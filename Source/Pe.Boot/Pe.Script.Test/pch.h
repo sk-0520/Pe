@@ -10,7 +10,9 @@
 // プリコンパイルするヘッダーをここに追加します
 #include "CppUnitTest.h"
 
-#include "../Pe.Library/common.h"
+extern "C" {
+#   include "../Pe.Library/common.h"
+}
 #include "../Pe.Library.Test/utility.h"
 
 extern TestImpl TEST;
