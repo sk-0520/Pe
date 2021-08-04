@@ -293,6 +293,9 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Pe.Library\Pe.Library.vcxproj">
+      <Project>{778ce0a0-cb22-4b9c-ad32-490c1ed04f7a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Pe.Script\Pe.Script.vcxproj">
       <Project>{B7FCED5D-BEFB-4A39-8F78-517ABE5681FE}</Project>
     </ProjectReference>
