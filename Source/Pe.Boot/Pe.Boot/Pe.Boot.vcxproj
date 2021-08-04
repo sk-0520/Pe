@@ -450,6 +450,9 @@
     <ProjectReference Include="..\Pe.Library\Pe.Library.vcxproj">
       <Project>{778ce0a0-cb22-4b9c-ad32-490c1ed04f7a}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Pe.Script\Pe.Script.vcxproj">
+      <Project>{b7fced5d-befb-4a39-8f78-517abe5681fe}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
