@@ -23,7 +23,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lexical_analyzer.cpp">
+    <ClCompile Include="lexical_analyzer.c">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
