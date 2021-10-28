@@ -24,6 +24,9 @@
     <ClInclude Include="script.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="token.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexical_analyzer.c">
