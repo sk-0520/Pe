@@ -273,7 +273,7 @@ typedef enum tag_TOKEN_KIND
     /// arg
     /// </summary>
     TOKEN_KIND_KEYWORD_ARG,
-    TOKEN_KIND_KEYWORD_,
+    //TOKEN_KIND_KEYWORD_,
 
     /// <summary>
     /// void
@@ -313,3 +313,13 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_LITERAL_BSTRING,
 } TOKEN_KIND;
+
+
+typedef struct tag_TOKEN_PAIR
+{
+    TOKEN_KIND kind;
+    TEXT word;
+} TOKEN_PAIR;
+
+
+
