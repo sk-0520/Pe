@@ -33,9 +33,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lexical_analyzer.h" />
+    <ClInclude Include="script.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexical_analyzer.c" />
+    <ClCompile Include="script.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
