@@ -80,6 +80,10 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_OP_COMMA,
     /// <summary>
+    /// .
+    /// </summary>
+    TOKEN_KIND_OP_DOT,
+    /// <summary>
     /// ;
     /// </summary>
     TOKEN_KIND_OP_SEMICOLON,
