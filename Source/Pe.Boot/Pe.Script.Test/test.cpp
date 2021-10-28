@@ -16,7 +16,7 @@ static void output(const TCHAR* message)
 }
 #endif
 
-TestImpl TEST(tstring(_T("PeBootTest")));
+TestImpl TEST(tstring(_T("ScriptTest")));
 
 TEST_MODULE_INITIALIZE(initialize)
 {
