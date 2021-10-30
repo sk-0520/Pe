@@ -119,6 +119,22 @@ static void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_p
     push_object_list(tokens, &token);
 }
 
+static void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, TEXT remark, size_t column_position, size_t line_number)
+{
+    COMPILE_RESULT compile_result = {
+        .stage = COMPILE_STAGE_LEX,
+        .kind = kind,
+        .code = code,
+        .remark = clone_text(&remark),
+        .position = {
+            .column_position = column_position,
+            .line_number = line_number,
+        },
+    };
+
+    push_object_list(compile_results, &compile_result);
+}
+
 void add_index(size_t* current_index, size_t* column_position, size_t add_value)
 {
     *current_index += add_value;
@@ -147,7 +163,7 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
     size_t current_index = 0;
     size_t line_number = 1;
     size_t column_position = 0;
-    TOKEN_KIND last_kind = TOKEN_KIND_NONE;
+    TOKEN_KIND last_token_kind = TOKEN_KIND_NONE;
 
     while (current_index < source->length) {
         TCHAR current_character = source->value[current_index];
@@ -163,8 +179,8 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
             } else {
                 current_index += 1;
             }
-            if (last_kind == TOKEN_KIND_COMMENT_LINE) {
-                last_kind = TOKEN_KIND_NONE;
+            if (last_token_kind == TOKEN_KIND_COMMENT_LINE) {
+                last_token_kind = TOKEN_KIND_NONE;
             }
             column_position = 0;
             line_number += 1;
@@ -183,13 +199,13 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
             if (current_character == multi_token->characters[MULTI_TOKEN_FIRST]) {
                 if (next_character && next_character == multi_token->characters[MULTI_TOKEN_SECOND] && multi_token->kinds[MULTI_TOKEN_SECOND] != TOKEN_KIND_NONE) {
                     processed_multi_token = true;
-                    if (!is_comment(last_kind) || !multi_token->skip_comments[MULTI_TOKEN_SECOND]) {
+                    if (!is_comment(last_token_kind) || !multi_token->skip_comments[MULTI_TOKEN_SECOND]) {
                         add_token_kind(&result->token, multi_token->kinds[MULTI_TOKEN_SECOND], column_position, line_number);
                     }
                     add_index(&current_index, &column_position, 2);
                 } else if (multi_token->kinds[MULTI_TOKEN_FIRST] != TOKEN_KIND_NONE) {
                     processed_multi_token = true;
-                    if (!is_comment(last_kind) || !multi_token->skip_comments[MULTI_TOKEN_FIRST]) {
+                    if (!is_comment(last_token_kind) || !multi_token->skip_comments[MULTI_TOKEN_FIRST]) {
                         add_token_kind(&result->token, multi_token->kinds[MULTI_TOKEN_FIRST], column_position, line_number);
                     }
                     add_index(&current_index, &column_position, 1);
@@ -198,12 +214,17 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
         }
         if (processed_multi_token) {
             TOKEN* token = peek_object_list(&result->token);
-            last_kind = token->kind;
+            last_token_kind = token->kind;
 
             continue;
         }
 
         current_index += 1;
+    }
+
+    if (last_token_kind == TOKEN_KIND_COMMENT_BLOCK_BEGIN) {
+        TOKEN* token = peek_object_list(&result->token);
+        add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_COMMENT, wrap_text(_T("コメントが閉じられていない")), token->position.column_position, token->position.line_number);
     }
 }
 
