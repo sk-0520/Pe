@@ -77,6 +77,14 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_OP_LAMBDA,
     /// <summary>
+    /// ++
+    /// </summary>
+    TOKEN_KIND_OP_INCREMENT,
+    /// <summary>
+    /// --
+    /// </summary>
+    TOKEN_KIND_OP_DECREMENT,
+    /// <summary>
     /// ,
     /// </summary>
     TOKEN_KIND_OP_COMMA,
@@ -92,6 +100,15 @@ typedef enum tag_TOKEN_KIND
     /// :
     /// </summary>
     TOKEN_KIND_OP_COLON,
+    /// <summary>
+    /// ?
+    /// </summary>
+    TOKEN_KIND_OP_QUESTION,
+    /// <summary>
+    /// \
+    /// </summary>
+    TOKEN_KIND_OP_BACKSLASH,
+
     /// <summary>
     /// (
     /// </summary>
@@ -327,6 +344,9 @@ typedef struct tag_TOKEN
 {
     SOURCE_POSITION position;
     TOKEN_KIND kind;
+    /// <summary>
+    /// 解放が必要。
+    /// </summary>
     TEXT word;
 } TOKEN;
 
