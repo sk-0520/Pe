@@ -38,6 +38,8 @@ namespace ScriptTest
                 DATA(std::vector<int> {TOKEN_KIND_OP_LESS, TOKEN_KIND_OP_GREATER, TOKEN_KIND_OP_LESS_EQUAL, TOKEN_KIND_OP_GREATER_EQUAL, TOKEN_KIND_OP_LAMBDA }, wrap("<><=>==>")),
 
                 DATA(std::vector<int> {TOKEN_KIND_OP_INCREMENT, TOKEN_KIND_OP_PLUS, TOKEN_KIND_OP_ADD_ASSIGN, TOKEN_KIND_OP_ASSIGN}, wrap("++ + += =")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_STAR, TOKEN_KIND_OP_STAR, TOKEN_KIND_OP_STAR, TOKEN_KIND_OP_MUL_ASSIGN, TOKEN_KIND_COMMENT_BLOCK_END}, wrap("** * *= */")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_SLASH, TOKEN_KIND_OP_DIV_ASSIGN, TOKEN_KIND_COMMENT_LINE}, wrap("/ /= //")),
 
             };
             for (auto test : tests) {
