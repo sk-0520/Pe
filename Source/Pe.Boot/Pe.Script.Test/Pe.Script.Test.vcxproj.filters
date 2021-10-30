@@ -27,7 +27,7 @@
     <ClCompile Include="test.cpp">
       <Filter>source\test</Filter>
     </ClCompile>
-    <ClCompile Include="empty.test.cpp">
+    <ClCompile Include="lexical_analyzer.test.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
