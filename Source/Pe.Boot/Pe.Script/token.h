@@ -35,6 +35,35 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_OP_PERCENT,
     /// <summary>
+    /// ,
+    /// </summary>
+    TOKEN_KIND_OP_COMMA,
+    /// <summary>
+    /// .
+    /// </summary>
+    TOKEN_KIND_OP_DOT,
+    /// <summary>
+    /// ;
+    /// </summary>
+    TOKEN_KIND_OP_SEMICOLON,
+    /// <summary>
+    /// :
+    /// </summary>
+    TOKEN_KIND_OP_COLON,
+    /// <summary>
+    /// ?
+    /// </summary>
+    TOKEN_KIND_OP_QUESTION,
+    /// <summary>
+    /// !
+    /// </summary>
+    TOKEN_KIND_OP_EXCLAMATION,
+    /// <summary>
+    /// \
+    /// </summary>
+    TOKEN_KIND_OP_BACKSLASH,
+
+    /// <summary>
     /// &amp;
     /// </summary>
     TOKEN_KIND_OP_AMPERSAND,
@@ -78,7 +107,24 @@ typedef enum tag_TOKEN_KIND
     /// =&gt;
     /// </summary>
     TOKEN_KIND_OP_LAMBDA,
+
     /// <summary>
+    /// +=
+    /// </summary>
+    TOKEN_KIND_OP_ADD_ASSIGN,
+    /// <summary>
+    /// -=
+    /// </summary>
+    TOKEN_KIND_OP_SUB_ASSIGN,
+    /// <summary>
+    /// <summary>
+    /// *=
+    /// </summary>
+    TOKEN_KIND_OP_MUL_ASSIGN,
+    /// <summary>
+    /// /=
+    /// </summary>
+    TOKEN_KIND_OP_DIV_ASSIGN,
     /// ++
     /// </summary>
     TOKEN_KIND_OP_INCREMENT,
@@ -86,30 +132,6 @@ typedef enum tag_TOKEN_KIND
     /// --
     /// </summary>
     TOKEN_KIND_OP_DECREMENT,
-    /// <summary>
-    /// ,
-    /// </summary>
-    TOKEN_KIND_OP_COMMA,
-    /// <summary>
-    /// .
-    /// </summary>
-    TOKEN_KIND_OP_DOT,
-    /// <summary>
-    /// ;
-    /// </summary>
-    TOKEN_KIND_OP_SEMICOLON,
-    /// <summary>
-    /// :
-    /// </summary>
-    TOKEN_KIND_OP_COLON,
-    /// <summary>
-    /// ?
-    /// </summary>
-    TOKEN_KIND_OP_QUESTION,
-    /// <summary>
-    /// \
-    /// </summary>
-    TOKEN_KIND_OP_BACKSLASH,
 
     /// <summary>
     /// (
