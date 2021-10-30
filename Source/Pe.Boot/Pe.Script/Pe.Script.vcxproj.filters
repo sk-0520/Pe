@@ -27,6 +27,9 @@
     <ClInclude Include="token.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="compile.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexical_analyzer.c">
