@@ -38,6 +38,24 @@ static struct
         .characters = { _T('-'), _T('-') },
         .kinds = { TOKEN_KIND_OP_MINUS, TOKEN_KIND_OP_DECREMENT },
     },
+    // *
+    {
+        .characters = { _T('*'), _T('=') },
+        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_MUL_ASSIGN },
+    },
+    {
+        .characters = { _T('*'), _T('/') },
+        .kinds = { TOKEN_KIND_OP_STAR, TOKEN_KIND_COMMENT_BLOCK_END },
+    },
+    // /
+    {
+        .characters = { _T('/'), _T('/') },
+        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_COMMENT_LINE },
+    },
+    {
+        .characters = { _T('/'), _T('=') },
+        .kinds = { TOKEN_KIND_OP_SLASH, TOKEN_KIND_OP_DIV_ASSIGN },
+    },
     // =
     {
         .characters = { _T('='), _T('>') },
@@ -135,7 +153,7 @@ static void analyze_line(TOKEN_RESULT* result, size_t line_number, const TEXT* l
         bool processed_multi_token = false;
         for (size_t i = 0; !processed_multi_token && i < sizeof(library__multi_tokens) / sizeof(library__multi_tokens[0]); i++) {
             if (current_character == library__multi_tokens[i].characters[MULTI_TOKEN_FIRST]) {
-                if (next_character && next_character == library__multi_tokens[i].characters[MULTI_TOKEN_SECOND]) {
+                if (next_character && next_character == library__multi_tokens[i].characters[MULTI_TOKEN_SECOND] && library__multi_tokens[i].kinds[MULTI_TOKEN_SECOND] != TOKEN_KIND_NONE) {
                     column_index += 2;
                     processed_multi_token = true;
                     add_token_kind(&result->token, library__multi_tokens[i].kinds[MULTI_TOKEN_SECOND], column_index, line_number, file_path);
