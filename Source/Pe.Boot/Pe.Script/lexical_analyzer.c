@@ -77,32 +77,6 @@ static struct
     },
 };
 
-size_t allocate_token_pairs(TOKEN_PAIR** pairs)
-{
-    TOKEN_PAIR token_pairs[] = {
-        { TOKEN_KIND_OP_ASSIGN, new_text(_T("=")) },
-    };
-
-    size_t token_length = sizeof(token_pairs) / sizeof(token_pairs[0]);
-    byte_t tokens_bytes = sizeof(token_pairs[0]) * token_length;
-    TOKEN_PAIR* result = allocate_memory(tokens_bytes, false);
-    copy_memory(pairs, result, tokens_bytes);
-
-    return token_length;
-}
-
-bool free_token_pairs(TOKEN_PAIR pairs[], size_t length)
-{
-    if (!pairs) {
-        return false;
-    }
-
-    for (size_t i = 0; i < length; i++) {
-        free_text(&pairs[i].word);
-    }
-
-    return true;
-}
 
 static bool is_whitespace_character(TCHAR c)
 {
@@ -110,16 +84,15 @@ static bool is_whitespace_character(TCHAR c)
 }
 
 
-static void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_index, size_t line_number, const TEXT* file_path)
+static void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_index, size_t line_number)
 {
     TOKEN token = {
         .kind = kind,
         .position = {
             .column_index = column_index,
             .line_number = line_number,
-            .file_path = (TEXT*)file_path,
-    },
-    .word = create_invalid_text()
+        },
+        .word = create_invalid_text()
     };
 
     push_object_list(tokens, &token);
@@ -127,8 +100,10 @@ static void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_i
 
 
 
-static void analyze_line(TOKEN_RESULT* result, size_t line_number, const TEXT* line, const TEXT* file_path, const PROJECT_SETTING* setting)
+static void analyze_line(size_t line_number, const TEXT* line, ANALYZE_DATA* analyze_data)
 {
+    TOKEN_RESULT* result = analyze_data->result;
+
     if (!line->length) {
         return;
     }
@@ -156,11 +131,11 @@ static void analyze_line(TOKEN_RESULT* result, size_t line_number, const TEXT* l
                 if (next_character && next_character == library__multi_tokens[i].characters[MULTI_TOKEN_SECOND] && library__multi_tokens[i].kinds[MULTI_TOKEN_SECOND] != TOKEN_KIND_NONE) {
                     column_index += 2;
                     processed_multi_token = true;
-                    add_token_kind(&result->token, library__multi_tokens[i].kinds[MULTI_TOKEN_SECOND], column_index, line_number, file_path);
+                    add_token_kind(&result->token, library__multi_tokens[i].kinds[MULTI_TOKEN_SECOND], column_index, line_number);
                 } else if(library__multi_tokens[i].kinds[MULTI_TOKEN_FIRST] != TOKEN_KIND_NONE) {
                     column_index += 1;
                     processed_multi_token = true;
-                    add_token_kind(&result->token, library__multi_tokens[i].kinds[MULTI_TOKEN_FIRST], column_index, line_number, file_path);
+                    add_token_kind(&result->token, library__multi_tokens[i].kinds[MULTI_TOKEN_FIRST], column_index, line_number);
                 }
             }
         }
@@ -193,9 +168,13 @@ static void analyze_line(TOKEN_RESULT* result, size_t line_number, const TEXT* l
 static bool foreach_analyze_line(const void* value, size_t index, size_t length, void* data)
 {
     TEXT* line = (TEXT*)value;
-    ANALYZE_DATA* analyze_data = (ANALYZE_DATA*)data;
-    analyze_line(analyze_data->result, index + 1, line, analyze_data->file_path, analyze_data->setting);
+    analyze_line(index + 1, line, data);
     return true;
+}
+
+void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* analyze_data)
+{
+
 }
 
 TOKEN_RESULT analyze(const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting)
@@ -203,6 +182,7 @@ TOKEN_RESULT analyze(const TEXT* file_path, const TEXT* source, const PROJECT_SE
     assert(setting);
 
     TOKEN_RESULT token_result = {
+        .file_path = (TEXT*)file_path,
         .token = create_object_list(sizeof(TOKEN), 1024, compare_object_list_value_null, free_object_list_value_null),
         .result = create_object_list(sizeof(COMPILE_RESULT), OBJECT_LIST_DEFAULT_CAPACITY_COUNT, compare_object_list_value_null, free_object_list_value_null),
     };
@@ -214,6 +194,7 @@ TOKEN_RESULT analyze(const TEXT* file_path, const TEXT* source, const PROJECT_SE
     OBJECT_LIST lines = split_newline_text(source);
 
     ANALYZE_DATA data = {
+        .file_path = file_path,
         .result = &token_result,
         .setting = (PROJECT_SETTING*)setting, //TODO: とりあえずの回避。Cって構造体メンバにconst使えんの？
     };
