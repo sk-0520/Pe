@@ -3,6 +3,8 @@
 
 typedef enum tag_TOKEN_KIND
 {
+    TOKEN_KIND_NONE,
+
     /// <summary>
     /// 関数名とか変数名とか。
     /// </summary>
