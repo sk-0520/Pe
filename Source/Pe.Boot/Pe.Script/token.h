@@ -62,6 +62,10 @@ typedef enum tag_TOKEN_KIND
     /// \
     /// </summary>
     TOKEN_KIND_OP_BACKSLASH,
+    /// <summary>
+    /// ~
+    /// </summary>
+    TOKEN_KIND_OP_TILDE,
 
     /// <summary>
     /// &amp;
@@ -117,7 +121,6 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_OP_SUB_ASSIGN,
     /// <summary>
-    /// <summary>
     /// *=
     /// </summary>
     TOKEN_KIND_OP_MUL_ASSIGN,
@@ -125,6 +128,10 @@ typedef enum tag_TOKEN_KIND
     /// /=
     /// </summary>
     TOKEN_KIND_OP_DIV_ASSIGN,
+    /// <summary>
+    /// ~=
+    /// </summary>
+    TOKEN_KIND_OP_STR_ASSIGN,
     /// ++
     /// </summary>
     TOKEN_KIND_OP_INCREMENT,
