@@ -34,10 +34,6 @@ typedef struct tag_PROJECT_INFO
 typedef struct tag_SOURCE_POSITION
 {
     /// <summary>
-    /// ソースファイルパス。
-    /// </summary>
-    TEXT* file_path;
-    /// <summary>
     /// 行番号(1始まり)。
     /// </summary>
     size_t line_number;
