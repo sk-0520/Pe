@@ -8,6 +8,44 @@ typedef struct tag_ANALYZE_DATA
     PROJECT_SETTING* setting;
 } ANALYZE_DATA;
 
+#define MULTI_TOKEN_FIRST (0)
+#define MULTI_TOKEN_SECOND (1)
+#define MULTI_TOKEN_COUNT (2)
+static struct
+{
+    TCHAR characters[MULTI_TOKEN_COUNT];
+    /// <summary>
+    /// MULTI_TOKEN_FIRST: characters[MULTI_TOKEN_FIRST] のみのトークン
+    /// MULTI_TOKEN_SECOND: characters[MULTI_TOKEN_FIRST][MULTI_TOKEN_SECOND]のトークン
+    /// </summary>
+    TOKEN_KIND kinds[MULTI_TOKEN_COUNT];
+} library__multi_tokens[] = {
+    {
+        .characters = { _T('+'), _T('+') },
+        .kinds = { TOKEN_KIND_OP_PLUS, TOKEN_KIND_OP_INCREMENT },
+    },
+    {
+        .characters = { _T('-'), _T('-') },
+        .kinds = { TOKEN_KIND_OP_MINUS, TOKEN_KIND_OP_DECREMENT },
+    },
+    {
+        .characters = { _T('='), _T('=') },
+        .kinds = { TOKEN_KIND_OP_ASSIGN, TOKEN_KIND_OP_EQUALS },
+    },
+    {
+        .characters = { _T('<'), _T('=') },
+        .kinds = { TOKEN_KIND_OP_LESS, TOKEN_KIND_OP_LESS_EQUAL },
+    },
+    {
+        .characters = { _T('>'), _T('=') },
+        .kinds = { TOKEN_KIND_OP_GREATER, TOKEN_KIND_OP_GREATER_EQUAL },
+    },
+    {
+        .characters = { _T('='), _T('>') }, // => と <=> が死ぬので優先度を下げている
+        .kinds = { TOKEN_KIND_OP_ASSIGN, TOKEN_KIND_OP_LAMBDA },
+    },
+};
+
 size_t allocate_token_pairs(TOKEN_PAIR** pairs)
 {
     TOKEN_PAIR token_pairs[] = {
@@ -84,22 +122,42 @@ static void analyze_line(TOKEN_RESULT* result, size_t line_number, const TEXT* l
             next_character = line->value[column_index + 1];
         }
 
-        switch (current_character) {
-            case _T('+'):
-                if (next_character) {
-                    if (next_character == _T('+')) {
-                        column_index += 2;
-                        add_token_kind(&result->token, TOKEN_KIND_OP_INCREMENT, column_index, line_number, file_path);
-                        continue;
-                    }
+        // 単一トークンと合わせ技のトークンを処理
+        bool processed_multi_token = false;
+        for (size_t i = 0; i < sizeof(library__multi_tokens) / sizeof(library__multi_tokens[0]); i++) {
+            if (current_character == library__multi_tokens[i].characters[MULTI_TOKEN_FIRST]) {
+                if (next_character && next_character == library__multi_tokens[i].characters[MULTI_TOKEN_SECOND]) {
+                    column_index += 2;
+                    processed_multi_token = true;
+                    add_token_kind(&result->token, library__multi_tokens[i].kinds[MULTI_TOKEN_SECOND], column_index, line_number, file_path);
+                } else {
+                    column_index += 1;
+                    processed_multi_token = true;
+                    add_token_kind(&result->token, library__multi_tokens[i].kinds[MULTI_TOKEN_FIRST], column_index, line_number, file_path);
                 }
-                add_token_kind(&result->token, TOKEN_KIND_OP_PLUS, column_index, line_number, file_path);
-                column_index += 1;
-                continue;
-
-            default:
                 break;
+            }
         }
+        if (processed_multi_token) {
+            continue;
+        }
+
+        //switch (current_character) {
+        //    case _T('+'):
+        //        if (next_character) {
+        //            if (next_character == _T('+')) {
+        //                column_index += 2;
+        //                add_token_kind(&result->token, TOKEN_KIND_OP_INCREMENT, column_index, line_number, file_path);
+        //                continue;
+        //            }
+        //        }
+        //        add_token_kind(&result->token, TOKEN_KIND_OP_PLUS, column_index, line_number, file_path);
+        //        column_index += 1;
+        //        continue;
+
+        //    default:
+        //        break;
+        //}
 
         column_index += 1;
 
