@@ -40,7 +40,7 @@ typedef struct tag_SOURCE_POSITION
     /// <summary>
     /// カラム位置(0始まり)。
     /// </summary>
-    size_t column_index;
+    size_t column_position;
 } SOURCE_POSITION;
 
 /// <summary>

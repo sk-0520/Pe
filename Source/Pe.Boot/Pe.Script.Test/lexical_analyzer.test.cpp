@@ -22,6 +22,31 @@ namespace ScriptTest
             free_token_result(&token_result);
         }
 
+        TEST_METHOD(analyze_newline_test)
+        {
+            PROJECT_SETTING setting;
+
+            TEXT input = wrap("*\r *\n  *\r\n   *");
+            TOKEN_RESULT actual = analyze(NULL, &input, &setting);
+
+            TOKEN* actual1 = (TOKEN*)get_object_list(&actual.token, 0).value;
+            TOKEN* actual2 = (TOKEN*)get_object_list(&actual.token, 1).value;
+            TOKEN* actual3 = (TOKEN*)get_object_list(&actual.token, 2).value;
+            TOKEN* actual4 = (TOKEN*)get_object_list(&actual.token, 3).value;
+
+            Assert::AreEqual((size_t)1, actual1->position.line_number);
+            Assert::AreEqual((size_t)2, actual2->position.line_number);
+            Assert::AreEqual((size_t)3, actual3->position.line_number);
+            Assert::AreEqual((size_t)4, actual4->position.line_number);
+
+            Assert::AreEqual((size_t)0, actual1->position.column_position);
+            Assert::AreEqual((size_t)1, actual2->position.column_position);
+            Assert::AreEqual((size_t)2, actual3->position.column_position);
+            Assert::AreEqual((size_t)3, actual4->position.column_position);
+
+            free_token_result(&actual);
+        }
+
         TEST_METHOD(analyze_multi_token_test)
         {
             PROJECT_SETTING setting;
