@@ -29,6 +29,10 @@ static struct
         .kinds = { TOKEN_KIND_OP_MINUS, TOKEN_KIND_OP_DECREMENT },
     },
     {
+        .characters = { _T('='), _T('>') },
+        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_LAMBDA },
+    },
+    {
         .characters = { _T('='), _T('=') },
         .kinds = { TOKEN_KIND_OP_ASSIGN, TOKEN_KIND_OP_EQUALS },
     },
@@ -39,10 +43,6 @@ static struct
     {
         .characters = { _T('>'), _T('=') },
         .kinds = { TOKEN_KIND_OP_GREATER, TOKEN_KIND_OP_GREATER_EQUAL },
-    },
-    {
-        .characters = { _T('='), _T('>') }, // => と <=> が死ぬので優先度を下げている
-        .kinds = { TOKEN_KIND_OP_ASSIGN, TOKEN_KIND_OP_LAMBDA },
     },
 };
 
@@ -130,7 +130,7 @@ static void analyze_line(TOKEN_RESULT* result, size_t line_number, const TEXT* l
                     column_index += 2;
                     processed_multi_token = true;
                     add_token_kind(&result->token, library__multi_tokens[i].kinds[MULTI_TOKEN_SECOND], column_index, line_number, file_path);
-                } else {
+                } else if(library__multi_tokens[i].kinds[MULTI_TOKEN_FIRST] != TOKEN_KIND_NONE) {
                     column_index += 1;
                     processed_multi_token = true;
                     add_token_kind(&result->token, library__multi_tokens[i].kinds[MULTI_TOKEN_FIRST], column_index, line_number, file_path);
