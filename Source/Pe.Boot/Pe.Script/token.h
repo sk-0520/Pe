@@ -363,13 +363,13 @@ typedef enum tag_TOKEN_KIND
     TOKEN_KIND_LITERAL_BSTRING,
 } TOKEN_KIND;
 
-
+/*
 typedef struct tag_TOKEN_PAIR
 {
     TOKEN_KIND kind;
     TEXT word;
 } TOKEN_PAIR;
-
+*/
 
 typedef struct tag_TOKEN
 {
