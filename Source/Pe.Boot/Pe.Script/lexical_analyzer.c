@@ -20,14 +20,25 @@ static struct
     /// </summary>
     TOKEN_KIND kinds[MULTI_TOKEN_COUNT];
 } library__multi_tokens[] = {
+    // +
+    {
+        .characters = { _T('+'), _T('=') },
+        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_ADD_ASSIGN },
+    },
     {
         .characters = { _T('+'), _T('+') },
         .kinds = { TOKEN_KIND_OP_PLUS, TOKEN_KIND_OP_INCREMENT },
+    },
+    // -
+    {
+        .characters = { _T('-'), _T('=') },
+        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_SUB_ASSIGN },
     },
     {
         .characters = { _T('-'), _T('-') },
         .kinds = { TOKEN_KIND_OP_MINUS, TOKEN_KIND_OP_DECREMENT },
     },
+    // =
     {
         .characters = { _T('='), _T('>') },
         .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_LAMBDA },
@@ -36,10 +47,12 @@ static struct
         .characters = { _T('='), _T('=') },
         .kinds = { TOKEN_KIND_OP_ASSIGN, TOKEN_KIND_OP_EQUALS },
     },
+    // <
     {
         .characters = { _T('<'), _T('=') },
         .kinds = { TOKEN_KIND_OP_LESS, TOKEN_KIND_OP_LESS_EQUAL },
     },
+    // >
     {
         .characters = { _T('>'), _T('=') },
         .kinds = { TOKEN_KIND_OP_GREATER, TOKEN_KIND_OP_GREATER_EQUAL },
@@ -93,11 +106,7 @@ static void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_i
 
     push_object_list(tokens, &token);
 }
-//
-//static TOKEN create_token_word()
-//{
-//
-//}
+
 
 
 static void analyze_line(TOKEN_RESULT* result, size_t line_number, const TEXT* line, const TEXT* file_path, const PROJECT_SETTING* setting)
@@ -124,7 +133,7 @@ static void analyze_line(TOKEN_RESULT* result, size_t line_number, const TEXT* l
 
         // 単一トークンと合わせ技のトークンを処理
         bool processed_multi_token = false;
-        for (size_t i = 0; i < sizeof(library__multi_tokens) / sizeof(library__multi_tokens[0]); i++) {
+        for (size_t i = 0; !processed_multi_token && i < sizeof(library__multi_tokens) / sizeof(library__multi_tokens[0]); i++) {
             if (current_character == library__multi_tokens[i].characters[MULTI_TOKEN_FIRST]) {
                 if (next_character && next_character == library__multi_tokens[i].characters[MULTI_TOKEN_SECOND]) {
                     column_index += 2;
@@ -135,7 +144,6 @@ static void analyze_line(TOKEN_RESULT* result, size_t line_number, const TEXT* l
                     processed_multi_token = true;
                     add_token_kind(&result->token, library__multi_tokens[i].kinds[MULTI_TOKEN_FIRST], column_index, line_number, file_path);
                 }
-                break;
             }
         }
         if (processed_multi_token) {
