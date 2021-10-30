@@ -27,20 +27,20 @@ namespace ScriptTest
             PROJECT_SETTING setting;
 
             auto tests = {
-                //DATA(std::vector<int> {TOKEN_KIND_OP_INCREMENT, TOKEN_KIND_OP_PLUS}, wrap("+++")),
-                //DATA(std::vector<int> {TOKEN_KIND_OP_INCREMENT, TOKEN_KIND_OP_INCREMENT}, wrap("++++")),
-                //DATA(std::vector<int> {TOKEN_KIND_OP_PLUS}, wrap("+")),
-                //DATA(std::vector<int> {TOKEN_KIND_OP_PLUS, TOKEN_KIND_OP_PLUS}, wrap("+ +")),
-                //DATA(std::vector<int> {TOKEN_KIND_OP_PLUS, TOKEN_KIND_OP_INCREMENT, TOKEN_KIND_OP_PLUS}, wrap("+ ++ +")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_INCREMENT, TOKEN_KIND_OP_PLUS}, wrap("+++")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_INCREMENT, TOKEN_KIND_OP_INCREMENT}, wrap("++++")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_PLUS}, wrap("+")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_PLUS, TOKEN_KIND_OP_PLUS}, wrap("+ +")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_PLUS, TOKEN_KIND_OP_INCREMENT, TOKEN_KIND_OP_PLUS}, wrap("+ ++ +")),
 
-                //DATA(std::vector<int> {TOKEN_KIND_OP_DECREMENT, TOKEN_KIND_OP_MINUS}, wrap("---")),
-                //DATA(std::vector<int> {TOKEN_KIND_OP_EQUALS, TOKEN_KIND_OP_ASSIGN}, wrap("===")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_DECREMENT, TOKEN_KIND_OP_MINUS}, wrap("---")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_EQUALS, TOKEN_KIND_OP_ASSIGN}, wrap("===")),
                 DATA(std::vector<int> {TOKEN_KIND_OP_LESS, TOKEN_KIND_OP_GREATER, TOKEN_KIND_OP_LESS_EQUAL, TOKEN_KIND_OP_GREATER_EQUAL, TOKEN_KIND_OP_LAMBDA }, wrap("<><=>==>")),
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
                 TOKEN_RESULT actual = analyze(NULL, &arg1, &setting);
-                Assert::AreEqual(test.expected.size(), actual.token.length);
+                Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
                 for (size_t i = 0; i < test.expected.size(); i++) {
                     TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
                     Assert::AreEqual<int>(test.expected[i], actual_token->kind);
