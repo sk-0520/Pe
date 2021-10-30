@@ -1,11 +1,12 @@
 ﻿#pragma once
+#include "script.h"
 
 typedef enum tag_TOKEN_KIND
 {
     /// <summary>
     /// 関数名とか変数名とか。
     /// </summary>
-    TOKEN_KIND_SYMBOL,
+    TOKEN_KIND_WORD,
 
     /// <summary>
     /// =
@@ -321,5 +322,12 @@ typedef struct tag_TOKEN_PAIR
     TEXT word;
 } TOKEN_PAIR;
 
+
+typedef struct tag_TOKEN
+{
+    SOURCE_POSITION position;
+    TOKEN_KIND kind;
+    TEXT word;
+} TOKEN;
 
 
