@@ -32,6 +32,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="compile.h" />
     <ClInclude Include="lexical_analyzer.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="token.h" />

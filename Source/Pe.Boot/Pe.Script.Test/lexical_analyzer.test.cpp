@@ -47,6 +47,20 @@ namespace ScriptTest
             free_token_result(&actual);
         }
 
+        TEST_METHOD(analyze_block_comment_test)
+        {
+            PROJECT_SETTING setting;
+
+            TEXT input = wrap("/*");
+            TOKEN_RESULT actual = analyze(NULL, &input, &setting);
+
+            TOKEN* actual1 = (TOKEN*)get_object_list(&actual.token, 0).value;
+            Assert::AreEqual<int>(TOKEN_KIND_COMMENT_BLOCK_BEGIN, actual1->kind);
+
+            COMPILE_RESULT* actual2 = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
+            Assert::AreEqual<int>(COMPILE_CODE_NOT_CLOSE_COMMENT, actual2->code);
+        }
+
         TEST_METHOD(analyze_multi_token_test)
         {
             PROJECT_SETTING setting;

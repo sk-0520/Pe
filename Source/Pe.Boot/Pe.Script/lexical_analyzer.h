@@ -8,8 +8,8 @@
 typedef struct tag_TOKEN_RESULT
 {
     TEXT* file_path;
-    OBJECT_LIST token;
-    OBJECT_LIST result;
+    OBJECT_LIST/*TOKEN*/ token;
+    OBJECT_LIST/*COMPILE_RESULT*/ result;
 } TOKEN_RESULT;
 
 
