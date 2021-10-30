@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../Pe.Library/text.h"
+#include "compile.h"
 
 /// <summary>
 /// プロジェクト設定。
@@ -58,8 +59,14 @@ typedef enum tag_COMPILE_RESULT_KIND
 /// </summary>
 typedef struct tag_COMPILE_RESULT
 {
+    COMPILE_STAGE stage;
     COMPILE_RESULT_KIND kind;
     SOURCE_POSITION position;
+    COMPILE_CODE code;
+    /// <summary>
+    /// 解放が必要。
+    /// </summary>
+    TEXT remark;
 } COMPILE_RESULT;
 
 
