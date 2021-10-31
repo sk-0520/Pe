@@ -2,13 +2,6 @@
 #include "../Pe.Library/primitive_list.h"
 #include "../Pe.Library/debug.h"
 
-typedef struct tag_ANALYZE_DATA
-{
-    TEXT* file_path;
-    TOKEN_RESULT* result;
-    PROJECT_SETTING* setting;
-} ANALYZE_DATA;
-
 #define MULTI_TOKEN_FIRST (0)
 #define MULTI_TOKEN_SECOND (1)
 #define MULTI_TOKEN_COUNT (2)
