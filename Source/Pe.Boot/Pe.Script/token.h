@@ -129,9 +129,9 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_OP_DIV_ASSIGN,
     /// <summary>
-    /// ~=
+    /// %=
     /// </summary>
-    TOKEN_KIND_OP_STR_ASSIGN,
+    TOKEN_KIND_OP_REM_ASSIGN,
     /// ++
     /// </summary>
     TOKEN_KIND_OP_INCREMENT,

@@ -88,6 +88,10 @@ namespace ScriptTest
                 DATA(std::vector<int> {TOKEN_KIND_COMMENT_BLOCK_BEGIN, TOKEN_KIND_COMMENT_BLOCK_END, TOKEN_KIND_OP_STAR}, wrap("/***/*")),
                 DATA(std::vector<int> {TOKEN_KIND_COMMENT_LINE, TOKEN_KIND_OP_STAR}, wrap("//\n*")),
 
+                DATA(std::vector<int> {TOKEN_KIND_OP_PERCENT, TOKEN_KIND_OP_REM_ASSIGN}, wrap("%%=")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_EXCLAMATION, TOKEN_KIND_OP_NOT_EQUALS}, wrap("!!=")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_AND, TOKEN_KIND_OP_AMPERSAND}, wrap("&&&")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_OR, TOKEN_KIND_OP_VERTICALBAR}, wrap("|||")),
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
