@@ -156,8 +156,6 @@ namespace ScriptTest
                 DATA((size_t)1, wrap("\"\"\"")),
                 DATA((size_t)1, wrap("\"\"    \"        Z")),
                 DATA((size_t)1, wrap("\"\"    \"        Z\r")),
-
-                DATA((size_t)0, wrap("`")),
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
@@ -242,6 +240,19 @@ namespace ScriptTest
             Assert::AreEqual((size_t)1, actual.result.length);
             COMPILE_RESULT* cr = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
             Assert::AreEqual<int>(COMPILE_CODE_UNKNOWN_ESCAPE_SEQUENCE, cr->code);
+
+            free_token_result(&actual);
+        }
+
+        TEST_METHOD(analyze_string_bq_notimpl_test)
+        {
+            PROJECT_SETTING setting;
+            TEXT input = wrap("`a`");
+            TOKEN_RESULT actual = analyze(NULL, &input, &setting);
+            Assert::AreEqual((size_t)0, actual.token.length);
+            Assert::AreEqual((size_t)1, actual.result.length);
+            COMPILE_RESULT* cr = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
+            Assert::AreEqual<int>(COMPILE_CODE_NOT_IMPLEMENT, cr->code);
 
             free_token_result(&actual);
         }
