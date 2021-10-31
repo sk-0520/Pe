@@ -104,5 +104,54 @@ namespace ScriptTest
                 free_token_result(&actual);
             }
         }
+
+        TEST_METHOD(analyze_single_character_token_test)
+        {
+            PROJECT_SETTING setting;
+
+            auto tests = {
+                DATA(std::vector<int> {TOKEN_KIND_OP_COMMA}, wrap(",")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_DOT}, wrap(".")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_SEMICOLON}, wrap(";")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_COLON}, wrap(":")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_QUESTION}, wrap("?")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_BACKSLASH}, wrap("\\")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_TILDE}, wrap("~")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_AT}, wrap("@")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_DOLLAR}, wrap("$")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_HASH}, wrap("#")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_LPAREN, TOKEN_KIND_OP_RPAREN}, wrap("()")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_LBRACE, TOKEN_KIND_OP_RBRACE}, wrap("{}")),
+                DATA(std::vector<int> {TOKEN_KIND_OP_LBRACKET, TOKEN_KIND_OP_RBRACKET}, wrap("[]")),
+            };
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                TOKEN_RESULT actual = analyze(NULL, &arg1, &setting);
+                Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
+                for (size_t i = 0; i < test.expected.size(); i++) {
+                    TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
+                    Assert::AreEqual<int>(test.expected[i], actual_token->kind);
+                }
+                free_token_result(&actual);
+            }
+        }
+
+        TEST_METHOD(analyze_string_not_close_1_test)
+        {
+            PROJECT_SETTING setting;
+
+            TEXT inputs[] = {
+                wrap("\'"),
+                wrap("\""),
+                wrap("`"),
+            };
+            for (auto input : inputs) {
+                TOKEN_RESULT actual = analyze(NULL, &input, &setting);
+                Assert::AreEqual((size_t)0, actual.token.length, input.value);
+                Assert::AreEqual((size_t)1, actual.result.length, input.value);
+            }
+        }
+
+
     };
 }
