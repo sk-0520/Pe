@@ -2,6 +2,7 @@
 #include <stddef.h>
 
 #include "../Pe.Library/text.h"
+#include "../Pe.Library/res_check.h"
 
 #include "token.h"
 
@@ -13,6 +14,12 @@ typedef struct tag_TOKEN_RESULT
 } TOKEN_RESULT;
 
 
-TOKEN_RESULT analyze(const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting);
+TOKEN_RESULT RC_HEAP_FUNC(analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting);
+#ifdef RES_CHECK
+#   define analyze(file_path, source, setting) RC_HEAP_WRAP(analyze, file_path, source, setting)
+#endif
 
-void free_token_result(TOKEN_RESULT* token_result);
+void RC_HEAP_FUNC(free_token_result, TOKEN_RESULT* token_result);
+#ifdef RES_CHECK
+#   define free_token_result(token_result) RC_HEAP_WRAP(free_token_result, token_result)
+#endif
