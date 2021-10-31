@@ -69,5 +69,14 @@ typedef struct tag_COMPILE_RESULT
     TEXT remark;
 } COMPILE_RESULT;
 
-
+/// <summary>
+///
+/// </summary>
+/// <param name="compile_results"><c>COMPILE_RESULT</c>の<c>OBJECT_LIST</c></param>
+/// <param name="kind"></param>
+/// <param name="code"></param>
+/// <param name="remark"></param>
+/// <param name="column_position"></param>
+/// <param name="line_number"></param>
+void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, const TEXT* remark, size_t column_position, size_t line_number);
 
