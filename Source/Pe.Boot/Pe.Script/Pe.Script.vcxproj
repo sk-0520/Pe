@@ -35,9 +35,11 @@
     <ClInclude Include="compile.h" />
     <ClInclude Include="lexical_analyzer.h" />
     <ClInclude Include="script.h" />
+    <ClInclude Include="source.h" />
     <ClInclude Include="token.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="compile.c" />
     <ClCompile Include="lexical_analyzer.c" />
     <ClCompile Include="script.c" />
     <ClCompile Include="token.c" />
