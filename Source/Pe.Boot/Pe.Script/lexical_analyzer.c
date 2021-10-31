@@ -241,11 +241,11 @@ static void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_p
         .position = {
             .column_position = column_position,
             .line_number = line_number,
-        },
-        .type = TOKEN_VALUE_TYPE_NONE,
-        .value = {
-            .none = NULL,
-        },
+    },
+    .type = TOKEN_VALUE_TYPE_NONE,
+    .value = {
+        .none = NULL,
+    },
     };
 
     push_object_list(tokens, &token);
@@ -258,9 +258,9 @@ static void add_token_value_core(OBJECT_LIST* tokens, TOKEN_KIND kind, TOKEN_VAL
         .position = {
             .column_position = column_position,
             .line_number = line_number,
-        },
-        .type = type,
-        .value = value,
+    },
+    .type = type,
+    .value = value,
     };
 
     push_object_list(tokens, &token);
@@ -524,7 +524,7 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
     } mode = MODE_INT;
 
     size_t read_length = 1;
-    for (size_t current_index = start_index + 1; current_index < source->length; current_index++, read_length++) {
+    for (size_t current_index = start_index + 1, i = 0; current_index < source->length; current_index++, read_length++, i++) {
         TCHAR current_character = source->value[current_index];
 
         TCHAR next_character = 0;
@@ -533,7 +533,7 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
         }
 
         // 最初だけちょっと特殊処理
-        if (!read_length && start_digit == '0' && (current_character == 'x' || current_character == 'b')) {
+        if (!i && start_digit == '0' && (current_character == 'x' || current_character == 'b')) {
             if (!next_character) {
                 add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, column_position, line_number);
                 break;
@@ -618,11 +618,13 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
     TOKEN_KIND number_token_kind = TOKEN_KIND_LITERAL_INTEGER;
     ssize_t converted_integer = 0;
     //double converted_decimal = 0;
+    TEXT_PARSED_I64_RESULT parsed_result;
+    TEXT reference_text;
     switch (mode) {
         case MODE_INT:
-            TEXT_PARSED_INT64_RESULT int_result = parse_long_from_text(&word, false);
-            if (int_result.success) {
-                converted_integer = (ssize_t)int_result.value;
+            parsed_result = parse_i64_from_text(&word, false);
+            if (parsed_result.success) {
+                converted_integer = (ssize_t)parsed_result.value;
             } else {
                 add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_PAESE_ERROR_NUMBER, NULL, column_position, line_number);
                 goto EXIT;
@@ -634,9 +636,9 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
             break;
 
         case MODE_HEX:
-            TEXT_PARSED_INT64_RESULT hex_result = parse_long_from_text(&word, true);
-            if (hex_result.success) {
-                converted_integer = (ssize_t)hex_result.value;
+            parsed_result = parse_i64_from_text(&word, true);
+            if (parsed_result.success) {
+                converted_integer = (ssize_t)parsed_result.value;
             } else {
                 add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_PAESE_ERROR_NUMBER, NULL, column_position, line_number);
                 goto EXIT;
@@ -644,7 +646,14 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
             break;
 
         case MODE_BIN:
-            // 10進数に変換しておく
+            reference_text = wrap_text_with_length(word.value + 2, word.length - 2, false);
+            parsed_result = parse_i64_from_bin_text(&reference_text);
+            if (parsed_result.success) {
+                converted_integer = (ssize_t)parsed_result.value;
+            } else {
+                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_PAESE_ERROR_NUMBER, NULL, column_position, line_number);
+                goto EXIT;
+            }
             break;
 
         default:
