@@ -140,15 +140,31 @@ namespace ScriptTest
         {
             PROJECT_SETTING setting;
 
-            TEXT inputs[] = {
-                wrap("\'"),
-                wrap("\""),
-                wrap("`"),
+            auto tests = {
+                DATA((size_t)0, wrap("\'")),
+                DATA((size_t)0, wrap("\'\r")),
+                DATA((size_t)0, wrap("\'\n")),
+                DATA((size_t)1, wrap("\'\'\'")),
+                DATA((size_t)1, wrap("\'\'    \'        Z")),
+                DATA((size_t)1, wrap("\'\'    \'        Z\r")),
+
+                DATA((size_t)0, wrap("\"")),
+
+                DATA((size_t)0, wrap("`")),
             };
-            for (auto input : inputs) {
-                TOKEN_RESULT actual = analyze(NULL, &input, &setting);
-                Assert::AreEqual((size_t)0, actual.token.length, input.value);
-                Assert::AreEqual((size_t)1, actual.result.length, input.value);
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                TOKEN_RESULT actual = analyze(NULL, &arg1, &setting);
+                Assert::AreEqual(test.expected, actual.token.length, arg1.value);
+                size_t error_count = 0;
+                for (size_t i = 0; i < actual.result.length; i++) {
+                    COMPILE_RESULT* cr = (COMPILE_RESULT*)get_object_list(&actual.result, i).value;
+                    if (cr->kind == COMPILE_RESULT_KIND_ERROR && cr->code == COMPILE_CODE_NOT_CLOSE_STRING) {
+                        error_count += 1;
+                    }
+                }
+                Assert::IsTrue(actual.result.length, arg1.value);
+                free_token_result(&actual);
             }
         }
 
@@ -158,7 +174,7 @@ namespace ScriptTest
             TEXT word;
         };
 
-        TEST_METHOD(analyze_string_sq_test)
+        TEST_METHOD(analyze_string_sq1_test)
         {
             PROJECT_SETTING setting;
 
@@ -183,6 +199,7 @@ namespace ScriptTest
                 free_token_result(&actual);
             }
         }
+
 
     };
 }
