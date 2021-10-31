@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <stddef.h>
+#include <stdbool.h>
 
 #include "../Pe.Library/text.h"
 #include "../Pe.Library/res_check.h"
@@ -32,3 +33,5 @@ void RC_HEAP_FUNC(free_token_result, TOKEN_RESULT* token_result);
 #ifdef RES_CHECK
 #   define free_token_result(token_result) RC_HEAP_WRAP(free_token_result, token_result)
 #endif
+
+#include "lexical_analyzer.z.number.h"
