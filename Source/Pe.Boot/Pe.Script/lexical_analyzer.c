@@ -202,7 +202,7 @@ static bool is_whitespace_character(TCHAR c)
         || c == '\v'
         || c == '\f'
 #if UNICODE
-        || c == '　'
+        || c == _T('　')
 #endif // UNICODE まぁこれしか考慮してないけどさ！
         ;
 }
