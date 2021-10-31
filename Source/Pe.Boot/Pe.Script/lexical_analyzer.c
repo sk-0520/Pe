@@ -238,13 +238,31 @@ static void add_token_word(OBJECT_LIST* tokens, TOKEN_KIND kind, const TEXT* wor
     push_object_list(tokens, &token);
 }
 
-static void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, TEXT remark, size_t column_position, size_t line_number)
+static void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, const TEXT* remark, size_t column_position, size_t line_number)
 {
+    TEXT auto_remark;
+    if (!remark) {
+        switch (code) {
+            case COMPILE_CODE_NOT_CLOSE_COMMENT:
+                auto_remark = wrap_text(_T("コメントが閉じられていない"));
+                break;
+
+            case COMPILE_CODE_NOT_CLOSE_STRING:
+                auto_remark = wrap_text(_T("文字列が閉じられていない"));
+                break;
+
+            default:
+                assert(false);
+                break;
+        }
+        remark = &auto_remark;
+    }
+
     COMPILE_RESULT compile_result = {
         .stage = COMPILE_STAGE_LEX,
         .kind = kind,
         .code = code,
-        .remark = clone_text(&remark),
+        .remark = clone_text(remark),
         .position = {
             .column_position = column_position,
             .line_number = line_number,
@@ -329,7 +347,7 @@ static size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, 
                     current_index += 2;
                     push_list_tchar(&character_list, '\'');
                 } else if (is_newline_character(current_character) || !next_character) {
-                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, wrap_text(_T("文字列が閉じられていない")), column_position, line_number);
+                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, NULL, column_position, line_number);
                     goto EXIT;
                 } else {
                     current_index += 1;
@@ -339,7 +357,7 @@ static size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, 
         }
     }
 
-    EXIT:
+EXIT:
     free_primitive_list(&character_list);
 
     return read_length;
@@ -431,7 +449,7 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
         // 文字列処理
         if (is_string_start(current_character)) {
             if (!next_character) {
-                add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, wrap_text(_T("文字列が閉じられていない")), column_position, line_number);
+                add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, NULL, column_position, line_number);
                 break;
             }
             size_t read_length = read_string_token(result, source, current_index, column_position, line_number);
@@ -447,25 +465,23 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
 
     if (last_token_kind == TOKEN_KIND_COMMENT_BLOCK_BEGIN) {
         TOKEN* token = peek_object_list(&result->token);
-        add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_COMMENT, wrap_text(_T("コメントが閉じられていない")), token->position.column_position, token->position.line_number);
+        add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_COMMENT, NULL, token->position.column_position, token->position.line_number);
     }
 }
 
-TOKEN_RESULT analyze(const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting)
+TOKEN_RESULT RC_HEAP_FUNC(analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting)
 {
     assert(setting);
 
     TOKEN_RESULT token_result = {
         .file_path = (TEXT*)file_path,
-        .token = create_object_list(sizeof(TOKEN), 1024, compare_object_list_value_null, free_object_list_value_null),
-        .result = create_object_list(sizeof(COMPILE_RESULT), OBJECT_LIST_DEFAULT_CAPACITY_COUNT, compare_object_list_value_null, free_object_list_value_null),
+        .token = RC_HEAP_CALL(create_object_list, sizeof(TOKEN), 1024, compare_object_list_value_null, free_object_list_value_null),
+        .result = RC_HEAP_CALL(create_object_list, sizeof(COMPILE_RESULT), OBJECT_LIST_DEFAULT_CAPACITY_COUNT, compare_object_list_value_null, free_object_list_value_null),
     };
 
     if (!source || !source->length) {
         return token_result;
     }
-
-    //OBJECT_LIST lines = split_newline_text(source);
 
     ANALYZE_DATA analyze_data = {
         .file_path = (TEXT*)file_path,
@@ -473,9 +489,6 @@ TOKEN_RESULT analyze(const TEXT* file_path, const TEXT* source, const PROJECT_SE
         .setting = (PROJECT_SETTING*)setting, //TODO: とりあえずの回避。Cって構造体メンバにconst使えんの？
     };
     analyze_core(&token_result, source, &analyze_data);
-    //foreach_object_list(&lines, foreach_analyze_line, &analyze_data);
-
-    //free_object_list(&lines);
 
     return token_result;
 }
@@ -487,9 +500,17 @@ static bool free_token_result_token(const void* value, size_t index, size_t leng
     return true;
 }
 
-void free_token_result(TOKEN_RESULT* token_result)
+static bool free_token_result_result(const void* value, size_t index, size_t length, void* data)
+{
+    COMPILE_RESULT* cr = (COMPILE_RESULT*)value;
+    free_text(&cr->remark);
+    return true;
+}
+
+void RC_HEAP_FUNC(free_token_result, TOKEN_RESULT* token_result)
 {
     foreach_object_list(&token_result->token, free_token_result_token, NULL);
+    foreach_object_list(&token_result->result, free_token_result_result, NULL);
     free_object_list(&token_result->token);
     free_object_list(&token_result->result);
 }
