@@ -415,9 +415,7 @@ static size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, 
                     current_index += 1;
                     push_list_tchar(&character_list, current_character);
                 }
-
-            case TOKEN_KIND_LITERAL_BSTRING:
-                break;
+                continue;
 
             default:
                 assert(false);
@@ -516,6 +514,11 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
 
         // 文字列処理
         if (is_string_start(current_character)) {
+            if (current_character == '`') {
+                TEXT remark = wrap_text(_T("文字列 ` は未実装"));
+                add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_IMPLEMENT, &remark, column_position, line_number);
+                break;
+            }
             if (!next_character) {
                 add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, NULL, column_position, line_number);
                 break;
