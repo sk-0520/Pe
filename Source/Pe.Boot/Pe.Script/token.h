@@ -375,22 +375,31 @@ typedef enum tag_TOKEN_KIND
     TOKEN_KIND_LITERAL_BSTRING,
 } TOKEN_KIND;
 
-/*
-typedef struct tag_TOKEN_PAIR
+typedef enum tag_TOKEN_VALUE_TYPE
 {
-    TOKEN_KIND kind;
+    TOKEN_VALUE_TYPE_NONE,
+    TOKEN_VALUE_TYPE_STRING,
+    TOKEN_VALUE_TYPE_INTEGER,
+    TOKEN_VALUE_TYPE_DECIMAL,
+} TOKEN_VALUE_TYPE;
+
+typedef union tag_TOKEN_VALUE
+{
+    void* none;
+    /// <summary>
+    /// 解放が必要。
+    /// </summary>
     TEXT word;
-} TOKEN_PAIR;
-*/
+    ssize_t integer;
+    double decimal;
+} TOKEN_VALUE;
 
 typedef struct tag_TOKEN
 {
     SOURCE_POSITION position;
     TOKEN_KIND kind;
-    /// <summary>
-    /// 解放が必要。
-    /// </summary>
-    TEXT word;
+    TOKEN_VALUE_TYPE type;
+    TOKEN_VALUE value;
 } TOKEN;
 
 
