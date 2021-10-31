@@ -173,7 +173,7 @@ namespace ScriptTest
             }
         }
 
-        struct STRING_TEST
+        struct WORD_TEST
         {
             TOKEN_KIND kind;
             TEXT word;
@@ -184,11 +184,11 @@ namespace ScriptTest
             PROJECT_SETTING setting;
 
             auto tests = {
-                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap("") }  }, wrap("\'\'")),
-                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap(" ") }  }, wrap("\' \'")),
-                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap(" ") }, { TOKEN_KIND_OP_STAR, wrap("") }  }, wrap("\' \'*")),
-                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap("A") }, { TOKEN_KIND_LITERAL_SSTRING, wrap("B") }  }, wrap("\'A\' \'B\'")),
-                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap("\\r\\n\\''\\t") }  }, wrap("\'\\r\\n\\\\'\\'\\t'")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap("") }  }, wrap("\'\'")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap(" ") }  }, wrap("\' \'")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap(" ") }, { TOKEN_KIND_OP_STAR, wrap("") }  }, wrap("\' \'*")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap("A") }, { TOKEN_KIND_LITERAL_SSTRING, wrap("B") }  }, wrap("\'A\' \'B\'")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap("\\r\\n\\''\\t") }  }, wrap("\'\\r\\n\\\\'\\'\\t'")),
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
@@ -210,11 +210,11 @@ namespace ScriptTest
             PROJECT_SETTING setting;
 
             auto tests = {
-                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap("") }  }, wrap("\"\"")),
-                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap(" ") }  }, wrap("\" \"")),
-                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap(" ") }, { TOKEN_KIND_OP_STAR, wrap("") }  }, wrap("\" \"*")),
-                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap("A") }, { TOKEN_KIND_LITERAL_DSTRING, wrap("B") }  }, wrap("\"A\" \"B\"")),
-                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap("\\\r\n\"'\t\a\b\f\v") }  }, wrap("\"\\\\\\r\\n\\\"\\'\\t\\a\\b\\f\\v\"")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap("") }  }, wrap("\"\"")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap(" ") }  }, wrap("\" \"")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap(" ") }, { TOKEN_KIND_OP_STAR, wrap("") }  }, wrap("\" \"*")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap("A") }, { TOKEN_KIND_LITERAL_DSTRING, wrap("B") }  }, wrap("\"A\" \"B\"")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap("\\\r\n\"'\t\a\b\f\v") }  }, wrap("\"\\\\\\r\\n\\\"\\'\\t\\a\\b\\f\\v\"")),
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
@@ -255,6 +255,32 @@ namespace ScriptTest
             Assert::AreEqual<int>(COMPILE_CODE_NOT_IMPLEMENT, cr->code);
 
             free_token_result(&actual);
+        }
+
+        TEST_METHOD(analyze_number_test)
+        {
+            PROJECT_SETTING setting;
+
+            auto tests = {
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_INTEGER, wrap("0") }  }, wrap("0")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_INTEGER, wrap("1") }  }, wrap("1")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_INTEGER, wrap("9") }  }, wrap("9")),
+
+                //DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_INTEGER, wrap("123") }, { TOKEN_KIND_LITERAL_INTEGER, wrap("4") }  }, wrap("123 4")),
+            };
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                TOKEN_RESULT actual = analyze(NULL, &arg1, &setting);
+                Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
+                for (size_t i = 0; i < test.expected.size(); i++) {
+                    TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
+                    Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
+                    if (test.expected[i].kind == TOKEN_KIND_LITERAL_INTEGER || test.expected[i].kind == TOKEN_KIND_LITERAL_DECIMAL) {
+                        Assert::AreEqual(test.expected[i].word.value, actual_token->word.value);
+                    }
+                }
+                free_token_result(&actual);
+            }
         }
     };
 }
