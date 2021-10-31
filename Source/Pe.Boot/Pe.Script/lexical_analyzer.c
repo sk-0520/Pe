@@ -73,6 +73,12 @@ static struct tag_MULTI_TOKEN
         .kinds = { TOKEN_KIND_OP_SLASH, TOKEN_KIND_OP_DIV_ASSIGN },
         .skip_comments = { false, false },
     },
+    // %
+    {
+        .characters = { _T('%'), _T('=') },
+        .kinds = { TOKEN_KIND_OP_PERCENT, TOKEN_KIND_OP_REM_ASSIGN },
+        .skip_comments = { false, false },
+    },
     // =
     {
         .characters = { _T('='), _T('>') },
@@ -94,6 +100,24 @@ static struct tag_MULTI_TOKEN
     {
         .characters = { _T('>'), _T('=') },
         .kinds = { TOKEN_KIND_OP_GREATER, TOKEN_KIND_OP_GREATER_EQUAL },
+        .skip_comments = { false, false },
+    },
+    // !
+    {
+        .characters = { _T('!'), _T('=') },
+        .kinds = { TOKEN_KIND_OP_EXCLAMATION, TOKEN_KIND_OP_NOT_EQUALS },
+        .skip_comments = { false, false },
+    },
+    // &
+    {
+        .characters = { _T('&'), _T('&') },
+        .kinds = { TOKEN_KIND_OP_AMPERSAND, TOKEN_KIND_OP_AND },
+        .skip_comments = { false, false },
+    },
+    // |
+    {
+        .characters = { _T('|'), _T('|') },
+        .kinds = { TOKEN_KIND_OP_VERTICALBAR, TOKEN_KIND_OP_OR },
         .skip_comments = { false, false },
     },
 };
