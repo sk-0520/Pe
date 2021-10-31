@@ -618,11 +618,23 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
     TOKEN_KIND number_token_kind = TOKEN_KIND_LITERAL_INTEGER;
     ssize_t converted_integer = 0;
     //double converted_decimal = 0;
-    TEXT_PARSED_I64_RESULT parsed_result;
+#ifdef _WIN64
+    TEXT_PARSED_I64_RESULT
+#else
+    TEXT_PARSED_I32_RESULT
+#endif
+        parsed_result;
     TEXT reference_text;
     switch (mode) {
         case MODE_INT:
-            parsed_result = parse_i64_from_text(&word, false);
+            parsed_result =
+#ifdef  _WIN64
+                parse_i64_from_text(&word, false)
+#else
+                parse_i32_from_text(&word, false)
+#endif
+                ;
+
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
             } else {
@@ -636,7 +648,14 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
             break;
 
         case MODE_HEX:
-            parsed_result = parse_i64_from_text(&word, true);
+            parsed_result =
+#ifdef  _WIN64
+                parse_i64_from_text(&word, true)
+#else
+                parse_i32_from_text(&word, true)
+#endif
+                ;
+
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
             } else {
@@ -647,7 +666,13 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
 
         case MODE_BIN:
             reference_text = wrap_text_with_length(word.value + 2, word.length - 2, false);
-            parsed_result = parse_i64_from_bin_text(&reference_text);
+            parsed_result =
+#ifdef _WIN64
+                parse_i64_from_bin_text(&reference_text)
+#else
+                parse_i32_from_bin_text(&reference_text)
+#endif
+                ;
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
             } else {
