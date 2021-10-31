@@ -196,7 +196,15 @@ static struct tag_SINGLE_CHAR_TOKEN
 
 static bool is_whitespace_character(TCHAR c)
 {
-    return c == _T(' ') || c == _T('\t');
+    return
+        c == ' '
+        || c == '\t'
+        || c == '\v'
+        || c == '\f'
+#if UNICODE
+        || c == '　'
+#endif // UNICODE まぁこれしか考慮してないけどさ！
+        ;
 }
 
 static bool is_newline_character(TCHAR c)
@@ -209,6 +217,10 @@ static bool is_string_start(TCHAR c)
     return c == '\'' || c == '\"' || c == '`';
 }
 
+static bool is_number_start(TCHAR c)
+{
+    return '0' <= c && c <= '9';
+}
 
 static void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_position, size_t line_number)
 {
@@ -324,7 +336,7 @@ static TCHAR get_simple_escape_sequence(TCHAR target_character)
         case 't':
             return '\t';
 
-        // あんま使わなさそうなの
+            // あんま使わなさそうなの
         case 'a':
             return '\a';
         case 'b':
@@ -429,6 +441,103 @@ EXIT:
     return read_length;
 }
 
+/// <summary>
+/// 数値を読み込み。
+/// 呼ばれた時点で最初の文字は数値判定されている。
+/// </summary>
+/// <param name="token_result">結果格納</param>
+/// <param name="source">ソース全体</param>
+/// <param name="start_index">文字列トークンとしての開始点</param>
+/// <param name="column_position"></param>
+/// <param name="line_number"></param>
+/// <returns>読み込み成功後に飛ばす長さ(start_indexからの相対位置)。0の場合は失敗しているので後続不要だが呼び出し時点で数値なのでまぁ0はない。</returns>
+static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, size_t column_position, size_t line_number)
+{
+    assert(token_result);
+
+    PRIMITIVE_LIST_TCHAR character_list = new_primitive_list(PRIMITIVE_LIST_TYPE_TCHAR, 256);
+
+    TCHAR start_digit = source->value[start_index];
+    push_list_tchar(&character_list, start_digit);
+    enum
+    {
+        MODE_INT,
+        MODE_DEC,
+        MODE_HEX,
+        MODE_BIN,
+    } mode = MODE_INT;
+
+    size_t current_index = start_index + 1;
+    for (size_t i = 0; current_index < source->length; current_index++, i++) {
+        TCHAR current_character = source->value[current_index];
+
+        // 最初だけちょっと特殊処理
+        if (!i) {
+            switch (current_character) {
+                case 'x':
+                    mode = MODE_HEX;
+                    push_list_tchar(&character_list, current_character);
+                    continue;
+                case 'b':
+                    mode = MODE_BIN;
+                    push_list_tchar(&character_list, current_character);
+                    continue;
+
+                default:
+                    break;
+            }
+        }
+
+        // 区切り文字は無視
+        if (current_character == '_') {
+            continue;
+        }
+
+        // (使えんけど)初回のみ少数に切り替え可能
+        if (current_character == '.') {
+            if (mode == MODE_DEC) {
+                break;
+            }
+        }
+    }
+
+    TEXT raw_word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false);
+    TEXT converted_word = raw_word;
+    TOKEN_KIND number_token_kind = TOKEN_KIND_LITERAL_INTEGER;
+
+    switch (mode) {
+        case MODE_INT:
+            break;
+
+        case MODE_DEC:
+            // 整数しかない世界
+            number_token_kind = TOKEN_KIND_LITERAL_DECIMAL;
+            TEXT decimal_remark = wrap_text(_T("整数のみ使用可能"));
+            add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_IMPLEMENT, &decimal_remark, column_position, line_number);
+            break;
+
+        case MODE_HEX:
+            // 10進数に変換しておく
+            converted_word = raw_word;
+            break;
+
+        case MODE_BIN:
+            // 10進数に変換しておく
+            converted_word = raw_word;
+            break;
+
+        default:
+            assert(false);
+    }
+
+    add_token_word(&token_result->token, number_token_kind, &converted_word, column_position, line_number);
+
+EXIT:
+    free_primitive_list(&character_list);
+
+    return current_index;
+}
+
 void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* analyze_data)
 {
     TOKEN_RESULT* result = analyze_data->result;
@@ -466,6 +575,7 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
             continue;
         }
 
+        // 空白無視
         if (is_whitespace_character(current_character)) {
             add_index(&current_index, &column_position, 1);
             continue;
@@ -527,6 +637,14 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
             if (!read_length) {
                 break;
             }
+            current_index += read_length;
+            continue;
+        }
+
+        // 数値処理
+        if (is_number_start(current_character)) {
+            size_t read_length = read_number_token(result, source, current_index, column_position, line_number);
+            assert(read_length);
             current_index += read_length;
             continue;
         }
