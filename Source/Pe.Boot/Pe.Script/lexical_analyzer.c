@@ -26,106 +26,181 @@ static struct tag_MULTI_TOKEN
 } library__multi_tokens[] = {
     // +
     {
-        .characters = { _T('+'), _T('=') },
+        .characters = { '+', '=' },
         .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_ADD_ASSIGN },
         .skip_comments = { true, true },
     },
     {
-        .characters = { _T('+'), _T('+') },
+        .characters = { '+', '+' },
         .kinds = { TOKEN_KIND_OP_PLUS, TOKEN_KIND_OP_INCREMENT },
         .skip_comments = { true, true },
     },
     // -
     {
-        .characters = { _T('-'), _T('=') },
+        .characters = { '-', '=' },
         .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_SUB_ASSIGN },
         .skip_comments = { true, true },
     },
     {
-        .characters = { _T('-'), _T('-') },
+        .characters = { '-', '-' },
         .kinds = { TOKEN_KIND_OP_MINUS, TOKEN_KIND_OP_DECREMENT },
         .skip_comments = { true, true },
     },
     // *
     {
-        .characters = { _T('*'), _T('=') },
+        .characters = { '*', '=' },
         .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_MUL_ASSIGN },
         .skip_comments = { true, true },
     },
     {
-        .characters = { _T('*'), _T('/') },
+        .characters = { '*', '/' },
         .kinds = { TOKEN_KIND_OP_STAR, TOKEN_KIND_COMMENT_BLOCK_END },
         .skip_comments = { true, false },
     },
     // /
     {
-        .characters = { _T('/'), _T('/') },
+        .characters = { '/', '/' },
         .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_COMMENT_LINE },
         .skip_comments = { false, false },
     },
     {
-        .characters = { _T('/'), _T('*') },
+        .characters = { '/', '*' },
         .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_COMMENT_BLOCK_BEGIN },
         .skip_comments = { false, false },
     },
     {
-        .characters = { _T('/'), _T('=') },
+        .characters = { '/', '=' },
         .kinds = { TOKEN_KIND_OP_SLASH, TOKEN_KIND_OP_DIV_ASSIGN },
         .skip_comments = { false, false },
     },
     // %
     {
-        .characters = { _T('%'), _T('=') },
+        .characters = { '%', '=' },
         .kinds = { TOKEN_KIND_OP_PERCENT, TOKEN_KIND_OP_REM_ASSIGN },
         .skip_comments = { false, false },
     },
     // =
     {
-        .characters = { _T('='), _T('>') },
+        .characters = { '=', '>' },
         .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_LAMBDA },
         .skip_comments = { false, false },
     },
     {
-        .characters = { _T('='), _T('=') },
+        .characters = { '=', '=' },
         .kinds = { TOKEN_KIND_OP_ASSIGN, TOKEN_KIND_OP_EQUALS },
         .skip_comments = { false, false },
     },
     // <
     {
-        .characters = { _T('<'), _T('=') },
+        .characters = { '<', '=' },
         .kinds = { TOKEN_KIND_OP_LESS, TOKEN_KIND_OP_LESS_EQUAL },
         .skip_comments = { false, false },
     },
     // >
     {
-        .characters = { _T('>'), _T('=') },
+        .characters = { '>', '=' },
         .kinds = { TOKEN_KIND_OP_GREATER, TOKEN_KIND_OP_GREATER_EQUAL },
         .skip_comments = { false, false },
     },
     // !
     {
-        .characters = { _T('!'), _T('=') },
+        .characters = { '!', '=' },
         .kinds = { TOKEN_KIND_OP_EXCLAMATION, TOKEN_KIND_OP_NOT_EQUALS },
         .skip_comments = { false, false },
     },
     // &
     {
-        .characters = { _T('&'), _T('&') },
+        .characters = { '&', '&' },
         .kinds = { TOKEN_KIND_OP_AMPERSAND, TOKEN_KIND_OP_AND },
         .skip_comments = { false, false },
     },
     // |
     {
-        .characters = { _T('|'), _T('|') },
+        .characters = { '|', '|' },
         .kinds = { TOKEN_KIND_OP_VERTICALBAR, TOKEN_KIND_OP_OR },
         .skip_comments = { false, false },
     },
 };
 
+static struct tag_SINGLE_CHAR_TOKEN
+{
+    TCHAR character;
+    TOKEN_KIND kind;
+} library__single_character_tokens[] = {
+    {
+        .character = ',',
+        .kind = TOKEN_KIND_OP_COMMA,
+    },
+    {
+        .character = '.',
+        .kind = TOKEN_KIND_OP_DOT,
+    },
+    {
+        .character = ';',
+        .kind = TOKEN_KIND_OP_SEMICOLON,
+    },
+    {
+        .character = ':',
+        .kind = TOKEN_KIND_OP_COLON,
+    },
+    {
+        .character = '?',
+        .kind = TOKEN_KIND_OP_QUESTION,
+    },
+    {
+        .character = '\\',
+        .kind = TOKEN_KIND_OP_BACKSLASH,
+    },
+    {
+        .character = '~',
+        .kind = TOKEN_KIND_OP_TILDE,
+    },
+    {
+        .character = '@',
+        .kind = TOKEN_KIND_OP_AT,
+    },
+    {
+        .character = '$',
+        .kind = TOKEN_KIND_OP_DOLLAR,
+    },
+    {
+        .character = '#',
+        .kind = TOKEN_KIND_OP_HASH,
+    },
+    {
+        .character = '(',
+        .kind = TOKEN_KIND_OP_LPAREN,
+    },
+    {
+        .character = ')',
+        .kind = TOKEN_KIND_OP_RPAREN,
+    },
+    {
+        .character = '{',
+        .kind = TOKEN_KIND_OP_LBRACE,
+    },
+    {
+        .character = '}',
+        .kind = TOKEN_KIND_OP_RBRACE,
+    },
+    {
+        .character = '[',
+        .kind = TOKEN_KIND_OP_LBRACKET,
+    },
+    {
+        .character = ']',
+        .kind = TOKEN_KIND_OP_RBRACKET,
+    },
+};
 
 static bool is_whitespace_character(TCHAR c)
 {
     return c == _T(' ') || c == _T('\t');
+}
+
+static bool is_string_start(TCHAR c)
+{
+    return c == '\'' || c == '\"' || c == '`';
 }
 
 
@@ -172,6 +247,17 @@ bool is_comment(TOKEN_KIND kind)
         ||
         kind == TOKEN_KIND_COMMENT_BLOCK_BEGIN
         ;
+}
+
+static struct tag_SINGLE_CHAR_TOKEN* find_single_character_token(TCHAR c)
+{
+    for (size_t i = 0; i < sizeof(library__single_character_tokens) / sizeof(library__single_character_tokens[0]); i++) {
+        if (library__single_character_tokens[i].character == c) {
+            return library__single_character_tokens + i;
+        }
+    }
+
+    return NULL;
 }
 
 void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* analyze_data)
@@ -241,6 +327,27 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
             last_token_kind = token->kind;
 
             continue;
+        }
+
+        // 以降はコメント中には処理しない
+        if (is_comment(last_token_kind)) {
+            current_index += 1;
+            continue;
+        }
+
+        // 1文字トークンの処理
+        struct tag_SINGLE_CHAR_TOKEN* single_char_token = find_single_character_token(current_character);
+        if (single_char_token) {
+            add_token_kind(&result->token, single_char_token->kind, column_position, line_number);
+            add_index(&current_index, &column_position, 1);
+            continue;
+        }
+
+        if (is_string_start(current_character)) {
+            if (!next_character) {
+                add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, wrap_text(_T("文字列が閉じられていない")), column_position, line_number);
+                break;
+            }
         }
 
         current_index += 1;
