@@ -1,5 +1,6 @@
 ﻿#include "lexical_analyzer.h"
 #include "../Pe.Library/primitive_list.h"
+#include "../Pe.Library/debug.h"
 
 typedef struct tag_ANALYZE_DATA
 {
@@ -198,6 +199,11 @@ static bool is_whitespace_character(TCHAR c)
     return c == _T(' ') || c == _T('\t');
 }
 
+static bool is_newline_character(TCHAR c)
+{
+    return c == '\r' || c == '\n';
+}
+
 static bool is_string_start(TCHAR c)
 {
     return c == '\'' || c == '\"' || c == '`';
@@ -218,6 +224,20 @@ static void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_p
     push_object_list(tokens, &token);
 }
 
+static void add_token_word(OBJECT_LIST* tokens, TOKEN_KIND kind, const TEXT* word, size_t column_position, size_t line_number)
+{
+    TOKEN token = {
+        .kind = kind,
+        .position = {
+            .column_position = column_position,
+            .line_number = line_number,
+    },
+    .word = clone_text(word)
+    };
+
+    push_object_list(tokens, &token);
+}
+
 static void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, TEXT remark, size_t column_position, size_t line_number)
 {
     COMPILE_RESULT compile_result = {
@@ -228,7 +248,7 @@ static void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND
         .position = {
             .column_position = column_position,
             .line_number = line_number,
-        },
+    },
     };
 
     push_object_list(compile_results, &compile_result);
@@ -260,6 +280,71 @@ static struct tag_SINGLE_CHAR_TOKEN* find_single_character_token(TCHAR c)
     return NULL;
 }
 
+/// <summary>
+/// 文字列を読み込み。
+/// 呼ばれる時点で最初の文字は文字列トークン判定済みなので初回の次文字読み込みは絶対に成功する。
+/// </summary>
+/// <param name="token_result">結果格納</param>
+/// <param name="source">ソース全体</param>
+/// <param name="start_index">文字列トークンとしての開始点</param>
+/// <returns>読み込み成功後に飛ばす長さ(start_indexからの相対位置)。0の場合は失敗しているので後続不要。</returns>
+static size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, size_t column_position, size_t line_number)
+{
+    assert(token_result);
+
+    TCHAR string_type = source->value[start_index];
+    size_t current_index = start_index + 1;
+    size_t read_length = 0;
+    TOKEN_KIND string_token_kind = string_type == '\''
+        ? TOKEN_KIND_LITERAL_SSTRING
+        : string_type == '\"'
+        ? TOKEN_KIND_LITERAL_DSTRING
+        : string_type == '`'
+        ? TOKEN_KIND_LITERAL_BSTRING
+        : TOKEN_KIND_NONE
+        ;
+    assert(string_token_kind != TOKEN_KIND_NONE);
+
+    PRIMITIVE_LIST_TCHAR character_list = new_primitive_list(PRIMITIVE_LIST_TYPE_TCHAR, 256);
+
+    while (current_index < source->length) {
+        TCHAR current_character = source->value[current_index];
+        if (current_character == string_type) {
+            // 文字列はここまで!
+            TEXT word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false);
+            add_token_word(&token_result->token, string_token_kind, &word, column_position, line_number);
+            read_length = current_index + 1;
+            break;
+        }
+
+        TCHAR next_character = 0;
+        if (current_index + 1 < source->length) {
+            next_character = source->value[current_index + 1];
+        }
+
+        switch (string_type) {
+            case '\'':
+                // ' の場合は \' のみをエスケープ対象にする
+                if (current_character == '\\' && next_character == '\'') {
+                    current_index += 2;
+                    push_list_tchar(&character_list, '\'');
+                } else if (is_newline_character(current_character)) {
+                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, wrap_text(_T("文字列が閉じられていない")), column_position, line_number);
+                    goto EXIT;
+                } else {
+                    current_index += 1;
+                    push_list_tchar(&character_list, current_character);
+                }
+                continue;
+        }
+    }
+
+    EXIT:
+    free_primitive_list(&character_list);
+
+    return read_length;
+}
+
 void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* analyze_data)
 {
     TOKEN_RESULT* result = analyze_data->result;
@@ -283,7 +368,7 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
         }
 
         // 改行処理
-        if (current_character == '\r' || current_character == '\n') {
+        if (is_newline_character(current_character)) {
             if (current_character == '\r' && next_character == '\n') {
                 current_index += 2;
             } else {
@@ -343,11 +428,18 @@ void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* 
             continue;
         }
 
+        // 文字列処理
         if (is_string_start(current_character)) {
             if (!next_character) {
                 add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, wrap_text(_T("文字列が閉じられていない")), column_position, line_number);
                 break;
             }
+            size_t read_length = read_string_token(result, source, current_index, column_position, line_number);
+            if (!read_length) {
+                break;
+            }
+            current_index += read_length;
+            continue;
         }
 
         current_index += 1;
