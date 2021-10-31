@@ -66,6 +66,18 @@ typedef enum tag_TOKEN_KIND
     /// ~
     /// </summary>
     TOKEN_KIND_OP_TILDE,
+    /// <summary>
+    /// @
+    /// </summary>
+    TOKEN_KIND_OP_AT,
+    /// <summary>
+    /// $
+    /// </summary>
+    TOKEN_KIND_OP_DOLLAR,
+    /// <summary>
+    /// #
+    /// </summary>
+    TOKEN_KIND_OP_HASH,
 
     /// <summary>
     /// &amp;
