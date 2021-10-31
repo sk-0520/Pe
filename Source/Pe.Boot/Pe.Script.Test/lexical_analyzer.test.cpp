@@ -152,6 +152,37 @@ namespace ScriptTest
             }
         }
 
+        struct STRING_TEST
+        {
+            TOKEN_KIND kind;
+            TEXT word;
+        };
+
+        TEST_METHOD(analyze_string_sq_test)
+        {
+            PROJECT_SETTING setting;
+
+            auto tests = {
+                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap("") }  }, wrap("\'\'")),
+                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap(" ") }  }, wrap("\' \'")),
+                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap(" ") }, { TOKEN_KIND_OP_STAR, wrap("") }  }, wrap("\' \'*")),
+                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap("A") }, { TOKEN_KIND_LITERAL_SSTRING, wrap("B") }  }, wrap("\'A\' \'B\'")),
+                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_SSTRING, wrap("\\r\\n\\''\\t") }  }, wrap("\'\\r\\n\\\\'\\'\\t'")),
+            };
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                TOKEN_RESULT actual = analyze(NULL, &arg1, &setting);
+                Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
+                for (size_t i = 0; i < test.expected.size(); i++) {
+                    TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
+                    Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
+                    if (test.expected[i].kind == TOKEN_KIND_LITERAL_SSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_DSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_BSTRING) {
+                        Assert::AreEqual(test.expected[i].word.value, actual_token->word.value);
+                    }
+                }
+                free_token_result(&actual);
+            }
+        }
 
     };
 }
