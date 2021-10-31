@@ -251,6 +251,10 @@ static void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND
                 auto_remark = wrap_text(_T("文字列が閉じられていない"));
                 break;
 
+            case COMPILE_CODE_UNKNOWN_ESCAPE_SEQUENCE:
+                auto_remark = wrap_text(_T("不明なエスケープシーケンス"));
+                break;
+
             default:
                 assert(false);
                 break;
@@ -299,6 +303,43 @@ static struct tag_SINGLE_CHAR_TOKEN* find_single_character_token(TCHAR c)
 }
 
 /// <summary>
+/// 2文字構成エスケープシーケンス(\c)に対する出力を取得。
+/// </summary>
+/// <param name="target_character"></param>
+/// <returns>該当しない場合は 0 。</returns>
+static TCHAR get_simple_escape_sequence(TCHAR target_character)
+{
+    switch (target_character) {
+        // 独断でよく使いそうなの
+        case '\\':
+            return '\\';
+        case 'r':
+            return '\r';
+        case 'n':
+            return '\n';
+        case '\"':
+            return '\"';
+        case '\'':
+            return '\'';
+        case 't':
+            return '\t';
+
+        // あんま使わなさそうなの
+        case 'a':
+            return '\a';
+        case 'b':
+            return '\b';
+        case 'f':
+            return '\f';
+        case 'v':
+            return '\v';
+
+        default:
+            return 0;
+    }
+}
+
+/// <summary>
 /// 文字列を読み込み。
 /// 呼ばれる時点で最初の文字は文字列トークン判定済みなので初回の次文字読み込みは絶対に成功する。
 /// </summary>
@@ -340,8 +381,8 @@ static size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, 
             next_character = source->value[current_index + 1];
         }
 
-        switch (string_type) {
-            case '\'':
+        switch (string_token_kind) {
+            case TOKEN_KIND_LITERAL_SSTRING:
                 // ' の場合は \' のみをエスケープ対象にする
                 if (current_character == '\\' && next_character == '\'') {
                     current_index += 2;
@@ -354,6 +395,33 @@ static size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, 
                     push_list_tchar(&character_list, current_character);
                 }
                 continue;
+
+            case TOKEN_KIND_LITERAL_DSTRING:
+                // " はやること多いいでぇ
+                if (current_character == '\\' && next_character) {
+                    TCHAR simple_escape = get_simple_escape_sequence(next_character);
+                    if (simple_escape) {
+                        current_index += 2;
+                        push_list_tchar(&character_list, simple_escape);
+                        continue;
+                    }
+
+                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_UNKNOWN_ESCAPE_SEQUENCE, NULL, column_position, line_number);
+                    goto EXIT;
+                } else if (is_newline_character(current_character) || !next_character) {
+                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, NULL, column_position, line_number);
+                    goto EXIT;
+                } else {
+                    current_index += 1;
+                    push_list_tchar(&character_list, current_character);
+                }
+
+            case TOKEN_KIND_LITERAL_BSTRING:
+                break;
+
+            default:
+                assert(false);
+                break;
         }
     }
 

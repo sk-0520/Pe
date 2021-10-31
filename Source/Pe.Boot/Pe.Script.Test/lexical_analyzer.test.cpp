@@ -151,6 +151,11 @@ namespace ScriptTest
                 DATA((size_t)1, wrap("\'\'    \'        Z\r")),
 
                 DATA((size_t)0, wrap("\"")),
+                DATA((size_t)0, wrap("\"\r")),
+                DATA((size_t)0, wrap("\"\n")),
+                DATA((size_t)1, wrap("\"\"\"")),
+                DATA((size_t)1, wrap("\"\"    \"        Z")),
+                DATA((size_t)1, wrap("\"\"    \"        Z\r")),
 
                 DATA((size_t)0, wrap("`")),
             };
@@ -176,7 +181,7 @@ namespace ScriptTest
             TEXT word;
         };
 
-        TEST_METHOD(analyze_string_sq1_test)
+        TEST_METHOD(analyze_string_sq_test)
         {
             PROJECT_SETTING setting;
 
@@ -202,6 +207,43 @@ namespace ScriptTest
             }
         }
 
+        TEST_METHOD(analyze_string_dq_test)
+        {
+            PROJECT_SETTING setting;
 
+            auto tests = {
+                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap("") }  }, wrap("\"\"")),
+                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap(" ") }  }, wrap("\" \"")),
+                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap(" ") }, { TOKEN_KIND_OP_STAR, wrap("") }  }, wrap("\" \"*")),
+                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap("A") }, { TOKEN_KIND_LITERAL_DSTRING, wrap("B") }  }, wrap("\"A\" \"B\"")),
+                DATA(std::vector<STRING_TEST> { { TOKEN_KIND_LITERAL_DSTRING, wrap("\\\r\n\"'\t\a\b\f\v") }  }, wrap("\"\\\\\\r\\n\\\"\\'\\t\\a\\b\\f\\v\"")),
+            };
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                TOKEN_RESULT actual = analyze(NULL, &arg1, &setting);
+                Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
+                for (size_t i = 0; i < test.expected.size(); i++) {
+                    TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
+                    Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
+                    if (test.expected[i].kind == TOKEN_KIND_LITERAL_SSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_DSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_BSTRING) {
+                        Assert::AreEqual(test.expected[i].word.value, actual_token->word.value);
+                    }
+                }
+                free_token_result(&actual);
+            }
+        }
+
+        TEST_METHOD(analyze_string_dq_esc_test)
+        {
+            PROJECT_SETTING setting;
+            TEXT input = wrap("\"\\Q\"");
+            TOKEN_RESULT actual = analyze(NULL, &input, &setting);
+            Assert::AreEqual((size_t)0, actual.token.length);
+            Assert::AreEqual((size_t)1, actual.result.length);
+            COMPILE_RESULT* cr = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
+            Assert::AreEqual<int>(COMPILE_CODE_UNKNOWN_ESCAPE_SEQUENCE, cr->code);
+
+            free_token_result(&actual);
+        }
     };
 }
