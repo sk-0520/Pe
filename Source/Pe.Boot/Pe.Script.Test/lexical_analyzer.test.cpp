@@ -59,6 +59,8 @@ namespace ScriptTest
 
             COMPILE_RESULT* actual2 = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
             Assert::AreEqual<int>(COMPILE_CODE_NOT_CLOSE_COMMENT, actual2->code);
+
+            free_token_result(&actual);
         }
 
         TEST_METHOD(analyze_multi_token_test)
