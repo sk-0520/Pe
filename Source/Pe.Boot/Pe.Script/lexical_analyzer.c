@@ -328,7 +328,7 @@ static size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, 
                 if (current_character == '\\' && next_character == '\'') {
                     current_index += 2;
                     push_list_tchar(&character_list, '\'');
-                } else if (is_newline_character(current_character)) {
+                } else if (is_newline_character(current_character) || !next_character) {
                     add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, wrap_text(_T("文字列が閉じられていない")), column_position, line_number);
                     goto EXIT;
                 } else {
