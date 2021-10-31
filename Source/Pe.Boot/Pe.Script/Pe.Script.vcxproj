@@ -34,6 +34,7 @@
   <ItemGroup>
     <ClInclude Include="compile.h" />
     <ClInclude Include="lexical_analyzer.h" />
+    <ClInclude Include="lexical_analyzer.z.number.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="source.h" />
     <ClInclude Include="token.h" />
@@ -41,6 +42,7 @@
   <ItemGroup>
     <ClCompile Include="compile.c" />
     <ClCompile Include="lexical_analyzer.c" />
+    <ClCompile Include="lexical_analyzer.z.number.c" />
     <ClCompile Include="script.c" />
     <ClCompile Include="token.c" />
   </ItemGroup>
