@@ -279,13 +279,25 @@ namespace ScriptTest
             PROJECT_SETTING setting;
 
             auto tests = {
-                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 0) }, wrap("0")),
-                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 1) }, wrap("1")),
-                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 9) }, wrap("9")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 0) }, wrap("0")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 1) }, wrap("1")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 9) }, wrap("9")),
 
-                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 123), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 4)  }, wrap("123 4")),
-                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 1234), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 5678) }, wrap("123_4 5__6___7____8__")),
-                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 1), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 2), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 3), { TOKEN_KIND_LITERAL_INTEGER, 4 } }, wrap("1\r2\n3\r\n4")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 123), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 4)  }, wrap("123 4")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 1234), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 5678) }, wrap("123_4 5__6___7____8__")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 1), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 2), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 3), { TOKEN_KIND_LITERAL_INTEGER, 4 } }, wrap("1\r2\n3\r\n4")),
+
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 0) }, wrap("0x00")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 1) }, wrap("0x01")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 15) }, wrap("0x0F")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 15) }, wrap("0x0f")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 16) }, wrap("0x1_0")),
+
+                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 1) }, wrap("0b0001")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 2) }, wrap("0b0010")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 4) }, wrap("0b0100")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 8) }, wrap("0b1000")),
+                //DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 8) }, wrap("0b10_00")),
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
