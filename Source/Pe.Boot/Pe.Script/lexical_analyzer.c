@@ -241,8 +241,26 @@ static void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_p
         .position = {
             .column_position = column_position,
             .line_number = line_number,
-    },
-    .word = create_invalid_text()
+        },
+        .type = TOKEN_VALUE_TYPE_NONE,
+        .value = {
+            .none = NULL,
+        },
+    };
+
+    push_object_list(tokens, &token);
+}
+
+static void add_token_value_core(OBJECT_LIST* tokens, TOKEN_KIND kind, TOKEN_VALUE_TYPE type, TOKEN_VALUE value, size_t column_position, size_t line_number)
+{
+    TOKEN token = {
+        .kind = kind,
+        .position = {
+            .column_position = column_position,
+            .line_number = line_number,
+        },
+        .type = type,
+        .value = value,
     };
 
     push_object_list(tokens, &token);
@@ -250,16 +268,26 @@ static void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_p
 
 static void add_token_word(OBJECT_LIST* tokens, TOKEN_KIND kind, const TEXT* word, size_t column_position, size_t line_number)
 {
-    TOKEN token = {
-        .kind = kind,
-        .position = {
-            .column_position = column_position,
-            .line_number = line_number,
-    },
-    .word = clone_text(word)
+    TOKEN_VALUE token_value = {
+        .word = clone_text(word),
     };
+    add_token_value_core(tokens, kind, TOKEN_VALUE_TYPE_STRING, token_value, column_position, line_number);
+}
 
-    push_object_list(tokens, &token);
+static void add_token_integer(OBJECT_LIST* tokens, TOKEN_KIND kind, ssize_t value, size_t column_position, size_t line_number)
+{
+    TOKEN_VALUE token_value = {
+        .integer = value,
+    };
+    add_token_value_core(tokens, kind, TOKEN_VALUE_TYPE_INTEGER, token_value, column_position, line_number);
+}
+
+static void add_token_decimal(OBJECT_LIST* tokens, TOKEN_KIND kind, double value, size_t column_position, size_t line_number)
+{
+    TOKEN_VALUE token_value = {
+        .decimal = value,
+    };
+    add_token_value_core(tokens, kind, TOKEN_VALUE_TYPE_DECIMAL, token_value, column_position, line_number);
 }
 
 static void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, const TEXT* remark, size_t column_position, size_t line_number)
@@ -269,6 +297,10 @@ static void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND
         switch (code) {
             case COMPILE_CODE_NOT_IMPLEMENT:
                 auto_remark = wrap_text(_T("未実装"));
+                break;
+
+            case COMPILE_CODE_NOT_IMPLEMENT_DECIMAL:
+                auto_remark = wrap_text(_T("非整数は未実装"));
                 break;
 
             case COMPILE_CODE_NOT_CLOSE_COMMENT:
@@ -285,6 +317,10 @@ static void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND
 
             case COMPILE_CODE_INVALID_NUMBER:
                 auto_remark = wrap_text(_T("不正な数値"));
+                break;
+
+            case COMPILE_CODE_PAESE_ERROR_NUMBER:
+                auto_remark = wrap_text(_T("数値変換失敗"));
                 break;
 
             default:
@@ -509,13 +545,16 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
                         break;
                     }
                     mode = MODE_HEX;
+                    push_list_tchar(&character_list, current_character);
                     continue;
+
                 case 'b':
                     if (!is_number_bin(next_character)) {
                         add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, column_position, line_number);
                         break;
                     }
                     mode = MODE_BIN;
+                    push_list_tchar(&character_list, current_character);
                     continue;
 
                 default:
@@ -575,37 +614,54 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
 
     }
 
-    TEXT raw_word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false);
-    TEXT converted_word = raw_word;
+    TEXT word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false);
     TOKEN_KIND number_token_kind = TOKEN_KIND_LITERAL_INTEGER;
-
+    ssize_t converted_integer = 0;
+    //double converted_decimal = 0;
     switch (mode) {
         case MODE_INT:
+            TEXT_PARSED_INT64_RESULT int_result = parse_long_from_text(&word, false);
+            if (int_result.success) {
+                converted_integer = (ssize_t)int_result.value;
+            } else {
+                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_PAESE_ERROR_NUMBER, NULL, column_position, line_number);
+                goto EXIT;
+            }
             break;
 
         case MODE_DEC:
-            // 整数しかない世界
             number_token_kind = TOKEN_KIND_LITERAL_DECIMAL;
-            TEXT decimal_remark = wrap_text(_T("整数のみ使用可能"));
-            add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_IMPLEMENT, &decimal_remark, column_position, line_number);
             break;
 
         case MODE_HEX:
-            // 10進数に変換しておく
-            converted_word = raw_word;
+            TEXT_PARSED_INT64_RESULT hex_result = parse_long_from_text(&word, true);
+            if (hex_result.success) {
+                converted_integer = (ssize_t)hex_result.value;
+            } else {
+                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_PAESE_ERROR_NUMBER, NULL, column_position, line_number);
+                goto EXIT;
+            }
             break;
 
         case MODE_BIN:
             // 10進数に変換しておく
-            converted_word = raw_word;
             break;
 
         default:
             assert(false);
     }
 
-    add_token_word(&token_result->token, number_token_kind, &converted_word, column_position, line_number);
+    if (mode == MODE_DEC) {
+        // 整数しかない世界
+        TEXT decimal_remark = wrap_text(_T("整数のみ使用可能"));
+        add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_IMPLEMENT_DECIMAL, &decimal_remark, column_position, line_number);
+        //add_token_decimal(&token_result->token, number_token_kind, converted_decimal, column_position, line_number);
+    } else {
+        add_token_integer(&token_result->token, number_token_kind, converted_integer, column_position, line_number);
+    }
 
+
+EXIT:
     free_primitive_list(&character_list);
 
     return read_length;
@@ -758,7 +814,9 @@ TOKEN_RESULT RC_HEAP_FUNC(analyze, const TEXT* file_path, const TEXT* source, co
 static bool free_token_result_token(const void* value, size_t index, size_t length, void* data)
 {
     TOKEN* token = (TOKEN*)value;
-    free_text(&token->word);
+    if (token->type == TOKEN_VALUE_TYPE_STRING) {
+        free_text(&token->value.word);
+    }
     return true;
 }
 
