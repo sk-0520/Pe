@@ -15,6 +15,13 @@ typedef struct tag_TOKEN_RESULT
     OBJECT_LIST/*COMPILE_RESULT*/ result;
 } TOKEN_RESULT;
 
+typedef struct tag_ANALYZE_DATA
+{
+    TEXT* file_path;
+    TOKEN_RESULT* result;
+    PROJECT_SETTING* setting;
+} ANALYZE_DATA;
+
 
 TOKEN_RESULT RC_HEAP_FUNC(analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting);
 #ifdef RES_CHECK
