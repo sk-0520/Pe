@@ -370,7 +370,7 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_LITERAL_SSTRING,
     /// <summary>
-    /// `文字列`
+    /// `文字列`。未実装
     /// </summary>
     TOKEN_KIND_LITERAL_BSTRING,
 } TOKEN_KIND;
