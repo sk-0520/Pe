@@ -30,6 +30,9 @@
     <ClInclude Include="compile.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="source.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexical_analyzer.c">
@@ -39,6 +42,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="token.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="compile.c">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
