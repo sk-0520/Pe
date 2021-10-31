@@ -234,13 +234,13 @@ static bool is_number_bin(TCHAR c)
     return '0' == c || c == '1';
 }
 
-void add_index(size_t* current_index, size_t* column_position, size_t add_value)
+static void add_index(size_t* current_index, size_t* column_position, size_t add_value)
 {
     *current_index += add_value;
     *column_position += add_value;
 }
 
-bool is_comment(TOKEN_KIND kind)
+static bool is_comment(TOKEN_KIND kind)
 {
     return
         kind == TOKEN_KIND_COMMENT_LINE
@@ -568,7 +568,7 @@ EXIT:
     return read_length;
 }
 
-void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* analyze_data)
+static void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* analyze_data)
 {
     TOKEN_RESULT* result = analyze_data->result;
 
