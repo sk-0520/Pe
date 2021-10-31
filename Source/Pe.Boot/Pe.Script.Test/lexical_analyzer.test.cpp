@@ -266,7 +266,9 @@ namespace ScriptTest
                 DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_INTEGER, wrap("1") }  }, wrap("1")),
                 DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_INTEGER, wrap("9") }  }, wrap("9")),
 
-                //DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_INTEGER, wrap("123") }, { TOKEN_KIND_LITERAL_INTEGER, wrap("4") }  }, wrap("123 4")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_INTEGER, wrap("123") }, { TOKEN_KIND_LITERAL_INTEGER, wrap("4") }  }, wrap("123 4")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_INTEGER, wrap("1234") }, { TOKEN_KIND_LITERAL_INTEGER, wrap("5678") } }, wrap("123_4 5__6___7____8__")),
+                DATA(std::vector<WORD_TEST> { { TOKEN_KIND_LITERAL_INTEGER, wrap("1") }, { TOKEN_KIND_LITERAL_INTEGER, wrap("2") }, { TOKEN_KIND_LITERAL_INTEGER, wrap("3") }, { TOKEN_KIND_LITERAL_INTEGER, wrap("4") } }, wrap("1\r2\n3\r\n4")),
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);

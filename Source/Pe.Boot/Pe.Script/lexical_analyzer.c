@@ -217,9 +217,21 @@ static bool is_string_start(TCHAR c)
     return c == '\'' || c == '\"' || c == '`';
 }
 
+static bool is_number_int(TCHAR c)
+{
+    return ('0' <= c && c <= '9');
+}
 static bool is_number_start(TCHAR c)
 {
-    return '0' <= c && c <= '9';
+    return is_number_int(c);
+}
+static bool is_number_hex(TCHAR c)
+{
+    return ('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f');
+}
+static bool is_number_bin(TCHAR c)
+{
+    return '0' == c || c == '1';
 }
 
 static void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_position, size_t line_number)
@@ -255,6 +267,10 @@ static void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND
     TEXT auto_remark;
     if (!remark) {
         switch (code) {
+            case COMPILE_CODE_NOT_IMPLEMENT:
+                auto_remark = wrap_text(_T("未実装"));
+                break;
+
             case COMPILE_CODE_NOT_CLOSE_COMMENT:
                 auto_remark = wrap_text(_T("コメントが閉じられていない"));
                 break;
@@ -265,6 +281,10 @@ static void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND
 
             case COMPILE_CODE_UNKNOWN_ESCAPE_SEQUENCE:
                 auto_remark = wrap_text(_T("不明なエスケープシーケンス"));
+                break;
+
+            case COMPILE_CODE_INVALID_NUMBER:
+                auto_remark = wrap_text(_T("不正な数値"));
                 break;
 
             default:
@@ -467,20 +487,35 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
         MODE_BIN,
     } mode = MODE_INT;
 
-    size_t current_index = start_index + 1;
-    for (size_t i = 0; current_index < source->length; current_index++, i++) {
+    size_t read_length = 1;
+    for (size_t current_index = start_index + 1; current_index < source->length; current_index++, read_length++) {
         TCHAR current_character = source->value[current_index];
 
+        TCHAR next_character = 0;
+        if (current_index + 1 < source->length) {
+            next_character = source->value[current_index + 1];
+        }
+
         // 最初だけちょっと特殊処理
-        if (!i) {
+        if (!read_length && start_digit == '0' && (current_character == 'x' || current_character == 'b')) {
+            if (!next_character) {
+                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, column_position, line_number);
+                break;
+            }
             switch (current_character) {
                 case 'x':
+                    if (!is_number_hex(next_character)) {
+                        add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, column_position, line_number);
+                        break;
+                    }
                     mode = MODE_HEX;
-                    push_list_tchar(&character_list, current_character);
                     continue;
                 case 'b':
+                    if (!is_number_bin(next_character)) {
+                        add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, column_position, line_number);
+                        break;
+                    }
                     mode = MODE_BIN;
-                    push_list_tchar(&character_list, current_character);
                     continue;
 
                 default:
@@ -493,12 +528,51 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
             continue;
         }
 
-        // (使えんけど)初回のみ少数に切り替え可能
         if (current_character == '.') {
+            // すでに少数制御中は解析終了
             if (mode == MODE_DEC) {
+                //current_index -= 1;
                 break;
             }
+            // 16,2進数も解析終了
+            if (mode == MODE_HEX || mode == MODE_BIN) {
+                //current_index -= 1;
+                break;
+            }
+            // 次の文字が数値でない場合はもう死んでくれ
+            if (!is_number_int(next_character)) {
+                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, column_position, line_number);
+                break;
+            }
+            // (使えんけど)初回のみ少数に切り替え可能
+            mode = MODE_DEC;
+            continue;
         }
+
+        if (mode == MODE_INT || mode == MODE_DEC) {
+            if (!is_number_int(current_character)) {
+                break;
+            }
+            push_list_tchar(&character_list, current_character);
+            continue;
+        }
+
+        if (mode == MODE_HEX) {
+            if (!is_number_hex(current_character)) {
+                break;
+            }
+            push_list_tchar(&character_list, current_character);
+            continue;
+        }
+
+        if (mode == MODE_BIN) {
+            if (!is_number_bin(current_character)) {
+                break;
+            }
+            push_list_tchar(&character_list, current_character);
+            continue;
+        }
+
     }
 
     TEXT raw_word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false);
@@ -532,10 +606,9 @@ static size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, 
 
     add_token_word(&token_result->token, number_token_kind, &converted_word, column_position, line_number);
 
-EXIT:
     free_primitive_list(&character_list);
 
-    return current_index;
+    return read_length;
 }
 
 void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* analyze_data)
