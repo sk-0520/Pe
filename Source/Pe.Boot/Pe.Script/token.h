@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "source.h"
 #include "script.h"
 
 typedef enum tag_TOKEN_KIND

@@ -4,6 +4,8 @@
 #include "../Pe.Library/text.h"
 #include "../Pe.Library/res_check.h"
 
+#include "compile.h"
+#include "source.h"
 #include "token.h"
 
 typedef struct tag_TOKEN_RESULT
