@@ -7,7 +7,7 @@
 /// 2文字構成エスケープシーケンス(\c)に対する出力を取得。
 /// </summary>
 /// <param name="target_character"></param>
-/// <returns>該当しない場合は 0 。</returns>
+/// <returns>該当しない場合は \0 。</returns>
 static TCHAR get_simple_escape_sequence(TCHAR target_character)
 {
     switch (target_character) {
