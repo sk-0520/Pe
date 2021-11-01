@@ -253,9 +253,13 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
     //PRIMITIVE_LIST_TCHAR stock = new_primitive_list(PRIMITIVE_LIST_TYPE_TCHAR, line->length);
 
     size_t current_index = 0;
-    size_t line_number = 1;
-    size_t column_position = 0;
+    //size_t line_number = 1;
+    //size_t column_position = 0;
     TOKEN_KIND last_token_kind = TOKEN_KIND_NONE;
+    SOURCE_POSITION source_position = {
+        .column_position = 0,
+        .line_number = 1,
+    };
 
     while (current_index < source->length) {
         TCHAR current_character = source->value[current_index];
@@ -274,14 +278,14 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
             if (last_token_kind == TOKEN_KIND_COMMENT_LINE) {
                 last_token_kind = TOKEN_KIND_NONE;
             }
-            column_position = 0;
-            line_number += 1;
+            source_position.column_position = 0;
+            source_position.line_number += 1;
             continue;
         }
 
         // 空白無視
         if (is_whitespace_character(current_character)) {
-            add_index(&current_index, &column_position, 1);
+            add_index(&current_index, &source_position.column_position, 1);
             continue;
         }
 
@@ -293,15 +297,15 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
                 if (next_character && next_character == multi_token->characters[MULTI_TOKEN_SECOND] && multi_token->kinds[MULTI_TOKEN_SECOND] != TOKEN_KIND_NONE) {
                     processed_multi_token = true;
                     if (!is_comment_token_kind(last_token_kind) || !multi_token->skip_comments[MULTI_TOKEN_SECOND]) {
-                        add_token_kind(&result->token, multi_token->kinds[MULTI_TOKEN_SECOND], column_position, line_number);
+                        add_token_kind(&result->token, multi_token->kinds[MULTI_TOKEN_SECOND], &source_position);
                     }
-                    add_index(&current_index, &column_position, 2);
+                    add_index(&current_index, &source_position.column_position, 2);
                 } else if (multi_token->kinds[MULTI_TOKEN_FIRST] != TOKEN_KIND_NONE) {
                     processed_multi_token = true;
                     if (!is_comment_token_kind(last_token_kind) || !multi_token->skip_comments[MULTI_TOKEN_FIRST]) {
-                        add_token_kind(&result->token, multi_token->kinds[MULTI_TOKEN_FIRST], column_position, line_number);
+                        add_token_kind(&result->token, multi_token->kinds[MULTI_TOKEN_FIRST], &source_position);
                     }
-                    add_index(&current_index, &column_position, 1);
+                    add_index(&current_index, &source_position.column_position, 1);
                 }
             }
         }
@@ -321,8 +325,8 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
         // 1文字トークンの処理
         struct tag_SINGLE_CHAR_TOKEN* single_char_token = find_single_character_token(current_character);
         if (single_char_token) {
-            add_token_kind(&result->token, single_char_token->kind, column_position, line_number);
-            add_index(&current_index, &column_position, 1);
+            add_token_kind(&result->token, single_char_token->kind, &source_position);
+            add_index(&current_index, &source_position.column_position, 1);
             continue;
         }
 
@@ -330,14 +334,14 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
         if (is_string_start(current_character)) {
             if (current_character == '`') {
                 TEXT remark = wrap_text(_T("文字列 ` は未実装"));
-                add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_IMPLEMENT, &remark, column_position, line_number);
+                add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_IMPLEMENT, &remark, &source_position);
                 break;
             }
             if (!next_character) {
-                add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, NULL, column_position, line_number);
+                add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, NULL, &source_position);
                 break;
             }
-            size_t read_length = read_string_token(result, source, current_index, column_position, line_number, project_setting);
+            size_t read_length = read_string_token(result, source, current_index, &source_position, project_setting);
             if (!read_length) {
                 break;
             }
@@ -347,7 +351,7 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
 
         // 数値処理
         if (is_number_start(current_character)) {
-            size_t read_length = read_number_token(result, source, current_index, column_position, line_number, project_setting);
+            size_t read_length = read_number_token(result, source, current_index, &source_position, project_setting);
             assert(read_length);
             current_index += read_length;
             continue;
@@ -358,7 +362,7 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
 
     if (last_token_kind == TOKEN_KIND_COMMENT_BLOCK_BEGIN) {
         TOKEN* token = peek_object_list(&result->token);
-        add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_COMMENT, NULL, token->position.column_position, token->position.line_number);
+        add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_COMMENT, NULL, &token->position);
     }
 }
 

@@ -30,7 +30,7 @@ bool is_number_start(TCHAR c)
 /// <param name="column_position"></param>
 /// <param name="line_number"></param>
 /// <returns>読み込み成功後に飛ばす長さ(start_indexからの相対位置)。0の場合は失敗しているので後続不要だが呼び出し時点で数値なのでまぁ0はない。</returns>
-size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, size_t column_position, size_t line_number, const PROJECT_SETTING* project_setting)
+size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, const SOURCE_POSITION* source_position, const PROJECT_SETTING* project_setting)
 {
     assert(token_result);
 
@@ -58,13 +58,13 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
         // 最初だけちょっと特殊処理
         if (!i && start_digit == '0' && (current_character == 'x' || current_character == 'b')) {
             if (!next_character) {
-                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, column_position, line_number);
+                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
                 break;
             }
             switch (current_character) {
                 case 'x':
                     if (!is_number_hex(next_character)) {
-                        add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, column_position, line_number);
+                        add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
                         break;
                     }
                     mode = MODE_HEX;
@@ -73,7 +73,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
 
                 case 'b':
                     if (!is_number_bin(next_character)) {
-                        add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, column_position, line_number);
+                        add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
                         break;
                     }
                     mode = MODE_BIN;
@@ -103,7 +103,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
             }
             // 次の文字が数値でない場合はもう死んでくれ
             if (!is_number_int(next_character)) {
-                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, column_position, line_number);
+                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
                 break;
             }
             // (使えんけど)初回のみ少数に切り替え可能
@@ -150,7 +150,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
             } else {
-                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_PAESE_ERROR_NUMBER, NULL, column_position, line_number);
+                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_PAESE_ERROR_NUMBER, NULL, source_position);
                 goto EXIT;
             }
             break;
@@ -165,7 +165,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
             } else {
-                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_PAESE_ERROR_NUMBER, NULL, column_position, line_number);
+                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_PAESE_ERROR_NUMBER, NULL, source_position);
                 goto EXIT;
             }
             break;
@@ -176,7 +176,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
             } else {
-                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_PAESE_ERROR_NUMBER, NULL, column_position, line_number);
+                add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_PAESE_ERROR_NUMBER, NULL, source_position);
                 goto EXIT;
             }
             break;
@@ -188,10 +188,10 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
     if (mode == MODE_DEC) {
         // 整数しかない世界
         TEXT decimal_remark = wrap_text(_T("整数のみ使用可能"));
-        add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_IMPLEMENT_DECIMAL, &decimal_remark, column_position, line_number);
-        //add_token_decimal(&token_result->token, number_token_kind, converted_decimal, column_position, line_number);
+        add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_IMPLEMENT_DECIMAL, &decimal_remark, source_position);
+        //add_token_decimal(&token_result->token, number_token_kind, converted_decimal, source_position);
     } else {
-        add_token_integer(&token_result->token, number_token_kind, converted_integer, column_position, line_number);
+        add_token_integer(&token_result->token, number_token_kind, converted_integer, source_position);
     }
 
 
