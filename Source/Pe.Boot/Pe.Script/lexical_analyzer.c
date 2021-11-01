@@ -11,6 +11,12 @@ static bool is_string_start(TCHAR c)
     return c == '\'' || c == '\"' || c == '`';
 }
 
+static void add_index(size_t* current_index, size_t* column_position, size_t add_value)
+{
+    *current_index += add_value;
+    *column_position += add_value;
+}
+
 TCHAR get_relative_character(const TEXT* text, size_t base_index, ssize_t next_position)
 {
     assert(text);
@@ -40,16 +46,6 @@ bool is_newline_character(TCHAR c)
 {
     return c == '\r' || c == '\n';
 }
-
-
-
-static void add_index(size_t* current_index, size_t* column_position, size_t add_value)
-{
-    *current_index += add_value;
-    *column_position += add_value;
-}
-
-
 
 static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source, LEXICAL_ANALYZE_DATA* lexical_analyze_data)
 {
