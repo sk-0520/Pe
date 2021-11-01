@@ -68,11 +68,7 @@ size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
             read_length = current_index + 1;
             break;
         }
-
-        TCHAR next_character = 0;
-        if (current_index + 1 < source->length) {
-            next_character = source->value[current_index + 1];
-        }
+        TCHAR next_character = get_next_character(source, current_index);
 
         switch (string_token_kind) {
             case TOKEN_KIND_LITERAL_SSTRING:

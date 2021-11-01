@@ -49,11 +49,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
     size_t read_length = 1;
     for (size_t current_index = start_index + 1, i = 0; current_index < source->length; current_index++, read_length++, i++) {
         TCHAR current_character = source->value[current_index];
-
-        TCHAR next_character = 0;
-        if (current_index + 1 < source->length) {
-            next_character = source->value[current_index + 1];
-        }
+        TCHAR next_character = get_next_character(source, current_index);
 
         // 最初だけちょっと特殊処理
         if (!i && start_digit == '0' && (current_character == 'x' || current_character == 'b')) {

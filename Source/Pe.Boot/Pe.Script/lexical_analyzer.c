@@ -6,10 +6,21 @@
 #include "lexical_analyzer.z.number.h"
 #include "lexical_analyzer.z.string.h"
 
-
 static bool is_string_start(TCHAR c)
 {
     return c == '\'' || c == '\"' || c == '`';
+}
+
+TCHAR get_relative_character(const TEXT* text, size_t base_index, ssize_t next_position)
+{
+    assert(text);
+
+    size_t index = base_index + next_position;
+    if (index < text->length) {
+        return text->value[index];
+    }
+
+    return '\0';
 }
 
 bool is_whitespace_character(TCHAR c)
@@ -62,10 +73,7 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
 
     while (current_index < source->length) {
         TCHAR current_character = source->value[current_index];
-        TCHAR next_character = 0;
-        if (current_index + 1 < source->length) {
-            next_character = source->value[current_index + 1];
-        }
+        TCHAR next_character = get_next_character(source, current_index);
 
         // 改行処理
         if (is_newline_character(current_character)) {
