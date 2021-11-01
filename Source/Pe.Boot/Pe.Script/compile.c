@@ -1,7 +1,7 @@
 ﻿#include "compile.h"
 #include "script.h"
 
-void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, const TEXT* remark, size_t column_position, size_t line_number)
+void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, const TEXT* remark, const SOURCE_POSITION* source_position)
 {
     TEXT auto_remark;
     if (!remark) {
@@ -46,10 +46,7 @@ void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, 
         .kind = kind,
         .code = code,
         .remark = clone_text(remark),
-        .position = {
-            .column_position = column_position,
-            .line_number = line_number,
-    },
+        .position = *source_position,
     };
 
     push_object_list(compile_results, &compile_result);
