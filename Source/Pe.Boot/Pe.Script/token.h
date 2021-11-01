@@ -252,6 +252,10 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_KEYWORD_CONST,
     /// <summary>
+    /// static
+    /// </summary>
+    TOKEN_KIND_KEYWORD_STATIC,
+    /// <summary>
     /// function
     /// </summary>
     TOKEN_KIND_KEYWORD_FUNCTION,
@@ -288,25 +292,17 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_KEYWORD_FALSE,
     /// <summary>
-    /// new
+    /// struct
     /// </summary>
-    TOKEN_KIND_KEYWORD_NEW,
+    TOKEN_KIND_KEYWORD_STRUCT,
     /// <summary>
-    /// delete
+    /// interface
     /// </summary>
-    TOKEN_KIND_KEYWORD_DELETE,
-    /// <summary>
-    /// class
-    /// </summary>
-    TOKEN_KIND_KEYWORD_CLASS,
+    TOKEN_KIND_KEYWORD_INTERFACE,
     /// <summary>
     /// private
     /// </summary>
     TOKEN_KIND_KEYWORD_PRIVATE,
-    /// <summary>
-    /// public
-    /// </summary>
-    TOKEN_KIND_KEYWORD_PUBLIC,
     /// <summary>
     /// in
     /// </summary>

@@ -21,14 +21,14 @@ typedef struct tag_ANALYZE_DATA
     TEXT* file_path;
     TOKEN_RESULT* result;
     PROJECT_SETTING* setting;
-} ANALYZE_DATA;
+} LEXICAL_ANALYZE_DATA;
 
 bool is_whitespace_character(TCHAR c);
 bool is_newline_character(TCHAR c);
 
-TOKEN_RESULT RC_HEAP_FUNC(analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting);
+TOKEN_RESULT RC_HEAP_FUNC(lexical_analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting);
 #ifdef RES_CHECK
-#   define analyze(file_path, source, setting) RC_HEAP_WRAP(analyze, file_path, source, setting)
+#   define lexical_analyze(file_path, source, setting) RC_HEAP_WRAP(lexical_analyze, file_path, source, setting)
 #endif
 
 void RC_HEAP_FUNC(free_token_result, TOKEN_RESULT* token_result);

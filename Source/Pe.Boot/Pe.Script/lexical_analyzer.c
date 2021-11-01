@@ -241,9 +241,10 @@ static struct tag_SINGLE_CHAR_TOKEN* find_single_character_token(TCHAR c)
     return NULL;
 }
 
-static void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE_DATA* analyze_data)
+static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source, LEXICAL_ANALYZE_DATA* lexical_analyze_data)
 {
-    TOKEN_RESULT* result = analyze_data->result;
+    TOKEN_RESULT* result = lexical_analyze_data->result;
+    const PROJECT_SETTING* project_setting = lexical_analyze_data->setting;
 
     if (!source->length) {
         return;
@@ -336,7 +337,7 @@ static void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE
                 add_compile_result(&result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, NULL, column_position, line_number);
                 break;
             }
-            size_t read_length = read_string_token(result, source, current_index, column_position, line_number);
+            size_t read_length = read_string_token(result, source, current_index, column_position, line_number, project_setting);
             if (!read_length) {
                 break;
             }
@@ -346,7 +347,7 @@ static void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE
 
         // 数値処理
         if (is_number_start(current_character)) {
-            size_t read_length = read_number_token(result, source, current_index, column_position, line_number);
+            size_t read_length = read_number_token(result, source, current_index, column_position, line_number, project_setting);
             assert(read_length);
             current_index += read_length;
             continue;
@@ -361,7 +362,7 @@ static void analyze_core(TOKEN_RESULT* token_result, const TEXT* source, ANALYZE
     }
 }
 
-TOKEN_RESULT RC_HEAP_FUNC(analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting)
+TOKEN_RESULT RC_HEAP_FUNC(lexical_analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting)
 {
     assert(setting);
 
@@ -375,12 +376,12 @@ TOKEN_RESULT RC_HEAP_FUNC(analyze, const TEXT* file_path, const TEXT* source, co
         return token_result;
     }
 
-    ANALYZE_DATA analyze_data = {
+    LEXICAL_ANALYZE_DATA lexical_analyze_data = {
         .file_path = (TEXT*)file_path,
         .result = &token_result,
         .setting = (PROJECT_SETTING*)setting, //TODO: とりあえずの回避。Cって構造体メンバにconst使えんの？
     };
-    analyze_core(&token_result, source, &analyze_data);
+    lexical_analyze_core(&token_result, source, &lexical_analyze_data);
 
     return token_result;
 }
