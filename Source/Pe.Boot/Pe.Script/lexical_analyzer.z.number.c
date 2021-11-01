@@ -1,5 +1,6 @@
-﻿#include "lexical_analyzer.h"
-#include "../Pe.Library/primitive_list.h"
+﻿#include "../Pe.Library/primitive_list.h"
+
+#include "lexical_analyzer.z.number.h"
 
 static bool is_number_int(TCHAR c)
 {
