@@ -399,8 +399,8 @@ typedef struct tag_TOKEN
     TOKEN_VALUE value;
 } TOKEN;
 
-void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, size_t column_position, size_t line_number);
-void add_token_word(OBJECT_LIST* tokens, TOKEN_KIND kind, const TEXT* word, size_t column_position, size_t line_number);
-void add_token_integer(OBJECT_LIST* tokens, TOKEN_KIND kind, ssize_t value, size_t column_position, size_t line_number);
-void add_token_decimal(OBJECT_LIST* tokens, TOKEN_KIND kind, double value, size_t column_position, size_t line_number);
+void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, const SOURCE_POSITION* source_position);
+void add_token_word(OBJECT_LIST* tokens, TOKEN_KIND kind, const TEXT* word, const SOURCE_POSITION* source_position);
+void add_token_integer(OBJECT_LIST* tokens, TOKEN_KIND kind, ssize_t value, const SOURCE_POSITION* source_position);
+void add_token_decimal(OBJECT_LIST* tokens, TOKEN_KIND kind, double value, const SOURCE_POSITION* source_position);
 
