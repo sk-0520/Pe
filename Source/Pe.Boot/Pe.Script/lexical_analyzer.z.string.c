@@ -40,7 +40,7 @@ static TCHAR get_simple_escape_sequence(TCHAR target_character)
     }
 }
 
-size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, size_t column_position, size_t line_number)
+size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, size_t column_position, size_t line_number, const PROJECT_SETTING* project_setting)
 {
     assert(token_result);
 
