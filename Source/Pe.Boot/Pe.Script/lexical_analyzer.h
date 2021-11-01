@@ -23,6 +23,8 @@ typedef struct tag_ANALYZE_DATA
     PROJECT_SETTING* setting;
 } ANALYZE_DATA;
 
+bool is_whitespace_character(TCHAR c);
+bool is_newline_character(TCHAR c);
 
 TOKEN_RESULT RC_HEAP_FUNC(analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting);
 #ifdef RES_CHECK
@@ -34,4 +36,3 @@ void RC_HEAP_FUNC(free_token_result, TOKEN_RESULT* token_result);
 #   define free_token_result(token_result) RC_HEAP_WRAP(free_token_result, token_result)
 #endif
 
-#include "lexical_analyzer.z.number.h"
