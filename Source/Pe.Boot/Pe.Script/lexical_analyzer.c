@@ -2,193 +2,10 @@
 #include "../Pe.Library/debug.h"
 
 #include "lexical_analyzer.h"
+#include "lexical_analyzer.z.token.h"
 #include "lexical_analyzer.z.number.h"
 #include "lexical_analyzer.z.string.h"
 
-#define MULTI_TOKEN_FIRST (0)
-#define MULTI_TOKEN_SECOND (1)
-#define MULTI_TOKEN_COUNT (2)
-static struct tag_MULTI_TOKEN
-{
-    TCHAR characters[MULTI_TOKEN_COUNT];
-    /// <summary>
-    /// MULTI_TOKEN_FIRST: characters[MULTI_TOKEN_FIRST] のみのトークン
-    /// MULTI_TOKEN_SECOND: characters[MULTI_TOKEN_FIRST][MULTI_TOKEN_SECOND]のトークン
-    /// </summary>
-    TOKEN_KIND kinds[MULTI_TOKEN_COUNT];
-    /// <summary>
-    /// 真の場合にコメント中は無視する
-    /// </summary>
-    bool skip_comments[MULTI_TOKEN_COUNT];
-} library__multi_tokens[] = {
-    // +
-    {
-        .characters = { '+', '=' },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_ADD_ASSIGN },
-        .skip_comments = { true, true },
-    },
-    {
-        .characters = { '+', '+' },
-        .kinds = { TOKEN_KIND_OP_PLUS, TOKEN_KIND_OP_INCREMENT },
-        .skip_comments = { true, true },
-    },
-    // -
-    {
-        .characters = { '-', '=' },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_SUB_ASSIGN },
-        .skip_comments = { true, true },
-    },
-    {
-        .characters = { '-', '-' },
-        .kinds = { TOKEN_KIND_OP_MINUS, TOKEN_KIND_OP_DECREMENT },
-        .skip_comments = { true, true },
-    },
-    // *
-    {
-        .characters = { '*', '=' },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_MUL_ASSIGN },
-        .skip_comments = { true, true },
-    },
-    {
-        .characters = { '*', '/' },
-        .kinds = { TOKEN_KIND_OP_STAR, TOKEN_KIND_COMMENT_BLOCK_END },
-        .skip_comments = { true, false },
-    },
-    // /
-    {
-        .characters = { '/', '/' },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_COMMENT_LINE },
-        .skip_comments = { false, false },
-    },
-    {
-        .characters = { '/', '*' },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_COMMENT_BLOCK_BEGIN },
-        .skip_comments = { false, false },
-    },
-    {
-        .characters = { '/', '=' },
-        .kinds = { TOKEN_KIND_OP_SLASH, TOKEN_KIND_OP_DIV_ASSIGN },
-        .skip_comments = { false, false },
-    },
-    // %
-    {
-        .characters = { '%', '=' },
-        .kinds = { TOKEN_KIND_OP_PERCENT, TOKEN_KIND_OP_REM_ASSIGN },
-        .skip_comments = { false, false },
-    },
-    // =
-    {
-        .characters = { '=', '>' },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_LAMBDA },
-        .skip_comments = { false, false },
-    },
-    {
-        .characters = { '=', '=' },
-        .kinds = { TOKEN_KIND_OP_ASSIGN, TOKEN_KIND_OP_EQUALS },
-        .skip_comments = { false, false },
-    },
-    // <
-    {
-        .characters = { '<', '=' },
-        .kinds = { TOKEN_KIND_OP_LESS, TOKEN_KIND_OP_LESS_EQUAL },
-        .skip_comments = { false, false },
-    },
-    // >
-    {
-        .characters = { '>', '=' },
-        .kinds = { TOKEN_KIND_OP_GREATER, TOKEN_KIND_OP_GREATER_EQUAL },
-        .skip_comments = { false, false },
-    },
-    // !
-    {
-        .characters = { '!', '=' },
-        .kinds = { TOKEN_KIND_OP_EXCLAMATION, TOKEN_KIND_OP_NOT_EQUALS },
-        .skip_comments = { false, false },
-    },
-    // &
-    {
-        .characters = { '&', '&' },
-        .kinds = { TOKEN_KIND_OP_AMPERSAND, TOKEN_KIND_OP_AND },
-        .skip_comments = { false, false },
-    },
-    // |
-    {
-        .characters = { '|', '|' },
-        .kinds = { TOKEN_KIND_OP_VERTICALBAR, TOKEN_KIND_OP_OR },
-        .skip_comments = { false, false },
-    },
-};
-
-static struct tag_SINGLE_CHAR_TOKEN
-{
-    TCHAR character;
-    TOKEN_KIND kind;
-} library__single_character_tokens[] = {
-    {
-        .character = ',',
-        .kind = TOKEN_KIND_OP_COMMA,
-    },
-    {
-        .character = '.',
-        .kind = TOKEN_KIND_OP_DOT,
-    },
-    {
-        .character = ';',
-        .kind = TOKEN_KIND_OP_SEMICOLON,
-    },
-    {
-        .character = ':',
-        .kind = TOKEN_KIND_OP_COLON,
-    },
-    {
-        .character = '?',
-        .kind = TOKEN_KIND_OP_QUESTION,
-    },
-    {
-        .character = '\\',
-        .kind = TOKEN_KIND_OP_BACKSLASH,
-    },
-    {
-        .character = '~',
-        .kind = TOKEN_KIND_OP_TILDE,
-    },
-    {
-        .character = '@',
-        .kind = TOKEN_KIND_OP_AT,
-    },
-    {
-        .character = '$',
-        .kind = TOKEN_KIND_OP_DOLLAR,
-    },
-    {
-        .character = '#',
-        .kind = TOKEN_KIND_OP_HASH,
-    },
-    {
-        .character = '(',
-        .kind = TOKEN_KIND_OP_LPAREN,
-    },
-    {
-        .character = ')',
-        .kind = TOKEN_KIND_OP_RPAREN,
-    },
-    {
-        .character = '{',
-        .kind = TOKEN_KIND_OP_LBRACE,
-    },
-    {
-        .character = '}',
-        .kind = TOKEN_KIND_OP_RBRACE,
-    },
-    {
-        .character = '[',
-        .kind = TOKEN_KIND_OP_LBRACKET,
-    },
-    {
-        .character = ']',
-        .kind = TOKEN_KIND_OP_RBRACKET,
-    },
-};
 
 static bool is_string_start(TCHAR c)
 {
@@ -221,25 +38,7 @@ static void add_index(size_t* current_index, size_t* column_position, size_t add
     *column_position += add_value;
 }
 
-static bool is_comment_token_kind(TOKEN_KIND kind)
-{
-    return
-        kind == TOKEN_KIND_COMMENT_LINE
-        ||
-        kind == TOKEN_KIND_COMMENT_BLOCK_BEGIN
-        ;
-}
 
-static struct tag_SINGLE_CHAR_TOKEN* find_single_character_token(TCHAR c)
-{
-    for (size_t i = 0; i < sizeof(library__single_character_tokens) / sizeof(library__single_character_tokens[0]); i++) {
-        if (library__single_character_tokens[i].character == c) {
-            return library__single_character_tokens + i;
-        }
-    }
-
-    return NULL;
-}
 
 static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source, LEXICAL_ANALYZE_DATA* lexical_analyze_data)
 {
@@ -290,28 +89,12 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
         }
 
         // 単一トークンと合わせ技のトークンを処理
-        bool processed_multi_token = false;
-        for (size_t i = 0; !processed_multi_token && i < sizeof(library__multi_tokens) / sizeof(library__multi_tokens[0]); i++) {
-            const struct tag_MULTI_TOKEN* multi_token = library__multi_tokens + i;
-            if (current_character == multi_token->characters[MULTI_TOKEN_FIRST]) {
-                if (next_character && next_character == multi_token->characters[MULTI_TOKEN_SECOND] && multi_token->kinds[MULTI_TOKEN_SECOND] != TOKEN_KIND_NONE) {
-                    processed_multi_token = true;
-                    if (!is_comment_token_kind(last_token_kind) || !multi_token->skip_comments[MULTI_TOKEN_SECOND]) {
-                        add_token_kind(&result->token, multi_token->kinds[MULTI_TOKEN_SECOND], &source_position);
-                    }
-                    add_index(&current_index, &source_position.column_position, 2);
-                } else if (multi_token->kinds[MULTI_TOKEN_FIRST] != TOKEN_KIND_NONE) {
-                    processed_multi_token = true;
-                    if (!is_comment_token_kind(last_token_kind) || !multi_token->skip_comments[MULTI_TOKEN_FIRST]) {
-                        add_token_kind(&result->token, multi_token->kinds[MULTI_TOKEN_FIRST], &source_position);
-                    }
-                    add_index(&current_index, &source_position.column_position, 1);
-                }
-            }
-        }
-        if (processed_multi_token) {
+        size_t multi_token_length = read_multi_character_token(result, source, current_index, last_token_kind, &source_position, project_setting);
+        if (multi_token_length) {
             TOKEN* token = peek_object_list(&result->token);
             last_token_kind = token->kind;
+
+            add_index(&current_index, &source_position.column_position, multi_token_length);
 
             continue;
         }
@@ -323,7 +106,7 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
         }
 
         // 1文字トークンの処理
-        struct tag_SINGLE_CHAR_TOKEN* single_char_token = find_single_character_token(current_character);
+        SINGLE_CHAR_TOKEN* single_char_token = find_single_character_token(current_character);
         if (single_char_token) {
             add_token_kind(&result->token, single_char_token->kind, &source_position);
             add_index(&current_index, &source_position.column_position, 1);
