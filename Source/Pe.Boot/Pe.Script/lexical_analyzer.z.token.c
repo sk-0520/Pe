@@ -176,7 +176,7 @@ bool is_comment_token_kind(TOKEN_KIND kind)
         ;
 }
 
-SINGLE_CHAR_TOKEN* find_single_character_token(TCHAR c)
+const SINGLE_CHAR_TOKEN* find_single_character_token(TCHAR c)
 {
     for (size_t i = 0; i < sizeof(library__single_character_tokens) / sizeof(library__single_character_tokens[0]); i++) {
         if (library__single_character_tokens[i].character == c) {

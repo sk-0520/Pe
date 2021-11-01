@@ -110,7 +110,7 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
         }
 
         // 1文字トークンの処理
-        SINGLE_CHAR_TOKEN* single_char_token = find_single_character_token(current_character);
+        const SINGLE_CHAR_TOKEN* single_char_token = find_single_character_token(current_character);
         if (single_char_token) {
             add_token_kind(&result->token, single_char_token->kind, &source_position);
             add_index(&current_index, &source_position.column_position, 1);
