@@ -67,4 +67,4 @@ typedef struct tag_COMPILE_RESULT
 /// <param name="remark"></param>
 /// <param name="column_position"></param>
 /// <param name="line_number"></param>
-void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, const TEXT* remark, size_t column_position, size_t line_number);
+void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, const TEXT* remark, const SOURCE_POSITION* source_position);

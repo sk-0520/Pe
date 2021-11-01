@@ -40,7 +40,7 @@ static TCHAR get_simple_escape_sequence(TCHAR target_character)
     }
 }
 
-size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, size_t column_position, size_t line_number, const PROJECT_SETTING* project_setting)
+size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, const SOURCE_POSITION* source_position, const PROJECT_SETTING* project_setting)
 {
     assert(token_result);
 
@@ -64,7 +64,7 @@ size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
         if (current_character == string_type) {
             // 文字列はここまで!
             TEXT word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false);
-            add_token_word(&token_result->token, string_token_kind, &word, column_position, line_number);
+            add_token_word(&token_result->token, string_token_kind, &word, source_position);
             read_length = current_index + 1;
             break;
         }
@@ -81,7 +81,7 @@ size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
                     current_index += 2;
                     push_list_tchar(&character_list, '\'');
                 } else if (is_newline_character(current_character) || !next_character) {
-                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, NULL, column_position, line_number);
+                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, NULL, source_position);
                     goto EXIT;
                 } else {
                     current_index += 1;
@@ -99,10 +99,10 @@ size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
                         continue;
                     }
 
-                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_UNKNOWN_ESCAPE_SEQUENCE, NULL, column_position, line_number);
+                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_UNKNOWN_ESCAPE_SEQUENCE, NULL, source_position);
                     goto EXIT;
                 } else if (is_newline_character(current_character) || !next_character) {
-                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, NULL, column_position, line_number);
+                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_CLOSE_STRING, NULL, source_position);
                     goto EXIT;
                 } else {
                     current_index += 1;
