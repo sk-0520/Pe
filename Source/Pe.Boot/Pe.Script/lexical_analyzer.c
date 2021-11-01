@@ -92,13 +92,13 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
             continue;
         }
 
-        // 単一トークンと合わせ技のトークンを処理
-        size_t multi_token_length = read_multi_character_token(result, source, current_index, last_token_kind, &source_position, project_setting);
-        if (multi_token_length) {
+        // 単一記号トークンと合わせ技の記号トークンを処理
+        size_t multi_symbol_token_length = read_multi_symbol_token(result, source, current_index, last_token_kind, &source_position, project_setting);
+        if (multi_symbol_token_length) {
             TOKEN* token = peek_object_list(&result->token);
             last_token_kind = token->kind;
 
-            add_index(&current_index, &source_position.column_position, multi_token_length);
+            add_index(&current_index, &source_position.column_position, multi_symbol_token_length);
 
             continue;
         }
@@ -109,10 +109,10 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
             continue;
         }
 
-        // 1文字トークンの処理
-        const SINGLE_CHAR_TOKEN* single_char_token = find_single_character_token(current_character);
-        if (single_char_token) {
-            add_token_kind(&result->token, single_char_token->kind, &source_position);
+        // 単一記号トークンの処理
+        const SINGLE_SYMBOL_TOKEN* single_symbol_token = find_single_symbol_token(current_character);
+        if (single_symbol_token) {
+            add_token_kind(&result->token, single_symbol_token->kind, &source_position);
             add_index(&current_index, &source_position.column_position, 1);
             continue;
         }
