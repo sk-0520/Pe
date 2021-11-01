@@ -30,7 +30,7 @@ bool is_number_start(TCHAR c)
 /// <param name="column_position"></param>
 /// <param name="line_number"></param>
 /// <returns>読み込み成功後に飛ばす長さ(start_indexからの相対位置)。0の場合は失敗しているので後続不要だが呼び出し時点で数値なのでまぁ0はない。</returns>
-size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, size_t column_position, size_t line_number)
+size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, size_t column_position, size_t line_number, const PROJECT_SETTING* project_setting)
 {
     assert(token_result);
 
