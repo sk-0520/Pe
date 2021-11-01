@@ -9,8 +9,8 @@ typedef struct tag_SINGLE_CHAR_TOKEN
     TOKEN_KIND kind;
 } SINGLE_CHAR_TOKEN;
 
-#define MULTI_CHAR_TOKEN_FIRST (0)
-#define MULTI_CHAR_TOKEN_SECOND (1)
+//#define MULTI_CHAR_TOKEN_FIRST (0)
+//#define MULTI_CHAR_TOKEN_SECOND (1)
 #define MULTI_CHAR_TOKEN_COUNT (4)
 typedef struct tag_MULTI_CHAR_TOKEN
 {
