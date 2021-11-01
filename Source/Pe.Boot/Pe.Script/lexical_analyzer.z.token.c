@@ -190,10 +190,7 @@ SINGLE_CHAR_TOKEN* find_single_character_token(TCHAR c)
 size_t read_multi_character_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, TOKEN_KIND last_token_kind, const SOURCE_POSITION* source_position, const PROJECT_SETTING* project_setting)
 {
     TCHAR current_character = source->value[start_index];
-    TCHAR next_character = 0;
-    if (start_index + 1 < source->length) {
-        next_character = source->value[start_index + 1];
-    }
+    TCHAR next_character = get_next_character(source, start_index);
 
     for (size_t i = 0; i < sizeof(library__multi_tokens) / sizeof(library__multi_tokens[0]); i++) {
         const MULTI_CHAR_TOKEN* multi_token = library__multi_tokens + i;
