@@ -9,7 +9,7 @@ typedef struct tag_SINGLE_SYMBOL_TOKEN
     TOKEN_KIND kind;
 } SINGLE_SYMBOL_TOKEN;
 
-#define MULTI_CHAR_SYMBOL_COUNT (4)
+#define MULTI_CHAR_SYMBOL_COUNT (2)
 typedef struct tag_MULTI_SYMBOL_TOKEN
 {
     TCHAR symbols[MULTI_CHAR_SYMBOL_COUNT];
