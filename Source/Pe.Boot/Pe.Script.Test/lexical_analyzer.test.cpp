@@ -12,6 +12,42 @@ namespace ScriptTest
     {
     public:
 
+        TEST_METHOD(get_relative_character_test)
+        {
+            auto tests = {
+                DATA(_T('a'), wrap("abc"), 0, 0),
+                DATA(_T('b'), wrap("abc"), 0, 1),
+                DATA(_T('b'), wrap("abc"), 1, 0),
+                DATA(_T('c'), wrap("abc"), 1, 1),
+                DATA(_T('\0'), wrap("abc"), 1, 2),
+
+                DATA(_T('a'), wrap("abc"), 1, -1),
+                DATA(_T('\0'), wrap("abc"), 1, -2),
+            };
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                auto arg2 = std::get<1>(test.inputs);
+                auto arg3 = std::get<2>(test.inputs);
+                TCHAR actual = get_relative_character(&arg1, arg2, arg3);
+                Assert::AreEqual(test.expected, actual, arg1.value);
+            }
+        }
+
+        TEST_METHOD(get_next_character_test)
+        {
+            auto tests = {
+                DATA(_T('b'), wrap("abc"), 0),
+                DATA(_T('c'), wrap("abc"), 1),
+                DATA(_T('\0'), wrap("abc"), 2),
+            };
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                auto arg2 = std::get<1>(test.inputs);
+                TCHAR actual = get_next_character(&arg1, arg2);
+                Assert::AreEqual(test.expected, actual, arg1.value);
+            }
+        }
+
         TEST_METHOD(lexical_analyze_empty_test)
         {
             PROJECT_SETTING setting;
