@@ -36,6 +36,9 @@
     <ClInclude Include="lexical_analyzer.z.number.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="lexical_analyzer.z.string.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexical_analyzer.c">
@@ -51,6 +54,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="lexical_analyzer.z.number.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="lexical_analyzer.z.string.c">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
