@@ -39,7 +39,18 @@ TCHAR get_relative_character(const TEXT* text, size_t base_index, ssize_t next_p
 /// <returns>1文字先の文字。進められない場合は \0 。</returns>
 #define get_next_character(text, base_index) get_relative_character(text, (base_index), 1)
 
+/// <summary>
+/// ホワイトスペースとして扱う文字か。
+/// </summary>
+/// <param name="c"></param>
+/// <returns></returns>
 bool is_whitespace_character(TCHAR c);
+
+/// <summary>
+/// 改行として扱う文字か。
+/// </summary>
+/// <param name="c"></param>
+/// <returns></returns>
 bool is_newline_character(TCHAR c);
 
 TOKEN_RESULT RC_HEAP_FUNC(lexical_analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting);
