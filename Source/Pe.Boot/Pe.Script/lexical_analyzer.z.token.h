@@ -26,8 +26,28 @@ typedef struct tag_MULTI_CHAR_TOKEN
     bool skip_comments[MULTI_CHAR_TOKEN_COUNT];
 } MULTI_CHAR_TOKEN;
 
+/// <summary>
+/// 指定トークンはコメントか。
+/// </summary>
+/// <param name="kind"></param>
+/// <returns></returns>
 bool is_comment_token_kind(TOKEN_KIND kind);
 
+/// <summary>
+/// 単一文字で構成されるトークンを取得。
+/// </summary>
+/// <param name="c"></param>
+/// <returns>取得できたトークン設定。取得できない場合は<c>NULL</c></returns>
 SINGLE_CHAR_TOKEN* find_single_character_token(TCHAR c);
 
+/// <summary>
+/// 複数文字で構成されるトークンを読み込み。
+/// </summary>
+/// <param name="token_result">結果格納</param>
+/// <param name="source">ソース全体</param>
+/// <param name="start_index">複数文字トークンとしての開始点</param>
+/// <param name="last_token_kind"></param>
+/// <param name="source_position"></param>
+/// <param name="project_setting"></param>
+/// <returns>読み込み成功後に飛ばす長さ(start_indexからの相対位置)。0の場合は失敗しているので後続不要。</returns>
 size_t read_multi_character_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, TOKEN_KIND last_token_kind, const SOURCE_POSITION* source_position, const PROJECT_SETTING* project_setting);
