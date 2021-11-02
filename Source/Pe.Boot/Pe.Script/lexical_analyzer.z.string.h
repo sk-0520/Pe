@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "lexical_analyzer.h"
 
+bool is_string_start(TCHAR c);
+
 /// <summary>
 /// 文字列を読み込み。
 /// 呼ばれる時点で最初の文字は文字列トークン判定済みなので初回の次文字読み込みは絶対に成功する。
