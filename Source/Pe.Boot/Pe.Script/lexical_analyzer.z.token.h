@@ -46,6 +46,13 @@ typedef struct tag_MULTI_SYMBOL_TOKEN
 bool is_comment_token_kind(TOKEN_KIND kind);
 
 /// <summary>
+/// 指定文字は記号トークンとして使用されるか。
+/// </summary>
+/// <param name="c"></param>
+/// <returns></returns>
+bool is_synbol_token(TCHAR c);
+
+/// <summary>
 /// 単一記号で構成されるトークンを取得。
 /// </summary>
 /// <param name="c"></param>

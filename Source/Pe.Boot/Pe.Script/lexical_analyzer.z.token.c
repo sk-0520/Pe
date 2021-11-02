@@ -194,6 +194,22 @@ bool is_comment_token_kind(TOKEN_KIND kind)
         ;
 }
 
+bool is_synbol_token(TCHAR c)
+{
+    for (size_t i = 0; i < sizeof(library__single_symbol_tokens) / sizeof(library__single_symbol_tokens[0]); i++) {
+        if (c == library__single_symbol_tokens[i].symbol) {
+            return true;
+        }
+    }
+    for (size_t i = 0; i < sizeof(library__multi_symbol_tokens) / sizeof(library__multi_symbol_tokens[0]); i++) {
+        if (c == library__multi_symbol_tokens[i].symbols[0]) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 const SINGLE_SYMBOL_TOKEN* find_single_symbol_token(TCHAR c)
 {
     for (size_t i = 0; i < sizeof(library__single_symbol_tokens) / sizeof(library__single_symbol_tokens[0]); i++) {
