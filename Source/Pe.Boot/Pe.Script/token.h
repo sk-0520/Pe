@@ -264,6 +264,10 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_KEYWORD_RETURN,
     /// <summary>
+    /// scope
+    /// </summary>
+    TOKEN_KIND_KEYWORD_SCOPE,
+    /// <summary>
     /// try
     /// </summary>
     TOKEN_KIND_KEYWORD_TRY,
