@@ -2,6 +2,10 @@
 
 #include "lexical_analyzer.z.string.h"
 
+bool is_string_start(TCHAR c)
+{
+    return c == '\'' || c == '\"' || c == '`';
+}
 
 /// <summary>
 /// 2文字構成エスケープシーケンス(\c)に対する出力を取得。

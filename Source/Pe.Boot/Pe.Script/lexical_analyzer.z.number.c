@@ -1,6 +1,7 @@
 ﻿#include "../Pe.Library/primitive_list.h"
 
 #include "lexical_analyzer.z.number.h"
+#include "lexical_analyzer.z.token.h"
 
 static bool is_number_int(TCHAR c)
 {
@@ -14,6 +15,23 @@ static bool is_number_bin(TCHAR c)
 {
     return '0' == c || c == '1';
 }
+
+/// <summary>
+/// 数値境界としてセーフな文字か。
+/// </summary>
+/// <param name="c"></param>
+/// <returns></returns>
+static bool is_number_boundary(TCHAR c)
+{
+    return
+        is_whitespace_character(c)
+        ||
+        is_newline_character(c)
+        ||
+        is_synbol_token(c)
+        ;
+}
+
 
 bool is_number_start(TCHAR c)
 {
@@ -55,13 +73,15 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
         if (!i && start_digit == '0' && (current_character == 'x' || current_character == 'b')) {
             if (!next_character) {
                 add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
-                break;
+                read_length = 0;
+                goto EXIT;
             }
             switch (current_character) {
                 case 'x':
                     if (!is_number_hex(next_character)) {
                         add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
-                        break;
+                        read_length = 0;
+                        goto EXIT;
                     }
                     mode = MODE_HEX;
                     push_list_tchar(&character_list, current_character);
@@ -70,7 +90,8 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
                 case 'b':
                     if (!is_number_bin(next_character)) {
                         add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
-                        break;
+                        read_length = 0;
+                        goto EXIT;
                     }
                     mode = MODE_BIN;
                     push_list_tchar(&character_list, current_character);
@@ -100,7 +121,8 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
             // 次の文字が数値でない場合はもう死んでくれ
             if (!is_number_int(next_character)) {
                 add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
-                break;
+                read_length = 0;
+                goto EXIT;
             }
             // (使えんけど)初回のみ少数に切り替え可能
             mode = MODE_DEC;
@@ -109,6 +131,11 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
 
         if (mode == MODE_INT || mode == MODE_DEC) {
             if (!is_number_int(current_character)) {
+                if (!is_number_boundary(current_character)) {
+                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
+                    read_length = 0;
+                    goto EXIT;
+                }
                 break;
             }
             push_list_tchar(&character_list, current_character);
@@ -117,6 +144,11 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
 
         if (mode == MODE_HEX) {
             if (!is_number_hex(current_character)) {
+                if (!is_number_boundary(current_character)) {
+                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
+                    read_length = 0;
+                    goto EXIT;
+                }
                 break;
             }
             push_list_tchar(&character_list, current_character);
@@ -125,6 +157,11 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
 
         if (mode == MODE_BIN) {
             if (!is_number_bin(current_character)) {
+                if (!is_number_boundary(current_character)) {
+                    add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
+                    read_length = 0;
+                    goto EXIT;
+                }
                 break;
             }
             push_list_tchar(&character_list, current_character);
@@ -132,6 +169,8 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
         }
 
     }
+
+    assert(read_length);
 
     TEXT word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false);
     TOKEN_KIND number_token_kind = TOKEN_KIND_LITERAL_INTEGER;
