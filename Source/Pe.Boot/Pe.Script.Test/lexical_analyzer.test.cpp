@@ -99,7 +99,7 @@ namespace ScriptTest
             free_token_result(&actual);
         }
 
-        TEST_METHOD(lexical_analyze_multi_token_test)
+        TEST_METHOD(lexical_analyze_multi_symbol_token_test)
         {
             PROJECT_SETTING setting;
 
@@ -145,7 +145,7 @@ namespace ScriptTest
             }
         }
 
-        TEST_METHOD(lexical_analyze_single_character_token_test)
+        TEST_METHOD(lexical_analyze_single_symbol_token_test)
         {
             PROJECT_SETTING setting;
 
@@ -228,6 +228,11 @@ namespace ScriptTest
             {
                 this->kind = kind;
                 this->value.decimal = value;
+            }
+            VALUE_TEST(TOKEN_KIND kind)
+            {
+                this->kind = kind;
+                this->value.none = NULL;
             }
 
             TOKEN_KIND kind;
@@ -346,6 +351,63 @@ namespace ScriptTest
                     Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
                     if (test.expected[i].kind == TOKEN_KIND_LITERAL_INTEGER || test.expected[i].kind == TOKEN_KIND_LITERAL_DECIMAL) {
                         Assert::AreEqual(test.expected[i].value.integer, actual_token->value.integer);
+                    }
+                }
+                free_token_result(&actual);
+            }
+        }
+
+        TEST_METHOD(lexical_analyze_number_error_test)
+        {
+            PROJECT_SETTING setting;
+
+            auto tests = {
+                DATA(COMPILE_CODE_INVALID_NUMBER, wrap("0a")),
+                DATA(COMPILE_CODE_INVALID_NUMBER, wrap("1_a")),
+                DATA(COMPILE_CODE_INVALID_NUMBER, wrap("1_.")),
+                DATA(COMPILE_CODE_INVALID_NUMBER, wrap("1._0")),
+                DATA(COMPILE_CODE_INVALID_NUMBER, wrap("1.0_e")),
+
+                DATA(COMPILE_CODE_INVALID_NUMBER, wrap("0x")),
+                DATA(COMPILE_CODE_INVALID_NUMBER, wrap("0x ")),
+                DATA(COMPILE_CODE_INVALID_NUMBER, wrap("0x_")),
+                DATA(COMPILE_CODE_INVALID_NUMBER, wrap("0b")),
+                DATA(COMPILE_CODE_INVALID_NUMBER, wrap("0b ")),
+                DATA(COMPILE_CODE_INVALID_NUMBER, wrap("0b_")),
+            };
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                Assert::AreEqual((size_t)0, actual.token.length, arg1.value);
+
+                COMPILE_RESULT* cr = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
+                Assert::AreEqual<int>(test.expected, cr->code);
+                free_token_result(&actual);
+            }
+        }
+
+        TEST_METHOD(lexical_analyze_number_symbol_test)
+        {
+            PROJECT_SETTING setting;
+
+            auto tests = {
+                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 0), VALUE_TEST(TOKEN_KIND_OP_PLUS), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 1) }, wrap("0+1")),
+                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 0), VALUE_TEST(TOKEN_KIND_OP_PLUS), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 1) }, wrap("0 +\r\n1   \r\n")),
+                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 0), VALUE_TEST(TOKEN_KIND_OP_SEMICOLON), VALUE_TEST(TOKEN_KIND_OP_PLUS), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 1), VALUE_TEST(TOKEN_KIND_OP_SLASH), VALUE_TEST(TOKEN_KIND_OP_MINUS), VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 2) }, wrap("0;+1/-2")),
+            };
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
+                for (size_t i = 0; i < test.expected.size(); i++) {
+                    TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
+                    Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
+                    if (test.expected[i].kind == TOKEN_KIND_LITERAL_INTEGER || test.expected[i].kind == TOKEN_KIND_LITERAL_DECIMAL) {
+                        Assert::AreEqual(test.expected[i].value.integer, actual_token->value.integer);
+                    } else if(test.expected[i].kind == TOKEN_KIND_LITERAL_SSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_DSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_BSTRING) {
+                        Assert::AreEqual(test.expected[i].value.word.value, actual_token->value.word.value);
+                    } else {
+                        Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
                     }
                 }
                 free_token_result(&actual);

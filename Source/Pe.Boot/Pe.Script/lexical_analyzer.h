@@ -53,6 +53,13 @@ bool is_whitespace_character(TCHAR c);
 /// <returns></returns>
 bool is_newline_character(TCHAR c);
 
+/// <summary>
+/// 文字列開始文字か。
+/// </summary>
+/// <param name="c"></param>
+/// <returns></returns>
+bool is_string_start(TCHAR c);
+
 TOKEN_RESULT RC_HEAP_FUNC(lexical_analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting);
 #ifdef RES_CHECK
 #   define lexical_analyze(file_path, source, setting) RC_HEAP_WRAP(lexical_analyze, file_path, source, setting)
