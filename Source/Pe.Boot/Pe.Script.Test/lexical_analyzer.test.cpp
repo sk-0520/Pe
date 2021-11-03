@@ -413,5 +413,39 @@ namespace ScriptTest
                 free_token_result(&actual);
             }
         }
+
+        TEST_METHOD(lexical_analyze_word_test)
+        {
+            PROJECT_SETTING setting;
+
+            auto tests = {
+                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_LITERAL_INTEGER, 0), }, wrap("0")),
+
+                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_WORD, wrap("A")), }, wrap("A")),
+                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_WORD, wrap("a")), }, wrap("a")),
+                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_WORD, wrap("_")), }, wrap("_")),
+
+                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_WORD, wrap("_word1")), }, wrap("_word1")),
+                DATA(std::vector<VALUE_TEST> { VALUE_TEST(TOKEN_KIND_WORD, wrap("_word1")), VALUE_TEST(TOKEN_KIND_WORD, wrap("_word2")), }, wrap("_word1 _word2")),
+            };
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
+                for (size_t i = 0; i < test.expected.size(); i++) {
+                    TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
+                    Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
+                    if (test.expected[i].kind == TOKEN_KIND_LITERAL_INTEGER || test.expected[i].kind == TOKEN_KIND_LITERAL_DECIMAL) {
+                        Assert::AreEqual(test.expected[i].value.integer, actual_token->value.integer);
+                    } else if (test.expected[i].kind == TOKEN_KIND_LITERAL_SSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_DSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_BSTRING) {
+                        Assert::AreEqual(test.expected[i].value.word.value, actual_token->value.word.value);
+                    } else {
+                        Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
+                    }
+                }
+                free_token_result(&actual);
+            }
+        }
+
     };
 }

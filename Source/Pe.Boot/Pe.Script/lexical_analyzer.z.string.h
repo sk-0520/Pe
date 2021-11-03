@@ -1,6 +1,11 @@
 ﻿#pragma once
 #include "lexical_analyzer.h"
 
+/// <summary>
+/// 以降を文字列として解釈してよいか。
+/// </summary>
+/// <param name="c"></param>
+/// <returns></returns>
 bool is_string_start(TCHAR c);
 
 /// <summary>

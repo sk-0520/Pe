@@ -37,6 +37,7 @@
     <ClInclude Include="lexical_analyzer.z.number.h" />
     <ClInclude Include="lexical_analyzer.z.string.h" />
     <ClInclude Include="lexical_analyzer.z.token.h" />
+    <ClInclude Include="lexical_analyzer.z.word.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="source.h" />
     <ClInclude Include="token.h" />
@@ -47,6 +48,7 @@
     <ClCompile Include="lexical_analyzer.z.number.c" />
     <ClCompile Include="lexical_analyzer.z.string.c" />
     <ClCompile Include="lexical_analyzer.z.token.c" />
+    <ClCompile Include="lexical_analyzer.z.word.c" />
     <ClCompile Include="script.c" />
     <ClCompile Include="token.c" />
   </ItemGroup>

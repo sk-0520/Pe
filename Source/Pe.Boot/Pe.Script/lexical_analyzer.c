@@ -3,8 +3,9 @@
 
 #include "lexical_analyzer.h"
 #include "lexical_analyzer.z.token.h"
-#include "lexical_analyzer.z.number.h"
 #include "lexical_analyzer.z.string.h"
+#include "lexical_analyzer.z.number.h"
+#include "lexical_analyzer.z.word.h"
 
 
 static void add_index(size_t* current_index, size_t* column_position, size_t add_value)
@@ -146,6 +147,16 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
         // 数値処理
         if (is_number_start(current_character)) {
             size_t read_length = read_number_token(result, source, current_index, &source_position, project_setting);
+            if (!read_length) {
+                break;
+            }
+            current_index += read_length;
+            continue;
+        }
+
+        // 単語処理
+        if (is_word_start(current_character)) {
+            size_t read_length = read_word_token(result, source, current_index, &source_position, project_setting);
             if (!read_length) {
                 break;
             }
