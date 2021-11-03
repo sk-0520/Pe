@@ -232,7 +232,7 @@ static bool is_word_char(TCHAR c)
 static const KEYWORD_TOKEN* get_word_token_kind(const TEXT* word)
 {
     for (size_t i = 0; i < SIZEOF_ARRAY(script__keyword_tokens); i++) {
-        if (!compare_text(word, &script__keyword_tokens[i].word, false)) {
+        if (is_equals_text(word, &script__keyword_tokens[i].word, false)) {
             return script__keyword_tokens + i;
         }
     }
