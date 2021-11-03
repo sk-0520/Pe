@@ -54,6 +54,13 @@ bool is_whitespace_character(TCHAR c);
 bool is_newline_character(TCHAR c);
 
 /// <summary>
+/// 単語境界として扱える文字か。
+/// </summary>
+/// <param name="c"></param>
+/// <returns></returns>
+bool is_word_boundary(TCHAR c);
+
+/// <summary>
 /// 文字列開始文字か。
 /// </summary>
 /// <param name="c"></param>

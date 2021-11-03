@@ -16,23 +16,6 @@ static bool is_number_bin(TCHAR c)
     return '0' == c || c == '1';
 }
 
-/// <summary>
-/// 数値境界としてセーフな文字か。
-/// </summary>
-/// <param name="c"></param>
-/// <returns></returns>
-static bool is_number_boundary(TCHAR c)
-{
-    return
-        is_whitespace_character(c)
-        ||
-        is_newline_character(c)
-        ||
-        is_synbol_token(c)
-        ;
-}
-
-
 bool is_number_start(TCHAR c)
 {
     return is_number_int(c);
@@ -131,7 +114,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
 
         if (mode == MODE_INT || mode == MODE_DEC) {
             if (!is_number_int(current_character)) {
-                if (!is_number_boundary(current_character)) {
+                if (!is_word_boundary(current_character)) {
                     add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
                     read_length = 0;
                     goto EXIT;
@@ -144,7 +127,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
 
         if (mode == MODE_HEX) {
             if (!is_number_hex(current_character)) {
-                if (!is_number_boundary(current_character)) {
+                if (!is_word_boundary(current_character)) {
                     add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
                     read_length = 0;
                     goto EXIT;
@@ -157,7 +140,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
 
         if (mode == MODE_BIN) {
             if (!is_number_bin(current_character)) {
-                if (!is_number_boundary(current_character)) {
+                if (!is_word_boundary(current_character)) {
                     add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_INVALID_NUMBER, NULL, source_position);
                     read_length = 0;
                     goto EXIT;

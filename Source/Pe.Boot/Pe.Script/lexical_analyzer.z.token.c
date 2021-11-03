@@ -3,7 +3,7 @@
 #include "lexical_analyzer.h"
 #include "lexical_analyzer.z.token.h"
 
-static SINGLE_SYMBOL_TOKEN library__single_symbol_tokens[] = {
+static SINGLE_SYMBOL_TOKEN script__single_symbol_tokens[] = {
     {
         .symbol = ',',
         .kind = TOKEN_KIND_OP_COMMA,
@@ -86,7 +86,7 @@ static SINGLE_SYMBOL_TOKEN library__single_symbol_tokens[] = {
 #   error !MULTI_CHAR_SYMBOL_COUNT!
 #endif
 
-static MULTI_SYMBOL_TOKEN library__multi_symbol_tokens[] = {
+static MULTI_SYMBOL_TOKEN script__multi_symbol_tokens[] = {
     // +
     {
         .symbols = { '+', '=', NONE_SYMBOL_SKIP_2 },
@@ -185,6 +185,36 @@ static MULTI_SYMBOL_TOKEN library__multi_symbol_tokens[] = {
     },
 };
 
+static TCHAR script__symbol_tokens[SIZEOF_ARRAY(script__single_symbol_tokens) + SIZEOF_ARRAY(script__multi_symbol_tokens)];
+static size_t script__symbol_tokens_length = 0;
+
+static void initialize_symbol_tokens()
+{
+    size_t length = 0;
+    for (size_t i = 0; i < SIZEOF_ARRAY(script__single_symbol_tokens); i++) {
+        TCHAR c = script__single_symbol_tokens[i].symbol;
+        bool skip = false;
+        for (size_t j = 0; !skip && j < length; j++) {
+            skip = c == script__symbol_tokens[j];
+        }
+        if (!skip) {
+            script__symbol_tokens[length++] = c;
+        }
+    }
+
+    for (size_t i = 0; i < SIZEOF_ARRAY(script__multi_symbol_tokens); i++) {
+        TCHAR c = script__multi_symbol_tokens[i].symbols[0];
+        bool skip = false;
+        for (size_t j = 0; !skip && j < length; j++) {
+            skip = c == script__symbol_tokens[j];
+        }
+        if (!skip) {
+            script__symbol_tokens[length++] = c;
+        }
+    }
+    script__symbol_tokens_length = length;
+}
+
 bool is_comment_token_kind(TOKEN_KIND kind)
 {
     return
@@ -196,13 +226,12 @@ bool is_comment_token_kind(TOKEN_KIND kind)
 
 bool is_synbol_token(TCHAR c)
 {
-    for (size_t i = 0; i < sizeof(library__single_symbol_tokens) / sizeof(library__single_symbol_tokens[0]); i++) {
-        if (c == library__single_symbol_tokens[i].symbol) {
-            return true;
-        }
+    if (!script__symbol_tokens_length) {
+        initialize_symbol_tokens();
     }
-    for (size_t i = 0; i < sizeof(library__multi_symbol_tokens) / sizeof(library__multi_symbol_tokens[0]); i++) {
-        if (c == library__multi_symbol_tokens[i].symbols[0]) {
+
+    for (size_t i = 0; i < script__symbol_tokens_length; i++) {
+        if (c == script__symbol_tokens[i]) {
             return true;
         }
     }
@@ -212,9 +241,9 @@ bool is_synbol_token(TCHAR c)
 
 const SINGLE_SYMBOL_TOKEN* find_single_symbol_token(TCHAR c)
 {
-    for (size_t i = 0; i < sizeof(library__single_symbol_tokens) / sizeof(library__single_symbol_tokens[0]); i++) {
-        if (library__single_symbol_tokens[i].symbol == c) {
-            return library__single_symbol_tokens + i;
+    for (size_t i = 0; i < sizeof(script__single_symbol_tokens) / sizeof(script__single_symbol_tokens[0]); i++) {
+        if (script__single_symbol_tokens[i].symbol == c) {
+            return script__single_symbol_tokens + i;
         }
     }
 
@@ -229,8 +258,8 @@ size_t read_multi_symbol_token(TOKEN_RESULT* token_result, const TEXT* source, s
         symbols[i] = get_relative_character(source, start_index, i);
     }
 
-    for (size_t i = 0; i < sizeof(library__multi_symbol_tokens) / sizeof(library__multi_symbol_tokens[0]); i++) {
-        const MULTI_SYMBOL_TOKEN* multi_symbol_token = library__multi_symbol_tokens + i;
+    for (size_t i = 0; i < sizeof(script__multi_symbol_tokens) / sizeof(script__multi_symbol_tokens[0]); i++) {
+        const MULTI_SYMBOL_TOKEN* multi_symbol_token = script__multi_symbol_tokens + i;
 
         // 一文字目が合致しないのであればどう頑張っても比較する意味がない
         if (multi_symbol_token->symbols[0] != symbols[0]) {
