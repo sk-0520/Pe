@@ -14,6 +14,10 @@ void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, 
                 auto_remark = wrap_text(_T("非整数は未実装"));
                 break;
 
+            case COMPILE_CODE_NOT_IMPLEMENT_KEYWORD:
+                auto_remark = wrap_text(_T("使用できない予約語"));
+                break;
+
             case COMPILE_CODE_NOT_CLOSE_COMMENT:
                 auto_remark = wrap_text(_T("コメントが閉じられていない"));
                 break;
