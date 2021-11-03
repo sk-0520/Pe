@@ -34,6 +34,10 @@ void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, 
                 auto_remark = wrap_text(_T("数値変換失敗"));
                 break;
 
+            case COMPILE_CODE_INVALID_WORD:
+                auto_remark = wrap_text(_T("単語として使用できない文字を含んでいる"));
+                break;
+
             default:
                 assert(false);
                 break;
