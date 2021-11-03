@@ -21,16 +21,6 @@ bool is_number_start(TCHAR c)
     return is_number_int(c);
 }
 
-/// <summary>
-/// 数値を読み込み。
-/// 呼ばれた時点で最初の文字は数値判定されている。
-/// </summary>
-/// <param name="token_result">結果格納</param>
-/// <param name="source">ソース全体</param>
-/// <param name="start_index">文字列トークンとしての開始点</param>
-/// <param name="column_position"></param>
-/// <param name="line_number"></param>
-/// <returns>読み込み成功後に飛ばす長さ(start_indexからの相対位置)。0の場合は失敗しているので後続不要だが呼び出し時点で数値なのでまぁ0はない。</returns>
 size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, const SOURCE_POSITION* source_position, const PROJECT_SETTING* project_setting)
 {
     assert(token_result);
@@ -48,7 +38,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
     } mode = MODE_INT;
 
     size_t read_length = 1;
-    for (size_t current_index = start_index + 1, i = 0; current_index < source->length; current_index++, read_length++, i++) {
+    for (size_t current_index = start_index + 1, i = 0; current_index < source->length; current_index++, i++, read_length++) {
         TCHAR current_character = source->value[current_index];
         TCHAR next_character = get_next_character(source, current_index);
 
