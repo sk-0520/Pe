@@ -43,6 +43,17 @@ bool is_newline_character(TCHAR c)
     return c == '\r' || c == '\n';
 }
 
+bool is_word_boundary(TCHAR c)
+{
+    return
+        is_whitespace_character(c)
+        ||
+        is_newline_character(c)
+        ||
+        is_synbol_token(c)
+        ;
+}
+
 static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source, LEXICAL_ANALYZE_DATA* lexical_analyze_data)
 {
     TOKEN_RESULT* result = lexical_analyze_data->result;
