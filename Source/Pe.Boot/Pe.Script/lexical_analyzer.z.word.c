@@ -3,6 +3,36 @@
 #include "lexical_analyzer.h"
 #include "lexical_analyzer.z.word.h"
 
+typedef struct tag_KEYWORD_TOKEN
+{
+    TOKEN_KIND kind;
+    bool implement;
+    TEXT word;
+} KEYWORD_TOKEN;
+
+KEYWORD_TOKEN script__keyword_tokens[] = {
+    {
+        .kind = TOKEN_KIND_KEYWORD_IF,
+        .implement = true,
+        .word = static_text("if"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_ELSE,
+        .implement = true,
+        .word = static_text("else"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_FOR,
+        .implement = true,
+        .word = static_text("for"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_FOREACH,
+        .implement = true,
+        .word = static_text("foreach"),
+    },
+};
+
 static bool is_word_char(TCHAR c)
 {
     return
@@ -12,9 +42,15 @@ static bool is_word_char(TCHAR c)
         ;
 }
 
-static TOKEN_KIND get_word_token_kind(const TEXT* word)
+static const KEYWORD_TOKEN* get_word_token_kind(const TEXT* word)
 {
-    return TOKEN_KIND_WORD;
+    for (size_t i = 0; i < SIZEOF_ARRAY(script__keyword_tokens); i++) {
+        if (!compare_text(word, &script__keyword_tokens[i].word, false)) {
+            return script__keyword_tokens + i;
+        }
+    }
+
+    return NULL;
 }
 
 bool is_word_start(TCHAR c)
@@ -56,11 +92,14 @@ size_t read_word_token(TOKEN_RESULT* token_result, const TEXT* source, size_t st
 
     const TCHAR* raw_word = reference_list_tchar(&character_list);
     TEXT word = wrap_text_with_length(raw_word, character_list.length, false);
-    TOKEN_KIND word_token_kind = get_word_token_kind(&word);
-    if (word_token_kind == TOKEN_KIND_WORD) {
-        add_token_word(&token_result->token, TOKEN_KIND_WORD, &word, source_position);
+    const KEYWORD_TOKEN* keyword_token = get_word_token_kind(&word);
+    if (keyword_token) {
+        if (!keyword_token->implement) {
+            add_compile_result(&token_result->result, COMPILE_RESULT_KIND_ERROR, COMPILE_CODE_NOT_IMPLEMENT_KEYWORD, NULL, source_position);
+        }
+        add_token_kind(&token_result->token, keyword_token->kind, source_position);
     } else {
-        add_token_kind(&token_result->token, word_token_kind, source_position);
+        add_token_word(&token_result->token, TOKEN_KIND_WORD, &word, source_position);
     }
 
 EXIT:
