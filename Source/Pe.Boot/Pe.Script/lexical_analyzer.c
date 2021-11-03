@@ -1,4 +1,5 @@
-﻿#include "../Pe.Library/primitive_list.h"
+﻿#include "../Pe.Library/tcharacter.h"
+#include "../Pe.Library/primitive_list.h"
 #include "../Pe.Library/debug.h"
 
 #include "lexical_analyzer.h"
@@ -14,18 +15,6 @@ static void add_index(size_t* current_index, size_t* column_position, size_t add
     *column_position += add_value;
 }
 
-TCHAR get_relative_character(const TEXT* text, size_t base_index, ssize_t next_position)
-{
-    assert(text);
-
-    size_t index = base_index + next_position;
-    if (index < text->length) {
-        return text->value[index];
-    }
-
-    return '\0';
-}
-
 bool is_whitespace_character(TCHAR c)
 {
     return
@@ -37,11 +26,6 @@ bool is_whitespace_character(TCHAR c)
         || c == _T('　')
 #endif // UNICODE まぁこれしか考慮してないけどさ！
         ;
-}
-
-bool is_newline_character(TCHAR c)
-{
-    return c == '\r' || c == '\n';
 }
 
 bool is_word_boundary(TCHAR c)
