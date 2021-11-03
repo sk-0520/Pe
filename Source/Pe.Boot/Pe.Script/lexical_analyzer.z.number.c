@@ -1,15 +1,16 @@
-﻿#include "../Pe.Library/primitive_list.h"
+﻿#include "../Pe.Library/tcharacter.h"
+#include "../Pe.Library/primitive_list.h"
 
 #include "lexical_analyzer.z.number.h"
 #include "lexical_analyzer.z.token.h"
 
 static bool is_number_int(TCHAR c)
 {
-    return ('0' <= c && c <= '9');
+    return is_digit_character(c);
 }
 static bool is_number_hex(TCHAR c)
 {
-    return ('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f');
+    return is_digit_character(c) || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f');
 }
 static bool is_number_bin(TCHAR c)
 {

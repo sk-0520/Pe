@@ -24,34 +24,11 @@ typedef struct tag_ANALYZE_DATA
 } LEXICAL_ANALYZE_DATA;
 
 /// <summary>
-/// テキストの位置からN進めた文字を取得。
-/// </summary>
-/// <param name="text">対象テキスト。</param>
-/// <param name="base_index">ベースインデックス。</param>
-/// <param name="next_position">進める量。</param>
-/// <returns>進めた先にある文字。進められない場合は \0 。</returns>
-TCHAR get_relative_character(const TEXT* text, size_t base_index, ssize_t next_position);
-/// <summary>
-/// テキストの位置から一文字進めた文字を取得。
-/// </summary>
-/// <param name="text">対象テキスト。</param>
-/// <param name="base_index">ベースインデックス。</param>
-/// <returns>1文字先の文字。進められない場合は \0 。</returns>
-#define get_next_character(text, base_index) get_relative_character(text, (base_index), 1)
-
-/// <summary>
 /// ホワイトスペースとして扱う文字か。
 /// </summary>
 /// <param name="c"></param>
 /// <returns></returns>
 bool is_whitespace_character(TCHAR c);
-
-/// <summary>
-/// 改行として扱う文字か。
-/// </summary>
-/// <param name="c"></param>
-/// <returns></returns>
-bool is_newline_character(TCHAR c);
 
 /// <summary>
 /// 単語境界として扱える文字か。

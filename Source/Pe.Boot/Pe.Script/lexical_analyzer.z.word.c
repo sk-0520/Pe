@@ -1,4 +1,5 @@
-﻿#include "../Pe.Library/primitive_list.h"
+﻿#include "../Pe.Library/tcharacter.h"
+#include "../Pe.Library/primitive_list.h"
 
 #include "lexical_analyzer.h"
 #include "lexical_analyzer.z.word.h"
@@ -223,7 +224,7 @@ const KEYWORD_TOKEN script__keyword_tokens[] = {
 static bool is_word_char(TCHAR c)
 {
     return
-        ('0' <= c && c <= '9')
+        is_digit_character(c)
         ||
         is_word_start(c)
         ;
@@ -243,9 +244,9 @@ static const KEYWORD_TOKEN* get_word_token_kind(const TEXT* word)
 bool is_word_start(TCHAR c)
 {
     return
-        ('a' <= c && c <= 'z')
+        is_lower_character(c)
         ||
-        ('A' <= c && c <= 'Z')
+        is_upper_character(c)
         ||
         (c == '_')
 #ifdef UNICODE
