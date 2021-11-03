@@ -5,6 +5,7 @@
 #include "../Pe.Library/object_list.h"
 
 #include "source.h"
+#include "script.h"
 
 /// <summary>
 /// コンパイル段階。
@@ -70,3 +71,5 @@ typedef struct tag_COMPILE_RESULT
 /// <param name="column_position"></param>
 /// <param name="line_number"></param>
 void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, const TEXT* remark, const SOURCE_POSITION* source_position);
+
+bool has_error(OBJECT_LIST* compile_results, const PROJECT_SETTING* project_setting);

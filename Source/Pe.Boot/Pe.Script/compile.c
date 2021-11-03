@@ -1,6 +1,37 @@
 ﻿#include "compile.h"
 #include "script.h"
 
+static bool is_error(COMPILE_RESULT_KIND compile_result_kind, const PROJECT_SETTING* project_setting)
+{
+    assert(project_setting);
+
+    if (compile_result_kind == COMPILE_RESULT_KIND_ERROR) {
+        return true;
+    }
+
+    if (project_setting->warning_is_error) {
+        if (compile_result_kind == COMPILE_RESULT_KIND_WARNING) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static size_t get_error_count(OBJECT_LIST* compile_results, const PROJECT_SETTING* project_setting)
+{
+    size_t error_count = 0;
+
+    for (size_t i = 0; i < compile_results->length; i++) {
+        const COMPILE_RESULT* compile_result = (COMPILE_RESULT*)get_object_list(compile_results, i).value;
+        if (is_error(compile_result->kind, project_setting)) {
+            error_count += 1;
+        }
+    }
+
+    return error_count;
+}
+
 void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, COMPILE_CODE code, const TEXT* remark, const SOURCE_POSITION* source_position)
 {
     TEXT auto_remark;
@@ -60,3 +91,7 @@ void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, 
     push_object_list(compile_results, &compile_result);
 }
 
+bool has_error(OBJECT_LIST* compile_results, const PROJECT_SETTING* project_setting)
+{
+    return 0 < get_error_count(compile_results, project_setting);
+}
