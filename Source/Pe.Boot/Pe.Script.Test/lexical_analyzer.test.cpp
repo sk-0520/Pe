@@ -404,7 +404,7 @@ namespace ScriptTest
                     Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
                     if (test.expected[i].kind == TOKEN_KIND_LITERAL_INTEGER || test.expected[i].kind == TOKEN_KIND_LITERAL_DECIMAL) {
                         Assert::AreEqual(test.expected[i].value.integer, actual_token->value.integer);
-                    } else if(test.expected[i].kind == TOKEN_KIND_LITERAL_SSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_DSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_BSTRING) {
+                    } else if (test.expected[i].kind == TOKEN_KIND_LITERAL_SSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_DSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_BSTRING) {
                         Assert::AreEqual(test.expected[i].value.word.value, actual_token->value.word.value);
                     } else {
                         Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
@@ -417,15 +417,54 @@ namespace ScriptTest
         TEST_METHOD(lexical_keyword_test)
         {
             PROJECT_SETTING setting;
-
             auto tests = {
                 DATA(TOKEN_KIND_KEYWORD_IF, wrap("if")),
+                DATA(TOKEN_KIND_KEYWORD_ELSE, wrap("else")),
+                DATA(TOKEN_KIND_KEYWORD_FOR, wrap("for")),
+                DATA(TOKEN_KIND_KEYWORD_FOREACH, wrap("foreach")),
+                DATA(TOKEN_KIND_KEYWORD_DO, wrap("do")),
+                DATA(TOKEN_KIND_KEYWORD_WHILE, wrap("while")),
+                DATA(TOKEN_KIND_KEYWORD_BREAK, wrap("break")),
+                DATA(TOKEN_KIND_KEYWORD_CONTINUE, wrap("continue")),
+                DATA(TOKEN_KIND_KEYWORD_GOTO, wrap("goto")),
+                DATA(TOKEN_KIND_KEYWORD_SWITCH, wrap("switch")),
+                DATA(TOKEN_KIND_KEYWORD_DEFAULT, wrap("default")),
+                DATA(TOKEN_KIND_KEYWORD_CASE, wrap("case")),
+                DATA(TOKEN_KIND_KEYWORD_VAR, wrap("var")),
+                DATA(TOKEN_KIND_KEYWORD_LET, wrap("let")),
+                DATA(TOKEN_KIND_KEYWORD_CONST, wrap("const")),
+                DATA(TOKEN_KIND_KEYWORD_STATIC, wrap("static")),
+                DATA(TOKEN_KIND_KEYWORD_FUNCTION, wrap("function")),
+                DATA(TOKEN_KIND_KEYWORD_RETURN, wrap("return")),
+                DATA(TOKEN_KIND_KEYWORD_SCOPE, wrap("scope")),
+                DATA(TOKEN_KIND_KEYWORD_TRY, wrap("try")),
+                DATA(TOKEN_KIND_KEYWORD_CATCH, wrap("catch")),
+                DATA(TOKEN_KIND_KEYWORD_FINALLY, wrap("finally")),
+                DATA(TOKEN_KIND_KEYWORD_THROW, wrap("throw")),
+                DATA(TOKEN_KIND_KEYWORD_IMPORT, wrap("import")),
+                DATA(TOKEN_KIND_KEYWORD_TRUE, wrap("true")),
+                DATA(TOKEN_KIND_KEYWORD_FALSE, wrap("false")),
+                DATA(TOKEN_KIND_KEYWORD_STRUCT, wrap("struct")),
+                DATA(TOKEN_KIND_KEYWORD_INTERFACE, wrap("interface")),
+                DATA(TOKEN_KIND_KEYWORD_PRIVATE, wrap("private")),
+                DATA(TOKEN_KIND_KEYWORD_IN, wrap("in")),
+                DATA(TOKEN_KIND_KEYWORD_OUT, wrap("out")),
+                DATA(TOKEN_KIND_KEYWORD_PROPERTY, wrap("property")),
+                DATA(TOKEN_KIND_KEYWORD_GET, wrap("get")),
+                DATA(TOKEN_KIND_KEYWORD_SET, wrap("set")),
+                DATA(TOKEN_KIND_KEYWORD_VALUE, wrap("value")),
+                DATA(TOKEN_KIND_KEYWORD_ARG, wrap("arg")),
+                DATA(TOKEN_KIND_KEYWORD_TYPE_VOID, wrap("void")),
+                DATA(TOKEN_KIND_KEYWORD_TYPE_INTEGER, wrap("integer")),
+                DATA(TOKEN_KIND_KEYWORD_TYPE_DECIMAL, wrap("decimal")),
+                DATA(TOKEN_KIND_KEYWORD_TYPE_STRING, wrap("string")),
+
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
                 TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
                 TOKEN* token = (TOKEN*)get_object_list(&actual.token, 0).value;
-                Assert::AreEqual<int>(test.expected, token->kind);
+                Assert::AreEqual<int>(test.expected, token->kind, arg1.value);
                 free_token_result(&actual);
             }
         }
@@ -462,5 +501,56 @@ namespace ScriptTest
                 free_token_result(&actual);
             }
         }
+
+        TEST_METHOD(lexical_analyze_word_keyword_test)
+        {
+            PROJECT_SETTING setting;
+
+            auto tests = {
+                DATA(
+                    std::vector<VALUE_TEST> {
+                        VALUE_TEST(TOKEN_KIND_KEYWORD_IF),
+                        VALUE_TEST(TOKEN_KIND_OP_LPAREN),
+                        VALUE_TEST(TOKEN_KIND_KEYWORD_TRUE),
+                        VALUE_TEST(TOKEN_KIND_OP_RPAREN),
+                        VALUE_TEST(TOKEN_KIND_KEYWORD_TYPE_INTEGER),
+                        VALUE_TEST(TOKEN_KIND_WORD, wrap("a")),
+                        VALUE_TEST(TOKEN_KIND_OP_ASSIGN),
+                        VALUE_TEST(TOKEN_KIND_LITERAL_DSTRING, wrap("ABC")),
+                        VALUE_TEST(TOKEN_KIND_OP_SEMICOLON),
+                        VALUE_TEST(TOKEN_KIND_COMMENT_LINE),
+
+                        VALUE_TEST(TOKEN_KIND_KEYWORD_VAR),
+                        VALUE_TEST(TOKEN_KIND_WORD, wrap("b")),
+                        VALUE_TEST(TOKEN_KIND_OP_ASSIGN),
+                        VALUE_TEST(TOKEN_KIND_WORD, wrap("a")),
+                        VALUE_TEST(TOKEN_KIND_OP_SEMICOLON),
+                    },
+                    wrap("if(true) integer a = \"ABC\"; ///*\nvar b=a;")
+                ),
+            };
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                //for (size_t i = 0; i < actual.token.length; i++) {
+                //    TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
+                //    TOKEN_KIND kind = actual_token->kind;
+                //}
+                Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
+                for (size_t i = 0; i < test.expected.size(); i++) {
+                    TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
+                    Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
+                    if (test.expected[i].kind == TOKEN_KIND_LITERAL_INTEGER || test.expected[i].kind == TOKEN_KIND_LITERAL_DECIMAL) {
+                        Assert::AreEqual(test.expected[i].value.integer, actual_token->value.integer);
+                    } else if (test.expected[i].kind == TOKEN_KIND_LITERAL_SSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_DSTRING || test.expected[i].kind == TOKEN_KIND_LITERAL_BSTRING) {
+                        Assert::AreEqual(test.expected[i].value.word.value, actual_token->value.word.value);
+                    } else {
+                        Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
+                    }
+                }
+                free_token_result(&actual);
+            }
+        }
+
     };
 }

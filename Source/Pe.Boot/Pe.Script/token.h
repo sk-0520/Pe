@@ -342,7 +342,7 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_KEYWORD_TYPE_VOID,
     /// <summary>
-    /// int
+    /// integer
     /// </summary>
     TOKEN_KIND_KEYWORD_TYPE_INTEGER,
     /// <summary>
