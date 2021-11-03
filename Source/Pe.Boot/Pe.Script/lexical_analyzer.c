@@ -94,6 +94,12 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
             continue;
         }
 
+        // 行コメント中はなんもしない
+        if (last_token_kind == TOKEN_KIND_COMMENT_LINE) {
+            current_index += 1;
+            continue;
+        }
+
         // 空白無視
         if (is_whitespace_character(current_character)) {
             add_index(&current_index, &source_position.column_position, 1);
