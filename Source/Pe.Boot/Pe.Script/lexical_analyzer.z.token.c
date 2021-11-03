@@ -241,7 +241,7 @@ bool is_synbol_token(TCHAR c)
 
 const SINGLE_SYMBOL_TOKEN* find_single_symbol_token(TCHAR c)
 {
-    for (size_t i = 0; i < sizeof(script__single_symbol_tokens) / sizeof(script__single_symbol_tokens[0]); i++) {
+    for (size_t i = 0; i < SIZEOF_ARRAY(script__single_symbol_tokens); i++) {
         if (script__single_symbol_tokens[i].symbol == c) {
             return script__single_symbol_tokens + i;
         }
@@ -253,12 +253,12 @@ const SINGLE_SYMBOL_TOKEN* find_single_symbol_token(TCHAR c)
 size_t read_multi_symbol_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, TOKEN_KIND last_token_kind, const SOURCE_POSITION* source_position, const PROJECT_SETTING* project_setting)
 {
     TCHAR symbols[MULTI_CHAR_SYMBOL_COUNT];
-    const size_t symbols_length = sizeof(symbols) / sizeof(symbols[0]);
+    const size_t symbols_length =  SIZEOF_ARRAY(symbols);
     for (size_t i = 0; i < symbols_length; i++) {
         symbols[i] = get_relative_character(source, start_index, i);
     }
 
-    for (size_t i = 0; i < sizeof(script__multi_symbol_tokens) / sizeof(script__multi_symbol_tokens[0]); i++) {
+    for (size_t i = 0; i < SIZEOF_ARRAY(script__multi_symbol_tokens); i++) {
         const MULTI_SYMBOL_TOKEN* multi_symbol_token = script__multi_symbol_tokens + i;
 
         // 一文字目が合致しないのであればどう頑張っても比較する意味がない
