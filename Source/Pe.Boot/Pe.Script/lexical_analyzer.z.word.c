@@ -10,7 +10,7 @@ typedef struct tag_KEYWORD_TOKEN
     TEXT word;
 } KEYWORD_TOKEN;
 
-KEYWORD_TOKEN script__keyword_tokens[] = {
+const KEYWORD_TOKEN script__keyword_tokens[] = {
     {
         .kind = TOKEN_KIND_KEYWORD_IF,
         .implement = true,
@@ -31,6 +31,193 @@ KEYWORD_TOKEN script__keyword_tokens[] = {
         .implement = true,
         .word = static_text("foreach"),
     },
+    {
+        .kind = TOKEN_KIND_KEYWORD_DO,
+        .implement = true,
+        .word = static_text("do"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_WHILE,
+        .implement = true,
+        .word = static_text("while"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_BREAK,
+        .implement = true,
+        .word = static_text("break"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_CONTINUE,
+        .implement = true,
+        .word = static_text("continue"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_GOTO,
+        .implement = true,
+        .word = static_text("goto"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_SWITCH,
+        .implement = true,
+        .word = static_text("switch"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_DEFAULT,
+        .implement = true,
+        .word = static_text("default"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_CASE,
+        .implement = true,
+        .word = static_text("case"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_VAR,
+        .implement = true,
+        .word = static_text("var"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_LET,
+        .implement = true,
+        .word = static_text("let"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_CONST,
+        .implement = true,
+        .word = static_text("const"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_STATIC,
+        .implement = true,
+        .word = static_text("static"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_FUNCTION,
+        .implement = true,
+        .word = static_text("function"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_RETURN,
+        .implement = true,
+        .word = static_text("return"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_SCOPE,
+        .implement = true,
+        .word = static_text("scope"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_TRY,
+        .implement = true,
+        .word = static_text("try"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_CATCH,
+        .implement = true,
+        .word = static_text("catch"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_FINALLY,
+        .implement = true,
+        .word = static_text("finally"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_THROW,
+        .implement = true,
+        .word = static_text("throw"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_IMPORT,
+        .implement = true,
+        .word = static_text("import"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_TRUE,
+        .implement = true,
+        .word = static_text("true"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_FALSE,
+        .implement = true,
+        .word = static_text("false"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_STRUCT,
+        .implement = true,
+        .word = static_text("struct"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_INTERFACE,
+        .implement = true,
+        .word = static_text("interface"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_PRIVATE,
+        .implement = true,
+        .word = static_text("private"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_IN,
+        .implement = true,
+        .word = static_text("in"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_OUT,
+        .implement = true,
+        .word = static_text("out"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_PROPERTY,
+        .implement = true,
+        .word = static_text("property"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_GET,
+        .implement = true,
+        .word = static_text("get"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_SET,
+        .implement = true,
+        .word = static_text("set"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_VALUE,
+        .implement = true,
+        .word = static_text("value"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_ARG,
+        .implement = true,
+        .word = static_text("arg"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_TYPE_VOID,
+        .implement = true,
+        .word = static_text("void"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_TYPE_INTEGER,
+        .implement = true,
+        .word = static_text("integer"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_TYPE_DECIMAL,
+        .implement = true,
+        .word = static_text("decimal"),
+    },
+    {
+        .kind = TOKEN_KIND_KEYWORD_TYPE_STRING,
+        .implement = true,
+        .word = static_text("string"),
+    },
+    /*
+    {
+        .kind = ,
+        .implement = true,
+        .word = static_text(""),
+    },
+    */
 };
 
 static bool is_word_char(TCHAR c)
