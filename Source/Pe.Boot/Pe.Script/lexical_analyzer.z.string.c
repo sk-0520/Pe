@@ -69,7 +69,7 @@ size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
             // 文字列はここまで!
             TEXT word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false);
             add_token_word(&token_result->token, string_token_kind, &word, source_position);
-            read_length = current_index + 1;
+            read_length = current_index - start_index + 1;
             break;
         }
         TCHAR next_character = get_next_character(source, current_index);
