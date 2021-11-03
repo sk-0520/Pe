@@ -414,6 +414,22 @@ namespace ScriptTest
             }
         }
 
+        TEST_METHOD(lexical_keyword_test)
+        {
+            PROJECT_SETTING setting;
+
+            auto tests = {
+                DATA(TOKEN_KIND_KEYWORD_IF, wrap("if")),
+            };
+            for (auto test : tests) {
+                auto arg1 = std::get<0>(test.inputs);
+                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN* token = (TOKEN*)get_object_list(&actual.token, 0).value;
+                Assert::AreEqual<int>(test.expected, token->kind);
+                free_token_result(&actual);
+            }
+        }
+
         TEST_METHOD(lexical_analyze_word_test)
         {
             PROJECT_SETTING setting;
@@ -446,6 +462,5 @@ namespace ScriptTest
                 free_token_result(&actual);
             }
         }
-
     };
 }
