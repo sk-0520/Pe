@@ -168,7 +168,7 @@ TOKEN_RESULT RC_HEAP_FUNC(lexical_analyze, const TEXT* file_path, const TEXT* so
     assert(setting);
 
     TOKEN_RESULT token_result = {
-        .file_path = (TEXT*)file_path,
+        .file_path = file_path,
         .token = RC_HEAP_CALL(create_object_list, sizeof(TOKEN), 1024, compare_object_list_value_null, free_object_list_value_null),
         .result = RC_HEAP_CALL(create_object_list, sizeof(COMPILE_RESULT), OBJECT_LIST_DEFAULT_CAPACITY_COUNT, compare_object_list_value_null, free_object_list_value_null),
     };
@@ -178,9 +178,9 @@ TOKEN_RESULT RC_HEAP_FUNC(lexical_analyze, const TEXT* file_path, const TEXT* so
     }
 
     LEXICAL_ANALYZE_DATA lexical_analyze_data = {
-        .file_path = (TEXT*)file_path,
+        .file_path = file_path,
         .result = &token_result,
-        .setting = (PROJECT_SETTING*)setting, //TODO: とりあえずの回避。Cって構造体メンバにconst使えんの？
+        .setting = setting,
     };
     lexical_analyze_core(&token_result, source, &lexical_analyze_data);
 
