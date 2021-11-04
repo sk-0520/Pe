@@ -40,7 +40,7 @@
     <ClInclude Include="lexical_analyzer.z.word.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="source.h" />
-    <ClInclude Include="token.h" />
+    <ClInclude Include="lexical_token.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compile.c" />
@@ -50,7 +50,7 @@
     <ClCompile Include="lexical_analyzer.z.token.c" />
     <ClCompile Include="lexical_analyzer.z.word.c" />
     <ClCompile Include="script.c" />
-    <ClCompile Include="token.c" />
+    <ClCompile Include="lexical_token.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

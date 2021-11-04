@@ -24,7 +24,7 @@
     <ClInclude Include="script.h">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="token.h">
+    <ClInclude Include="lexical_token.h">
       <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="compile.h">
@@ -53,7 +53,7 @@
     <ClCompile Include="script.c">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="token.c">
+    <ClCompile Include="lexical_token.c">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="compile.c">
