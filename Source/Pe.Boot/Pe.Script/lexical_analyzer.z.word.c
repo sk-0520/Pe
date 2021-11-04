@@ -224,9 +224,9 @@ const KEYWORD_TOKEN script__keyword_tokens[] = {
 static bool is_word_char(TCHAR c)
 {
     return
-        is_digit_character(c)
-        ||
         is_word_start(c)
+        ||
+        is_digit_character(c)
         ;
 }
 
@@ -244,9 +244,7 @@ static const KEYWORD_TOKEN* get_word_token_kind(const TEXT* word)
 bool is_word_start(TCHAR c)
 {
     return
-        is_lower_character(c)
-        ||
-        is_upper_character(c)
+        is_alphabet_character(c)
         ||
         (c == '_')
 #ifdef UNICODE
