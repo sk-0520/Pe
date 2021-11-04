@@ -3,7 +3,7 @@
 #include "lexical_analyzer.h"
 #include "lexical_analyzer.z.token.h"
 
-static SINGLE_SYMBOL_TOKEN script__single_symbol_tokens[] = {
+static const SINGLE_SYMBOL_TOKEN script__single_symbol_tokens[] = {
     {
         .symbol = ',',
         .kind = TOKEN_KIND_OP_COMMA,
@@ -86,7 +86,7 @@ static SINGLE_SYMBOL_TOKEN script__single_symbol_tokens[] = {
 #   error !MULTI_CHAR_SYMBOL_COUNT!
 #endif
 
-static MULTI_SYMBOL_TOKEN script__multi_symbol_tokens[] = {
+static const MULTI_SYMBOL_TOKEN script__multi_symbol_tokens[] = {
     // +
     {
         .symbols = { '+', '=', NONE_SYMBOL_SKIP_2 },
