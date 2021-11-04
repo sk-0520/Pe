@@ -11,16 +11,16 @@
 
 typedef struct tag_TOKEN_RESULT
 {
-    TEXT* file_path;
+    const TEXT* file_path;
     OBJECT_LIST/*TOKEN*/ token;
     OBJECT_LIST/*COMPILE_RESULT*/ result;
 } TOKEN_RESULT;
 
 typedef struct tag_ANALYZE_DATA
 {
-    TEXT* file_path;
+    const TEXT* file_path;
     TOKEN_RESULT* result;
-    PROJECT_SETTING* setting;
+    const PROJECT_SETTING* setting;
 } LEXICAL_ANALYZE_DATA;
 
 /// <summary>
