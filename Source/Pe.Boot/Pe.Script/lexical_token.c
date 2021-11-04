@@ -1,5 +1,5 @@
 ﻿#include "../Pe.Library/object_list.h"
-#include "token.h"
+#include "lexical_token.h"
 
 void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, const SOURCE_POSITION* source_position)
 {
