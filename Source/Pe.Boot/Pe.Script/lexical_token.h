@@ -192,6 +192,27 @@ typedef enum tag_TOKEN_KIND
     TOKEN_KIND_COMMENT_BLOCK_END,
 
     /// <summary>
+    /// 整数。
+    /// </summary>
+    TOKEN_KIND_LITERAL_INTEGER,
+    /// <summary>
+    /// 少数。つかえない。
+    /// </summary>
+    TOKEN_KIND_LITERAL_DECIMAL,
+    /// <summary>
+    /// '文字列'。文字なんてものはない。
+    /// </summary>
+    TOKEN_KIND_LITERAL_SSTRING,
+    /// <summary>
+    /// "文字列"
+    /// </summary>
+    TOKEN_KIND_LITERAL_DSTRING,
+    /// <summary>
+    /// `文字列`。未実装
+    /// </summary>
+    TOKEN_KIND_LITERAL_BSTRING,
+
+    /// <summary>
     /// if
     /// </summary>
     TOKEN_KIND_KEYWORD_IF,
@@ -244,9 +265,9 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_KEYWORD_VAR,
     /// <summary>
-    /// let
+    /// val
     /// </summary>
-    TOKEN_KIND_KEYWORD_LET,
+    TOKEN_KIND_KEYWORD_VAL,
     /// <summary>
     /// const
     /// </summary>
@@ -336,7 +357,6 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_KEYWORD_ARG,
     //TOKEN_KIND_KEYWORD_,
-
     /// <summary>
     /// void
     /// </summary>
@@ -354,26 +374,7 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_KEYWORD_TYPE_STRING,
 
-    /// <summary>
-    /// 整数。
-    /// </summary>
-    TOKEN_KIND_LITERAL_INTEGER,
-    /// <summary>
-    /// 少数。つかえない。
-    /// </summary>
-    TOKEN_KIND_LITERAL_DECIMAL,
-    /// <summary>
-    /// "文字列"
-    /// </summary>
-    TOKEN_KIND_LITERAL_DSTRING,
-    /// <summary>
-    /// '文字列'。文字なんてものはない。
-    /// </summary>
-    TOKEN_KIND_LITERAL_SSTRING,
-    /// <summary>
-    /// `文字列`。未実装
-    /// </summary>
-    TOKEN_KIND_LITERAL_BSTRING,
+
 } TOKEN_KIND;
 
 typedef enum tag_TOKEN_VALUE_TYPE

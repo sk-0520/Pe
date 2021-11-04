@@ -11,7 +11,7 @@ typedef struct tag_KEYWORD_TOKEN
     TEXT word;
 } KEYWORD_TOKEN;
 
-const KEYWORD_TOKEN script__keyword_tokens[] = {
+static const KEYWORD_TOKEN script__keyword_tokens[] = {
     {
         .kind = TOKEN_KIND_KEYWORD_IF,
         .implement = true,
@@ -78,9 +78,9 @@ const KEYWORD_TOKEN script__keyword_tokens[] = {
         .word = static_text("var"),
     },
     {
-        .kind = TOKEN_KIND_KEYWORD_LET,
+        .kind = TOKEN_KIND_KEYWORD_VAL,
         .implement = true,
-        .word = static_text("let"),
+        .word = static_text("val"),
     },
     {
         .kind = TOKEN_KIND_KEYWORD_CONST,
