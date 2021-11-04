@@ -7,7 +7,7 @@
 
 #include "compile.h"
 #include "source.h"
-#include "token.h"
+#include "lexical_token.h"
 
 typedef struct tag_TOKEN_RESULT
 {
