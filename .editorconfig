@@ -424,6 +424,10 @@ indent_size = 4
 indent_style = space
 indent_size = 2
 
+[.lex]
+indent_style = tab
+indent_size = 8
+
 [*.tsx]
 indent_style = tab
 tab_width = 2

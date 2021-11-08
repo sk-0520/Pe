@@ -41,6 +41,7 @@
     <ClInclude Include="script.h" />
     <ClInclude Include="source.h" />
     <ClInclude Include="lexical_token.h" />
+    <ClInclude Include="syntax_analyzer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compile.c" />
@@ -51,6 +52,7 @@
     <ClCompile Include="lexical_analyzer.z.word.c" />
     <ClCompile Include="script.c" />
     <ClCompile Include="lexical_token.c" />
+    <ClCompile Include="syntax_analyzer.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

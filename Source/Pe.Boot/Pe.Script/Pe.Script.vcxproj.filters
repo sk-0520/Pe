@@ -45,6 +45,9 @@
     <ClInclude Include="lexical_analyzer.z.word.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="syntax_analyzer.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lexical_analyzer.c">
@@ -69,6 +72,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="lexical_analyzer.z.word.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="syntax_analyzer.c">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
