@@ -4,6 +4,7 @@
 extern "C" {
 #   include "../Pe.Library/res_check.h"
 #   include "../Pe.Library/path.h"
+#   include "../Pe.Library/logging.h"
 }
 #endif
 
@@ -18,11 +19,20 @@ static void output(const TCHAR* message)
 
 TestImpl TEST(tstring(_T("ScriptTest")));
 
+void custom_logger(const LOG_ITEM* log_item, void* data)
+{
+    output(log_item->message->value);
+}
+
 TEST_MODULE_INITIALIZE(initialize)
 {
 #ifdef RES_CHECK
     rc__initialize(output, RES_CHECK_INIT_PATH_LENGTH, RES_CHECK_INIT_BUFFER_LENGTH, RES_CHECK_INIT_HEAP_COUNT, RES_CHECK_INIT_FILE_COUNT);
 #endif
+    LOGGER logger;
+    logger.function = &custom_logger;
+        logger.data = NULL;
+    attach_logger(&logger);
 }
 
 TEST_MODULE_CLEANUP(cleanup)
