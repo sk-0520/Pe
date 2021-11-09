@@ -1,5 +1,8 @@
-expressions_if_exists:
-	[{TOKEN_KIND_OP_COMMA expression}*]
+more_arguments:
+	TOKEN_KIND_OP_COMMA expression
+
+arguments:
+	expression more_arguments*
 
 expression:
 	primary_expression
