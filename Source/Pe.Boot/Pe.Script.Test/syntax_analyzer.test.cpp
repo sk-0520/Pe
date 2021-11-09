@@ -8,7 +8,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace ScriptTest
 {
-    TEST_CLASS(lexical_analyzer_test)
+    TEST_CLASS(syntax_analyzer_test)
     {
     public:
         TEST_METHOD(test)
@@ -18,6 +18,8 @@ namespace ScriptTest
             TEXT source = wrap("123");
             TOKEN_RESULT token_result = analyze_lexical(NULL, &source, &setting);
             analyze_syntax(&token_result, &setting);
+
+            free_token_result(&token_result);
         }
 
     };
