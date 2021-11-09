@@ -44,9 +44,9 @@ bool is_word_boundary(TCHAR c);
 /// <returns></returns>
 bool is_string_start(TCHAR c);
 
-TOKEN_RESULT RC_HEAP_FUNC(lexical_analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting);
+TOKEN_RESULT RC_HEAP_FUNC(analyze_lexical, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting);
 #ifdef RES_CHECK
-#   define lexical_analyze(file_path, source, setting) RC_HEAP_WRAP(lexical_analyze, file_path, source, setting)
+#   define analyze_lexical(file_path, source, setting) RC_HEAP_WRAP(analyze_lexical, file_path, source, setting)
 #endif
 
 void RC_HEAP_FUNC(free_token_result, TOKEN_RESULT* token_result);

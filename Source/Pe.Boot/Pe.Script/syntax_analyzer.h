@@ -48,15 +48,15 @@ typedef enum tag_SYNTAX_ELEMENT_TYPE
     /// <summary>
     /// トークン。
     /// </summary>
-    SYNTAX_TYPE_TOKEN,
+    SYNTAX_ELEMENT_TYPE_TOKEN,
     /// <summary>
     /// 構文定義。
     /// </summary>
-    SYNTAX_TYPE_DEFINE,
+    SYNTAX_ELEMENT_TYPE_DEFINE,
     /// <summary>
     /// 要素(再帰的に使用),
     /// </summary>
-    SYNTAX_TYPE_ELEMENTS,
+    SYNTAX_ELEMENT_TYPE_ELEMENTS,
 } SYNTAX_ELEMENT_TYPE;
 
 typedef enum tag_SYNTAX_RULE
@@ -125,3 +125,4 @@ typedef struct tag_SYNTAX_DEFINES
 } SYNTAX_DEFINES;
 
 
+void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* setting);
