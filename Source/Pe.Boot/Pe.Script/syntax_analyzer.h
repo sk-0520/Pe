@@ -118,11 +118,4 @@ typedef struct tag_SYNTAX_DEFINE
     size_t length;
 } SYNTAX_DEFINE;
 
-typedef struct tag_SYNTAX_DEFINES
-{
-    SYNTAX_DEFINE defines[128];
-    size_t length;
-} SYNTAX_DEFINES;
-
-
 void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* setting);
