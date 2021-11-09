@@ -22,6 +22,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pe.Script", "Pe.Script\Pe.S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pe.Script.Test", "Pe.Script.Test\Pe.Script.Test.vcxproj", "{91654796-DE55-4FBE-959C-DB1F04275639}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{36C874A7-4971-4FE1-B6CA-82F362BB34E2}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Define\script-syntax.lex = ..\..\Define\script-syntax.lex
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CI_TEST|x64 = CI_TEST|x64
