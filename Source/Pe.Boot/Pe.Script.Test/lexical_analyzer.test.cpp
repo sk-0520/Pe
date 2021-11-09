@@ -1,14 +1,14 @@
 ﻿#include "pch.h"
 
 extern "C" {
-#   include "../Pe.Script/lexical_analyzer.h"
+#   include "../Pe.Script/syntax_analyzer.h"
 }
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace ScriptTest
 {
-    TEST_CLASS(lexical_analyzer_test)
+    TEST_CLASS(syntax_analyzer_test)
     {
     public:
 
@@ -48,22 +48,22 @@ namespace ScriptTest
             }
         }
 
-        TEST_METHOD(lexical_analyze_empty_test)
+        TEST_METHOD(analyze_lexical_empty_test)
         {
             PROJECT_SETTING setting;
-            TOKEN_RESULT token_result = lexical_analyze(NULL, NULL, &setting);
+            TOKEN_RESULT token_result = analyze_lexical(NULL, NULL, &setting);
 
             Assert::AreEqual((size_t)0, token_result.token.length);
             Assert::AreEqual((size_t)0, token_result.result.length);
             free_token_result(&token_result);
         }
 
-        TEST_METHOD(lexical_analyze_newline_test)
+        TEST_METHOD(analyze_lexical_newline_test)
         {
             PROJECT_SETTING setting;
 
             TEXT input = wrap("*\r *\n  *\r\n   *");
-            TOKEN_RESULT actual = lexical_analyze(NULL, &input, &setting);
+            TOKEN_RESULT actual = analyze_lexical(NULL, &input, &setting);
 
             TOKEN* actual1 = (TOKEN*)get_object_list(&actual.token, 0).value;
             TOKEN* actual2 = (TOKEN*)get_object_list(&actual.token, 1).value;
@@ -83,12 +83,12 @@ namespace ScriptTest
             free_token_result(&actual);
         }
 
-        TEST_METHOD(lexical_analyze_block_comment_test)
+        TEST_METHOD(analyze_lexical_block_comment_test)
         {
             PROJECT_SETTING setting;
 
             TEXT input = wrap("/*");
-            TOKEN_RESULT actual = lexical_analyze(NULL, &input, &setting);
+            TOKEN_RESULT actual = analyze_lexical(NULL, &input, &setting);
 
             TOKEN* actual1 = (TOKEN*)get_object_list(&actual.token, 0).value;
             Assert::AreEqual<int>(TOKEN_KIND_COMMENT_BLOCK_BEGIN, actual1->kind);
@@ -99,7 +99,7 @@ namespace ScriptTest
             free_token_result(&actual);
         }
 
-        TEST_METHOD(lexical_analyze_multi_symbol_token_test)
+        TEST_METHOD(analyze_lexical_multi_symbol_token_test)
         {
             PROJECT_SETTING setting;
 
@@ -135,7 +135,7 @@ namespace ScriptTest
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
-                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
                 for (size_t i = 0; i < test.expected.size(); i++) {
                     TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
@@ -145,7 +145,7 @@ namespace ScriptTest
             }
         }
 
-        TEST_METHOD(lexical_analyze_single_symbol_token_test)
+        TEST_METHOD(analyze_lexical_single_symbol_token_test)
         {
             PROJECT_SETTING setting;
 
@@ -166,7 +166,7 @@ namespace ScriptTest
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
-                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
                 for (size_t i = 0; i < test.expected.size(); i++) {
                     TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
@@ -176,7 +176,7 @@ namespace ScriptTest
             }
         }
 
-        TEST_METHOD(lexical_analyze_string_not_close_1_test)
+        TEST_METHOD(analyze_lexical_string_not_close_1_test)
         {
             PROJECT_SETTING setting;
 
@@ -197,7 +197,7 @@ namespace ScriptTest
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
-                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 Assert::AreEqual(test.expected, actual.token.length, arg1.value);
                 size_t error_count = 0;
                 for (size_t i = 0; i < actual.result.length; i++) {
@@ -239,7 +239,7 @@ namespace ScriptTest
             TOKEN_VALUE value;
         };
 
-        TEST_METHOD(lexical_analyze_string_sq_test)
+        TEST_METHOD(analyze_lexical_string_sq_test)
         {
             PROJECT_SETTING setting;
 
@@ -252,7 +252,7 @@ namespace ScriptTest
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
-                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
                 for (size_t i = 0; i < test.expected.size(); i++) {
                     TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
@@ -265,7 +265,7 @@ namespace ScriptTest
             }
         }
 
-        TEST_METHOD(lexical_analyze_string_dq_test)
+        TEST_METHOD(analyze_lexical_string_dq_test)
         {
             PROJECT_SETTING setting;
 
@@ -278,7 +278,7 @@ namespace ScriptTest
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
-                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
                 for (size_t i = 0; i < test.expected.size(); i++) {
                     TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
@@ -291,11 +291,11 @@ namespace ScriptTest
             }
         }
 
-        TEST_METHOD(lexical_analyze_string_dq_esc_test)
+        TEST_METHOD(analyze_lexical_string_dq_esc_test)
         {
             PROJECT_SETTING setting;
             TEXT input = wrap("\"\\Q\"");
-            TOKEN_RESULT actual = lexical_analyze(NULL, &input, &setting);
+            TOKEN_RESULT actual = analyze_lexical(NULL, &input, &setting);
             Assert::AreEqual((size_t)0, actual.token.length);
             Assert::AreEqual((size_t)1, actual.result.length);
             COMPILE_RESULT* cr = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
@@ -304,11 +304,11 @@ namespace ScriptTest
             free_token_result(&actual);
         }
 
-        TEST_METHOD(lexical_analyze_string_bq_notimpl_test)
+        TEST_METHOD(analyze_lexical_string_bq_notimpl_test)
         {
             PROJECT_SETTING setting;
             TEXT input = wrap("`a`");
-            TOKEN_RESULT actual = lexical_analyze(NULL, &input, &setting);
+            TOKEN_RESULT actual = analyze_lexical(NULL, &input, &setting);
             Assert::AreEqual((size_t)0, actual.token.length);
             Assert::AreEqual((size_t)1, actual.result.length);
             COMPILE_RESULT* cr = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
@@ -317,7 +317,7 @@ namespace ScriptTest
             free_token_result(&actual);
         }
 
-        TEST_METHOD(lexical_analyze_number_test)
+        TEST_METHOD(analyze_lexical_number_test)
         {
             PROJECT_SETTING setting;
 
@@ -344,7 +344,7 @@ namespace ScriptTest
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
-                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
                 for (size_t i = 0; i < test.expected.size(); i++) {
                     TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
@@ -357,7 +357,7 @@ namespace ScriptTest
             }
         }
 
-        TEST_METHOD(lexical_analyze_number_error_test)
+        TEST_METHOD(analyze_lexical_number_error_test)
         {
             PROJECT_SETTING setting;
 
@@ -377,7 +377,7 @@ namespace ScriptTest
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
-                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 Assert::AreEqual((size_t)0, actual.token.length, arg1.value);
 
                 COMPILE_RESULT* cr = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
@@ -386,7 +386,7 @@ namespace ScriptTest
             }
         }
 
-        TEST_METHOD(lexical_analyze_number_symbol_test)
+        TEST_METHOD(analyze_lexical_number_symbol_test)
         {
             PROJECT_SETTING setting;
 
@@ -397,7 +397,7 @@ namespace ScriptTest
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
-                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
                 for (size_t i = 0; i < test.expected.size(); i++) {
                     TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
@@ -461,14 +461,14 @@ namespace ScriptTest
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
-                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 TOKEN* token = (TOKEN*)get_object_list(&actual.token, 0).value;
                 Assert::AreEqual<int>(test.expected, token->kind, arg1.value);
                 free_token_result(&actual);
             }
         }
 
-        TEST_METHOD(lexical_analyze_word_test)
+        TEST_METHOD(analyze_lexical_word_test)
         {
             PROJECT_SETTING setting;
 
@@ -484,7 +484,7 @@ namespace ScriptTest
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
-                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 Assert::AreEqual(test.expected.size(), actual.token.length, arg1.value);
                 for (size_t i = 0; i < test.expected.size(); i++) {
                     TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
@@ -501,36 +501,36 @@ namespace ScriptTest
             }
         }
 
-        TEST_METHOD(lexical_analyze_word_keyword_test)
+        TEST_METHOD(analyze_lexical_word_keyword_test)
         {
             PROJECT_SETTING setting;
 
             auto tests = {
                 DATA(
                     std::vector<VALUE_TEST> {
-                        VALUE_TEST(TOKEN_KIND_KEYWORD_IF),
-                        VALUE_TEST(TOKEN_KIND_OP_LPAREN),
-                        VALUE_TEST(TOKEN_KIND_KEYWORD_TRUE),
-                        VALUE_TEST(TOKEN_KIND_OP_RPAREN),
-                        VALUE_TEST(TOKEN_KIND_KEYWORD_TYPE_INTEGER),
-                        VALUE_TEST(TOKEN_KIND_WORD, wrap("a")),
-                        VALUE_TEST(TOKEN_KIND_OP_ASSIGN),
-                        VALUE_TEST(TOKEN_KIND_LITERAL_DSTRING, wrap("ABC")),
-                        VALUE_TEST(TOKEN_KIND_OP_SEMICOLON),
-                        VALUE_TEST(TOKEN_KIND_COMMENT_LINE),
+                VALUE_TEST(TOKEN_KIND_KEYWORD_IF),
+                    VALUE_TEST(TOKEN_KIND_OP_LPAREN),
+                    VALUE_TEST(TOKEN_KIND_KEYWORD_TRUE),
+                    VALUE_TEST(TOKEN_KIND_OP_RPAREN),
+                    VALUE_TEST(TOKEN_KIND_KEYWORD_TYPE_INTEGER),
+                    VALUE_TEST(TOKEN_KIND_WORD, wrap("a")),
+                    VALUE_TEST(TOKEN_KIND_OP_ASSIGN),
+                    VALUE_TEST(TOKEN_KIND_LITERAL_DSTRING, wrap("ABC")),
+                    VALUE_TEST(TOKEN_KIND_OP_SEMICOLON),
+                    VALUE_TEST(TOKEN_KIND_COMMENT_LINE),
 
-                        VALUE_TEST(TOKEN_KIND_KEYWORD_VAL),
-                        VALUE_TEST(TOKEN_KIND_WORD, wrap("b")),
-                        VALUE_TEST(TOKEN_KIND_OP_ASSIGN),
-                        VALUE_TEST(TOKEN_KIND_WORD, wrap("a")),
-                        VALUE_TEST(TOKEN_KIND_OP_SEMICOLON),
-                    },
+                    VALUE_TEST(TOKEN_KIND_KEYWORD_VAL),
+                    VALUE_TEST(TOKEN_KIND_WORD, wrap("b")),
+                    VALUE_TEST(TOKEN_KIND_OP_ASSIGN),
+                    VALUE_TEST(TOKEN_KIND_WORD, wrap("a")),
+                    VALUE_TEST(TOKEN_KIND_OP_SEMICOLON),
+            },
                     wrap("if(true) integer a = \"ABC\"; ///*\nval b=a;")
-                ),
+                    ),
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
-                TOKEN_RESULT actual = lexical_analyze(NULL, &arg1, &setting);
+                TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 //for (size_t i = 0; i < actual.token.length; i++) {
                 //    TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
                 //    TOKEN_KIND kind = actual_token->kind;
