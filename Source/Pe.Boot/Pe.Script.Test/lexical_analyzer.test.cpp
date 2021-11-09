@@ -8,7 +8,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace ScriptTest
 {
-    TEST_CLASS(syntax_analyzer_test)
+    TEST_CLASS(lexical_analyzer_test)
     {
     public:
 
