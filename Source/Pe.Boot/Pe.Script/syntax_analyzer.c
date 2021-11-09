@@ -63,10 +63,7 @@ void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* set
                             break;
                         case SYNTAX_ELEMENT_TYPE_TOKEN:
                         {
-                            TEXT format = wrap_text(_T("%d"));
-                            TEXT text = format_text(&format, token->kind);
-                            logger_put_information(text.value);
-                            free_text(&text);
+                            logger_format_information(_T("%d"), token->kind);
                             goto NEXT;
                         }
                             break;
