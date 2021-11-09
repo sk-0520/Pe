@@ -7,13 +7,18 @@
 //#include "lexical_analyzer.z.number.h"
 //#include "lexical_analyzer.z.word.h"
 
+/// <summary>
+/// 構文定義種別。
+/// </summary>
 typedef enum tag_SYNTAX_DEFINE_KIND
 {
-    SYNTAX_DEFINE_KIND_NONE,
     /// <summary>
-    /// [{, expr}*]
+    /// なし。
+    /// <para>番兵にでも使うかなぁ</para>
     /// </summary>
-    SYNTAX_DEFINE_KIND_EXPRESSIONS_IF_EXISTS,
+    SYNTAX_DEFINE_KIND_NONE,
+    SYNTAX_DEFINE_KIND_MORE_ARGUMENTS,
+    SYNTAX_DEFINE_KIND_ARGUMENTS,
     /// <summary>
     /// SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION
     /// expr TOKEN_KIND_OP_PLUS expr
@@ -34,20 +39,69 @@ typedef enum tag_SYNTAX_DEFINE_KIND
     SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION,
 } SYNTAX_DEFINE_KIND;
 
-typedef enum tag_SYNTAX_TYPE
-{
-    SYNTAX_TYPE_TOKEN,
-    SYNTAX_TYPE_DEFINE,
-    //SYNTAX_TYPE_ELEMENTS_IF_EXISTS,
-} SYNTAX_TYPE;
 
+/// <summary>
+/// 構文要素タイプ。
+/// </summary>
+typedef enum tag_SYNTAX_ELEMENT_TYPE
+{
+    /// <summary>
+    /// トークン。
+    /// </summary>
+    SYNTAX_TYPE_TOKEN,
+    /// <summary>
+    /// 構文定義。
+    /// </summary>
+    SYNTAX_TYPE_DEFINE,
+    /// <summary>
+    /// 要素(再帰的に使用),
+    /// </summary>
+    SYNTAX_TYPE_ELEMENTS,
+} SYNTAX_ELEMENT_TYPE;
+
+typedef enum tag_SYNTAX_RULE
+{
+    /// <summary>
+    /// 通常。
+    /// </summary>
+    SYNTAX_RULE_NORMAL,
+    /// <summary>
+    /// 0個以上。*
+    /// </summary>
+    SYNTAX_RULE_MORE_0,
+    /// <summary>
+    /// 1個以上。*
+    /// </summary>
+    SYNTAX_RULE_MORE_1,
+    /// <summary>
+    /// 省略可能。?
+    /// </summary>
+    SYNTAX_RULE_OPTION,
+} SYNTAX_RULE;
+
+struct tag_SYNTAX_ELEMENTS;
+
+/// <summary>
+/// 構文要素。
+/// </summary>
 typedef struct tag_SYNTAX_ELEMENT
 {
-    SYNTAX_TYPE type;
+    /// <summary>
+    /// 構文要素タイプ。
+    /// </summary>
+    SYNTAX_ELEMENT_TYPE type;
+    /// <summary>
+    /// 構文ルール。
+    /// </summary>
+    SYNTAX_RULE rule;
     union
     {
         SYNTAX_DEFINE_KIND define;
         TOKEN_KIND token;
+        /// <summary>
+        /// 再帰的要素
+        /// </summary>
+        struct tag_SYNTAX_ELEMENTS* elements;
     } item;
 } SYNTAX_ELEMENT;
 
