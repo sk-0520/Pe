@@ -39,7 +39,7 @@ bool is_word_boundary(TCHAR c)
         ;
 }
 
-static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source, LEXICAL_ANALYZE_DATA* lexical_analyze_data)
+static void analyze_lexical_core(TOKEN_RESULT* token_result, const TEXT* source, LEXICAL_ANALYZE_DATA* lexical_analyze_data)
 {
     TOKEN_RESULT* result = lexical_analyze_data->result;
     const PROJECT_SETTING* project_setting = lexical_analyze_data->setting;
@@ -163,7 +163,7 @@ static void lexical_analyze_core(TOKEN_RESULT* token_result, const TEXT* source,
     }
 }
 
-TOKEN_RESULT RC_HEAP_FUNC(lexical_analyze, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting)
+TOKEN_RESULT RC_HEAP_FUNC(analyze_lexical, const TEXT* file_path, const TEXT* source, const PROJECT_SETTING* setting)
 {
     assert(setting);
 
@@ -182,7 +182,7 @@ TOKEN_RESULT RC_HEAP_FUNC(lexical_analyze, const TEXT* file_path, const TEXT* so
         .result = &token_result,
         .setting = setting,
     };
-    lexical_analyze_core(&token_result, source, &lexical_analyze_data);
+    analyze_lexical_core(&token_result, source, &lexical_analyze_data);
 
     return token_result;
 }
