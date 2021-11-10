@@ -8,7 +8,15 @@
 <#+
 class SyntaxElement
 {
+    public SyntaxElement(string value)
+    {
+        Data = value.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
+    }
+
     #region property
+
+    public IReadOnlyList<string> Data { get; }
+
     #endregion
 }
 
@@ -17,13 +25,13 @@ class SyntaxDefine
     public SyntaxDefine(KeyValuePair<string, List<string>> pair)
     {
         Key = pair.Key;
-        Values = pair.Value;
+        Elements = pair.Value.Select(i => new SyntaxElement(i)).ToList();
     }
 
     #region property
 
     public string Key { get; }
-    public IReadOnlyList<string> Values { get; }
+    public IReadOnlyList<SyntaxElement> Elements { get; }
 
     #endregion
 }
@@ -86,6 +94,13 @@ static class SyntaxUtility
     public const string TokenKind = "TOKEN_KIND";
     public const string DefineKind = "SYNTAX_DEFINE_KIND";
 
+    public static IReadOnlyDictionary<string, string> Rules = new Dictionary<string, string>() {
+        {string.Empty, "SYNTAX_RULE_NORMAL"},
+        {"*", "SYNTAX_RULE_MORE_0"},
+        {"+", "SYNTAX_RULE_MORE_1"},
+        {"?", "SYNTAX_RULE_OPTION"},
+    };
+
     #endregion
 
     #region function
@@ -100,6 +115,11 @@ static class SyntaxUtility
         return s == s.ToLowerInvariant();
     }
 
+    public static string ToDefineKind(string s)
+    {
+        return DefineKind + "_" + s.ToUpperInvariant();
+    }
+
     public static string ToDefineKind(SyntaxDefine define, int indent, bool withComment)
     {
         var results = new List<string>();
@@ -107,12 +127,12 @@ static class SyntaxUtility
         if(withComment) {
             results.Add("/// <summary>");
             results.Add("/// <list type=\"number\">");
-            results.AddRange(define.Values.Select(i => "/// <item>" + i + "</item>"));
+            results.AddRange(define.Elements.Select(i => "/// <item>" + i + "</item>"));
             results.Add("/// </list>");
             results.Add("/// </summary>");
         }
 
-        results.Add(DefineKind + "_" + define.Key.ToUpperInvariant());
+        results.Add(ToDefineKind(define.Key.ToUpperInvariant()));
 
         return string.Join(Environment.NewLine, results.Select(i => new string(IndentCharacter, indent * IndentWidth) + i));
     }
