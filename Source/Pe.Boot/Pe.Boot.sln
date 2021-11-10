@@ -24,7 +24,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pe.Script.Test", "Pe.Script
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{36C874A7-4971-4FE1-B6CA-82F362BB34E2}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\Define\script-syntax.lex = ..\..\Define\script-syntax.lex
+		..\..\Define\script-syntax.def = ..\..\Define\script-syntax.def
 	EndProjectSection
 EndProject
 Global
