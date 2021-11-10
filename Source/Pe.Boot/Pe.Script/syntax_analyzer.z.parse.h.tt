@@ -44,7 +44,7 @@ typedef enum tag_SYNTAX_ELEMENT_TYPE
     /// <summary>
     /// 要素(再帰的に使用),
     /// </summary>
-    SYNTAX_ELEMENT_TYPE_ELEMENTS,
+    SYNTAX_ELEMENT_TYPE_ELEMENTS, // これいる？
 } SYNTAX_ELEMENT_TYPE;
 
 typedef enum tag_SYNTAX_RULE
@@ -58,7 +58,7 @@ typedef enum tag_SYNTAX_RULE
     /// </summary>
     SYNTAX_RULE_MORE_0,
     /// <summary>
-    /// 1個以上。*
+    /// 1個以上。+
     /// </summary>
     SYNTAX_RULE_MORE_1,
     /// <summary>
@@ -89,7 +89,7 @@ typedef struct tag_SYNTAX_ELEMENT
         /// <summary>
         /// 再帰的要素
         /// </summary>
-        struct tag_SYNTAX_ELEMENTS* elements;
+        struct tag_SYNTAX_ELEMENTS* elements; // これいる？
     } item;
 } SYNTAX_ELEMENT;
 

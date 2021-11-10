@@ -15,34 +15,34 @@ typedef enum tag_SYNTAX_DEFINE_KIND
     SYNTAX_DEFINE_KIND_NONE,
     /// <summary>
     /// <list type="number">
-    /// <item>TOKEN_KIND_OP_COMMA expression</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_MORE_ARGUMENTS,
     /// <summary>
     /// <list type="number">
-    /// <item>expression more_arguments*</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_ARGUMENTS,
     /// <summary>
     /// <list type="number">
-    /// <item>primary_expression</item>
-    /// <item>expression TOKEN_KIND_OP_PLUS   expression</item>
-    /// <item>expression TOKEN_KIND_OP_MINUS  expression</item>
-    /// <item>expression TOKEN_KIND_OP_STAR   expression</item>
-    /// <item>expression TOKEN_KIND_OP_SLASH  expression</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_EXPRESSION,
     /// <summary>
     /// <list type="number">
-    /// <item>TOKEN_KIND_LITERAL_INTEGER</item>
-    /// <item>TOKEN_KIND_LITERAL_DECIMAL</item>
-    /// <item>TOKEN_KIND_LITERAL_SSTRING</item>
-    /// <item>TOKEN_KIND_LITERAL_DSTRING</item>
-    /// <item>TOKEN_KIND_LITERAL_BSTRING</item>
-    /// <item>TOKEN_KIND_WORD</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION,
@@ -64,7 +64,7 @@ typedef enum tag_SYNTAX_ELEMENT_TYPE
     /// <summary>
     /// 要素(再帰的に使用),
     /// </summary>
-    SYNTAX_ELEMENT_TYPE_ELEMENTS,
+    SYNTAX_ELEMENT_TYPE_ELEMENTS, // これいる？
 } SYNTAX_ELEMENT_TYPE;
 
 typedef enum tag_SYNTAX_RULE
@@ -78,7 +78,7 @@ typedef enum tag_SYNTAX_RULE
     /// </summary>
     SYNTAX_RULE_MORE_0,
     /// <summary>
-    /// 1個以上。*
+    /// 1個以上。+
     /// </summary>
     SYNTAX_RULE_MORE_1,
     /// <summary>
@@ -109,7 +109,7 @@ typedef struct tag_SYNTAX_ELEMENT
         /// <summary>
         /// 再帰的要素
         /// </summary>
-        struct tag_SYNTAX_ELEMENTS* elements;
+        struct tag_SYNTAX_ELEMENTS* elements; // これいる？
     } item;
 } SYNTAX_ELEMENT;
 
