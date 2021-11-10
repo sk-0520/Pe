@@ -1,0 +1,123 @@
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#+
+class SyntaxElement
+{
+    #region property
+    #endregion
+}
+
+class SyntaxDefine
+{
+    public SyntaxDefine(KeyValuePair<string, List<string>> pair)
+    {
+        Key = pair.Key;
+        Values = pair.Value;
+    }
+
+    #region property
+
+    public string Key { get; }
+    public IReadOnlyList<string> Values { get; }
+
+    #endregion
+}
+
+static class SyntaxLoader
+{
+    #region function
+
+    public static IEnumerable<SyntaxDefine> ParseFromDefault(ITextTemplatingEngineHost host)
+    {
+        var definePath = host.ResolvePath(@"..\..\..\Define\script-syntax.def");
+        var defineLines = File.ReadAllLines(definePath);
+        return Parse(defineLines);
+    }
+
+    public static IEnumerable<SyntaxDefine> Parse(IEnumerable<string> source)
+    {
+        var items = new List<KeyValuePair<string, List<string>>>();
+        var lines = source.Where(i => !string.IsNullOrWhiteSpace(i));
+        var head = new Regex(@"^(\w+)\s*:\s*");
+        var body = new Regex(@"^\t\s*(.+)\s*");
+
+        KeyValuePair<string, List<string>> pair = default(KeyValuePair<string, List<string>>);
+        foreach(var line in lines) {
+            var headMatch = head.Match(line);
+            if(headMatch.Success) {
+                if(!string.IsNullOrEmpty(pair.Key)) {
+                    items.Add(pair);
+                }
+                var key = headMatch.Groups[1].Value;
+                pair = new KeyValuePair<string, List<string>>(key, new List<string>());
+            } else {
+                var bodyMatch = body.Match(line);
+                if(bodyMatch.Success) {
+                    var value = bodyMatch.Groups[1].Value;
+                    pair.Value.Add(value);
+                }
+            }
+        }
+
+        if(!string.IsNullOrEmpty(pair.Key)) {
+            items.Add(pair);
+        }
+
+        foreach(var item in items) {
+            yield return new SyntaxDefine(item);
+        }
+    }
+
+    #endregion
+}
+
+static class SyntaxUtility
+{
+    #region property
+
+    public const int IndentWidth = 4;
+    public const char IndentCharacter = ' ';
+
+    public const string TokenKind = "TOKEN_KIND";
+    public const string DefineKind = "SYNTAX_DEFINE_KIND";
+
+    #endregion
+
+    #region function
+
+    public static bool IsTokenKind(string s)
+    {
+        return s == s.ToUpperInvariant();
+    }
+
+    public static bool IsDefineKind(string s)
+    {
+        return s == s.ToLowerInvariant();
+    }
+
+    public static string ToDefineKind(SyntaxDefine define, int indent, bool withComment)
+    {
+        var results = new List<string>();
+
+        if(withComment) {
+            results.Add("/// <summary>");
+            results.Add("/// <list type=\"number\">");
+            results.AddRange(define.Values.Select(i => "/// <item>" + i + "</item>"));
+            results.Add("/// </list>");
+            results.Add("/// </summary>");
+        }
+
+        results.Add(DefineKind + "_" + define.Key.ToUpperInvariant());
+
+        return string.Join(Environment.NewLine, results.Select(i => new string(IndentCharacter, indent * IndentWidth) + i));
+    }
+
+    #endregion
+}
+
+#>
