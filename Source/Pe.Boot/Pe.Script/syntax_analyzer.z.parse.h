@@ -15,34 +15,34 @@ typedef enum tag_SYNTAX_DEFINE_KIND
     SYNTAX_DEFINE_KIND_NONE,
     /// <summary>
     /// <list type="number">
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>TOKEN_KIND_OP_COMMA expression</item>
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_MORE_ARGUMENTS,
     /// <summary>
     /// <list type="number">
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>expression more_arguments*</item>
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_ARGUMENTS,
     /// <summary>
     /// <list type="number">
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>primary_expression</item>
+    /// <item>expression TOKEN_KIND_OP_PLUS expression</item>
+    /// <item>expression TOKEN_KIND_OP_MINUS expression</item>
+    /// <item>expression TOKEN_KIND_OP_STAR expression</item>
+    /// <item>expression TOKEN_KIND_OP_SLASH expression</item>
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_EXPRESSION,
     /// <summary>
     /// <list type="number">
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
-    /// <item>Microsoft.VisualStudio.TextTemplating141a1991fe3544719b6143dbdb413386.GeneratedTextTransformation+SyntaxElement</item>
+    /// <item>TOKEN_KIND_LITERAL_INTEGER</item>
+    /// <item>TOKEN_KIND_LITERAL_DECIMAL</item>
+    /// <item>TOKEN_KIND_LITERAL_SSTRING</item>
+    /// <item>TOKEN_KIND_LITERAL_DSTRING</item>
+    /// <item>TOKEN_KIND_LITERAL_BSTRING</item>
+    /// <item>TOKEN_KIND_WORD</item>
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION,
@@ -131,5 +131,6 @@ extern SYNTAX_DEFINE script__syntax_defines[SYNTAX_DEFINE_LENGTH];
 
 void script__initialize_syntax_defines(void);
 
+void script__uninitialize_syntax_defines(void);
 
 

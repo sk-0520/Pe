@@ -14,19 +14,21 @@ void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* set
         const TOKEN* token = tokens + current_index++;
 
         for (size_t i = 0; i < script__syntax_defines->length; i++) {
-            for (size_t j = 0; i < script__syntax_defines[i].length; j++) {
+            for (size_t j = 0; j < script__syntax_defines[i].length; j++) {
                 const SYNTAX_ELEMENTS* elements = script__syntax_defines[i].elements + j;
                 for (size_t k = 0; k < elements->length; k++) {
                     const SYNTAX_ELEMENT* element = elements->data + i;
                     switch (element->type) {
-                        case SYNTAX_ELEMENT_TYPE_DEFINE:
-                            break;
                         case SYNTAX_ELEMENT_TYPE_TOKEN:
                         {
                             logger_format_information(_T("%d"), token->kind);
                             goto NEXT;
                         }
+                        break;
+
+                        case SYNTAX_ELEMENT_TYPE_DEFINE:
                             break;
+
 
                         case SYNTAX_ELEMENT_TYPE_ELEMENTS:
                             break;
@@ -41,4 +43,6 @@ void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* set
     NEXT:
         continue;
     }
+
+    script__uninitialize_syntax_defines();
 }

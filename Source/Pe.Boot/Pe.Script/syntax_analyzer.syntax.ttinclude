@@ -127,7 +127,7 @@ static class SyntaxUtility
         if(withComment) {
             results.Add("/// <summary>");
             results.Add("/// <list type=\"number\">");
-            results.AddRange(define.Elements.Select(i => "/// <item>" + i + "</item>"));
+            results.AddRange(define.Elements.Select(i => "/// <item>" + string.Join(" ", i.Data) + "</item>"));
             results.Add("/// </list>");
             results.Add("/// </summary>");
         }
