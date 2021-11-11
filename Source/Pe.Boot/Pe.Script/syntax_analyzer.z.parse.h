@@ -27,25 +27,37 @@ typedef enum tag_SYNTAX_DEFINE_KIND
     SYNTAX_DEFINE_KIND_ARGUMENTS,
     /// <summary>
     /// <list type="number">
+    /// <item>term TOKEN_KIND_OP_PLUS term</item>
+    /// <item>term TOKEN_KIND_OP_MINUS term</item>
     /// <item>primary_expression</item>
-    /// <item>expression TOKEN_KIND_OP_PLUS expression</item>
-    /// <item>expression TOKEN_KIND_OP_MINUS expression</item>
-    /// <item>expression TOKEN_KIND_OP_STAR expression</item>
-    /// <item>expression TOKEN_KIND_OP_SLASH expression</item>
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_EXPRESSION,
     /// <summary>
     /// <list type="number">
+    /// <item>TOKEN_KIND_WORD</item>
     /// <item>TOKEN_KIND_LITERAL_INTEGER</item>
     /// <item>TOKEN_KIND_LITERAL_DECIMAL</item>
     /// <item>TOKEN_KIND_LITERAL_SSTRING</item>
     /// <item>TOKEN_KIND_LITERAL_DSTRING</item>
     /// <item>TOKEN_KIND_LITERAL_BSTRING</item>
-    /// <item>TOKEN_KIND_WORD</item>
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION,
+    /// <summary>
+    /// <list type="number">
+    /// <item>expression TOKEN_KIND_OP_STAR expression</item>
+    /// <item>expression TOKEN_KIND_OP_SLASH expression</item>
+    /// <item>factor</item>
+    /// </list>
+    /// </summary>
+    SYNTAX_DEFINE_KIND_TERM,
+    /// <summary>
+    /// <list type="number">
+    /// <item>TOKEN_KIND_OP_LPAREN expression TOKEN_KIND_OP_RPAREN</item>
+    /// </list>
+    /// </summary>
+    SYNTAX_DEFINE_KIND_FACTOR,
 } SYNTAX_DEFINE_KIND;
 
 /// <summary>
@@ -126,7 +138,7 @@ typedef struct tag_SYNTAX_DEFINE
     size_t length;
 } SYNTAX_DEFINE;
 
-#define SYNTAX_DEFINE_LENGTH (4)
+#define SYNTAX_DEFINE_LENGTH (6)
 extern SYNTAX_DEFINE script__syntax_defines[SYNTAX_DEFINE_LENGTH];
 
 void script__initialize_syntax_defines(void);
