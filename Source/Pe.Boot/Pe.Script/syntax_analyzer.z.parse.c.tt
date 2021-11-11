@@ -34,7 +34,6 @@ void script__initialize_syntax_defines(void)
 <#
        var element = item.Elements[j];
 #>
-
     <#= defineName #>.elements[<#= j #>].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * <#= element.Data.Count #>, false),
     <#= defineName #>.elements[<#= j #>].length = <#= element.Data.Count #>;
 <# for(var k = 0; k < element.Data.Count; k++) { #>
@@ -42,26 +41,31 @@ void script__initialize_syntax_defines(void)
     var data = element.Data[k];
     var dataName = defineName + "_element_" + j + "_data_" + k;
     string rule;
-    string typeBase = data;
+    string dataItem = data;
     if(SyntaxUtility.Rules.TryGetValue(data.Substring(data.Length - 1), out rule)) {
-        typeBase = data.Substring(0, data.Length - 1);
+        dataItem = data.Substring(0, data.Length - 1);
     } else {
         rule = SyntaxUtility.Rules[string.Empty];
     }
-    var type = SyntaxUtility.IsTokenKind(typeBase) ? typeBase: SyntaxUtility.ToDefineKind(typeBase);
+    var isToken = SyntaxUtility.IsTokenKind(dataItem);
+    var type = isToken ? "SYNTAX_ELEMENT_TYPE_TOKEN": "SYNTAX_ELEMENT_TYPE_DEFINE";
 #>
     SYNTAX_ELEMENT <#= dataName #>_value = {
         .rule = <#= rule #>,
         .type = <#= type #>,
+        .item = {
+<# if(isToken) { #>
+            .token = <#= dataItem #>,
+<# } else { #>
+            .define = <#= SyntaxUtility.ToDefineKind(dataItem) #>,
+<# } #>
+        }
     };
     <#= defineName #>.elements[<#= j #>].data[<#= k #>] = <#= dataName #>_value;
 
 <# } #>
-
 <# } #>
-
 <# } #>
-
 
 <# for(var i = 0; i < items.Count; i++) { #>
 <#
@@ -73,5 +77,20 @@ void script__initialize_syntax_defines(void)
     script__initialized_syntax_defines = true;
 }
 
+void script__uninitialize_syntax_defines(void)
+{
+    if (!script__initialized_syntax_defines) {
+        return;
+    }
+
+    for (size_t i = 0; i < SYNTAX_DEFINE_LENGTH; i++) {
+        for (size_t j = 0; j < script__syntax_defines[i].length; j++) {
+            free_memory(script__syntax_defines[i].elements[j].data);
+        }
+        free_memory(script__syntax_defines[i].elements);
+    }
+
+    script__initialized_syntax_defines = false;
+}
 
 <#@ include file="syntax_analyzer.syntax.ttinclude" once="true" #>
