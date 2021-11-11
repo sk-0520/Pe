@@ -111,5 +111,6 @@ extern SYNTAX_DEFINE script__syntax_defines[SYNTAX_DEFINE_LENGTH];
 
 void script__initialize_syntax_defines(void);
 
+void script__uninitialize_syntax_defines(void);
 
 <#@ include file="syntax_analyzer.syntax.ttinclude" once="true" #>
