@@ -38,12 +38,18 @@ typedef enum tag_SYNTAX_DEFINE_KIND
     /// <item>TOKEN_KIND_WORD</item>
     /// <item>TOKEN_KIND_LITERAL_INTEGER</item>
     /// <item>TOKEN_KIND_LITERAL_DECIMAL</item>
+    /// <item>string</item>
+    /// </list>
+    /// </summary>
+    SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION,
+    /// <summary>
+    /// <list type="number">
     /// <item>TOKEN_KIND_LITERAL_SSTRING</item>
     /// <item>TOKEN_KIND_LITERAL_DSTRING</item>
     /// <item>TOKEN_KIND_LITERAL_BSTRING</item>
     /// </list>
     /// </summary>
-    SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION,
+    SYNTAX_DEFINE_KIND_STRING,
     /// <summary>
     /// <list type="number">
     /// <item>expression TOKEN_KIND_OP_STAR expression</item>
@@ -138,7 +144,7 @@ typedef struct tag_SYNTAX_DEFINE
     size_t length;
 } SYNTAX_DEFINE;
 
-#define SYNTAX_DEFINE_LENGTH (6)
+#define SYNTAX_DEFINE_LENGTH (7)
 extern SYNTAX_DEFINE script__syntax_defines[SYNTAX_DEFINE_LENGTH];
 
 void script__initialize_syntax_defines(void);
