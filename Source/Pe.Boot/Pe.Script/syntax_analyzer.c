@@ -31,6 +31,7 @@ void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* set
 
 
                         case SYNTAX_ELEMENT_TYPE_ELEMENTS:
+                            assert(false);
                             break;
 
                         default:
