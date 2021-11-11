@@ -22,7 +22,7 @@ typedef enum tag_<#= SyntaxUtility.DefineKind #>
     /// なし。
     /// <para>番兵にでも使うかなぁ</para>
     /// </summary>
-    <#= SyntaxUtility.DefineKind #>_NONE,
+    <#= SyntaxUtility.ToDefineKind("NONE") #>,
 <# foreach(var item in items) { #>
 <#= SyntaxUtility.ToDefineKind(item, 1, true) #>,
 <# } #>
