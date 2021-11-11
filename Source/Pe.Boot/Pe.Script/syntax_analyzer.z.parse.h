@@ -15,18 +15,6 @@ typedef enum tag_SYNTAX_DEFINE_KIND
     SYNTAX_DEFINE_KIND_NONE,
     /// <summary>
     /// <list type="number">
-    /// <item>TOKEN_KIND_OP_COMMA expression</item>
-    /// </list>
-    /// </summary>
-    SYNTAX_DEFINE_KIND_MORE_ARGUMENTS,
-    /// <summary>
-    /// <list type="number">
-    /// <item>expression more_arguments*</item>
-    /// </list>
-    /// </summary>
-    SYNTAX_DEFINE_KIND_ARGUMENTS,
-    /// <summary>
-    /// <list type="number">
     /// <item>term TOKEN_KIND_OP_PLUS term</item>
     /// <item>term TOKEN_KIND_OP_MINUS term</item>
     /// <item>primary_expression</item>
@@ -144,7 +132,7 @@ typedef struct tag_SYNTAX_DEFINE
     size_t length;
 } SYNTAX_DEFINE;
 
-#define SYNTAX_DEFINE_LENGTH (7)
+#define SYNTAX_DEFINE_LENGTH (5)
 extern SYNTAX_DEFINE script__syntax_defines[SYNTAX_DEFINE_LENGTH];
 
 void script__initialize_syntax_defines(void);

@@ -1,8 +1,8 @@
-more_arguments:
-	TOKEN_KIND_OP_COMMA expression
-
-arguments:
-	expression more_arguments*
+;more_arguments:
+;	TOKEN_KIND_OP_COMMA expression
+;
+;arguments:
+;	expression more_arguments*
 
 expression:
 	term TOKEN_KIND_OP_PLUS   term
