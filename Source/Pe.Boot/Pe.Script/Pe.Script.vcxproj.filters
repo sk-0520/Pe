@@ -94,5 +94,14 @@
     <None Include="syntax_analyzer.syntax.ttinclude">
       <Filter>template</Filter>
     </None>
+    <None Include="lexical_token.ttinclude">
+      <Filter>template</Filter>
+    </None>
+    <None Include="lexical_token.h.tt">
+      <Filter>template</Filter>
+    </None>
+    <None Include="lexical_analyzer.z.token.c.tt">
+      <Filter>template</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -48,7 +48,7 @@ typedef enum tag_SYNTAX_DEFINE_KIND
     SYNTAX_DEFINE_KIND_TERM,
     /// <summary>
     /// <list type="number">
-    /// <item>TOKEN_KIND_OP_LPAREN expression TOKEN_KIND_OP_RPAREN</item>
+    /// <item>TOKEN_KIND_BRACKET_LPAREN expression TOKEN_KIND_BRACKET_RPAREN</item>
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_FACTOR,

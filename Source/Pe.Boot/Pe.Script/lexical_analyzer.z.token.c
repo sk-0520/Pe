@@ -1,4 +1,5 @@
-﻿#include "../Pe.Library/common.h"
+﻿/* 自動生成: lexical_analyzer.z.token.c.tt */
+#include "../Pe.Library/common.h"
 
 #include "lexical_analyzer.h"
 #include "lexical_analyzer.z.token.h"
@@ -46,27 +47,27 @@ static const SINGLE_SYMBOL_TOKEN script__single_symbol_tokens[] = {
     },
     {
         .symbol = '(',
-        .kind = TOKEN_KIND_OP_LPAREN,
+        .kind = TOKEN_KIND_BRACKET_LPAREN,
     },
     {
         .symbol = ')',
-        .kind = TOKEN_KIND_OP_RPAREN,
+        .kind = TOKEN_KIND_BRACKET_RPAREN,
     },
     {
         .symbol = '{',
-        .kind = TOKEN_KIND_OP_LBRACE,
+        .kind = TOKEN_KIND_BRACKET_LBRACE,
     },
     {
         .symbol = '}',
-        .kind = TOKEN_KIND_OP_RBRACE,
+        .kind = TOKEN_KIND_BRACKET_RBRACE,
     },
     {
         .symbol = '[',
-        .kind = TOKEN_KIND_OP_LBRACKET,
+        .kind = TOKEN_KIND_BRACKET_LBRACKET,
     },
     {
         .symbol = ']',
-        .kind = TOKEN_KIND_OP_RBRACKET,
+        .kind = TOKEN_KIND_BRACKET_RBRACKET,
     },
 };
 
@@ -253,7 +254,7 @@ const SINGLE_SYMBOL_TOKEN* find_single_symbol_token(TCHAR c)
 size_t read_multi_symbol_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, TOKEN_KIND last_token_kind, const SOURCE_POSITION* source_position, const PROJECT_SETTING* project_setting)
 {
     TCHAR symbols[MULTI_CHAR_SYMBOL_COUNT];
-    const size_t symbols_length =  SIZEOF_ARRAY(symbols);
+    const size_t symbols_length = SIZEOF_ARRAY(symbols);
     for (size_t i = 0; i < symbols_length; i++) {
         symbols[i] = get_relative_character(source, start_index, i);
     }
@@ -290,3 +291,5 @@ size_t read_multi_symbol_token(TOKEN_RESULT* token_result, const TEXT* source, s
 
     return 0;
 }
+
+
