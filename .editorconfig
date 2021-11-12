@@ -397,4 +397,4 @@ indent_size = 2
 
 [*.def]
 indent_style = tab
-indent_size = 8
+indent_size = 16

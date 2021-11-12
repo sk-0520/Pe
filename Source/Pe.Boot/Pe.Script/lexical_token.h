@@ -1,16 +1,18 @@
 ﻿#pragma once
+/* 自動生成: lexical_token.h.tt */
 #include "source.h"
 #include "script.h"
 
 typedef enum tag_TOKEN_KIND
 {
+    /// <summary>
+    /// なんやろね。
+    /// </summary>
     TOKEN_KIND_NONE,
-
     /// <summary>
     /// 関数名とか変数名とか。
     /// </summary>
     TOKEN_KIND_WORD,
-
     /// <summary>
     /// =
     /// </summary>
@@ -79,9 +81,8 @@ typedef enum tag_TOKEN_KIND
     /// #
     /// </summary>
     TOKEN_KIND_OP_HASH,
-
     /// <summary>
-    /// &amp;
+    /// &
     /// </summary>
     TOKEN_KIND_OP_AMPERSAND,
     /// <summary>
@@ -89,7 +90,7 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_OP_VERTICALBAR,
     /// <summary>
-    /// &amp;&amp;
+    /// &&
     /// </summary>
     TOKEN_KIND_OP_AND,
     /// <summary>
@@ -105,26 +106,25 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_OP_NOT_EQUALS,
     /// <summary>
-    /// &gt;
+    /// >
     /// </summary>
     TOKEN_KIND_OP_GREATER,
     /// <summary>
-    /// &lt;
+    /// <
     /// </summary>
     TOKEN_KIND_OP_LESS,
     /// <summary>
-    /// &gt;=
+    /// >=
     /// </summary>
     TOKEN_KIND_OP_GREATER_EQUAL,
     /// <summary>
-    /// &lt;=
+    /// <=
     /// </summary>
     TOKEN_KIND_OP_LESS_EQUAL,
     /// <summary>
-    /// =&gt;
+    /// =>
     /// </summary>
     TOKEN_KIND_OP_LAMBDA,
-
     /// <summary>
     /// +=
     /// </summary>
@@ -145,6 +145,7 @@ typedef enum tag_TOKEN_KIND
     /// %=
     /// </summary>
     TOKEN_KIND_OP_REM_ASSIGN,
+    /// <summary>
     /// ++
     /// </summary>
     TOKEN_KIND_OP_INCREMENT,
@@ -152,32 +153,30 @@ typedef enum tag_TOKEN_KIND
     /// --
     /// </summary>
     TOKEN_KIND_OP_DECREMENT,
-
     /// <summary>
     /// (
     /// </summary>
-    TOKEN_KIND_OP_LPAREN,
+    TOKEN_KIND_BRACKET_LPAREN,
     /// <summary>
     /// )
     /// </summary>
-    TOKEN_KIND_OP_RPAREN,
+    TOKEN_KIND_BRACKET_RPAREN,
     /// <summary>
     /// {
     /// </summary>
-    TOKEN_KIND_OP_LBRACE,
+    TOKEN_KIND_BRACKET_LBRACE,
     /// <summary>
     /// }
     /// </summary>
-    TOKEN_KIND_OP_RBRACE,
+    TOKEN_KIND_BRACKET_RBRACE,
     /// <summary>
     /// [
     /// </summary>
-    TOKEN_KIND_OP_LBRACKET,
+    TOKEN_KIND_BRACKET_LBRACKET,
     /// <summary>
     /// ]
     /// </summary>
-    TOKEN_KIND_OP_RBRACKET,
-
+    TOKEN_KIND_BRACKET_RBRACKET,
     /// <summary>
     /// //
     /// </summary>
@@ -190,7 +189,6 @@ typedef enum tag_TOKEN_KIND
     /// */
     /// </summary>
     TOKEN_KIND_COMMENT_BLOCK_END,
-
     /// <summary>
     /// 整数。
     /// </summary>
@@ -200,18 +198,17 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_LITERAL_DECIMAL,
     /// <summary>
-    /// '文字列'。文字なんてものはない。
+    /// 文字列'。文字なんてものはない。
     /// </summary>
     TOKEN_KIND_LITERAL_SSTRING,
     /// <summary>
-    /// "文字列"
+    /// 文字列。
     /// </summary>
     TOKEN_KIND_LITERAL_DSTRING,
     /// <summary>
-    /// `文字列`。未実装
+    /// `文字列`。未実装。
     /// </summary>
     TOKEN_KIND_LITERAL_BSTRING,
-
     /// <summary>
     /// if
     /// </summary>
@@ -309,11 +306,11 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_KEYWORD_IMPORT,
     /// <summary>
-    /// true
+    /// 真
     /// </summary>
     TOKEN_KIND_KEYWORD_TRUE,
     /// <summary>
-    /// false
+    /// 偽
     /// </summary>
     TOKEN_KIND_KEYWORD_FALSE,
     /// <summary>
@@ -356,7 +353,6 @@ typedef enum tag_TOKEN_KIND
     /// arg
     /// </summary>
     TOKEN_KIND_KEYWORD_ARG,
-    //TOKEN_KIND_KEYWORD_,
     /// <summary>
     /// void
     /// </summary>
@@ -373,8 +369,6 @@ typedef enum tag_TOKEN_KIND
     /// string
     /// </summary>
     TOKEN_KIND_KEYWORD_TYPE_STRING,
-
-
 } TOKEN_KIND;
 
 typedef enum tag_TOKEN_VALUE_TYPE
@@ -408,4 +402,5 @@ void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, const SOURCE_POSITION*
 void add_token_word(OBJECT_LIST* tokens, TOKEN_KIND kind, const TEXT* word, const SOURCE_POSITION* source_position);
 void add_token_integer(OBJECT_LIST* tokens, TOKEN_KIND kind, ssize_t value, const SOURCE_POSITION* source_position);
 void add_token_decimal(OBJECT_LIST* tokens, TOKEN_KIND kind, double value, const SOURCE_POSITION* source_position);
+
 
