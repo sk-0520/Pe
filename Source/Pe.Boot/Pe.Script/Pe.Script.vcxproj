@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="lexical_analyzer.z.token.c.tt" />
+    <None Include="lexical_analyzer.z.word.c.tt" />
     <None Include="lexical_token.h.tt" />
     <None Include="lexical_token.ttinclude" />
     <None Include="syntax_analyzer.syntax.ttinclude" />
