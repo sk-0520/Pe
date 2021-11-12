@@ -1,0 +1,90 @@
+親種別	子種別	キー	実装	値(あれば)	コメント
+op		assign	true	=	=
+op		plus	true	+	+
+op		minus	true	-	-
+op		star	true	*	*
+op		slash	true	/	/
+op		percent	true	%	%
+op		comma	true	,	,
+op		dot	true	.	.
+op		semicolon	true	;	;
+op		colon	true	:	:
+op		question	true	?	?
+op		exclamation	true	!	!
+op		backslash	true	\	\
+op		tilde	true	~	~
+op		at	true	@	@
+op		dollar	true	$	$
+op		hash	true	#	#
+op		ampersand	true	&	&
+op		verticalbar	true	|	|
+op		and	true	&&	&&
+op		or	true	||	||
+op		equals	true	==	==
+op		not_equals	true	!=	!=
+op		greater	true	>	>
+op		less	true	<	<
+op		greater_equal	true	>=	>=
+op		less_equal	true	<=	<=
+op		lambda	true	=>	=>
+op		add_assign	true	+=	+=
+op		sub_assign	true	-=	-=
+op		mul_assign	true	*=	*=
+op		div_assign	true	/=	/=
+op		rem_assign	true	%=	%=
+op		increment	true	++	++
+op		decrement	true	--	--
+bracket		lparen	true	(	(
+bracket		rparen	true	)	)
+bracket		lbrace	true	{	{
+bracket		rbrace	true	}	}
+bracket		lbracket	true	[	[
+bracket		rbracket	true	]	]
+comment		line	true	//	//
+comment	block	begin	true	/*	/*
+comment	block	end	true	*/	*/
+literal		integer	true		整数。
+literal		decimal	true		少数。つかえない。
+literal		sstring	true		文字列'。文字なんてものはない。
+literal		dstring	true		文字列。
+literal		bstring	true		`文字列`。未実装。
+keyword		if	true	if	if
+keyword		else	true	else	else
+keyword		for	true	for	for
+keyword		foreach	true	foreach	foreach
+keyword		do	true	do	do
+keyword		while	true	while	while
+keyword		break	true	break	break
+keyword		continue	true	continue	continue
+keyword		goto	true	goto	goto
+keyword		switch	true	switch	switch
+keyword		default	true	default	default
+keyword		case	true	case	case
+keyword		var	true	var	var
+keyword		val	true	val	val
+keyword		const	true	const	const
+keyword		static	true	static	static
+keyword		function	true	function	function
+keyword		return	true	return	return
+keyword		scope	true	scope	scope
+keyword		try	true	try	try
+keyword		catch	true	catch	catch
+keyword		finally	true	finally	finally
+keyword		throw	true	throw	throw
+keyword		import	true	import	import
+keyword		true	true	true	真
+keyword		false	true	false	偽
+keyword		struct	true	struct	struct
+keyword		interface	true	interface	interface
+keyword		private	true	private	private
+keyword		in	true	in	in
+keyword		out	true	out	out
+keyword		property	true	property	property
+keyword		get	true	get	get
+keyword		set	true	set	set
+keyword		value	true	value	value
+keyword		arg	true	arg	arg
+keyword	type	void	true	void	void
+keyword	type	integer	true	integer	integer
+keyword	type	decimal	true	decimal	decimal
+keyword	type	string	true	string	string

@@ -26,7 +26,7 @@ term:
 	factor
 
 factor:
-	TOKEN_KIND_OP_LPAREN expression TOKEN_KIND_OP_RPAREN
+	TOKEN_KIND_BRACKET_LPAREN expression TOKEN_KIND_BRACKET_RPAREN
 
 
 

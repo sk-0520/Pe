@@ -160,9 +160,9 @@ namespace ScriptTest
                 DATA(std::vector<int> {TOKEN_KIND_OP_AT}, wrap("@")),
                 DATA(std::vector<int> {TOKEN_KIND_OP_DOLLAR}, wrap("$")),
                 DATA(std::vector<int> {TOKEN_KIND_OP_HASH}, wrap("#")),
-                DATA(std::vector<int> {TOKEN_KIND_OP_LPAREN, TOKEN_KIND_OP_RPAREN}, wrap("()")),
-                DATA(std::vector<int> {TOKEN_KIND_OP_LBRACE, TOKEN_KIND_OP_RBRACE}, wrap("{}")),
-                DATA(std::vector<int> {TOKEN_KIND_OP_LBRACKET, TOKEN_KIND_OP_RBRACKET}, wrap("[]")),
+                DATA(std::vector<int> {TOKEN_KIND_BRACKET_LPAREN, TOKEN_KIND_BRACKET_RPAREN}, wrap("()")),
+                DATA(std::vector<int> {TOKEN_KIND_BRACKET_LBRACE, TOKEN_KIND_BRACKET_RBRACE}, wrap("{}")),
+                DATA(std::vector<int> {TOKEN_KIND_BRACKET_LBRACKET, TOKEN_KIND_BRACKET_RBRACKET}, wrap("[]")),
             };
             for (auto test : tests) {
                 auto arg1 = std::get<0>(test.inputs);
@@ -509,9 +509,9 @@ namespace ScriptTest
                 DATA(
                     std::vector<VALUE_TEST> {
                 VALUE_TEST(TOKEN_KIND_KEYWORD_IF),
-                    VALUE_TEST(TOKEN_KIND_OP_LPAREN),
+                    VALUE_TEST(TOKEN_KIND_BRACKET_LPAREN),
                     VALUE_TEST(TOKEN_KIND_KEYWORD_TRUE),
-                    VALUE_TEST(TOKEN_KIND_OP_RPAREN),
+                    VALUE_TEST(TOKEN_KIND_BRACKET_RPAREN),
                     VALUE_TEST(TOKEN_KIND_KEYWORD_TYPE_INTEGER),
                     VALUE_TEST(TOKEN_KIND_WORD, wrap("a")),
                     VALUE_TEST(TOKEN_KIND_OP_ASSIGN),
