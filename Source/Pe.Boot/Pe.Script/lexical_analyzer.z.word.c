@@ -1,4 +1,5 @@
-﻿#include "../Pe.Library/tcharacter.h"
+﻿/* 自動生成: lexical_analyzer.z.word.c.tt */
+#include "../Pe.Library/tcharacter.h"
 #include "../Pe.Library/primitive_list.h"
 
 #include "lexical_analyzer.h"
@@ -293,6 +294,5 @@ EXIT:
 
     return read_length;
 }
-
 
 
