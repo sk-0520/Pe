@@ -25,6 +25,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{36C874A7-4971-4FE1-B6CA-82F362BB34E2}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\Define\script-syntax.def = ..\..\Define\script-syntax.def
+		..\..\Define\script-token.def = ..\..\Define\script-token.def
 	EndProjectSection
 EndProject
 Global
