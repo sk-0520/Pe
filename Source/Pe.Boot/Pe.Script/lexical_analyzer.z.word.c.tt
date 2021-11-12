@@ -1,4 +1,14 @@
-﻿/* 自動生成: lexical_analyzer.z.word.c.tt */
+<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output encoding="utf-8" extension="" #>
+<#
+    var items = TokenLoader.ParseFromDefault(Host).ToList();
+#>
+/* 自動生成: lexical_analyzer.z.word.c.tt */
 #include "../Pe.Library/tcharacter.h"
 #include "../Pe.Library/primitive_list.h"
 
@@ -295,4 +305,4 @@ EXIT:
     return read_length;
 }
 
-
+<#@ include file="lexical_token.ttinclude" once="true" #>
