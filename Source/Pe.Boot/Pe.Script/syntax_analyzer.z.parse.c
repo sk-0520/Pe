@@ -256,7 +256,7 @@ void script__initialize_syntax_defines(void)
         .rule = SYNTAX_RULE_NORMAL,
         .type = SYNTAX_ELEMENT_TYPE_TOKEN,
         .item = {
-            .token = TOKEN_KIND_OP_LPAREN,
+            .token = TOKEN_KIND_BRACKET_LPAREN,
         }
     };
     define_4_factor.elements[0].data[0] = define_4_factor_element_0_data_0_value;
@@ -274,7 +274,7 @@ void script__initialize_syntax_defines(void)
         .rule = SYNTAX_RULE_NORMAL,
         .type = SYNTAX_ELEMENT_TYPE_TOKEN,
         .item = {
-            .token = TOKEN_KIND_OP_RPAREN,
+            .token = TOKEN_KIND_BRACKET_RPAREN,
         }
     };
     define_4_factor.elements[0].data[2] = define_4_factor_element_0_data_2_value;
@@ -303,5 +303,6 @@ void script__uninitialize_syntax_defines(void)
 
     script__initialized_syntax_defines = false;
 }
+
 
 
