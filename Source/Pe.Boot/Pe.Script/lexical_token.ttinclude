@@ -1,0 +1,113 @@
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#+
+
+class TokenDefine
+{
+    public TokenDefine(string line)
+    {
+        var tsv = line.Split('\t');
+        Group = tsv[0];
+        Sub = tsv[1];
+        Key = tsv[2];
+        Implement = bool.Parse(tsv[3]);
+        Value = tsv[4];
+        Comment = tsv[5];
+    }
+
+    #region property
+
+    public string Group { get; }
+    public string Sub { get; }
+    public string Key { get; }
+    public bool Implement { get; }
+    public string Value { get; }
+    public string Comment { get; }
+
+    #endregion
+}
+
+static class TokenLoader
+{
+    #region function
+
+    public static IEnumerable<TokenDefine> ParseFromDefault(ITextTemplatingEngineHost host)
+    {
+        var definePath = host.ResolvePath(@"..\..\..\Define\script-token.def");
+        var defineLines = File.ReadAllLines(definePath).Skip(1);
+        return Parse(defineLines);
+    }
+
+    public static IEnumerable<TokenDefine> Parse(IEnumerable<string> source)
+    {
+        return source.Select(i => new TokenDefine(i));
+    }
+
+    #endregion
+}
+
+static class TokenUtility
+{
+    #region property
+
+    public const int IndentWidth = 4;
+    public const char IndentCharacter = ' ';
+
+    public const string TokenKind = "TOKEN_KIND";
+
+    public static string None
+    {
+        get { return ToDefineKind("none"); }
+    }
+    public static string Word
+    {
+        get { return ToDefineKind("word"); }
+    }
+
+    #endregion
+
+    #region function
+
+    public static bool IsToken(string s)
+    {
+        return s.ToUpperInvariant().StartsWith(TokenKind + "_");
+    }
+
+
+    public static string ToDefineKind(string s)
+    {
+        return TokenKind + "_" + s.ToUpperInvariant();
+    }
+
+    public static string ToDefineKind(TokenDefine define, int indent, bool withComment)
+    {
+        var results = new List<string>();
+
+        if(withComment) {
+            results.Add("/// <summary>");
+            results.Add("/// " + define.Comment);
+            if(!define.Implement) {
+                results.Add("/// <para>未実装</para>");
+            }
+            results.Add("/// </summary>");
+        }
+        var values = new [] {
+            define.Group,
+            define.Sub,
+            define.Key,
+        };
+        var value = string.Join("_", values.Where(i => !string.IsNullOrWhiteSpace(i)));
+        results.Add(ToDefineKind(value));
+
+        return string.Join(Environment.NewLine, results.Select(i => new string(IndentCharacter, indent * IndentWidth) + i));
+    }
+
+    #endregion
+}
+
+#>
