@@ -82,7 +82,7 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_OP_HASH,
     /// <summary>
-    /// &
+    /// &amp;
     /// </summary>
     TOKEN_KIND_OP_AMPERSAND,
     /// <summary>
@@ -90,7 +90,7 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_OP_VERTICALBAR,
     /// <summary>
-    /// &&
+    /// &amp;&amp;
     /// </summary>
     TOKEN_KIND_OP_AND,
     /// <summary>
@@ -106,23 +106,23 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_OP_NOT_EQUALS,
     /// <summary>
-    /// >
+    /// &gt;
     /// </summary>
     TOKEN_KIND_OP_GREATER,
     /// <summary>
-    /// <
+    /// &lt;
     /// </summary>
     TOKEN_KIND_OP_LESS,
     /// <summary>
-    /// >=
+    /// &gt;=
     /// </summary>
     TOKEN_KIND_OP_GREATER_EQUAL,
     /// <summary>
-    /// <=
+    /// &lt;=
     /// </summary>
     TOKEN_KIND_OP_LESS_EQUAL,
     /// <summary>
-    /// =>
+    /// =&gt;
     /// </summary>
     TOKEN_KIND_OP_LAMBDA,
     /// <summary>
@@ -198,7 +198,7 @@ typedef enum tag_TOKEN_KIND
     /// </summary>
     TOKEN_KIND_LITERAL_DECIMAL,
     /// <summary>
-    /// 文字列'。文字なんてものはない。
+    /// 文字列&apos;。文字なんてものはない。
     /// </summary>
     TOKEN_KIND_LITERAL_SSTRING,
     /// <summary>
