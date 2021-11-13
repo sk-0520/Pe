@@ -12,12 +12,14 @@ class TokenDefine
     public TokenDefine(string line)
     {
         var tsv = line.Split('\t');
-        Group = tsv[0];
-        Sub = tsv[1];
-        Key = tsv[2];
-        Implement = bool.Parse(tsv[3]);
-        Value = tsv[4];
-        Comment = tsv[5];
+        var index = 0;
+        Group = tsv[index++];
+        Sub = tsv[index++];
+        Key = tsv[index++];
+        Implement = bool.Parse(tsv[index++]);
+        CommentDelimiter = bool.Parse(tsv[index++]);
+        Value = tsv[index++];
+        Comment = tsv[index++];
     }
 
     #region property
@@ -26,8 +28,50 @@ class TokenDefine
     public string Sub { get; }
     public string Key { get; }
     public bool Implement { get; }
+    public bool CommentDelimiter { get; }
     public string Value { get; }
     public string Comment { get; }
+
+    public bool IsOperator { get { return Group == "op"; } }
+    public bool IsBracket { get { return Group == "bracket"; } }
+    public bool IsComment { get { return Group == "comment"; } }
+    public bool IsBlockComment { get { return IsComment && Sub == "block"; } }
+    public bool IsLiteral { get { return Group == "literal"; } }
+    public bool IsKeyword { get { return Group == "keyword"; } }
+    public bool IsTypeKeyword { get { return IsKeyword && Sub == "type"; } }
+
+    #endregion
+
+    #region function
+
+    private string EscapeSequenceCharacter(char c)
+    {
+        var escseq = new [] { '\'', '\\', };
+        if(Array.IndexOf(escseq, c) != -1) {
+            return "\\" + c.ToString();
+        }
+
+        return c.ToString();
+    }
+
+    public string ToSingleSymbolCharacter()
+    {
+        if(Value.Length != 1) {
+            throw new InvalidOperationException();
+        }
+
+        return EscapeSequenceCharacter(Value[0]);
+    }
+
+    public IEnumerable<string> ToMultiSymbolCharacters()
+    {
+        if(Value.Length <= 1) {
+            throw new InvalidOperationException();
+        }
+
+        return Value.Select(i => EscapeSequenceCharacter(i));
+    }
+
 
     #endregion
 }
