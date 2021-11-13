@@ -11,7 +11,7 @@ typedef struct tag_MULTI_SYMBOL_TOKEN
     /// <summary>
     /// 順々のトークン種別。
     /// </summary>
-    /// <list type="number>
+    /// <list type="number">
     ///     <listheader>
     ///         <term>【定義見出し・見出し】</term>
     ///         <description>【説明見出し】</description>
