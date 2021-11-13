@@ -5,6 +5,7 @@
 <#@ import namespace="System.Text.RegularExpressions" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="Microsoft.VisualStudio.TextTemplating" #>
+<#@ import namespace="System.Security" #>
 <#+
 
 class TokenDefine
@@ -134,7 +135,7 @@ static class TokenUtility
 
         if(withComment) {
             results.Add("/// <summary>");
-            results.Add("/// " + define.Comment);
+            results.Add("/// " + SecurityElement.Escape(define.Comment));
             if(!define.Implement) {
                 results.Add("/// <para>未実装</para>");
             }
