@@ -213,13 +213,6 @@ static const KEYWORD_TOKEN script__keyword_tokens[] = {
         .implement = true,
         .word = static_text("string"),
     },
-    /*
-    {
-        .kind = ,
-        .implement = true,
-        .word = static_text(""),
-    },
-    */
 };
 
 static bool is_word_char(TCHAR c)
