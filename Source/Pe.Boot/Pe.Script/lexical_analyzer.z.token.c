@@ -4,6 +4,35 @@
 #include "lexical_analyzer.h"
 #include "lexical_analyzer.z.token.h"
 
+#define MULTI_CHAR_SYMBOL_COUNT (2)
+typedef struct tag_MULTI_SYMBOL_TOKEN
+{
+    TCHAR symbols[MULTI_CHAR_SYMBOL_COUNT];
+    /// <summary>
+    /// 順々のトークン種別。
+    /// </summary>
+    /// <list type="number>
+    ///     <listheader>
+    ///         <term>【定義見出し・見出し】</term>
+    ///         <description>【説明見出し】</description>
+    ///     </listheader>
+    ///     <item>
+    ///         <description>symbols[0] のみのトークン</description>
+    ///     </item>
+    ///     <item>
+    ///         <description>symbols[0][1]のトークン</description>
+    ///     </item>
+    ///     <item>
+    ///         <description>symbols[0][1][N..]のトークン</description>
+    ///     </item>
+    /// </list>
+    TOKEN_KIND kinds[MULTI_CHAR_SYMBOL_COUNT];
+    /// <summary>
+    /// 真の場合にコメント中は無視する
+    /// </summary>
+    bool skip_comments[MULTI_CHAR_SYMBOL_COUNT];
+} MULTI_SYMBOL_TOKEN;
+
 static const SINGLE_SYMBOL_TOKEN script__single_symbol_tokens[] = {
     {
         .symbol = ',',
@@ -71,150 +100,134 @@ static const SINGLE_SYMBOL_TOKEN script__single_symbol_tokens[] = {
     },
 };
 
-#if MULTI_CHAR_SYMBOL_COUNT == 2
-#   define NONE_SYMBOL_SKIP_2
-#   define NONE_KIND_SKIP_2
-#   define COMMENT_ALL_SKIP true, true
-#elif MULTI_CHAR_SYMBOL_COUNT == 3
-#   define NONE_SYMBOL_SKIP_2 '\0'
-#   define NONE_KIND_SKIP_2 TOKEN_KIND_NONE
-#   define COMMENT_ALL_SKIP true, true, true
-#elif MULTI_CHAR_SYMBOL_COUNT == 4
-#   define NONE_SYMBOL_SKIP_2 '\0', '\0'
-#   define NONE_KIND_SKIP_2 TOKEN_KIND_NONE, TOKEN_KIND_NONE
-#   define COMMENT_ALL_SKIP true, true, true, true
-#else
-#   error !MULTI_CHAR_SYMBOL_COUNT!
-#endif
-
 static const MULTI_SYMBOL_TOKEN script__multi_symbol_tokens[] = {
-    // +
-    {
-        .symbols = { '+', '=', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_ADD_ASSIGN, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    {
-        .symbols = { '+', '+', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_OP_PLUS, TOKEN_KIND_OP_INCREMENT, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    // -
-    {
-        .symbols = { '-', '=', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_SUB_ASSIGN, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    {
-        .symbols = { '-', '-', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_OP_MINUS, TOKEN_KIND_OP_DECREMENT, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    // *
-    {
-        .symbols = { '*', '=', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_MUL_ASSIGN, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    {
-        .symbols = { '*', '/', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_OP_STAR, TOKEN_KIND_COMMENT_BLOCK_END, NONE_KIND_SKIP_2 },
-        .skip_comments = { true, false, /*true, true,*/ },
-    },
-    // /
-    {
-        .symbols = { '/', '/', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_COMMENT_LINE, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    {
-        .symbols = { '/', '*', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_COMMENT_BLOCK_BEGIN, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    {
-        .symbols = { '/', '=', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_OP_SLASH, TOKEN_KIND_OP_DIV_ASSIGN, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    // %
-    {
-        .symbols = { '%', '=', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_OP_PERCENT, TOKEN_KIND_OP_REM_ASSIGN, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    // =
-    {
-        .symbols = { '=', '>', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_LAMBDA, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    {
-        .symbols = { '=', '=', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_OP_ASSIGN, TOKEN_KIND_OP_EQUALS, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    // <
-    {
-        .symbols = { '<', '=', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_OP_LESS, TOKEN_KIND_OP_LESS_EQUAL, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    // >
-    {
-        .symbols = { '>', '=', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_OP_GREATER, TOKEN_KIND_OP_GREATER_EQUAL, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
-    // !
-    {
-        .symbols = { '!', '=', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_OP_EXCLAMATION, TOKEN_KIND_OP_NOT_EQUALS, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
-    },
     // &
     {
-        .symbols = { '&', '&', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_OP_AMPERSAND, TOKEN_KIND_OP_AND, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
+        .symbols = { '&', '&' },
+        .kinds = { TOKEN_KIND_OP_AMPERSAND, TOKEN_KIND_OP_AND },
+        .skip_comments = { true, true },
     },
     // |
     {
-        .symbols = { '|', '|', NONE_SYMBOL_SKIP_2 },
-        .kinds = { TOKEN_KIND_OP_VERTICALBAR, TOKEN_KIND_OP_OR, NONE_KIND_SKIP_2 },
-        .skip_comments = { COMMENT_ALL_SKIP },
+        .symbols = { '|', '|' },
+        .kinds = { TOKEN_KIND_OP_VERTICALBAR, TOKEN_KIND_OP_OR },
+        .skip_comments = { true, true },
+    },
+    // =
+    {
+        .symbols = { '=', '=' },
+        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_EQUALS },
+        .skip_comments = { true, true },
+    },
+    {
+        .symbols = { '=', '>' },
+        .kinds = { TOKEN_KIND_OP_ASSIGN, TOKEN_KIND_OP_LAMBDA },
+        .skip_comments = { true, true },
+    },
+    // !
+    {
+        .symbols = { '!', '=' },
+        .kinds = { TOKEN_KIND_OP_EXCLAMATION, TOKEN_KIND_OP_NOT_EQUALS },
+        .skip_comments = { true, true },
+    },
+    // >
+    {
+        .symbols = { '>', '=' },
+        .kinds = { TOKEN_KIND_OP_GREATER, TOKEN_KIND_OP_GREATER_EQUAL },
+        .skip_comments = { true, true },
+    },
+    // <
+    {
+        .symbols = { '<', '=' },
+        .kinds = { TOKEN_KIND_OP_LESS, TOKEN_KIND_OP_LESS_EQUAL },
+        .skip_comments = { true, true },
+    },
+    // +
+    {
+        .symbols = { '+', '=' },
+        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_ADD_ASSIGN },
+        .skip_comments = { true, true },
+    },
+    {
+        .symbols = { '+', '+' },
+        .kinds = { TOKEN_KIND_OP_PLUS, TOKEN_KIND_OP_INCREMENT },
+        .skip_comments = { true, true },
+    },
+    // -
+    {
+        .symbols = { '-', '=' },
+        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_SUB_ASSIGN },
+        .skip_comments = { true, true },
+    },
+    {
+        .symbols = { '-', '-' },
+        .kinds = { TOKEN_KIND_OP_MINUS, TOKEN_KIND_OP_DECREMENT },
+        .skip_comments = { true, true },
+    },
+    // *
+    {
+        .symbols = { '*', '=' },
+        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_MUL_ASSIGN },
+        .skip_comments = { true, true },
+    },
+    {
+        .symbols = { '*', '/' },
+        .kinds = { TOKEN_KIND_OP_STAR, TOKEN_KIND_COMMENT_BLOCK_END },
+        .skip_comments = { true, false },
+    },
+    // /
+    {
+        .symbols = { '/', '=' },
+        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_OP_DIV_ASSIGN },
+        .skip_comments = { true, true },
+    },
+    {
+        .symbols = { '/', '/' },
+        .kinds = { TOKEN_KIND_NONE, TOKEN_KIND_COMMENT_LINE },
+        .skip_comments = { true, true },
+    },
+    {
+        .symbols = { '/', '*' },
+        .kinds = { TOKEN_KIND_OP_SLASH, TOKEN_KIND_COMMENT_BLOCK_BEGIN },
+        .skip_comments = { true, true },
+    },
+    // %
+    {
+        .symbols = { '%', '=' },
+        .kinds = { TOKEN_KIND_OP_PERCENT, TOKEN_KIND_OP_REM_ASSIGN },
+        .skip_comments = { true, true },
     },
 };
 
-static TCHAR script__symbol_tokens[SIZEOF_ARRAY(script__single_symbol_tokens) + SIZEOF_ARRAY(script__multi_symbol_tokens)];
-static size_t script__symbol_tokens_length = 0;
-
-static void initialize_symbol_tokens()
-{
-    size_t length = 0;
-    for (size_t i = 0; i < SIZEOF_ARRAY(script__single_symbol_tokens); i++) {
-        TCHAR c = script__single_symbol_tokens[i].symbol;
-        bool skip = false;
-        for (size_t j = 0; !skip && j < length; j++) {
-            skip = c == script__symbol_tokens[j];
-        }
-        if (!skip) {
-            script__symbol_tokens[length++] = c;
-        }
-    }
-
-    for (size_t i = 0; i < SIZEOF_ARRAY(script__multi_symbol_tokens); i++) {
-        TCHAR c = script__multi_symbol_tokens[i].symbols[0];
-        bool skip = false;
-        for (size_t j = 0; !skip && j < length; j++) {
-            skip = c == script__symbol_tokens[j];
-        }
-        if (!skip) {
-            script__symbol_tokens[length++] = c;
-        }
-    }
-    script__symbol_tokens_length = length;
-}
+static const TCHAR script__symbol_tokens[] = {
+    '=',
+    '+',
+    '-',
+    '*',
+    '/',
+    '%',
+    ',',
+    '.',
+    ';',
+    ':',
+    '?',
+    '!',
+    '\\',
+    '~',
+    '@',
+    '$',
+    '#',
+    '&',
+    '|',
+    '>',
+    '<',
+    '(',
+    ')',
+    '{',
+    '}',
+    '[',
+    ']',
+};
 
 bool is_comment_token_kind(TOKEN_KIND kind)
 {
@@ -227,11 +240,7 @@ bool is_comment_token_kind(TOKEN_KIND kind)
 
 bool is_synbol_token(TCHAR c)
 {
-    if (!script__symbol_tokens_length) {
-        initialize_symbol_tokens();
-    }
-
-    for (size_t i = 0; i < script__symbol_tokens_length; i++) {
+    for (size_t i = 0; i < SIZEOF_ARRAY(script__symbol_tokens); i++) {
         if (c == script__symbol_tokens[i]) {
             return true;
         }

@@ -9,35 +9,6 @@ typedef struct tag_SINGLE_SYMBOL_TOKEN
     TOKEN_KIND kind;
 } SINGLE_SYMBOL_TOKEN;
 
-#define MULTI_CHAR_SYMBOL_COUNT (2)
-typedef struct tag_MULTI_SYMBOL_TOKEN
-{
-    TCHAR symbols[MULTI_CHAR_SYMBOL_COUNT];
-    /// <summary>
-    /// 順々のトークン種別。
-    /// </summary>
-    /// <list type="number>
-    ///     <listheader>
-    ///         <term>【定義見出し・見出し】</term>
-    ///         <description>【説明見出し】</description>
-    ///     </listheader>
-    ///     <item>
-    ///         <description>symbols[0] のみのトークン</description>
-    ///     </item>
-    ///     <item>
-    ///         <description>symbols[0][1]のトークン</description>
-    ///     </item>
-    ///     <item>
-    ///         <description>symbols[0][1][N..]のトークン</description>
-    ///     </item>
-    /// </list>
-    TOKEN_KIND kinds[MULTI_CHAR_SYMBOL_COUNT];
-    /// <summary>
-    /// 真の場合にコメント中は無視する
-    /// </summary>
-    bool skip_comments[MULTI_CHAR_SYMBOL_COUNT];
-} MULTI_SYMBOL_TOKEN;
-
 /// <summary>
 /// 指定トークンはコメントか。
 /// </summary>
