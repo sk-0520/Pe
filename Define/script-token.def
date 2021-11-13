@@ -1,90 +1,90 @@
-親種別	子種別	キー	実装	値(あれば)	コメント
-op		assign	true	=	=
-op		plus	true	+	+
-op		minus	true	-	-
-op		star	true	*	*
-op		slash	true	/	/
-op		percent	true	%	%
-op		comma	true	,	,
-op		dot	true	.	.
-op		semicolon	true	;	;
-op		colon	true	:	:
-op		question	true	?	?
-op		exclamation	true	!	!
-op		backslash	true	\	\
-op		tilde	true	~	~
-op		at	true	@	@
-op		dollar	true	$	$
-op		hash	true	#	#
-op		ampersand	true	&	&
-op		verticalbar	true	|	|
-op		and	true	&&	&&
-op		or	true	||	||
-op		equals	true	==	==
-op		not_equals	true	!=	!=
-op		greater	true	>	>
-op		less	true	<	<
-op		greater_equal	true	>=	>=
-op		less_equal	true	<=	<=
-op		lambda	true	=>	=>
-op		add_assign	true	+=	+=
-op		sub_assign	true	-=	-=
-op		mul_assign	true	*=	*=
-op		div_assign	true	/=	/=
-op		rem_assign	true	%=	%=
-op		increment	true	++	++
-op		decrement	true	--	--
-bracket		lparen	true	(	(
-bracket		rparen	true	)	)
-bracket		lbrace	true	{	{
-bracket		rbrace	true	}	}
-bracket		lbracket	true	[	[
-bracket		rbracket	true	]	]
-comment		line	true	//	//
-comment	block	begin	true	/*	/*
-comment	block	end	true	*/	*/
-literal		integer	true		整数。
-literal		decimal	true		少数。つかえない。
-literal		sstring	true		文字列'。文字なんてものはない。
-literal		dstring	true		文字列。
-literal		bstring	true		`文字列`。未実装。
-keyword		if	true	if	if
-keyword		else	true	else	else
-keyword		for	true	for	for
-keyword		foreach	true	foreach	foreach
-keyword		do	true	do	do
-keyword		while	true	while	while
-keyword		break	true	break	break
-keyword		continue	true	continue	continue
-keyword		goto	true	goto	goto
-keyword		switch	true	switch	switch
-keyword		default	true	default	default
-keyword		case	true	case	case
-keyword		var	true	var	var
-keyword		val	true	val	val
-keyword		const	true	const	const
-keyword		static	true	static	static
-keyword		function	true	function	function
-keyword		return	true	return	return
-keyword		scope	true	scope	scope
-keyword		try	true	try	try
-keyword		catch	true	catch	catch
-keyword		finally	true	finally	finally
-keyword		throw	true	throw	throw
-keyword		import	true	import	import
-keyword		true	true	true	真
-keyword		false	true	false	偽
-keyword		struct	true	struct	struct
-keyword		interface	true	interface	interface
-keyword		private	true	private	private
-keyword		in	true	in	in
-keyword		out	true	out	out
-keyword		property	true	property	property
-keyword		get	true	get	get
-keyword		set	true	set	set
-keyword		value	true	value	value
-keyword		arg	true	arg	arg
-keyword	type	void	true	void	void
-keyword	type	integer	true	integer	integer
-keyword	type	decimal	true	decimal	decimal
-keyword	type	string	true	string	string
+グループ	サブ	キー	実装	コメント終端	値(あれば)	コメント
+op		assign	true	false	=	=
+op		plus	true	false	+	+
+op		minus	true	false	-	-
+op		star	true	false	*	*
+op		slash	true	false	/	/
+op		percent	true	false	%	%
+op		comma	true	false	,	,
+op		dot	true	false	.	.
+op		semicolon	true	false	;	;
+op		colon	true	false	:	:
+op		question	true	false	?	?
+op		exclamation	true	false	!	!
+op		backslash	true	false	\	\
+op		tilde	true	false	~	~
+op		at	true	false	@	@
+op		dollar	true	false	$	$
+op		hash	true	false	#	#
+op		ampersand	true	false	&	&
+op		verticalbar	true	false	|	|
+op		and	true	false	&&	&&
+op		or	true	false	||	||
+op		equals	true	false	==	==
+op		not_equals	true	false	!=	!=
+op		greater	true	false	>	>
+op		less	true	false	<	<
+op		greater_equal	true	false	>=	>=
+op		less_equal	true	false	<=	<=
+op		lambda	true	false	=>	=>
+op		add_assign	true	false	+=	+=
+op		sub_assign	true	false	-=	-=
+op		mul_assign	true	false	*=	*=
+op		div_assign	true	false	/=	/=
+op		rem_assign	true	false	%=	%=
+op		increment	true	false	++	++
+op		decrement	true	false	--	--
+bracket		lparen	true	false	(	(
+bracket		rparen	true	false	)	)
+bracket		lbrace	true	false	{	{
+bracket		rbrace	true	false	}	}
+bracket		lbracket	true	false	[	[
+bracket		rbracket	true	false	]	]
+comment		line	true	false	//	//
+comment	block	begin	true	false	/*	/*
+comment	block	end	true	true	*/	*/
+literal		integer	true	false		整数。
+literal		decimal	true	false		少数。つかえない。
+literal		sstring	true	false		文字列'。文字なんてものはない。
+literal		dstring	true	false		文字列。
+literal		bstring	true	false		`文字列`。未実装。
+keyword		if	true	false	if	if
+keyword		else	true	false	else	else
+keyword		for	true	false	for	for
+keyword		foreach	true	false	foreach	foreach
+keyword		do	true	false	do	do
+keyword		while	true	false	while	while
+keyword		break	true	false	break	break
+keyword		continue	true	false	continue	continue
+keyword		goto	true	false	goto	goto
+keyword		switch	true	false	switch	switch
+keyword		default	true	false	default	default
+keyword		case	true	false	case	case
+keyword		var	true	false	var	var
+keyword		val	true	false	val	val
+keyword		const	true	false	const	const
+keyword		static	true	false	static	static
+keyword		function	true	false	function	function
+keyword		return	true	false	return	return
+keyword		scope	true	false	scope	scope
+keyword		try	true	false	try	try
+keyword		catch	true	false	catch	catch
+keyword		finally	true	false	finally	finally
+keyword		throw	true	false	throw	throw
+keyword		import	true	false	import	import
+keyword		true	true	false	true	真
+keyword		false	true	false	false	偽
+keyword		struct	true	false	struct	struct
+keyword		interface	true	false	interface	interface
+keyword		private	true	false	private	private
+keyword		in	true	false	in	in
+keyword		out	true	false	out	out
+keyword		property	true	false	property	property
+keyword		get	true	false	get	get
+keyword		set	true	false	set	set
+keyword		value	true	false	value	value
+keyword		arg	true	false	arg	arg
+keyword	type	void	true	false	void	void
+keyword	type	integer	true	false	integer	integer
+keyword	type	decimal	true	false	decimal	decimal
+keyword	type	string	true	false	string	string
