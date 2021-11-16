@@ -17,7 +17,7 @@ void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* set
             for (size_t j = 0; j < script__syntax_defines[i].length; j++) {
                 const SYNTAX_ELEMENTS* elements = script__syntax_defines[i].elements + j;
                 for (size_t k = 0; k < elements->length; k++) {
-                    const SYNTAX_ELEMENT* element = elements->data + i;
+                    const SYNTAX_ELEMENT* element = elements->data + k;
                     switch (element->type) {
                         case SYNTAX_ELEMENT_TYPE_TOKEN:
                         {
