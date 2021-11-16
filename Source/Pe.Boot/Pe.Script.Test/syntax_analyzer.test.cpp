@@ -19,7 +19,7 @@ namespace ScriptTest
             TOKEN_RESULT token_result = analyze_lexical(NULL, &source, &setting);
             analyze_syntax(&token_result, &setting);
 
-            free_token_result(&token_result);
+            release_token_result(&token_result);
         }
 
     };

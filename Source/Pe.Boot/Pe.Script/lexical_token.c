@@ -30,7 +30,7 @@ static void add_token_value_core(OBJECT_LIST* tokens, TOKEN_KIND kind, TOKEN_VAL
 void add_token_word(OBJECT_LIST* tokens, TOKEN_KIND kind, const TEXT* word, const SOURCE_POSITION* source_position)
 {
     TOKEN_VALUE token_value = {
-        .word = clone_text(word),
+        .word = clone_text(word, SCRIPT_MEMORY),
     };
     add_token_value_core(tokens, kind, TOKEN_VALUE_TYPE_STRING, token_value, source_position);
 }
