@@ -1,36 +1,30 @@
 ﻿#include "pch.h"
-
-#ifdef RES_CHECK
 extern "C" {
-#   include "../Pe.Library/res_check.h"
-#   include "../Pe.Library/path.h"
+#   include "../Pe.Script/script.h"
 }
-#endif
 
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-
-#ifdef RES_CHECK
-static void output(const TCHAR* message)
-{
-    Logger::WriteMessage(message);
-}
-#endif
+//#define SCRIPT_MEMORY_RESOURCE
 
 TestImpl TEST(tstring(_T("ScriptTest")));
 
+#ifdef SCRIPT_MEMORY_RESOURCE
+static MEMORY_RESOURCE script_memory_resource;
+#endif
+
 TEST_MODULE_INITIALIZE(initialize)
 {
-#ifdef RES_CHECK
-    rc__initialize(output, RES_CHECK_INIT_PATH_LENGTH, RES_CHECK_INIT_BUFFER_LENGTH, RES_CHECK_INIT_HEAP_COUNT, RES_CHECK_INIT_FILE_COUNT);
+#ifdef SCRIPT_MEMORY_RESOURCE
+    script_memory_resource = new_memory_resource(0, 0);
+    set_script_memory_resource(&script_memory_resource);
+#else
+    set_script_memory_resource(DEFAULT_MEMORY);
 #endif
 }
 
 TEST_MODULE_CLEANUP(cleanup)
 {
-#ifdef RES_CHECK
-    rc__print(true);
-    auto  exists_resource_leak = rc__exists_resource_leak();
-    rc__uninitialize();
-    Assert::IsFalse(exists_resource_leak);
+#ifdef SCRIPT_MEMORY_RESOURCE
+    release_memory_resource(&script_memory_resource);
 #endif
 }
+

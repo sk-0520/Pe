@@ -26,7 +26,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
 {
     assert(token_result);
 
-    PRIMITIVE_LIST_TCHAR character_list = new_primitive_list(PRIMITIVE_LIST_TYPE_TCHAR, 256);
+    PRIMITIVE_LIST_TCHAR character_list = new_primitive_list(PRIMITIVE_LIST_TYPE_TCHAR, 256, SCRIPT_MEMORY);
 
     TCHAR start_digit = source->value[start_index];
     push_list_tchar(&character_list, start_digit);
@@ -146,7 +146,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
 
     assert(read_length);
 
-    TEXT word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false);
+    TEXT word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false, SCRIPT_MEMORY);
     TOKEN_KIND number_token_kind = TOKEN_KIND_LITERAL_INTEGER;
     ssize_t converted_integer = 0;
     //double converted_decimal = 0;
@@ -154,7 +154,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
     TEXT reference_text;
     switch (mode) {
         case MODE_INT:
-            parsed_result = parse_ssize_from_text(&word, false);
+            parsed_result = parse_ssize_from_text(&word, false, SCRIPT_MEMORY);
 
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
@@ -169,7 +169,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
             break;
 
         case MODE_HEX:
-            parsed_result = parse_ssize_from_text(&word, true);
+            parsed_result = parse_ssize_from_text(&word, true, SCRIPT_MEMORY);
 
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
@@ -180,7 +180,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
             break;
 
         case MODE_BIN:
-            reference_text = wrap_text_with_length(word.value + 2, word.length - 2, false);
+            reference_text = wrap_text_with_length(word.value + 2, word.length - 2, false, SCRIPT_MEMORY);
             parsed_result = parse_ssize_from_bin_text(&reference_text);
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
@@ -205,7 +205,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
 
 
 EXIT:
-    free_primitive_list(&character_list);
+    release_primitive_list(&character_list);
 
     return read_length;
 }
