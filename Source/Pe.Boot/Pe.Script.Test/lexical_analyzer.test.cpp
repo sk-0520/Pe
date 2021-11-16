@@ -55,7 +55,7 @@ namespace ScriptTest
 
             Assert::AreEqual((size_t)0, token_result.token.length);
             Assert::AreEqual((size_t)0, token_result.result.length);
-            free_token_result(&token_result);
+            release_token_result(&token_result);
         }
 
         TEST_METHOD(analyze_lexical_newline_test)
@@ -80,7 +80,7 @@ namespace ScriptTest
             Assert::AreEqual((size_t)2, actual3->position.column_position);
             Assert::AreEqual((size_t)3, actual4->position.column_position);
 
-            free_token_result(&actual);
+            release_token_result(&actual);
         }
 
         TEST_METHOD(analyze_lexical_block_comment_test)
@@ -96,7 +96,7 @@ namespace ScriptTest
             COMPILE_RESULT* actual2 = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
             Assert::AreEqual<int>(COMPILE_CODE_NOT_CLOSE_COMMENT, actual2->code);
 
-            free_token_result(&actual);
+            release_token_result(&actual);
         }
 
         TEST_METHOD(analyze_lexical_multi_symbol_token_test)
@@ -141,7 +141,7 @@ namespace ScriptTest
                     TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
                     Assert::AreEqual<int>(test.expected[i], actual_token->kind);
                 }
-                free_token_result(&actual);
+                release_token_result(&actual);
             }
         }
 
@@ -172,7 +172,7 @@ namespace ScriptTest
                     TOKEN* actual_token = (TOKEN*)get_object_list(&actual.token, i).value;
                     Assert::AreEqual<int>(test.expected[i], actual_token->kind);
                 }
-                free_token_result(&actual);
+                release_token_result(&actual);
             }
         }
 
@@ -207,7 +207,7 @@ namespace ScriptTest
                     }
                 }
                 Assert::IsTrue(actual.result.length, arg1.value);
-                free_token_result(&actual);
+                release_token_result(&actual);
             }
         }
 
@@ -261,7 +261,7 @@ namespace ScriptTest
                         Assert::AreEqual(test.expected[i].value.word.value, actual_token->value.word.value);
                     }
                 }
-                free_token_result(&actual);
+                release_token_result(&actual);
             }
         }
 
@@ -287,7 +287,7 @@ namespace ScriptTest
                         Assert::AreEqual(test.expected[i].value.word.value, actual_token->value.word.value);
                     }
                 }
-                free_token_result(&actual);
+                release_token_result(&actual);
             }
         }
 
@@ -301,7 +301,7 @@ namespace ScriptTest
             COMPILE_RESULT* cr = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
             Assert::AreEqual<int>(COMPILE_CODE_UNKNOWN_ESCAPE_SEQUENCE, cr->code);
 
-            free_token_result(&actual);
+            release_token_result(&actual);
         }
 
         TEST_METHOD(analyze_lexical_string_bq_notimpl_test)
@@ -314,7 +314,7 @@ namespace ScriptTest
             COMPILE_RESULT* cr = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
             Assert::AreEqual<int>(COMPILE_CODE_NOT_IMPLEMENT, cr->code);
 
-            free_token_result(&actual);
+            release_token_result(&actual);
         }
 
         TEST_METHOD(analyze_lexical_number_test)
@@ -353,7 +353,7 @@ namespace ScriptTest
                         Assert::AreEqual(test.expected[i].value.integer, actual_token->value.integer);
                     }
                 }
-                free_token_result(&actual);
+                release_token_result(&actual);
             }
         }
 
@@ -382,7 +382,7 @@ namespace ScriptTest
 
                 COMPILE_RESULT* cr = (COMPILE_RESULT*)get_object_list(&actual.result, 0).value;
                 Assert::AreEqual<int>(test.expected, cr->code);
-                free_token_result(&actual);
+                release_token_result(&actual);
             }
         }
 
@@ -410,7 +410,7 @@ namespace ScriptTest
                         Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
                     }
                 }
-                free_token_result(&actual);
+                release_token_result(&actual);
             }
         }
 
@@ -464,7 +464,7 @@ namespace ScriptTest
                 TOKEN_RESULT actual = analyze_lexical(NULL, &arg1, &setting);
                 TOKEN* token = (TOKEN*)get_object_list(&actual.token, 0).value;
                 Assert::AreEqual<int>(test.expected, token->kind, arg1.value);
-                free_token_result(&actual);
+                release_token_result(&actual);
             }
         }
 
@@ -497,7 +497,7 @@ namespace ScriptTest
                         Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
                     }
                 }
-                free_token_result(&actual);
+                release_token_result(&actual);
             }
         }
 
@@ -547,7 +547,7 @@ namespace ScriptTest
                         Assert::AreEqual<int>(test.expected[i].kind, actual_token->kind);
                     }
                 }
-                free_token_result(&actual);
+                release_token_result(&actual);
             }
         }
 

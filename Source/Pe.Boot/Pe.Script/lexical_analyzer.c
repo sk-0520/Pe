@@ -169,8 +169,8 @@ TOKEN_RESULT RC_HEAP_FUNC(analyze_lexical, const TEXT* file_path, const TEXT* so
 
     TOKEN_RESULT token_result = {
         .file_path = file_path,
-        .token = RC_HEAP_CALL(create_object_list, sizeof(TOKEN), 1024, compare_object_list_value_null, free_object_list_value_null),
-        .result = RC_HEAP_CALL(create_object_list, sizeof(COMPILE_RESULT), OBJECT_LIST_DEFAULT_CAPACITY_COUNT, compare_object_list_value_null, free_object_list_value_null),
+        .token = RC_HEAP_CALL(new_object_list, sizeof(TOKEN), 1024, compare_object_list_value_null, release_object_list_value_null, SCRIPT_MEMORY),
+        .result = RC_HEAP_CALL(new_object_list, sizeof(COMPILE_RESULT), OBJECT_LIST_DEFAULT_CAPACITY_COUNT, compare_object_list_value_null, release_object_list_value_null, SCRIPT_MEMORY),
     };
 
     if (!source || !source->length) {
@@ -187,26 +187,26 @@ TOKEN_RESULT RC_HEAP_FUNC(analyze_lexical, const TEXT* file_path, const TEXT* so
     return token_result;
 }
 
-static bool free_token_result_token(const void* value, size_t index, size_t length, void* data)
+static bool release_token_result_token(const void* value, size_t index, size_t length, void* data)
 {
     TOKEN* token = (TOKEN*)value;
     if (token->type == TOKEN_VALUE_TYPE_STRING) {
-        free_text(&token->value.word);
+        release_text(&token->value.word);
     }
     return true;
 }
 
-static bool free_token_result_result(const void* value, size_t index, size_t length, void* data)
+static bool release_token_result_result(const void* value, size_t index, size_t length, void* data)
 {
     COMPILE_RESULT* cr = (COMPILE_RESULT*)value;
-    free_text(&cr->remark);
+    release_text(&cr->remark);
     return true;
 }
 
-void RC_HEAP_FUNC(free_token_result, TOKEN_RESULT* token_result)
+void RC_HEAP_FUNC(release_token_result, TOKEN_RESULT* token_result)
 {
-    foreach_object_list(&token_result->token, free_token_result_token, NULL);
-    foreach_object_list(&token_result->result, free_token_result_result, NULL);
-    free_object_list(&token_result->token);
-    free_object_list(&token_result->result);
+    foreach_object_list(&token_result->token, release_token_result_token, NULL);
+    foreach_object_list(&token_result->result, release_token_result_result, NULL);
+    release_object_list(&token_result->token);
+    release_object_list(&token_result->result);
 }

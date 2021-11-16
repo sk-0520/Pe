@@ -49,8 +49,8 @@ TOKEN_RESULT RC_HEAP_FUNC(analyze_lexical, const TEXT* file_path, const TEXT* so
 #   define analyze_lexical(file_path, source, setting) RC_HEAP_WRAP(analyze_lexical, file_path, source, setting)
 #endif
 
-void RC_HEAP_FUNC(free_token_result, TOKEN_RESULT* token_result);
+void RC_HEAP_FUNC(release_token_result, TOKEN_RESULT* token_result);
 #ifdef RES_CHECK
-#   define free_token_result(token_result) RC_HEAP_WRAP(free_token_result, token_result)
+#   define release_token_result(token_result) RC_HEAP_WRAP(release_token_result, token_result)
 #endif
 

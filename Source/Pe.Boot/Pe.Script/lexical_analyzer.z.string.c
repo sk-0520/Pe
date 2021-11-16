@@ -62,13 +62,13 @@ size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
         ;
     assert(string_token_kind != TOKEN_KIND_NONE);
 
-    PRIMITIVE_LIST_TCHAR character_list = new_primitive_list(PRIMITIVE_LIST_TYPE_TCHAR, 256);
+    PRIMITIVE_LIST_TCHAR character_list = new_primitive_list(PRIMITIVE_LIST_TYPE_TCHAR, 256, SCRIPT_MEMORY);
 
     while (current_index < source->length) {
         TCHAR current_character = source->value[current_index];
         if (current_character == string_type) {
             // 文字列はここまで!
-            TEXT word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false);
+            TEXT word = wrap_text_with_length(reference_list_tchar(&character_list), character_list.length, false, SCRIPT_MEMORY);
             add_token_word(&token_result->token, string_token_kind, &word, source_position);
             read_length = current_index - start_index + 1;
             break;
@@ -118,7 +118,7 @@ size_t read_string_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
     }
 
 EXIT:
-    free_primitive_list(&character_list);
+    release_primitive_list(&character_list);
 
     return read_length;
 }
