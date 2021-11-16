@@ -70,7 +70,7 @@ bool is_word_start(TCHAR c)
 
 size_t read_word_token(TOKEN_RESULT* token_result, const TEXT* source, size_t start_index, const SOURCE_POSITION* source_position, const PROJECT_SETTING* project_setting)
 {
-    PRIMITIVE_LIST_TCHAR character_list = new_primitive_list(PRIMITIVE_LIST_TYPE_TCHAR, 256);
+    PRIMITIVE_LIST_TCHAR character_list = new_primitive_list(PRIMITIVE_LIST_TYPE_TCHAR, 256, SCRIPT_MEMORY);
     push_list_tchar(&character_list, source->value[start_index]);
 
     size_t read_length = 1;
@@ -91,7 +91,7 @@ size_t read_word_token(TOKEN_RESULT* token_result, const TEXT* source, size_t st
     }
 
     const TCHAR* raw_word = reference_list_tchar(&character_list);
-    TEXT word = wrap_text_with_length(raw_word, character_list.length, false);
+    TEXT word = wrap_text_with_length(raw_word, character_list.length, false, SCRIPT_MEMORY);
     const KEYWORD_TOKEN* keyword_token = get_word_token_kind(&word);
     if (keyword_token) {
         if (!keyword_token->implement) {
@@ -103,7 +103,7 @@ size_t read_word_token(TOKEN_RESULT* token_result, const TEXT* source, size_t st
     }
 
 EXIT:
-    free_primitive_list(&character_list);
+    release_primitive_list(&character_list);
 
     return read_length;
 }
