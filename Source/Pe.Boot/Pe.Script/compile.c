@@ -84,7 +84,7 @@ void add_compile_result(OBJECT_LIST* compile_results, COMPILE_RESULT_KIND kind, 
         .stage = COMPILE_STAGE_LEX,
         .kind = kind,
         .code = code,
-        .remark = clone_text(remark),
+        .remark = clone_text(remark, SCRIPT_MEMORY),
         .position = *source_position,
     };
 

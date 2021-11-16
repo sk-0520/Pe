@@ -28,3 +28,7 @@ typedef struct tag_PROJECT_INFO
     PROJECT_SETTING setting;
 } PROJECT_INFO;
 
+void set_script_memory_resource(const MEMORY_RESOURCE* memory_resource);
+const MEMORY_RESOURCE* get_script_memory_resource();
+
+#define SCRIPT_MEMORY get_script_memory_resource()

@@ -12,10 +12,10 @@ void script__initialize_syntax_defines(void)
 {
     SYNTAX_DEFINE define_0_expression = {
         .kind = SYNTAX_DEFINE_KIND_EXPRESSION,
-        .elements = allocate_memory(sizeof(SYNTAX_ELEMENTS) * 3, false),
+        .elements = allocate_raw_memory(sizeof(SYNTAX_ELEMENTS) * 3, false, SCRIPT_MEMORY),
         .length = 3,
     };
-    define_0_expression.elements[0].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 3, false),
+    define_0_expression.elements[0].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 3, false, SCRIPT_MEMORY),
     define_0_expression.elements[0].length = 3;
     SYNTAX_ELEMENT define_0_expression_element_0_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -44,7 +44,7 @@ void script__initialize_syntax_defines(void)
     };
     define_0_expression.elements[0].data[2] = define_0_expression_element_0_data_2_value;
 
-    define_0_expression.elements[1].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 3, false),
+    define_0_expression.elements[1].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 3, false, SCRIPT_MEMORY),
     define_0_expression.elements[1].length = 3;
     SYNTAX_ELEMENT define_0_expression_element_1_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -73,7 +73,7 @@ void script__initialize_syntax_defines(void)
     };
     define_0_expression.elements[1].data[2] = define_0_expression_element_1_data_2_value;
 
-    define_0_expression.elements[2].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 1, false),
+    define_0_expression.elements[2].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 1, false, SCRIPT_MEMORY),
     define_0_expression.elements[2].length = 1;
     SYNTAX_ELEMENT define_0_expression_element_2_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -86,10 +86,10 @@ void script__initialize_syntax_defines(void)
 
     SYNTAX_DEFINE define_1_primary_expression = {
         .kind = SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION,
-        .elements = allocate_memory(sizeof(SYNTAX_ELEMENTS) * 4, false),
+        .elements = allocate_raw_memory(sizeof(SYNTAX_ELEMENTS) * 4, false, SCRIPT_MEMORY),
         .length = 4,
     };
-    define_1_primary_expression.elements[0].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 1, false),
+    define_1_primary_expression.elements[0].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 1, false, SCRIPT_MEMORY),
     define_1_primary_expression.elements[0].length = 1;
     SYNTAX_ELEMENT define_1_primary_expression_element_0_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -100,7 +100,7 @@ void script__initialize_syntax_defines(void)
     };
     define_1_primary_expression.elements[0].data[0] = define_1_primary_expression_element_0_data_0_value;
 
-    define_1_primary_expression.elements[1].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 1, false),
+    define_1_primary_expression.elements[1].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 1, false, SCRIPT_MEMORY),
     define_1_primary_expression.elements[1].length = 1;
     SYNTAX_ELEMENT define_1_primary_expression_element_1_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -111,7 +111,7 @@ void script__initialize_syntax_defines(void)
     };
     define_1_primary_expression.elements[1].data[0] = define_1_primary_expression_element_1_data_0_value;
 
-    define_1_primary_expression.elements[2].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 1, false),
+    define_1_primary_expression.elements[2].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 1, false, SCRIPT_MEMORY),
     define_1_primary_expression.elements[2].length = 1;
     SYNTAX_ELEMENT define_1_primary_expression_element_2_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -122,7 +122,7 @@ void script__initialize_syntax_defines(void)
     };
     define_1_primary_expression.elements[2].data[0] = define_1_primary_expression_element_2_data_0_value;
 
-    define_1_primary_expression.elements[3].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 1, false),
+    define_1_primary_expression.elements[3].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 1, false, SCRIPT_MEMORY),
     define_1_primary_expression.elements[3].length = 1;
     SYNTAX_ELEMENT define_1_primary_expression_element_3_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -135,10 +135,10 @@ void script__initialize_syntax_defines(void)
 
     SYNTAX_DEFINE define_2_string = {
         .kind = SYNTAX_DEFINE_KIND_STRING,
-        .elements = allocate_memory(sizeof(SYNTAX_ELEMENTS) * 3, false),
+        .elements = allocate_raw_memory(sizeof(SYNTAX_ELEMENTS) * 3, false, SCRIPT_MEMORY),
         .length = 3,
     };
-    define_2_string.elements[0].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 1, false),
+    define_2_string.elements[0].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 1, false, SCRIPT_MEMORY),
     define_2_string.elements[0].length = 1;
     SYNTAX_ELEMENT define_2_string_element_0_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -149,7 +149,7 @@ void script__initialize_syntax_defines(void)
     };
     define_2_string.elements[0].data[0] = define_2_string_element_0_data_0_value;
 
-    define_2_string.elements[1].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 1, false),
+    define_2_string.elements[1].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 1, false, SCRIPT_MEMORY),
     define_2_string.elements[1].length = 1;
     SYNTAX_ELEMENT define_2_string_element_1_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -160,7 +160,7 @@ void script__initialize_syntax_defines(void)
     };
     define_2_string.elements[1].data[0] = define_2_string_element_1_data_0_value;
 
-    define_2_string.elements[2].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 1, false),
+    define_2_string.elements[2].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 1, false, SCRIPT_MEMORY),
     define_2_string.elements[2].length = 1;
     SYNTAX_ELEMENT define_2_string_element_2_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -173,10 +173,10 @@ void script__initialize_syntax_defines(void)
 
     SYNTAX_DEFINE define_3_term = {
         .kind = SYNTAX_DEFINE_KIND_TERM,
-        .elements = allocate_memory(sizeof(SYNTAX_ELEMENTS) * 3, false),
+        .elements = allocate_raw_memory(sizeof(SYNTAX_ELEMENTS) * 3, false, SCRIPT_MEMORY),
         .length = 3,
     };
-    define_3_term.elements[0].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 3, false),
+    define_3_term.elements[0].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 3, false, SCRIPT_MEMORY),
     define_3_term.elements[0].length = 3;
     SYNTAX_ELEMENT define_3_term_element_0_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -205,7 +205,7 @@ void script__initialize_syntax_defines(void)
     };
     define_3_term.elements[0].data[2] = define_3_term_element_0_data_2_value;
 
-    define_3_term.elements[1].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 3, false),
+    define_3_term.elements[1].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 3, false, SCRIPT_MEMORY),
     define_3_term.elements[1].length = 3;
     SYNTAX_ELEMENT define_3_term_element_1_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -234,7 +234,7 @@ void script__initialize_syntax_defines(void)
     };
     define_3_term.elements[1].data[2] = define_3_term_element_1_data_2_value;
 
-    define_3_term.elements[2].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 1, false),
+    define_3_term.elements[2].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 1, false, SCRIPT_MEMORY),
     define_3_term.elements[2].length = 1;
     SYNTAX_ELEMENT define_3_term_element_2_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -247,10 +247,10 @@ void script__initialize_syntax_defines(void)
 
     SYNTAX_DEFINE define_4_factor = {
         .kind = SYNTAX_DEFINE_KIND_FACTOR,
-        .elements = allocate_memory(sizeof(SYNTAX_ELEMENTS) * 1, false),
+        .elements = allocate_raw_memory(sizeof(SYNTAX_ELEMENTS) * 1, false, SCRIPT_MEMORY),
         .length = 1,
     };
-    define_4_factor.elements[0].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * 3, false),
+    define_4_factor.elements[0].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * 3, false, SCRIPT_MEMORY),
     define_4_factor.elements[0].length = 3;
     SYNTAX_ELEMENT define_4_factor_element_0_data_0_value = {
         .rule = SYNTAX_RULE_NORMAL,
@@ -296,9 +296,9 @@ void script__uninitialize_syntax_defines(void)
 
     for (size_t i = 0; i < SYNTAX_DEFINE_LENGTH; i++) {
         for (size_t j = 0; j < script__syntax_defines[i].length; j++) {
-            free_memory(script__syntax_defines[i].elements[j].data);
+            release_memory(script__syntax_defines[i].elements[j].data, SCRIPT_MEMORY);
         }
-        free_memory(script__syntax_defines[i].elements);
+        release_memory(script__syntax_defines[i].elements, SCRIPT_MEMORY);
     }
 
     script__initialized_syntax_defines = false;
