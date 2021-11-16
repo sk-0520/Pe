@@ -27,14 +27,14 @@ void script__initialize_syntax_defines(void)
 #>
     SYNTAX_DEFINE <#= defineName #> = {
         .kind = <#= SyntaxUtility.ToDefineKind(item, 0, false) #>,
-        .elements = allocate_memory(sizeof(SYNTAX_ELEMENTS) * <#= item.Elements.Count #>, false),
+        .elements = allocate_raw_memory(sizeof(SYNTAX_ELEMENTS) * <#= item.Elements.Count #>, false, SCRIPT_MEMORY),
         .length = <#= item.Elements.Count #>,
     };
 <# for(var j = 0; j < item.Elements.Count; j++) { #>
 <#
        var element = item.Elements[j];
 #>
-    <#= defineName #>.elements[<#= j #>].data = allocate_memory(sizeof(SYNTAX_ELEMENT) * <#= element.Data.Count #>, false),
+    <#= defineName #>.elements[<#= j #>].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * <#= element.Data.Count #>, false, SCRIPT_MEMORY),
     <#= defineName #>.elements[<#= j #>].length = <#= element.Data.Count #>;
 <# for(var k = 0; k < element.Data.Count; k++) { #>
 <#
@@ -85,9 +85,9 @@ void script__uninitialize_syntax_defines(void)
 
     for (size_t i = 0; i < SYNTAX_DEFINE_LENGTH; i++) {
         for (size_t j = 0; j < script__syntax_defines[i].length; j++) {
-            free_memory(script__syntax_defines[i].elements[j].data);
+            release_memory(script__syntax_defines[i].elements[j].data, SCRIPT_MEMORY);
         }
-        free_memory(script__syntax_defines[i].elements);
+        release_memory(script__syntax_defines[i].elements, SCRIPT_MEMORY);
     }
 
     script__initialized_syntax_defines = false;
