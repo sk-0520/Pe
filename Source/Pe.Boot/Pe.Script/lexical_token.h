@@ -398,6 +398,13 @@ typedef struct tag_TOKEN
     TOKEN_VALUE value;
 } TOKEN;
 
+/// <summary>
+/// <see cref="TOKEN_KIND" />から<c>enum</c>メンバ名を取得。
+/// </summary>
+/// <param name="kind"></param>
+/// <returns></returns>
+const TEXT* get_member_name_by_token_kind(TOKEN_KIND kind);
+
 void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, const SOURCE_POSITION* source_position);
 void add_token_word(OBJECT_LIST* tokens, TOKEN_KIND kind, const TEXT* word, const SOURCE_POSITION* source_position);
 void add_token_integer(OBJECT_LIST* tokens, TOKEN_KIND kind, ssize_t value, const SOURCE_POSITION* source_position);
