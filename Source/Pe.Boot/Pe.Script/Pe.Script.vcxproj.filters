@@ -106,5 +106,8 @@
     <None Include="lexical_analyzer.z.word.c.tt">
       <Filter>template</Filter>
     </None>
+    <None Include="lexical_token.c.tt">
+      <Filter>template</Filter>
+    </None>
   </ItemGroup>
 </Project>
