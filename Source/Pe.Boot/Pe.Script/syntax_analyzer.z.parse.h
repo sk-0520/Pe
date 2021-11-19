@@ -132,13 +132,20 @@ typedef struct tag_SYNTAX_DEFINE
     size_t length;
 } SYNTAX_DEFINE;
 
-#define SYNTAX_DEFINE_LENGTH (5)
-extern SYNTAX_DEFINE script__syntax_defines[SYNTAX_DEFINE_LENGTH];
+typedef struct tag_SYNTAX_SET
+{
+    SYNTAX_DEFINE* defines;
+    size_t length;
+    struct
+    {
+        const MEMORY_RESOURCE* memory_resource;
+    } script;
+} SYNTAX_SET;
 
 const TEXT* get_member_name_by_syntax_define_kind(SYNTAX_DEFINE_KIND syntax_define_kind);
 
-void script__initialize_syntax_defines(void);
+SYNTAX_SET new_default_syntax_set(void);
 
-void script__uninitialize_syntax_defines(void);
+void release_syntax_set(SYNTAX_SET* syntax_set);
 
 
