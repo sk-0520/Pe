@@ -55,9 +55,16 @@ typedef struct tag_TOKEN
     TOKEN_VALUE value;
 } TOKEN;
 
-void add_token_kind(OBJECT_LIST* tokens, TOKEN_KIND kind, const SOURCE_POSITION* source_position);
-void add_token_word(OBJECT_LIST* tokens, TOKEN_KIND kind, const TEXT* word, const SOURCE_POSITION* source_position);
-void add_token_integer(OBJECT_LIST* tokens, TOKEN_KIND kind, ssize_t value, const SOURCE_POSITION* source_position);
-void add_token_decimal(OBJECT_LIST* tokens, TOKEN_KIND kind, double value, const SOURCE_POSITION* source_position);
+/// <summary>
+/// <see cref="<#= TokenUtility.TokenKind #>" />から<c>enum</c>メンバ名を取得。
+/// </summary>
+/// <param name="kind"></param>
+/// <returns></returns>
+const TEXT* get_member_name_by_token_kind(<#= TokenUtility.TokenKind #> kind);
+
+void add_token_kind(OBJECT_LIST* tokens, <#= TokenUtility.TokenKind #> kind, const SOURCE_POSITION* source_position);
+void add_token_word(OBJECT_LIST* tokens, <#= TokenUtility.TokenKind #> kind, const TEXT* word, const SOURCE_POSITION* source_position);
+void add_token_integer(OBJECT_LIST* tokens, <#= TokenUtility.TokenKind #> kind, ssize_t value, const SOURCE_POSITION* source_position);
+void add_token_decimal(OBJECT_LIST* tokens, <#= TokenUtility.TokenKind #> kind, double value, const SOURCE_POSITION* source_position);
 
 <#@ include file="lexical_token.ttinclude" once="true" #>

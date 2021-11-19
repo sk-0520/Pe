@@ -8,6 +8,22 @@
 SYNTAX_DEFINE script__syntax_defines[SYNTAX_DEFINE_LENGTH];
 static bool script__initialized_syntax_defines = false;
 
+static const TEXT script__syntax_define_kind_member_names[] = {
+    static_text(" SYNTAX_DEFINE_KIND_EXPRESSION"),
+    static_text(" SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION"),
+    static_text(" SYNTAX_DEFINE_KIND_STRING"),
+    static_text(" SYNTAX_DEFINE_KIND_TERM"),
+    static_text(" SYNTAX_DEFINE_KIND_FACTOR"),
+};
+
+const TEXT* get_member_name_by_syntax_define_kind(SYNTAX_DEFINE_KIND syntax_define_kind)
+{
+    assert(syntax_define_kind < SIZEOF_ARRAY(script__syntax_define_kind_member_names));
+
+    return script__syntax_define_kind_member_names + syntax_define_kind;
+}
+
+
 void script__initialize_syntax_defines(void)
 {
     SYNTAX_DEFINE define_0_expression = {
