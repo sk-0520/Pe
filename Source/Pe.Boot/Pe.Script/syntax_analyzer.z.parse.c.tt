@@ -18,6 +18,20 @@
 SYNTAX_DEFINE script__syntax_defines[SYNTAX_DEFINE_LENGTH];
 static bool script__initialized_syntax_defines = false;
 
+static const TEXT script__syntax_define_kind_member_names[] = {
+<# foreach(var item in items) { #>
+    static_text(" <#= SyntaxUtility.ToDefineKind(item, 0, false) #>"),
+<# } #>
+};
+
+const TEXT* get_member_name_by_syntax_define_kind(<#= SyntaxUtility.DefineKind #> syntax_define_kind)
+{
+    assert(syntax_define_kind < SIZEOF_ARRAY(script__syntax_define_kind_member_names));
+
+    return script__syntax_define_kind_member_names + syntax_define_kind;
+}
+
+
 void script__initialize_syntax_defines(void)
 {
 <# for(var i = 0; i < items.Count; i++) { #>
