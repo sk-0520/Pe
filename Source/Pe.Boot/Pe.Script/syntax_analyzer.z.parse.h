@@ -135,6 +135,8 @@ typedef struct tag_SYNTAX_DEFINE
 #define SYNTAX_DEFINE_LENGTH (5)
 extern SYNTAX_DEFINE script__syntax_defines[SYNTAX_DEFINE_LENGTH];
 
+const TEXT* get_member_name_by_syntax_define_kind(SYNTAX_DEFINE_KIND syntax_define_kind);
+
 void script__initialize_syntax_defines(void);
 
 void script__uninitialize_syntax_defines(void);
