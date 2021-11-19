@@ -15,8 +15,7 @@
 
 #include "syntax_analyzer.z.parse.h"
 
-SYNTAX_DEFINE script__syntax_defines[SYNTAX_DEFINE_LENGTH];
-static bool script__initialized_syntax_defines = false;
+#define DEFAULT_SYNTAX_DEFINE_LENGTH (<#= items.Count #>)
 
 static const TEXT script__syntax_define_kind_member_names[] = {
 <# foreach(var item in items) { #>
@@ -31,9 +30,19 @@ const TEXT* get_member_name_by_syntax_define_kind(<#= SyntaxUtility.DefineKind #
     return script__syntax_define_kind_member_names + syntax_define_kind;
 }
 
-
-void script__initialize_syntax_defines(void)
+SYNTAX_SET new_default_syntax_set(void)
 {
+    const MEMORY_RESOURCE* memory_resource = SCRIPT_MEMORY;
+    SYNTAX_DEFINE* syntax_defines = allocate_memory(DEFAULT_SYNTAX_DEFINE_LENGTH, sizeof(SYNTAX_DEFINE), memory_resource);
+
+    SYNTAX_SET result = {
+        .defines = syntax_defines,
+        .length = DEFAULT_SYNTAX_DEFINE_LENGTH,
+        .script = {
+            .memory_resource = memory_resource,
+        },
+    };
+
 <# for(var i = 0; i < items.Count; i++) { #>
 <#
     var item = items[i];
@@ -41,14 +50,14 @@ void script__initialize_syntax_defines(void)
 #>
     SYNTAX_DEFINE <#= defineName #> = {
         .kind = <#= SyntaxUtility.ToDefineKind(item, 0, false) #>,
-        .elements = allocate_raw_memory(sizeof(SYNTAX_ELEMENTS) * <#= item.Elements.Count #>, false, SCRIPT_MEMORY),
+        .elements = allocate_raw_memory(sizeof(SYNTAX_ELEMENTS) * <#= item.Elements.Count #>, false, memory_resource),
         .length = <#= item.Elements.Count #>,
     };
 <# for(var j = 0; j < item.Elements.Count; j++) { #>
 <#
        var element = item.Elements[j];
 #>
-    <#= defineName #>.elements[<#= j #>].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * <#= element.Data.Count #>, false, SCRIPT_MEMORY),
+    <#= defineName #>.elements[<#= j #>].data = allocate_raw_memory(sizeof(SYNTAX_ELEMENT) * <#= element.Data.Count #>, false, memory_resource),
     <#= defineName #>.elements[<#= j #>].length = <#= element.Data.Count #>;
 <# for(var k = 0; k < element.Data.Count; k++) { #>
 <#
@@ -86,25 +95,24 @@ void script__initialize_syntax_defines(void)
     var item = items[i];
     var defineName = "define_" + i + "_" + item.Key;
 #>
-    script__syntax_defines[<#= i #>] = <#= defineName #>;
+    syntax_defines[<#= i #>] = <#= defineName #>;
 <# } #>
-    script__initialized_syntax_defines = true;
+
+    return result;
 }
 
-void script__uninitialize_syntax_defines(void)
+void release_syntax_set(SYNTAX_SET* syntax_set)
 {
-    if (!script__initialized_syntax_defines) {
-        return;
-    }
+    const MEMORY_RESOURCE* memory_resource = syntax_set->script.memory_resource;
 
-    for (size_t i = 0; i < SYNTAX_DEFINE_LENGTH; i++) {
-        for (size_t j = 0; j < script__syntax_defines[i].length; j++) {
-            release_memory(script__syntax_defines[i].elements[j].data, SCRIPT_MEMORY);
+    for (size_t i = 0; i < syntax_set->length; i++) {
+        for (size_t j = 0; j < syntax_set->defines[i].length; j++) {
+            release_memory(syntax_set->defines[i].elements[j].data, memory_resource);
         }
-        release_memory(script__syntax_defines[i].elements, SCRIPT_MEMORY);
+        release_memory(syntax_set->defines[i].elements, memory_resource);
     }
-
-    script__initialized_syntax_defines = false;
+    release_memory(syntax_set->defines, memory_resource);
+    set_memory(syntax_set, sizeof(SYNTAX_SET), 0);
 }
 
 <#@ include file="lexical_token.ttinclude" once="true" #>
