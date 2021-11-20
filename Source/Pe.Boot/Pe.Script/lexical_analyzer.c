@@ -187,26 +187,22 @@ TOKEN_RESULT RC_HEAP_FUNC(analyze_lexical, const TEXT* file_path, const TEXT* so
     return token_result;
 }
 
-static bool release_token_result_token(const void* value, size_t index, size_t length, void* data)
-{
-    TOKEN* token = (TOKEN*)value;
-    if (token->type == TOKEN_VALUE_TYPE_STRING) {
-        release_text(&token->value.word);
-    }
-    return true;
-}
-
-static bool release_token_result_result(const void* value, size_t index, size_t length, void* data)
-{
-    COMPILE_RESULT* cr = (COMPILE_RESULT*)value;
-    release_text(&cr->remark);
-    return true;
-}
-
 void RC_HEAP_FUNC(release_token_result, TOKEN_RESULT* token_result)
 {
-    foreach_object_list(&token_result->token, release_token_result_token, NULL);
-    foreach_object_list(&token_result->result, release_token_result_result, NULL);
+    const TOKEN* tokens = reference_value_object_list(TOKEN, token_result->token);
+    for (size_t i = 0; i < token_result->token.length; i++) {
+        TOKEN* token = (TOKEN*)(tokens + i);
+        if (token->type == TOKEN_VALUE_TYPE_STRING) {
+            release_text(&token->value.word);
+        }
+    }
+
+    const COMPILE_RESULT* compile_results = reference_value_object_list(COMPILE_RESULT, token_result->result);
+    for (size_t i = 0; i < token_result->result.length; i++) {
+        COMPILE_RESULT* compile_result = (COMPILE_RESULT*)(compile_results + i);
+        release_text(&compile_result->remark);
+    }
+
     release_object_list(&token_result->token);
     release_object_list(&token_result->result);
 }
