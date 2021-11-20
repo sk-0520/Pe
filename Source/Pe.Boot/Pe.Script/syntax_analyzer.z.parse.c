@@ -25,7 +25,7 @@ const TEXT* get_member_name_by_syntax_define_kind(SYNTAX_DEFINE_KIND syntax_defi
 SYNTAX_SET new_default_syntax_set(void)
 {
     const MEMORY_RESOURCE* memory_resource = SCRIPT_MEMORY;
-    SYNTAX_DEFINE* syntax_defines = allocate_memory(DEFAULT_SYNTAX_DEFINE_LENGTH, sizeof(SYNTAX_DEFINE), memory_resource);
+    SYNTAX_DEFINE* syntax_defines = new_memory(DEFAULT_SYNTAX_DEFINE_LENGTH, sizeof(SYNTAX_DEFINE), memory_resource);
 
     SYNTAX_SET result = {
         .defines = syntax_defines,
