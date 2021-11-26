@@ -21,7 +21,7 @@ void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* set
                     switch (element->type) {
                         case SYNTAX_ELEMENT_TYPE_TOKEN:
                             {
-                                logger_format_information(_T("%d"), token->kind);
+                                logger_format_info(_T("%d"), token->kind);
                                 goto NEXT;
                             }
                             break;
