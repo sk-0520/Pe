@@ -169,8 +169,8 @@ TOKEN_RESULT RC_HEAP_FUNC(analyze_lexical, const TEXT* file_path, const TEXT* so
 
     TOKEN_RESULT token_result = {
         .file_path = file_path,
-        .token = RC_HEAP_CALL(new_object_list, sizeof(TOKEN), 1024, compare_object_list_value_null, release_object_list_value_null, SCRIPT_MEMORY),
-        .result = RC_HEAP_CALL(new_object_list, sizeof(COMPILE_RESULT), OBJECT_LIST_DEFAULT_CAPACITY_COUNT, compare_object_list_value_null, release_object_list_value_null, SCRIPT_MEMORY),
+        .token = RC_HEAP_CALL(new_object_list, sizeof(TOKEN), 1024, NULL, compare_object_list_value_null, release_object_list_value_null, SCRIPT_MEMORY),
+        .result = RC_HEAP_CALL(new_object_list, sizeof(COMPILE_RESULT), OBJECT_LIST_DEFAULT_CAPACITY_COUNT, NULL, compare_object_list_value_null, release_object_list_value_null, SCRIPT_MEMORY),
     };
 
     if (!source || !source->length) {
@@ -203,6 +203,6 @@ void RC_HEAP_FUNC(release_token_result, TOKEN_RESULT* token_result)
         release_text(&compile_result->remark);
     }
 
-    release_object_list(&token_result->token);
-    release_object_list(&token_result->result);
+    release_object_list(&token_result->token, true);
+    release_object_list(&token_result->result, true);
 }
