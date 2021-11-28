@@ -1,32 +1,58 @@
-<#@ template debug="false" hostspecific="true" language="C#" #>
-<#@ assembly name="System.Core" #>
-<#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #>
-<#@ import namespace="System.Text.RegularExpressions" #>
-<#@ import namespace="System.Collections.Generic" #>
-<#@ output encoding="utf-8" extension="" #>
-<#
-    var items = SyntaxLoader.ParseFromDefault(Host).ToList();
-#>
-#pragma once
-/* 自動生成: syntax_analyzer.z.parse.h.tt */
+﻿#pragma once
+/* 自動生成: syntax_analyzer.z.default_parse.h.tt */
 #include "lexical_analyzer.h"
 #include "lexical_analyzer.z.token.h"
 
 /// <summary>
 /// 構文定義種別。
 /// </summary>
-typedef enum tag_<#= SyntaxUtility.DefineKind #>
+typedef enum tag_SYNTAX_DEFINE_KIND
 {
     /// <summary>
     /// なし。
     /// <para>番兵にでも使うかなぁ</para>
     /// </summary>
-    <#= SyntaxUtility.ToDefineKind("NONE") #>,
-<# foreach(var item in items) { #>
-<#= SyntaxUtility.ToDefineKind(item, 1, true) #>,
-<# } #>
-} <#= SyntaxUtility.DefineKind #>;
+    SYNTAX_DEFINE_KIND_NONE,
+    /// <summary>
+    /// <list type="number">
+    /// <item>term TOKEN_KIND_OP_PLUS term</item>
+    /// <item>term TOKEN_KIND_OP_MINUS term</item>
+    /// <item>primary_expression</item>
+    /// </list>
+    /// </summary>
+    SYNTAX_DEFINE_KIND_EXPRESSION,
+    /// <summary>
+    /// <list type="number">
+    /// <item>TOKEN_KIND_WORD</item>
+    /// <item>TOKEN_KIND_LITERAL_INTEGER</item>
+    /// <item>TOKEN_KIND_LITERAL_DECIMAL</item>
+    /// <item>string</item>
+    /// </list>
+    /// </summary>
+    SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION,
+    /// <summary>
+    /// <list type="number">
+    /// <item>TOKEN_KIND_LITERAL_SSTRING</item>
+    /// <item>TOKEN_KIND_LITERAL_DSTRING</item>
+    /// <item>TOKEN_KIND_LITERAL_BSTRING</item>
+    /// </list>
+    /// </summary>
+    SYNTAX_DEFINE_KIND_STRING,
+    /// <summary>
+    /// <list type="number">
+    /// <item>expression TOKEN_KIND_OP_STAR expression</item>
+    /// <item>expression TOKEN_KIND_OP_SLASH expression</item>
+    /// <item>factor</item>
+    /// </list>
+    /// </summary>
+    SYNTAX_DEFINE_KIND_TERM,
+    /// <summary>
+    /// <list type="number">
+    /// <item>TOKEN_KIND_BRACKET_LPAREN expression TOKEN_KIND_BRACKET_RPAREN</item>
+    /// </list>
+    /// </summary>
+    SYNTAX_DEFINE_KIND_FACTOR,
+} SYNTAX_DEFINE_KIND;
 
 /// <summary>
 /// 構文要素タイプ。
@@ -106,7 +132,7 @@ typedef struct tag_SYNTAX_DEFINE
     size_t length;
 } SYNTAX_DEFINE;
 
-typedef struct tag_SYNTAX_SET
+typedef struct tag_SYNTAXES
 {
     SYNTAX_DEFINE* defines;
     size_t length;
@@ -114,12 +140,12 @@ typedef struct tag_SYNTAX_SET
     {
         const MEMORY_RESOURCE* memory_resource;
     } script;
-} SYNTAX_SET;
+} SYNTAXES;
 
-const TEXT* get_member_name_by_syntax_define_kind(<#= SyntaxUtility.DefineKind #> syntax_define_kind);
+const TEXT* get_member_name_by_syntax_define_kind(SYNTAX_DEFINE_KIND syntax_define_kind);
 
-SYNTAX_SET new_default_syntax_set(void);
+SYNTAXES new_default_syntaxes(void);
 
-void release_syntax_set(SYNTAX_SET* syntax_set);
+void release_syntaxes(SYNTAXES* syntaxes);
 
-<#@ include file="syntax_analyzer.syntax.ttinclude" once="true" #>
+
