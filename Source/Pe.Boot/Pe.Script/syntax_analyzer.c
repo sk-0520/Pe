@@ -2,20 +2,20 @@
 #include "../Pe.Library/logging.h"
 
 #include "syntax_analyzer.h"
-#include "syntax_analyzer.z.parse.h"
+#include "syntax_analyzer.z.default_parse.h"
 
 void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* setting)
 {
-    SYNTAX_SET syntax_set = new_default_syntax_set();
+    SYNTAXES syntaxes = new_default_syntaxes();
 
     const TOKEN* tokens = reference_value_object_list(TOKEN, token_result->token);
     size_t current_index = 0;
     while (current_index < token_result->token.length) {
         const TOKEN* token = tokens + current_index++;
 
-        for (size_t i = 0; i < syntax_set.defines->length; i++) {
-            for (size_t j = 0; j < syntax_set.defines[i].length; j++) {
-                const SYNTAX_ELEMENTS* elements = syntax_set.defines[i].elements + j;
+        for (size_t i = 0; i < syntaxes.defines->length; i++) {
+            for (size_t j = 0; j < syntaxes.defines[i].length; j++) {
+                const SYNTAX_ELEMENTS* elements = syntaxes.defines[i].elements + j;
                 for (size_t k = 0; k < elements->length; k++) {
                     const SYNTAX_ELEMENT* element = elements->data + k;
                     switch (element->type) {
@@ -45,5 +45,5 @@ void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* set
         continue;
     }
 
-    release_syntax_set(&syntax_set);
+    release_syntaxes(&syntaxes);
 }
