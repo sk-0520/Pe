@@ -1,90 +1,90 @@
 グループ	サブ	キー	実装	コメント終端	値(あれば)	コメント
-op		assign	true	false	=	=
-op		plus	true	false	+	+
-op		minus	true	false	-	-
-op		star	true	false	*	*
-op		slash	true	false	/	/
-op		percent	true	false	%	%
-op		comma	true	false	,	,
-op		dot	true	false	.	.
-op		semicolon	true	false	;	;
-op		colon	true	false	:	:
-op		question	true	false	?	?
-op		exclamation	true	false	!	!
-op		backslash	true	false	\	\
-op		tilde	true	false	~	~
-op		at	true	false	@	@
-op		dollar	true	false	$	$
-op		hash	true	false	#	#
-op		ampersand	true	false	&	&
-op		verticalbar	true	false	|	|
-op		and	true	false	&&	&&
-op		or	true	false	||	||
-op		equals	true	false	==	==
-op		not_equals	true	false	!=	!=
-op		greater	true	false	>	>
-op		less	true	false	<	<
-op		greater_equal	true	false	>=	>=
-op		less_equal	true	false	<=	<=
-op		lambda	true	false	=>	=>
-op		add_assign	true	false	+=	+=
-op		sub_assign	true	false	-=	-=
-op		mul_assign	true	false	*=	*=
-op		div_assign	true	false	/=	/=
-op		rem_assign	true	false	%=	%=
-op		increment	true	false	++	++
-op		decrement	true	false	--	--
-bracket		lparen	true	false	(	(
-bracket		rparen	true	false	)	)
-bracket		lbrace	true	false	{	{
-bracket		rbrace	true	false	}	}
-bracket		lbracket	true	false	[	[
-bracket		rbracket	true	false	]	]
-comment		line	true	false	//	//
-comment	block	begin	true	false	/*	/*
-comment	block	end	true	true	*/	*/
-literal		integer	true	false		整数。
-literal		decimal	true	false		少数。つかえない。
-literal		sstring	true	false		文字列'。文字なんてものはない。
-literal		dstring	true	false		文字列。
-literal		bstring	true	false		`文字列`。未実装。
-keyword		if	true	false	if	if
-keyword		else	true	false	else	else
-keyword		for	true	false	for	for
-keyword		foreach	true	false	foreach	foreach
-keyword		do	true	false	do	do
-keyword		while	true	false	while	while
-keyword		break	true	false	break	break
-keyword		continue	true	false	continue	continue
-keyword		goto	true	false	goto	goto
-keyword		switch	true	false	switch	switch
-keyword		default	true	false	default	default
-keyword		case	true	false	case	case
-keyword		var	true	false	var	var
-keyword		val	true	false	val	val
-keyword		const	true	false	const	const
-keyword		static	true	false	static	static
-keyword		function	true	false	function	function
-keyword		return	true	false	return	return
-keyword		scope	true	false	scope	scope
-keyword		try	true	false	try	try
-keyword		catch	true	false	catch	catch
-keyword		finally	true	false	finally	finally
-keyword		throw	true	false	throw	throw
-keyword		import	true	false	import	import
-keyword		true	true	false	true	真
-keyword		false	true	false	false	偽
-keyword		struct	true	false	struct	struct
-keyword		interface	true	false	interface	interface
-keyword		private	true	false	private	private
-keyword		in	true	false	in	in
-keyword		out	true	false	out	out
-keyword		property	true	false	property	property
-keyword		get	true	false	get	get
-keyword		set	true	false	set	set
-keyword		value	true	false	value	value
-keyword		arg	true	false	arg	arg
-keyword	type	void	true	false	void	void
-keyword	type	integer	true	false	integer	integer
-keyword	type	decimal	true	false	decimal	decimal
-keyword	type	string	true	false	string	string
+op		assign	TRUE	FALSE	=	=
+op		plus	TRUE	FALSE	+	+
+op		minus	TRUE	FALSE	-	-
+op		star	TRUE	FALSE	*	*
+op		slash	TRUE	FALSE	/	/
+op		percent	TRUE	FALSE	%	%
+op		comma	TRUE	FALSE	,	,
+op		dot	TRUE	FALSE	.	.
+op		semicolon	TRUE	FALSE	;	;
+op		colon	TRUE	FALSE	:	:
+op		question	TRUE	FALSE	?	?
+op		exclamation	TRUE	FALSE	!	!
+op		backslash	TRUE	FALSE	\	\
+op		tilde	TRUE	FALSE	~	~
+op		at	TRUE	FALSE	@	@
+op		dollar	TRUE	FALSE	$	$
+op		hash	TRUE	FALSE	#	#
+op		ampersand	TRUE	FALSE	&	&
+op		verticalbar	TRUE	FALSE	|	|
+op		and	TRUE	FALSE	&&	&&
+op		or	TRUE	FALSE	||	||
+op		equals	TRUE	FALSE	==	==
+op		not_equals	TRUE	FALSE	!=	!=
+op		greater	TRUE	FALSE	>	>
+op		less	TRUE	FALSE	<	<
+op		greater_equal	TRUE	FALSE	>=	>=
+op		less_equal	TRUE	FALSE	<=	<=
+op		lambda	TRUE	FALSE	=>	=>
+op		add_assign	TRUE	FALSE	+=	+=
+op		sub_assign	TRUE	FALSE	-=	-=
+op		mul_assign	TRUE	FALSE	*=	*=
+op		div_assign	TRUE	FALSE	/=	/=
+op		rem_assign	TRUE	FALSE	%=	%=
+op		increment	TRUE	FALSE	++	++
+op		decrement	TRUE	FALSE	--	--
+bracket		lparen	TRUE	FALSE	(	(
+bracket		rparen	TRUE	FALSE	)	)
+bracket		lbrace	TRUE	FALSE	{	{
+bracket		rbrace	TRUE	FALSE	}	}
+bracket		lbracket	TRUE	FALSE	[	[
+bracket		rbracket	TRUE	FALSE	]	]
+comment		line	TRUE	FALSE	//	//
+comment	block	begin	TRUE	FALSE	/*	/*
+comment	block	end	TRUE	TRUE	*/	*/
+literal		integer	TRUE	FALSE		整数。
+literal		decimal	TRUE	FALSE		少数。つかえない。
+literal		sstring	TRUE	FALSE		文字列'。文字なんてものはない。
+literal		dstring	TRUE	FALSE		文字列。
+literal		bstring	TRUE	FALSE		`文字列`。未実装。
+keyword		if	TRUE	FALSE	if	if
+keyword		else	TRUE	FALSE	else	else
+keyword		for	TRUE	FALSE	for	for
+keyword		foreach	TRUE	FALSE	foreach	foreach
+keyword		do	TRUE	FALSE	do	do
+keyword		while	TRUE	FALSE	while	while
+keyword		break	TRUE	FALSE	break	break
+keyword		continue	TRUE	FALSE	continue	continue
+keyword		goto	TRUE	FALSE	goto	goto
+keyword		switch	TRUE	FALSE	switch	switch
+keyword		default	TRUE	FALSE	default	default
+keyword		case	TRUE	FALSE	case	case
+keyword		var	TRUE	FALSE	var	var
+keyword		val	TRUE	FALSE	val	val
+keyword		const	TRUE	FALSE	const	const
+keyword		static	TRUE	FALSE	static	static
+keyword		function	TRUE	FALSE	function	function
+keyword		return	TRUE	FALSE	return	return
+keyword		scope	TRUE	FALSE	scope	scope
+keyword		try	TRUE	FALSE	try	try
+keyword		catch	TRUE	FALSE	catch	catch
+keyword		finally	TRUE	FALSE	finally	finally
+keyword		throw	TRUE	FALSE	throw	throw
+keyword		import	TRUE	FALSE	import	import
+keyword		true	TRUE	FALSE	true	真
+keyword		false	TRUE	FALSE	false	偽
+keyword		struct	TRUE	FALSE	struct	struct
+keyword		interface	TRUE	FALSE	interface	interface
+keyword		private	TRUE	FALSE	private	private
+keyword		in	TRUE	FALSE	in	in
+keyword		out	TRUE	FALSE	out	out
+keyword		property	TRUE	FALSE	property	property
+keyword		get	TRUE	FALSE	get	get
+keyword		set	TRUE	FALSE	set	set
+keyword		value	TRUE	FALSE	value	value
+keyword		arg	TRUE	FALSE	arg	arg
+keyword	type	void	TRUE	FALSE	void	void
+keyword	type	integer	TRUE	FALSE	integer	integer
+keyword	type	decimal	TRUE	FALSE	decimal	decimal
+keyword	type	string	TRUE	FALSE	string	string
