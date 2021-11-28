@@ -48,7 +48,10 @@
     <ClInclude Include="syntax_analyzer.h">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="syntax_analyzer.z.default_parse.h">
+    <ClInclude Include="syntax_analyzer.z.gen.parse.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_analyzer.z.parse.h">
       <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>
@@ -80,15 +83,18 @@
     <ClCompile Include="syntax_analyzer.c">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="syntax_analyzer.z.default_parse.c">
+    <ClCompile Include="syntax_analyzer.z.gen.parse.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="syntax_analyzer.z.parse.c">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="syntax_analyzer.z.default_parse.h.tt">
+    <None Include="syntax_analyzer.z.gen.parse.h.tt">
       <Filter>template</Filter>
     </None>
-    <None Include="syntax_analyzer.z.default_parse.c.tt">
+    <None Include="syntax_analyzer.z.gen.parse.c.tt">
       <Filter>template</Filter>
     </None>
     <None Include="syntax_analyzer.syntax.ttinclude">

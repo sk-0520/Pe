@@ -2,7 +2,7 @@
 #include "../Pe.Library/logging.h"
 
 #include "syntax_analyzer.h"
-#include "syntax_analyzer.z.default_parse.h"
+#include "syntax_analyzer.z.parse.h"
 
 void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* setting)
 {

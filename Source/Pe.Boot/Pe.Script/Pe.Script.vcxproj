@@ -42,7 +42,8 @@
     <ClInclude Include="source.h" />
     <ClInclude Include="lexical_token.h" />
     <ClInclude Include="syntax_analyzer.h" />
-    <ClInclude Include="syntax_analyzer.z.default_parse.h" />
+    <ClInclude Include="syntax_analyzer.z.gen.parse.h" />
+    <ClInclude Include="syntax_analyzer.z.parse.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compile.c" />
@@ -54,7 +55,8 @@
     <ClCompile Include="script.c" />
     <ClCompile Include="lexical_token.c" />
     <ClCompile Include="syntax_analyzer.c" />
-    <ClCompile Include="syntax_analyzer.z.default_parse.c" />
+    <ClCompile Include="syntax_analyzer.z.gen.parse.c" />
+    <ClCompile Include="syntax_analyzer.z.parse.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="lexical_analyzer.z.token.c.tt" />
@@ -63,8 +65,8 @@
     <None Include="lexical_token.h.tt" />
     <None Include="lexical_token.ttinclude" />
     <None Include="syntax_analyzer.syntax.ttinclude" />
-    <None Include="syntax_analyzer.z.default_parse.c.tt" />
-    <None Include="syntax_analyzer.z.default_parse.h.tt" />
+    <None Include="syntax_analyzer.z.gen.parse.c.tt" />
+    <None Include="syntax_analyzer.z.gen.parse.h.tt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
