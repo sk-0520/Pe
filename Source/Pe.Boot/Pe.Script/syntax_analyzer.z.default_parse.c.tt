@@ -8,18 +8,18 @@
 <#
     var items = SyntaxLoader.ParseFromDefault(Host).ToList();
 #>
-/* 自動生成: syntax_analyzer.z.parse.c.tt */
+/* 自動生成: syntax_analyzer.z.default_parse.c.tt */
 #include "../Pe.Library/debug.h"
 #include "../Pe.Library/logging.h"
 #include "../Pe.Library/memory.h"
 
-#include "syntax_analyzer.z.parse.h"
+#include "syntax_analyzer.z.default_parse.h"
 
 #define DEFAULT_SYNTAX_DEFINE_LENGTH (<#= items.Count #>)
 
 static const TEXT script__syntax_define_kind_member_names[] = {
 <# foreach(var item in items) { #>
-    static_text(" <#= SyntaxUtility.ToDefineKind(item, 0, false) #>"),
+    static_text("<#= SyntaxUtility.ToDefineKind(item, 0, false) #>"),
 <# } #>
 };
 
@@ -30,12 +30,12 @@ const TEXT* get_member_name_by_syntax_define_kind(<#= SyntaxUtility.DefineKind #
     return script__syntax_define_kind_member_names + syntax_define_kind;
 }
 
-SYNTAX_SET new_default_syntax_set(void)
+SYNTAXES new_default_syntaxes(void)
 {
     const MEMORY_RESOURCE* memory_resource = SCRIPT_MEMORY;
     SYNTAX_DEFINE* syntax_defines = new_memory(DEFAULT_SYNTAX_DEFINE_LENGTH, sizeof(SYNTAX_DEFINE), memory_resource);
 
-    SYNTAX_SET result = {
+    SYNTAXES result = {
         .defines = syntax_defines,
         .length = DEFAULT_SYNTAX_DEFINE_LENGTH,
         .script = {
@@ -101,18 +101,18 @@ SYNTAX_SET new_default_syntax_set(void)
     return result;
 }
 
-void release_syntax_set(SYNTAX_SET* syntax_set)
+void release_syntaxes(SYNTAXES* syntaxes)
 {
-    const MEMORY_RESOURCE* memory_resource = syntax_set->script.memory_resource;
+    const MEMORY_RESOURCE* memory_resource = syntaxes->script.memory_resource;
 
-    for (size_t i = 0; i < syntax_set->length; i++) {
-        for (size_t j = 0; j < syntax_set->defines[i].length; j++) {
-            release_memory(syntax_set->defines[i].elements[j].data, memory_resource);
+    for (size_t i = 0; i < syntaxes->length; i++) {
+        for (size_t j = 0; j < syntaxes->defines[i].length; j++) {
+            release_memory(syntaxes->defines[i].elements[j].data, memory_resource);
         }
-        release_memory(syntax_set->defines[i].elements, memory_resource);
+        release_memory(syntaxes->defines[i].elements, memory_resource);
     }
-    release_memory(syntax_set->defines, memory_resource);
-    set_memory(syntax_set, sizeof(SYNTAX_SET), 0);
+    release_memory(syntaxes->defines, memory_resource);
+    set_memory(syntaxes, sizeof(SYNTAXES), 0);
 }
 
 <#@ include file="lexical_token.ttinclude" once="true" #>
