@@ -77,4 +77,4 @@ void add_token_decimal(OBJECT_LIST* tokens, <#= TokenUtility.TokenKind #> kind, 
     add_token_value_core(tokens, kind, TOKEN_VALUE_TYPE_DECIMAL, token_value, source_position);
 }
 
-<#@ include file="lexical_token.ttinclude" once="true" #>
+<#@ include file="lexical_token.t4" once="true" #>

@@ -67,4 +67,4 @@ void add_token_word(OBJECT_LIST* tokens, <#= TokenUtility.TokenKind #> kind, con
 void add_token_integer(OBJECT_LIST* tokens, <#= TokenUtility.TokenKind #> kind, ssize_t value, const SOURCE_POSITION* source_position);
 void add_token_decimal(OBJECT_LIST* tokens, <#= TokenUtility.TokenKind #> kind, double value, const SOURCE_POSITION* source_position);
 
-<#@ include file="lexical_token.ttinclude" once="true" #>
+<#@ include file="lexical_token.t4" once="true" #>
