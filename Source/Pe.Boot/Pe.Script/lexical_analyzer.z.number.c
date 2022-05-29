@@ -154,7 +154,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
     TEXT reference_text;
     switch (mode) {
         case MODE_INT:
-            parsed_result = parse_ssize_from_text(&word, false, SCRIPT_MEMORY);
+            parsed_result = parse_ssize_from_text(&word, PARSE_BASE_NUMBER_D);
 
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
@@ -169,7 +169,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
             break;
 
         case MODE_HEX:
-            parsed_result = parse_ssize_from_text(&word, true, SCRIPT_MEMORY);
+            parsed_result = parse_ssize_from_text(&word, PARSE_BASE_NUMBER_X);
 
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
@@ -181,7 +181,7 @@ size_t read_number_token(TOKEN_RESULT* token_result, const TEXT* source, size_t 
 
         case MODE_BIN:
             reference_text = wrap_text_with_length(word.value + 2, word.length - 2, false, SCRIPT_MEMORY);
-            parsed_result = parse_ssize_from_bin_text(&reference_text);
+            parsed_result = parse_i64_from_text(&reference_text, PARSE_BASE_NUMBER_B);
             if (parsed_result.success) {
                 converted_integer = (ssize_t)parsed_result.value;
             } else {
