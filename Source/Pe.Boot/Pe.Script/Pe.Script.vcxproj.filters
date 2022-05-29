@@ -97,10 +97,10 @@
     <None Include="syntax_analyzer.z.gen.parse.c.tt">
       <Filter>template</Filter>
     </None>
-    <None Include="syntax_analyzer.syntax.ttinclude">
+    <None Include="syntax_analyzer.syntax.t4">
       <Filter>template</Filter>
     </None>
-    <None Include="lexical_token.ttinclude">
+    <None Include="lexical_token.t4">
       <Filter>template</Filter>
     </None>
     <None Include="lexical_token.h.tt">

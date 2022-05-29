@@ -63,8 +63,8 @@
     <None Include="lexical_analyzer.z.word.c.tt" />
     <None Include="lexical_token.c.tt" />
     <None Include="lexical_token.h.tt" />
-    <None Include="lexical_token.ttinclude" />
-    <None Include="syntax_analyzer.syntax.ttinclude" />
+    <None Include="lexical_token.t4" />
+    <None Include="syntax_analyzer.syntax.t4" />
     <None Include="syntax_analyzer.z.gen.parse.c.tt" />
     <None Include="syntax_analyzer.z.gen.parse.h.tt" />
   </ItemGroup>

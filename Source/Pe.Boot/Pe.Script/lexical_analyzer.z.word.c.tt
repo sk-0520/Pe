@@ -108,4 +108,4 @@ EXIT:
     return read_length;
 }
 
-<#@ include file="lexical_token.ttinclude" once="true" #>
+<#@ include file="lexical_token.t4" once="true" #>
