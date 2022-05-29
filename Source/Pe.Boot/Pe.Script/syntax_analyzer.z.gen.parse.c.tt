@@ -101,5 +101,5 @@ SYNTAXES new_default_syntaxes(void)
     return result;
 }
 
-<#@ include file="lexical_token.ttinclude" once="true" #>
-<#@ include file="syntax_analyzer.syntax.ttinclude" once="true" #>
+<#@ include file="lexical_token.t4" once="true" #>
+<#@ include file="syntax_analyzer.syntax.t4" once="true" #>
