@@ -206,4 +206,4 @@ size_t read_multi_symbol_token(TOKEN_RESULT* token_result, const TEXT* source, s
     return 0;
 }
 
-<#@ include file="lexical_token.ttinclude" once="true" #>
+<#@ include file="lexical_token.t4" once="true" #>
