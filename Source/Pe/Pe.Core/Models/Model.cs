@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Logging;
-using Prism.Mvvm;
+//using Prism.Mvvm;
 
 namespace ContentTypeTextNet.Pe.Core.Models
 {
@@ -58,7 +60,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         #endregion
     }
 
-    public abstract class NotifyPropertyBase: BindableBase, IDisposer
+    public abstract class NotifyPropertyBase: /*BindableBase,*/INotifyPropertyChanged, IDisposer
     {
         protected NotifyPropertyBase()
         { }
@@ -69,6 +71,42 @@ namespace ContentTypeTextNet.Pe.Core.Models
         }
 
         #region property
+        #endregion
+
+        #region function
+
+        protected void RaisePropertyChanged([CallerMemberName] string propertyName = "") => OnPropertyChanged(propertyName);
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            var propertyChanged = PropertyChanged;
+            if(propertyChanged is not null) {
+                propertyChanged(this, e);
+            }
+        }
+
+        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
+        {
+            if(EqualityComparer<T>.Default.Equals(storage, value)) {
+                return false;
+            }
+
+            storage = value;
+            OnPropertyChanged(propertyName);
+
+            return true;
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         #endregion
 
         #region IDisposable
@@ -144,8 +182,12 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
         #region property
 
-        protected ILogger Logger { get; private set; }
-        protected ILoggerFactory LoggerFactory { get; private set; }
+        /// <inheritdoc cref="ILoggerFactory"/>
+        protected ILoggerFactory LoggerFactory { get; }
+        /// <summary>
+        /// ロガー。
+        /// </summary>
+        protected ILogger Logger { get; }
 
         #endregion
 

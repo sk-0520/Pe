@@ -14,7 +14,7 @@ using System.Windows.Input;
 using System.Xml.Serialization;
 using ContentTypeTextNet.Pe.Core.Models;
 using Microsoft.Extensions.Logging;
-using Prism.Mvvm;
+//using Prism.Mvvm;
 
 namespace ContentTypeTextNet.Pe.Core.ViewModels
 {
@@ -31,7 +31,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
     /// <summary>
     /// ViewModel の基底。
     /// </summary>
-    public abstract class ViewModelBase: BindableBase, INotifyDataErrorInfo, IDisposer
+    public abstract class ViewModelBase: BindModelBase, INotifyDataErrorInfo, IDisposer
     {
         /// <summary>
         /// 生成。
@@ -39,10 +39,9 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
         /// <param name="cacheProperty">プロパティ情報をキャッシュするか。</param>
         /// <param name="loggerFactory"><inheritdoc cref="ILoggerFactory"/></param>
         protected ViewModelBase(bool cacheProperty, ILoggerFactory loggerFactory)
+            :base(loggerFactory)
         {
-            LoggerFactory = loggerFactory;
-            Logger = loggerFactory.CreateLogger(GetType());
-            ErrorsContainer = new ErrorsContainer<string>(OnErrorsChanged);
+            ErrorsContainer = new ErrorsContainer(OnErrorsChanged);
 
             if(cacheProperty) {
                 PropertyCacher = new ConcurrentDictionary<object, PropertyCacher>();
@@ -65,12 +64,6 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
 
         #region property
 
-        /// <inheritdoc cref="ILoggerFactory"/>
-        protected ILoggerFactory LoggerFactory { get; }
-        /// <summary>
-        /// ロガー。
-        /// </summary>
-        protected ILogger Logger { get; }
         //IDictionary<string, ICommand> CommandCache { get; } = new Dictionary<string, ICommand>();
         /// <summary>
         /// コマンド一覧。
@@ -364,18 +357,18 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
             }
         }
 
-        protected void ThrowIfDisposed([CallerMemberName] string _callerMemberName = "")
-        {
-            if(IsDisposed) {
-                throw new ObjectDisposedException(_callerMemberName);
-            }
-        }
+        //protected void ThrowIfDisposed([CallerMemberName] string _callerMemberName = "")
+        //{
+        //    if(IsDisposed) {
+        //        throw new ObjectDisposedException(_callerMemberName);
+        //    }
+        //}
 
         #endregion
 
         #region INotifyDataErrorInfo
 
-        private ErrorsContainer<string> ErrorsContainer { get; }
+        private ErrorsContainer ErrorsContainer { get; }
 
         protected void OnErrorsChanged([CallerMemberName] string propertyName = "")
         {
@@ -386,6 +379,9 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
 
         public System.Collections.IEnumerable GetErrors(string? propertyName)
         {
+            if(propertyName is null) {
+                return Enumerable.Empty<string>();
+            }
             return ErrorsContainer.GetErrors(propertyName);
         }
 
@@ -393,62 +389,24 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
 
         #endregion
 
-        #region IDisposable
+        #region BindModelBase
 
-        /// <summary>
-        /// <see cref="IDisposable.Dispose"/>時に呼び出されるイベント。
-        /// <para>呼び出し時点では<see cref="IsDisposed"/>は偽のまま。</para>
-        /// </summary>
-        [field: NonSerialized]
-        public event EventHandler? Disposing;
-
-        /// <summary>
-        /// <see cref="IDisposable.Dispose"/>されたか。
-        /// </summary>
-        [IgnoreDataMember, XmlIgnore]
-        public bool IsDisposed { get; private set; }
-
-        /// <summary>
-        /// <see cref="IDisposable.Dispose"/>の内部処理。
-        /// <para>継承先クラスでは本メソッドを呼び出す必要がある。</para>
-        /// </summary>
-        /// <param name="disposing">CLRの管理下か。</param>
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
-            if(IsDisposed) {
-                return;
+            if(!IsDisposed) {
+                if(PropertyCacher is not null) {
+                    PropertyCacher.Clear();
+                }
+
+                ErrorsContainer.ClearErrors();
+                PropertyChangedEventArgsCache.Clear();
+
+                if(disposing) {
+                    CommandStore.Dispose();
+                }
             }
 
-            if(Disposing != null) {
-                Disposing(this, EventArgs.Empty);
-            }
-
-            if(PropertyCacher is not null) {
-                PropertyCacher.Clear();
-            }
-
-            ErrorsContainer.ClearErrors();
-            PropertyChangedEventArgsCache.Clear();
-
-            if(disposing) {
-                CommandStore.Dispose();
-            }
-
-            if(disposing) {
-#pragma warning disable S3971 // "GC.SuppressFinalize" should not be called
-                GC.SuppressFinalize(this);
-#pragma warning restore S3971 // "GC.SuppressFinalize" should not be called
-            }
-
-            IsDisposed = true;
-        }
-
-
-        /// <inheritdoc cref="IDisposable.Dispose" />
-        [SuppressMessage("Usage", "CA1816:Dispose メソッドは、SuppressFinalize を呼び出す必要があります")]
-        public void Dispose()
-        {
-            Dispose(true);
+            base.Dispose(disposing);
         }
 
         #endregion
