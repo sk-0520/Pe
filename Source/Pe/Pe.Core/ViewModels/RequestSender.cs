@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
-using Prism.Mvvm;
+//using Prism.Mvvm;
 
 namespace ContentTypeTextNet.Pe.Core.ViewModels
 {
@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
         #endregion
     }
 
-    public class RequestSender: BindableBase, IRequestSender
+    public class RequestSender: NotifyPropertyBase, IRequestSender
     {
         public RequestSender()
         { }
