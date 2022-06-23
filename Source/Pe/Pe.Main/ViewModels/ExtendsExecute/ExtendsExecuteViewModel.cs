@@ -267,7 +267,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
             }
         ));
 
-        public ICommand RemoveHistoryCommand => GetOrCreateCommand(() => new DelegateCommand<HistoryViewModel>(
+        public ICommand RemoveHistoryCommand => GetOrCreateCommand(() => new _DelegateCommand<HistoryViewModel>(
             o => {
                 var removed = Model.RemoveHistory(o.Kind, o.LastExecuteTimestamp);
                 var items = o.Kind switch {
