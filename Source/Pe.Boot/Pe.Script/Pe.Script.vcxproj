@@ -40,33 +40,31 @@
     <ClInclude Include="lexical_analyzer.z.word.h" />
     <ClInclude Include="script.h" />
     <ClInclude Include="source.h" />
-    <ClInclude Include="lexical_token.h" />
+    <ClInclude Include="lexical_token.gen.h" />
     <ClInclude Include="syntax_analyzer.h" />
-    <ClInclude Include="syntax_analyzer.z.gen.parse.h" />
-    <ClInclude Include="syntax_analyzer.z.parse.h" />
+    <ClInclude Include="syntax_analyzer.z.parse.gen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="compile.c" />
     <ClCompile Include="lexical_analyzer.c" />
     <ClCompile Include="lexical_analyzer.z.number.c" />
     <ClCompile Include="lexical_analyzer.z.string.c" />
-    <ClCompile Include="lexical_analyzer.z.token.c" />
-    <ClCompile Include="lexical_analyzer.z.word.c" />
+    <ClCompile Include="lexical_analyzer.z.token.gen.c" />
+    <ClCompile Include="lexical_analyzer.z.word.gen.c" />
     <ClCompile Include="script.c" />
-    <ClCompile Include="lexical_token.c" />
+    <ClCompile Include="lexical_token.gen.c" />
     <ClCompile Include="syntax_analyzer.c" />
-    <ClCompile Include="syntax_analyzer.z.gen.parse.c" />
-    <ClCompile Include="syntax_analyzer.z.parse.c" />
+    <ClCompile Include="syntax_analyzer.z.parse.gen.c" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="lexical_analyzer.z.token.c.tt" />
-    <None Include="lexical_analyzer.z.word.c.tt" />
-    <None Include="lexical_token.c.tt" />
-    <None Include="lexical_token.h.tt" />
+    <None Include="lexical_analyzer.z.token.gen.c.tt" />
+    <None Include="lexical_analyzer.z.word.gen.c.tt" />
+    <None Include="lexical_token.gen.c.tt" />
+    <None Include="lexical_token.gen.h.tt" />
     <None Include="lexical_token.t4" />
     <None Include="syntax_analyzer.syntax.t4" />
-    <None Include="syntax_analyzer.z.gen.parse.c.tt" />
-    <None Include="syntax_analyzer.z.gen.parse.h.tt" />
+    <None Include="syntax_analyzer.z.parse.gen.c.tt" />
+    <None Include="syntax_analyzer.z.parse.gen.h.tt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
