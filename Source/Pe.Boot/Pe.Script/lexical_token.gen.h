@@ -1,5 +1,5 @@
 ﻿#pragma once
-/* 自動生成: lexical_token.h.tt */
+/* 自動生成: lexical_token.gen.h.tt */
 #include "source.h"
 #include "script.h"
 
