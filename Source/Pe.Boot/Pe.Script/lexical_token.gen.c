@@ -1,7 +1,7 @@
 ﻿/* 自動生成: lexical_token.c.tt */
 #include "../Pe.Library/debug.h"
 #include "../Pe.Library/object_list.h"
-#include "lexical_token.h"
+#include "lexical_token.gen.h"
 
 static const TEXT script__token_kind_member_names[] = {
     static_text("TOKEN_KIND_OP_ASSIGN"),
