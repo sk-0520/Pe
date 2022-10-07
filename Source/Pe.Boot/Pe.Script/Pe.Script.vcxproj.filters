@@ -24,7 +24,7 @@
     <ClInclude Include="script.h">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="lexical_token.h">
+    <ClInclude Include="lexical_token.gen.h">
       <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="compile.h">
@@ -48,10 +48,7 @@
     <ClInclude Include="syntax_analyzer.h">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="syntax_analyzer.z.gen.parse.h">
-      <Filter>header</Filter>
-    </ClInclude>
-    <ClInclude Include="syntax_analyzer.z.parse.h">
+    <ClInclude Include="syntax_analyzer.z.parse.gen.h">
       <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>
@@ -62,7 +59,7 @@
     <ClCompile Include="script.c">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="lexical_token.c">
+    <ClCompile Include="lexical_token.gen.c">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="compile.c">
@@ -74,27 +71,24 @@
     <ClCompile Include="lexical_analyzer.z.string.c">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="lexical_analyzer.z.token.c">
+    <ClCompile Include="lexical_analyzer.z.token.gen.c">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="lexical_analyzer.z.word.c">
+    <ClCompile Include="lexical_analyzer.z.word.gen.c">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="syntax_analyzer.c">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="syntax_analyzer.z.gen.parse.c">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="syntax_analyzer.z.parse.c">
+    <ClCompile Include="syntax_analyzer.z.parse.gen.c">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="syntax_analyzer.z.gen.parse.h.tt">
+    <None Include="syntax_analyzer.z.parse.gen.h.tt">
       <Filter>template</Filter>
     </None>
-    <None Include="syntax_analyzer.z.gen.parse.c.tt">
+    <None Include="syntax_analyzer.z.parse.gen.c.tt">
       <Filter>template</Filter>
     </None>
     <None Include="syntax_analyzer.syntax.t4">
@@ -103,16 +97,16 @@
     <None Include="lexical_token.t4">
       <Filter>template</Filter>
     </None>
-    <None Include="lexical_token.h.tt">
+    <None Include="lexical_token.gen.h.tt">
       <Filter>template</Filter>
     </None>
-    <None Include="lexical_analyzer.z.token.c.tt">
+    <None Include="lexical_analyzer.z.token.gen.c.tt">
       <Filter>template</Filter>
     </None>
-    <None Include="lexical_analyzer.z.word.c.tt">
+    <None Include="lexical_analyzer.z.word.gen.c.tt">
       <Filter>template</Filter>
     </None>
-    <None Include="lexical_token.c.tt">
+    <None Include="lexical_token.gen.c.tt">
       <Filter>template</Filter>
     </None>
   </ItemGroup>

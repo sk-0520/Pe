@@ -1,5 +1,5 @@
 ﻿#pragma once
-/* 自動生成: syntax_analyzer.z.default_parse.h.tt */
+/* 自動生成: syntax_analyzer.z.default_parse.gen.h.tt */
 #include "lexical_analyzer.h"
 #include "lexical_analyzer.z.token.h"
 
@@ -145,7 +145,5 @@ typedef struct tag_SYNTAXES
 const TEXT* get_member_name_by_syntax_define_kind(SYNTAX_DEFINE_KIND syntax_define_kind);
 
 SYNTAXES new_default_syntaxes(void);
-
-void release_syntaxes(SYNTAXES* syntaxes);
 
 
