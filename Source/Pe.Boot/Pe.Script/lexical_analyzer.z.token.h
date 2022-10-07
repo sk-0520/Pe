@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <stdbool.h>
 
-#include "lexical_token.h"
+#include "lexical_token.gen.h"
 
 typedef struct tag_SINGLE_SYMBOL_TOKEN
 {

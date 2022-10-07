@@ -1,5 +1,5 @@
 ﻿#include "../Pe.Library/tcharacter.h"
-#include "../Pe.Library/primitive_list.h"
+#include "../Pe.Library/primitive_list.gen.h"
 #include "../Pe.Library/debug.h"
 
 #include "lexical_analyzer.h"
