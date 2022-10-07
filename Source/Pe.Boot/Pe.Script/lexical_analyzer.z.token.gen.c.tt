@@ -37,7 +37,7 @@
     ;
 
 #>
-/* 自動生成: lexical_analyzer.z.token.c.tt */
+/* 自動生成: lexical_analyzer.z.token.gen.c.tt */
 #include "../Pe.Library/common.h"
 
 #include "lexical_analyzer.h"
