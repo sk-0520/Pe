@@ -8,12 +8,12 @@
 <#
     var items = SyntaxLoader.ParseFromDefault(Host).ToList();
 #>
-/* 自動生成: syntax_analyzer.z.default_parse.c.tt */
+/* 自動生成: syntax_analyzer.z.default_parse.c.gen.tt */
 #include "../Pe.Library/debug.h"
 #include "../Pe.Library/logging.h"
 #include "../Pe.Library/memory.h"
 
-#include "syntax_analyzer.z.parse.h"
+#include "syntax_analyzer.z.parse.gen.h"
 
 #define DEFAULT_SYNTAX_DEFINE_LENGTH (<#= items.Count #>)
 
