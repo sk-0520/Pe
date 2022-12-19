@@ -125,7 +125,7 @@ namespace ContentTypeTextNet.Pe.Main.Models
         /// <summary>
         /// Pe の SQL ディレクトリ。
         /// </summary>
-        public DirectoryInfo MainSqlDirectory => CombineDirectory(false, SqlDirectory, "ContentTypeTextNet.Pe.Main");
+        public DirectoryInfo MainSqlDirectory => CombineDirectory(false, SqlDirectory, "Pe.Main");
 
         public DirectoryInfo WebViewTemplateDirectory => CombineDirectory(false, EtcDirectory, "web-view");
         //public DirectoryInfo WebViewThirdPartyDirectory => CombineDirectory(false, WebViewTemplateDirectory, "third-party");

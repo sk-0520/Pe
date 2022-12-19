@@ -210,7 +210,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
     {
         #region define
 
-        private const string IgnoreNamespace = "ContentTypeTextNet.Pe.Main";
+        private const string IgnoreNamespace = "ContentTypeTextNet.Pe.Main.Models.Database";
         private const string SelectStatement = @"
 select
     Statements.Statement
