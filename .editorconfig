@@ -256,7 +256,7 @@ csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimenta
 
 charset = utf-8-bom
 
-cpp_generate_documentation_comments = xml
+cpp_generate_documentation_comments = doxygen_triple_slash
 
 cpp_indent_braces = false
 cpp_indent_multi_line_relative_to = innermost_parenthesis
