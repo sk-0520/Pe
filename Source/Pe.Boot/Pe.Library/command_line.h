@@ -6,14 +6,10 @@
 #include "map.h"
 
 
-/// <summary>
-/// コマンドラインの値。
-/// </summary>
+/// @brief コマンドラインの値。
 typedef struct tag_COMMAND_LINE_ITEM
 {
-    /// <summary>
-    /// COMMAND_LINE_OPTION.arguments から見たキーの位置。
-    /// </summary>
+    /// @brief COMMAND_LINE_OPTION.arguments から見たキーの位置。
     size_t key_index;
     /// <summary>
     /// COMMAND_LINE_OPTION.arguments から見た値の位置。

@@ -5,11 +5,8 @@
 
 #include "common.h"
 
-/// <summary>
-/// デバッグ時のみ使用可能なログ出力。
-/// <para>DEBUGレベルで動かすので設定レベルに依存。</para>
-/// </summary>
-/// <param name="s"></param>
+/// @brief デバッグ時のみ使用可能なログ出力。
+/// @param s DEBUGレベルで動かすので設定レベルに依存。
 void output_debug(const TCHAR * s);
 
 #ifdef NDEBUG
