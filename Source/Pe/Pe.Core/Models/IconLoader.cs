@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
@@ -19,12 +20,46 @@ namespace ContentTypeTextNet.Pe.Core.Models
     /// </summary>
     public class IconLoader
     {
+        #region define
+
+        private class ResourceBinary: DisposerBase
+        {
+            public ResourceBinary(IntPtr buffer, int length)
+            {
+                Buffer = buffer;
+                Length = length;
+            }
+
+            #region property
+
+            public IntPtr Buffer { get; private set; }
+            public int Length { get; }
+
+            #endregion
+
+            #region DisposerBase
+
+            protected override void Dispose(bool disposing)
+            {
+                if(!IsDisposed) {
+                    if(Buffer != IntPtr.Zero) {
+                        Buffer = IntPtr.Zero;
+                    }
+                }
+
+                base.Dispose(disposing);
+            }
+
+            #endregion
+        }
+
         private const int SIZEOF_GRPICONDIR_idCount = 4;
         private const int OFFSET_GRPICONDIRENTRY_nID = 12;
         private const int OFFSET_GRPICONDIRENTRY_dwBytesInRes = 8;
         private static readonly int SIZEOF_ICONDIR = Marshal.SizeOf<ICONDIR>();
         private static readonly int SIZEOF_ICONDIRENTRY = Marshal.SizeOf<ICONDIRENTRY>();
         private static readonly int SIZEOF_GRPICONDIRENTRY = Marshal.SizeOf<GRPICONDIRENTRY>();
+        #endregion
 
         public IconLoader(ILogger logger)
         {
