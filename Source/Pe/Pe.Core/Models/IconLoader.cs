@@ -24,7 +24,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
         private class ResourceBinary: DisposerBase
         {
-            public ResourceBinary(IntPtr buffer, int length)
+            public ResourceBinary(IntPtr buffer, uint length)
             {
                 Buffer = buffer;
                 Length = length;
@@ -33,7 +33,13 @@ namespace ContentTypeTextNet.Pe.Core.Models
             #region property
 
             public IntPtr Buffer { get; private set; }
-            public int Length { get; }
+            public uint Length { get; }
+
+            #endregion
+
+            #region function
+
+            public static ResourceBinary CreateEmpty() => new(IntPtr.Zero, 0);
 
             #endregion
 
@@ -45,6 +51,33 @@ namespace ContentTypeTextNet.Pe.Core.Models
                     if(Buffer != IntPtr.Zero) {
                         Buffer = IntPtr.Zero;
                     }
+                }
+
+                base.Dispose(disposing);
+            }
+
+            #endregion
+        }
+
+        private class ModuleBinaryList: DisposerBase
+        {
+            public ModuleBinaryList(IntPtr hModule)
+            {
+                ModuleHandle = hModule;
+            }
+
+            #region property
+
+            IntPtr ModuleHandle { get; }
+
+            #endregion
+
+            #region DisposerBase
+
+            protected override void Dispose(bool disposing)
+            {
+                if(!IsDisposed) {
+                    NativeMethods.FreeLibrary(ModuleHandle);
                 }
 
                 base.Dispose(disposing);
@@ -125,36 +158,33 @@ namespace ContentTypeTextNet.Pe.Core.Models
         /// <param name="resType"><inheritdoc cref="RT"/></param>
         /// <returns>取得成功した場合のリソースバイナリ。</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1168:Empty arrays and collections should be returned instead of null")]
-        private byte[]? GetResourceBinaryData(IntPtr hModule, IntPtr name, RT resType)
+        private ResourceBinary GetResourceBinaryData(IntPtr hModule, IntPtr name, RT resType, bool leaveOpen)
         {
             var hGroup = NativeMethods.FindResource(hModule, name, new IntPtr((int)resType));
             if(hGroup == IntPtr.Zero) {
                 Logger.LogTrace($"return {nameof(NativeMethods.FindResource)}");
-                return null;
+                return ResourceBinary.CreateEmpty();
             }
 
             var hLoadGroup = NativeMethods.LoadResource(hModule, hGroup);
             if(hLoadGroup == IntPtr.Zero) {
                 Logger.LogTrace($"return {nameof(NativeMethods.LoadResource)}");
-                return null;
+                return ResourceBinary.CreateEmpty();
             }
 
             var resData = NativeMethods.LockResource(hLoadGroup);
             if(resData == IntPtr.Zero) {
                 Logger.LogTrace($"return {nameof(NativeMethods.LockResource)}");
-                return null;
+                return ResourceBinary.CreateEmpty();
             }
 
             var resSize = NativeMethods.SizeofResource(hModule, hGroup);
             if(resSize == 0) {
                 Logger.LogTrace($"return {nameof(NativeMethods.SizeofResource)}");
-                return null;
+                return ResourceBinary.CreateEmpty();
             }
 
-            var resBinary = new byte[resSize];
-            Marshal.Copy(resData, resBinary, 0, resBinary.Length);
-
-            return resBinary;
+            return new ResourceBinary(resData, resSize);
         }
 
         /// <summary>
