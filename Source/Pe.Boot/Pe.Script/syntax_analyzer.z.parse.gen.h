@@ -138,7 +138,7 @@ typedef struct tag_SYNTAXES
     size_t length;
     struct
     {
-        const MEMORY_RESOURCE* memory_resource;
+        const MEMORY_ARENA_RESOURCE* memory_resource;
     } script;
 } SYNTAXES;
 
