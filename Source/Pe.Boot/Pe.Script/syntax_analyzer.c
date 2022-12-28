@@ -50,7 +50,7 @@ void analyze_syntax(const TOKEN_RESULT* token_result, const PROJECT_SETTING* set
 
 void release_syntaxes(SYNTAXES* syntaxes)
 {
-    const MEMORY_RESOURCE* memory_resource = syntaxes->script.memory_resource;
+    const MEMORY_ARENA_RESOURCE* memory_resource = syntaxes->script.memory_resource;
 
     for (size_t i = 0; i < syntaxes->length; i++) {
         for (size_t j = 0; j < syntaxes->defines[i].length; j++) {
