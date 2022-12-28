@@ -32,7 +32,7 @@ const TEXT* get_member_name_by_syntax_define_kind(<#= SyntaxUtility.DefineKind #
 
 SYNTAXES new_default_syntaxes(void)
 {
-    const MEMORY_RESOURCE* memory_resource = SCRIPT_MEMORY;
+    const MEMORY_ARENA_RESOURCE* memory_resource = SCRIPT_MEMORY;
     SYNTAX_DEFINE* syntax_defines = new_memory(DEFAULT_SYNTAX_DEFINE_LENGTH, sizeof(SYNTAX_DEFINE), memory_resource);
 
     SYNTAXES result = {
