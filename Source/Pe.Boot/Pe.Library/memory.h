@@ -24,6 +24,26 @@ typedef struct tag_MEMORY_ARENA_RESOURCE
 } MEMORY_ARENA_RESOURCE;
 
 /// <summary>
+/// メモリ管理データ。
+/// </summary>
+typedef struct tag_MEMORY_RESOURCE
+{
+    /// <summary>
+    /// 有効データ。
+    /// </summary>
+    void* values;
+    /// <summary>
+    /// 有効領域。
+    /// </summary>
+    byte_t length;
+
+    struct
+    {
+        MEMORY_ARENA_RESOURCE arena;
+    } library;
+} MEMORY_RESOURCE;
+
+/// <summary>
 /// メモリアリーナ管理: 自動初期サイズ。
 /// </summary>
 #define MEMORY_ARENA_AUTO_INITIAL_SIZE (0)
