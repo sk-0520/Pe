@@ -72,7 +72,7 @@ typedef struct tag_MULTI_SYMBOL_TOKEN
     bool skip_comments[MULTI_CHAR_SYMBOL_COUNT];
 } MULTI_SYMBOL_TOKEN;
 
-static const SINGLE_SYMBOL_TOKEN script__single_symbol_tokens[] = {
+static const SINGLE_SYMBOL_TOKEN script_single_symbol_tokens[] = {
 <# foreach(var item in singleSymbolItems) { #>
     {
         .symbol = '<#= item.ToSingleSymbolCharacter() #>',
@@ -81,7 +81,7 @@ static const SINGLE_SYMBOL_TOKEN script__single_symbol_tokens[] = {
 <# } #>
 };
 
-static const MULTI_SYMBOL_TOKEN script__multi_symbol_tokens[] = {
+static const MULTI_SYMBOL_TOKEN script_multi_symbol_tokens[] = {
 <# foreach(var group in multiSymbolItems.GroupBy(i => i.Value[0])) { #>
 <#
     var groupItems = group.ToList();
@@ -128,7 +128,7 @@ static const MULTI_SYMBOL_TOKEN script__multi_symbol_tokens[] = {
 <# } #>
 };
 
-static const TCHAR script__symbol_tokens[] = {
+static const TCHAR script_symbol_tokens[] = {
 <# foreach(var c in singleSymbolItemCharacters) { #>
     '<#= c #>',
 <# } #>
@@ -145,8 +145,8 @@ bool is_comment_token_kind(TOKEN_KIND kind)
 
 bool is_synbol_token(TCHAR c)
 {
-    for (size_t i = 0; i < SIZEOF_ARRAY(script__symbol_tokens); i++) {
-        if (c == script__symbol_tokens[i]) {
+    for (size_t i = 0; i < SIZEOF_ARRAY(script_symbol_tokens); i++) {
+        if (c == script_symbol_tokens[i]) {
             return true;
         }
     }
@@ -156,9 +156,9 @@ bool is_synbol_token(TCHAR c)
 
 const SINGLE_SYMBOL_TOKEN* find_single_symbol_token(TCHAR c)
 {
-    for (size_t i = 0; i < SIZEOF_ARRAY(script__single_symbol_tokens); i++) {
-        if (script__single_symbol_tokens[i].symbol == c) {
-            return script__single_symbol_tokens + i;
+    for (size_t i = 0; i < SIZEOF_ARRAY(script_single_symbol_tokens); i++) {
+        if (script_single_symbol_tokens[i].symbol == c) {
+            return script_single_symbol_tokens + i;
         }
     }
 
@@ -173,8 +173,8 @@ size_t read_multi_symbol_token(TOKEN_RESULT* token_result, const TEXT* source, s
         symbols[i] = get_relative_character(source, start_index, i);
     }
 
-    for (size_t i = 0; i < SIZEOF_ARRAY(script__multi_symbol_tokens); i++) {
-        const MULTI_SYMBOL_TOKEN* multi_symbol_token = script__multi_symbol_tokens + i;
+    for (size_t i = 0; i < SIZEOF_ARRAY(script_multi_symbol_tokens); i++) {
+        const MULTI_SYMBOL_TOKEN* multi_symbol_token = script_multi_symbol_tokens + i;
 
         // 一文字目が合致しないのであればどう頑張っても比較する意味がない
         if (multi_symbol_token->symbols[0] != symbols[0]) {

@@ -7,7 +7,7 @@
 
 #define DEFAULT_SYNTAX_DEFINE_LENGTH (5)
 
-static const TEXT script__syntax_define_kind_member_names[] = {
+static const TEXT script_syntax_define_kind_member_names[] = {
     static_text("SYNTAX_DEFINE_KIND_EXPRESSION"),
     static_text("SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION"),
     static_text("SYNTAX_DEFINE_KIND_STRING"),
@@ -17,9 +17,9 @@ static const TEXT script__syntax_define_kind_member_names[] = {
 
 const TEXT* get_member_name_by_syntax_define_kind(SYNTAX_DEFINE_KIND syntax_define_kind)
 {
-    assert(syntax_define_kind < SIZEOF_ARRAY(script__syntax_define_kind_member_names));
+    assert(syntax_define_kind < SIZEOF_ARRAY(script_syntax_define_kind_member_names));
 
-    return script__syntax_define_kind_member_names + syntax_define_kind;
+    return script_syntax_define_kind_member_names + syntax_define_kind;
 }
 
 SYNTAXES new_default_syntaxes(void)
