@@ -12,7 +12,7 @@ typedef struct tag_KEYWORD_TOKEN
     TEXT word;
 } KEYWORD_TOKEN;
 
-static const KEYWORD_TOKEN script__keyword_tokens[] = {
+static const KEYWORD_TOKEN script_keyword_tokens[] = {
     {
         .kind = TOKEN_KIND_KEYWORD_IF,
         .implement = true,
@@ -226,9 +226,9 @@ static bool is_word_char(TCHAR c)
 
 static const KEYWORD_TOKEN* get_word_token_kind(const TEXT* word)
 {
-    for (size_t i = 0; i < SIZEOF_ARRAY(script__keyword_tokens); i++) {
-        if (is_equals_text(word, &script__keyword_tokens[i].word, false)) {
-            return script__keyword_tokens + i;
+    for (size_t i = 0; i < SIZEOF_ARRAY(script_keyword_tokens); i++) {
+        if (is_equals_text(word, &script_keyword_tokens[i].word, false)) {
+            return script_keyword_tokens + i;
         }
     }
 

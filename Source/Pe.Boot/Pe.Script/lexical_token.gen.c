@@ -3,7 +3,7 @@
 #include "../Pe.Library/object_list.h"
 #include "lexical_token.gen.h"
 
-static const TEXT script__token_kind_member_names[] = {
+static const TEXT script_token_kind_member_names[] = {
     static_text("TOKEN_KIND_OP_ASSIGN"),
     static_text("TOKEN_KIND_OP_PLUS"),
     static_text("TOKEN_KIND_OP_MINUS"),
@@ -97,9 +97,9 @@ static const TEXT script__token_kind_member_names[] = {
 
 const TEXT* get_member_name_by_token_kind(TOKEN_KIND kind)
 {
-    assert(kind < SIZEOF_ARRAY(script__token_kind_member_names));
+    assert(kind < SIZEOF_ARRAY(script_token_kind_member_names));
 
-    return script__token_kind_member_names + kind;
+    return script_token_kind_member_names + kind;
 }
 
 
