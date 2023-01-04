@@ -13,7 +13,7 @@
 #include "../Pe.Library/object_list.h"
 #include "lexical_token.gen.h"
 
-static const TEXT script__token_kind_member_names[] = {
+static const TEXT script_token_kind_member_names[] = {
 <# foreach(var item in items) { #>
     static_text("<#= TokenUtility.ToDefineKind(item, 0, false) #>"),
 <# } #>
@@ -21,9 +21,9 @@ static const TEXT script__token_kind_member_names[] = {
 
 const TEXT* get_member_name_by_token_kind(<#= TokenUtility.TokenKind #> kind)
 {
-    assert(kind < SIZEOF_ARRAY(script__token_kind_member_names));
+    assert(kind < SIZEOF_ARRAY(script_token_kind_member_names));
 
-    return script__token_kind_member_names + kind;
+    return script_token_kind_member_names + kind;
 }
 
 
