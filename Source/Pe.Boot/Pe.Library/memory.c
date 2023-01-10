@@ -19,6 +19,21 @@ static MEMORY_ARENA_RESOURCE create_invalid_memory_arena_resource()
     return result;
 }
 
+static MEMORY_RESOURCE create_invalid_memory_resource(const MEMORY_ARENA_RESOURCE* memory_arena_resource)
+{
+    MEMORY_RESOURCE result = {
+        .values = NULL,
+        .value_size = 0,
+        .value_length = 0,
+        .library = {
+            .arena = memory_arena_resource,
+        }
+    };
+
+    return result;
+}
+
+
 /// <summary>
 /// メモリリソースがライブラリ管理の通常使用かどうかを判断。
 /// </summary>
@@ -72,7 +87,7 @@ MEMORY_ARENA_RESOURCE new_memory_arena_resource(byte_t initial_size, byte_t maxi
     };
 
     return result;
-}
+    }
 
 bool release_memory_arena_resource(MEMORY_ARENA_RESOURCE* memory_arena_resource)
 {
@@ -99,15 +114,24 @@ bool is_enabled_memory_arena_resource(const MEMORY_ARENA_RESOURCE* memory_arena_
     return memory_arena_resource->handle;
 }
 
-void* RC_HEAP_FUNC(allocate_raw_memory, byte_t bytes, bool zero_fill, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
+bool is_enabled_memory_resource(const MEMORY_RESOURCE* memory_resource)
+{
+    if (!memory_resource) {
+        return false;
+    }
+
+    return memory_resource->value_size;
+}
+
+MEMORY_RESOURCE RC_HEAP_FUNC(allocate_raw_memory, byte_t bytes, bool zero_fill, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
 {
     if (!is_enabled_memory_arena_resource(memory_arena_resource)) {
-        return NULL;
+        return create_invalid_memory_resource(memory_arena_resource);
     }
 
     void* heap = HeapAlloc(memory_arena_resource->handle, zero_fill ? HEAP_ZERO_MEMORY : 0, bytes);
     if (!heap) {
-        return NULL;
+        return create_invalid_memory_resource(memory_arena_resource);
     }
 
 #ifdef RES_CHECK
@@ -116,35 +140,48 @@ void* RC_HEAP_FUNC(allocate_raw_memory, byte_t bytes, bool zero_fill, const MEMO
     }
 #endif
 
-    return heap;
+    MEMORY_RESOURCE result = {
+        .values = heap,
+        .value_size = 1,
+        .value_length = bytes,
+        .library = {
+            .arena = memory_arena_resource
+        }
+    };
+
+    return result;
 }
 
-void* RC_HEAP_FUNC(new_memory, size_t count, byte_t type_size, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
+MEMORY_RESOURCE RC_HEAP_FUNC(new_memory, size_t count, byte_t type_size, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
 {
     byte_t allocate_size = count * type_size;
     if (allocate_size / type_size != count) {
-        return NULL;
+        return create_invalid_memory_resource(memory_arena_resource);
     }
 
-    return RC_HEAP_CALL(allocate_raw_memory, allocate_size, true, memory_arena_resource);
+    MEMORY_RESOURCE result = RC_HEAP_CALL(allocate_raw_memory, allocate_size, true, memory_arena_resource);
+    result.value_size = type_size;
+    result.value_length = count;
+
+    return result;
 }
 
-bool RC_HEAP_FUNC(release_memory, void* p, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
+bool RC_HEAP_FUNC(release_memory, MEMORY_RESOURCE* memory_resource)
 {
-    if (!p) {
+    if(!is_enabled_memory_resource(memory_resource)) {
         return false;
     }
 
-    bool result = HeapFree(memory_arena_resource->handle, 0, p);
+    bool result = HeapFree(memory_resource->library.arena.handle, 0, memory_resource->values);
     if (!result) {
         return false;
     }
 
 #ifdef RES_CHECK
-    if (is_default_memory_arena_resource(memory_arena_resource)) {
+    if (is_default_memory_arena_resource(&memory_resource->library.arena)) {
 #pragma warning(push)
 #pragma warning(disable:6001)
-        library_rc_heap_check(p, false, RES_CHECK_CALL_ARGS);
+        library_rc_heap_check(memory_resource->values, false, RES_CHECK_CALL_ARGS);
 #pragma warning(pop)
     }
 #endif
@@ -188,13 +225,13 @@ byte_t library_extend_capacity_if_not_enough_bytes(void** target, byte_t current
         new_capacity_bytes = calc_extend_capacity(new_capacity_bytes);
     } while (new_capacity_bytes < need_total_bytes);
 
-    void* new_buffer = allocate_raw_memory(new_capacity_bytes, false, memory_arena_resource);
+    MEMORY_RESOURCE new_buffer = allocate_raw_memory(new_capacity_bytes, false, memory_arena_resource);
     void* old_buffer = *target;
 
-    copy_memory(new_buffer, old_buffer, new_capacity_bytes);
+    copy_memory(new_buffer.values, old_buffer, new_capacity_bytes);
     release_memory(old_buffer, memory_arena_resource);
 
-    *target = new_buffer;
+    *target = new_buffer.values;
 
     //return new_capacity_bytes - old_capacity_bytes;
     return new_capacity_bytes;

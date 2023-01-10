@@ -15,12 +15,12 @@ namespace PeLibraryTest
         TEST_METHOD(allocate_test)
         {
             size_t len = 16;
-            auto p1 = (unsigned char*)allocate_raw_memory(len, false, DEFAULT_MEMORY_ARENA);
+            MEMORY_RESOURCE p1 = allocate_raw_memory(len, false, DEFAULT_MEMORY_ARENA);
             for (size_t i = 0; i < len; i++) {
                 p1[i] = (unsigned char)i;
             }
 
-            auto p2 = (unsigned char*)allocate_raw_memory(len, true, DEFAULT_MEMORY_ARENA);
+            MEMORY_RESOURCE p2 = allocate_raw_memory(len, true, DEFAULT_MEMORY_ARENA);
             for (size_t i = 0; i < len; i++) {
                 unsigned char c = p2[i];
                 Assert::IsFalse(c);

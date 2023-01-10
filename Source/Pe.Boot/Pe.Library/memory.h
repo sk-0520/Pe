@@ -39,7 +39,7 @@ typedef struct tag_MEMORY_RESOURCE
     /// <summary>
     /// <see cref="values"/> の個数。
     /// </summary>
-    size_t value_count;
+    size_t value_length;
 
     struct
     {
@@ -123,12 +123,19 @@ bool release_memory_arena_resource(MEMORY_ARENA_RESOURCE* memory_arena_resource)
 bool is_enabled_memory_arena_resource(const MEMORY_ARENA_RESOURCE* memory_arena_resource);
 
 /// <summary>
+/// メモリ確保データが有効か。
+/// </summary>
+/// <param name="memory_resource"></param>
+/// <returns></returns>
+bool is_enabled_memory_resource(const MEMORY_RESOURCE* memory_resource);
+
+/// <summary>
 /// 指定したサイズ以上のヒープ領域を確保。
 /// <para>アプリケーション側では原則使用しない。</para>
 /// </summary>
 /// <param name="bytes">確保サイズ</param>
 /// <returns>確保した領域。<see cref="release_memory"/>にて開放が必要。失敗時は<c>NULL</c>を返す。</returns>
-void* RC_HEAP_FUNC(allocate_raw_memory, byte_t bytes, bool zero_fill, const MEMORY_ARENA_RESOURCE* memory_arena_resource);
+MEMORY_RESOURCE RC_HEAP_FUNC(allocate_raw_memory, byte_t bytes, bool zero_fill, const MEMORY_ARENA_RESOURCE* memory_arena_resource);
 #if RES_CHECK
 #   define allocate_raw_memory(bytes, zero_fill, memory_arena_resource) RC_HEAP_WRAP(allocate_raw_memory, bytes, zero_fill, memory_arena_resource)
 #endif
@@ -141,7 +148,7 @@ void* RC_HEAP_FUNC(allocate_raw_memory, byte_t bytes, bool zero_fill, const MEMO
 /// <param name="count">確保する個数。</param>
 /// <param name="type_size">型サイズ。</param>
 /// <returns>確保した領域。<see cref="release_memory"/>にて開放が必要。失敗時は<c>NULL</c>を返す。</returns>
-void* RC_HEAP_FUNC(new_memory, size_t count, byte_t type_size, const MEMORY_ARENA_RESOURCE* memory_arena_resource);
+MEMORY_RESOURCE RC_HEAP_FUNC(new_memory, size_t count, byte_t type_size, const MEMORY_ARENA_RESOURCE* memory_arena_resource);
 #if RES_CHECK
 #   define new_memory(count, type_size, memory_arena_resource) RC_HEAP_WRAP(new_memory, count, type_size, memory_arena_resource)
 #endif
@@ -151,9 +158,9 @@ void* RC_HEAP_FUNC(new_memory, size_t count, byte_t type_size, const MEMORY_AREN
 /// </summary>
 /// <param name="p"></param>
 /// <returns></returns>
-bool RC_HEAP_FUNC(release_memory, void* p, const MEMORY_ARENA_RESOURCE* memory_arena_resource);
+bool RC_HEAP_FUNC(release_memory, MEMORY_RESOURCE* memory_resource);
 #if RES_CHECK
-#   define release_memory(p, memory_arena_resource) RC_HEAP_WRAP(release_memory, p, memory_arena_resource)
+#   define release_memory(p, memory_resource) RC_HEAP_WRAP(release_memory, memory_resource)
 #endif
 
 
