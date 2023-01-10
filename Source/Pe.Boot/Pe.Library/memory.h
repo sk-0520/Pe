@@ -33,9 +33,13 @@ typedef struct tag_MEMORY_RESOURCE
     /// </summary>
     void* values;
     /// <summary>
-    /// 有効領域。
+    /// 有効データ一要素のサイズ。
     /// </summary>
-    byte_t length;
+    byte_t value_size;
+    /// <summary>
+    /// <see cref="values"/> の個数。
+    /// </summary>
+    size_t value_count;
 
     struct
     {
