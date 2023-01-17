@@ -36,6 +36,7 @@
     <ClInclude Include="gui.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="component.c" />
     <ClCompile Include="gui.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
