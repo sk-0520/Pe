@@ -33,9 +33,9 @@ EXIT_CODE app_main(HINSTANCE hInstance, const COMMAND_LINE_OPTION* command_line_
         TEXT gui = static_text("gui");
         const COMMAND_LINE_ITEM* item = get_command_line_item(command_line_option, &gui);
         if (item) {
-            gui_test();
+            gui_test(hInstance);
+            return 0;
         }
-        return 0;
     }
 #endif
 

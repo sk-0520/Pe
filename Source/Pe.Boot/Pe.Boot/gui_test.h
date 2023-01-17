@@ -2,4 +2,4 @@
 
 #include "../Pe.Gui/gui.h"
 
-void gui_test();
+void gui_test(HINSTANCE hInstance);
