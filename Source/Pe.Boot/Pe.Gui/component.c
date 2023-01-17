@@ -1,0 +1,5 @@
+﻿
+void create_component()
+{
+
+}

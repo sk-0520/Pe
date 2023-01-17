@@ -310,6 +310,9 @@
     <ProjectReference Include="..\Pe.Boot\Pe.Boot.vcxproj">
       <Project>{92130c2c-74bb-446a-9291-fd8c34e0453e}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Pe.Gui\Pe.Gui.vcxproj">
+      <Project>{672d3e37-6d1a-4407-b866-677915601b52}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Pe.Library\Pe.Library.vcxproj">
       <Project>{778ce0a0-cb22-4b9c-ad32-490c1ed04f7a}</Project>
     </ProjectReference>

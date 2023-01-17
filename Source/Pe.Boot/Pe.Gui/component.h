@@ -18,13 +18,18 @@ typedef enum tag_COMPONENT_TYPE
     COMPONENT_TYPE_TOOLTIP,
     COMPONENT_TYPE_SPIN,
 
-}COMPONENT_TYPE;
+} COMPONENT_TYPE;
 
-typedef struct tag_GUI_COMPONENT_BASE
+#define GUI_COMPONENT_LIBRARY \
+struct { \
+    const COMPONENT_TYPE type; \
+    const HANDLE handle; \
+    const GUI_ROOT_RESOURCE* root; \
+} library
+
+typedef struct tag_GUI_BASE_COMPONENT
 {
-    struct
-    {
-        const GUI_ROOT_RESOURCE* root;
-    } library;
-} GUI_COMPONENT_BASE;
+    GUI_COMPONENT_LIBRARY;
+} GUI_BASE_COMPONENT;
 
+void create_component();
