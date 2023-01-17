@@ -51,6 +51,9 @@
     <ClCompile Include="execute.c">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="gui_test.c">
+      <Filter>source\exec</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -84,6 +87,9 @@
       <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="execute.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="gui_test.h">
       <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>
