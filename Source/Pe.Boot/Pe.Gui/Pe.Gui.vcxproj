@@ -32,6 +32,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="component.h" />
     <ClInclude Include="gui.h" />
   </ItemGroup>
   <ItemGroup>
