@@ -15,10 +15,28 @@
 #   include "oreore_test.h"
 #endif
 
+#define GUI_TEST
+#ifdef GUI_TEST
+#   include "gui_test.h"
+#else
+#   error GUI_TEST
+#endif
+
 EXIT_CODE app_main(HINSTANCE hInstance, const COMMAND_LINE_OPTION* command_line_option)
 {
 #ifdef OREORE_TEST
     oreore_test(hInstance, command_line_option);
+#endif
+
+#ifdef GUI_TEST
+    if (true) {
+        TEXT gui = static_text("gui");
+        const COMMAND_LINE_ITEM* item = get_command_line_item(command_line_option, &gui);
+        if (item) {
+            gui_test();
+        }
+        return 0;
+    }
 #endif
 
     if (command_line_option->count < 1) {
