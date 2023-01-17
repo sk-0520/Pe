@@ -40,11 +40,11 @@ bool release_gui_root_resource(GUI_ROOT_RESOURCE* gui_root_resource)
 WPARAM loop_message_gui(HWND target_window_handle, const GUI_ROOT_RESOURCE* gui_root_resource)
 {
     MSG msg;
-    BOOL messageResult;
+    BOOL message_result;
 
     // https://learn.microsoft.com/ja-jp/windows/win32/winmsg/using-messages-and-message-queues
-    while ((messageResult = GetMessage(&msg, target_window_handle, 0, 0)) != 0) {
-        if (messageResult == -1) {
+    while ((message_result = GetMessage(&msg, target_window_handle, 0, 0)) != 0) {
+        if (message_result == -1) {
             // handle the error and possibly exit
         } else {
             TranslateMessage(&msg);
