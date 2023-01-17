@@ -35,5 +35,24 @@ bool release_gui_root_resource(GUI_ROOT_RESOURCE* gui_root_resource)
     gui_root_resource->library.memory_arena_resource = NULL;
 
     return true;
-
 }
+
+WPARAM loop_message_gui(HWND target_window_handle, const GUI_ROOT_RESOURCE* gui_root_resource)
+{
+    MSG msg;
+    BOOL messageResult;
+
+    // https://learn.microsoft.com/ja-jp/windows/win32/winmsg/using-messages-and-message-queues
+    while ((messageResult = GetMessage(&msg, target_window_handle, 0, 0)) != 0) {
+        if (messageResult == -1) {
+            // handle the error and possibly exit
+        } else {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+    }
+
+    return msg.wParam;
+}
+
+
