@@ -18,6 +18,9 @@
     <ClInclude Include="gui.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="component.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="gui.c">
