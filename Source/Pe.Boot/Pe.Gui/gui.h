@@ -35,3 +35,12 @@ bool is_enabled_gui_root_resource(const GUI_ROOT_RESOURCE* gui_root_resource);
 /// <param name="gui_root_resource"></param>
 /// <returns></returns>
 bool release_gui_root_resource(GUI_ROOT_RESOURCE* gui_root_resource);
+
+/// <summary>
+/// ウィンドウメッセージループを開始。
+/// </summary>
+/// <param name="target_window_handle">対象のウィンドウ。指定する必要なし。</param>
+/// <param name="gui_root_resource"></param>
+/// <returns></returns>
+WPARAM loop_message_gui(HWND target_window_handle, const GUI_ROOT_RESOURCE* gui_root_resource);
+
