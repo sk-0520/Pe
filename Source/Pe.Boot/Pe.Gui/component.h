@@ -27,9 +27,9 @@ struct { \
     const GUI_ROOT_RESOURCE* root; \
 } library
 
-typedef struct tag_GUI_BASE_COMPONENT
+typedef struct tag_COMPONENT_BASE
 {
     GUI_COMPONENT_LIBRARY;
-} GUI_BASE_COMPONENT;
+} COMPONENT_BASE;
 
 void create_component();
