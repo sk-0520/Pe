@@ -20,16 +20,16 @@ typedef enum tag_COMPONENT_TYPE
 
 } COMPONENT_TYPE;
 
-#define GUI_COMPONENT_LIBRARY \
-struct { \
-    const COMPONENT_TYPE type; \
-    const HANDLE handle; \
-    const GUI_ROOT_RESOURCE* root; \
-} library
+typedef struct tag_GUI_COMPONENT_LIBRARY
+{
+    const COMPONENT_TYPE type;
+    const HANDLE handle;
+    const GUI_ROOT_RESOURCE* root;
+} GUI_COMPONENT_LIBRARY;
 
 typedef struct tag_COMPONENT_BASE
 {
-    GUI_COMPONENT_LIBRARY;
+    GUI_COMPONENT_LIBRARY library;
 } COMPONENT_BASE;
 
 void create_component();
