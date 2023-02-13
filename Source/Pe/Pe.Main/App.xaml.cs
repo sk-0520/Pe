@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
@@ -117,6 +118,19 @@ namespace ContentTypeTextNet.Pe.Main
                         Shutdown();
                         return;
                     }
+
+                case RunMode.Database: {
+                        ShutdownMode = ShutdownMode.OnMainWindowClose;
+                        var options = new Core.Models.CommandLineSimpleConverter<AppMode.Database.Models.Data.DatabaseOptions>(new Core.Models.CommandLine(e.Args, false)).GetMappingData();
+                        if(options == null) {
+                            Logger.LogError("DB実行環境起動できず: {0}", string.Join(" ", e.Args));
+                            Shutdown(-1);
+                            return;
+                        }
+                        var model = new AppMode.Database.Models.Element.DatabaseElement(options, initializer.Logging.Factory);
+
+                    }
+                    break;
 
                 default:
                     throw new NotImplementedException();

@@ -16,6 +16,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         /// </summary>
         CrashReport,
         /// <summary>
+        /// SQL 実行環境。
+        /// </summary>
+        Database,
+        /// <summary>
         /// 一時的プロセス間通信。
         /// </summary>
         InterProcessCommunication,
@@ -32,6 +36,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         public static string ToString(RunMode runMode) => runMode switch {
             RunMode.Normal => "normal",
             RunMode.CrashReport => "crash-report",
+            RunMode.Database => "database",
             RunMode.InterProcessCommunication => "ipc",
             _ => throw new NotImplementedException(),
         };
@@ -41,6 +46,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
             switch(value?.ToLowerInvariant()) {
                 case "crash-report":
                     return RunMode.CrashReport;
+
+                case "database":
+                    return RunMode.Database;
 
                 case "ipc":
                     return RunMode.InterProcessCommunication;
