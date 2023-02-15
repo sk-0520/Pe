@@ -11,10 +11,10 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
 {
     /// <summary>
     /// プロパティ変更通知(と取得)ヘルパー。
-    /// <para>使用側で通知するには自分で <see cref="INotifyPropertyChanged.PropertyChanged"/> の <c>add, remove</c> に割り当てること。</para>
     /// <para>Pe から提供される。</para>
     /// </summary>
-    public interface INotifyProperty<TObject>: INotifyPropertyChanged
+    public interface INotifyProperty<TObject>
+        where TObject : class, INotifyPropertyChanged
     {
         #region function
 
@@ -29,7 +29,9 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
     {
         #region function
 
-        public INotifyProperty<TObject> Create<TObject>(TObject instance);
+        public INotifyProperty<TObject> Create<TObject>(TObject instance)
+            where TObject : class, INotifyPropertyChanged
+        ;
 
         #endregion
     }
