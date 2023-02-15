@@ -7,6 +7,10 @@ using System.Windows.Input;
 
 namespace ContentTypeTextNet.Pe.Bridge.Models
 {
+    /// <summary>
+    /// コマンド生成処理。
+    /// <para>Pe から提供される。</para>
+    /// </summary>
     public interface ICommandFactory
     {
         #region function
