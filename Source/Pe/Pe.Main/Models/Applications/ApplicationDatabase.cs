@@ -88,12 +88,27 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
     /// </summary>
     internal class ApplicationDatabaseAccessor: SqliteAccessor
     {
+        #region define
+
+        public class ApplicationDAccessOptions: SqliteAccessOptions
+        {
+            public ApplicationDAccessOptions()
+                : base()
+            {
+                #region define
+                IsEnabledLogging = true;
+                #endregion
+            }
+        }
+
+        #endregion
+
         public ApplicationDatabaseAccessor(IDatabaseFactory connectionCreator, ILogger logger)
-            : base(connectionCreator, logger)
+            : base(connectionCreator, new ApplicationDAccessOptions(), logger)
         { }
 
         public ApplicationDatabaseAccessor(IDatabaseFactory connectionCreator, ILoggerFactory loggerFactory)
-            : base(connectionCreator, loggerFactory)
+            : base(connectionCreator, new ApplicationDAccessOptions(), loggerFactory)
         { }
 
         #region DatabaseAccessor

@@ -12,6 +12,24 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Standard.Database
 {
+    public interface IDatabaseAccessOptions
+    {
+        #region property
+
+        public bool IsEnabledLogging { get; }
+
+        #endregion
+    }
+
+    public class DatabaseAccessOptions: IDatabaseAccessOptions
+    {
+        #region IDatabaseAccessOptions
+
+        public bool IsEnabledLogging { get; set; }
+
+        #endregion
+    }
+
     /// <summary>
     /// DBアクセス処理。
     /// <para>使用者側はトランザクション処理を原則使用しない。</para>
@@ -113,18 +131,20 @@ namespace ContentTypeTextNet.Pe.Standard.Database
     /// </summary>
     public class DatabaseAccessor: DisposerBase, IDatabaseAccessor
     {
-        public DatabaseAccessor(IDatabaseFactory databaseFactory, ILogger logger)
+        public DatabaseAccessor(IDatabaseFactory databaseFactory, IDatabaseAccessOptions options, ILogger logger)
         {
             Logger = logger;
             DatabaseFactory = databaseFactory;
+            Options = options;
             LazyConnection = new Lazy<IDbConnection>(OpenConnection);
             LazyImplementation = new Lazy<IDatabaseImplementation>(DatabaseFactory.CreateImplementation);
         }
 
-        public DatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
+        public DatabaseAccessor(IDatabaseFactory databaseFactory, IDatabaseAccessOptions options, ILoggerFactory loggerFactory)
         {
             Logger = loggerFactory.CreateLogger(GetType());
             DatabaseFactory = databaseFactory;
+            Options = options;
             LazyConnection = new Lazy<IDbConnection>(OpenConnection);
             LazyImplementation = new Lazy<IDatabaseImplementation>(DatabaseFactory.CreateImplementation);
         }
@@ -132,7 +152,7 @@ namespace ContentTypeTextNet.Pe.Standard.Database
         #region property
 
         private Lazy<IDbConnection> LazyConnection { get; set; }
-
+        protected IDatabaseAccessOptions Options { get; }
         private Lazy<IDatabaseImplementation> LazyImplementation { get; }
         protected IDatabaseImplementation Implementation => LazyImplementation.Value;
 
@@ -769,12 +789,12 @@ namespace ContentTypeTextNet.Pe.Standard.Database
     public class DatabaseAccessor<TDbConnection>: DatabaseAccessor
         where TDbConnection : IDbConnection
     {
-        public DatabaseAccessor(IDatabaseFactory connectionFactory, ILogger logger)
-            : base(connectionFactory, logger)
+        public DatabaseAccessor(IDatabaseFactory connectionFactory, IDatabaseAccessOptions options, ILogger logger)
+            : base(connectionFactory, options, logger)
         { }
 
-        public DatabaseAccessor(IDatabaseFactory connectionFactory, ILoggerFactory loggerFactory)
-            : base(connectionFactory, loggerFactory)
+        public DatabaseAccessor(IDatabaseFactory connectionFactory, IDatabaseAccessOptions options, ILoggerFactory loggerFactory)
+            : base(connectionFactory, options, loggerFactory)
         { }
 
         #region property

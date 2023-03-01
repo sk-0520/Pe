@@ -10,14 +10,20 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite
 {
+    public interface ISqliteAccessOptions: IDatabaseAccessOptions
+    { }
+
+    public class SqliteAccessOptions: DatabaseAccessOptions, ISqliteAccessOptions
+    { }
+
     public class SqliteAccessor: DatabaseAccessor<SQLiteConnection>
     {
-        public SqliteAccessor(IDatabaseFactory databaseFactory, ILogger logger)
-            : base(databaseFactory, logger)
+        public SqliteAccessor(IDatabaseFactory databaseFactory, ISqliteAccessOptions options, ILogger logger)
+            : base(databaseFactory, options, logger)
         { }
 
-        public SqliteAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
-            : base(databaseFactory, loggerFactory)
+        public SqliteAccessor(IDatabaseFactory databaseFactory, ISqliteAccessOptions options, ILoggerFactory loggerFactory)
+            : base(databaseFactory, options, loggerFactory)
         { }
 
         #region function

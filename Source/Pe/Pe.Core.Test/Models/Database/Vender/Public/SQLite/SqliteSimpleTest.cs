@@ -14,11 +14,21 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Database.Vender.Public.SQLite
     {
         #region define
 
+        private class DatabaseAccessOptions: ISqliteAccessOptions
+        {
+            #region ISqliteAccessOptions
+
+            public bool IsEnabledLogging { get; } = false;
+
+            #endregion
+        }
+
         #endregion
+
         public SqliteSimpleTest()
         {
             var factory = new TestSqliteFactory();
-            DatabaseAccessor = new SqliteAccessor(factory, Test.LoggerFactory);
+            DatabaseAccessor = new SqliteAccessor(factory, new DatabaseAccessOptions(), Test.LoggerFactory);
         }
         #region property
 
