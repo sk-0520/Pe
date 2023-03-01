@@ -9,14 +9,16 @@ namespace ContentTypeTextNet.Pe.Standard.Database
 {
     internal sealed class LogDbConnection: IDbConnection
     {
-        public LogDbConnection(IDbConnection connection, ILogger logger)
+        public LogDbConnection(IDbConnection connection, LogLevel logLevel, ILogger logger)
         {
             Connection = connection;
+            LogLevel = logLevel;
             Logger = logger;
         }
 
         #region property
         internal IDbConnection Connection { get; }
+        private LogLevel LogLevel { get; }
         private ILogger Logger { get; }
 
         #endregion
@@ -44,7 +46,7 @@ namespace ContentTypeTextNet.Pe.Standard.Database
 
         public void Close() => Connection.Close();
 
-        public IDbCommand CreateCommand() => new LogDbCommand(Connection.CreateCommand(), Logger);
+        public IDbCommand CreateCommand() => new LogDbCommand(Connection.CreateCommand(), LogLevel, Logger);
 
         public void Dispose()
         {
@@ -59,15 +61,17 @@ namespace ContentTypeTextNet.Pe.Standard.Database
 
     internal sealed class LogDbCommand: IDbCommand
     {
-        public LogDbCommand(IDbCommand command, ILogger logger)
+        public LogDbCommand(IDbCommand command, LogLevel logLevel, ILogger logger)
         {
             Command = command;
+            LogLevel = logLevel;
             Logger = logger;
         }
 
         #region property
 
         private IDbCommand Command { get; }
+        private LogLevel LogLevel { get; }
         private ILogger Logger { get; }
 
         #endregion
@@ -91,8 +95,8 @@ namespace ContentTypeTextNet.Pe.Standard.Database
         }
         public IDbConnection Connection
         {
-            get => Connection;
-            set => Connection = value;
+            get => Command.Connection;
+            set => Command.Connection = value;
         }
 
         public IDataParameterCollection Parameters => Command.Parameters;

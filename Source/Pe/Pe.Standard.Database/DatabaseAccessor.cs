@@ -17,6 +17,7 @@ namespace ContentTypeTextNet.Pe.Standard.Database
         #region property
 
         public bool IsEnabledLogging { get; }
+        public LogLevel LogLevel { get; }
 
         #endregion
     }
@@ -26,6 +27,7 @@ namespace ContentTypeTextNet.Pe.Standard.Database
         #region IDatabaseAccessOptions
 
         public bool IsEnabledLogging { get; set; }
+        public LogLevel LogLevel { get; set; }
 
         #endregion
     }
@@ -40,6 +42,7 @@ namespace ContentTypeTextNet.Pe.Standard.Database
 
         /// <summary>
         /// 接続元。
+        /// <para>ラップされている状態は考慮しない。</para>
         /// </summary>
         IDbConnection BaseConnection { get; }
         /// <summary>
@@ -186,10 +189,13 @@ namespace ContentTypeTextNet.Pe.Standard.Database
             }
             ThrowIfDisposed();
 
-            var con = DatabaseFactory.CreateConnection();
-            con.Open();
+            var connection = DatabaseFactory.CreateConnection();
+            if(Options.IsEnabledLogging) {
+                connection = new LogDbConnection(connection, Options.LogLevel, Logger);
+            }
+            connection.Open();
             IsOpend = true;
-            return con;
+            return connection;
         }
 
 
@@ -801,8 +807,19 @@ namespace ContentTypeTextNet.Pe.Standard.Database
 
         /// <summary>
         /// 接続元。
+        /// <para>ラップされている状態も考慮する。(※<see cref="LogDbConnection"/> のみ)</para>
         /// </summary>
-        public TDbConnection Connection => (TDbConnection)BaseConnection;
+        public TDbConnection Connection
+        {
+            get
+            {
+                if(BaseConnection is LogDbConnection logDbConnection) {
+                    return (TDbConnection)logDbConnection.Connection;
+                }
+
+                return (TDbConnection)BaseConnection;
+            }
+        }
 
         #endregion
     }
