@@ -1,3 +1,8 @@
+//#define ENABLED_DATABASE_LOG
+#if DEBUG
+#   define ENABLED_DATABASE_LOG
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -90,32 +95,36 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
     {
         #region define
 
-        public class ApplicationDAccessOptions: SqliteAccessOptions
+        public class ApplicationDatabaseAccessOptions: SqliteAccessOptions
         {
-            public ApplicationDAccessOptions()
+            public ApplicationDatabaseAccessOptions()
                 : base()
             {
-                #region define
+#if ENABLED_DATABASE_LOG
                 IsEnabledLogging = true;
-                #endregion
+                LogLevel = LogLevel.Trace;
+#else
+                IsEnabledLogging = true;
+                LogLevel = LogLevel.Information;
+#endif
             }
         }
 
         #endregion
 
         public ApplicationDatabaseAccessor(IDatabaseFactory connectionCreator, ILogger logger)
-            : base(connectionCreator, new ApplicationDAccessOptions(), logger)
+            : base(connectionCreator, new ApplicationDatabaseAccessOptions(), logger)
         { }
 
         public ApplicationDatabaseAccessor(IDatabaseFactory connectionCreator, ILoggerFactory loggerFactory)
-            : base(connectionCreator, new ApplicationDAccessOptions(), loggerFactory)
+            : base(connectionCreator, new ApplicationDatabaseAccessOptions(), loggerFactory)
         { }
 
         #region DatabaseAccessor
 
         protected override void LoggingStatement(string statement, object? parameter)
         {
-#if DEBUG
+#if ENABLED_DATABASE_LOG
             ThrowIfDisposed();
 
             if(!Logger.IsEnabled(LogLevel.Trace)) {
@@ -305,7 +314,7 @@ limit
 
         private string CreateCache(string key)
         {
-#if DEBUG
+#if ENABLED_DATABASE_LOG
             using var x = ActionDisposerHelper.Create((d, sw) => Logger.LogTrace("SQL読み込み時間: {0}, {1}", sw.Elapsed, key), Stopwatch.StartNew());
 #endif
             if(StatementAccessor == null) {
