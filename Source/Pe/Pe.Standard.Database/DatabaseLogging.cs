@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using ContentTypeTextNet.Pe.Standard.Base;
 using Microsoft.Extensions.Logging;
@@ -76,6 +79,24 @@ namespace ContentTypeTextNet.Pe.Standard.Database
 
         #endregion
 
+        #region function
+
+        private void Logging([CallerMemberName] string callerMemberName = "")
+        {
+            if(!Logger.IsEnabled(LogLevel)) {
+                return;
+            }
+
+            var statement = Command.CommandText;
+            var parameters = Command.Parameters.Cast<DbParameter>()
+                .Select(a => $"-> {a.DbType} {a.ParameterName} = {a.Value}")
+                .JoinString(Environment.NewLine)
+            ;
+            Logger.Log(LogLevel, "<{callerMemberName}>\r\n[SQL]\r\n{statement}\r\n[PARAM]\r\n{parameters}", callerMemberName, statement, parameters);
+        }
+
+        #endregion
+
         #region IDbCommand
 
         public string CommandText
@@ -124,11 +145,13 @@ namespace ContentTypeTextNet.Pe.Standard.Database
 
         public int ExecuteNonQuery()
         {
+            Logging();
             return Command.ExecuteNonQuery();
         }
 
         public IDataReader ExecuteReader()
         {
+            Logging();
             return Command.ExecuteReader();
         }
 
@@ -139,13 +162,11 @@ namespace ContentTypeTextNet.Pe.Standard.Database
 
         public object ExecuteScalar()
         {
+            Logging();
             return Command.ExecuteScalar();
         }
 
-        public void Prepare()
-        {
-            Command.Prepare();
-        }
+        public void Prepare() => Command.Prepare();
 
         #endregion
     }
