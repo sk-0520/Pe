@@ -198,86 +198,6 @@ namespace ContentTypeTextNet.Pe.Standard.Database
             return connection;
         }
 
-
-        /// <summary>
-        /// 問い合わせ文をログ出力。
-        /// <para>あくまで実行するための文をログに出すだけで実際に実行される文ではない。</para>
-        /// </summary>
-        /// <param name="statement">問い合わせ文。</param>
-        /// <param name="parameter">パラメータ。</param>
-        protected virtual void LoggingStatement(string statement, object? parameter)
-        {
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("{0}{1}{2}", statement, Environment.NewLine, ObjectDumper.GetDumpString(parameter));
-            }
-        }
-
-        /// <summary>
-        /// 単体結果の問い合わせ結果のログ出力。
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="result"></param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        protected virtual void LoggingQueryResult<T>([MaybeNull] T result, DateTime startUtcTime, DateTime endUtcTime)
-        {
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("{0} -> {1}, {2}", typeof(T), result, endUtcTime - startUtcTime);
-            }
-        }
-
-        /// <summary>
-        /// 複数結果の問い合わせ結果のログ出力。
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="result"></param>
-        /// <param name="bufferd">偽の場合、<paramref name="result"/>に全数は存在しない。</param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        protected virtual void LoggingQueryResults<T>(IEnumerable<T> result, bool bufferd, DateTime startUtcTime, DateTime endUtcTime)
-        {
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                if(bufferd) {
-                    Logger.LogTrace("{0}<{1}> -> {2}, {3}", nameof(IEnumerable), typeof(T), result.Count(), endUtcTime - startUtcTime);
-                } else {
-                    Logger.LogTrace("{0}<{1}> -> no buffered, {2}", nameof(IEnumerable), typeof(T), endUtcTime - startUtcTime);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 実行結果のログ出力。
-        /// <para><see cref="IDatabaseWriter.Execute(string, object?)"/>で使用される。</para>
-        /// </summary>
-        /// <param name="result"></param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        [SuppressMessage("Performance", "HAA0101:Array allocation for params parameter")]
-        [SuppressMessage("Performance", "HAA0601:Value type to reference type conversion causing boxing allocation")]
-        protected virtual void LoggingExecuteResult(int result, DateTime startUtcTime, DateTime endUtcTime)
-        {
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("result: {0}, {1}", result, endUtcTime - startUtcTime);
-            }
-        }
-
-        /// <summary>
-        /// 問い合わせ結果のログ出力。
-        /// <para><see cref="IDatabaseReader.GetDataTable(string, object?)"/>で使用される。</para>
-        /// </summary>
-        /// <param name="table"></param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        [SuppressMessage("Performance", "HAA0101:Array allocation for params parameter")]
-        [SuppressMessage("Performance", "HAA0601:Value type to reference type conversion causing boxing allocation")]
-        [SuppressMessage("Performance", "HAA0503:Explicit new anonymous object allocation")]
-        protected virtual void LoggingDataTable(DataTable table, DateTime startUtcTime, DateTime endUtcTime)
-        {
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("table: {0} -> {1} * {2} = {3}, {4}", table.TableName, table.Columns.Count, table.Rows.Count, table.Columns.Count * table.Rows.Count, endUtcTime - startUtcTime);
-            }
-        }
-
         #endregion
 
         #region IDatabaseAccessor
@@ -315,7 +235,6 @@ namespace ContentTypeTextNet.Pe.Standard.Database
             ThrowIfDisposed();
 
             var formattedStatement = Implementation.PreFormatStatement(statement);
-            LoggingStatement(formattedStatement, parameter);
 
             var result = BaseConnection.ExecuteReader(formattedStatement, parameter, transaction?.Transaction);
             return result;
@@ -333,7 +252,6 @@ namespace ContentTypeTextNet.Pe.Standard.Database
             ThrowIfDisposed();
 
             var formattedStatement = Implementation.PreFormatStatement(statement);
-            LoggingStatement(formattedStatement, parameter);
 
             var command = new CommandDefinition(
                 statement,
@@ -357,14 +275,10 @@ namespace ContentTypeTextNet.Pe.Standard.Database
 
             var formattedStatement = Implementation.PreFormatStatement(statement);
 
-            LoggingStatement(formattedStatement, parameter);
-
             var dataTable = new DataTable();
-            var startTime = DateTime.UtcNow;
-            using(var reader = GetDataReader(transaction, statement, parameter)) {
+            using(var reader = GetDataReader(transaction, formattedStatement, parameter)) {
                 dataTable.Load(reader);
             }
-            LoggingDataTable(dataTable, startTime, DateTime.UtcNow);
 
             return dataTable;
         }
