@@ -43,7 +43,7 @@ typedef struct tag_MEMORY_RESOURCE
 
     struct
     {
-        MEMORY_ARENA_RESOURCE arena;
+        const MEMORY_ARENA_RESOURCE* arena;
     } library;
 } MEMORY_RESOURCE;
 
@@ -160,7 +160,7 @@ MEMORY_RESOURCE RC_HEAP_FUNC(new_memory, size_t count, byte_t type_size, const M
 /// <returns></returns>
 bool RC_HEAP_FUNC(release_memory, MEMORY_RESOURCE* memory_resource);
 #if RES_CHECK
-#   define release_memory(p, memory_resource) RC_HEAP_WRAP(release_memory, memory_resource)
+#   define release_memory(memory_resource) RC_HEAP_WRAP(release_memory, memory_resource)
 #endif
 
 

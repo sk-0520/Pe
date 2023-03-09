@@ -42,7 +42,8 @@ EXIT_CODE boot_with_option(HINSTANCE hInstance, const COMMAND_LINE_OPTION* comma
         logger_put_info(_T("待機終了"));
     }
 
-    TEXT_LIST args = new_memory(command_line_option->count, sizeof(TEXT), DEFAULT_MEMORY_ARENA);
+    MEMORY_RESOURCE args_memory_resource = new_memory(command_line_option->count, sizeof(TEXT), DEFAULT_MEMORY_ARENA);
+    TEXT_LIST args = args_memory_resource.values;
     size_t arg_count = filter_enable_command_line_items(args, command_line_option);
 
     TEXT argument = to_command_line_argument(args, arg_count, DEFAULT_MEMORY_ARENA);
@@ -50,7 +51,7 @@ EXIT_CODE boot_with_option(HINSTANCE hInstance, const COMMAND_LINE_OPTION* comma
 
     EXIT_CODE result = boot_core(hInstance, &argument);
     release_text(&argument);
-    release_memory(args, DEFAULT_MEMORY_ARENA);
+    release_memory(&args_memory_resource);
 
     return result;
 }

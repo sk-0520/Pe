@@ -80,12 +80,14 @@ EXIT_CODE dry_run(HINSTANCE hInstance, const COMMAND_LINE_OPTION* command_line_o
 
     logger_format_debug(_T("[ENV] %t = %t"), &env_special_key, &value);
 
-    TEXT_LIST args = new_memory(command_line_option->count, sizeof(TEXT), DEFAULT_MEMORY_ARENA);
+    MEMORY_RESOURCE args_memory_resource = new_memory(command_line_option->count, sizeof(TEXT), DEFAULT_MEMORY_ARENA);
+    //TEXT_LIST args = new_memory(command_line_option->count, sizeof(TEXT), DEFAULT_MEMORY_ARENA);
+    TEXT_LIST args = args_memory_resource.values;
     size_t arg_count = filter_enable_command_line_items(args, command_line_option);
 
     TEXT argument = to_command_line_argument(args, arg_count, DEFAULT_MEMORY_ARENA);
     logger_format_debug(_T("argument = %t"), &argument);
-    release_memory(args, DEFAULT_MEMORY_ARENA);
+    release_memory(&args_memory_resource);
     EXIT_CODE exit_code = dry_run_core(hInstance, &console_resource, &argument);
     release_text(&argument);
 
