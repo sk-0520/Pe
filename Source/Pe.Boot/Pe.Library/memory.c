@@ -172,7 +172,7 @@ bool RC_HEAP_FUNC(release_memory, MEMORY_RESOURCE* memory_resource)
         return false;
     }
 
-    bool result = HeapFree(memory_resource->library.arena.handle, 0, memory_resource->values);
+    bool result = HeapFree(memory_resource->library.arena->handle, 0, memory_resource->values);
     if (!result) {
         return false;
     }
@@ -209,7 +209,7 @@ int compare_memory(const void* a, const void* b, byte_t bytes)
     return memcmp(a, b, bytes);
 }
 
-byte_t library_extend_capacity_if_not_enough_bytes(void** target, byte_t current_bytes, byte_t current_capacity_bytes, byte_t need_bytes, byte_t default_capacity_bytes, func_calc_extend_capacity calc_extend_capacity, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
+byte_t library_extend_capacity_if_not_enough_bytes(MEMORY_RESOURCE** target, byte_t current_bytes, byte_t current_capacity_bytes, byte_t need_bytes, byte_t default_capacity_bytes, func_calc_extend_capacity calc_extend_capacity, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
 {
     assert(memory_arena_resource);
 
@@ -226,10 +226,10 @@ byte_t library_extend_capacity_if_not_enough_bytes(void** target, byte_t current
     } while (new_capacity_bytes < need_total_bytes);
 
     MEMORY_RESOURCE new_buffer = allocate_raw_memory(new_capacity_bytes, false, memory_arena_resource);
-    void* old_buffer = *target;
+    MEMORY_RESOURCE* old_buffer = *target;
 
     copy_memory(new_buffer.values, old_buffer, new_capacity_bytes);
-    release_memory(old_buffer, memory_arena_resource);
+    release_memory(old_buffer);
 
     *target = new_buffer.values;
 
@@ -242,7 +242,7 @@ static byte_t extend_x2(byte_t input_bytes)
     return input_bytes * 2;
 }
 
-byte_t library_extend_capacity_if_not_enough_bytes_x2(void** target, byte_t current_bytes, byte_t current_capacity_bytes, byte_t need_bytes, byte_t default_capacity_bytes, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
+byte_t library_extend_capacity_if_not_enough_bytes_x2(MEMORY_RESOURCE** target, byte_t current_bytes, byte_t current_capacity_bytes, byte_t need_bytes, byte_t default_capacity_bytes, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
 {
     assert(memory_arena_resource);
 

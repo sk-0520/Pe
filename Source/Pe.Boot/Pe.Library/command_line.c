@@ -148,7 +148,8 @@ COMMAND_LINE_OPTION RC_HEAP_FUNC(parse_command_line, const TEXT* command_line, b
     TCHAR** argv = CommandLineToArgvW(command_line->value, &temp_argc);
     size_t argc = (size_t)temp_argc;
 
-    TEXT* arguments = allocate_raw_memory(argc * sizeof(TEXT), false, memory_arena_resource);
+    MEMORY_RESOURCE arguments_memory_resource = allocate_raw_memory(argc * sizeof(TEXT), false, memory_arena_resource);
+    TEXT* arguments = arguments_memory_resource.values;
     for (size_t i = 0; i < argc; i++) {
         TCHAR* arg = argv[i];
         arguments[i] = wrap_text(arg);
@@ -197,7 +198,7 @@ bool RC_HEAP_FUNC(release_command_line, COMMAND_LINE_OPTION* command_line_option
 
     release_map(&command_line_option->library.map);
 
-    RC_HEAP_CALL(release_memory, command_line_option->library.raw_arguments, memory_arena_resource);
+    RC_HEAP_CALL(release_memory, command_line_option->library.raw_arguments);
     command_line_option->library.raw_arguments = NULL;
 
     LocalFree((HLOCAL)command_line_option->library.argv);
@@ -242,7 +243,8 @@ TEXT to_command_line_argument(const TEXT_LIST arguments, size_t count, const MEM
 
     size_t total_length = count - 1; // スペース分
 
-    bool* hasSpaceList = new_memory(count, sizeof(bool), memory_arena_resource);
+    MEMORY_RESOURCE has_space_list_memory_resource = new_memory(count, sizeof(bool), memory_arena_resource);
+    bool* hasSpaceList = has_space_list_memory_resource.values;
 
     for (size_t i = 0; i < count; i++) {
         const TEXT* argument = &arguments[i];
@@ -286,7 +288,7 @@ TEXT to_command_line_argument(const TEXT_LIST arguments, size_t count, const MEM
     }
     buffer[position] = 0;
 
-    release_memory(hasSpaceList, memory_arena_resource);
+    release_memory(&has_space_list_memory_resource);
 
     return wrap_text_with_length(buffer, position, true, memory_arena_resource);
 }
