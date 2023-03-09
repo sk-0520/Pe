@@ -140,6 +140,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao
 
             public bool SupportedTransactionDML => throw new NotSupportedException();
             public bool SupportedTransactionTruncate => throw new NotSupportedException();
+            public bool SupportedNestTransaction => throw new NotSupportedException();
 
             public bool SupportedLineComment => throw new NotSupportedException();
             public bool SupportedBlockComment => throw new NotSupportedException();

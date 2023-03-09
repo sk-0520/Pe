@@ -52,7 +52,7 @@ values
 "
                 };
 
-            var c = DatabaseAccessor.BeginTransaction();
+            using var c = DatabaseAccessor.BeginTransaction();
             foreach(var sql in sqls) {
                 c.Execute(sql);
             }

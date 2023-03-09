@@ -38,7 +38,7 @@ values
 "
                 };
 
-            var c = databaseAccessor.BeginTransaction();
+            using var c = databaseAccessor.BeginTransaction();
             foreach(var sql in sqls) {
                 c.Execute(sql);
             }
@@ -100,6 +100,23 @@ values
 
             var acutual3 = databaseAccessor.QueryFirstOrDefault<string>("select ColVal from TestTable1 where ColKey = @Key", new { Key = 0 });
             Assert.AreEqual(acutual3, "!");
+        }
+
+        [TestMethod]
+        public void NestedTransactionTest()
+        {
+            var databaseAccessor = InitializeDatabase();
+
+            using(var t = databaseAccessor.BeginTransaction()) {
+                Assert.ThrowsException<NotSupportedException>(() => databaseAccessor.BeginTransaction());
+                Assert.ThrowsException<NotSupportedException>(() => databaseAccessor.BeginReadOnlyTransaction());
+            }
+
+            using(var t = databaseAccessor.BeginReadOnlyTransaction()) {
+                Assert.ThrowsException<NotSupportedException>(() => databaseAccessor.BeginTransaction());
+                Assert.ThrowsException<NotSupportedException>(() => databaseAccessor.BeginReadOnlyTransaction());
+            }
+
         }
 
         #endregion

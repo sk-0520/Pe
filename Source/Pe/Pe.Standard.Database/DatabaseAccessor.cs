@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Standard.Base;
@@ -116,6 +117,12 @@ namespace ContentTypeTextNet.Pe.Standard.Database
     /// </summary>
     public class DatabaseAccessor: DisposerBase, IDatabaseAccessor
     {
+        #region variable
+
+        int _transactionCount = 0;
+
+        #endregion
+
         public DatabaseAccessor(IDatabaseFactory databaseFactory, ILogger logger)
         {
             Logger = logger;
@@ -147,6 +154,24 @@ namespace ContentTypeTextNet.Pe.Standard.Database
         public bool IsOpend { get; private set; }
 
         /// <summary>
+        /// トランザクション中か。
+        /// </summary>
+        public bool InTransaction => 0 < TransactionCount;
+
+        private int TransactionCount
+        {
+            get => this._transactionCount;
+            set
+            {
+                if(value < 0) {
+                    throw new InvalidOperationException();
+                }
+
+                this._transactionCount = value;
+            }
+        }
+
+        /// <summary>
         /// データベース接続が一時的に閉じているか。
         /// </summary>
         public bool ConnectionPausing { get; private set; }
@@ -175,6 +200,23 @@ namespace ContentTypeTextNet.Pe.Standard.Database
             return con;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        protected void DecrementTransactionCount()
+        {
+            TransactionCount -= 1;
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        protected void IncrementTransactionCount()
+        {
+            if(InTransaction) {
+                if(!Implementation.SupportedNestTransaction) {
+                    throw new NotSupportedException();
+                }
+            }
+
+            TransactionCount += 1;
+        }
 
         /// <summary>
         /// 問い合わせ文をログ出力。
@@ -795,7 +837,9 @@ namespace ContentTypeTextNet.Pe.Standard.Database
         {
             ThrowIfDisposed();
 
-            return new DatabaseTransaction(true, this);
+            IncrementTransactionCount();
+
+            return new DatabaseTransaction(true, this, DecrementTransactionCount);
         }
 
         /// <summary>
@@ -807,20 +851,26 @@ namespace ContentTypeTextNet.Pe.Standard.Database
         {
             ThrowIfDisposed();
 
-            return new DatabaseTransaction(true, this, isolationLevel);
+            IncrementTransactionCount();
+
+            return new DatabaseTransaction(true, this, DecrementTransactionCount, isolationLevel);
         }
 
         public virtual IDatabaseTransaction BeginReadOnlyTransaction()
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(true, this);
+            IncrementTransactionCount();
+
+            return new ReadOnlyDatabaseTransaction(true, this, DecrementTransactionCount);
         }
         public virtual IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(true, this, isolationLevel);
+            IncrementTransactionCount();
+
+            return new ReadOnlyDatabaseTransaction(true, this, DecrementTransactionCount, isolationLevel);
         }
 
         #endregion

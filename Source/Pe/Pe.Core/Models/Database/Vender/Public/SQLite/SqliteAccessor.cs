@@ -41,13 +41,17 @@ namespace ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(false, this);
+            IncrementTransactionCount();
+
+            return new ReadOnlyDatabaseTransaction(false, this, DecrementTransactionCount);
         }
         public override IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(false, this, isolationLevel);
+            IncrementTransactionCount();
+
+            return new ReadOnlyDatabaseTransaction(false, this, DecrementTransactionCount, isolationLevel);
         }
 
         #endregion

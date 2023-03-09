@@ -56,6 +56,10 @@ namespace ContentTypeTextNet.Pe.Standard.Database
         /// トランザクション中の<c>TRUNCATE</c>が有効か。
         /// </summary>
         bool SupportedTransactionTruncate { get; }
+        /// <summary>
+        /// 入れ子のトランザクションが有効か。
+        /// </summary>
+        bool SupportedNestTransaction { get; }
 
         /// <summary>
         /// 単一行コメントをサポートしているか。
@@ -157,6 +161,7 @@ namespace ContentTypeTextNet.Pe.Standard.Database
         public virtual bool SupportedTransactionDML { get; } = true;
         /// <inheritdoc cref="IDatabaseImplementation.SupportedTransactionTruncate"/>
         public virtual bool SupportedTransactionTruncate { get; } = false;
+        public virtual bool SupportedNestTransaction { get; } = false;
 
         /// <inheritdoc cref="IDatabaseImplementation.SupportedLineComment"/>
         public virtual bool SupportedLineComment { get; } = true;

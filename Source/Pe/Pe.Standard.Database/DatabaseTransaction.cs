@@ -46,16 +46,21 @@ namespace ContentTypeTextNet.Pe.Standard.Database
     /// </summary>
     public class DatabaseTransaction: DisposerBase, IDatabaseTransaction
     {
+        private DatabaseTransaction(IDatabaseAccessor databaseAccessor, Action closeCallback)
+        {
+            DatabaseAccessor = databaseAccessor;
+            Implementation = DatabaseAccessor.DatabaseFactory.CreateImplementation();
+            CloseCallback = closeCallback;
+        }
+
         /// <summary>
         /// 生成。
         /// </summary>
         /// <param name="beginTransaction">トランザクションを開始するか。</param>
         /// <param name="databaseAccessor">アクセサ。</param>
-        public DatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor)
+        public DatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor, Action closeCallback)
+            :this(databaseAccessor, closeCallback)
         {
-            DatabaseAccessor = databaseAccessor;
-            Implementation = DatabaseAccessor.DatabaseFactory.CreateImplementation();
-
             if(beginTransaction) {
                 Transaction = DatabaseAccessor.BaseConnection.BeginTransaction();
             } else {
@@ -69,11 +74,9 @@ namespace ContentTypeTextNet.Pe.Standard.Database
         /// <param name="beginTransaction">トランザクションを開始するか。</param>
         /// <param name="databaseAccessor">アクセサ。</param>
         /// <param name="isolationLevel"><see cref="IsolationLevel"/></param>
-        public DatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor, IsolationLevel isolationLevel)
+        public DatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor, Action closeCallback, IsolationLevel isolationLevel)
+            :this(databaseAccessor, closeCallback)
         {
-            DatabaseAccessor = databaseAccessor;
-            Implementation = DatabaseAccessor.DatabaseFactory.CreateImplementation();
-
             if(beginTransaction) {
                 Transaction = DatabaseAccessor.BaseConnection.BeginTransaction(isolationLevel);
             } else {
@@ -85,6 +88,8 @@ namespace ContentTypeTextNet.Pe.Standard.Database
 
         private IDatabaseAccessor DatabaseAccessor { get; [Unused(UnusedKinds.Dispose)] set; }
         public bool Committed { get; private set; }
+
+        private Action CloseCallback { get; }
 
         #endregion
 
@@ -271,6 +276,7 @@ namespace ContentTypeTextNet.Pe.Standard.Database
                     }
                     if(Transaction is not null) {
                         Transaction.Dispose();
+                        CloseCallback();
                     }
                     Transaction = null;
                     DatabaseAccessor = null!;
@@ -285,12 +291,12 @@ namespace ContentTypeTextNet.Pe.Standard.Database
 
     public sealed class ReadOnlyDatabaseTransaction: DatabaseTransaction
     {
-        public ReadOnlyDatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor)
-            : base(beginTransaction, databaseAccessor)
+        public ReadOnlyDatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor, Action closeCallback)
+            : base(beginTransaction, databaseAccessor, closeCallback)
         { }
 
-        public ReadOnlyDatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor, IsolationLevel isolationLevel)
-            : base(beginTransaction, databaseAccessor, isolationLevel)
+        public ReadOnlyDatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor, Action closeCallback, IsolationLevel isolationLevel)
+            : base(beginTransaction, databaseAccessor, closeCallback, isolationLevel)
         { }
 
         #region DatabaseTransaction
