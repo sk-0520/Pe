@@ -116,7 +116,9 @@ TEXT RC_FILE_FUNC(read_content_file_reader, FILE_READER* file_reader)
     const MEMORY_ARENA_RESOURCE* memory_arena_resource = file_reader->resource.library.memory_arena_resource;
 
     size_t total_read_length = 0;
-    uint8_t* buffer = RC_HEAP_CALL(allocate_raw_memory, file_length, false, memory_arena_resource);
+    //uint8_t* buffer = RC_HEAP_CALL(allocate_raw_memory, file_length, false, memory_arena_resource);
+    MEMORY_RESOURCE buffer_memory_resource = RC_HEAP_CALL(allocate_raw_memory, file_length, false, memory_arena_resource);
+    uint8_t* buffer = buffer_memory_resource.values;
     uint8_t read_buffer[FILE_READER_BUFFER_SIZE];
 
     seek_begin_file_resource(&file_reader->resource);
@@ -124,7 +126,7 @@ TEXT RC_FILE_FUNC(read_content_file_reader, FILE_READER* file_reader)
     do {
         ssize_t read_length = read_file_resource(&file_reader->resource, read_buffer, sizeof(read_buffer));
         if (read_length < 0) {
-            RC_HEAP_CALL(release_memory, buffer, memory_arena_resource);
+            RC_HEAP_CALL(release_memory, &buffer_memory_resource);
             return create_invalid_text();
         }
         if (read_length) {
@@ -151,7 +153,7 @@ TEXT RC_FILE_FUNC(read_content_file_reader, FILE_READER* file_reader)
         case FILE_ENCODING_UTF8:
             {
                 TEXT text = RC_HEAP_CALL(make_text_from_multibyte, conv_buffer, conv_buffer_length, MULTI_BYTE_CHARACTER_TYPE_UTF8, memory_arena_resource);
-                release_memory(buffer, memory_arena_resource);
+                RC_HEAP_CALL(release_memory, &buffer_memory_resource);
                 return text;
             }
 
