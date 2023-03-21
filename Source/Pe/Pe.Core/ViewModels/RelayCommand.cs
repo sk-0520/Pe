@@ -8,7 +8,7 @@ using ContentTypeTextNet.Pe.Standard.Base;
 
 namespace ContentTypeTextNet.Pe.Core.ViewModels
 {
-    public class RelayCommand: ICommand
+    public abstract class RelayCommandBase: ICommand
     {
         #region ICommand
 
@@ -23,6 +23,24 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
         {
             throw new NotImplementedException();
         }
+
+        #endregion
+    }
+
+    public class RelaySyncCommand
+    {
+        #region property
+
+
+
+        #endregion
+    }
+
+    public class RelayAsyncCommand
+    {
+        #region property
+
+
 
         #endregion
     }
