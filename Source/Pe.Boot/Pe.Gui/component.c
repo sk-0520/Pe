@@ -1,16 +1,19 @@
 ﻿#include "../Pe.Library/text.h"
 #include "component.h"
 
-static WNDCLASS create_component_core(COMPONENT_BASE* result, COMPONENT_TYPE component_type, const TEXT* custom_class_name)
+//void create_component_core(COMPONENT_BASE* result, COMPONENT_TYPE component_type, const TEXT* custom_class_name)
+//{
+//    WNDCLASS wnd_class /*= {
+//    }*/;
+//}
+
+WINDOW_COMPONENT create_window_component(const WINDOW_COMPONENT_OPTIONS* options)
 {
-    WNDCLASS wnd_class /*= {
-    }*/;
+    WINDOW_COMPONENT component;
+    set_memory(&component, 0, sizeof(component));
 
-
-    return wnd_class;
-}
-
-void create_component()
-{
+    WNDCLASS wnd_class = {
+        sizeof(WNDCLASS)
+    };
 
 }
