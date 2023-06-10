@@ -3,14 +3,22 @@
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 
-  Title="DatabaseWindow"
+  xmlns:app_main="clr-namespace:ContentTypeTextNet.Pe.Main"
+  xmlns:app_main_views_converter="clr-namespace:ContentTypeTextNet.Pe.Main.Views.Converter"
   
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
+  xmlns:datacontext="clr-namespace:ContentTypeTextNet.Pe.Main.AppMode.Database.ViewModels" d:DataContext="{d:DesignInstance Type=datacontext:DatabaseViewModel}"
   d:DesignWidth="640"
   d:DesignHeight="480"
 >
-    <Grid>
+  <Window.Resources>
+    <app_main_views_converter:TitleConverter x:Key="TitleConverter" />
+  </Window.Resources>
+  <Window.Title>
+    <Binding Path="Resources.String_Database_Caption" Source="{x:Static app_main:CultureService.Instance}" Converter="{StaticResource TitleConverter}" />
+  </Window.Title>
+  <Grid>
         
     </Grid>
 </Window>

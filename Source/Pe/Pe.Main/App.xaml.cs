@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
+using ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models;
 using ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
@@ -129,6 +130,12 @@ namespace ContentTypeTextNet.Pe.Main
                             return;
                         }
                         var model = new AppMode.Database.Models.Element.DatabaseElement(options, initializer.Logging.Factory);
+                        model.Initialize();
+                        var viewModel = new AppMode.Database.ViewModels.DatabaseViewModel(model, new Models.Telemetry.UserTracker(initializer.Logging.Factory), new ApplicationDispatcherWrapper(Timeout.InfiniteTimeSpan), initializer.Logging.Factory);
+                        MainWindow = new AppMode.Database.Views.DatabaseWindow() {
+                            DataContext = viewModel,
+                        };
+                        MainWindow.Show();
 
                     }
                     break;

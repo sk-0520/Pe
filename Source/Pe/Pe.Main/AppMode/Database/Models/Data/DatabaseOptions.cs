@@ -11,7 +11,16 @@ namespace ContentTypeTextNet.Pe.Main.AppMode.Database.Models.Data
     {
         #region property
 
-        [CommandLine(longKey:"database")]
+        /// <summary>
+        /// 言語。
+        /// </summary>
+        [CommandLine(longKey: "language", hasValue: false)]
+        public string Language { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 対象データベース一覧。
+        /// </summary>
+        [CommandLine(longKey: "database")]
         public string[] Database { get; set; } = Array.Empty<string>();
 
         #endregion
