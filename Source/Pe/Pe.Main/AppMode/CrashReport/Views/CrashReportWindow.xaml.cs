@@ -6,7 +6,7 @@ using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 using Prism.Commands;
 
-namespace ContentTypeTextNet.Pe.Main.CrashReport.Views
+namespace ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Views
 {
     /// <summary>
     /// CrashReportWindow.xaml の相互作用ロジック

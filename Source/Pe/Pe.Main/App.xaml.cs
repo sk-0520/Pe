@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
+using ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
@@ -96,16 +97,16 @@ namespace ContentTypeTextNet.Pe.Main
 
                 case Models.Data.RunMode.CrashReport: {
                         ShutdownMode = ShutdownMode.OnMainWindowClose;
-                        var options = new Standard.Base.CommandLineSimpleConverter<CrashReport.Models.Data.CrashReportOptions>(new Standard.Base.CommandLine(e.Args, false)).GetMappingData();
+                        var options = new Standard.Base.CommandLineSimpleConverter<CrashReportOptions>(new Standard.Base.CommandLine(e.Args, false)).GetMappingData();
                         if(options == null) {
                             Logger.LogError("クラッシュレポート起動できず: {0}", string.Join(" ", e.Args));
                             Shutdown(-1);
                             return;
                         }
-                        var model = new CrashReport.Models.Element.CrashReportElement(options, initializer.Logging.Factory);
+                        var model = new AppMode.CrashReport.Models.Element.CrashReportElement(options, initializer.Logging.Factory);
                         model.Initialize();
-                        var viewModel = new CrashReport.ViewModels.CrashReportViewModel(model, new Models.Telemetry.UserTracker(initializer.Logging.Factory), new ApplicationDispatcherWrapper(Timeout.InfiniteTimeSpan), initializer.Logging.Factory);
-                        MainWindow = new CrashReport.Views.CrashReportWindow() {
+                        var viewModel = new AppMode.CrashReport.ViewModels.CrashReportViewModel(model, new Models.Telemetry.UserTracker(initializer.Logging.Factory), new ApplicationDispatcherWrapper(Timeout.InfiniteTimeSpan), initializer.Logging.Factory);
+                        MainWindow = new AppMode.CrashReport.Views.CrashReportWindow() {
                             DataContext = viewModel,
                         };
                         MainWindow.Show();

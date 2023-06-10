@@ -5,7 +5,7 @@ using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Standard.Base;
 using Microsoft.Extensions.Logging;
 
-namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
+namespace ContentTypeTextNet.Pe.Main.AppMode.CrashReport.ViewModels
 {
     public class CrashReportItemViewModel: ViewModelBase
     {

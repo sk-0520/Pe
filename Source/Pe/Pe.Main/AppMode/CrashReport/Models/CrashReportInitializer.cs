@@ -1,9 +1,9 @@
-using ContentTypeTextNet.Pe.Main.CrashReport.Models.Data;
-using ContentTypeTextNet.Pe.Main.CrashReport.Models.Element;
-using ContentTypeTextNet.Pe.Main.CrashReport.ViewModels;
+using ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models.Data;
+using ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models.Element;
+using ContentTypeTextNet.Pe.Main.AppMode.CrashReport.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models;
 
-namespace ContentTypeTextNet.Pe.Main.CrashReport.Models
+namespace ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models
 {
     internal class CrashReportInitializer
     {

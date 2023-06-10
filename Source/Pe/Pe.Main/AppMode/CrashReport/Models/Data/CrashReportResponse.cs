@@ -2,7 +2,7 @@ using System;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
-namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Data
+namespace ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models.Data
 {
     /// <summary>
     /// クラッシュレポート送信結果。

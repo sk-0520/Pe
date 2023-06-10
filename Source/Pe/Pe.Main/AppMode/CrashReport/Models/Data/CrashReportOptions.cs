@@ -1,7 +1,7 @@
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Standard.Base;
 
-namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Data
+namespace ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models.Data
 {
     internal class CrashReportOptions
     {

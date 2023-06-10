@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Data
+namespace ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models.Data
 {
     [Serializable, DataContract]
     internal class CrashReportRawData

@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml;
 using ContentTypeTextNet.Pe.Core.Models;
 
-namespace ContentTypeTextNet.Pe.Main.CrashReport.Models
+namespace ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models
 {
     //TODO: JsonTextSerializer に統合
     internal sealed class CrashReportSerializer: SerializerBase

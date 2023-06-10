@@ -5,13 +5,13 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
-using ContentTypeTextNet.Pe.Main.CrashReport.Models.Element;
+using ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models.Element;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using ContentTypeTextNet.Pe.Main.ViewModels;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 
-namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
+namespace ContentTypeTextNet.Pe.Main.AppMode.CrashReport.ViewModels
 {
     internal class CrashReportViewModel: ElementViewModelBase<CrashReportElement>
     {

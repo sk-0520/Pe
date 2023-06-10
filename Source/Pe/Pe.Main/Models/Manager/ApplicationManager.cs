@@ -23,8 +23,7 @@ using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.Models.Database;
 using ContentTypeTextNet.Pe.Standard.DependencyInjection;
 using ContentTypeTextNet.Pe.Core.ViewModels;
-using ContentTypeTextNet.Pe.Main.CrashReport.Models;
-using ContentTypeTextNet.Pe.Main.CrashReport.Models.Data;
+using ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Command;
@@ -65,6 +64,7 @@ using ContentTypeTextNet.Pe.Plugins.DefaultTheme;
 using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Standard.Database;
 using ContentTypeTextNet.Pe.Standard.Base;
+using ContentTypeTextNet.Pe.Main.AppMode.CrashReport.Models.Data;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
