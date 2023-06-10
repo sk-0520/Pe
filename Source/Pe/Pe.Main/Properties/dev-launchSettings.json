@@ -10,7 +10,7 @@
 		},
 		"Database": {
 			"commandName": "Project",
-			"commandLineArgs": "--run-mode database --log=X:\\\\pe\\\\log --with-log=xml --force-log --full-trace-log --database X:\\pe\\user\\settings\\setting.sqlite3 --database X:\\pe\\user\\settings\\file.sqlite3 "
+			"commandLineArgs": "--run-mode database --log=X:\\pe\\log --with-log=xml --force-log --full-trace-log --database X:\\pe\\user\\settings\\setting.sqlite3 "
 		}
 	}
 }
