@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Main.AppMode.Database.Models.Data
         #region property
 
         [CommandLine(longKey:"database")]
-        public string Database { get; set; } = string.Empty;
+        public string[] Database { get; set; } = Array.Empty<string>();
 
         #endregion
     }
