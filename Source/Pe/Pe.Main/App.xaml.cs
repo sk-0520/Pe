@@ -121,7 +121,7 @@ namespace ContentTypeTextNet.Pe.Main
 
                 case RunMode.Database: {
                         ShutdownMode = ShutdownMode.OnMainWindowClose;
-                        var options = new Core.Models.CommandLineSimpleConverter<AppMode.Database.Models.Data.DatabaseOptions>(new Core.Models.CommandLine(e.Args, false)).GetMappingData();
+                        var options = new Standard.Base.CommandLineSimpleConverter<AppMode.Database.Models.Data.DatabaseOptions>(new Standard.Base.CommandLine(e.Args, false)).GetMappingData();
                         if(options == null) {
                             Logger.LogError("DB実行環境起動できず: {0}", string.Join(" ", e.Args));
                             Shutdown(-1);
