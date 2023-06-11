@@ -136,7 +136,6 @@ namespace ContentTypeTextNet.Pe.Main
                             DataContext = viewModel,
                         };
                         MainWindow.Show();
-
                     }
                     break;
 

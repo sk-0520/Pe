@@ -5,6 +5,10 @@
 
   xmlns:app_main="clr-namespace:ContentTypeTextNet.Pe.Main"
   xmlns:app_main_views_converter="clr-namespace:ContentTypeTextNet.Pe.Main.Views.Converter"
+
+  ResizeMode="CanResizeWithGrip"
+  Width="800"
+  Height="600"
   
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   mc:Ignorable="d"
@@ -19,6 +23,24 @@
     <Binding Path="Resources.String_Database_Caption" Source="{x:Static app_main:CultureService.Instance}" Converter="{StaticResource TitleConverter}" />
   </Window.Title>
   <Grid>
-        
-    </Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Grid.Row="0">
+      <Menu>
+        <MenuItem Header="menu"/>
+      </Menu>
+      <ToolBar>
+        <Button>toolbar</Button>
+      </ToolBar>
+    </StackPanel>
+
+    <StatusBar Grid.Row="2" >
+      <TextBlock>statusbar</TextBlock>
+    </StatusBar>
+    
+  </Grid>
 </Window>
