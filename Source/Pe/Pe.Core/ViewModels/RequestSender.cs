@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
-using Prism.Mvvm;
 
 namespace ContentTypeTextNet.Pe.Core.ViewModels
 {
