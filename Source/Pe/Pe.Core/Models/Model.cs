@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
@@ -8,6 +10,55 @@ using Prism.Mvvm;
 
 namespace ContentTypeTextNet.Pe.Core.Models
 {
+    public abstract class SelfBindableBase: INotifyPropertyChanged
+    {
+        #region function
+
+        /// <summary>
+        protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string? propertyName = default)
+        {
+            if(EqualityComparer<T>.Default.Equals(storage, value)) {
+                return false;
+            }
+
+            storage = value;
+            RaisePropertyChanged(propertyName);
+
+            return true;
+        }
+
+        protected virtual bool SetProperty<T>(ref T storage, T value, Action onChanged, [CallerMemberName] string? propertyName = default)
+        {
+            if(EqualityComparer<T>.Default.Equals(storage, value)) {
+                return false;
+            }
+
+            storage = value;
+            onChanged?.Invoke();
+            RaisePropertyChanged(propertyName);
+
+            return true;
+        }
+
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
+        {
+            PropertyChanged?.Invoke(this, args);
+        }
+
+        protected void RaisePropertyChanged([CallerMemberName] string? propertyName = default)
+        {
+            OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        #endregion
+    }
+
     public abstract class NotifyPropertyBase: BindableBase, IDisposer
     {
         protected NotifyPropertyBase()
