@@ -3,7 +3,7 @@ Param(
 	[Parameter(mandatory = $true)][string[]] $BootConfigurations,
 	[Parameter(mandatory = $false)][string] $MainLogger,
 	[Parameter(mandatory = $true)][string[]] $Platforms,
-	[Parameter(mandatory = $true)][switch] $Coverage
+	[switch] $Coverage
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -35,6 +35,7 @@ foreach ($platform in $Platforms) {
 	$cg = ""
 	if ($Coverage) {
 		$cg = "/p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov"
+		$cg = "/p:CollectCoverage=true"
 	}
 	foreach ($mainConfiguration in $MainConfigurations) {
 		foreach ($projectDirItem in $mainProjectDirItems) {
