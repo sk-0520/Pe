@@ -59,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         #endregion
     }
 
-    public abstract class NotifyPropertyBase: BindableBase, IDisposer
+    public abstract class NotifyPropertyBase: SelfBindableBase, IDisposer
     {
         protected NotifyPropertyBase()
         { }

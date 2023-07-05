@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
         #endregion
     }
 
-    public class RequestSender: BindableBase, IRequestSender
+    public class RequestSender: SelfBindableBase, IRequestSender
     {
         public RequestSender()
         { }
