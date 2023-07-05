@@ -2,7 +2,8 @@ Param(
 	[Parameter(mandatory = $true)][string[]] $MainConfigurations,
 	[Parameter(mandatory = $true)][string[]] $BootConfigurations,
 	[Parameter(mandatory = $false)][string] $MainLogger,
-	[Parameter(mandatory = $true)][string[]] $Platforms
+	[Parameter(mandatory = $true)][string[]] $Platforms,
+	[Parameter(mandatory = $true)][switch] $Coverage
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -31,13 +32,17 @@ foreach ($platform in $Platforms) {
 	}
 	$mainProjectDirItems = Get-ChildItem -Path $sourceMainDirectoryPath -Filter "*.Test" -Directory
 
+	$cg = ""
+	if ($Coverage) {
+		$cg = "/p:CollectCoverage=true /p:CoverletOutput=TestResults/ /p:CoverletOutputFormat=lcov"
+	}
 	foreach ($mainConfiguration in $MainConfigurations) {
 		foreach ($projectDirItem in $mainProjectDirItems) {
 			$testDirPath = Join-Path $projectDirItem.FullName "bin" | Join-Path -ChildPath $platform | Join-Path -ChildPath $mainConfiguration
 			$testFileName = $projectDirItem.BaseName + '.dll'
 			$testFilePath = Join-Path $testDirPath (Get-ChildItem -LiteralPath $testDirPath -Recurse -Name -File -Include $testFileName)
 
-			dotnet test $testFilePath --test-adapter-path:. $mainLoggerArg
+			dotnet test $testFilePath --test-adapter-path:. $mainLoggerArg $cg
 			if (-not $?) {
 				exit 1
 			}
