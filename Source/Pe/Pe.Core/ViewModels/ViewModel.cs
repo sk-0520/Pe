@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
@@ -15,7 +16,6 @@ using System.Xml.Serialization;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Standard.Base;
 using Microsoft.Extensions.Logging;
-using Prism.Mvvm;
 
 namespace ContentTypeTextNet.Pe.Core.ViewModels
 {
@@ -27,6 +27,76 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
     {
         public IgnoreValidationAttribute()
         { }
+    }
+
+    public class SelfErrorsContainer
+    {
+        public SelfErrorsContainer(Action<string> raiseErrorsChanged)
+        {
+            if(raiseErrorsChanged == null) {
+                throw new ArgumentNullException(nameof(raiseErrorsChanged));
+            }
+
+            CallbackErrorsChanged = raiseErrorsChanged;
+        }
+
+        #region property
+
+        private Action<string> CallbackErrorsChanged { get; }
+
+        private Dictionary<string, List<string>> Errors { get; } = new Dictionary<string, List<string>>();
+
+        public bool HasErrors => Errors.Count != 0;
+
+        #endregion
+
+        #region function
+
+        public IReadOnlyDictionary<string, IReadOnlyList<string>> GetErrors()
+        {
+            return (IReadOnlyDictionary<string, IReadOnlyList<string>>)Errors;
+        }
+
+        public IReadOnlyList<string> GetErrors(string? propertyName)
+        {
+            if(propertyName is not null) {
+                if(Errors.TryGetValue(propertyName, out var currentValidationResults)) {
+                    return currentValidationResults;
+                }
+            }
+
+            return Array.Empty<string>();
+        }
+
+        public void ClearErrors()
+        {
+            foreach(var key in Errors.Keys) {
+                ClearErrors(key);
+            }
+        }
+
+        public void ClearErrors(string propertyName)
+        {
+            SetErrors(propertyName, new List<string>());
+        }
+
+        public void SetErrors(string propertyName, IEnumerable<string> newValidationResults)
+        {
+            var hasCurrentValidationResults = Errors.ContainsKey(propertyName);
+            var hasNewValidationResults = newValidationResults is not null && newValidationResults.Any();
+
+            if(hasCurrentValidationResults || hasNewValidationResults) {
+                if(newValidationResults is not null) {
+                    Errors[propertyName] = newValidationResults.ToList();
+                    CallbackErrorsChanged(propertyName);
+                } else {
+                    Errors.Remove(propertyName);
+                    CallbackErrorsChanged(propertyName);
+                }
+            }
+        }
+
+        #endregion
     }
 
     /// <summary>
@@ -43,7 +113,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
         {
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
-            ErrorsContainer = new ErrorsContainer<string>(OnErrorsChanged);
+            ErrorsContainer = new SelfErrorsContainer(OnErrorsChanged);
             WeakDisposing = new WeakEvent<EventArgs>(nameof(Disposing));
 
             if(cacheProperty) {
@@ -379,7 +449,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
 
         #region INotifyDataErrorInfo
 
-        private ErrorsContainer<string> ErrorsContainer { get; }
+        private SelfErrorsContainer ErrorsContainer { get; }
 
         protected void OnErrorsChanged([CallerMemberName] string propertyName = "")
         {
