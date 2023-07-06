@@ -45,4 +45,44 @@ namespace ContentTypeTextNet.Pe.Core.Models.Command
 
         #endregion
     }
+
+    public class DelegateCommand<TParameter>: DelegateCommandBase
+    {
+        public DelegateCommand(Action<TParameter> executeMethod)
+            : this(executeMethod, NullCanExecuteMethod)
+        { }
+
+        public DelegateCommand(Action<TParameter> executeMethod, Func<TParameter, bool> canExecuteMethod)
+        {
+            ExecuteMethod = executeMethod;
+            CanExecuteMethod = canExecuteMethod;
+        }
+
+        #region property
+
+        private Func<TParameter, bool> CanExecuteMethod { get; }
+        private Action<TParameter> ExecuteMethod { get; }
+
+        #endregion
+
+        #region function
+
+        private static bool NullCanExecuteMethod(TParameter _) => true;
+
+        #endregion
+
+        #region DelegateCommandBase
+
+        public override bool CanExecute(object? parameter)
+        {
+            return CanExecuteMethod((TParameter)parameter!);
+        }
+
+        public override void Execute(object? parameter)
+        {
+            ExecuteMethod((TParameter)parameter!);
+        }
+
+        #endregion
+    }
 }
