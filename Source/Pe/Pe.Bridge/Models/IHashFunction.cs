@@ -17,6 +17,10 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
         MD5,
     }
 
+    /// <summary>
+    /// ハッシュ関数の簡易的なやつ。
+    /// <para>Pe から提供される。</para>
+    /// </summary>
     public interface IHashFunction
     {
         #region function
@@ -42,7 +46,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
         public static HashAlgorithm Create(this IHashFunction hashFunction, string algorithmName)
         {
             var kind = algorithmName.ToUpperInvariant() switch {
-                "SHA" or "SHA1" => HashAlgorithmKind.SHA1,
+                "SHA" or "SHA1" or "SHA-1" => HashAlgorithmKind.SHA1,
                 "SHA256" or "SHA-256" => HashAlgorithmKind.SHA256,
                 "SHA384" or "SHA-384" => HashAlgorithmKind.SHA384,
                 "SHA512" or "SHA-512" => HashAlgorithmKind.SHA512,
