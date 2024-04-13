@@ -100,6 +100,12 @@ namespace ContentTypeTextNet.Pe.Mvvm.Binding
             return ChangePropertyValue(model, value, prop, notifyPropertyName);
         }
 
+        // 互換用
+        protected bool SetPropertyValue<TObject, TValue>(TObject model, TValue value, [CallerMemberName] string propertyName = "", [CallerMemberName] string notifyPropertyName = "")
+        {
+            return SetProperty(model, value, propertyName, notifyPropertyName);
+        }
+
         protected virtual void OnErrorsChanged([CallerMemberName] string propertyName = "")
         {
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
@@ -184,6 +190,203 @@ namespace ContentTypeTextNet.Pe.Mvvm.Binding
 
             return Array.Empty<DataErrorsChangedEventArgs>();
         }
+
+        ///// <summary>
+        ///// プロパティ検証。
+        ///// </summary>
+        ///// <param name="value"></param>
+        ///// <param name="propertyName"></param>
+        //protected void ValidateProperty(object? value, [CallerMemberName] string propertyName = "")
+        //{
+        //    ThrowIfDisposed();
+
+        //    var context = new ValidationContext(this) {
+        //        MemberName = propertyName
+        //    };
+        //    var validationErrors = new List<ValidationResult>();
+        //    if(!Validator.TryValidateProperty(value, context, validationErrors)) {
+        //        var errors = validationErrors.Select(error => error.ErrorMessage ?? string.Empty);
+        //        ErrorsContainer.SetErrors(propertyName, errors);
+        //    } else {
+        //        ErrorsContainer.ClearErrors(propertyName);
+        //    }
+        //}
+
+        ///// <summary>
+        ///// 子を含む全ての検証要素を取得。
+        ///// </summary>
+        ///// <returns></returns>
+        //private (IReadOnlyCollection<PropertyInfo> properties, IReadOnlyCollection<ViewModelBase> childViewModels) GetValidationItems()
+        //{
+        //    ThrowIfDisposed();
+
+        //    if(SkipValidation) {
+        //        return (Array.Empty<PropertyInfo>(), Array.Empty<ViewModelBase>());
+        //    }
+
+        //    var type = GetType();
+        //    var properties = type.GetProperties()
+        //        .Select(i => (property: i, attribute: i.GetCustomAttribute<IgnoreValidationAttribute>()))
+        //        .Where(i => i.attribute == null)
+        //        .Select(i => i.property)
+        //        .ToList()
+        //    ;
+        //    var targetProperties = properties
+        //        .Select(i => (property: i, attributes: i.GetCustomAttributes<ValidationAttribute>()))
+        //        .Where(i => i.attributes.Any())
+        //        .Select(i => i.property)
+        //        .ToList()
+        //    ;
+
+        //    var childProperties = properties.Except(targetProperties);
+        //    var childViewModels = new List<ViewModelBase>();
+        //    foreach(var property in childProperties) {
+        //        var rawValue = property.GetValue(this);
+        //        switch(rawValue) {
+        //            case ViewModelBase viewModel:
+        //                childViewModels.Add(viewModel);
+        //                break;
+
+        //            case IEnumerable enumerable:
+        //                foreach(var element in enumerable.OfType<ViewModelBase>()) {
+        //                    childViewModels.Add(element);
+        //                }
+        //                break;
+
+        //            default:
+        //                break;
+        //        }
+        //    }
+
+        //    return (targetProperties, childViewModels);
+        //}
+
+        ///// <summary>
+        ///// 子を含む全てのプロパティ検証。
+        ///// </summary>
+        //private void ValidateAllProperty()
+        //{
+        //    ThrowIfDisposed();
+
+        //    var validationItems = GetValidationItems();
+
+        //    foreach(var property in validationItems.properties) {
+        //        var rawValue = property.GetValue(this);
+        //        ValidateProperty(rawValue!, property.Name);
+        //    }
+
+        //    foreach(var childViewModel in validationItems.childViewModels) {
+        //        childViewModel.ValidateAllProperty();
+        //    }
+        //}
+
+        ///// <summary>
+        ///// ビジネスロジックの検証。
+        ///// <para>継承先でこいつを最初に呼び出すこと。</para>
+        ///// </summary>
+        //protected virtual void ValidateDomain()
+        //{
+        //    ThrowIfDisposed();
+        //}
+
+        ///// <summary>
+        ///// 子を含む全てのビジネスロジックの検証。
+        ///// </summary>
+        //private void ValidateAllDomain()
+        //{
+        //    ThrowIfDisposed();
+
+        //    var v = GetValidationItems();
+        //    ValidateDomain();
+        //    foreach(var childViewModel in v.childViewModels) {
+        //        childViewModel.ValidateAllDomain();
+        //    }
+        //}
+
+        //private bool HasChildrenErrors()
+        //{
+        //    ThrowIfDisposed();
+
+        //    var v = GetValidationItems();
+        //    var result = v.childViewModels.Any(i => i.HasErrors || i.HasChildrenErrors());
+        //    return result;
+        //}
+
+        //private void ClearAllErrors()
+        //{
+        //    ThrowIfDisposed();
+
+        //    ErrorsContainer.ClearErrors();
+        //    var v = GetValidationItems();
+        //    foreach(var property in v.properties) {
+        //        ClearError(property.Name);
+        //    }
+        //    foreach(var viewModels in v.childViewModels) {
+        //        viewModels.ClearAllErrors();
+        //    }
+        //}
+
+        //public bool Validate()
+        //{
+        //    ThrowIfDisposed();
+
+        //    if(HasErrors || HasChildrenErrors()) {
+        //        return false;
+        //    }
+
+        //    ValidateAllProperty();
+
+        //    if(HasErrors || HasChildrenErrors()) {
+        //        return false;
+        //    }
+
+        //    ClearAllErrors();
+        //    ValidateAllDomain();
+
+        //    return !HasErrors && !HasChildrenErrors();
+        //}
+
+        //protected void ClearError([CallerMemberName] string propertyName = "")
+        //{
+        //    ThrowIfDisposed();
+
+        //    ErrorsContainer.ClearErrors(propertyName);
+        //}
+
+        //protected void SetError(string errorMessage, [CallerMemberName] string propertyName = "")
+        //{
+        //    ThrowIfDisposed();
+
+        //    ErrorsContainer.SetErrors(propertyName, new[] { errorMessage });
+        //}
+        //protected void SetErrors(IEnumerable<string> errorMessage, [CallerMemberName] string propertyName = "")
+        //{
+        //    ThrowIfDisposed();
+
+        //    ErrorsContainer.SetErrors(propertyName, errorMessage);
+        //}
+        //protected void AddError(string message, [CallerMemberName] string propertyName = "")
+        //{
+        //    ThrowIfDisposed();
+
+        //    var errors = ErrorsContainer.GetErrors(propertyName).ToList();
+        //    if(!errors.Contains(message)) {
+        //        errors.Add(message);
+        //        ErrorsContainer.SetErrors(propertyName, errors);
+        //    }
+        //}
+        //protected void AddErrors(IEnumerable<string> messages, [CallerMemberName] string propertyName = "")
+        //{
+        //    ThrowIfDisposed();
+
+        //    var errors = ErrorsContainer.GetErrors(propertyName).ToList();
+        //    foreach(var message in messages) {
+        //        if(!errors.Contains(message)) {
+        //            errors.Add(message);
+        //            ErrorsContainer.SetErrors(propertyName, errors);
+        //        }
+        //    }
+        //}
 
         #endregion
 

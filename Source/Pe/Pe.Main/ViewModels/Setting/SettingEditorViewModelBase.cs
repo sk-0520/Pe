@@ -4,6 +4,7 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using ContentTypeTextNet.Pe.Standard.Base;
 using Microsoft.Extensions.Logging;
 

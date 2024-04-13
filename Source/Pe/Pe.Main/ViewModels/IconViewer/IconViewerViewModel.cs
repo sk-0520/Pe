@@ -9,11 +9,12 @@ using ContentTypeTextNet.Pe.Bridge.Plugin.Addon;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
 {
-    public sealed class ImageViewModel: ViewModelBase
+    public sealed class ImageViewModel: ViewModelWithLoggerBase
     {
         public ImageViewModel(ImageSource imageSource, ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -28,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
         #endregion
     }
 
-    public sealed class IconObjectViewModel: ViewModelBase
+    public sealed class IconObjectViewModel: ViewModelWithLoggerBase
     {
         public IconObjectViewModel(object icon, ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -43,7 +44,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
         #endregion
     }
 
-    public class IconViewerViewModel: ViewModelBase
+    public class IconViewerViewModel: ViewModelWithLoggerBase
     {
         #region define
 

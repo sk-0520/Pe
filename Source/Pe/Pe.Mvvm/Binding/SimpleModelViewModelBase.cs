@@ -53,6 +53,38 @@ namespace ContentTypeTextNet.Pe.Mvvm.Binding
             return SetModel(value, modelPropertyName, notifyPropertyName);
         }
 
+        /// <summary>
+        /// モデルを取り込んだ際に一度だけ呼び出される処理。
+        /// <para>継承クラスでは一番最初に呼び出すこと。</para>
+        /// </summary>
+        protected virtual void AttachModelEventsImpl()
+        {
+            ThrowIfDisposed();
+        }
+
+        protected void AttachModelEvents()
+        {
+            if(Model != null) {
+                ThrowIfDisposed();
+
+                AttachModelEventsImpl();
+            }
+        }
+
+        /// <summary>
+        /// モデルとサヨナラするとき(<see cref="Dispose(bool)"/>とか)するときに一度だけ呼び出される。
+        /// <para>継承クラスでは一番最初に呼び出すこと。</para>
+        /// </summary>
+        protected virtual void DetachModelEventsImpl()
+        { }
+
+        protected void DetachModelEvents()
+        {
+            if(Model != null) {
+                DetachModelEventsImpl();
+            }
+        }
+
         #endregion
 
         #region ViewModelBase

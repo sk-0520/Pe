@@ -8,6 +8,7 @@ using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Element.Plugin;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting;
+using ContentTypeTextNet.Pe.Mvvm.Binding.Collection;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 

@@ -3,6 +3,7 @@ using System.Linq;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Main.Models.Data;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using ContentTypeTextNet.Pe.Standard.Base;
 using Microsoft.Extensions.Logging;
 
@@ -35,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.ReleaseNote
         #endregion
     }
 
-    public class NewVersionInfo: BindModelBase, IReadOnlyNewVersionInfo
+    public class NewVersionInfo: BindModelWithLoggerBase, IReadOnlyNewVersionInfo
     {
         #region variable
 
@@ -49,7 +50,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.ReleaseNote
 
         #endregion
 
-        public NewVersionInfo(ILoggerFactory loggerFactory) : base(loggerFactory)
+        public NewVersionInfo(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
             CurrentLogProgress = new Progress<string>(v => CurrentLog = v);
             ChecksumProgress = new Progress<double>(v => ChecksumValue = v);

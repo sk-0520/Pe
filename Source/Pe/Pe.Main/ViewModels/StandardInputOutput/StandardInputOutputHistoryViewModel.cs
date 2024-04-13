@@ -1,11 +1,12 @@
 using System;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
 {
-    public class StandardInputOutputHistoryViewModel: ViewModelBase
+    public class StandardInputOutputHistoryViewModel: ViewModelWithLoggerBase
     {
         public StandardInputOutputHistoryViewModel(string value, [DateTimeKind(DateTimeKind.Utc)] DateTime timestamp, ILoggerFactory loggerFactory)
             : base(loggerFactory)

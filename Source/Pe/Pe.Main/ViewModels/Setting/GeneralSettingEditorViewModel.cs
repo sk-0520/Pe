@@ -17,6 +17,7 @@ using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.ViewModels.Font;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 
@@ -125,7 +126,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
     {
         #region define
 
-        public class ThemePluginItemViewModel: ViewModelBase
+        public class ThemePluginItemViewModel: ViewModelWithLoggerBase
         {
             public ThemePluginItemViewModel(IPlugin plugin, IImageLoader imageLoader, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
                 : base(loggerFactory)

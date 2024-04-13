@@ -17,6 +17,8 @@ using Microsoft.Extensions.Logging;
 using Prism.Commands;
 using ContentTypeTextNet.Pe.Standard.Base;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Mvvm.Binding.Collection;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 {

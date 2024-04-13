@@ -13,6 +13,7 @@ using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.NotifyLog;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Theme;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
+using ContentTypeTextNet.Pe.Mvvm.Binding.Collection;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 

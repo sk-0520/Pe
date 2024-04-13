@@ -4,11 +4,12 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 {
-    public class HistoryViewModel: ViewModelBase
+    public class HistoryViewModel: ViewModelWithLoggerBase
     {
         public HistoryViewModel(LauncherHistoryData data, CultureInfo cultureInfo, ILoggerFactory loggerFactory)
             : base(loggerFactory)

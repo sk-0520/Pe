@@ -2,121 +2,122 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using ContentTypeTextNet.Pe.Standard.Base;
 using Microsoft.Extensions.Logging;
 using Prism.Mvvm;
 
 namespace ContentTypeTextNet.Pe.Core.Models
 {
-    public abstract class NotifyPropertyBase: BindableBase, IDisposer
-    {
-        protected NotifyPropertyBase()
-        { }
+//    public abstract class NotifyPropertyBase: BindableBase, IDisposer
+//    {
+//        protected NotifyPropertyBase()
+//        { }
 
-        ~NotifyPropertyBase()
-        {
-            Dispose(false);
-        }
+//        ~NotifyPropertyBase()
+//        {
+//            Dispose(false);
+//        }
 
-        #region property
-        #endregion
+//        #region property
+//        #endregion
 
-        #region IDisposable
+//        #region IDisposable
 
-        /// <summary>
-        /// <see cref="IDisposable.Dispose"/>時に呼び出されるイベント。
-        /// <para>呼び出し時点では<see cref="IsDisposed"/>は偽のまま。</para>
-        /// </summary>
-        [field: NonSerialized]
-        public event EventHandler<EventArgs>? Disposing;
+//        /// <summary>
+//        /// <see cref="IDisposable.Dispose"/>時に呼び出されるイベント。
+//        /// <para>呼び出し時点では<see cref="IsDisposed"/>は偽のまま。</para>
+//        /// </summary>
+//        [field: NonSerialized]
+//        public event EventHandler<EventArgs>? Disposing;
 
-        /// <summary>
-        /// <see cref="IDisposable.Dispose"/>されたか。
-        /// </summary>
-        [IgnoreDataMember, XmlIgnore]
-        public bool IsDisposed { get; private set; }
+//        /// <summary>
+//        /// <see cref="IDisposable.Dispose"/>されたか。
+//        /// </summary>
+//        [IgnoreDataMember, XmlIgnore]
+//        public bool IsDisposed { get; private set; }
 
-        protected void ThrowIfDisposed([CallerMemberName] string _callerMemberName = "")
-        {
-            if(IsDisposed) {
-                throw new ObjectDisposedException(_callerMemberName);
-            }
-        }
+//        protected void ThrowIfDisposed([CallerMemberName] string _callerMemberName = "")
+//        {
+//            if(IsDisposed) {
+//                throw new ObjectDisposedException(_callerMemberName);
+//            }
+//        }
 
 
-        /// <summary>
-        /// <see cref="IDisposable.Dispose"/>の内部処理。
-        /// <para>継承先クラスでは本メソッドを呼び出す必要がある。</para>
-        /// </summary>
-        /// <param name="disposing">CLRの管理下か。</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if(IsDisposed) {
-                return;
-            }
+//        /// <summary>
+//        /// <see cref="IDisposable.Dispose"/>の内部処理。
+//        /// <para>継承先クラスでは本メソッドを呼び出す必要がある。</para>
+//        /// </summary>
+//        /// <param name="disposing">CLRの管理下か。</param>
+//        protected virtual void Dispose(bool disposing)
+//        {
+//            if(IsDisposed) {
+//                return;
+//            }
 
-            Disposing?.Invoke(this, EventArgs.Empty);
+//            Disposing?.Invoke(this, EventArgs.Empty);
 
-            if(disposing) {
-#pragma warning disable S3971 // "GC.SuppressFinalize" should not be called
-#pragma warning disable CA1816 // Dispose メソッドは、SuppressFinalize を呼び出す必要があります
-                GC.SuppressFinalize(this);
-#pragma warning restore CA1816 // Dispose メソッドは、SuppressFinalize を呼び出す必要があります
-#pragma warning restore S3971 // "GC.SuppressFinalize" should not be called
-            }
+//            if(disposing) {
+//#pragma warning disable S3971 // "GC.SuppressFinalize" should not be called
+//#pragma warning disable CA1816 // Dispose メソッドは、SuppressFinalize を呼び出す必要があります
+//                GC.SuppressFinalize(this);
+//#pragma warning restore CA1816 // Dispose メソッドは、SuppressFinalize を呼び出す必要があります
+//#pragma warning restore S3971 // "GC.SuppressFinalize" should not be called
+//            }
 
-            IsDisposed = true;
-        }
+//            IsDisposed = true;
+//        }
 
-        /// <summary>
-        /// 解放。
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-        }
+//        /// <summary>
+//        /// 解放。
+//        /// </summary>
+//        public void Dispose()
+//        {
+//            Dispose(true);
+//        }
 
-        #endregion
-    }
+//        #endregion
+//    }
 
-    public abstract class BindModelBase: NotifyPropertyBase
-    {
-        protected BindModelBase(ILoggerFactory loggerFactory)
-        {
-            Logger = loggerFactory.CreateLogger(GetType());
-            LoggerFactory = loggerFactory;
-        }
+//    public abstract class BindModelBase: NotifyPropertyBase
+//    {
+//        protected BindModelBase(ILoggerFactory loggerFactory)
+//        {
+//            Logger = loggerFactory.CreateLogger(GetType());
+//            LoggerFactory = loggerFactory;
+//        }
 
-        ~BindModelBase()
-        {
-            Dispose(false);
-        }
+//        ~BindModelBase()
+//        {
+//            Dispose(false);
+//        }
 
-        #region property
+//        #region property
 
-        protected ILogger Logger { get; private set; }
-        protected ILoggerFactory LoggerFactory { get; private set; }
+//        protected ILogger Logger { get; private set; }
+//        protected ILoggerFactory LoggerFactory { get; private set; }
 
-        #endregion
+//        #endregion
 
-        //#region NotifyPropertyBase
+//        //#region NotifyPropertyBase
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if(!IsDisposed) {
-        //        if(disposing) {
-        //            if(Logger is IDisposable disposer) {
-        //                disposer.Dispose();
-        //            }
-        //        }
-        //    }
+//        //protected override void Dispose(bool disposing)
+//        //{
+//        //    if(!IsDisposed) {
+//        //        if(disposing) {
+//        //            if(Logger is IDisposable disposer) {
+//        //                disposer.Dispose();
+//        //            }
+//        //        }
+//        //    }
 
-        //    base.Dispose(disposing);
-        //}
+//        //    base.Dispose(disposing);
+//        //}
 
-        //#endregion
+//        //#endregion
 
-    }
+//    }
 
     public sealed class WrapModel<TData>: BindModelBase
     {
@@ -124,7 +125,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
             : this(data, true, loggerFactory)
         { }
         public WrapModel(TData data, bool useDispose, ILoggerFactory loggerFactory)
-            : base(loggerFactory)
+            : base()
         {
             Data = data;
             UseDispose = useDispose;

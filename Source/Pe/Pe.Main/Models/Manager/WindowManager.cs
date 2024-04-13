@@ -17,6 +17,7 @@ using ContentTypeTextNet.Pe.PInvoke.Windows;
 using Microsoft.Extensions.Logging;
 using System.Windows.Data;
 using Microsoft.Web.WebView2.Wpf;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {

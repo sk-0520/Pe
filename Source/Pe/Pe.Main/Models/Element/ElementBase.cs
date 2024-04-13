@@ -4,6 +4,7 @@ using ContentTypeTextNet.Pe.Standard.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element
 {
@@ -11,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element
     /// <summary>
     /// DataContext にあてる VM のモデルになる基底クラス。
     /// </summary>
-    public abstract class ElementBase: BindModelBase
+    public abstract class ElementBase: BindModelWithLoggerBase
     {
         #region variable
 

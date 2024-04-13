@@ -12,6 +12,7 @@ using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.Accept;
 using ContentTypeTextNet.Pe.Main.Views.Accept;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 

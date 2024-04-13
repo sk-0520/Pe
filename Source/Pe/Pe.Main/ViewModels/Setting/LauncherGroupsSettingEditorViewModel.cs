@@ -17,6 +17,8 @@ using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.ViewModels.LauncherGroup;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
+using ContentTypeTextNet.Pe.Mvvm.Binding.Collection;
 using ContentTypeTextNet.Pe.Standard.Base;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;

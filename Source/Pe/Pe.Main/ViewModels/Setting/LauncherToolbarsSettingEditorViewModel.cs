@@ -6,6 +6,7 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting;
+using ContentTypeTextNet.Pe.Mvvm.Binding.Collection;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 

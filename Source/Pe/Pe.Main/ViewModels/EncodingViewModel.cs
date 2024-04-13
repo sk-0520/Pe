@@ -1,11 +1,12 @@
 using System.Text;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels
 {
-    public class EncodingViewModel: ViewModelBase
+    public class EncodingViewModel: ViewModelWithLoggerBase
     {
         public EncodingViewModel(EncodingInfo encodingInfo, ILoggerFactory loggerFactory)
             : base(loggerFactory)

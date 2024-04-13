@@ -1,10 +1,11 @@
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 {
-    public class HitValueItemViewModel: ViewModelBase
+    public class HitValueItemViewModel: ViewModelWithLoggerBase
     {
         public HitValueItemViewModel(HitValue hitValue, ILoggerFactory loggerFactory)
             : base(loggerFactory)

@@ -10,6 +10,7 @@ using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.ViewModels.Manager;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;

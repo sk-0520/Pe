@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Core.Models
@@ -51,7 +52,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
     /// <summary>
     /// 実行状態。
     /// </summary>
-    public class RunningStatus: BindModelBase, IRunningStatus
+    public class RunningStatus: BindModelWithLoggerBase, IRunningStatus
     {
         #region variable
 

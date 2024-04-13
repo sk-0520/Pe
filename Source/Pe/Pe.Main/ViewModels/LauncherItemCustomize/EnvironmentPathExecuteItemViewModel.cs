@@ -1,11 +1,12 @@
 using System.IO;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 {
-    public class EnvironmentPathExecuteItemViewModel: ViewModelBase
+    public class EnvironmentPathExecuteItemViewModel: ViewModelWithLoggerBase
     {
         public EnvironmentPathExecuteItemViewModel(EnvironmentPathExecuteItem item, ILoggerFactory loggerFactory)
             : base(loggerFactory)

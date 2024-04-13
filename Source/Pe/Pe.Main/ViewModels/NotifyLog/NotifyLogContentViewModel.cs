@@ -2,11 +2,12 @@ using System;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Data;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
 {
-    public class NotifyLogContentViewModel: ViewModelBase
+    public class NotifyLogContentViewModel: ViewModelWithLoggerBase
     {
         public NotifyLogContentViewModel(IReadOnlyNotifyLogContent content, ILoggerFactory loggerFactory)
             : base(loggerFactory)
