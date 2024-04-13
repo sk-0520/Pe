@@ -32,6 +32,7 @@ using Prism.Commands;
 using ContentTypeTextNet.Pe.Standard.Base;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Mvvm.Binding.Collection;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Mvvm.Binding;
 using ContentTypeTextNet.Pe.Standard.Base;
 using Microsoft.Extensions.Logging;
 
@@ -16,13 +17,12 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
         #endregion
 
         public CrashReportItemViewModel(ObjectDumpItem item, ILoggerFactory loggerFactory)
-            : base(loggerFactory)
         {
             Item = item;
             Name = Item.MemberInfo.Name;
             Value = Item.Value;
             Children = Item.Children
-                .Select(i => new CrashReportItemViewModel(i, LoggerFactory))
+                .Select(i => new CrashReportItemViewModel(i, loggerFactory))
                 .ToList()
             ;
         }
@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
         public bool IsExpanded
         {
             get => this._isExpanded;
-            set => SetProperty(ref this._isExpanded, value);
+            set => SetVariable(ref this._isExpanded, value);
         }
 
         #endregion

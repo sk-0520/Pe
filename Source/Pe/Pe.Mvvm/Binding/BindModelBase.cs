@@ -43,6 +43,12 @@ namespace ContentTypeTextNet.Pe.Mvvm.Binding
             return true;
         }
 
+        // 互換用
+        protected bool SetVariableValue<T>(ref T variable, T value, [CallerMemberName] string notifyPropertyName = "")
+        {
+            return SetVariable(ref variable, value, notifyPropertyName);
+        }
+
         #endregion
 
         #region IDisposed

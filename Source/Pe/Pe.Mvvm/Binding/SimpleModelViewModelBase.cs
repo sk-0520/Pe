@@ -47,6 +47,12 @@ namespace ContentTypeTextNet.Pe.Mvvm.Binding
 #pragma warning restore CS8604 // Null 参照引数の可能性があります。
         }
 
+        // 互換用
+        protected bool SetModelValue<T>(T value, [CallerMemberName] string modelPropertyName = "", [CallerMemberName] string notifyPropertyName = "")
+        {
+            return SetModel(value, modelPropertyName, notifyPropertyName);
+        }
+
         #endregion
 
         #region ViewModelBase

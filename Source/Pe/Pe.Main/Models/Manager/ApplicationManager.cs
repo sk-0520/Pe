@@ -65,6 +65,7 @@ using ContentTypeTextNet.Pe.Plugins.DefaultTheme;
 using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Standard.Database;
 using ContentTypeTextNet.Pe.Standard.Base;
+using ContentTypeTextNet.Pe.Mvvm.Binding.Collection;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
