@@ -10,11 +10,9 @@ Describe 'Invoke-Using' {
 			}
 		}
 
-		{
-			Invoke-Using ([Test]::new()) {
-				$script:callCount += 1
-			}
-		} | Should Not Throw
+		Invoke-Using ([Test]::new()) {
+			$script:callCount += 1
+		}
 
 		$script:callCount | Should Be 2
 	}
