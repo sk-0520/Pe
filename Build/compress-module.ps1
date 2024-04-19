@@ -8,6 +8,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 Import-Module "${PSScriptRoot}/Modules/Project"
+Import-Module "${PSScriptRoot}/Modules/Path"
 
 
 #/*[FUNCTIONS]-------------------------------------
@@ -18,9 +19,7 @@ Write-Verbose "OutputFileBaseName = $OutputFileBaseName"
 
 $outputFileName = $OutputFileBaseName + '.' + $Archive
 
-try {
-	Push-Location $TargetDirectory
-
+Invoke-Location -Path $TargetDirectory {
 	switch ($Archive) {
 		'7z' {
 			7z a -t7z -m0=lzma2 -mx=9 -mfb=64 -md=64m -ms=on -mmt=on "$outputFileName" * -r -bsp1
@@ -40,6 +39,5 @@ try {
 	}
 
 	Move-Item -Path $outputFileName -Destination (Get-RootDirectory) | Out-Null
-} finally {
-	Pop-Location
 }
+
