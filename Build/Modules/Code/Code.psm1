@@ -18,7 +18,7 @@ function Invoke-Using {
 	)
 
 	try {
-		Invoke-Command -ScriptBlock $ScriptBlock
+		.$ScriptBlock
 	} finally {
 		if ($null -ne $Object) {
 			$Object.Dispose()

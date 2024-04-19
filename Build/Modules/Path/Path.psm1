@@ -19,7 +19,7 @@ function Invoke-Location {
 
 	Push-Location -LiteralPath $Path
 	try {
-		Invoke-Command -ScriptBlock $ScriptBlock
+		.$ScriptBlock
 	} finally {
 		Pop-Location
 	}
