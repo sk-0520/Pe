@@ -3,6 +3,13 @@ Set-StrictMode -Version Latest
 
 $projectFile = Join-Path -Path (Split-Path -Parent $PSScriptRoot | Split-Path -Parent | Split-Path -Parent) -ChildPath 'Source/Pe/Directory.Build.props'
 
+<#
+.SYNOPSIS
+	アプリケーションのバージョンを取得。
+
+.OUTPUTS
+	アプリケーションのバージョン。
+#>
 function Get-ApplicationVersion {
 	[OutputType([version])]
 	Param()
@@ -14,6 +21,16 @@ function Get-ApplicationVersion {
 	return [version]$vesion
 }
 
+<#
+.SYNOPSIS
+	バージョンを文字列化。
+
+.PARAMETER Version
+	バージョン。
+
+.PARAMETER Separator
+	結合文字列。
+#>
 function Convert-Version {
 	[OutputType([string])]
 	Param(

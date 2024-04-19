@@ -10,7 +10,6 @@ Set-StrictMode -Version Latest
 
 .PARAMETER ScriptBlock
 	処理。
-
 #>
 function Invoke-Using {
 	Param(

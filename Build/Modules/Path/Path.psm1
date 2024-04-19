@@ -3,14 +3,13 @@ Set-StrictMode -Version Latest
 
 <#
 .SYNOPSIS
-	IDisposable に対する自動解放処理。
+	現在ディレクトリを変更しつつ処理して、その後変更前ディレクトリに移動。
 
 .PARAMETER Path
-	IDisposable オブジェクト。
+	移動先ディレクトリ。
 
 .PARAMETER ScriptBlock
 	処理。
-
 #>
 function Invoke-Location {
 	Param(

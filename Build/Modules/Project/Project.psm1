@@ -1,7 +1,10 @@
 ﻿$ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
-
+<#
+.SYNOPSIS
+	Pe のルートディレクトリを取得。
+#>
 function Get-RootDirectory {
 	[OutputType([System.IO.DirectoryInfo])]
 	Param()
@@ -9,6 +12,13 @@ function Get-RootDirectory {
 	return [System.IO.DirectoryInfo](Split-Path -Parent $PSScriptRoot | Split-Path -Parent | Split-Path -Parent)
 }
 
+<#
+.SYNOPSIS
+	ソースディレクトリの取得。
+
+.PARAMETER Kind
+	種別。
+#>
 function Get-SourceDirectory {
 	[OutputType([System.IO.DirectoryInfo])]
 	Param(
@@ -30,6 +40,13 @@ function Get-SourceDirectory {
 	return [System.IO.DirectoryInfo]$result
 }
 
+<#
+.SYNOPSIS
+	プロジェクトディレクトリ一覧の取得。
+
+.PARAMETER Kind
+	種別。
+#>
 function Get-ProjectDirectory {
 	[OutputType([System.IO.DirectoryInfo[]])]
 	Param(
@@ -54,6 +71,13 @@ function Get-ProjectDirectory {
 	return [System.IO.DirectoryInfo[]]$result
 }
 
+<#
+.SYNOPSIS
+	プロジェクト(非テスト)ディレクトリ一覧の取得。
+
+.PARAMETER Kind
+	種別。
+#>
 function Get-ApplicationProjectDirectory {
 	[OutputType([System.IO.DirectoryInfo[]])]
 	Param(
@@ -64,6 +88,13 @@ function Get-ApplicationProjectDirectory {
 		Where-Object { $_.Name -notlike '*.Test' }
 }
 
+<#
+.SYNOPSIS
+	プロジェクト(テストのみ)ディレクトリ一覧の取得。
+
+.PARAMETER Kind
+	種別。
+#>
 function Get-TestProjectDirectory {
 	[OutputType([System.IO.DirectoryInfo[]])]
 	Param(
