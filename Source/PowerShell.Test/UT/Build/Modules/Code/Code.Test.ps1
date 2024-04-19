@@ -10,7 +10,7 @@ Describe 'Invoke-Using' {
 			}
 		}
 
-		Invoke-Using ([Test]::new()) {
+		Invoke-Using -Object ([Test]::new()) {
 			$script:callCount += 1
 		}
 
@@ -21,7 +21,7 @@ Describe 'Invoke-Using' {
 		$script:callCount = 0
 
 		{
-			Invoke-Using ([Object]::new()) {
+			Invoke-Using -Object ([Object]::new()) {
 				$script:callCount += 1
 			}
 		} | Should Throw
