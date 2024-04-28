@@ -80,6 +80,15 @@
 				"uri": "https://github.com/adoconnection/SevenZipExtractor/blob/master/LICENSE"
 			},
 			"comment": "7z"
+		},
+		{
+			"name": "ObjectDumper.NET",
+			"uri": "https://github.com/thomasgalliker/ObjectDumper",
+			"license": {
+				"name": "Apache License 2.0",
+				"uri": "https://licenses.nuget.org/Apache-2.0"
+			},
+			"comment": ""
 		}
 	],
 	"resource": [
