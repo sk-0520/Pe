@@ -12,8 +12,9 @@ WINDOW_COMPONENT create_window_component(const WINDOW_COMPONENT_OPTIONS* options
     WINDOW_COMPONENT component;
     set_memory(&component, 0, sizeof(component));
 
-    WNDCLASS wnd_class = {
-        sizeof(WNDCLASS)
-    };
+    //WNDCLASS wnd_class = {
+    //    0
+    //};
 
+    return component;
 }
