@@ -89,11 +89,7 @@ namespace ContentTypeTextNet.Pe.Standard.Database
         /// <param name="statement">問い合わせ文。</param>
         /// <param name="parameter">パラメータ。</param>
         protected virtual void LoggingStatement(string statement, object? parameter)
-        {
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("{0}{1}{2}", statement, Environment.NewLine, ObjectDumper.GetDumpString(parameter));
-            }
-        }
+        { }
 
         protected virtual void LoggingExecuteScalarResult<TResult>(TResult result, DateTime startUtcTime, DateTime endUtcTime)
         {

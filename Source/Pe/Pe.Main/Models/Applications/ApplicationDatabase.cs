@@ -152,11 +152,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 sb.Append(indent);
                 sb.AppendLine("[PARAM]");
 
-                var od = new ObjectDumper();
-                var dumpItems = od.Dump(parameter);
-                foreach(var dumpItem in dumpItems) {
-                    Logging(dumpItem, 0);
-                }
+                var dumpValue = ObjectDumper.Dump(parameter);
+                sb.AppendLine(dumpValue);
             }
 
             using(Logger.BeginScope(nameof(LoggingStatement))) {
