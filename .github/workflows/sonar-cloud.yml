@@ -62,7 +62,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-c-cpp@v2
       - name: Run build-wrapper
         run: |
-          build-wrapper-win-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} .\Build\build-module.ps1 -InformationAction Continue -Module 'boot' -ProductMode -Platform 'x64'
+          build-wrapper-win-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} powershell .\Build\build-module.ps1 -InformationAction Continue -Module 'boot' -ProductMode -Platform 'x64'
       - name: Run sonar-scanner
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
