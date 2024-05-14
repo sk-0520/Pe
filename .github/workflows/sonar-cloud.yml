@@ -45,6 +45,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
+          Remove-Item -LiteralPath sonar-project.properties -Force
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"sk-0520_Pe" /o:"sk-0520" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           .\Build\build-module.ps1 -InformationAction Continue -Module 'main' -ProductMode -Platform 'x64'
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
