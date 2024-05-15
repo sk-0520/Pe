@@ -23,8 +23,7 @@ if ($Module -eq 'boot') {
 		$testFileName = $projectDirItem.BaseName + '.dll'
 		$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
-		Write-Verbose "VSTest.Console $testFilePath /InIsolation /Platform:$Platform"
-		VSTest.Console $testFilePath /InIsolation /Platform:$Platform
+		OpenCppCoverage --sources $projectDirItem.BaseName -- VSTest.Console $testFilePath /InIsolation /Platform:$Platform
 		if (-not $?) {
 			throw "test error: $Module"
 		}
