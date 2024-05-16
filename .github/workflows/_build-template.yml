@@ -359,6 +359,7 @@ jobs:
         CONFIGURATION:
           - Release
           - CI_TEST
+          - Debug
 
     steps:
       - name: <Checkout> Repository
@@ -400,7 +401,10 @@ jobs:
         shell: pwsh
         run: |
           $env:Path
-          $cppTestRunner = Join-Path -Path "${{ env.VS_TEST_CONSOLE_PATH }}" -ChildPath "VSTest.Console.exe"
+          $cppTestRunner = ''
+          if( '${{ matrix.CONFIGURATION }}' -eq 'Debug') {
+            $cppTestRunner = Join-Path -Path "${{ env.VS_TEST_CONSOLE_PATH }}" -ChildPath "VSTest.Console.exe"
+          }
           .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }} -cppTestRunner $cppTestRunner
 
 
