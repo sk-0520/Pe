@@ -373,7 +373,7 @@ jobs:
         id: setup_opencppcoverage
         run: |
           choco install OpenCppCoverage -y
-          $env:Path += ";C:\Program Files\OpenCppCoverage"
+          $env:Path += ';C:\Program Files\OpenCppCoverage'
 
       - name: <Rewrite> Module
         shell: pwsh
@@ -399,6 +399,7 @@ jobs:
       - name: <Test> Module
         shell: pwsh
         run: |
+          $env:Path
           $env:Path += ';${{env.VS_TEST_CONSOLE_PATH}}'
           .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
 
