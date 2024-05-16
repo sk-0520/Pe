@@ -425,8 +425,7 @@ jobs:
       - name: <Test> Module
         shell: pwsh
         run: |
-          $env:Path += ';${{env.VS_TEST_CONSOLE_PATH}}'
-          echo $env:Path
+          '${{env.VS_TEST_CONSOLE_PATH}}' >> $env:GITHUB_PATH
           .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
 
 
