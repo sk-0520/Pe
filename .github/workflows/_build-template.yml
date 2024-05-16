@@ -400,7 +400,6 @@ jobs:
         run: |
           choco install OpenCppCoverage -y
           echo "C:\Program Files\OpenCppCoverage" >> $env:GITHUB_PATH
-          echo "${{ env.VS_TEST_CONSOLE_PATH }}" >> $env:GITHUB_PATH
 
       - name: <Rewrite> Module
         shell: pwsh
@@ -427,7 +426,8 @@ jobs:
         shell: pwsh
         run: |
           $env:Path
-          .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
+          $cppTestRunner = Join-Path -Path "${{ env.VS_TEST_CONSOLE_PATH }}" -ChildPath "VSTest.Console.exe"
+          .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }} -cppTestRunner $cppTestRunner
 
 
   build-main:
