@@ -4,7 +4,8 @@
 	[string] $BuildType,
 	[Parameter(mandatory = $true)][ValidateSet('x86', 'x64')][string] $Platform,
 	[Parameter(mandatory = $true)][string] $Configuration,
-	[string] $Logger
+	[string] $Logger,
+	[string] $CppTestRunner = ''
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
@@ -23,7 +24,7 @@ if ($Module -eq 'boot') {
 		$testFileName = $projectDirItem.BaseName + '.dll'
 		$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
-		OpenCppCoverage --sources $projectDirItem.BaseName -- VSTest.Console "${testFilePath}" /InIsolation /Platform:$Platform
+		OpenCppCoverage --sources $projectDirItem.BaseName -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
 		if (-not $?) {
 			throw "test error: $Module"
 		}
