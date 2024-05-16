@@ -24,7 +24,11 @@ if ($Module -eq 'boot') {
 		$testFileName = $projectDirItem.BaseName + '.dll'
 		$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
-		OpenCppCoverage --sources $projectDirItem.BaseName -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
+		if([string]::IsNullOrEmpty($CppTestRunner)) {
+			& "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
+		} else {
+			OpenCppCoverage --sources $projectDirItem.BaseName -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
+		}
 		if (-not $?) {
 			throw "test error: $Module"
 		}
