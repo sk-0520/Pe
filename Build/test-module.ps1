@@ -27,7 +27,7 @@ if ($Module -eq 'boot') {
 		if([string]::IsNullOrEmpty($CppTestRunner)) {
 			& "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
 		} else {
-			OpenCppCoverage --sources $projectDirItem.BaseName -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
+			OpenCppCoverage --sources "$($projectDirItem.FullName)" -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
 		}
 		if (-not $?) {
 			throw "test error: $Module"
