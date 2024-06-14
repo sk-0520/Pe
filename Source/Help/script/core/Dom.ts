@@ -79,33 +79,36 @@ class DomImpl {
 		selectors?: string | types.Constructor<TElement>,
 		elementType?: types.Constructor<TElement>,
 	): TElement {
-		if (types.isString(element)) {
-			if (selectors) {
-				if (types.isString(selectors)) {
+		let workElement = element;
+		let workSelectors = selectors;
+		let workElementType = elementType;
+		if (types.isString(workElement)) {
+			if (workSelectors) {
+				if (types.isString(workSelectors)) {
 					throw new throws.MismatchArgumentError("selectors");
 				}
-				elementType = selectors;
+				workElementType = workSelectors;
 			}
-			selectors = element;
-			element = null;
+			workSelectors = workElement;
+			workElement = null;
 		} else {
-			if (types.isUndefined(selectors)) {
+			if (types.isUndefined(workSelectors)) {
 				throw new throws.MismatchArgumentError("selectors");
 			}
-			if (!types.isString(selectors)) {
+			if (!types.isString(workSelectors)) {
 				throw new throws.MismatchArgumentError("selectors");
 			}
 		}
 
-		const result = (element ?? document).querySelector(selectors);
+		const result = (workElement ?? document).querySelector(workSelectors);
 		if (!result) {
-			throw new throws.NotFoundDomSelectorError(selectors);
+			throw new throws.NotFoundDomSelectorError(workSelectors);
 		}
 
-		if (elementType) {
-			if (!types.instanceOf(result, elementType)) {
+		if (workElementType) {
+			if (!types.instanceOf(result, workElementType)) {
 				throw new throws.ElementTypeError(
-					`${result.constructor.name} != ${elementType.prototype.constructor.name}`,
+					`${result.constructor.name} != ${workElementType.prototype.constructor.name}`,
 				);
 			}
 		}
@@ -146,34 +149,40 @@ class DomImpl {
 		selectors?: string | types.Constructor<TElement>,
 		elementType?: types.Constructor<TElement>,
 	): NodeListOf<TElement> {
-		if (types.isString(element)) {
-			if (selectors) {
-				if (types.isString(selectors)) {
+		let workElement = element;
+		let workElementType = elementType;
+		let workSelectors = selectors;
+
+		if (types.isString(workElement)) {
+			if (workSelectors) {
+				if (types.isString(workSelectors)) {
 					throw new throws.MismatchArgumentError("selectors");
 				}
-				elementType = selectors;
+				workElementType = workSelectors;
 			}
-			selectors = element;
-			element = null;
+			workSelectors = workElement;
+			workElement = null;
 		} else {
-			if (types.isUndefined(selectors)) {
+			if (types.isUndefined(workSelectors)) {
 				throw new throws.MismatchArgumentError("selectors");
 			}
-			if (!types.isString(selectors)) {
+			if (!types.isString(workSelectors)) {
 				throw new throws.MismatchArgumentError("selectors");
 			}
 		}
 
-		const result = (element ?? document).querySelectorAll<TElement>(selectors);
+		const result = (workElement ?? document).querySelectorAll<TElement>(
+			workSelectors,
+		);
 		if (!result) {
-			throw new throws.NotFoundDomSelectorError(selectors);
+			throw new throws.NotFoundDomSelectorError(workSelectors);
 		}
 
-		if (elementType) {
+		if (workElementType) {
 			for (const elm of result) {
-				if (!types.instanceOf(elm, elementType)) {
+				if (!types.instanceOf(elm, workElementType)) {
 					throw new throws.ElementTypeError(
-						`elm ${elm} != ${elementType.prototype.constructor.name}`,
+						`elm ${elm} != ${workElementType.prototype.constructor.name}`,
 					);
 				}
 			}
@@ -239,12 +248,13 @@ class DomImpl {
 	public cloneTemplate(selectors: string): DocumentFragment;
 	public cloneTemplate(element: HTMLTemplateElement): DocumentFragment;
 	public cloneTemplate(input: string | HTMLTemplateElement): DocumentFragment {
-		if (typeof input === "string") {
-			const element = this.requireSelector(input, HTMLTemplateElement);
-			input = element;
+		let workInput = input;
+		if (typeof workInput === "string") {
+			const element = this.requireSelector(workInput, HTMLTemplateElement);
+			workInput = element;
 		}
 
-		const result = input.content.cloneNode(true);
+		const result = workInput.content.cloneNode(true);
 
 		return result as DocumentFragment;
 	}
@@ -298,28 +308,29 @@ class DomImpl {
 		position: AttachPosition,
 		node: Node | NodeFactory,
 	): Node {
-		if (this.isNodeFactory(node)) {
-			node = node.element;
+		let workNode = node;
+		if (this.isNodeFactory(workNode)) {
+			workNode = workNode.element;
 		}
 
 		switch (position) {
 			case AttachPosition.Last:
-				return parent.appendChild(node);
+				return parent.appendChild(workNode);
 
 			case AttachPosition.First:
-				return parent.insertBefore(node, parent.firstChild);
+				return parent.insertBefore(workNode, parent.firstChild);
 
 			case AttachPosition.Previous:
 				if (!parent.parentNode) {
 					throw new TypeError("parent.parentNode");
 				}
-				return parent.parentNode.insertBefore(node, parent);
+				return parent.parentNode.insertBefore(workNode, parent);
 
 			case AttachPosition.Next:
 				if (!parent.parentNode) {
 					throw new TypeError("parent.parentNode");
 				}
-				return parent.parentNode.insertBefore(node, parent.nextSibling);
+				return parent.parentNode.insertBefore(workNode, parent.nextSibling);
 
 			default:
 				throw new throws.NotImplementedError();
@@ -341,16 +352,17 @@ class DomImpl {
 
 	/**
 	 * カスタムデータ属性のケバブ名を dataset アクセス可能な名前に変更
-	 * @param kebab データ属性名。
+	 * @param workKebab データ属性名。
 	 * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
 	 */
 	public toCustomKey(kebab: string, removeDataAttributeBegin = true): string {
+		let workKebab = kebab;
 		const dataHead = "data-";
-		if (removeDataAttributeBegin && kebab.startsWith(dataHead)) {
-			kebab = kebab.substring(dataHead.length);
+		if (removeDataAttributeBegin && workKebab.startsWith(dataHead)) {
+			workKebab = workKebab.substring(dataHead.length);
 		}
 
-		return kebab
+		return workKebab
 			.split("-")
 			.map((item, index) =>
 				index
@@ -417,15 +429,16 @@ class DomImpl {
 	public equalTagName(element: Element, value: string): boolean;
 	public equalTagName(element: Element, value: Element): boolean;
 	public equalTagName(element: Element, value: string | Element): boolean {
-		if (!types.isString(value)) {
-			value = value.tagName;
+		let workValue = value;
+		if (!types.isString(workValue)) {
+			workValue = workValue.tagName;
 		}
 
-		if (element.tagName === value) {
+		if (element.tagName === workValue) {
 			return true;
 		}
 
-		return element.tagName.toUpperCase() === value.toUpperCase();
+		return element.tagName.toUpperCase() === workValue.toUpperCase();
 	}
 
 	/**

@@ -110,7 +110,7 @@ export function isObject(arg: unknown): arg is object {
  * @param arg
  * @returns
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export function isFunction(arg: unknown): arg is Function {
 	return typeof arg === "function";
 }
@@ -266,10 +266,10 @@ export function hasArray(
  * @param key プロパティ名。
  * @returns
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export function hasFunction(
 	obj: unknown,
 	key: PropertyKey,
+	// biome-ignore lint/complexity/noBannedTypes: <explanation>
 ): obj is Record<PropertyKey, Function> {
 	return hasProperty(obj, key) && isFunction(obj[key]);
 }
@@ -480,12 +480,12 @@ export function flatClone<
 	return result as unknown as TResult;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export function nameof(name: Function): string;
 export function nameof<T extends object>(
 	name: Extract<keyof T, string>,
 ): string;
-// eslint-disable-next-line @typescript-eslint/ban-types
+// biome-ignore lint/complexity/noBannedTypes: <explanation>
 export function nameof<T>(name: Extract<keyof T, string> | Function): string {
 	if (typeof name === "function") {
 		return name.name;
@@ -494,6 +494,7 @@ export function nameof<T>(name: Extract<keyof T, string> | Function): string {
 	return name;
 }
 
+// biome-ignore lint/suspicious/noShadowRestrictedNames: <explanation>
 export function toString(input: unknown): string {
 	switch (typeof input) {
 		case "object":
