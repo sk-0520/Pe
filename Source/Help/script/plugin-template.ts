@@ -58,7 +58,7 @@ function generateUUID(): string {
 }
 
 function initializePluginTemplate() {
-	document.getElementById("generator")!.addEventListener("submit", (_) => {
+	document.getElementById("generator")?.addEventListener("submit", (_) => {
 		output();
 	});
 
@@ -68,8 +68,8 @@ function initializePluginTemplate() {
 	}
 
 	document
-		.getElementById("set-auto-plugin-id")!
-		.addEventListener("click", (_) => {
+		.getElementById("set-auto-plugin-id")
+		?.addEventListener("click", (_) => {
 			setAutoGeneratePluginId();
 		});
 }
@@ -82,7 +82,7 @@ async function setAutoGeneratePluginId() {
 			const uri = "https://peserver.site/api/plugin/generate-plugin-id";
 			const response = await fetch(uri);
 			const json = await response.json();
-			guid = json["data"]["plugin_id"];
+			guid = json.data.plugin_id;
 		} catch (ex) {
 			guid = generateUUID();
 		}
@@ -111,8 +111,8 @@ function existsPluginId(pluginId: string): boolean {
 			.map((i) => convertInnerTextFromGuid(i))
 			.filter(
 				(i) =>
-					convertInnerTextFromGuid(pluginId) == convertInnerTextFromGuid(i),
-			).length != 0
+					convertInnerTextFromGuid(pluginId) === convertInnerTextFromGuid(i),
+			).length !== 0
 	);
 }
 
@@ -120,7 +120,7 @@ function existsPluginName(pluginName: string): boolean {
 	return (
 		ReservedPluginIds.map((i) => i.name)
 			.map((i) => i.toLowerCase())
-			.filter((i) => pluginName.toLowerCase() == i).length != 0
+			.filter((i) => pluginName.toLowerCase() === i).length !== 0
 	);
 }
 
@@ -194,23 +194,16 @@ function output() {
 		outputElement.textContent = "エラーあり";
 	} else {
 		if (items.length) {
-			outputElement.textContent =
-				".\\create-project.ps1 " +
-				items
-					.map((i) => {
-						return (
-							i.key +
-							" " +
-							(() => {
-								if (i.value.indexOf(" ") != -1) {
-									return `"${i.value}"`;
-								} else {
-									return i.value;
-								}
-							})()
-						);
-					})
-					.join(" ");
+			outputElement.textContent = `.\\create-project.ps1 ${items
+				.map((i) => {
+					return `${i.key} ${(() => {
+						if (i.value.indexOf(" ") !== -1) {
+							return `"${i.value}"`;
+						}
+						return i.value;
+					})()}`;
+				})
+				.join(" ")}`;
 		} else {
 			outputElement.textContent = "未設定";
 		}

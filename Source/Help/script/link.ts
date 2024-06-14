@@ -5,7 +5,7 @@ window.addEventListener("DOMContentLoaded", (_) => {
 		if (
 			url.protocol.startsWith("http") &&
 			!url.hostname.startsWith("localhost") &&
-			anchorElement.target == ""
+			anchorElement.target === ""
 		) {
 			anchorElement.target = "_blank";
 		}

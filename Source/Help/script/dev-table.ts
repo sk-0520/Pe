@@ -151,14 +151,14 @@ function getElementByName<THTMLElement extends HTMLElement>(
 	node: ParentNode,
 	name: string,
 ): THTMLElement {
-	return node.querySelector('[name="' + name + '"]') as THTMLElement;
+	return node.querySelector(`[name="${name}"]`) as THTMLElement;
 }
 
 function getElementsByName<THTMLElement extends HTMLElement>(
 	node: ParentNode,
 	name: string,
 ): NodeListOf<THTMLElement> {
-	return node.querySelectorAll('[name="' + name + '"]');
+	return node.querySelectorAll(`[name="${name}"]`);
 }
 
 function getClosest(
@@ -190,7 +190,7 @@ function countSingleChar(s: string): number {
 		s.match(/[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g) || [];
 	let length = 0;
 	for (const c of chars) {
-		if (c.length == 1) {
+		if (c.length === 1) {
 			// eslint-disable-next-line no-control-regex
 			if (!c.match(/[^\x01-\x7E]/) || !c.match(/[^\uFF65-\uFF9F]/)) {
 				length += 1;
@@ -270,7 +270,7 @@ class Entity {
 			}
 		}
 
-		throw "はい、定義ミス:" + JSON.stringify(lines);
+		throw `はい、定義ミス:${JSON.stringify(lines)}`;
 	}
 
 	private trimMarkdownTable(
@@ -388,12 +388,7 @@ class Entity {
 					logicalDataElement.parentElement?.parentElement?.classList.add(
 						"error-row",
 					);
-					throw (
-						"clrValues が取得できない, たぶん 論理型 が不明: " +
-						logicalDataElement.value +
-						":" +
-						physicalValue
-					);
+					throw `clrValues が取得できない, たぶん 論理型 が不明: ${logicalDataElement.value}:${physicalValue}`;
 				}
 				optionElement.disabled = !clrValues.some(
 					(i) => i === optionElement.value,
@@ -407,7 +402,7 @@ class Entity {
 					selectedElement = optionElement;
 				}
 			}
-			if (selectedElement && selectedElement.disabled) {
+			if (selectedElement?.disabled) {
 				defaultElement!.selected = true;
 			}
 		});
@@ -446,7 +441,7 @@ class Entity {
 			[LayoutColumn.LogicalColumnName, ""],
 			[LayoutColumn.PhysicalColumnName, ""],
 			[LayoutColumn.LogicalType, defaultDatabaseType],
-			[LayoutColumn.ClrType, ClrMap.get(defaultDatabaseType)![0]],
+			[LayoutColumn.ClrType, ClrMap.get(defaultDatabaseType)?.[0]],
 			[LayoutColumn.CheckConstraint, ""],
 			[LayoutColumn.Comment, ""],
 		]);
@@ -530,7 +525,7 @@ class Entity {
 				ev.srcElement as HTMLElement,
 				(e) => e.getAttribute("name") === IndexBlockName.IndexRowColumnRoot,
 			);
-			parent!.remove();
+			parent?.remove();
 		});
 
 		return clonedTemplate;
@@ -590,7 +585,7 @@ class Entity {
 				ev.srcElement as HTMLElement,
 				(e) => e.getAttribute("name") === IndexBlockName.IndexRowRoot,
 			);
-			parent!.remove();
+			parent?.remove();
 		});
 
 		return clonedTemplate;
@@ -739,7 +734,7 @@ class Entity {
 			LayoutBlockName.ForeignKeyColumn,
 		);
 		const targetEntity = targetEntities.find(
-			(i) => i.getTableName() == currentTableElement.value,
+			(i) => i.getTableName() === currentTableElement.value,
 		);
 
 		if (targetEntity) {
@@ -904,8 +899,7 @@ class EntityRelationManager {
 					if (inputValue.indexOf("/") === 0) {
 						return new RegExp(inputValue.substr(1));
 					}
-					const headPattern =
-						"^\\s*" + inputValue.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+					const headPattern = `^\\s*${inputValue.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}`;
 					return new RegExp(headPattern);
 				} catch {
 					return /(?:)/;
@@ -1139,7 +1133,7 @@ class EntityRelationManager {
 	) {
 		const valueLength = countSingleChar(value);
 
-		if (valueLength == length) {
+		if (valueLength === length) {
 			return value;
 		}
 		switch (position) {
@@ -1182,22 +1176,20 @@ class EntityRelationManager {
 
 		const lines = new Array<string>();
 		lines.push(
-			"| " +
-				this.toMarkdownTableCells(header, positions, cellSpace).join(" | ") +
-				" |",
+			`| ${this.toMarkdownTableCells(header, positions, cellSpace).join(" | ")} |`,
 		);
 		let sep = "|";
 		for (let i = 0; i < header.length; i++) {
 			const position = positions.get(i) || MarkdownTablePosition.left;
 			switch (position) {
 				case MarkdownTablePosition.center:
-					sep += ":" + "-".repeat(cellSpace[i]) + ":";
+					sep += `:${"-".repeat(cellSpace[i])}:`;
 					break;
 				case MarkdownTablePosition.right:
-					sep += "-".repeat(cellSpace[i] + 1) + ":";
+					sep += `${"-".repeat(cellSpace[i] + 1)}:`;
 					break;
 				case MarkdownTablePosition.left:
-					sep += ":" + "-".repeat(cellSpace[i] + 1);
+					sep += `:${"-".repeat(cellSpace[i] + 1)}`;
 					break;
 			}
 			sep += "|";
@@ -1206,9 +1198,7 @@ class EntityRelationManager {
 
 		for (const content of contents) {
 			lines.push(
-				"| " +
-					this.toMarkdownTableCells(content, positions, cellSpace).join(" | ") +
-					" |",
+				`| ${this.toMarkdownTableCells(content, positions, cellSpace).join(" | ")} |`,
 			);
 		}
 
@@ -1272,11 +1262,11 @@ class EntityRelationManager {
 		} as ExportData;
 
 		let sql = `create table [${tableName}] (\r\n`;
-		sql += "\t" + databaseColumns.join(",\r\n\t");
+		sql += `\t${databaseColumns.join(",\r\n\t")}`;
 		if (primaryKeys.length) {
 			sql += ",\r\n";
 			sql += "\tprimary key(\r\n";
-			sql += "\t\t" + primaryKeys.map((i) => `[${i}]`).join(",\r\n\t\t");
+			sql += `\t\t${primaryKeys.map((i) => `[${i}]`).join(",\r\n\t\t")}`;
 			sql += "\r\n\t)";
 		}
 		if (foreingKeys.size) {
@@ -1331,7 +1321,7 @@ class EntityRelationManager {
 		sql += ` [idx_${tableName}_${row.name}]`;
 		sql += " on";
 		sql += ` [${tableName}](\r\n`;
-		sql += row.columns.map((i) => `\t[${i}]`).join(",\r\n") + "\r\n";
+		sql += `${row.columns.map((i) => `\t[${i}]`).join(",\r\n")}\r\n`;
 		sql += ")\r\n";
 		sql += ";\r\n";
 
@@ -1445,8 +1435,7 @@ class EntityRelationManager {
 		}
 
 		this.defineElement.value = markdowns.join("\r\n");
-		this.sqlElement.value =
-			databaseTables.join("\r\n") + "\r\n" + databaseIndexs.join("\r\n");
+		this.sqlElement.value = `${databaseTables.join("\r\n")}\r\n${databaseIndexs.join("\r\n")}`;
 	}
 
 	private copyElement(element: HTMLTextAreaElement) {

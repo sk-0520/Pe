@@ -512,5 +512,5 @@ export function toString(input: unknown): string {
 			break;
 	}
 
-	return input + "";
+	return `${input}`;
 }

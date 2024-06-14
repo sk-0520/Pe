@@ -83,16 +83,16 @@ class DomImpl {
 			if (selectors) {
 				if (types.isString(selectors)) {
 					throw new throws.MismatchArgumentError("selectors");
-				} else {
-					elementType = selectors;
 				}
+				elementType = selectors;
 			}
 			selectors = element;
 			element = null;
 		} else {
 			if (types.isUndefined(selectors)) {
 				throw new throws.MismatchArgumentError("selectors");
-			} else if (!types.isString(selectors)) {
+			}
+			if (!types.isString(selectors)) {
 				throw new throws.MismatchArgumentError("selectors");
 			}
 		}
@@ -150,16 +150,16 @@ class DomImpl {
 			if (selectors) {
 				if (types.isString(selectors)) {
 					throw new throws.MismatchArgumentError("selectors");
-				} else {
-					elementType = selectors;
 				}
+				elementType = selectors;
 			}
 			selectors = element;
 			element = null;
 		} else {
 			if (types.isUndefined(selectors)) {
 				throw new throws.MismatchArgumentError("selectors");
-			} else if (!types.isString(selectors)) {
+			}
+			if (!types.isString(selectors)) {
 				throw new throws.MismatchArgumentError("selectors");
 			}
 		}
@@ -441,7 +441,7 @@ class DomImpl {
 		if (refElement) {
 			const newItem = isUp ? current : refElement;
 			const oldItem = isUp ? refElement : current;
-			current.parentElement!.insertBefore(newItem, oldItem);
+			current.parentElement?.insertBefore(newItem, oldItem);
 		}
 	}
 }

@@ -17,7 +17,7 @@ function makeAutoLink() {
 		const li = itemList[i];
 		li.innerHTML = li.innerHTML.replace(
 			/((http|https|ftp):\/\/[\w?=&./\-;#~%-]+(?![\w\s?&./;#~%"=-]*>))/g,
-			'<a href="$1" href="' + targetName + '">$1</a>',
+			`<a href="$1" href="${targetName}">$1</a>`,
 		); //'"
 	}
 }
@@ -28,7 +28,7 @@ function makeIssueLink() {
 		const li = itemList[i];
 
 		const linkElements = li.getElementsByTagName("a");
-		if (linkElements.length == 1 && linkElements[0].className == "revision") {
+		if (linkElements.length === 1 && linkElements[0].className === "revision") {
 			const linkElement = linkElements[0];
 			const rev = linkElement.innerHTML;
 			const link = revisionLink + rev;
@@ -39,7 +39,7 @@ function makeIssueLink() {
 		let text = li.innerHTML;
 		text = text.replace(
 			/#([0-9]+)/g,
-			"<a href='" + issueLink + "$1' target='" + targetName + "'>#$1</a>",
+			`<a href='${issueLink}$1' target='${targetName}'>#$1</a>`,
 		);
 		li.innerHTML = text;
 	}

@@ -33,41 +33,41 @@ window.addEventListener("load", () => {
 
 		const listOptionElement = document.createElement("option");
 		listOptionElement.value = changelog.version;
-		listOptionElement.text = `${changelog["date"]}, ${changelog["version"]}`;
+		listOptionElement.text = `${changelog.date}, ${changelog.version}`;
 		listElement.appendChild(listOptionElement);
 
 		const versionHeader = document.createElement("h2");
-		versionHeader.textContent = `${changelog["date"]}, ${changelog["version"]}`;
+		versionHeader.textContent = `${changelog.date}, ${changelog.version}`;
 		versionSection.appendChild(versionHeader);
 
-		for (const content of changelog["contents"]) {
+		for (const content of changelog.contents) {
 			const contentSection = document.createElement("section");
 
 			const contentHeader = document.createElement("h3");
-			contentHeader.className = content["type"];
-			contentHeader.textContent = changelogTypeMap[content["type"]];
+			contentHeader.className = content.type;
+			contentHeader.textContent = changelogTypeMap[content.type];
 
 			contentSection.appendChild(contentHeader);
 
 			const logs = document.createElement("ul");
-			for (const log of content["logs"]) {
+			for (const log of content.logs) {
 				const item = document.createElement("li");
 				if ("class" in log) {
-					item.className = log["class"]!;
+					item.className = log.class!;
 				}
 
 				const header = document.createElement("span");
 				header.className = "header";
 
 				const subject = document.createElement("span");
-				subject.textContent = log["subject"];
+				subject.textContent = log.subject;
 				header.appendChild(subject);
 
 				if ("revision" in log) {
-					if (log["revision"]) {
+					if (log.revision) {
 						const revision = document.createElement("a");
 						revision.className = "revision";
-						revision.textContent = log["revision"]!;
+						revision.textContent = log.revision!;
 						header.appendChild(revision);
 					}
 				}
@@ -76,7 +76,7 @@ window.addEventListener("load", () => {
 
 				if ("comments" in log) {
 					const comments = document.createElement("ul");
-					for (const comment of log["comments"]!) {
+					for (const comment of log.comments!) {
 						const li = document.createElement("li");
 						li.textContent = comment;
 						comments.appendChild(li);
