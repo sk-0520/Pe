@@ -1,9 +1,18 @@
-import * as types from './types';
-import * as throws from './throws';
-import { AttachPosition, NodeFactory, TagFactory } from './DomFactory';
+import { AttachPosition, type NodeFactory, TagFactory } from "./DomFactory";
+import * as throws from "./throws";
+import * as types from "./types";
 
-
-type HtmlTagName = Uppercase<keyof HTMLElementTagNameMap | keyof HTMLElementDeprecatedTagNameMap | keyof SVGElementTagNameMap> | Lowercase<keyof HTMLElementTagNameMap | keyof HTMLElementDeprecatedTagNameMap | keyof SVGElementTagNameMap>;
+type HtmlTagName =
+	| Uppercase<
+			| keyof HTMLElementTagNameMap
+			| keyof HTMLElementDeprecatedTagNameMap
+			| keyof SVGElementTagNameMap
+	  >
+	| Lowercase<
+			| keyof HTMLElementTagNameMap
+			| keyof HTMLElementDeprecatedTagNameMap
+			| keyof SVGElementTagNameMap
+	  >;
 
 class DomImpl {
 	/**
@@ -15,7 +24,10 @@ class DomImpl {
 	 * @throws {throws.NotFoundDomSelectorError} セレクタから要素が見つからない
 	 * @throws {throws.ElementTypeError} 要素に指定された型が合わない
 	 */
-	public requireElementById<THtmlElement extends HTMLElement>(elementId: string, elementType?: types.Constructor<THtmlElement>): THtmlElement {
+	public requireElementById<THtmlElement extends HTMLElement>(
+		elementId: string,
+		elementType?: types.Constructor<THtmlElement>,
+	): THtmlElement {
 		const result = document.getElementById(elementId);
 		if (!result) {
 			throw new throws.NotFoundDomSelectorError(elementId);
@@ -23,7 +35,9 @@ class DomImpl {
 
 		if (elementType) {
 			if (!types.instanceOf(result, elementType)) {
-				throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
+				throw new throws.ElementTypeError(
+					`${result.constructor.name} != ${elementType.prototype.constructor.name}`,
+				);
 			}
 		}
 
@@ -37,17 +51,38 @@ class DomImpl {
 	 * @param selectors
 	 * @returns
 	 */
-	public requireSelector<K extends keyof HTMLElementTagNameMap>(element: ParentNode, selectors: K): HTMLElementTagNameMap[K];
-	public requireSelector<K extends keyof HTMLElementTagNameMap>(selectors: K): HTMLElementTagNameMap[K];
-	public requireSelector<K extends keyof SVGElementTagNameMap>(element: ParentNode, selectors: K): SVGElementTagNameMap[K];
-	public requireSelector<K extends keyof SVGElementTagNameMap>(selectors: K): SVGElementTagNameMap[K];
-	public requireSelector<TElement extends Element = Element>(selectors: string, elementType?: types.Constructor<TElement>): TElement;
-	public requireSelector<TElement extends Element = Element>(element: ParentNode, selectors: string, elementType?: types.Constructor<TElement>): TElement;
-	public requireSelector<TElement extends Element = Element>(element: ParentNode | string | null, selectors?: string | types.Constructor<TElement>, elementType?: types.Constructor<TElement>): TElement {
+	public requireSelector<K extends keyof HTMLElementTagNameMap>(
+		element: ParentNode,
+		selectors: K,
+	): HTMLElementTagNameMap[K];
+	public requireSelector<K extends keyof HTMLElementTagNameMap>(
+		selectors: K,
+	): HTMLElementTagNameMap[K];
+	public requireSelector<K extends keyof SVGElementTagNameMap>(
+		element: ParentNode,
+		selectors: K,
+	): SVGElementTagNameMap[K];
+	public requireSelector<K extends keyof SVGElementTagNameMap>(
+		selectors: K,
+	): SVGElementTagNameMap[K];
+	public requireSelector<TElement extends Element = Element>(
+		selectors: string,
+		elementType?: types.Constructor<TElement>,
+	): TElement;
+	public requireSelector<TElement extends Element = Element>(
+		element: ParentNode,
+		selectors: string,
+		elementType?: types.Constructor<TElement>,
+	): TElement;
+	public requireSelector<TElement extends Element = Element>(
+		element: ParentNode | string | null,
+		selectors?: string | types.Constructor<TElement>,
+		elementType?: types.Constructor<TElement>,
+	): TElement {
 		if (types.isString(element)) {
 			if (selectors) {
 				if (types.isString(selectors)) {
-					throw new throws.MismatchArgumentError('selectors');
+					throw new throws.MismatchArgumentError("selectors");
 				} else {
 					elementType = selectors;
 				}
@@ -56,9 +91,9 @@ class DomImpl {
 			element = null;
 		} else {
 			if (types.isUndefined(selectors)) {
-				throw new throws.MismatchArgumentError('selectors');
+				throw new throws.MismatchArgumentError("selectors");
 			} else if (!types.isString(selectors)) {
-				throw new throws.MismatchArgumentError('selectors');
+				throw new throws.MismatchArgumentError("selectors");
 			}
 		}
 
@@ -69,7 +104,9 @@ class DomImpl {
 
 		if (elementType) {
 			if (!types.instanceOf(result, elementType)) {
-				throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
+				throw new throws.ElementTypeError(
+					`${result.constructor.name} != ${elementType.prototype.constructor.name}`,
+				);
 			}
 		}
 
@@ -81,17 +118,38 @@ class DomImpl {
 	 * @param element
 	 * @param selectors
 	 */
-	public requireSelectorAll<K extends keyof HTMLElementTagNameMap>(element: ParentNode, selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
-	public requireSelectorAll<K extends keyof HTMLElementTagNameMap>(selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
-	public requireSelectorAll<K extends keyof SVGElementTagNameMap>(element: ParentNode, selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
-	public requireSelectorAll<K extends keyof SVGElementTagNameMap>(selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
-	public requireSelectorAll<TElement extends Element = Element>(selectors: string, elementType?: types.Constructor<TElement>): NodeListOf<TElement>;
-	public requireSelectorAll<TElement extends Element = Element>(element: ParentNode, selectors: string, elementType?: types.Constructor<TElement>): NodeListOf<TElement>;
-	public requireSelectorAll<TElement extends Element = Element>(element: ParentNode | string | null, selectors?: string | types.Constructor<TElement>, elementType?: types.Constructor<TElement>): NodeListOf<TElement> {
+	public requireSelectorAll<K extends keyof HTMLElementTagNameMap>(
+		element: ParentNode,
+		selectors: K,
+	): NodeListOf<HTMLElementTagNameMap[K]>;
+	public requireSelectorAll<K extends keyof HTMLElementTagNameMap>(
+		selectors: K,
+	): NodeListOf<HTMLElementTagNameMap[K]>;
+	public requireSelectorAll<K extends keyof SVGElementTagNameMap>(
+		element: ParentNode,
+		selectors: K,
+	): NodeListOf<SVGElementTagNameMap[K]>;
+	public requireSelectorAll<K extends keyof SVGElementTagNameMap>(
+		selectors: K,
+	): NodeListOf<SVGElementTagNameMap[K]>;
+	public requireSelectorAll<TElement extends Element = Element>(
+		selectors: string,
+		elementType?: types.Constructor<TElement>,
+	): NodeListOf<TElement>;
+	public requireSelectorAll<TElement extends Element = Element>(
+		element: ParentNode,
+		selectors: string,
+		elementType?: types.Constructor<TElement>,
+	): NodeListOf<TElement>;
+	public requireSelectorAll<TElement extends Element = Element>(
+		element: ParentNode | string | null,
+		selectors?: string | types.Constructor<TElement>,
+		elementType?: types.Constructor<TElement>,
+	): NodeListOf<TElement> {
 		if (types.isString(element)) {
 			if (selectors) {
 				if (types.isString(selectors)) {
-					throw new throws.MismatchArgumentError('selectors');
+					throw new throws.MismatchArgumentError("selectors");
 				} else {
 					elementType = selectors;
 				}
@@ -100,9 +158,9 @@ class DomImpl {
 			element = null;
 		} else {
 			if (types.isUndefined(selectors)) {
-				throw new throws.MismatchArgumentError('selectors');
+				throw new throws.MismatchArgumentError("selectors");
 			} else if (!types.isString(selectors)) {
-				throw new throws.MismatchArgumentError('selectors');
+				throw new throws.MismatchArgumentError("selectors");
 			}
 		}
 
@@ -114,7 +172,9 @@ class DomImpl {
 		if (elementType) {
 			for (const elm of result) {
 				if (!types.instanceOf(elm, elementType)) {
-					throw new throws.ElementTypeError(`elm ${elm} != ${elementType.prototype.constructor.name}`);
+					throw new throws.ElementTypeError(
+						`elm ${elm} != ${elementType.prototype.constructor.name}`,
+					);
 				}
 			}
 		}
@@ -129,10 +189,24 @@ class DomImpl {
 	 * @param element
 	 * @returns
 	 */
-	public requireClosest<K extends keyof HTMLElementTagNameMap>(element: Element, selectors: K): HTMLElementTagNameMap[K];
-	public requireClosest<K extends keyof SVGElementTagNameMap>(element: Element, selectors: K): SVGElementTagNameMap[K];
-	public requireClosest<E extends Element = Element>(element: Element, selectors: string, elementType?: types.Constructor<E>): E;
-	public requireClosest<TElement extends Element = Element>(element: Element, selectors: string, elementType?: types.Constructor<TElement>): Element {
+	public requireClosest<K extends keyof HTMLElementTagNameMap>(
+		element: Element,
+		selectors: K,
+	): HTMLElementTagNameMap[K];
+	public requireClosest<K extends keyof SVGElementTagNameMap>(
+		element: Element,
+		selectors: K,
+	): SVGElementTagNameMap[K];
+	public requireClosest<E extends Element = Element>(
+		element: Element,
+		selectors: string,
+		elementType?: types.Constructor<E>,
+	): E;
+	public requireClosest<TElement extends Element = Element>(
+		element: Element,
+		selectors: string,
+		elementType?: types.Constructor<TElement>,
+	): Element {
 		const result = element.closest(selectors);
 		if (!result) {
 			throw new throws.NotFoundDomSelectorError(selectors);
@@ -140,7 +214,9 @@ class DomImpl {
 
 		if (elementType) {
 			if (!types.instanceOf(result, elementType)) {
-				throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
+				throw new throws.ElementTypeError(
+					`${result.constructor.name} != ${elementType.prototype.constructor.name}`,
+				);
 			}
 		}
 
@@ -153,7 +229,7 @@ class DomImpl {
 	 * @returns
 	 */
 	public getParentForm(element: Element): HTMLFormElement {
-		return this.requireClosest(element, 'form');
+		return this.requireClosest(element, "form");
 	}
 
 	/**
@@ -163,7 +239,7 @@ class DomImpl {
 	public cloneTemplate(selectors: string): DocumentFragment;
 	public cloneTemplate(element: HTMLTemplateElement): DocumentFragment;
 	public cloneTemplate(input: string | HTMLTemplateElement): DocumentFragment {
-		if (typeof input === 'string') {
+		if (typeof input === "string") {
 			const element = this.requireSelector(input, HTMLTemplateElement);
 			input = element;
 		}
@@ -179,11 +255,23 @@ class DomImpl {
 	 * @param tagName
 	 * @param options
 	 */
-	public createFactory<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementTagNameMap[K]>;
+	public createFactory<K extends keyof HTMLElementTagNameMap>(
+		tagName: K,
+		options?: ElementCreationOptions,
+	): TagFactory<HTMLElementTagNameMap[K]>;
 	/** @deprecated */
-	public createFactory<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
-	public createFactory<THTMLElement extends HTMLElement>(tagName: string, options?: ElementCreationOptions): TagFactory<THTMLElement>;
-	public createFactory(tagName: string, options?: ElementCreationOptions): TagFactory<HTMLElement> {
+	public createFactory<K extends keyof HTMLElementDeprecatedTagNameMap>(
+		tagName: K,
+		options?: ElementCreationOptions,
+	): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
+	public createFactory<THTMLElement extends HTMLElement>(
+		tagName: string,
+		options?: ElementCreationOptions,
+	): TagFactory<THTMLElement>;
+	public createFactory(
+		tagName: string,
+		options?: ElementCreationOptions,
+	): TagFactory<HTMLElement> {
 		const element = document.createElement(tagName, options);
 		return new TagFactory(element);
 	}
@@ -194,10 +282,22 @@ class DomImpl {
 	 * @param position 位置。
 	 * @param factory 追加する要素。
 	 */
-	public attach(parent: Element, position: AttachPosition, factory: NodeFactory): Node;
-	public attach<TElement extends Element = Element>(parent: Element, position: AttachPosition, factory: TagFactory<TElement>): TElement;
+	public attach(
+		parent: Element,
+		position: AttachPosition,
+		factory: NodeFactory,
+	): Node;
+	public attach<TElement extends Element = Element>(
+		parent: Element,
+		position: AttachPosition,
+		factory: TagFactory<TElement>,
+	): TElement;
 	public attach(parent: Element, position: AttachPosition, node: Node): Node;
-	public attach(parent: Element, position: AttachPosition, node: Node | NodeFactory): Node {
+	public attach(
+		parent: Element,
+		position: AttachPosition,
+		node: Node | NodeFactory,
+	): Node {
 		if (this.isNodeFactory(node)) {
 			node = node.element;
 		}
@@ -211,13 +311,13 @@ class DomImpl {
 
 			case AttachPosition.Previous:
 				if (!parent.parentNode) {
-					throw new TypeError('parent.parentNode');
+					throw new TypeError("parent.parentNode");
 				}
 				return parent.parentNode.insertBefore(node, parent);
 
 			case AttachPosition.Next:
 				if (!parent.parentNode) {
-					throw new TypeError('parent.parentNode');
+					throw new TypeError("parent.parentNode");
 				}
 				return parent.parentNode.insertBefore(node, parent.nextSibling);
 
@@ -227,7 +327,7 @@ class DomImpl {
 	}
 
 	private isNodeFactory(arg: unknown): arg is NodeFactory {
-		return types.hasObject(arg, 'element');
+		return types.hasObject(arg, "element");
 	}
 
 	/**
@@ -236,9 +336,8 @@ class DomImpl {
 	 * @param element
 	 */
 	public clearContent(element: InnerHTML): void {
-		element.innerHTML = '';
+		element.innerHTML = "";
 	}
-
 
 	/**
 	 * カスタムデータ属性のケバブ名を dataset アクセス可能な名前に変更
@@ -246,20 +345,19 @@ class DomImpl {
 	 * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
 	 */
 	public toCustomKey(kebab: string, removeDataAttributeBegin = true): string {
-
-		const dataHead = 'data-';
+		const dataHead = "data-";
 		if (removeDataAttributeBegin && kebab.startsWith(dataHead)) {
 			kebab = kebab.substring(dataHead.length);
 		}
 
 		return kebab
-			.split('-')
-			.map((item, index) => index
-				? item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
-				: item.toLowerCase()
+			.split("-")
+			.map((item, index) =>
+				index
+					? item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
+					: item.toLowerCase(),
 			)
-			.join('')
-			;
+			.join("");
 	}
 
 	/**
@@ -270,7 +368,11 @@ class DomImpl {
 	 * @param removeDataAttributeBegin 先頭の `data-` を破棄するか。
 	 * @returns
 	 */
-	public getDataset(element: HTMLOrSVGElement, dataKey: string, removeDataAttributeBegin = true): string {
+	public getDataset(
+		element: HTMLOrSVGElement,
+		dataKey: string,
+		removeDataAttributeBegin = true,
+	): string {
 		const key = this.toCustomKey(dataKey, removeDataAttributeBegin);
 		const value = element.dataset[key];
 		if (types.isUndefined(value)) {
@@ -289,7 +391,12 @@ class DomImpl {
 	 * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
 	 * @returns
 	 */
-	public getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallback: string, removeDataAttributeBegin = true): string {
+	public getDatasetOr(
+		element: HTMLOrSVGElement,
+		dataKey: string,
+		fallback: string,
+		removeDataAttributeBegin = true,
+	): string {
 		const key = this.toCustomKey(dataKey, removeDataAttributeBegin);
 		const value = element.dataset[key];
 		if (types.isUndefined(value)) {
@@ -308,7 +415,7 @@ class DomImpl {
 	 */
 	public equalTagName(element: Element, value: HtmlTagName): boolean;
 	public equalTagName(element: Element, value: string): boolean;
-	public equalTagName(element: Element, value: Element): boolean
+	public equalTagName(element: Element, value: Element): boolean;
 	public equalTagName(element: Element, value: string | Element): boolean {
 		if (!types.isString(value)) {
 			value = value.tagName;
@@ -329,8 +436,7 @@ class DomImpl {
 	public moveElement(current: HTMLElement, isUp: boolean): void {
 		const refElement = isUp
 			? current.previousElementSibling
-			: current.nextElementSibling
-			;
+			: current.nextElementSibling;
 
 		if (refElement) {
 			const newItem = isUp ? current : refElement;
@@ -343,4 +449,3 @@ class DomImpl {
 const Dom = new DomImpl();
 
 export default Dom;
-
