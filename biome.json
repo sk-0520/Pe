@@ -12,5 +12,13 @@
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git"
+	},
+	"files": {
+		"ignore": [
+			"node_modules",
+			"bin",
+			"obj",
+			"*.json"
+		]
 	}
 }
