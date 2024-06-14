@@ -1,5 +1,7 @@
 // カラム名変更とか追加とか削除とかはキッツいので手動対応
 
+import { getMapValue } from "./accessor";
+
 interface BlockElements {
 	root: HTMLDivElement;
 	table: HTMLDivElement;
@@ -402,8 +404,8 @@ class Entity {
 					selectedElement = optionElement;
 				}
 			}
-			if (selectedElement?.disabled) {
-				defaultElement!.selected = true;
+			if (defaultElement && selectedElement?.disabled) {
+				defaultElement.selected = true;
 			}
 		});
 		logicalDataElement.dispatchEvent(new Event("change"));
@@ -441,12 +443,12 @@ class Entity {
 			[LayoutColumn.LogicalColumnName, ""],
 			[LayoutColumn.PhysicalColumnName, ""],
 			[LayoutColumn.LogicalType, defaultDatabaseType],
-			[LayoutColumn.ClrType, ClrMap.get(defaultDatabaseType)?.[0]],
+			[LayoutColumn.ClrType, getMapValue(ClrMap, defaultDatabaseType)[0]],
 			[LayoutColumn.CheckConstraint, ""],
 			[LayoutColumn.Comment, ""],
 		]);
 
-		return [...map.keys()].sort().map((i) => map.get(i)!);
+		return [...map.keys()].sort().map((i) => getMapValue(map, i));
 	}
 
 	private buildLayout(

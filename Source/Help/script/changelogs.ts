@@ -7,6 +7,7 @@
 import "./changelog-link";
 import changelogsArchives from "../../../Define/changelogs-archive.json";
 import changelogs from "../../../Define/changelogs.json";
+import { enforce } from "./accessor";
 
 Array.prototype.push.apply(changelogs, changelogsArchives);
 
@@ -26,7 +27,7 @@ window.addEventListener("load", () => {
 		}
 	});
 
-	const changelogElement = document.getElementById("changelogs")!;
+	const changelogElement = enforce(document.getElementById("changelogs"));
 	for (const changelog of changelogs) {
 		const versionSection = document.createElement("section");
 		versionSection.id = changelog.version;
@@ -52,8 +53,8 @@ window.addEventListener("load", () => {
 			const logs = document.createElement("ul");
 			for (const log of content.logs) {
 				const item = document.createElement("li");
-				if ("class" in log) {
-					item.className = log.class!;
+				if ("class" in log && log.class) {
+					item.className = log.class;
 				}
 
 				const header = document.createElement("span");
@@ -63,20 +64,18 @@ window.addEventListener("load", () => {
 				subject.textContent = log.subject;
 				header.appendChild(subject);
 
-				if ("revision" in log) {
-					if (log.revision) {
+				if ("revision" in log && log.revision) {
 						const revision = document.createElement("a");
 						revision.className = "revision";
-						revision.textContent = log.revision!;
+						revision.textContent = log.revision;
 						header.appendChild(revision);
-					}
 				}
 
 				item.appendChild(header);
 
-				if ("comments" in log) {
+				if ("comments" in log && log.comments) {
 					const comments = document.createElement("ul");
-					for (const comment of log.comments!) {
+					for (const comment of log.comments) {
 						const li = document.createElement("li");
 						li.textContent = comment;
 						comments.appendChild(li);

@@ -1,3 +1,11 @@
+export function enforce<T>(input: T | undefined | null): T {
+	if (input) {
+		return input;
+	}
+
+	throw new Error();
+}
+
 export function getArrayValue<TValue>(
 	array: ReadonlyArray<TValue>,
 	index: number,
@@ -21,7 +29,7 @@ export function getRecordValue<TKey extends string | number | symbol, TValue>(
 }
 
 export function getMapValue<TKey, TValue>(
-	map: Map<TKey, TValue>,
+	map: Map<TKey, TValue> | ReadonlyMap<TKey, TValue>,
 	key: TKey,
 ): TValue {
 	if (map.has(key)) {
