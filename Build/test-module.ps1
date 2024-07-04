@@ -25,7 +25,7 @@ if ($Module -eq 'boot') {
 		$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
 		if([string]::IsNullOrEmpty($CppTestRunner)) {
-			& "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
+			VSTest.Console "${testFilePath}" /InIsolation /Platform:$Platform
 		} else {
 			OpenCppCoverage --sources "$($projectDirItem.FullName)" -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
 		}
