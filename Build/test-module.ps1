@@ -26,7 +26,7 @@ if ($Module -eq 'boot') {
 		$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
 		$binDirName = $testProjectDirItem.BaseName.Substring(0, $testProjectDirItem.BaseName.Length - ".Test".Length)
-		$binDirPath = Join-Path -Path $bootDir.FullName -ChilidPath $binDirName | Join-Path  -ChildPath 'bin' | Join-Path -ChildPath $Configuration | Join-Path -ChildPath $Platform
+		$binDirPath = Join-Path -Path $bootDir.FullName -ChildPath $binDirName | Join-Path  -ChildPath 'bin' | Join-Path -ChildPath $Configuration | Join-Path -ChildPath $Platform
 		$binPath = Join-Path -Path $binDirPath -ChildPath "${binDirName}.dll"
 
 		if([string]::IsNullOrEmpty($CppTestRunner)) {
