@@ -30,7 +30,7 @@ if ($Module -eq 'boot') {
 			#$sourceDirPath = $testProjectDirItem.FullName.SubString(0, $testProjectDirItem.FullName.Length - ".Test".Length)
 			#OpenCppCoverage --sources "$($testProjectDirItem.FullName)" -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
 			#OpenCppCoverage --sources "$($testProjectDirItem.FullName)" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
-			OpenCppCoverage -- "${CppTestRunner}" "${testFilePath}"
+			OpenCppCoverage --sources "${sourceDirPath}" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
 			#OpenCppCoverage --modules "$($testProjectDirItem.FullName)" -- "${testFilePath}"
 		}
 		if (-not $?) {
