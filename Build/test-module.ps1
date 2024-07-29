@@ -18,19 +18,23 @@ Import-Module "${PSScriptRoot}/Modules/Project"
 
 if ($Module -eq 'boot') {
 	$testProjectDirItems = Get-TestProjectDirectory -Kind $Module
+	$bootDir = Get-ProjectDirectory -Kind 'boot'
 
 	foreach ($testProjectDirItem in $testProjectDirItems) {
 		$testDirPath = Join-Path -Path $testProjectDirItem.FullName -ChildPath 'bin' | Join-Path -ChildPath $Configuration | Join-Path -ChildPath $Platform
 		$testFileName = $testProjectDirItem.BaseName + '.dll'
 		$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
+		$binDirName = $testProjectDirItem.Name.SubString(0, $testProjectDirItem.FullName.Length - ".Test".Length)
+		$binDirPath = Join-Path -Path $bootDir.FullName -ChilidPath $binDirName | Join-Path  -ChildPath 'bin' | Join-Path -ChildPath $Configuration | Join-Path -ChildPath $Platform
+		$binPath = Join-Path -Path $binDirPath -ChildPath "${binDirName}.dll"
+
 		if([string]::IsNullOrEmpty($CppTestRunner)) {
 			VSTest.Console "${testFilePath}" /InIsolation /Platform:$Platform
 		} else {
-			$sourceDirPath = $testProjectDirItem.FullName.SubString(0, $testProjectDirItem.FullName.Length - ".Test".Length)
 			#OpenCppCoverage --sources "$($testProjectDirItem.FullName)" -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
 			#OpenCppCoverage --sources "$($testProjectDirItem.FullName)" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
-			OpenCppCoverage --sources "${sourceDirPath}" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
+			OpenCppCoverage --sources "${sourceDirPath}" --modules "$binPath" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
 			#OpenCppCoverage --modules "$($testProjectDirItem.FullName)" -- "${testFilePath}"
 		}
 		if (-not $?) {
