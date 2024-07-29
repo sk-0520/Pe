@@ -36,7 +36,7 @@ if ($Module -eq 'boot') {
 			#OpenCppCoverage --sources "$($testProjectDirItem.FullName)" -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
 			#OpenCppCoverage --sources "$($testProjectDirItem.FullName)" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
 			Write-Information "[DBG] ${testFilePath} $(Test-Path $testFilePath)"
-			OpenCppCoverage --sources "${sourceDirPath}" --modules "$binPath" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
+			OpenCppCoverage --sources "${sourceDirPath}" --modules "$binPath" --export_type=html:code-coverage -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
 			#OpenCppCoverage --modules "$($testProjectDirItem.FullName)" -- "${testFilePath}"
 		}
 		if (-not $?) {
