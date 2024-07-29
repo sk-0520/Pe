@@ -434,8 +434,9 @@ jobs:
           .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }} -CppTestRunner $cppTestRunner
 
       - name: <abc>
-        uses: actions/upload-artifact
+        uses: actions/upload-artifact@v4
         with:
+          name: CoverageReport-${{ matrix.PLATFORM }}
           path: Pe/CoverageReport-*
 
 
