@@ -25,9 +25,10 @@ if ($Module -eq 'boot') {
 		$testFileName = $testProjectDirItem.BaseName + '.dll'
 		$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
-		$binDirName = $testProjectDirItem.BaseName.Substring(0, $testProjectDirItem.BaseName.Length - ".Test".Length)
-		$binDirPath = Join-Path -Path $bootDir.FullName -ChildPath $binDirName | Join-Path  -ChildPath 'bin' | Join-Path -ChildPath $Configuration | Join-Path -ChildPath $Platform
-		$binPath = Join-Path -Path $binDirPath -ChildPath "${binDirName}.dll"
+		$sourceDirName = $testProjectDirItem.BaseName.Substring(0, $testProjectDirItem.BaseName.Length - ".Test".Length)
+		$sourceDirPath = Join-Path -Path $bootDir.FullName -ChildPath $sourceDirName
+		$binDirPath = Join-Path -Path $bootDir.FullName -ChildPath $sourceDirName | Join-Path  -ChildPath 'bin' | Join-Path -ChildPath $Configuration | Join-Path -ChildPath $Platform
+		$binPath = Join-Path -Path $binDirPath -ChildPath "${sourceDirName}.dll"
 
 		if([string]::IsNullOrEmpty($CppTestRunner)) {
 			VSTest.Console "${testFilePath}" /InIsolation /Platform:$Platform
