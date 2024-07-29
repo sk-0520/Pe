@@ -489,7 +489,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: CoverageReport-${{ matrix.PLATFORM }}
-          path: Pe/CoverageReport-*
+          path: Pe/CoverageReport-*/**/*
 
 
   build-main:
