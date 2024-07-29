@@ -435,7 +435,7 @@ jobs:
           - x64
         CONFIGURATION:
           - Release
-          - Debug
+          - CI_TEST
 
     steps:
       - name: <Checkout> Repository
