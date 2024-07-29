@@ -28,7 +28,8 @@ if ($Module -eq 'boot') {
 			VSTest.Console "${testFilePath}" /InIsolation /Platform:$Platform
 		} else {
 			#OpenCppCoverage --sources "$($projectDirItem.FullName)" -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
-			OpenCppCoverage --sources "$($projectDirItem.FullName)" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
+			#OpenCppCoverage --sources "$($projectDirItem.FullName)" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
+			OpenCppCoverage -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
 			#OpenCppCoverage --modules "$($projectDirItem.FullName)" -- "${testFilePath}"
 		}
 		if (-not $?) {
