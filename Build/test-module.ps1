@@ -25,7 +25,7 @@ if ($Module -eq 'boot') {
 		$testFileName = $testProjectDirItem.BaseName + '.dll'
 		$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
-		$binDirName = $testProjectDirItem.Name.SubString(0, $testProjectDirItem.FullName.Length - ".Test".Length)
+		$binDirName = $testProjectDirItem.Name.Substring(0, ($testProjectDirItem.FullName.Length - ".Test".Length))
 		$binDirPath = Join-Path -Path $bootDir.FullName -ChilidPath $binDirName | Join-Path  -ChildPath 'bin' | Join-Path -ChildPath $Configuration | Join-Path -ChildPath $Platform
 		$binPath = Join-Path -Path $binDirPath -ChildPath "${binDirName}.dll"
 
