@@ -27,7 +27,7 @@ if ($Module -eq 'boot') {
 		if([string]::IsNullOrEmpty($CppTestRunner)) {
 			VSTest.Console "${testFilePath}" /InIsolation /Platform:$Platform
 		} else {
-			#$sourceDirPath = $testProjectDirItem.FullName.SubString(0, $testProjectDirItem.FullName.Length - ".Test".Length)
+			$sourceDirPath = $testProjectDirItem.FullName.SubString(0, $testProjectDirItem.FullName.Length - ".Test".Length)
 			#OpenCppCoverage --sources "$($testProjectDirItem.FullName)" -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
 			#OpenCppCoverage --sources "$($testProjectDirItem.FullName)" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
 			OpenCppCoverage --sources "${sourceDirPath}" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
