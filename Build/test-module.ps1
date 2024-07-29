@@ -17,20 +17,21 @@ Import-Module "${PSScriptRoot}/Modules/Project"
 #*/[FUNCTIONS]-------------------------------------
 
 if ($Module -eq 'boot') {
-	$projectDirItems = Get-TestProjectDirectory -Kind $Module
+	$testProjectDirItems = Get-TestProjectDirectory -Kind $Module
 
-	foreach ($projectDirItem in $projectDirItems) {
-		$testDirPath = Join-Path -Path $projectDirItem.FullName -ChildPath 'bin' | Join-Path -ChildPath $Configuration | Join-Path -ChildPath $Platform
-		$testFileName = $projectDirItem.BaseName + '.dll'
+	foreach ($testProjectDirItem in $testProjectDirItems) {
+		$testDirPath = Join-Path -Path $testProjectDirItem.FullName -ChildPath 'bin' | Join-Path -ChildPath $Configuration | Join-Path -ChildPath $Platform
+		$testFileName = $testProjectDirItem.BaseName + '.dll'
 		$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
 		if([string]::IsNullOrEmpty($CppTestRunner)) {
 			VSTest.Console "${testFilePath}" /InIsolation /Platform:$Platform
 		} else {
-			#OpenCppCoverage --sources "$($projectDirItem.FullName)" -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
-			#OpenCppCoverage --sources "$($projectDirItem.FullName)" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
-			OpenCppCoverage --sources "$($projectDirItem.FullName)" -- "${testFilePath}"
-			#OpenCppCoverage --modules "$($projectDirItem.FullName)" -- "${testFilePath}"
+			$sourceDirPath = Join-Path -Path $testProjectDirItem.FullName.SubString(0, $testProjectDirItem.FullName.Length - "Test".Length)
+			#OpenCppCoverage --sources "$($testProjectDirItem.FullName)" -- "${CppTestRunner}" "${testFilePath}" /InIsolation /Platform:$Platform
+			#OpenCppCoverage --sources "$($testProjectDirItem.FullName)" -- "${CppTestRunner}" /InIsolation /Platform:$Platform "${testFilePath}"
+			OpenCppCoverage --sources "${sourceDirPath}" -- "${CppTestRunner}" "${testFilePath}"
+			#OpenCppCoverage --modules "$($testProjectDirItem.FullName)" -- "${testFilePath}"
 		}
 		if (-not $?) {
 			throw "test error: $Module"
