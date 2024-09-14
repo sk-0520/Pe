@@ -74,6 +74,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.CommonTest", "Pe.CommonT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.CommonTest.Test", "Pe.CommonTest.Test\Pe.CommonTest.Test.csproj", "{A038DE95-CF05-49C1-890D-D602088F8983}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Standard.Args", "Pe.Standard.Args\Pe.Standard.Args.csproj", "{CCAB3AE0-BA07-4F55-AD09-7029C894DF71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Standard.Args.Test", "Pe.Standard.Args.Test\Pe.Standard.Args.Test.csproj", "{A08941D6-45A5-4E5D-846B-4FCDCBCCF5EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -290,6 +294,22 @@ Global
 		{A038DE95-CF05-49C1-890D-D602088F8983}.Release|x64.Build.0 = Release|x64
 		{A038DE95-CF05-49C1-890D-D602088F8983}.Release|x86.ActiveCfg = Release|x86
 		{A038DE95-CF05-49C1-890D-D602088F8983}.Release|x86.Build.0 = Release|x86
+		{CCAB3AE0-BA07-4F55-AD09-7029C894DF71}.Debug|x64.ActiveCfg = Debug|x64
+		{CCAB3AE0-BA07-4F55-AD09-7029C894DF71}.Debug|x64.Build.0 = Debug|x64
+		{CCAB3AE0-BA07-4F55-AD09-7029C894DF71}.Debug|x86.ActiveCfg = Debug|x86
+		{CCAB3AE0-BA07-4F55-AD09-7029C894DF71}.Debug|x86.Build.0 = Debug|x86
+		{CCAB3AE0-BA07-4F55-AD09-7029C894DF71}.Release|x64.ActiveCfg = Release|x64
+		{CCAB3AE0-BA07-4F55-AD09-7029C894DF71}.Release|x64.Build.0 = Release|x64
+		{CCAB3AE0-BA07-4F55-AD09-7029C894DF71}.Release|x86.ActiveCfg = Release|x86
+		{CCAB3AE0-BA07-4F55-AD09-7029C894DF71}.Release|x86.Build.0 = Release|x86
+		{A08941D6-45A5-4E5D-846B-4FCDCBCCF5EC}.Debug|x64.ActiveCfg = Debug|x64
+		{A08941D6-45A5-4E5D-846B-4FCDCBCCF5EC}.Debug|x64.Build.0 = Debug|x64
+		{A08941D6-45A5-4E5D-846B-4FCDCBCCF5EC}.Debug|x86.ActiveCfg = Debug|x86
+		{A08941D6-45A5-4E5D-846B-4FCDCBCCF5EC}.Debug|x86.Build.0 = Debug|x86
+		{A08941D6-45A5-4E5D-846B-4FCDCBCCF5EC}.Release|x64.ActiveCfg = Release|x64
+		{A08941D6-45A5-4E5D-846B-4FCDCBCCF5EC}.Release|x64.Build.0 = Release|x64
+		{A08941D6-45A5-4E5D-846B-4FCDCBCCF5EC}.Release|x86.ActiveCfg = Release|x86
+		{A08941D6-45A5-4E5D-846B-4FCDCBCCF5EC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -322,10 +342,12 @@ Global
 		{8CAF4F50-CE0B-4D6B-948C-C7B83CD59E27} = {7D2653BF-3D84-44F4-8158-21179F8EE206}
 		{38A690D9-40AA-44EF-89C7-ADB957D3D244} = {0A9EE77F-5AB6-4D3C-8493-145E5122DD0E}
 		{A038DE95-CF05-49C1-890D-D602088F8983} = {0A9EE77F-5AB6-4D3C-8493-145E5122DD0E}
+		{CCAB3AE0-BA07-4F55-AD09-7029C894DF71} = {7D2653BF-3D84-44F4-8158-21179F8EE206}
+		{A08941D6-45A5-4E5D-846B-4FCDCBCCF5EC} = {7D2653BF-3D84-44F4-8158-21179F8EE206}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = ja-JP
-		SolutionGuid = {2A7A6231-6BA0-4928-AF4D-59F81862C278}
 		RESX_PrefixTranslations = False
+		SolutionGuid = {2A7A6231-6BA0-4928-AF4D-59F81862C278}
+		RESX_NeutralResourcesLanguage = ja-JP
 	EndGlobalSection
 EndGlobal
