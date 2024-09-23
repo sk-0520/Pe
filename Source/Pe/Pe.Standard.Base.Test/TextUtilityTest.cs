@@ -20,9 +20,9 @@ namespace ContentTypeTextNet.Pe.Standard.Base.Test
         [InlineData("<>", "<>", "<", ">")] // 何もない場合は何もしない
         [InlineData("[<a]>", "<<a>>", "<", ">")] // 近しい範囲
         [InlineData("[a][b]", "<a><b>", "<", ">")]
-        public void ReplacePlaceholderTest(string expected, string src, string head, string tail)
+        public void ReplacePlaceholder_NoEscape_Test(string expected, string src, string head, string tail)
         {
-            var actual = TextUtility.ReplacePlaceholder(src, head, tail, s => "[" + s + "]");
+            var actual = TextUtility.ReplacePlaceholder(src, head, tail, s => "[" + s + "]", '\0');
             Assert.Equal(expected, actual);
         }
 

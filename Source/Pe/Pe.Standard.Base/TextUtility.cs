@@ -85,8 +85,10 @@ namespace ContentTypeTextNet.Pe.Standard.Base
         /// <param name="tail">置き換え終了文字列。</param>
         /// <param name="dg">処理。</param>
         /// <returns>置き換え後文字列。</returns>
-        public static string ReplacePlaceholder(string source, string head, string tail, Func<string, string> dg)
+        public static string ReplacePlaceholder(string source, string head, string tail, Func<string, string> dg, char headEscape)
         {
+            var isEnabledHeadEscape = headEscape != '\0';
+
             var escHead = Regex.Escape(head);
             var escTail = Regex.Escape(tail);
             var pattern = escHead + "(.+?)" + escTail;
@@ -102,9 +104,9 @@ namespace ContentTypeTextNet.Pe.Standard.Base
         /// <param name="tail">置き換え終了文字列。</param>
         /// <param name="map">置き換え対象文字列と置き換え後文字列のペアであるコレクション。</param>
         /// <returns>置き換え後文字列。</returns>
-        public static string ReplacePlaceholderFromDictionary(string source, string head, string tail, IReadOnlyDictionary<string, string> map)
+        public static string ReplacePlaceholderFromDictionary(string source, string head, string tail, IReadOnlyDictionary<string, string> map, char headEscape = '\0')
         {
-            return ReplacePlaceholder(source, head, tail, s => map.ContainsKey(s) ? map[s] : head + s + tail);
+            return ReplacePlaceholder(source, head, tail, s => map.ContainsKey(s) ? map[s] : head + s + tail, headEscape);
         }
         /// <summary>
         /// 文字列中の<c>${key}</c>を<see cref="IReadOnlyDictionary{string, string}"/>の対応で置き換える。
@@ -114,7 +116,7 @@ namespace ContentTypeTextNet.Pe.Standard.Base
         /// <returns>置き換え後文字列。</returns>
         public static string ReplaceFromDictionary(string source, IReadOnlyDictionary<string, string> map)
         {
-            return ReplacePlaceholderFromDictionary(source, "${", "}", map);
+            return ReplacePlaceholderFromDictionary(source, "${", "}", map, '$');
         }
 
         /// <summary>
