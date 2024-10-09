@@ -79,7 +79,10 @@
 					},
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "#973: GHA 権限整理",
+						"comments": [
+							"今が何の権限で動いてんのかわっかんねぇんよ"
+						]
 					},
 					{
 						"revision": "",
