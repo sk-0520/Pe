@@ -74,6 +74,7 @@
 						"revision": "",
 						"subject": "#972: .NET Standard 基準のソースはもう .NET n に移したい",
 						"comments": [
+							"Pe 側で使ってる .NET 8 に変更",
 							"Pe.Standard.* -> Pe.Library.*"
 						]
 					},
