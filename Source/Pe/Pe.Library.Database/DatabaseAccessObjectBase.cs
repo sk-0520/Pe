@@ -71,14 +71,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <summary>
         /// 行終端文字列を取得または初期設定。
         /// </summary>
-        public string NewLine { get; set; /* TODO: 本来 init */ } = Environment.NewLine;
+        public string NewLine { get; init; } = Environment.NewLine;
         /// <summary>
         /// ファイル読み込み時に使用するキーの結合文字列。
         /// </summary>
         /// <remarks>
         /// <para>ファイル名に使用出来てメソッド名に使用できない(できなさそう)なのが良い。</para>
         /// </remarks>
-        protected string JoinSeparator { get; set; /* TODO: 本来 init */ } = "!";
+        protected string JoinSeparator { get; init; } = "!";
 
         /// <summary>
         /// 処理対象文の取得用正規表現。
