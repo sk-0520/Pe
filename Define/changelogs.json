@@ -95,6 +95,14 @@
 					},
 					{
 						"revision": "",
+						"subject": "Microsoft.Extensions.Configuration.Json 8.0.0 -> 8.0.1"
+					},
+					{
+						"revision": "",
+						"subject": ""
+					},
+					{
+						"revision": "",
 						"subject": ""
 					}
 				]
