@@ -91,6 +91,10 @@
 					},
 					{
 						"revision": "",
+						"subject": "Microsoft.Extensions.Logging.Abstractions 8.0.1 -> 8.0.2"
+					},
+					{
+						"revision": "",
 						"subject": ""
 					}
 				]
