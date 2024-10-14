@@ -3,7 +3,6 @@ import LightbulbOutlinedIcon from "@mui/icons-material/LightbulbOutlined";
 import { AlertTitle, Typography, styled } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import { type MarkdownToJSX, RuleType } from "markdown-to-jsx";
-import React from "react";
 import type { MarkdownRule } from "./markdown";
 
 const AlertKinds = ["NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"] as const;
