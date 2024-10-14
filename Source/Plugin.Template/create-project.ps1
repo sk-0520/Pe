@@ -316,23 +316,23 @@ try {
 		},
 		@{
 			project = 'Pe.Library.Base'
-			directory = 'Pe\lib\standard'
+			directory = 'Pe\lib\library'
 		},
 		@{
 			project = 'Pe.Library.CliProxy'
-			directory = 'Pe\lib\standard'
+			directory = 'Pe\lib\library'
 		},
 		@{
 			project = 'Pe.Library.Property'
-			directory = 'Pe\lib\standard'
+			directory = 'Pe\lib\library'
 		},
 		@{
 			project = 'Pe.Library.Database'
-			directory = 'Pe\lib\standard'
+			directory = 'Pe\lib\library'
 		},
 		@{
 			project = 'Pe.Library.DependencyInjection'
-			directory = 'Pe\lib\standard'
+			directory = 'Pe\lib\library'
 		},
 		@{
 			project = 'Pe.PInvoke'
