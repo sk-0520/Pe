@@ -15,7 +15,7 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
 
         #region property
 
-        private byte BaseAlplha { get; } = 180;
+        private byte BaseAlpha { get; } = 180;
 
         #endregion
 
@@ -23,7 +23,7 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
 
         private Color ToBaseColor(Color color)
         {
-            color.A = BaseAlplha;
+            color.A = BaseAlpha;
             return color;
         }
 
@@ -81,7 +81,7 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
             var color = MediaUtility.GetAutoColor(PlatformTheme.GetTaskbarColor());
             color.A = isMouseOver
                 ? (byte)255
-                : BaseAlplha
+                : BaseAlpha
             ;
             return new SolidColorBrush(color);
         }

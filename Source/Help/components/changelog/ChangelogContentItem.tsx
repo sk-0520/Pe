@@ -106,6 +106,7 @@ export const ChangelogContentItem: FC<ChangelogContentItemProps> = (
 								listStyleType: "disc",
 								display: "list-item",
 								marginLeft: "3ch",
+								width: "initial",
 							}}
 						>
 							<ChangelogReplaceLink>{a}</ChangelogReplaceLink>

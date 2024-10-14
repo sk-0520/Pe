@@ -1,5 +1,64 @@
 [
 	{
+		"date": "2024/10/14",
+		"version": "0.99.244",
+		"contents": [
+			{
+				"type": "fixes",
+				"logs": [
+					{
+						"revision": "017c6c94498a9f3deb072b0cadfb61dd3f44b608",
+						"subject": "#970: リリースノートの謎横スクロールを消す"
+					}
+				]
+			},
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "a873c6cc1165803e8c59b7579d8c84aae70a0ef0",
+						"subject": "#972: .NET Standard 基準のソースはもう .NET n に移したい",
+						"comments": [
+							"Pe 側で使ってる .NET 8 に変更",
+							"Pe.Standard.* -> Pe.Library.*"
+						]
+					},
+					{
+						"revision": "5a0712460c1d2a5a4849836501997c4a5349ddf5",
+						"subject": "#973: GHA 権限整理",
+						"comments": [
+							"今が何の権限で動いてんのかわっかんねぇんよ"
+						]
+					},
+					{
+						"revision": "e4164b853161c198fa339d49367b50b723e25195",
+						"class": "nuget",
+						"subject": "Microsoft.Extensions.Logging 8.0.0 -> 8.0.1"
+					},
+					{
+						"revision": "10a2aadfc00e7e9b6bba13bc40c787f274483c99",
+						"class": "nuget",
+						"subject": "Microsoft.Extensions.Logging.Abstractions 8.0.1 -> 8.0.2"
+					},
+					{
+						"revision": "c5a3ae47c6f01d7c7230c54874414c21f0233b65",
+						"class": "nuget",
+						"subject": "Microsoft.Extensions.Configuration.Json 8.0.0 -> 8.0.1"
+					},
+					{
+						"revision": "275b30abdcdf70bf627f5cb79e0c9083507332f5",
+						"class": "nuget",
+						"subject": "System.DirectoryServices.AccountManagement 8.0.0 -> 8.0.1"
+					},
+					{
+						"revision": "2a6de9af983966dc8d624d8b99741fff430a0a67",
+						"subject": "update npm"
+					}
+				]
+			}
+		]
+	},
+	{
 		"date": "2024/10/06",
 		"version": "0.99.243",
 		"contents": [

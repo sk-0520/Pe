@@ -28,23 +28,23 @@
     <PackageReference Include="AvalonEdit" Version="6.3.0.90" />
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2792.45" />
     <PackageReference Include="NLog.Extensions.Logging" Version="5.3.14" />
     <PackageReference Include="Prism.Wpf" Version="9.0.537" />
     <PackageReference Include="SevenZipExtractor" Version="1.0.17" />
-    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Pe.Core\Pe.Core.csproj" />
     <ProjectReference Include="..\Pe.Plugins.DefaultTheme\Pe.Plugins.DefaultTheme.csproj" />
-    <ProjectReference Include="..\Pe.Standard.Base\Pe.Standard.Base.csproj" />
-    <ProjectReference Include="..\Pe.Standard.CliProxy\Pe.Standard.CliProxy.csproj" />
-    <ProjectReference Include="..\Pe.Standard.Database\Pe.Standard.Database.csproj" />
-    <ProjectReference Include="..\Pe.Standard.DependencyInjection\Pe.Standard.DependencyInjection.csproj" />
+    <ProjectReference Include="..\Pe.Library.Base\Pe.Library.Base.csproj" />
+    <ProjectReference Include="..\Pe.Library.CliProxy\Pe.Library.CliProxy.csproj" />
+    <ProjectReference Include="..\Pe.Library.Database\Pe.Library.Database.csproj" />
+    <ProjectReference Include="..\Pe.Library.DependencyInjection\Pe.Library.DependencyInjection.csproj" />
   </ItemGroup>
 
   <ItemGroup>

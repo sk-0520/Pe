@@ -20,7 +20,7 @@ Pe リポジトリからいい感じのあれこれを取ってきてあれこ�
 名前空間
 
 .PARAMETER AppTargetBranch
-対象 Pe のブランチ
+対象 Pe のブランチ(原則指定しない, 開発内部的な使用を目的としている)
 
 .PARAMETER AppRevision
 対象 Pe のリビジョン(原則指定しない, 開発内部的な使用を目的としている)
@@ -315,24 +315,24 @@ try {
 			directory = 'Pe\bridge'
 		},
 		@{
-			project = 'Pe.Standard.Base'
-			directory = 'Pe\lib\standard'
+			project = 'Pe.Library.Base'
+			directory = 'Pe\lib\library'
 		},
 		@{
-			project = 'Pe.Standard.CliProxy'
-			directory = 'Pe\lib\standard'
+			project = 'Pe.Library.CliProxy'
+			directory = 'Pe\lib\library'
 		},
 		@{
-			project = 'Pe.Standard.Property'
-			directory = 'Pe\lib\standard'
+			project = 'Pe.Library.Property'
+			directory = 'Pe\lib\library'
 		},
 		@{
-			project = 'Pe.Standard.Database'
-			directory = 'Pe\lib\standard'
+			project = 'Pe.Library.Database'
+			directory = 'Pe\lib\library'
 		},
 		@{
-			project = 'Pe.Standard.DependencyInjection'
-			directory = 'Pe\lib\standard'
+			project = 'Pe.Library.DependencyInjection'
+			directory = 'Pe\lib\library'
 		},
 		@{
 			project = 'Pe.PInvoke'
