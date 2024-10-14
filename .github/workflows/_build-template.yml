@@ -251,7 +251,7 @@ jobs:
             -H "Authorization: Bearer ${{ env.WORKFLOW_TOKEN }}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/${{ env.PLUGIN_TEMPLATE_REPOSITORY_OWNER }}/${{ env.PLUGIN_TEMPLATE_REPOSITORY_NAME }}/dispatches \
-            -d '{ "event_type": "invoke-plugin-template", "client_payload": { "PE_REVISION": "${{ github.sha }}" }}'
+            -d '{ "event_type": "invoke-plugin-template", "client_payload": { "PE_REVISION": "${{ github.sha }}", "PE_BRANCH": "${{ github.ref_name }}" }}'
 
   history:
     name: Release Note
