@@ -1,14 +1,17 @@
 [
 	{
-		"date": "YYYY/MM/DD",
-		"version": "0.99.244+",
+		"date": "2024/10/16",
+		"version": "0.99.245",
 		"contents": [
 			{
 				"type": "note",
 				"logs": [
 					{
 						"revision": "",
-						"subject": "またしてもサーバー周りのドメイン変更"
+						"subject": "またしてもサーバー周りのドメイン変更",
+						"comments": [
+							"次回アップデートが成功すればOK"
+						]
 					}
 				]
 			},
@@ -16,7 +19,7 @@
 				"type": "developer",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "45040431ee969b15f7076ea0b9ac3805d9d1784b",
 						"subject": "#974: APIサーバー変更",
 						"comments": [
 							"peserver.site -> pe.content-type-text.org",

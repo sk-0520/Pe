@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Version>0.99.244</Version>
+    <Version>0.99.245</Version>
 
     <TargetFramework>net8.0-windows</TargetFramework>
     <Platforms>x64;x86</Platforms>
@@ -17,7 +17,7 @@
     <PathMap>$(MSBuildThisFileDirectory)=.</PathMap>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
-  
+
   <PropertyGroup>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
   </PropertyGroup>
