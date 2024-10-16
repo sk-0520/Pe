@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import React, { type ReactNode, type FC } from "react";
+import type { FC, ReactNode } from "react";
 
 interface TableSectionProps {
 	title: string;

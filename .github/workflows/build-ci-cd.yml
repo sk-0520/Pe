@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  PE_UPDATE_API_ENDPOINT: https://peserver.site/api/administrator/pe/version
+  PE_UPDATE_API_ENDPOINT: https://pe.content-type-text.org/api/administrator/pe/version
 
 jobs:
   build:

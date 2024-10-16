@@ -3,7 +3,7 @@ import {
 	type ListSubheaderProps,
 	useTheme,
 } from "@mui/material";
-import React, { type FC } from "react";
+import type { FC } from "react";
 
 export const ListGroupHeader: FC<ListSubheaderProps> = (props) => {
 	const theme = useTheme();

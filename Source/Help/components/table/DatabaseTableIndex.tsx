@@ -1,6 +1,6 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, IconButton, MenuItem, Stack, TableRow } from "@mui/material";
-import React, {
+import {
 	type BaseSyntheticEvent,
 	type FC,
 	type MouseEvent,
