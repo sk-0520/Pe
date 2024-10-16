@@ -12,7 +12,7 @@
 
 以下がプラグイン配布サイトの総本山です。
 
-[Pe.Server](https://peserver.site/plugin)
+[Pe.Server](https://pe.content-type-text.org/plugin)
 
 # インストール方法
 

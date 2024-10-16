@@ -8,62 +8,7 @@
 				"logs": [
 					{
 						"revision": "",
-						"class": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
-			{
-				"type": "features",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
-			{
-				"type": "fixes",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
+						"subject": "またしてもサーバー周りのドメイン変更"
 					}
 				]
 			},
@@ -72,19 +17,15 @@
 				"logs": [
 					{
 						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
+						"subject": "#974: APIサーバー変更",
+						"comments": [
+							"peserver.site -> pe.content-type-text.org",
+							"調子乗って org を取ってしまった悲しみ",
+							"サブドメインで戦えるように欲張った悲しみ",
+							"遂にお財布開いた悲しみ",
+							"一ヶ月でビール飲める値段🍺。サーバーは全部金問題",
+							"悲しさしかない"
+						]
 					}
 				]
 			}
