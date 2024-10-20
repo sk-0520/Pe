@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Plugins.DefaultTheme", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.Base", "..\Pe\Pe.Library.Base\Pe.Library.Base.csproj", "{7DED2843-A1A8-496B-93E6-B68F76FC6B21}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "standard", "standard", "{A99BC63C-7FEC-422F-9A76-AD1201D216B7}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "library", "library", "{A99BC63C-7FEC-422F-9A76-AD1201D216B7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.Database", "..\Pe\Pe.Library.Database\Pe.Library.Database.csproj", "{A5B22D83-0067-495A-84AA-E937A366D984}"
 EndProject

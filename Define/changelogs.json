@@ -1,5 +1,20 @@
 [
 	{
+		"date": "2024/10/20",
+		"version": "0.99.246",
+		"contents": [
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "06ab8d18818b34ae31eb0f85710f3d605044d946",
+						"subject": "#928: アップデート処理中にアプリケーション実行されてる気がする"
+					}
+				]
+			}
+		]
+	},
+	{
 		"date": "2024/10/16",
 		"version": "0.99.245",
 		"contents": [
