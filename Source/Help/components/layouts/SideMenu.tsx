@@ -1,4 +1,4 @@
-import List from "@mui/material/List";
+import { Box, List } from "@mui/material";
 import type { FC } from "react";
 import React from "react";
 import { type PageKey, Pages } from "../../pages";
@@ -13,16 +13,18 @@ export const SideMenu: FC<SideMenuProps> = (props: SideMenuProps) => {
 	const { selectedPageKey, handleSelectPageKey } = props;
 
 	return (
-		<List disablePadding>
-			{Pages.map((a) => (
-				<SideMenuItem
-					key={a.key}
-					selectedPageKey={selectedPageKey}
-					callbackSelectPageKey={handleSelectPageKey}
-					page={a}
-					nestLevel={0}
-				/>
-			))}
-		</List>
+		<Box sx={{ overflow: "auto" }}>
+			<List disablePadding>
+				{Pages.map((a) => (
+					<SideMenuItem
+						key={a.key}
+						selectedPageKey={selectedPageKey}
+						callbackSelectPageKey={handleSelectPageKey}
+						page={a}
+						nestLevel={0}
+					/>
+				))}
+			</List>
+		</Box>
 	);
 };

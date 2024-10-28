@@ -55,7 +55,10 @@
 					},
 					{
 						"revision": "",
-						"subject": "おうちサイトのURL変更"
+						"subject": " #898: ヘルプの左側がなんかこう、広い",
+						"comments": [
+							"あんまよく分かんなかったのでサイドバー自体の拡縮を追加した"
+						]
 					},
 					{
 						"revision": "",
@@ -72,7 +75,7 @@
 				"logs": [
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "おうちサイトのURL変更"
 					},
 					{
 						"revision": "",
