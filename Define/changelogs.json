@@ -51,7 +51,7 @@
 				"logs": [
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "なんだこのコピペミスは"
 					},
 					{
 						"revision": "",
@@ -99,7 +99,7 @@
 				"logs": [
 					{
 						"revision": "b32b1ec6c5179edb7709688c9f4560623ba34950",
-						"subject": "0.99.246 #928 のリビジョンが正しくない 06ab8d1881 -> e8338b20dc"
+						"subject": "#928 のリビジョンが正しくない 06ab8d1881 -> e8338b20dc"
 					},
 					{
 						"revision": "29c19133ade144ebc5106391aa629a2f33607a0a",
