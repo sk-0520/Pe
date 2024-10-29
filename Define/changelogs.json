@@ -1,5 +1,50 @@
 [
 	{
+		"date": "2024/10/29",
+		"version": "0.99.247",
+		"contents": [
+			{
+				"type": "fixes",
+				"logs": [
+					{
+						"revision": "b32b1ec6c5179edb7709688c9f4560623ba34950",
+						"subject": "0.99.246 #928 のリビジョンが正しくない 06ab8d1881 -> e8338b20dc"
+					},
+					{
+						"revision": "29c19133ade144ebc5106391aa629a2f33607a0a",
+						"subject": " #898: ヘルプの左側がなんかこう、広い",
+						"comments": [
+							"あんまよく分かんなかったのでサイドバー自体の拡縮を追加した"
+						]
+					}
+				]
+			},
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "c822650e4629e910793b592fed43650d7b9f931c",
+						"subject": "おうちサイトのURL変更"
+					},
+					{
+						"revision": "6a41bf323c9cd7b5aefa2b2494ca3b6cd471e06f",
+						"class": "nuget",
+						"subject": "Hardcodet.NotifyIcon.Wpf 1.1.0 -> 2.0.1",
+						"comments": [
+							"2.0.0 は高 DPI だと動かなかったので待ったでござる",
+							"#530 が解決出来たらうれしいなっていう思い"
+						]
+					},
+					{
+						"revision": "fbad30c209e126feaf3beaab94360beff25188a2",
+						"class": "nuget",
+						"subject": "Microsoft.Web.WebView2 1.0.2792.45 -> 1.0.2849.39"
+					}
+				]
+			}
+		]
+	},
+	{
 		"date": "2024/10/20",
 		"version": "0.99.246",
 		"contents": [

@@ -1,13 +1,16 @@
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import {
 	AppBar,
 	Box,
 	Divider,
 	Drawer,
+	IconButton,
 	Toolbar,
 	Typography,
 } from "@mui/material";
 import { useAtom } from "jotai";
-import { type FC, useEffect, useState } from "react";
+import { type FC, type MouseEvent, useEffect, useState } from "react";
 import { PageContent } from "./components/layouts/PageContent";
 import { SideMenu } from "./components/layouts/SideMenu";
 import { type PageKey, Pages } from "./pages";
@@ -18,6 +21,7 @@ const sidebarWidth = 240;
 
 export const App: FC = () => {
 	const [isLoading, setIsLoading] = useState(true);
+	const [isOpen, setIsOpen] = useState(true);
 	const [selectedPageKey, setSelectedPageKey] = useAtom(SelectedPageKeyAtom);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: 初回にイベント設定
@@ -69,6 +73,12 @@ export const App: FC = () => {
 		history.pushState({}, "", url);
 	};
 
+	function handleDrawerOpen(
+		event: MouseEvent<HTMLButtonElement, MouseEvent>,
+	): void {
+		setIsOpen((a) => !a);
+	}
+
 	const currentPage = getPage(selectedPageKey, Pages);
 
 	if (isLoading) {
@@ -83,6 +93,17 @@ export const App: FC = () => {
 				sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
 			>
 				<Toolbar>
+					<IconButton
+						color="inherit"
+						aria-label="open drawer"
+						onClick={handleDrawerOpen}
+						edge="start"
+						sx={{
+							marginRight: "1ch",
+						}}
+					>
+						{isOpen ? <MenuOpenIcon /> : <MenuIcon />}
+					</IconButton>
 					<Typography variant="h6" noWrap component="h1">
 						{currentPage.title}
 					</Typography>
@@ -96,6 +117,7 @@ export const App: FC = () => {
 						width: sidebarWidth,
 						boxSizing: "border-box",
 					},
+					display: isOpen ? undefined : "none",
 				}}
 				variant="permanent"
 				anchor="left"
