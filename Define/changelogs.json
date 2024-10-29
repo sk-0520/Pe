@@ -79,7 +79,11 @@
 					},
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "Hardcodet.NotifyIcon.Wpf 1.1.0 -> 2.0.1",
+						"comments": [
+							"2.0.0 は高 DPI だと動かなかったので待ったでござる",
+							"#530 が解決出来たらうれしいなっていう思い"
+						]
 					},
 					{
 						"revision": "",
