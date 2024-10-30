@@ -55,7 +55,10 @@
 					},
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "#928 のリビジョンが正しくない 06ab8d1881 -> e8338b20dc",
+						"comments":[
+							"何も解決してなかった"
+						]
 					},
 					{
 						"revision": "",
@@ -143,7 +146,7 @@
 				"type": "developer",
 				"logs": [
 					{
-						"revision": "06ab8d18818b34ae31eb0f85710f3d605044d946",
+						"revision": "e8338b20dcf1a016d7db85c194c089549e8300ad",
 						"subject": "#928: アップデート処理中にアプリケーション実行されてる気がする"
 					}
 				]
