@@ -75,7 +75,10 @@
 				"logs": [
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "#975: node のバージョンを v22 に変更する",
+						"comments": [
+							"v22.11.0"
+						]
 					},
 					{
 						"revision": "",
