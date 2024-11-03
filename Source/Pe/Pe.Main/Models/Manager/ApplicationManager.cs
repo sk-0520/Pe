@@ -561,7 +561,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             }
         }
 
-        public void ShowHelp()
+        /// <summary>
+        /// ヘルプの表示。
+        /// </summary>
+        /// <param name="embeddedBrowser">内蔵ブラウザで開くか。</param>
+        public void ShowHelp(bool embeddedBrowser)
         {
             try {
                 var environmentParameters = ApplicationDiContainer.Get<EnvironmentParameters>();

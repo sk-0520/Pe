@@ -246,7 +246,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Manager
         private ICommand? _OpenHelpCommand;
         public ICommand OpenHelpCommand => this._OpenHelpCommand ??= new DelegateCommand(
             () => {
-                ApplicationManager.ShowHelp();
+                var isExtend = Keyboard.Modifiers == ModifierKeys.Shift;
+                ApplicationManager.ShowHelp(isExtend);
             }
         );
 
