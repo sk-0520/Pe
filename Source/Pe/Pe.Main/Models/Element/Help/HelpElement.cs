@@ -18,7 +18,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Help
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         #endregion

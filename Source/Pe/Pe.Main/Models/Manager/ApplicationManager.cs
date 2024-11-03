@@ -565,12 +565,31 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         /// ヘルプの表示。
         /// </summary>
         /// <param name="embeddedBrowser">内蔵ブラウザで開くか。</param>
-        public void ShowHelp(bool embeddedBrowser)
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public async Task ShowHelpAsync(bool embeddedBrowser, CancellationToken cancellationToken)
         {
             try {
-                var environmentParameters = ApplicationDiContainer.Get<EnvironmentParameters>();
-                var systemExecutor = ApplicationDiContainer.Build<SystemExecutor>();
-                systemExecutor.ExecuteFile(environmentParameters.HelpFile.FullName);
+                if(embeddedBrowser || true) {
+                    using(var diContainer = ApplicationDiContainer.CreateChildContainer()) {
+                        diContainer
+                            .RegisterMvvm<Element.Help.HelpElement, ViewModels.Help.HelpViewModel, Views.Help.HelpWindow>()
+                        ;
+                        var model = diContainer.New<Element.Help.HelpElement>();
+                        await model.InitializeAsync(CancellationToken.None);
+
+                        var view = diContainer.Build<Views.Help.HelpWindow>();
+
+                        var windowManager = diContainer.Get<IWindowManager>();
+                        windowManager.Register(new WindowItem(WindowKind.Help, model, view));
+
+                        view.Show();
+                    }
+                } else {
+                    var environmentParameters = ApplicationDiContainer.Get<EnvironmentParameters>();
+                    var systemExecutor = ApplicationDiContainer.Build<SystemExecutor>();
+                    systemExecutor.ExecuteFile(environmentParameters.HelpFile.FullName);
+                }
             } catch(Exception ex) {
                 Logger.LogWarning(ex, ex.Message);
             }

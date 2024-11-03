@@ -33,14 +33,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Help
         }
 
         public void ReceiveViewInitialized(Window window)
-        {
-            throw new NotImplementedException();
-        }
+        {}
 
         public void ReceiveViewLoaded(Window window)
-        {
-            throw new NotImplementedException();
-        }
+        { }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)
         {
