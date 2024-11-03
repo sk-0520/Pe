@@ -10,6 +10,7 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Main.Models.Element.Help;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
+using ContentTypeTextNet.Pe.Main.Views.Help;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Help
@@ -33,7 +34,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Help
         }
 
         public void ReceiveViewInitialized(Window window)
-        {}
+        {
+            var view = (HelpWindow)window;
+                view.webView.NavigateToString("<html>HTML!</html>");
+        }
 
         public void ReceiveViewLoaded(Window window)
         { }
