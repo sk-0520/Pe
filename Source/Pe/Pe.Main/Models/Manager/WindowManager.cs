@@ -88,6 +88,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         /// プラグインインストーラ(Web)。
         /// </summary>
         PluginWebInstaller,
+        /// <summary>
+        /// ヘルプ。
+        /// </summary>
+        /// <remarks>これは WebView 表示用のテスト的な UI であり、これが壊れても別に構わない。</remarks>
+        Help,
 
         /// <summary>
         /// プラグイン ウィジェット。
