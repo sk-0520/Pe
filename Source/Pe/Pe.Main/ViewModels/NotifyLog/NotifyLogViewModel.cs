@@ -154,9 +154,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
+        public Task ReceiveViewInitializedAsync(Window window)
         {
             DpiScaleOutpour = (IDpiScaleOutpour)window;
+            return Task.CompletedTask;
         }
 
         public void ReceiveViewLoaded(Window window)

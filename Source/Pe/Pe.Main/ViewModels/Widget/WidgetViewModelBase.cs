@@ -34,10 +34,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Widget
 
         #region IViewLifecycleReceiver
 
-        public virtual void ReceiveViewInitialized(Window window)
+        public virtual Task ReceiveViewInitializedAsync(Window window)
         {
             // ツールウィンドウを強制
             UIUtility.SetToolWindowStyle(window, false, false);
+            return Task.CompletedTask;
         }
 
         public virtual void ReceiveViewLoaded(Window window)

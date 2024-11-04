@@ -454,13 +454,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
+        public Task ReceiveViewInitializedAsync(Window window)
         {
             DpiScaleOutpour = (IDpiScaleOutpour)window;
 
             var hWnd = HandleUtility.GetWindowHandle(window);
             var hWndSource = HwndSource.FromHwnd(hWnd);
             hWndSource.AddHook(WndProc);
+
+            return Task.CompletedTask;
         }
 
         public void ReceiveViewLoaded(Window window)

@@ -105,13 +105,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Accept
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
+        public Task ReceiveViewInitializedAsync(Window window)
         {
             var view = (AcceptWindow)window;
             //view.documentAccept.do
             using(var stream = Model.GetAcceptDocumentXamlStream()) {
                 view.documentAccept.Document = (FlowDocument)XamlReader.Load(stream);
             }
+            return Task.CompletedTask;
         }
 
         public void ReceiveViewLoaded(Window window)

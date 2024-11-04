@@ -313,7 +313,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         #endregion
 
-        private void Window_SourceInitialized(object sender, EventArgs e)
+        private async void Window_SourceInitialized(object sender, EventArgs e)
         {
             var window = (Window)sender;
             Logger.LogDebug("ウィンドウハンドル生成: {0}", window);
@@ -357,7 +357,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 hWndSource.AddHook(WndProc);
                 WindowHandleSources.Add(item, hWndSource);
 
-                viewLifecycleReceiver.ReceiveViewInitialized(window);
+                await viewLifecycleReceiver.ReceiveViewInitializedAsync(window);
             }
         }
 

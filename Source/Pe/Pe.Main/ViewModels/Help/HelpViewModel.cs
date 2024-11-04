@@ -42,10 +42,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Help
             throw new NotImplementedException();
         }
 
-        public void ReceiveViewInitialized(Window window)
+        public Task ReceiveViewInitializedAsync(Window window)
         {
             var view = (HelpWindow)window;
-            WebViewInitializer.WaitInitializeAsync(CancellationToken.None).ContinueWith(t => {
+            return WebViewInitializer.WaitInitializeAsync(CancellationToken.None).ContinueWith(t => {
                 view.webView.NavigateToString("<html>HTML!</html>");
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }

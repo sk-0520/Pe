@@ -93,8 +93,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Plugin
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
-        { }
+        public Task ReceiveViewInitializedAsync(Window window)
+        {
+            return Task.CompletedTask;
+        }
 
         public void ReceiveViewLoaded(Window window)
         { }

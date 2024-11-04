@@ -101,8 +101,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Startup
 
         #region IViewLifecycleReceiver
 
-        public virtual void ReceiveViewInitialized(Window window)
-        { }
+        public virtual Task ReceiveViewInitializedAsync(Window window)
+        {
+            return Task.CompletedTask;
+        }
 
         public virtual void ReceiveViewLoaded(Window window)
         { }

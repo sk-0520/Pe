@@ -636,8 +636,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         //#endregion
 
         #region IViewLifecycleReceiver
-        public void ReceiveViewInitialized(Window window)
-        { }
+        public Task ReceiveViewInitializedAsync(Window window)
+        {
+            return Task.CompletedTask;
+        }
 
         public void ReceiveViewLoaded(Window window)
         {

@@ -73,11 +73,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ReleaseNote
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
+        public Task ReceiveViewInitializedAsync(Window window)
         {
             var view = (ReleaseNoteWindow)window;
 
-            Model.LoadReleaseNoteDocumentAsync(CancellationToken.None).ContinueWith(t => {
+            return Model.LoadReleaseNoteDocumentAsync(CancellationToken.None).ContinueWith(t => {
                 if(IsDisposed) {
                     Logger.LogTrace("close");
                     return;
