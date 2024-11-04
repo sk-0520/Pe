@@ -150,7 +150,8 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
-        ///   &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+        ///   &lt;!doctype html&gt;
+        ///&lt;html lang=&quot;ja&quot;&gt;
         ///&lt;head&gt;
         ///	&lt;title&gt;&lt;/title&gt;
         ///&lt;/head&gt;
@@ -462,6 +463,15 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         public static string String_ApplicationCommand_Description_Help {
             get {
                 return ResourceManager.GetString("String_ApplicationCommand_Description_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ヘルプ(WebView) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_ApplicationCommand_Description_Help_Extend {
+            get {
+                return ResourceManager.GetString("String_ApplicationCommand_Description_Help_Extend", resourceCulture);
             }
         }
         
