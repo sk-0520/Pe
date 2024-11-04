@@ -10,6 +10,7 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Main.Models.Element.Help;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
+using ContentTypeTextNet.Pe.Main.Models.WebView;
 using ContentTypeTextNet.Pe.Main.Views.Help;
 using Microsoft.Extensions.Logging;
 
@@ -17,9 +18,17 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Help
 {
     public class HelpViewModel: ElementViewModelBase<HelpElement>, IViewLifecycleReceiver
     {
-        public HelpViewModel(HelpElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public HelpViewModel(HelpElement model, IWebViewInitializer webViewInitializer, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(model, userTracker, dispatcherWrapper, loggerFactory)
-        { }
+        {
+            WebViewInitializer = webViewInitializer;
+        }
+
+        #region property
+
+        private IWebViewInitializer WebViewInitializer { get; }
+
+        #endregion
 
         #region IViewLifecycleReceiver
 
@@ -36,7 +45,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Help
         public void ReceiveViewInitialized(Window window)
         {
             var view = (HelpWindow)window;
+            WebViewInitializer.WaitInitializeAsync(CancellationToken.None).ContinueWith(t => {
                 view.webView.NavigateToString("<html>HTML!</html>");
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         public void ReceiveViewLoaded(Window window)

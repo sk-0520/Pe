@@ -1,4 +1,7 @@
+using System;
+using System.Threading;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Library.Base;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using Microsoft.Extensions.Logging;
@@ -7,7 +10,31 @@ using Microsoft.Web.WebView2.Wpf;
 
 namespace ContentTypeTextNet.Pe.Main.Models.WebView
 {
-    public class WebViewInitializer
+    public interface IWebViewInitializer
+    {
+        #region property
+
+        /// <summary>
+        /// WebView が初期化済みか。
+        /// </summary>
+        bool IsInitialized { get; }
+
+        #endregion
+
+        #region function
+
+        /// <summary>
+        /// WevView 初期化が完了するまで待機。
+        /// </summary>
+        /// <remarks>初期化完了済みでも呼び出し可能。</remarks>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task WaitInitializeAsync(CancellationToken cancellationToken);
+
+        #endregion
+    }
+
+    public class WebViewInitializer: DisposerBase, IWebViewInitializer
     {
         public WebViewInitializer(ILoggerFactory loggerFactory)
         {
@@ -16,6 +43,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.WebView
         }
 
         #region property
+
+        private ManualResetEventSlim InitializeCompleted { get; } = new ManualResetEventSlim(false);
 
         /// <inheritdoc cref="ILoggerFactory"/>
         private ILoggerFactory LoggerFactory { get; }
@@ -60,6 +89,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.WebView
             } finally {
                 webView.CoreWebView2InitializationCompleted -= WebView_CoreWebView2InitializationCompleted;
             }
+            InitializeCompleted.Set();
         }
 
         //public void AddVisualCppRuntimeRedist(EnvironmentParameters environmentParameters)
@@ -83,9 +113,44 @@ namespace ContentTypeTextNet.Pe.Main.Models.WebView
 
         #endregion
 
+        #region IWebViewInitializer
+
+        public bool IsInitialized { get; private set; }
+
+        public Task WaitInitializeAsync(CancellationToken cancellationToken)
+        {
+            if(IsInitialized) {
+                return Task.FromResult(IsInitialized);
+            }
+
+            return Task.Run(() => {
+                try {
+                    InitializeCompleted.Wait(cancellationToken);
+                    IsInitialized = true;
+                } catch(Exception ex) {
+                    Logger.LogError(ex, ex.Message);
+                }
+            }, cancellationToken);
+        }
+
+        #endregion
+
+        #region DisposerBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                InitializeCompleted.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
         private void WebView_CoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
         {
-            
+
         }
     }
 }

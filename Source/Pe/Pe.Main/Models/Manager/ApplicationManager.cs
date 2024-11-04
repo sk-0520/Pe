@@ -67,6 +67,7 @@ using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Base;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
 using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Main.Models.WebView;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
@@ -571,9 +572,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         {
             try {
                 if(embeddedBrowser || true) {
+
                     using(var diContainer = ApplicationDiContainer.CreateChildContainer()) {
+                        var webViewInitializer = diContainer.New<WebViewInitializer>();
+
                         diContainer
                             .RegisterMvvm<Element.Help.HelpElement, ViewModels.Help.HelpViewModel, Views.Help.HelpWindow>()
+                            .Register<IWebViewInitializer>(webViewInitializer)
+                            .Register(webViewInitializer)
                         ;
                         var model = diContainer.New<Element.Help.HelpElement>();
                         await model.InitializeAsync(CancellationToken.None);
