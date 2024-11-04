@@ -361,7 +361,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             }
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var window = (Window)sender;
             Logger.LogDebug("ウィンドウ生成完了: {0}", window);
@@ -371,7 +371,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var item = Items.First(i => i.Window == window);
             item.IsOpened = true;
             if(item.ViewModel is IViewLifecycleReceiver viewLifecycleReceiver) {
-                viewLifecycleReceiver.ReceiveViewLoaded(window);
+                await viewLifecycleReceiver.ReceiveViewLoadedAsync(window);
             }
         }
 

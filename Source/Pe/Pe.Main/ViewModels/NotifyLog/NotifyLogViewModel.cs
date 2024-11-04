@@ -160,8 +160,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
             return Task.CompletedTask;
         }
 
-        public void ReceiveViewLoaded(Window window)
-        { }
+        public Task ReceiveViewLoadedAsync(Window window)
+        {
+            return Task.CompletedTask;
+        }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)
         {

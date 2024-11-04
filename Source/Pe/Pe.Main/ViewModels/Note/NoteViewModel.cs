@@ -1351,7 +1351,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             return Task.CompletedTask;
         }
 
-        public void ReceiveViewLoaded(Window window)
+        public Task ReceiveViewLoadedAsync(Window window)
         {
             if(IsVisible) {
                 if(!IsTopmost) {
@@ -1361,6 +1361,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             } else {
                 window.Visibility = Visibility.Collapsed;
             }
+            return Task.CompletedTask;
         }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)

@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels
         /// <summary>
         /// ウィンドウが生成された。
         /// </summary>
-        void ReceiveViewLoaded(Window window);
+        Task ReceiveViewLoadedAsync(Window window);
 
         /// <summary>
         /// ウィンドウが閉じられようとしている。

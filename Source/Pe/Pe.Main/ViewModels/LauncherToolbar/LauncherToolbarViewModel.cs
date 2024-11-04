@@ -641,11 +641,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             return Task.CompletedTask;
         }
 
-        public void ReceiveViewLoaded(Window window)
+        public Task ReceiveViewLoadedAsync(Window window)
         {
             if(!IsVisible) {
                 window.Visibility = Visibility.Collapsed;
             }
+
+            return Task.CompletedTask;
         }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)

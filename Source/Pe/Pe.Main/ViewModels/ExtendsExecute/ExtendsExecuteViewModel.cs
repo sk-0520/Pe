@@ -469,11 +469,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
             return Task.CompletedTask;
         }
 
-        public void ReceiveViewLoaded(Window window)
+        public Task ReceiveViewLoadedAsync(Window window)
         {
             DpiScaleOutpour = (IDpiScaleOutpour)window;
 
             WindowsUtility.ShowActiveForeground(HandleUtility.GetWindowHandle(window));
+
+            return Task.CompletedTask;
         }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)

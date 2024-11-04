@@ -122,10 +122,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
             return Task.CompletedTask;
         }
 
-        public void ReceiveViewLoaded(Window window)
+        public Task ReceiveViewLoadedAsync(Window window)
         {
             RaisePropertyChanged(nameof(SelectedEditor));
             SelectedEditor.LoadAsync(CancellationToken.None);
+
+            return Task.CompletedTask;
         }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)

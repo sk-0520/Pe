@@ -41,8 +41,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Widget
             return Task.CompletedTask;
         }
 
-        public virtual void ReceiveViewLoaded(Window window)
-        { }
+        public virtual Task ReceiveViewLoadedAsync(Window window)
+        {
+            return Task.CompletedTask;
+        }
 
         public virtual void ReceiveViewUserClosing(Window window, CancelEventArgs e)
         {
