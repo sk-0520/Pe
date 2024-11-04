@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -20,7 +21,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Help
 
         private EnvironmentParameters EnvironmentParameters { get; }
 
-        public string HtmlHelpPath => EnvironmentParameters.HelpFile.FullName;
+        public string HtmlHelpRawUri => "file://" + EnvironmentParameters.HelpFile.FullName.Replace(Path.DirectorySeparatorChar, '/');
 
         #endregion
 

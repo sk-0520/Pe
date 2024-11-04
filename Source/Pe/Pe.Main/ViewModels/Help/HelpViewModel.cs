@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Help
 
             await WebViewInitializer.WaitInitializeAsync(CancellationToken.None);
 
-            view.webView.CoreWebView2.Navigate(Model.HtmlHelpPath);
+            view.webView.CoreWebView2.Navigate(Model.HtmlHelpRawUri);
         }
 
         public Task ReceiveViewLoadedAsync(Window window)
