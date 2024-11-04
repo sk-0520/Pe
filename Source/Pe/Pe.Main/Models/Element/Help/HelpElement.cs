@@ -10,9 +10,19 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Help
 {
     public class HelpElement: ElementBase
     {
-        public HelpElement(ILoggerFactory loggerFactory)
+        public HelpElement(EnvironmentParameters environmentParameters, ILoggerFactory loggerFactory)
             : base(loggerFactory)
-        { }
+        {
+            EnvironmentParameters = environmentParameters;
+        }
+
+        #region property
+
+        private EnvironmentParameters EnvironmentParameters { get; }
+
+        public string HtmlHelpPath => EnvironmentParameters.HelpFile.FullName;
+
+        #endregion
 
         #region ElementBase
 

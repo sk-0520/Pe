@@ -32,22 +32,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Help
 
         #region IViewLifecycleReceiver
 
-        public Task ReceiveViewClosedAsync(Window window, bool isUserOperation, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ReceiveViewClosing(Window window, CancelEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task ReceiveViewInitializedAsync(Window window)
+        public async Task ReceiveViewInitializedAsync(Window window)
         {
             var view = (HelpWindow)window;
-            return WebViewInitializer.WaitInitializeAsync(CancellationToken.None).ContinueWith(t => {
-                view.webView.NavigateToString("<html>HTML!</html>");
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+
+            await WebViewInitializer.WaitInitializeAsync(CancellationToken.None);
+
+            view.webView.CoreWebView2.Navigate(Model.HtmlHelpPath);
         }
 
         public Task ReceiveViewLoadedAsync(Window window)
@@ -55,9 +46,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Help
             return Task.CompletedTask;
         }
 
+        public void ReceiveViewClosing(Window window, CancelEventArgs e)
+        { }
+
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)
+        { }
+
+        public Task ReceiveViewClosedAsync(Window window, bool isUserOperation, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         #endregion

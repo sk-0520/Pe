@@ -572,8 +572,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         {
             try {
                 if(embeddedBrowser || true) {
-
                     using(var diContainer = ApplicationDiContainer.CreateChildContainer()) {
+                        var windowManager = diContainer.Get<IWindowManager>();
+                        var helpWindowItem = windowManager.GetWindowItems(WindowKind.Help).FirstOrDefault();
+                        if(helpWindowItem is not null) {
+                            Logger.LogInformation("内蔵ブラウザでヘルプ表示済みのため再表示");
+                            WindowManager.Flash(helpWindowItem);
+                            return;
+                        }
+
                         var webViewInitializer = diContainer.New<WebViewInitializer>();
 
                         diContainer
@@ -586,7 +593,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
                         var view = diContainer.Build<Views.Help.HelpWindow>();
 
-                        var windowManager = diContainer.Get<IWindowManager>();
                         windowManager.Register(new WindowItem(WindowKind.Help, model, view));
 
                         view.Show();
