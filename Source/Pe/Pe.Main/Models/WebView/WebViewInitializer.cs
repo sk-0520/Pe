@@ -40,8 +40,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.WebView
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
+            X = Random.Shared.Next();
         }
-
+        public int X { get; }
         #region property
 
         private ManualResetEventSlim InitializeCompleted { get; } = new ManualResetEventSlim(false);

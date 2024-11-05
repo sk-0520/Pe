@@ -572,31 +572,32 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         {
             try {
                 if(embeddedBrowser || true) {
-                    using(var diContainer = ApplicationDiContainer.CreateChildContainer()) {
-                        var windowManager = diContainer.Get<IWindowManager>();
-                        var helpWindowItem = windowManager.GetWindowItems(WindowKind.Help).FirstOrDefault();
-                        if(helpWindowItem is not null) {
-                            Logger.LogInformation("内蔵ブラウザでヘルプ表示済みのため再表示");
-                            WindowManager.Flash(helpWindowItem);
-                            return;
-                        }
-
-                        var webViewInitializer = diContainer.New<WebViewInitializer>();
-
-                        diContainer
-                            .RegisterMvvm<Element.Help.HelpElement, ViewModels.Help.HelpViewModel, Views.Help.HelpWindow>()
-                            .Register<IWebViewInitializer>(webViewInitializer)
-                            .Register(webViewInitializer)
-                        ;
-                        var model = diContainer.New<Element.Help.HelpElement>();
-                        await model.InitializeAsync(CancellationToken.None);
-
-                        var view = diContainer.Build<Views.Help.HelpWindow>();
-
-                        windowManager.Register(new WindowItem(WindowKind.Help, model, view));
-
-                        view.Show();
+                    var windowManager = ApplicationDiContainer.Get<IWindowManager>();
+                    var helpWindowItem = windowManager.GetWindowItems(WindowKind.Help).FirstOrDefault();
+                    if(helpWindowItem is not null) {
+                        Logger.LogInformation("内蔵ブラウザでヘルプ表示済みのため再表示");
+                        WindowManager.Flash(helpWindowItem);
+                        return;
                     }
+
+                    Element.Help.HelpElement helpElement;
+                    Views.Help.HelpWindow helpView;
+                    ViewModels.Help.HelpViewModel helpViewModel;
+                    var webViewInitializer = ApplicationDiContainer.Build<WebViewInitializer>();
+                    try {
+                        ApplicationDiContainer.Register<IWebViewInitializer>(webViewInitializer);
+                        ApplicationDiContainer.Register(webViewInitializer);
+                        helpElement = ApplicationDiContainer.Build<Element.Help.HelpElement>();
+                        await helpElement.InitializeAsync(CancellationToken.None);
+                        helpViewModel = ApplicationDiContainer.Build<ViewModels.Help.HelpViewModel>(helpElement);
+                        helpView = ApplicationDiContainer.Build<Views.Help.HelpWindow>(helpViewModel);
+                    } finally {
+                        ApplicationDiContainer.Unregister(webViewInitializer.GetType());
+                        ApplicationDiContainer.Unregister<IWebViewInitializer>();
+                    }
+                    helpView.DataContext = helpViewModel;
+                    windowManager.Register(new WindowItem(WindowKind.Help, helpElement, helpView));
+                    helpView.Show();
                 } else {
                     var environmentParameters = ApplicationDiContainer.Get<EnvironmentParameters>();
                     var systemExecutor = ApplicationDiContainer.Build<SystemExecutor>();
