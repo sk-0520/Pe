@@ -582,20 +582,19 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
                     Element.Help.HelpElement helpElement;
                     Views.Help.HelpWindow helpView;
-                    ViewModels.Help.HelpViewModel helpViewModel;
                     var webViewInitializer = ApplicationDiContainer.Build<WebViewInitializer>();
                     try {
                         ApplicationDiContainer.Register<IWebViewInitializer>(webViewInitializer);
-                        ApplicationDiContainer.Register(webViewInitializer);
+                        ApplicationDiContainer.Register<WebViewInitializer>(webViewInitializer);
                         helpElement = ApplicationDiContainer.Build<Element.Help.HelpElement>();
                         await helpElement.InitializeAsync(CancellationToken.None);
-                        helpViewModel = ApplicationDiContainer.Build<ViewModels.Help.HelpViewModel>(helpElement);
+                        var helpViewModel = ApplicationDiContainer.Build<ViewModels.Help.HelpViewModel>(helpElement);
                         helpView = ApplicationDiContainer.Build<Views.Help.HelpWindow>(helpViewModel);
+                        helpView.DataContext = helpViewModel;
                     } finally {
-                        ApplicationDiContainer.Unregister(webViewInitializer.GetType());
+                        ApplicationDiContainer.Unregister<WebViewInitializer>();
                         ApplicationDiContainer.Unregister<IWebViewInitializer>();
                     }
-                    helpView.DataContext = helpViewModel;
                     windowManager.Register(new WindowItem(WindowKind.Help, helpElement, helpView));
                     helpView.Show();
                 } else {
