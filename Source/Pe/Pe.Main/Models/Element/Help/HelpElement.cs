@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Help
 
         private EnvironmentParameters EnvironmentParameters { get; }
 
-        public string HtmlHelpRawUri => "file://" + EnvironmentParameters.HelpFile.FullName.Replace(Path.DirectorySeparatorChar, '/');
+        public FileInfo HtmlFile => EnvironmentParameters.HelpFile;
 
         #endregion
 

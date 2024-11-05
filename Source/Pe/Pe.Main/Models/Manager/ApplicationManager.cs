@@ -571,7 +571,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         public async Task ShowHelpAsync(bool embeddedBrowser, CancellationToken cancellationToken)
         {
             try {
-                if(embeddedBrowser) {
+                if(embeddedBrowser || true) {
                     using(var diContainer = ApplicationDiContainer.CreateChildContainer()) {
                         var windowManager = diContainer.Get<IWindowManager>();
                         var helpWindowItem = windowManager.GetWindowItems(WindowKind.Help).FirstOrDefault();

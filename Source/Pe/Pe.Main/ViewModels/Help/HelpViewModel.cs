@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using ContentTypeTextNet.Pe.Bridge.Models;
+using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Element.Help;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
@@ -28,6 +30,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Help
 
         private IWebViewInitializer WebViewInitializer { get; }
 
+        private string HtmlFileRawUri => "file://" + Model.HtmlFile.FullName.Replace(Path.DirectorySeparatorChar, '/');
+
         #endregion
 
         #region IViewLifecycleReceiver
@@ -38,7 +42,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Help
 
             await WebViewInitializer.WaitInitializeAsync(CancellationToken.None);
 
-            view.webView.CoreWebView2.Navigate(Model.HtmlHelpRawUri);
+            view.webView.CoreWebView2.Navigate(HtmlFileRawUri);
         }
 
         public Task ReceiveViewLoadedAsync(Window window)
