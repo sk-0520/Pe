@@ -568,43 +568,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         /// <param name="embeddedBrowser">内蔵ブラウザで開くか。</param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task ShowHelpAsync(bool embeddedBrowser, CancellationToken cancellationToken)
+        public Task ShowHelpAsync(bool embeddedBrowser, CancellationToken cancellationToken)
         {
             try {
-                if(embeddedBrowser || true) {
-                    var windowManager = ApplicationDiContainer.Get<IWindowManager>();
-                    var helpWindowItem = windowManager.GetWindowItems(WindowKind.Help).FirstOrDefault();
-                    if(helpWindowItem is not null) {
-                        Logger.LogInformation("内蔵ブラウザでヘルプ表示済みのため再表示");
-                        WindowManager.Flash(helpWindowItem);
-                        return;
-                    }
-
-                    Element.Help.HelpElement helpElement;
-                    Views.Help.HelpWindow helpView;
-                    var webViewInitializer = ApplicationDiContainer.Build<WebViewInitializer>();
-                    try {
-                        ApplicationDiContainer.Register<IWebViewInitializer>(webViewInitializer);
-                        ApplicationDiContainer.Register<WebViewInitializer>(webViewInitializer);
-                        helpElement = ApplicationDiContainer.Build<Element.Help.HelpElement>();
-                        await helpElement.InitializeAsync(CancellationToken.None);
-                        var helpViewModel = ApplicationDiContainer.Build<ViewModels.Help.HelpViewModel>(helpElement);
-                        helpView = ApplicationDiContainer.Build<Views.Help.HelpWindow>(helpViewModel);
-                        helpView.DataContext = helpViewModel;
-                    } finally {
-                        ApplicationDiContainer.Unregister<WebViewInitializer>();
-                        ApplicationDiContainer.Unregister<IWebViewInitializer>();
-                    }
-                    windowManager.Register(new WindowItem(WindowKind.Help, helpElement, helpView));
-                    helpView.Show();
-                } else {
-                    var environmentParameters = ApplicationDiContainer.Get<EnvironmentParameters>();
-                    var systemExecutor = ApplicationDiContainer.Build<SystemExecutor>();
-                    systemExecutor.ExecuteFile(environmentParameters.HelpFile.FullName);
-                }
+                var environmentParameters = ApplicationDiContainer.Get<EnvironmentParameters>();
+                var systemExecutor = ApplicationDiContainer.Build<SystemExecutor>();
+                systemExecutor.ExecuteFile(environmentParameters.HelpFile.FullName);
             } catch(Exception ex) {
                 Logger.LogWarning(ex, ex.Message);
             }
+
+            return Task.CompletedTask;
         }
 
         private async Task ShowNewVersionReleaseNoteCoreAsync(NewVersionItemData updateItem, bool isCheckOnly, CancellationToken cancellationToken)

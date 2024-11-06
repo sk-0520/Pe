@@ -467,15 +467,6 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
-        ///   ヘルプ(WebView) に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string String_ApplicationCommand_Description_Help_Extend {
-            get {
-                return ResourceManager.GetString("String_ApplicationCommand_Description_Help_Extend", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   プロキシ使用状態切り替え に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_ApplicationCommand_Description_Proxy {
