@@ -81,14 +81,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.WebView
             var userDataDirectoryPath = environmentParameters.MachineWebViewDirectory.FullName;
             var webViewEnvironment = await CoreWebView2Environment.CreateAsync(null, userDataDirectoryPath);
 
-            webView.CoreWebView2InitializationCompleted += WebView_CoreWebView2InitializationCompleted;
-            try {
-                await webView.EnsureCoreWebView2Async(webViewEnvironment);
-                webView.CoreWebView2.Settings.AreDevToolsEnabled = environmentParameters.ApplicationConfiguration.Web.DeveloperTools;
-                webView.CoreWebView2.Settings.UserAgent = ApplicationStringFormats.GetHttpUserAgentWebViewValue(environmentParameters.ApplicationConfiguration.Web.ViewUserAgentFormat, webView);
-            } finally {
-                webView.CoreWebView2InitializationCompleted -= WebView_CoreWebView2InitializationCompleted;
-            }
+            await webView.EnsureCoreWebView2Async(webViewEnvironment);
+            webView.CoreWebView2.Settings.AreDevToolsEnabled = environmentParameters.ApplicationConfiguration.Web.DeveloperTools;
+            webView.CoreWebView2.Settings.UserAgent = ApplicationStringFormats.GetHttpUserAgentWebViewValue(environmentParameters.ApplicationConfiguration.Web.ViewUserAgentFormat, webView);
             InitializeCompleted.Set();
         }
 
@@ -147,10 +142,5 @@ namespace ContentTypeTextNet.Pe.Main.Models.WebView
         }
 
         #endregion
-
-        private void WebView_CoreWebView2InitializationCompleted(object? sender, CoreWebView2InitializationCompletedEventArgs e)
-        {
-
-        }
     }
 }

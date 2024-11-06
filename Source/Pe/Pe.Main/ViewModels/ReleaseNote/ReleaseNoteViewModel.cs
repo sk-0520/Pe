@@ -17,16 +17,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ReleaseNote
 {
     public class ReleaseNoteViewModel: ElementViewModelBase<ReleaseNoteElement>, IViewLifecycleReceiver
     {
-        public ReleaseNoteViewModel(ReleaseNoteElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public ReleaseNoteViewModel(ReleaseNoteElement model, IWebViewInitializer webViewInitializer, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(model, userTracker, dispatcherWrapper, loggerFactory)
         {
             //PropertyChangedHooker = new PropertyChangedHooker(DispatcherWrapper, LoggerFactory);
             //PropertyChangedHooker.AddHook(nameof(), nameof());
+            WebViewInitializer = webViewInitializer;
         }
 
         #region property
 
         //PropertyChangedHooker PropertyChangedHooker { get; }
+
+        private IWebViewInitializer WebViewInitializer { get; }
 
         [DateTimeKind(DateTimeKind.Utc)]
         public DateTime Release => Model?.NewVersionItem.Release ?? DateTime.UtcNow;
@@ -73,23 +76,27 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ReleaseNote
 
         #region IViewLifecycleReceiver
 
-        public Task ReceiveViewInitializedAsync(Window window)
+        public async Task ReceiveViewInitializedAsync(Window window)
         {
             var view = (ReleaseNoteWindow)window;
 
-            return Model.LoadReleaseNoteDocumentAsync(CancellationToken.None).ContinueWith(t => {
+
+            var waitInitializeTask = WebViewInitializer.WaitInitializeAsync(CancellationToken.None);
+            var releaseNoteTask = Model.LoadReleaseNoteDocumentAsync(CancellationToken.None);
+
+            try {
+                await Task.WhenAll(waitInitializeTask, releaseNoteTask);
                 if(IsDisposed) {
-                    Logger.LogTrace("close");
+                    Logger.LogTrace("closed");
                     return;
                 }
+                var htmlSource = releaseNoteTask.Result;
+                view.webView.NavigateToString(htmlSource);
 
-                if(t.IsCompletedSuccessfully) {
-                    var htmlSource = t.Result;
-                    view.webView.NavigateToString(htmlSource);
-                } else {
-                    view.webView.NavigateToString(Properties.Resources.File_ReleaseNote_ErrorReleaseNote);
-                }
-            }, System.Threading.Tasks.TaskScheduler.FromCurrentSynchronizationContext());
+            } catch(Exception ex) {
+                Logger.LogError(ex, ex.Message);
+                view.webView.NavigateToString(Properties.Resources.File_ReleaseNote_ErrorReleaseNote);
+            }
         }
 
         public Task ReceiveViewLoadedAsync(Window window)
@@ -110,7 +117,5 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ReleaseNote
         }
 
         #endregion
-
-
     }
 }

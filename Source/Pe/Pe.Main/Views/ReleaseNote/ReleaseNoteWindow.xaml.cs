@@ -53,6 +53,7 @@ namespace ContentTypeTextNet.Pe.Main.Views.ReleaseNote
         {
             this.webView.CoreWebView2.NewWindowRequested -= CoreWebView2_NewWindowRequested;
             this.webView.Unloaded -= WebView_Unloaded;
+            WebViewInitializer.Dispose();
         }
 
         private void CoreWebView2_NewWindowRequested(object? sender, Microsoft.Web.WebView2.Core.CoreWebView2NewWindowRequestedEventArgs e)
