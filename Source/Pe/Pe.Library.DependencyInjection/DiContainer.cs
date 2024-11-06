@@ -772,18 +772,17 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         /// <inheritdoc cref="IDiRegisterContainer.Unregister(Type, string)"/>
         public bool Unregister(Type interfaceType, string name)
         {
-            Mapping[name].TryRemove(interfaceType, out _);
-            Factory[name].TryRemove(interfaceType, out _);
-            Constructors[name].TryRemove(interfaceType, out _);
+            var mappingResult = Mapping[name].TryRemove(interfaceType, out _);
+           Constructors[name].TryRemove(interfaceType, out _);
             if(Factory[name].TryGetValue(interfaceType, out var factory)) {
                 if(factory.Lifecycle == DiLifecycle.Singleton) {
-                    ObjectPool[name].TryRemove(interfaceType, out _);
                     factory.Dispose();
                 }
-                return true;
+                Factory[name].Remove(interfaceType, out _);
             }
+            ObjectPool[name].TryRemove(interfaceType, out _);
 
-            return false;
+            return mappingResult  ;
         }
 
         /// <inheritdoc cref="IDiRegisterContainer.Unregister{TInterface}"/>
