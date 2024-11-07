@@ -357,7 +357,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 hWndSource.AddHook(WndProc);
                 WindowHandleSources.Add(item, hWndSource);
 
-                await viewLifecycleReceiver.ReceiveViewInitializedAsync(window);
+                await viewLifecycleReceiver.ReceiveViewInitializedAsync(window, CancellationToken.None);
             }
         }
 
@@ -371,7 +371,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var item = Items.First(i => i.Window == window);
             item.IsOpened = true;
             if(item.ViewModel is IViewLifecycleReceiver viewLifecycleReceiver) {
-                await viewLifecycleReceiver.ReceiveViewLoadedAsync(window);
+                await viewLifecycleReceiver.ReceiveViewLoadedAsync(window, CancellationToken.None);
             }
         }
 

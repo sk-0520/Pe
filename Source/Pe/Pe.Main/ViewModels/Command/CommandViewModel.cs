@@ -454,7 +454,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
         #region IViewLifecycleReceiver
 
-        public Task ReceiveViewInitializedAsync(Window window)
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
             DpiScaleOutpour = (IDpiScaleOutpour)window;
 
@@ -465,7 +465,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
             return Task.CompletedTask;
         }
 
-        public Task ReceiveViewLoadedAsync(Window window)
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }

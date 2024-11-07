@@ -282,7 +282,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
 
         #region IViewLifecycleReceiver
 
-        public Task ReceiveViewInitializedAsync(Window window)
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
             var view = (StandardInputOutputWindow)window;
 
@@ -293,7 +293,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
             return Task.CompletedTask;
         }
 
-        public Task ReceiveViewLoadedAsync(Window window)
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }

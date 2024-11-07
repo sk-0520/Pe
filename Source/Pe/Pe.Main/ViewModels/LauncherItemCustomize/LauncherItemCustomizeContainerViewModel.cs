@@ -85,12 +85,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #region IViewLifecycleReceiver
 
-        public Task ReceiveViewInitializedAsync(Window window)
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
 
-        public Task ReceiveViewLoadedAsync(Window window)
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }

@@ -76,13 +76,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ReleaseNote
 
         #region IViewLifecycleReceiver
 
-        public async Task ReceiveViewInitializedAsync(Window window)
+        public async Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
             var view = (ReleaseNoteWindow)window;
 
 
-            var waitInitializeTask = WebViewInitializer.WaitInitializeAsync(CancellationToken.None);
-            var releaseNoteTask = Model.LoadReleaseNoteDocumentAsync(CancellationToken.None);
+            var waitInitializeTask = WebViewInitializer.WaitInitializeAsync(cancellationToken);
+            var releaseNoteTask = Model.LoadReleaseNoteDocumentAsync(cancellationToken);
 
             try {
                 await Task.WhenAll(waitInitializeTask, releaseNoteTask);
@@ -99,7 +99,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ReleaseNote
             }
         }
 
-        public Task ReceiveViewLoadedAsync(Window window)
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }

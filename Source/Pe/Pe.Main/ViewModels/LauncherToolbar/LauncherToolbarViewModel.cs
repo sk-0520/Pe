@@ -636,12 +636,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         //#endregion
 
         #region IViewLifecycleReceiver
-        public Task ReceiveViewInitializedAsync(Window window)
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
         }
 
-        public Task ReceiveViewLoadedAsync(Window window)
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
             if(!IsVisible) {
                 window.Visibility = Visibility.Collapsed;

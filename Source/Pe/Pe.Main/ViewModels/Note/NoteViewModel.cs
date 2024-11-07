@@ -1318,7 +1318,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #region IViewLifecycleReceiver
 
-        public Task ReceiveViewInitializedAsync(Window window)
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
             // 各ディスプレイのDPIで事故らないように原点をディスプレイへ移動してウィンドウ位置・サイズをいい感じに頑張る
             var hWnd = HandleUtility.GetWindowHandle(window);
@@ -1351,7 +1351,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             return Task.CompletedTask;
         }
 
-        public Task ReceiveViewLoadedAsync(Window window)
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
             if(IsVisible) {
                 if(!IsTopmost) {
