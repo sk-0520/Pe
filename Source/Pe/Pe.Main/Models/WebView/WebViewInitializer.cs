@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using Microsoft.Extensions.Logging;
@@ -139,6 +140,44 @@ namespace ContentTypeTextNet.Pe.Main.Models.WebView
             }
 
             base.Dispose(disposing);
+        }
+
+        #endregion
+    }
+
+    public static class WebViewInitializerExtensions
+    {
+        #region function
+
+        /// <summary>
+        /// <see cref="WebViewInitializer"/>をDIコンテナに登録する。
+        /// </summary>
+        /// <param name="webViewInitializer">登録するオブジェクト。</param>
+        /// <param name="container">登録先DIコンテナ。</param>
+        public static void RegisterToDiContainer(this WebViewInitializer webViewInitializer, IDiRegisterContainer container)
+        {
+            container.Register(webViewInitializer);
+            container.Register<IWebViewInitializer>(webViewInitializer);
+        }
+
+        /// <summary>
+        /// <see cref="WebViewInitializer"/>をDIコンテナに一時的に登録する。
+        /// </summary>
+        /// <remarks>
+        /// <para>プロパティインジェクションが外部から渡せない都合でこれで一時的に登録・解除を行う。つらい設計。</para>
+        /// <para><see cref="IDiScopeContainerFactory.Scope"/>が使えるのであればそちらを使用すべき。</para>
+        /// </remarks>
+        /// <param name="webViewInitializer">登録するオブジェクト。</param>
+        /// <param name="container">登録先DIコンテナ。</param>
+        /// <returns>解除処理。</returns>
+        public static IDisposable RegisterTemporaryToDiContainer(this WebViewInitializer webViewInitializer, IDiRegisterContainer container)
+        {
+            webViewInitializer.RegisterToDiContainer(container);
+
+            return new ActionDisposer(d => {
+                container.Unregister<WebViewInitializer>();
+                container.Unregister<IWebViewInitializer>();
+            });
         }
 
         #endregion

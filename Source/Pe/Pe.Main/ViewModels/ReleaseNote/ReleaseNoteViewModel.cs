@@ -80,7 +80,6 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ReleaseNote
         {
             var view = (ReleaseNoteWindow)window;
 
-
             var waitInitializeTask = WebViewInitializer.WaitInitializeAsync(cancellationToken);
             var releaseNoteTask = Model.LoadReleaseNoteDocumentAsync(cancellationToken);
 

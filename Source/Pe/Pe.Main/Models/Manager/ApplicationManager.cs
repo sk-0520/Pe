@@ -549,9 +549,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             using(var diContainer = ApplicationDiContainer.CreateChildContainer()) {
                 var webViewInitializer = diContainer.Build<WebViewInitializer>();
 
+                webViewInitializer.RegisterToDiContainer(diContainer);
                 diContainer
-                    .Register(webViewInitializer)
-                    .Register<IWebViewInitializer>(webViewInitializer)
                     .RegisterMvvm<Element.About.AboutElement, ViewModels.About.AboutViewModel, Views.About.AboutWindow>()
                 ;
                 var model = diContainer.New<Element.About.AboutElement>();
@@ -588,20 +587,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         private async Task ShowNewVersionReleaseNoteCoreAsync(NewVersionItemData updateItem, bool isCheckOnly, CancellationToken cancellationToken)
         {
             var webViewInitializer = ApplicationDiContainer.Build<WebViewInitializer>();
-            try {
-                ApplicationDiContainer.Register<WebViewInitializer>(webViewInitializer);
-                ApplicationDiContainer.Register<IWebViewInitializer>(webViewInitializer);
-                var element = ApplicationDiContainer.Build<Element.ReleaseNote.ReleaseNoteElement>(ApplicationUpdateInfo, updateItem, isCheckOnly);
-                await element.InitializeAsync(cancellationToken);
-                var view = ApplicationDiContainer.Build<Views.ReleaseNote.ReleaseNoteWindow>();
-                view.DataContext = ApplicationDiContainer.Build<ViewModels.ReleaseNote.ReleaseNoteViewModel>(element);
-                WindowManager.Register(new WindowItem(WindowKind.Release, element, view));
-                view.Show();
-                await webViewInitializer.WaitInitializeAsync(cancellationToken);
-            } finally {
-                ApplicationDiContainer.Unregister<WebViewInitializer>();
-                ApplicationDiContainer.Unregister<IWebViewInitializer>();
-            }
+            using var unregisterTemporary = webViewInitializer.RegisterTemporaryToDiContainer(ApplicationDiContainer);
+            var element = ApplicationDiContainer.Build<Element.ReleaseNote.ReleaseNoteElement>(ApplicationUpdateInfo, updateItem, isCheckOnly);
+            await element.InitializeAsync(cancellationToken);
+            var view = ApplicationDiContainer.Build<Views.ReleaseNote.ReleaseNoteWindow>();
+            view.DataContext = ApplicationDiContainer.Build<ViewModels.ReleaseNote.ReleaseNoteViewModel>(element);
+            WindowManager.Register(new WindowItem(WindowKind.Release, element, view));
+            view.Show();
+            await webViewInitializer.WaitInitializeAsync(cancellationToken);
         }
 
         private async Task ShowNewVersionReleaseNoteAsync(NewVersionItemData updateItem, bool isCheckOnly, CancellationToken cancellationToken)
