@@ -17,11 +17,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemExtension
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
-        { }
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
-        public void ReceiveViewLoaded(Window window)
-        { }
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)
         {

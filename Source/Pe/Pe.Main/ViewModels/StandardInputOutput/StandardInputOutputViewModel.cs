@@ -282,17 +282,21 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
             var view = (StandardInputOutputWindow)window;
 
             Terminal = (TextEditor)view.FindName("terminal");
             Terminal.TextArea.Caret.CaretBrush = Brushes.Transparent;
             Terminal.TextChanged += Terminal_TextChanged;
+
+            return Task.CompletedTask;
         }
 
-        public void ReceiveViewLoaded(Window window)
-        { }
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)
         {

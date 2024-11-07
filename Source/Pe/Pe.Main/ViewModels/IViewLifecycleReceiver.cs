@@ -16,12 +16,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels
         /// 分離できるって啓蒙してる人らはなんなの、全部添付とかサブクラス作れって言うの
         /// </summary>
         /// <param name="window"></param>
-        void ReceiveViewInitialized(Window window);
+        Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken);
 
         /// <summary>
         /// ウィンドウが生成された。
         /// </summary>
-        void ReceiveViewLoaded(Window window);
+        Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken);
 
         /// <summary>
         /// ウィンドウが閉じられようとしている。

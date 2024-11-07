@@ -83,7 +83,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
         CopyInformation,
         [CommandDescription(nameof(Properties.Resources.String_ApplicationCommand_Description_Proxy))]
         Proxy,
-        [CommandDescription(nameof(Properties.Resources.String_ApplicationCommand_Description_Help))]
+        [CommandDescription(nameof(Properties.Resources.String_ApplicationCommand_Description_Help), false)]
         Help,
         [CommandDescription(nameof(Properties.Resources.String_ApplicationCommand_Description_Exception))]
         Exception,

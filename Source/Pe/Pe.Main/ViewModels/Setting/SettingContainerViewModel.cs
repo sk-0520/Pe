@@ -117,13 +117,17 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
-        { }
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
-        public void ReceiveViewLoaded(Window window)
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
             RaisePropertyChanged(nameof(SelectedEditor));
-            SelectedEditor.LoadAsync(CancellationToken.None);
+            SelectedEditor.LoadAsync(cancellationToken);
+
+            return Task.CompletedTask;
         }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)

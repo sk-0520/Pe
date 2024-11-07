@@ -464,14 +464,18 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
-        { }
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
-        public void ReceiveViewLoaded(Window window)
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
             DpiScaleOutpour = (IDpiScaleOutpour)window;
 
             WindowsUtility.ShowActiveForeground(HandleUtility.GetWindowHandle(window));
+
+            return Task.CompletedTask;
         }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)

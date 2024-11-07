@@ -67,6 +67,7 @@ using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Base;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
 using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Main.Models.WebView;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
@@ -546,6 +547,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             using var viewPausing = PauseAllViews();
 
             using(var diContainer = ApplicationDiContainer.CreateChildContainer()) {
+                var webViewInitializer = diContainer.Build<WebViewInitializer>();
+
+                webViewInitializer.RegisterToDiContainer(diContainer);
                 diContainer
                     .RegisterMvvm<Element.About.AboutElement, ViewModels.About.AboutViewModel, Views.About.AboutWindow>()
                 ;
@@ -561,7 +565,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             }
         }
 
-        public void ShowHelp()
+        /// <summary>
+        /// ヘルプの表示。
+        /// </summary>
+        /// <param name="embeddedBrowser">内蔵ブラウザで開くか。</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task ShowHelpAsync(bool embeddedBrowser, CancellationToken cancellationToken)
         {
             try {
                 var environmentParameters = ApplicationDiContainer.Get<EnvironmentParameters>();
@@ -570,16 +580,21 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             } catch(Exception ex) {
                 Logger.LogWarning(ex, ex.Message);
             }
+
+            return Task.CompletedTask;
         }
 
         private async Task ShowNewVersionReleaseNoteCoreAsync(NewVersionItemData updateItem, bool isCheckOnly, CancellationToken cancellationToken)
         {
+            var webViewInitializer = ApplicationDiContainer.Build<WebViewInitializer>();
+            using var unregisterTemporary = webViewInitializer.RegisterTemporaryToDiContainer(ApplicationDiContainer);
             var element = ApplicationDiContainer.Build<Element.ReleaseNote.ReleaseNoteElement>(ApplicationUpdateInfo, updateItem, isCheckOnly);
             await element.InitializeAsync(cancellationToken);
             var view = ApplicationDiContainer.Build<Views.ReleaseNote.ReleaseNoteWindow>();
             view.DataContext = ApplicationDiContainer.Build<ViewModels.ReleaseNote.ReleaseNoteViewModel>(element);
             WindowManager.Register(new WindowItem(WindowKind.Release, element, view));
             view.Show();
+            await webViewInitializer.WaitInitializeAsync(cancellationToken);
         }
 
         private async Task ShowNewVersionReleaseNoteAsync(NewVersionItemData updateItem, bool isCheckOnly, CancellationToken cancellationToken)
