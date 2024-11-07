@@ -547,7 +547,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             using var viewPausing = PauseAllViews();
 
             using(var diContainer = ApplicationDiContainer.CreateChildContainer()) {
+                var webViewInitializer = diContainer.Build<WebViewInitializer>();
+
                 diContainer
+                    .Register(webViewInitializer)
+                    .Register<IWebViewInitializer>(webViewInitializer)
                     .RegisterMvvm<Element.About.AboutElement, ViewModels.About.AboutViewModel, Views.About.AboutWindow>()
                 ;
                 var model = diContainer.New<Element.About.AboutElement>();

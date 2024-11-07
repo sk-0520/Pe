@@ -16,10 +16,16 @@ using ContentTypeTextNet.Pe.Main.Models.Platform;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
+using ContentTypeTextNet.Pe.Main.Models.WebView;
+using ContentTypeTextNet.Pe.Main.Views.ReleaseNote;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Windows;
+using ContentTypeTextNet.Pe.Main.Views.About;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 {
-    public class AboutViewModel: ElementViewModelBase<AboutElement>
+    public class AboutViewModel: ElementViewModelBase<AboutElement>, IViewLifecycleReceiver
     {
         #region variable
 
@@ -27,9 +33,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 
         #endregion
 
-        public AboutViewModel(AboutElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public AboutViewModel(AboutElement model, IWebViewInitializer webViewInitializer, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(model, userTracker, dispatcherWrapper, loggerFactory)
         {
+            WebViewInitializer = webViewInitializer;
             ComponentCollection = new ObservableCollection<AboutComponentItemViewModel>(model.Components.Select(i => new AboutComponentItemViewModel(i, LoggerFactory)));
             ComponentItems = CollectionViewSource.GetDefaultView(ComponentCollection);
             ComponentItems.GroupDescriptions.Add(new PropertyGroupDescription(nameof(AboutComponentItemViewModel.Kind)));
@@ -37,6 +44,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
         }
 
         #region property
+
+        private IWebViewInitializer WebViewInitializer { get; }
 
         public RequestSender CloseRequest { get; } = new RequestSender();
         public RequestSender FileSelectRequest { get; } = new RequestSender();
@@ -279,6 +288,34 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
             RaisePropertyChanged(callerMemberName);
         }
 
+        #endregion
+
+        #region IViewLifecycleReceiver
+
+        public async Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
+        {
+            var view = (AboutWindow)window;
+
+            await WebViewInitializer.WaitInitializeAsync(cancellationToken);
+
+            view.webView.NavigateToString("aaaaa");
+        }
+
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public void ReceiveViewUserClosing(Window window, CancelEventArgs e)
+        { }
+
+        public void ReceiveViewClosing(Window window, CancelEventArgs e)
+        { }
+
+        public Task ReceiveViewClosedAsync(Window window, bool isUserOperation, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
         #endregion
     }
 }

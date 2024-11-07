@@ -39,7 +39,7 @@ namespace ContentTypeTextNet.Pe.Main.Views.ReleaseNote
 
         #endregion
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:命名スタイル", Justification = "<保留中>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:命名スタイル", Justification = "自動生成")]
         private async void root_SourceInitialized(object sender, System.EventArgs e)
         {
             await WebViewInitializer.InitializeAsync(this.webView, EnvironmentParameters, CultureService);

@@ -332,6 +332,15 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
+        ///   WebView に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_About_WebView_Header {
+            get {
+                return ResourceManager.GetString("String_About_WebView_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   使用する に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Accept_Affirmative {

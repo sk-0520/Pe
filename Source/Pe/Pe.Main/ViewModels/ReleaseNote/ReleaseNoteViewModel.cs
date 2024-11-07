@@ -110,7 +110,6 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ReleaseNote
         public void ReceiveViewClosing(Window window, CancelEventArgs e)
         { }
 
-
         public Task ReceiveViewClosedAsync(Window window, bool isUserOperation, CancellationToken cancellationToken)
         {
             return Task.CompletedTask;

@@ -2375,4 +2375,7 @@ URL: バージョンチェックURLを指定すればその内容からプラグ
     <value>本バージョンはβ版です。
 不具合修正・動作確認のために使用します。</value>
   </data>
+  <data name="String_About_WebView_Header" xml:space="preserve">
+    <value>WebView</value>
+  </data>
 </root>
