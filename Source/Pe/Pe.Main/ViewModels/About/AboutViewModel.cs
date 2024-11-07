@@ -22,6 +22,11 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows;
 using ContentTypeTextNet.Pe.Main.Views.About;
+using Microsoft.Web.WebView2.Core;
+using System.Diagnostics;
+using Microsoft.Web.WebView2.Wpf;
+using System.Collections.Generic;
+using ContentTypeTextNet.Pe.Library.Base;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 {
@@ -288,6 +293,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
             RaisePropertyChanged(callerMemberName);
         }
 
+        private string GetRuntimePath(CoreWebView2 coreWebView)
+        {
+            var processId = (int)coreWebView.BrowserProcessId;
+            try {
+                var process = Process.GetProcessById(processId);
+                var fileName = process.MainModule?.FileName;
+                return System.IO.Path.GetDirectoryName(fileName) ?? throw new Exception("failed to get runtime path");
+            } catch(Exception e) {
+                Logger.LogError(e, e.Message);
+                return e.Message;
+            }
+        }
+
         #endregion
 
         #region IViewLifecycleReceiver
@@ -298,7 +316,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 
             await WebViewInitializer.WaitInitializeAsync(cancellationToken);
 
-            view.webView.NavigateToString("aaaaa");
+            var options = new CoreWebView2EnvironmentOptions();
+            var parameter = new Dictionary<string,string>() {
+                ["ASSEMBLY_NAME"] = typeof(WebView2).Assembly.FullName!,
+                ["SDK_VERSION"] = options.TargetCompatibleBrowserVersion,
+                ["RUNTIME_VERSION"] = view.webView.CoreWebView2.Environment.BrowserVersionString,
+                ["RUNTIME_PATH"] = GetRuntimePath(view.webView.CoreWebView2),
+            };
+            var html = TextUtility.ReplaceFromDictionary(Properties.Resources.File_About_WebView, parameter);
+            view.webView.NavigateToString(html);
         }
 
         public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)

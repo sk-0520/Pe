@@ -61,6 +61,47 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
+        ///   &lt;!doctype html&gt;
+        ///&lt;html lang=&quot;ja&quot;&gt;
+        ///&lt;head&gt;
+        ///	&lt;meta charSet=&quot;utf-8&quot; /&gt;
+        ///	&lt;style&gt;
+        ///		* {
+        ///			font-family: monospace;
+        ///			font-size: 10pt;
+        ///		}
+        ///		/* キー項目のセル */
+        ///		tr &gt; td:first-child {
+        ///			white-space: nowrap;
+        ///		}
+        ///			/* 値項目のセル */
+        ///			tr &gt; td:first-child + td {
+        ///				font-size: 90%;
+        ///			}
+        ///	&lt;/style&gt;
+        ///&lt;/head&gt;
+        ///&lt;body&gt;
+        ///	&lt;table&gt;
+        ///		&lt;thead&gt;
+        ///			&lt;tr&gt;
+        ///				&lt;th&gt;KEY&lt;/th&gt;
+        ///				&lt;th&gt;VALUE&lt;/th&gt;
+        ///			&lt;/tr&gt;
+        ///		&lt;/thead&gt;
+        ///		&lt;tbody&gt;
+        ///			&lt;tr&gt;
+        ///				&lt;td&gt;Assembly Name&lt;/td&gt;
+        ///				&lt;td&gt;&lt;code&gt;${ASSEMBLY_NAME}&lt;/code&gt;&lt;/td&gt;
+        ///			&lt;/tr&gt;
+        ///			&lt; [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string File_About_WebView {
+            get {
+                return ResourceManager.GetString("File_About_WebView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   &lt;FlowDocument
         ///  xmlns=&quot;http://schemas.microsoft.com/winfx/2006/xaml/presentation&quot;
         ///  xmlns:x=&quot;http://schemas.microsoft.com/winfx/2006/xaml&quot;
