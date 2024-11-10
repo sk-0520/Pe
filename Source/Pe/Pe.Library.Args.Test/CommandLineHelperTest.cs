@@ -11,6 +11,31 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
     {
         #region function
 
+        [Fact]
+        public void ThrowIfInvalidLongKeyTest()
+        {
+            Assert.Throws<ArgumentNullException>(() => CommandLineHelper.ThrowIfInvalidLongKey(null!));
+            Assert.Throws<ArgumentException>(() => CommandLineHelper.ThrowIfInvalidLongKey(""));
+            Assert.Throws<ArgumentException>(() => CommandLineHelper.ThrowIfInvalidLongKey(" "));
+
+            var actual = CommandLineHelper.ThrowIfInvalidLongKey(" key ");
+            Assert.Equal(" key ", actual);
+        }
+
+        [Theory]
+        [InlineData("a", "a")]
+        [InlineData("\"", "\"")]
+        [InlineData("\"a", "\"a")]
+        [InlineData("a\"", "a\"")]
+        [InlineData("\"\"", "\"\"")]
+        [InlineData("a", "\"a\"")]
+        [InlineData(" \"a\" ", " \"a\" ")]
+        public void StripDoubleQuotesTest(string expected, string input)
+        {
+            var actual =  CommandLineHelper.StripDoubleQuotes(input);
+            Assert.Equal(expected, actual);
+        }
+
         [Theory]
         [InlineData("\"\"", "")]
         [InlineData("\" \"", " ")]
@@ -49,7 +74,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             Assert.Contains("@@empty=\"\"", actual2);
             Assert.Contains("@@white=\" \"", actual2);
 
-            var actual3 = CommandLineHelper.ToCommandLineArguments(input, "**",' ');
+            var actual3 = CommandLineHelper.ToCommandLineArguments(input, "**", ' ');
             Assert.Contains("**key value", actual3);
             Assert.Contains("**space \"abc xyz\"", actual3);
             Assert.Contains("**empty \"\"", actual3);

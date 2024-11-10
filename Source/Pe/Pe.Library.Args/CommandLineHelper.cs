@@ -11,6 +11,31 @@ namespace ContentTypeTextNet.Pe.Library.Args
         #region function
 
         /// <summary>
+        /// 長いキーが不正なら落とす。
+        /// </summary>
+        /// <param name="longKey"></param>
+        /// <returns></returns>
+        public static string ThrowIfInvalidLongKey(string longKey)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(longKey);
+            return longKey;
+        }
+
+        /// <summary>
+        /// 左右の " を切り落とす。
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string StripDoubleQuotes(string s)
+        {
+            if(s.Length > "\"\"".Length && s[0] == '"' && s[^1] == '"') {
+                return s.Substring(1, s.Length - 1 - 1);
+            }
+
+            return s;
+        }
+
+        /// <summary>
         /// 文字列をコマンドライン引数の値に変換する。
         /// </summary>
         /// <param name="input">対象文字列。</param>

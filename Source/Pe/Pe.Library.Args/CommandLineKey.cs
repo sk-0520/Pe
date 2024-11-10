@@ -21,6 +21,12 @@ namespace ContentTypeTextNet.Pe.Library.Args
         #region property
 
         /// <summary>
+        /// 長いキー。
+        /// </summary>
+        public string LongKey { get; } = CommandLineHelper.ThrowIfInvalidLongKey(LongKey);
+
+
+        /// <summary>
         /// 有効な<see cref="LongKey"/>か。
         /// </summary>
         public bool IsEnabledLongKey => !string.IsNullOrEmpty(LongKey);

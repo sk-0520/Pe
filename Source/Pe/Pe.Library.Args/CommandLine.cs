@@ -7,6 +7,66 @@ using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.Pe.Library.Args
 {
+    public interface ICommandLine
+    {
+        #region property
+
+        /// <summary>
+        /// プログラム/コマンド名。
+        /// </summary>
+        /// <remarks>
+        /// <para><see langword="null" />が入ることはない。</para>
+        /// </remarks>
+        public string CommandName { get; }
+        /// <summary>
+        /// プログラム名を含まないコマンドライン引数。
+        /// </summary>
+        public IReadOnlyList<string> Arguments { get; }
+
+        /// <summary>
+        /// 解析が完了したか。
+        /// </summary>
+        public bool IsParsed { get; }
+
+        /// <summary>
+        /// キーアイテム一覧。
+        /// </summary>
+        public IReadOnlyList<CommandLineKey> Keys { get; }
+
+        /// <summary>
+        /// 値一覧。
+        /// </summary>
+        public IReadOnlyDictionary<CommandLineKey, ICommandLineValue> Values { get; }
+
+        /// <summary>
+        /// スイッチ一覧。
+        /// </summary>
+        public IReadOnlyCollection<CommandLineKey> Switches { get; }
+
+        /// <summary>
+        /// 不明アイテム一覧。
+        /// </summary>
+        public IReadOnlyList<string> Unknowns { get; }
+
+        /// <summary>
+        /// 解析時例外。
+        /// </summary>
+        public Exception? ParseException { get; }
+
+        #endregion
+
+        #region function
+
+        /// <summary>
+        /// 長いキーから値取得。
+        /// </summary>
+        /// <param name="longKey">長いキー。</param>
+        /// <returns>取得した値。取得できない場合は<see langword="null" />。</returns>
+        public CommandLineKey? GetKey(string longKey);
+
+        #endregion
+    }
+
     /// <summary>
     /// </summary>
     /// <remarks>
@@ -15,7 +75,6 @@ namespace ContentTypeTextNet.Pe.Library.Args
     ///     <item><c>--key=value</c></item>
     ///     <item><c>--switch</c></item>
     /// </list>
-    /// <para>短いキーをいっぱいくっつけてどうとかはできない。</para>
     /// </remarks>
     public class CommandLine
     {
@@ -49,62 +108,24 @@ namespace ContentTypeTextNet.Pe.Library.Args
         #region property
 
         /// <summary>
-        /// プログラム/コマンド名。
-        /// </summary>
-        /// <remarks>
-        /// <para><see langword="null" />が入ることはない。</para>
-        /// </remarks>
-        public string CommandName { get; }
-        /// <summary>
-        /// プログラム名を含まないコマンドライン引数。
-        /// </summary>
-        public IReadOnlyList<string> Arguments { get; }
-
-        /// <summary>
-        /// 解析が完了したか。
-        /// </summary>
-        public bool IsParsed { get; private set; }
-
-        /// <summary>
-        /// キーアイテム一覧。
+        /// キーアイテム一覧実体。
         /// </summary>
         private List<CommandLineKey> KeyItems { get; } = new List<CommandLineKey>();
-        /// <summary>
-        /// キーアイテム一覧。
-        /// </summary>
-        public IReadOnlyList<CommandLineKey> Keys => KeyItems;
 
         /// <summary>
         /// 値一覧実体。
         /// </summary>
         private Dictionary<CommandLineKey, ICommandLineValue> ValueItems { get; } = new Dictionary<CommandLineKey, ICommandLineValue>();
-        /// <summary>
-        /// 値一覧。
-        /// </summary>
-        public IReadOnlyDictionary<CommandLineKey, ICommandLineValue> Values => ValueItems;
 
         /// <summary>
         /// スイッチ一覧実体。
         /// </summary>
         private HashSet<CommandLineKey> SwitchItems { get; } = new HashSet<CommandLineKey>();
-        /// <summary>
-        /// スイッチ一覧。
-        /// </summary>
-        public IReadOnlyCollection<CommandLineKey> Switches => SwitchItems;
 
         /// <summary>
         /// 不明アイテム一覧実体。
         /// </summary>
         private List<string> UnknownItems { get; } = new List<string>();
-        /// <summary>
-        /// 不明アイテム一覧。
-        /// </summary>
-        public IReadOnlyList<string> Unknowns => UnknownItems;
-
-        /// <summary>
-        /// 解析時例外。
-        /// </summary>
-        public Exception? ParseException { get; private set; }
 
         #endregion
 
@@ -155,7 +176,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
             return Add(value);
         }
 
-        string StripDoubleQuotes(string s)
+        private string StripDoubleQuotes(string s)
         {
             if(s.Length > "\"\"".Length && s[0] == '"' && s[^1] == '"') {
                 return s.Substring(1, s.Length - 1 - 1);
@@ -273,11 +294,25 @@ namespace ContentTypeTextNet.Pe.Library.Args
             return result;
         }
 
-        /// <summary>
-        /// 長いキーから値取得。
-        /// </summary>
-        /// <param name="longKey">長いキー。</param>
-        /// <returns>取得した値。取得できない場合は<see langword="null" />。</returns>
+        #endregion
+
+        #region ICommandLine
+
+        public string CommandName { get; }
+        public IReadOnlyList<string> Arguments { get; }
+
+        public bool IsParsed { get; private set; }
+
+        public IReadOnlyList<CommandLineKey> Keys => KeyItems;
+
+        public IReadOnlyDictionary<CommandLineKey, ICommandLineValue> Values => ValueItems;
+
+        public IReadOnlySet<CommandLineKey> Switches => SwitchItems;
+
+        public IReadOnlyList<string> Unknowns => UnknownItems;
+
+        public Exception? ParseException { get; private set; }
+
         public CommandLineKey? GetKey(string longKey)
         {
             return KeyItems
@@ -286,37 +321,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
                 .FirstOrDefault(k => k.LongKey == longKey)
             ;
         }
-
-        /// <summary>
-        /// 文字列をコマンド実行可能な書式に変換する。
-        /// </summary>
-        /// <param name="input">対象文字列。</param>
-        /// <returns></returns>
-        public static string Escape(string input)
-        {
-            if(string.IsNullOrWhiteSpace(input)) {
-                return string.Empty;
-            }
-
-            var s = input.Trim();
-            var result = s.Replace("\"", "\"\"");
-            if(s.IndexOf(' ') == -1) {
-                return result;
-            } else {
-                return "\"" + result + "\"";
-            }
-        }
-
-        /// <summary>
-        /// <see cref="IDictionary{TKey, TValue}"/>をいい感じにつなげる。
-        /// </summary>
-        /// <param name="map"></param>
-        /// <returns></returns>
-        public static IEnumerable<string> ToCommandLineArguments(IReadOnlyDictionary<string, string> map, string header = "--", char separator = '=')
-        {
-            return map.Select(i => header + i.Key + separator + Escape(i.Value));
-        }
-
         #endregion
+
     }
 }

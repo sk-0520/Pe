@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
             var map = new Dictionary<PropertyInfo, CommandLineKey>();
             foreach(var pair in propertyAttributeMap) {
                 var attribute = pair.Value;
-                var key = commandLine.Add(attribute.LongKey, attribute.HasValue, attribute.Description);
+                var key = commandLine.Add(attribute.Key);
                 map.Add(pair.Key, key);
             }
 
