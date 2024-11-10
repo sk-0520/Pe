@@ -9,7 +9,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class CommandLineAttribute: Attribute
     {
-        public CommandLineAttribute(string longKey = "", string description = "", bool hasValue = true)
+        public CommandLineAttribute(string longKey, string description = "", bool hasValue = true)
         {
             LongKey = longKey;
             Description = description;

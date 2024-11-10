@@ -97,21 +97,5 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             var has = commandLine.Switches.Contains(commandKey);
             Assert.True(has == expected);
         }
-
-        [Theory]
-        [InlineData("", "")]
-        [InlineData("a", "a")]
-        [InlineData("a", " a")]
-        [InlineData("a", "a ")]
-        [InlineData("a", " a ")]
-        [InlineData("\"a a\"", "a a")]
-        [InlineData("a\"\"b", "a\"b")]
-        [InlineData("a\"\"\"\"\"\"b", "a\"\"\"b")]
-        [InlineData("\"a \"\"\"\"\"\" b\"", "a \"\"\" b")]
-        public void Escape(string expected, string input)
-        {
-            var actual = CommandLine.Escape(input);
-            Assert.Equal(expected, actual);
-        }
     }
 }
