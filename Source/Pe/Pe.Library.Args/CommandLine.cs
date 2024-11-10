@@ -220,7 +220,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
                 var map = new[] {
                     new { Key = "--", IsLong = true },
                     //new { Key = "-",  IsLong = false },
-                    new { Key = "/",  IsLong = true },
+                    //new { Key = "/",  IsLong = true },
                 };
 
                 for(var i = 0; i < Arguments.Count; i++) {
