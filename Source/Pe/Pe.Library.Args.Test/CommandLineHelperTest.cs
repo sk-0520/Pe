@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         [InlineData(" \"a\" ", " \"a\" ")]
         public void StripDoubleQuotesTest(string expected, string input)
         {
-            var actual =  CommandLineHelper.StripDoubleQuotes(input);
+            var actual = CommandLineHelper.StripDoubleQuotes(input);
             Assert.Equal(expected, actual);
         }
 
@@ -68,13 +68,13 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             Assert.Contains("--empty=\"\"", actual1);
             Assert.Contains("--white=\" \"", actual1);
 
-            var actual2 = CommandLineHelper.ToCommandLineArguments(input, "@@");
+            var actual2 = CommandLineHelper.ToCommandLineArguments(input, '=', "@@");
             Assert.Contains("@@key=value", actual2);
             Assert.Contains("@@space=\"abc xyz\"", actual2);
             Assert.Contains("@@empty=\"\"", actual2);
             Assert.Contains("@@white=\" \"", actual2);
 
-            var actual3 = CommandLineHelper.ToCommandLineArguments(input, "**", ' ');
+            var actual3 = CommandLineHelper.ToCommandLineArguments(input, ' ', "**");
             Assert.Contains("**key value", actual3);
             Assert.Contains("**space \"abc xyz\"", actual3);
             Assert.Contains("**empty \"\"", actual3);

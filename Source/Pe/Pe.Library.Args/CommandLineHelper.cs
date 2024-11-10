@@ -60,7 +60,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// </summary>
         /// <param name="map"></param>
         /// <returns></returns>
-        public static IEnumerable<string> ToCommandLineArguments(IReadOnlyDictionary<string, string> map, string header = "--", char separator = '=')
+        public static IEnumerable<string> ToCommandLineArguments(IReadOnlyDictionary<string, string> map, char separator = '=', string header = "--")
         {
             return map.Select(i => header + i.Key + separator + Escape(i.Value));
         }
