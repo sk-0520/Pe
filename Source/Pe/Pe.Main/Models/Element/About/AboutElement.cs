@@ -18,6 +18,7 @@ using System.Threading;
 using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Html;
 using System.Globalization;
+using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.About
 {
@@ -557,7 +558,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.About
 
                 foreach(var deleteItem in deleteItems.Where(i => uninstallTargets.HasFlag(i.Target))) {
                     writer.WriteLine("echo [{0}]", deleteItem.Target);
-                    writer.WriteLine("rmdir /S /Q {0}", CommandLine.Escape(deleteItem.Directory.FullName));
+                    writer.WriteLine("rmdir /S /Q {0}", CommandLineHelper.Escape(deleteItem.Directory.FullName));
                     writer.WriteLine();
                 }
 
@@ -566,7 +567,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.About
                     if(startupRegister.Exists()) {
                         var startupFilePath = startupRegister.GetStartupFilePath();
                         writer.WriteLine("echo [{0}]", "STARTUP");
-                        writer.WriteLine("del {0}", CommandLine.Escape(startupFilePath));
+                        writer.WriteLine("del {0}", CommandLineHelper.Escape(startupFilePath));
                         writer.WriteLine();
                     }
                 }

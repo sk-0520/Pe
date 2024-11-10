@@ -37,6 +37,7 @@ using System.Threading;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 {
@@ -492,7 +493,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
             if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
                 var filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
-                var argument = string.Join(' ', filePaths.Select(i => CommandLine.Escape(i)));
+                var argument = string.Join(' ', filePaths.Select(i => CommandLineHelper.Escape(i)));
                 await DispatcherWrapper.BeginAsync(async () => await ExecuteExtendDropDataAsync(launcherItemId, argument, cancellationToken));
             } else if(e.Data.IsTextPresent()) {
                 var argument = TextUtility.JoinLines(e.Data.RequireText());
