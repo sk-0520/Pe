@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace ContentTypeTextNet.Pe.Library.Args
@@ -30,17 +30,17 @@ namespace ContentTypeTextNet.Pe.Library.Args
         public IReadOnlyList<CommandLineKey> Keys { get; }
 
         /// <summary>
-        /// 値一覧。
+        /// 値データ一覧。
         /// </summary>
         public IReadOnlyDictionary<CommandLineKey, ICommandLineValue> Values { get; }
 
         /// <summary>
-        /// スイッチ一覧。
+        /// スイッチデータ一覧。
         /// </summary>
         public IReadOnlyCollection<CommandLineKey> Switches { get; }
 
         /// <summary>
-        /// 不明アイテム一覧。
+        /// 不明データ一覧。
         /// </summary>
         public IReadOnlyList<string> Unknowns { get; }
 

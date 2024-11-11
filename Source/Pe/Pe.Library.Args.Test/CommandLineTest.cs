@@ -22,39 +22,62 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             Assert.True(commandLine.Arguments.Count == expectedArgumentCount);
         }
 
-        //TODO: 例外と分けた方がいい
-        [Theory]
-        [InlineData(true, "aa")]
-        [InlineData(false, "")]
-        [InlineData(false, "a")]
-        public void AddTest(bool expected, string longKey)
+        [Fact]
+        public void Add_Key_Test()
         {
             var commandLine = new CommandLine();
-            try {
-                var key = commandLine.Add(longKey);
-                Assert.True(expected);
-            } catch(ArgumentException ex) {
-                Assert.False(expected, ex.ToString());
-            }
+            var key = commandLine.Add(new CommandLineKey("aa", true, ""));
+            Assert.Equal("aa", key.LongKey);
         }
-        //TOOD: AddTest の観点と同じ
+
+        public static TheoryData<Type, string, CommandLineKey> Add_Key_Throw_Data => new() {
+            {
+                typeof(ArgumentNullException),
+                "Value cannot be null. (Parameter 'key')",
+                null!
+            },
+            {
+                typeof(ArgumentException),
+                "IsEnabledLongKey and LongKey.Length == 1 (Parameter 'key')",
+                new CommandLineKey("a", true, "")
+            }
+        };
+
         [Theory]
-        [InlineData(false, "")]
-        [InlineData(false, "aa")]
-        [InlineData(false, "bb")]
-        [InlineData(true, "aaa")]
-        public void AddTest_Exists(bool expected, string longKey)
+        [MemberData(nameof(Add_Key_Throw_Data))]
+        public void Add_Key_Throw_Test(Type expectedException, string expectedMessage, CommandLineKey input)
+        {
+            var commandLine = new CommandLine();
+            var exception = Assert.Throws(expectedException, () => commandLine.Add(input));
+            Assert.Equal(expectedMessage, exception.Message);
+        }
+
+        [Fact]
+        public void Add_Params_Test()
+        {
+            var commandLine = new CommandLine();
+            var key = commandLine.Add("aa");
+            Assert.Equal("aa", key.LongKey);
+        }
+
+        [Theory]
+        [InlineData(typeof(ArgumentNullException), default)]
+        [InlineData(typeof(ArgumentException), "")]
+        [InlineData(typeof(ArgumentException), " ")]
+        public void Add_Params_Throw_Test(Type expectedException, string? longKey)
+        {
+            var commandLine = new CommandLine();
+            Assert.Throws(expectedException, () => commandLine.Add(longKey!));
+        }
+
+        [Fact]
+        public void AddTest_Exists_Test()
         {
             var commandLine = new CommandLine();
             commandLine.Add("aa");
-            commandLine.Add("bb");
 
-            try {
-                var key = commandLine.Add(longKey);
-                Assert.True(expected);
-            } catch(ArgumentException ex) {
-                Assert.False(expected, ex.ToString());
-            }
+            Assert.Throws<ArgumentException>(() => commandLine.Add("aa"));
+            Assert.Throws<ArgumentException>(() => commandLine.Add(new CommandLineKey("aa", true, "")));
         }
 
         [Theory]
@@ -62,7 +85,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         //[InlineData("A", new[] { "/aaa", "A" }, "aaa")]
         //[InlineData("AA", new[] { "/aaa", "AA", "/a", "A" }, "aaa")]
         [InlineData("A", new[] { "--aaa", "A" }, "aaa")]
-        [InlineData("AA", new[] { "--aaa", "AA", "-a", "A" },"aaa")]
+        [InlineData("AA", new[] { "--aaa", "AA", "-a", "A" }, "aaa")]
         //[InlineData("A", new[] { "/a=A" }, "aaa")]
         //[InlineData("A", new[] { "/aaa=A" }, "aaa")]
         //[InlineData("AA", new[] { "/aaa=AA", "/a=A" }, "aaa")]

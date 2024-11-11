@@ -53,29 +53,23 @@ namespace ContentTypeTextNet.Pe.Library.Args
         private List<CommandLineKey> KeyItems { get; } = new List<CommandLineKey>();
 
         /// <summary>
-        /// 値一覧実体。
+        /// 値データ一覧実体。
         /// </summary>
         private Dictionary<CommandLineKey, ICommandLineValue> ValueItems { get; } = new Dictionary<CommandLineKey, ICommandLineValue>();
 
         /// <summary>
-        /// スイッチ一覧実体。
+        /// スイッチデータ一覧実体。
         /// </summary>
         private HashSet<CommandLineKey> SwitchItems { get; } = new HashSet<CommandLineKey>();
 
         /// <summary>
-        /// 不明アイテム一覧実体。
+        /// 不明データ一覧実体。
         /// </summary>
         private List<string> UnknownItems { get; } = new List<string>();
 
         #endregion
 
         #region function
-
-        private CommandLineKey AddCore(CommandLineKey key)
-        {
-            KeyItems.Add(key);
-            return key;
-        }
 
         /// <summary>
         /// コマンドラインキーの追加。
@@ -93,14 +87,15 @@ namespace ContentTypeTextNet.Pe.Library.Args
             }
 
             if(key.IsEnabledLongKey && key.LongKey.Length == 1) {
-                throw new ArgumentException($"{nameof(key.IsEnabledLongKey)} and {nameof(key.LongKey)}.{key.LongKey.Length} == 1", nameof(key));
+                throw new ArgumentException($"{nameof(key.IsEnabledLongKey)} and {nameof(key.LongKey)}.{nameof(key.LongKey.Length)} == 1", nameof(key));
             }
 
             if(KeyItems.Where(k => k.IsEnabledLongKey).Any(k => k.LongKey == key.LongKey)) {
                 throw new ArgumentException($"exists {nameof(key.LongKey)}: {key.LongKey}");
             }
 
-            return AddCore(key);
+            KeyItems.Add(key);
+            return key;
         }
 
         /// <summary>
@@ -114,15 +109,6 @@ namespace ContentTypeTextNet.Pe.Library.Args
         {
             var value = new CommandLineKey(longKey, hasValue, description);
             return Add(value);
-        }
-
-        private string StripDoubleQuotes(string s)
-        {
-            if(s.Length > "\"\"".Length && s[0] == '"' && s[^1] == '"') {
-                return s.Substring(1, s.Length - 1 - 1);
-            }
-
-            return s;
         }
 
         private CommandLineKey? GetCommandLineKey(string key)
@@ -165,7 +151,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
 
                 for(var i = 0; i < Arguments.Count; i++) {
                     var argument = Arguments[i];
-                    var arg = StripDoubleQuotes(argument);
+                    var arg = CommandLineHelper.StripDoubleQuotes(argument);
                     if(string.IsNullOrWhiteSpace(arg)) {
                         continue;
                     }
@@ -200,7 +186,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
                             }
                             if(key.HasValue) {
                                 var val = arg.Substring(separatorIndex + 1);
-                                SetValue(key, StripDoubleQuotes(val));
+                                SetValue(key, CommandLineHelper.StripDoubleQuotes(val));
                                 continue;
                             } else {
                                 SetSwitch(key);
@@ -238,21 +224,30 @@ namespace ContentTypeTextNet.Pe.Library.Args
 
         #region ICommandLine
 
+        /// <inheritdoc cref="ICommandLine.CommandName"/>
         public string CommandName { get; }
+        /// <inheritdoc cref="ICommandLine.Arguments"/>
         public IReadOnlyList<string> Arguments { get; }
 
+        /// <inheritdoc cref="ICommandLine.IsParsed"/>
         public bool IsParsed { get; private set; }
 
+        /// <inheritdoc cref="ICommandLine.Keys"/>
         public IReadOnlyList<CommandLineKey> Keys => KeyItems;
 
+        /// <inheritdoc cref="ICommandLine.Values"/>
         public IReadOnlyDictionary<CommandLineKey, ICommandLineValue> Values => ValueItems;
 
+        /// <inheritdoc cref="ICommandLine.Switches"/>
         public IReadOnlySet<CommandLineKey> Switches => SwitchItems;
 
+        /// <inheritdoc cref="ICommandLine.Unknowns"/>
         public IReadOnlyList<string> Unknowns => UnknownItems;
 
+        /// <inheritdoc cref="ICommandLine.ParseException"/>
         public Exception? ParseException { get; private set; }
 
+        /// <inheritdoc cref="ICommandLine.GetKey(string)"/>
         public CommandLineKey? GetKey(string longKey)
         {
             return KeyItems
