@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -247,16 +248,33 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// <inheritdoc cref="ICommandLine.ParseException"/>
         public Exception? ParseException { get; private set; }
 
-        /// <inheritdoc cref="ICommandLine.GetKey(string)"/>
-        public CommandLineKey? GetKey(string longKey)
+        /// <inheritdoc cref="ICommandLine.TryGetKey(string, out CommandLineKey?)"/>
+        public bool TryGetKey(string longKey, [NotNullWhen(true)] out CommandLineKey? result)
         {
-            return KeyItems
+            var key = KeyItems
                 .Concat(SwitchItems)
                 .Where(k => k.IsEnabledLongKey)
                 .FirstOrDefault(k => k.LongKey == longKey)
             ;
-        }
-        #endregion
+            if(key is null) {
+                result = null;
+                return false;
+            }
 
+            result = key;
+            return true;
+        }
+
+        /// <inheritdoc cref="ICommandLine.GetKey(string)"/>
+        public CommandLineKey? GetKey(string longKey)
+        {
+            if(TryGetKey(longKey, out var result)) {
+                return result;
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        #endregion
     }
 }

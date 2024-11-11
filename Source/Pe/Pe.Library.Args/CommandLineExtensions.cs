@@ -22,8 +22,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// <returns><paramref name="key"/>に対する値。存在しない場合は<paramref name="defaultValue"/>を返す。</returns>
         public static string GetValue(this CommandLine commandLine, string key, string defaultValue)
         {
-            var commandLineKey = commandLine.GetKey(key);
-            if(commandLineKey != null) {
+            if(commandLine.TryGetKey(key, out var commandLineKey)) {
                 if(commandLine.Values.TryGetValue(commandLineKey, out var value)) {
                     return value.First;
                 }
@@ -40,8 +39,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// <returns>スイッチ状態。</returns>
         public static bool ExistsSwitch(this CommandLine commandLine, string key)
         {
-            var commandLineKey = commandLine.GetKey(key);
-            if(commandLineKey != null) {
+            if(commandLine.TryGetKey(key, out var commandLineKey)) {
                 return commandLine.Switches.Contains(commandLineKey);
             }
 
