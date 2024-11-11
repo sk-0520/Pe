@@ -7,6 +7,7 @@ using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Library.Base;
 using Microsoft.Extensions.Configuration;
+using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.Models
 {
@@ -305,8 +306,7 @@ namespace ContentTypeTextNet.Pe.Main.Models
 
         private static DirectoryInfo GetDirectory(CommandLine commandLine, string key, string defaultValue)
         {
-            var commandLineKey = commandLine.GetKey(key);
-            if(commandLineKey != null) {
+            if(commandLine.TryGetKey(key, out var commandLineKey)) {
                 if(commandLine.Values.TryGetValue(commandLineKey, out var commandLineValue)) {
                     var rawPath = commandLineValue.First;
                     if(!string.IsNullOrWhiteSpace(rawPath)) {

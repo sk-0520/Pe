@@ -68,6 +68,7 @@ using ContentTypeTextNet.Pe.Library.Base;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
 using ContentTypeTextNet.Pe.Library.Base.Linq;
 using ContentTypeTextNet.Pe.Main.Models.WebView;
+using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
@@ -1836,7 +1837,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
             var currentCommands = Environment.GetCommandLineArgs()
                 .Skip(1)
-                .Select(i => CommandLine.Escape(i))
+                .Select(i => CommandLineHelper.Escape(i))
                 .ToList()
             ;
 
@@ -1849,12 +1850,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var args = new List<string> {
                 "--run-mode", "crash-report",
                 "--language", System.Globalization.CultureInfo.CurrentCulture.Name,
-                "--post-uri", CommandLine.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportUri.OriginalString),
-                "--src-uri", CommandLine.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportSourceUri.OriginalString),
-                "--report-raw-file", CommandLine.Escape(rawReport.FullName),
-                "--report-save-file", CommandLine.Escape(saveReportFilePath),
-                "--execute-command", CommandLine.Escape(environmentParameters.RootApplication.FullName),
-                "--execute-argument", CommandLine.Escape(string.Join(" ", currentCommands)),
+                "--post-uri", CommandLineHelper.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportUri.OriginalString),
+                "--src-uri", CommandLineHelper.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportSourceUri.OriginalString),
+                "--report-raw-file", CommandLineHelper.Escape(rawReport.FullName),
+                "--report-save-file", CommandLineHelper.Escape(saveReportFilePath),
+                "--execute-command", CommandLineHelper.Escape(environmentParameters.RootApplication.FullName),
+                "--execute-argument", CommandLineHelper.Escape(string.Join(" ", currentCommands)),
             };
             if(autoSend) {
                 args.Add("--auto-send");

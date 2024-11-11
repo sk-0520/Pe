@@ -27,6 +27,7 @@ using ContentTypeTextNet.Pe.Library.Base;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.Base.Linq;
 using System.Threading;
+using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 {
@@ -371,7 +372,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
         {
             if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
                 var filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
-                Option = string.Join(" ", filePaths.Select(i => CommandLine.Escape(i)));
+                Option = string.Join(" ", filePaths.Select(i => CommandLineHelper.Escape(i)));
                 e.Handled = true;
             } else if(e.Data.IsTextPresent()) {
                 Option = TextUtility.JoinLines(e.Data.RequireText());
