@@ -81,21 +81,15 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         }
 
         [Theory]
-        //[InlineData("A", new[] { "/a", "A" }, "aaa")]
-        //[InlineData("A", new[] { "/aaa", "A" }, "aaa")]
-        //[InlineData("AA", new[] { "/aaa", "AA", "/a", "A" }, "aaa")]
         [InlineData("A", new[] { "--aaa", "A" }, "aaa")]
-        [InlineData("AA", new[] { "--aaa", "AA", "-a", "A" }, "aaa")]
-        //[InlineData("A", new[] { "/a=A" }, "aaa")]
-        //[InlineData("A", new[] { "/aaa=A" }, "aaa")]
-        //[InlineData("AA", new[] { "/aaa=AA", "/a=A" }, "aaa")]
+        [InlineData("A A", new[] { "--aaa", "A A", "-a", "A" }, "aaa")]
         [InlineData("A", new[] { "--aaa=A" }, "aaa")]
-        [InlineData("AA", new[] { "--aaa=AA", "-a=A" }, "aaa")]
-        //[InlineData("A", new[] { "/aaa=\"A\"" }, "aaa")]
-        //[InlineData("AA", new[] { "/aaa=\"AA\"", "/a=\"A\"" }, "aaa")]
+        [InlineData("A A", new[] { "--aaa=A A", "-a=A" }, "aaa")]
         [InlineData("A", new[] { "--aaa=\"A\"" }, "aaa")]
-        [InlineData("AA", new[] { "--aaa=\"AA\"", "-a=\"A\"" }, "aaa")]
-        public void ExecuteTest_Simple(string expected, string[] args, string longKey)
+        [InlineData("A A", new[] { "--aaa=\"A A\"", "-a=\"A\"" }, "aaa")]
+        [InlineData("", new[] { "--aaa" }, "aaa")]
+        [InlineData("", new[] { "--aaa=" }, "aaa")]
+        public void Execute_Simple_Test(string expected, string[] args, string longKey)
         {
             var commandLine = new CommandLine(args, false);
             var commandKey = commandLine.Add(longKey, true);
@@ -106,12 +100,10 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         }
 
         [Theory]
-        [InlineData(false, new[] { "/a" }, "aaa")]
-        //[InlineData(true, new[] { "/aaa" }, "aaa")]
-        //[InlineData(true, new[] { "-a" }, 'a', "aaa")]
+        [InlineData(false, new[] { "/aaa" }, "aaa")]
         [InlineData(true, new[] { "--aaa" }, "aaa")]
         [InlineData(false, new[] { "--aaa" }, "AAA")]
-        public void ExecuteTest_Switch(bool expected, string[] args, string longKey)
+        public void Execute_Switch_Test(bool expected, string[] args, string longKey)
         {
             var commandLine = new CommandLine(args, false);
             var commandKey = commandLine.Add(longKey, false);
@@ -119,6 +111,32 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             Assert.True(commandLine.Parse());
             var has = commandLine.Switches.Contains(commandKey);
             Assert.True(has == expected);
+        }
+
+        [Theory]
+        [InlineData(new[] { "--aaa b" }, "aaa")]
+        [InlineData(new[] { "--aaa=b" }, "aaa")]
+        [InlineData(new[] { "--aaa" }, "aaa")]
+        public void GetKeyTest(string[] args, string longKey)
+        {
+            var commandLine = new CommandLine(args, false);
+            var commandKey = commandLine.Add("aaa", true);
+
+            Assert.True(commandLine.Parse());
+            var actual = commandLine.GetKey(longKey);
+            Assert.Equal(commandKey, actual);
+        }
+
+        [Theory]
+        [InlineData(new[] { "--aaa=b" }, "aa")]
+        [InlineData(new[] { "--aaa=b" }, "AAA")]
+        public void GetKey_Throw_Test(string[] args, string longKey)
+        {
+            var commandLine = new CommandLine(args, false);
+            var commandKey = commandLine.Add("aaa", true);
+
+            Assert.True(commandLine.Parse());
+            Assert.Throws<InvalidOperationException>(() => commandLine.GetKey(longKey));
         }
     }
 }
