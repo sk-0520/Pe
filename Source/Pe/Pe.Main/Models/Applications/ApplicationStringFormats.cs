@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Web.WebView2.Wpf;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications

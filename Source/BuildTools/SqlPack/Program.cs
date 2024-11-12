@@ -3,7 +3,7 @@ using System.IO;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite;
 using ContentTypeTextNet.Pe.Library.Args;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace SqlPack
@@ -13,8 +13,8 @@ namespace SqlPack
         static void Main(string[] args)
         {
             var commandLine = new CommandLine();
-            var sqlRootDirKey = commandLine.Add(longKey: "sql-root-dir", hasValue: true);
-            var outputPathKey = commandLine.Add(longKey: "output", hasValue: true);
+            var sqlRootDirKey = commandLine.Add(longKey: "sql-root-dir", CommandLineKeyKind.Value);
+            var outputPathKey = commandLine.Add(longKey: "output", CommandLineKeyKind.Value);
             if(!commandLine.Parse()) {
                 throw commandLine.ParseException!;
             }

@@ -1,6 +1,6 @@
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models

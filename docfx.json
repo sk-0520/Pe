@@ -11,7 +11,7 @@
 						"Source/Pe/Pe.Library.Property/Pe.Library.Property.csproj",
 						"Source/Pe/Pe.Library.Args/Pe.Library.Args.csproj",
 						"Source/Pe/Pe.Library.CliProxy/Pe.Library.CliProxy.csproj",
-						"Source/Pe/Pe.Library.Base/Pe.Library.Base.csproj",
+						"Source/Pe/Pe.Library.Common/Pe.Library.Common.csproj",
 						"Source/Pe/Pe.Library.Database/Pe.Library.Database.csproj",
 						"Source/Pe/Pe.Library.DependencyInjection/Pe.Library.DependencyInjection.csproj",
 						"Source/Pe/Pe.Core/Pe.Core.csproj",

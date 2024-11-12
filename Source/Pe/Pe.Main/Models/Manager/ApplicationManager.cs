@@ -64,9 +64,9 @@ using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.Plugins.DefaultTheme;
 using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Main.Models.WebView;
 using ContentTypeTextNet.Pe.Library.Args;
 
@@ -1912,7 +1912,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             }
             var endTimestamp = DateTime.UtcNow;
             var now = GC.GetTotalMemory(false);
-            var sizeConverter = ApplicationDiContainer.Build<Library.Base.SizeConverter>();
+            var sizeConverter = ApplicationDiContainer.Build<Library.Common.SizeConverter>();
             Logger.LogInformation(
                 "GC(FULL:{0}): {1}({2}) -> {3}({4}), 差分: {5}({6}), 所要時間: {7}",
                 full,

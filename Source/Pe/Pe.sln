@@ -44,9 +44,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Plugins.Reference.Eyes",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Plugins.Reference.FileFinder", "Pe.Plugins.Reference.FileFinder\Pe.Plugins.Reference.FileFinder.csproj", "{1DF129D6-E2BC-4671-9012-646B8CE7C023}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.Base", "Pe.Library.Base\Pe.Library.Base.csproj", "{EF043BDE-4205-42A8-BEA1-E26B4FED0457}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.Common", "Pe.Library.Common\Pe.Library.Common.csproj", "{EF043BDE-4205-42A8-BEA1-E26B4FED0457}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.Base.Test", "Pe.Library.Base.Test\Pe.Library.Base.Test.csproj", "{18425900-CBF3-46FE-905A-838140538B12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.Common.Test", "Pe.Library.Common.Test\Pe.Library.Common.Test.csproj", "{18425900-CBF3-46FE-905A-838140538B12}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "library", "library", "{7D2653BF-3D84-44F4-8158-21179F8EE206}"
 EndProject
@@ -74,9 +74,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.CommonTest", "Pe.CommonT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.CommonTest.Test", "Pe.CommonTest.Test\Pe.CommonTest.Test.csproj", "{A038DE95-CF05-49C1-890D-D602088F8983}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Library.Args", "Pe.Library.Args\Pe.Library.Args.csproj", "{D7DFD317-3D3D-4329-B5B5-29A707F47116}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.Args", "Pe.Library.Args\Pe.Library.Args.csproj", "{D7DFD317-3D3D-4329-B5B5-29A707F47116}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Library.Args.Test", "Pe.Library.Args.Test\Pe.Library.Args.Test.csproj", "{EF6C469A-A84F-4362-A108-59D2510A34AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.Args.Test", "Pe.Library.Args.Test\Pe.Library.Args.Test.csproj", "{EF6C469A-A84F-4362-A108-59D2510A34AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -346,8 +346,8 @@ Global
 		{EF6C469A-A84F-4362-A108-59D2510A34AE} = {7D2653BF-3D84-44F4-8158-21179F8EE206}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_NeutralResourcesLanguage = ja-JP
-		SolutionGuid = {2A7A6231-6BA0-4928-AF4D-59F81862C278}
 		RESX_PrefixTranslations = False
+		SolutionGuid = {2A7A6231-6BA0-4928-AF4D-59F81862C278}
+		RESX_NeutralResourcesLanguage = ja-JP
 	EndGlobalSection
 EndGlobal

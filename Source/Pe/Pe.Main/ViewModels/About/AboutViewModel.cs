@@ -26,7 +26,7 @@ using Microsoft.Web.WebView2.Core;
 using System.Diagnostics;
 using Microsoft.Web.WebView2.Wpf;
 using System.Collections.Generic;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 {
