@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
     ///     <item><c>--switch</c></item>
     /// </list>
     /// </remarks>
-    public class CommandLine
+    public class CommandLine: ICommandLine
     {
         /// <summary>
         /// アプリ状態から生成。
@@ -225,30 +225,22 @@ namespace ContentTypeTextNet.Pe.Library.Args
 
         #region ICommandLine
 
-        /// <inheritdoc cref="ICommandLine.CommandName"/>
         public string CommandName { get; }
-        /// <inheritdoc cref="ICommandLine.Arguments"/>
+
         public IReadOnlyList<string> Arguments { get; }
 
-        /// <inheritdoc cref="ICommandLine.IsParsed"/>
         public bool IsParsed { get; private set; }
 
-        /// <inheritdoc cref="ICommandLine.Keys"/>
         public IReadOnlyList<CommandLineKey> Keys => KeyItems;
 
-        /// <inheritdoc cref="ICommandLine.Values"/>
         public IReadOnlyDictionary<CommandLineKey, ICommandLineValue> Values => ValueItems;
 
-        /// <inheritdoc cref="ICommandLine.Switches"/>
         public IReadOnlySet<CommandLineKey> Switches => SwitchItems;
 
-        /// <inheritdoc cref="ICommandLine.Unknowns"/>
         public IReadOnlyList<string> Unknowns => UnknownItems;
 
-        /// <inheritdoc cref="ICommandLine.ParseException"/>
         public Exception? ParseException { get; private set; }
 
-        /// <inheritdoc cref="ICommandLine.TryGetKey(string, out CommandLineKey?)"/>
         public bool TryGetKey(string longKey, [NotNullWhen(true)] out CommandLineKey? result)
         {
             var key = KeyItems
@@ -265,7 +257,6 @@ namespace ContentTypeTextNet.Pe.Library.Args
             return true;
         }
 
-        /// <inheritdoc cref="ICommandLine.GetKey(string)"/>
         public CommandLineKey? GetKey(string longKey)
         {
             if(TryGetKey(longKey, out var result)) {

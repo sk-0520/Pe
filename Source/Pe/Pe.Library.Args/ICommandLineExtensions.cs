@@ -9,18 +9,18 @@ namespace ContentTypeTextNet.Pe.Library.Args
     /// <summary>
     /// マッピング用設定。
     /// </summary>
-    public static class CommandLineExtensions
+    public static class ICommandLineExtensions
     {
         #region function
 
         /// <summary>
-        /// <see cref="CommandLine"/>のキーから値を取得。
+        /// <see cref="ICommandLine"/>のキーから値を取得。
         /// </summary>
-        /// <param name="commandLine">対象の<see cref="CommandLine"/>。</param>
+        /// <param name="commandLine">対象の<see cref="ICommandLine"/>。</param>
         /// <param name="key">キー。</param>
         /// <param name="defaultValue"><paramref name="key"/>が存在しない場合の戻り値。</param>
         /// <returns><paramref name="key"/>に対する値。存在しない場合は<paramref name="defaultValue"/>を返す。</returns>
-        public static string GetValue(this CommandLine commandLine, string key, string defaultValue)
+        public static string GetValue(this ICommandLine commandLine, string key, string defaultValue)
         {
             if(commandLine.TryGetKey(key, out var commandLineKey)) {
                 if(commandLine.Values.TryGetValue(commandLineKey, out var value)) {
@@ -32,12 +32,12 @@ namespace ContentTypeTextNet.Pe.Library.Args
         }
 
         /// <summary>
-        /// <see cref="CommandLine"/>のスイッチを取得。
+        /// <see cref="ICommandLine"/>のスイッチを取得。
         /// </summary>
-        /// <param name="commandLine">対象の<see cref="CommandLine"/>。</param>
+        /// <param name="commandLine">対象の<see cref="ICommandLine"/>。</param>
         /// <param name="key">キー。</param>
         /// <returns>スイッチ状態。</returns>
-        public static bool ExistsSwitch(this CommandLine commandLine, string key)
+        public static bool ExistsSwitch(this ICommandLine commandLine, string key)
         {
             if(commandLine.TryGetKey(key, out var commandLineKey)) {
                 return commandLine.Switches.Contains(commandLineKey);

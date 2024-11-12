@@ -15,6 +15,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// <para><see langword="null" />が入ることはない。</para>
         /// </remarks>
         string CommandName { get; }
+
         /// <summary>
         /// プログラム名を含まないコマンドライン引数。
         /// </summary>
@@ -38,7 +39,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// <summary>
         /// スイッチデータ一覧。
         /// </summary>
-        IReadOnlyCollection<CommandLineKey> Switches { get; }
+        IReadOnlySet<CommandLineKey> Switches { get; }
 
         /// <summary>
         /// 不明データ一覧。

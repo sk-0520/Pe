@@ -117,7 +117,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         [InlineData(new[] { "--aaa b" }, "aaa")]
         [InlineData(new[] { "--aaa=b" }, "aaa")]
         [InlineData(new[] { "--aaa" }, "aaa")]
-        public void GetKeyTest(string[] args, string longKey)
+        public void GetKey_Single_Test(string[] args, string longKey)
         {
             var commandLine = new CommandLine(args, false);
             var commandKey = commandLine.Add("aaa", true);
