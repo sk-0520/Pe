@@ -169,10 +169,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 #endif
         }
 
-        protected override void LoggingExecuteScalarResult<TResult>(TResult result, DateTime startUtcTime, DateTime endUtcTime)
+        protected override void LoggingExecuteScalarResult<TResult>(TResult result, TimeSpan elapsedTime)
         {
             if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("result: {Result}, {Time}", result, endUtcTime - startUtcTime);
+                Logger.LogTrace("result: {Result}, {Time}", result, elapsedTime);
             }
         }
 
@@ -183,10 +183,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         /// <param name="result"></param>
         /// <param name="startUtcTime"></param>
         /// <param name="endUtcTime"></param>
-        protected override void LoggingQueryResult<T>([MaybeNull] T result, DateTime startUtcTime, DateTime endUtcTime)
+        protected override void LoggingQueryResult<T>([MaybeNull] T result, TimeSpan elapsedTime)
         {
             if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("{Type} -> {Result}, {Time}", typeof(T), result, endUtcTime - startUtcTime);
+                Logger.LogTrace("{Type} -> {Result}, {Time}", typeof(T), result, elapsedTime);
             }
         }
 
@@ -198,13 +198,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         /// <param name="buffered">偽の場合、<paramref name="result"/>に全数は存在しない。</param>
         /// <param name="startUtcTime"></param>
         /// <param name="endUtcTime"></param>
-        protected override void LoggingQueryResults<T>(IEnumerable<T> result, bool buffered, DateTime startUtcTime, DateTime endUtcTime)
+        protected override void LoggingQueryResults<T>(IEnumerable<T> result, bool buffered, TimeSpan elapsedTime)
         {
             if(Logger.IsEnabled(LogLevel.Trace)) {
                 if(buffered) {
-                    Logger.LogTrace("{Collection}<{Type}> -> {Count}, {Time}", nameof(IEnumerable), typeof(T), result.Count(), endUtcTime - startUtcTime);
+                    Logger.LogTrace("{Collection}<{Type}> -> {Count}, {Time}", nameof(IEnumerable), typeof(T), result.Count(), elapsedTime);
                 } else {
-                    Logger.LogTrace("{Collection}<{Type}> -> no buffered, {Time}", nameof(IEnumerable), typeof(T), endUtcTime - startUtcTime);
+                    Logger.LogTrace("{Collection}<{Type}> -> no buffered, {Time}", nameof(IEnumerable), typeof(T), elapsedTime);
                 }
             }
         }
@@ -218,10 +218,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         /// <param name="result"></param>
         /// <param name="startUtcTime"></param>
         /// <param name="endUtcTime"></param>
-        protected override void LoggingExecuteResult(int result, DateTime startUtcTime, DateTime endUtcTime)
+        protected override void LoggingExecuteResult(int result, TimeSpan elapsedTime)
         {
             if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("result: {Result}, {Time}", result, endUtcTime - startUtcTime);
+                Logger.LogTrace("result: {Result}, {Time}", result, elapsedTime);
             }
         }
 
@@ -234,10 +234,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         /// <param name="table"></param>
         /// <param name="startUtcTime"></param>
         /// <param name="endUtcTime"></param>
-        protected override void LoggingDataTable(DataTable table, DateTime startUtcTime, DateTime endUtcTime)
+        protected override void LoggingDataTable(DataTable table, TimeSpan elapsedTime)
         {
             if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("table: {TableName} -> {ColumnsCount} * {RowsCount} = {Count}, {Time}", table.TableName, table.Columns.Count, table.Rows.Count, table.Columns.Count * table.Rows.Count, endUtcTime - startUtcTime);
+                Logger.LogTrace("table: {TableName} -> {ColumnsCount} * {RowsCount} = {Count}, {Time}", table.TableName, table.Columns.Count, table.Rows.Count, table.Columns.Count * table.Rows.Count, elapsedTime);
             }
         }
 

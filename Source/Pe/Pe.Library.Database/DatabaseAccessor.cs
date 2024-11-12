@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
@@ -96,9 +97,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <param name="result"></param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        protected virtual void LoggingExecuteScalarResult<TResult>(TResult result, DateTime startUtcTime, DateTime endUtcTime)
+        /// <param name="elapsedTime"></param>
+        protected virtual void LoggingExecuteScalarResult<TResult>(TResult result, TimeSpan elapsedTime)
         { }
 
         /// <summary>
@@ -106,9 +106,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="result"></param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        protected virtual void LoggingQueryResult<T>([MaybeNull] T result, DateTime startUtcTime, DateTime endUtcTime)
+        /// <param name="elapsedTime"></param>
+        protected virtual void LoggingQueryResult<T>([MaybeNull] T result, TimeSpan elapsedTime)
         { }
 
         /// <summary>
@@ -117,9 +116,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <typeparam name="T"></typeparam>
         /// <param name="result"></param>
         /// <param name="buffered">偽の場合、<paramref name="result"/>に全数は存在しない。</param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        protected virtual void LoggingQueryResults<T>(IEnumerable<T> result, bool buffered, DateTime startUtcTime, DateTime endUtcTime)
+        /// <param name="elapsedTime"></param>
+        protected virtual void LoggingQueryResults<T>(IEnumerable<T> result, bool buffered, TimeSpan elapsedTime)
         { }
 
         /// <summary>
@@ -129,9 +127,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <para><see cref="IDatabaseWriter.Execute(string, object?)"/>で使用される。</para>
         /// </remarks>
         /// <param name="result"></param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        protected virtual void LoggingExecuteResult(int result, DateTime startUtcTime, DateTime endUtcTime)
+        /// <param name="elapsedTime"></param>
+        protected virtual void LoggingExecuteResult(int result, TimeSpan elapsedTime)
         { }
 
         /// <summary>
@@ -141,9 +138,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <para><see cref="IDatabaseReader.GetDataTable(string, object?)"/>で使用される。</para>
         /// </remarks>
         /// <param name="table"></param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        protected virtual void LoggingDataTable(DataTable table, DateTime startUtcTime, DateTime endUtcTime)
+        /// <param name="elapsedTime"></param>
+        protected virtual void LoggingDataTable(DataTable table, TimeSpan elapsedTime)
         { }
 
         #endregion
@@ -224,11 +220,11 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var dataTable = new DataTable();
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             using(var reader = GetDataReader(transaction, statement, parameter)) {
                 dataTable.Load(reader);
             }
-            LoggingDataTable(dataTable, startTime, DateTime.UtcNow);
+            LoggingDataTable(dataTable, Stopwatch.GetElapsedTime(startTime));
 
             return dataTable;
         }
@@ -249,11 +245,11 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var dataTable = new DataTable();
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             using(var reader = await GetDataReaderAsync(transaction, statement, parameter, cancellationToken)) {
                 dataTable.Load(reader);
             }
-            LoggingDataTable(dataTable, startTime, DateTime.UtcNow);
+            LoggingDataTable(dataTable, Stopwatch.GetElapsedTime(startTime));
 
             return dataTable;
         }
@@ -272,9 +268,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var result = BaseConnection.ExecuteScalar<TResult>(formattedStatement, parameter, transaction?.Transaction);
-            LoggingExecuteScalarResult(result, startTime, DateTime.UtcNow);
+            LoggingExecuteScalarResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
@@ -293,7 +289,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
@@ -301,7 +297,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 cancellationToken: cancellationToken
             );
             var result = await BaseConnection.ExecuteScalarAsync<TResult>(command);
-            LoggingExecuteScalarResult(result, startTime, DateTime.UtcNow);
+            LoggingExecuteScalarResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
@@ -321,9 +317,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var result = BaseConnection.Query<T>(formattedStatement, parameter, transaction?.Transaction, buffered);
-            LoggingQueryResults(result, buffered, startTime, DateTime.UtcNow);
+            LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
@@ -344,7 +340,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
@@ -354,7 +350,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             );
 
             var result = await BaseConnection.QueryAsync<T>(command);
-            LoggingQueryResults(result, buffered, startTime, DateTime.UtcNow);
+            LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
 
@@ -374,9 +370,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var result = BaseConnection.Query(formattedStatement, parameter, transaction?.Transaction, buffered);
-            LoggingQueryResults(result, buffered, startTime, DateTime.UtcNow);
+            LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
@@ -397,7 +393,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
@@ -407,7 +403,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             );
 
             var result = await BaseConnection.QueryAsync(command);
-            LoggingQueryResults(result, buffered, startTime, DateTime.UtcNow);
+            LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
 
@@ -427,9 +423,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var result = BaseConnection.QueryFirst<T>(formattedStatement, parameter, transaction?.Transaction);
-            LoggingQueryResult(result, startTime, DateTime.UtcNow);
+            LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
@@ -449,7 +445,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
@@ -458,7 +454,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             );
 
             var result = await BaseConnection.QueryFirstAsync<T>(command);
-            LoggingQueryResult(result, startTime, DateTime.UtcNow);
+            LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
 
@@ -478,9 +474,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var result = BaseConnection.QueryFirstOrDefault<T>(formattedStatement, parameter, transaction?.Transaction);
-            LoggingQueryResult(result, startTime, DateTime.UtcNow);
+            LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
@@ -500,7 +496,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
@@ -509,7 +505,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             );
 
             return BaseConnection.QueryFirstOrDefaultAsync<T?>(command).ContinueWith(t => {
-                LoggingQueryResult(t.Result, startTime, DateTime.UtcNow);
+                LoggingQueryResult(t.Result, Stopwatch.GetElapsedTime(startTime));
                 return t.Result;
             }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
@@ -528,9 +524,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var result = BaseConnection.QuerySingle<T>(formattedStatement, parameter, transaction?.Transaction);
-            LoggingQueryResult(result, startTime, DateTime.UtcNow);
+            LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
@@ -549,7 +545,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
@@ -558,7 +554,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             );
 
             var result = await BaseConnection.QuerySingleAsync<T>(command);
-            LoggingQueryResult(result, startTime, DateTime.UtcNow);
+            LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
 
@@ -577,9 +573,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var result = BaseConnection.QuerySingleOrDefault<T>(formattedStatement, parameter, transaction?.Transaction);
-            LoggingQueryResult(result, startTime, DateTime.UtcNow);
+            LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
@@ -599,7 +595,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
@@ -607,7 +603,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 cancellationToken: cancellationToken
             );
             var result = await BaseConnection.QuerySingleOrDefaultAsync<T>(command);
-            LoggingQueryResult(result, startTime, DateTime.UtcNow);
+            LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
@@ -626,9 +622,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var result = BaseConnection.Execute(formattedStatement, parameter, transaction?.Transaction);
-            LoggingExecuteResult(result, startTime, DateTime.UtcNow);
+            LoggingExecuteResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
@@ -647,7 +643,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var startTime = DateTime.UtcNow;
+            var startTime = Stopwatch.GetTimestamp();
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
@@ -655,7 +651,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 cancellationToken: cancellationToken
             );
             var result = await BaseConnection.ExecuteAsync(command);
-            LoggingExecuteResult(result, startTime, DateTime.UtcNow);
+            LoggingExecuteResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
