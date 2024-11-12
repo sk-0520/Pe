@@ -44,6 +44,38 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         }
 
         [Fact]
+        public void GetValuesTest()
+        {
+            var commandLine = new CommandLine([
+                "--key", "value1",
+                "--KEY", "VALUE",
+                "--key", "value2",
+                "--switch"
+            ]);
+            commandLine.Add("key", true);
+            commandLine.Add("KEY", true);
+            commandLine.Add("keY", true);
+            commandLine.Add("switch", false);
+
+            Assert.True(commandLine.Parse());
+
+            var actual1 = commandLine.GetValues("key");
+            Assert.Equal(["value1", "value2"], actual1);
+
+            var actual2 = commandLine.GetValues("KEY");
+            Assert.Equal(["VALUE"], actual2);
+
+            var actual3 = commandLine.GetValues("Key");
+            Assert.Empty(actual3);
+
+            var actual4 = commandLine.GetValues("keY");
+            Assert.Empty(actual4);
+
+            var actual5 = commandLine.GetValues("switch");
+            Assert.Empty(actual5);
+        }
+
+        [Fact]
         public void GetSwitchTest()
         {
             var commandLine = new CommandLine([
