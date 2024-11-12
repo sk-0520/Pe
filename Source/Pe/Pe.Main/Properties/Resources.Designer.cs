@@ -174,7 +174,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         /// <summary>
         ///   &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
         ///&lt;SyntaxDefinition xmlns=&quot;http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008&quot; name=&quot;EnvVar_Remove&quot;&gt;
-        ///	&lt;!--縺阪■繧薙→縺吶ｋ--&gt;
+        ///	&lt;!--きちんとする--&gt;
         ///	&lt;Color name=&quot;Key&quot; /&gt;
         ///	&lt;RuleSet ignoreCase=&quot;true&quot;&gt;
         ///		&lt;Rule color=&quot;Key&quot;&gt;
