@@ -9,9 +9,9 @@ namespace ContentTypeTextNet.Pe.Library.Args
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class CommandLineAttribute: Attribute
     {
-        public CommandLineAttribute(string longKey, bool hasValue = true, string description = "")
+        public CommandLineAttribute(string longKey, CommandLineKeyKind kind = CommandLineKeyKind.Value, string description = "")
         {
-            Key = new CommandLineKey(longKey, hasValue, description);
+            Key = new CommandLineKey(longKey, kind, description);
         }
 
         #region property

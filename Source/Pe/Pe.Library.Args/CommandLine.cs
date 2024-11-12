@@ -106,9 +106,9 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// <param name="hasValue">値を持つか。</param>
         /// <param name="description">説明。</param>
         /// <returns>追加したキー。</returns>
-        public CommandLineKey Add(string longKey = "", bool hasValue = false, string description = "")
+        public CommandLineKey Add(string longKey = "", CommandLineKeyKind kind = CommandLineKeyKind.Switch, string description = "")
         {
-            var value = new CommandLineKey(longKey, hasValue, description);
+            var value = new CommandLineKey(longKey, kind, description);
             return Add(value);
         }
 
@@ -166,7 +166,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
                                 SetUnknown(arg);
                                 continue;
                             }
-                            if(key.HasValue) {
+                            if(key.kind == CommandLineKeyKind.Value) {
                                 if(i < Arguments.Count - 1) {
                                     SetValue(key, Arguments[i + 1]);
                                     i += 1;
@@ -185,7 +185,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
                                 SetUnknown(arg);
                                 continue;
                             }
-                            if(key.HasValue) {
+                            if(key.kind == CommandLineKeyKind.Value) {
                                 var val = arg.Substring(separatorIndex + 1);
                                 SetValue(key, CommandLineHelper.StripDoubleQuotes(val));
                                 continue;

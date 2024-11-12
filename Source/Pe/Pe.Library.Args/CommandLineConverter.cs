@@ -130,7 +130,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
             try {
                 if(CommandLine.Parse()) {
                     foreach(var pair in keyMap) {
-                        if(pair.Value.HasValue) {
+                        if(pair.Value.kind == CommandLineKeyKind.Value) {
                             // 値取得
                             if(CommandLine.Values.TryGetValue(pair.Value, out var value)) {
                                 var convertedValue = ConvertValue(pair.Key.PropertyType, value);

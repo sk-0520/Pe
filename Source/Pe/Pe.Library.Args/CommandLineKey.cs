@@ -10,11 +10,11 @@ namespace ContentTypeTextNet.Pe.Library.Args
     /// コマンドラインのキー。
     /// </summary>
     /// <param name="LongKey">長いキー。</param>
-    /// <param name="HasValue">値を持つか。</param>
+    /// <param name="kind"><see cref="CommandLineKeyKind"/></param>
     /// <param name="Description">説明。</param>
     public record class CommandLineKey(
         string LongKey,
-        bool HasValue,
+        CommandLineKeyKind kind,
         string Description
     )
     {

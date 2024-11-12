@@ -26,7 +26,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void Add_Key_Test()
         {
             var commandLine = new CommandLine();
-            var key = commandLine.Add(new CommandLineKey("aa", true, ""));
+            var key = commandLine.Add(new CommandLineKey("aa", CommandLineKeyKind.Value, ""));
             Assert.Equal("aa", key.LongKey);
         }
 
@@ -39,7 +39,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             {
                 typeof(ArgumentException),
                 "IsEnabledLongKey and LongKey.Length == 1 (Parameter 'key')",
-                new CommandLineKey("a", true, "")
+                new CommandLineKey("a", CommandLineKeyKind.Value, "")
             }
         };
 
@@ -77,7 +77,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             commandLine.Add("aa");
 
             Assert.Throws<ArgumentException>(() => commandLine.Add("aa"));
-            Assert.Throws<ArgumentException>(() => commandLine.Add(new CommandLineKey("aa", true, "")));
+            Assert.Throws<ArgumentException>(() => commandLine.Add(new CommandLineKey("aa", CommandLineKeyKind.Value, "")));
         }
 
         [Theory]
@@ -92,7 +92,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void Execute_Simple_Test(string expected, string[] args, string longKey)
         {
             var commandLine = new CommandLine(args, false);
-            var commandKey = commandLine.Add(longKey, true);
+            var commandKey = commandLine.Add(longKey, CommandLineKeyKind.Value);
 
             Assert.True(commandLine.Parse());
             var value = commandLine.Values[commandKey];
@@ -106,7 +106,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void Execute_Switch_Test(bool expected, string[] args, string longKey)
         {
             var commandLine = new CommandLine(args, false);
-            var commandKey = commandLine.Add(longKey, false);
+            var commandKey = commandLine.Add(longKey, CommandLineKeyKind.Switch);
 
             Assert.True(commandLine.Parse());
             var has = commandLine.Switches.Contains(commandKey);
@@ -120,7 +120,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void GetKey_Single_Test(string[] args, string longKey)
         {
             var commandLine = new CommandLine(args, false);
-            var commandKey = commandLine.Add("aaa", true);
+            var commandKey = commandLine.Add("aaa", CommandLineKeyKind.Value);
 
             Assert.True(commandLine.Parse());
             var actual = commandLine.GetKey(longKey);
@@ -133,7 +133,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void GetKey_Throw_Test(string[] args, string longKey)
         {
             var commandLine = new CommandLine(args, false);
-            var commandKey = commandLine.Add("aaa", true);
+            var commandKey = commandLine.Add("aaa", CommandLineKeyKind.Value);
 
             Assert.True(commandLine.Parse());
             Assert.Throws<InvalidOperationException>(() => commandLine.GetKey(longKey));

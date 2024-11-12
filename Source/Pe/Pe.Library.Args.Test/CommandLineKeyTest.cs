@@ -14,18 +14,18 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         [Fact]
         public void ConstructorTest()
         {
-            var actual1 = new CommandLineKey("long", false, "desc");
+            var actual1 = new CommandLineKey("long", CommandLineKeyKind.Switch, "desc");
             Assert.Equal("long", actual1.LongKey);
-            Assert.False(actual1.HasValue);
+            Assert.Equal(CommandLineKeyKind.Switch, actual1.kind);
             Assert.Equal("desc", actual1.Description);
 
-            var actual2 = new CommandLineKey("long", true, "desc");
+            var actual2 = new CommandLineKey("long", CommandLineKeyKind.Value, "desc");
             Assert.Equal("long", actual2.LongKey);
-            Assert.True(actual2.HasValue);
+            Assert.Equal(CommandLineKeyKind.Value, actual2.kind);
             Assert.Equal("desc", actual2.Description);
 
-            Assert.Throws<ArgumentNullException>(() => new CommandLineKey(null!, false, string.Empty));
-            Assert.Throws<ArgumentException>(() => new CommandLineKey("", false, string.Empty));
+            Assert.Throws<ArgumentNullException>(() => new CommandLineKey(null!, CommandLineKeyKind.Switch, string.Empty));
+            Assert.Throws<ArgumentException>(() => new CommandLineKey("", CommandLineKeyKind.Switch, string.Empty));
         }
 
         #endregion

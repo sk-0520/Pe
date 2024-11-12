@@ -14,14 +14,14 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         [Fact]
         public void ConstructorTest()
         {
-            var actual1 = new CommandLineAttribute("long", false, "desc");
+            var actual1 = new CommandLineAttribute("long", CommandLineKeyKind.Switch, "desc");
             Assert.Equal("long", actual1.Key.LongKey);
-            Assert.False(actual1.Key.HasValue);
+            Assert.Equal(CommandLineKeyKind.Switch, actual1.Key.kind);
             Assert.Equal("desc", actual1.Key.Description);
 
-            var actual2 = new CommandLineAttribute("long", true, "desc");
+            var actual2 = new CommandLineAttribute("long", CommandLineKeyKind.Value, "desc");
             Assert.Equal("long", actual2.Key.LongKey);
-            Assert.True(actual2.Key.HasValue);
+            Assert.Equal(CommandLineKeyKind.Value, actual2.Key.kind);
             Assert.Equal("desc", actual2.Key.Description);
 
             Assert.Throws<ArgumentNullException>(() => new CommandLineAttribute(null!));

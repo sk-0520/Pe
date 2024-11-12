@@ -20,10 +20,10 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
                 "--key", "value2",
                 "--switch"
             ]);
-            commandLine.Add("key", true);
-            commandLine.Add("KEY", true);
-            commandLine.Add("keY", true);
-            commandLine.Add("switch", false);
+            commandLine.Add("key", kind: CommandLineKeyKind.Value);
+            commandLine.Add("KEY", kind: CommandLineKeyKind.Value);
+            commandLine.Add("keY", kind: CommandLineKeyKind.Value);
+            commandLine.Add("switch", kind: CommandLineKeyKind.Switch);
 
             Assert.True(commandLine.Parse());
 
@@ -52,10 +52,10 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
                 "--key", "value2",
                 "--switch"
             ]);
-            commandLine.Add("key", true);
-            commandLine.Add("KEY", true);
-            commandLine.Add("keY", true);
-            commandLine.Add("switch", false);
+            commandLine.Add("key", kind: CommandLineKeyKind.Value);
+            commandLine.Add("KEY", kind: CommandLineKeyKind.Value);
+            commandLine.Add("keY", kind: CommandLineKeyKind.Value);
+            commandLine.Add("switch", kind: CommandLineKeyKind.Switch);
 
             Assert.True(commandLine.Parse());
 
@@ -84,10 +84,10 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
                 "--key", "value2",
                 "--switch"
             ]);
-            commandLine.Add("key", true);
-            commandLine.Add("KEY", true);
-            commandLine.Add("keY", true);
-            commandLine.Add("switch", false);
+            commandLine.Add("key", kind: CommandLineKeyKind.Value);
+            commandLine.Add("KEY", kind: CommandLineKeyKind.Value);
+            commandLine.Add("keY", kind: CommandLineKeyKind.Value);
+            commandLine.Add("switch", kind: CommandLineKeyKind.Switch);
 
             Assert.True(commandLine.Parse());
 
