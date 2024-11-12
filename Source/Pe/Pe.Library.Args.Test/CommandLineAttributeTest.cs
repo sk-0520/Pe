@@ -24,8 +24,8 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             Assert.Equal(CommandLineKeyKind.Value, actual2.Key.kind);
             Assert.Equal("desc", actual2.Key.Description);
 
-            Assert.Throws<ArgumentNullException>(() => new CommandLineAttribute(null!));
-            Assert.Throws<ArgumentException>(() => new CommandLineAttribute(""));
+            Assert.Throws<ArgumentNullException>(() => new CommandLineAttribute(null!, CommandLineKeyKind.Switch));
+            Assert.Throws<ArgumentException>(() => new CommandLineAttribute("", CommandLineKeyKind.Value));
         }
 
         #endregion
