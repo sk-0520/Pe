@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -19,6 +20,19 @@ namespace ContentTypeTextNet.Pe.Library.Database
     public static class IDatabaseReaderExtensions
     {
         #region function
+
+        /// <inheritdoc cref="IDatabaseReader.GetDataReader(string, object?)"/>
+        public static IDataReader GetDataReader(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.GetDataReader(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.GetDataReaderAsync(string, object?, CancellationToken)"/>
+        public static Task<IDataReader> GetDataReaderAsync(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.GetDataReaderAsync(statement, parameter, cancellationToken);
+        }
+
 
         [Conditional("DEBUG")]
         private static void ThrowIfNotOrderBy(string statement)

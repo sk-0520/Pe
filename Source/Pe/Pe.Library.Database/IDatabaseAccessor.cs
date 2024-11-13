@@ -40,10 +40,10 @@ namespace ContentTypeTextNet.Pe.Library.Database
         IDisposable PauseConnection();
 
         /// <inheritdoc cref="IDatabaseReader.GetDataReader(string, object?)"/>
-        IDataReader GetDataReader(IDatabaseTransaction? transaction, string statement, object? parameter = null);
+        IDataReader GetDataReader(IDatabaseTransaction? transaction, string statement, object? parameter);
 
-        /// <inheritdoc cref="IDatabaseReader.GetDataReaderAsync(string, object?, CancellationToken = default)"/>
-        Task<IDataReader> GetDataReaderAsync(IDatabaseTransaction? transaction, string statement, object? parameter = null, CancellationToken cancellationToken = default);
+        /// <inheritdoc cref="IDatabaseReader.GetDataReaderAsync(string, object?, CancellationToken)"/>
+        Task<IDataReader> GetDataReaderAsync(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken);
 
         /// <inheritdoc cref="IDatabaseReader.GetDataTable(string, object?)"/>
         DataTable GetDataTable(IDatabaseTransaction? transaction, string statement, object? parameter);

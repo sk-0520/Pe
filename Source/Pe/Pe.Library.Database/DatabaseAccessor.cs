@@ -170,7 +170,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             });
         }
 
-        public IDataReader GetDataReader(IDatabaseTransaction? transaction, string statement, object? parameter = null)
+        public IDataReader GetDataReader(IDatabaseTransaction? transaction, string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -181,14 +181,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public IDataReader GetDataReader(string statement, object? parameter = null)
+        public IDataReader GetDataReader(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return GetDataReader(null, statement, parameter);
         }
 
-        public Task<IDataReader> GetDataReaderAsync(IDatabaseTransaction? transaction, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<IDataReader> GetDataReaderAsync(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -206,7 +206,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             return GetDataReaderAsync(null, statement, parameter, cancellationToken);
         }
@@ -416,7 +416,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseAccessor.QueryFirst{T}(IDatabaseTransaction?, string, object?)"/>
-        public virtual T QueryFirst<T>(IDatabaseTransaction? transaction, string statement, object? parameter=null)
+        public virtual T QueryFirst<T>(IDatabaseTransaction? transaction, string statement, object? parameter = null)
         {
             ThrowIfDisposed();
 

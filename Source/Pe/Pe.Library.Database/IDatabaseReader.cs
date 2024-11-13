@@ -23,7 +23,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="statement">データベース問い合わせ文。</param>
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
         /// <returns></returns>
-        IDataReader GetDataReader(string statement, object? parameter = null);
+        IDataReader GetDataReader(string statement, object? parameter);
 
         /// <summary>
         /// 非同期で<inheritdoc cref="IDbCommand.ExecuteReader"/>
@@ -31,7 +31,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="statement">データベース問い合わせ文。</param>
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
         /// <returns></returns>
-        Task<IDataReader> GetDataReaderAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default);
+        Task<IDataReader> GetDataReaderAsync(string statement, object? parameter, CancellationToken cancellationToken);
 
         /// <summary>
         /// <see cref="DataTable"/> でデータ取得。

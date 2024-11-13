@@ -49,14 +49,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return Transaction.ExecuteAsync(statement, parameter, cancellationToken);
         }
 
-        public IDataReader GetDataReader(string statement, object? parameter = null)
+        public IDataReader GetDataReader(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.GetDataReader(statement, parameter);
         }
 
-        public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             return Transaction.GetDataReaderAsync(statement, parameter, cancellationToken);
         }
