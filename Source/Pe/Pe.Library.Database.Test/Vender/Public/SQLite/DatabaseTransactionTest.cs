@@ -92,7 +92,7 @@ values
         public async Task GetDataReaderAsyncTest()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                context.Execute("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
+                await context.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
 
                 using var reader = await context.GetDataReaderAsync("select * from TestTable1 order by ColKey");
 
@@ -109,7 +109,7 @@ values
                 Assert.Equal(5, rowNumber);
             }
 
-            Assert.Equal(4, DatabaseAccessor.QueryFirst<long>("select count(*) from TestTable1"));
+            Assert.Equal(4, await DatabaseAccessor.QueryFirstAsync<long>("select count(*) from TestTable1"));
         }
 
         [Fact]
@@ -132,7 +132,7 @@ values
         public async Task GetDataTableAsyncTest()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                context.Execute("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
+                await context.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
                 using var actual = await context.GetDataTableAsync("select * from TestTable1 order by ColKey");
 
                 Assert.Equal(1L, actual.Rows[0]["ColKey"]);
@@ -164,7 +164,7 @@ values
         public async Task GetScalarAsyncTest()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                context.Execute("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
+                await context.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
 
                 var actual1 = await context.GetScalarAsync<string>("select ColVal from TestTable1 order by ColKey");
                 Assert.Equal("A", actual1);
@@ -213,7 +213,7 @@ values
         public async Task QueryAsyncTest()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                context.Execute("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
+                await context.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
 
                 var expectedAsc = new[] { "A", "B", "C", "D", "E" };
                 var actualAsc = await context.QueryAsync<string>("select ColVal from TestTable1 order by ColKey");
@@ -229,7 +229,7 @@ values
         public async Task QueryAsync_Dynamic_Test()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                context.Execute("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
+                await context.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
 
                 var expectedAsc = new[] { "A", "B", "C", "D", "E" };
                 var actualAsc = await context.QueryAsync("select * from TestTable1 order by ColKey");
@@ -258,7 +258,7 @@ values
         public async Task QueryFirstAsyncTest()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                context.Execute("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
+                await context.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
                 var actual = await context.QueryFirstAsync<string>("select ColVal from TestTable1 where ColKey = 5");
                 Assert.Equal("E", actual);
 
@@ -288,7 +288,7 @@ values
         public async Task QueryFirstOrDefaultAsyncTest()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                context.Execute("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
+                await context.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
 
                 var actual = await context.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 5");
                 Assert.Equal("E", actual);
@@ -316,7 +316,7 @@ values
         public async Task QuerySingleAsyncTest()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                context.Execute("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
+                await context.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
 
                 var actual = await context.QuerySingleAsync<string>("select ColVal from TestTable1 where ColKey = 5");
                 Assert.Equal("E", actual);
@@ -355,7 +355,7 @@ values
         public async Task QuerySingleOrDefaultAsyncTest()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                context.Execute("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
+                await context.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
 
                 var actual = await context.QuerySingleOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 5");
                 Assert.Equal("E", actual);
@@ -371,7 +371,7 @@ values
             using(var context = DatabaseAccessor.BeginTransaction()) {
                 await context.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
 
-                var actual = context.QueryFirst<long>("select count(*) from TestTable1");
+                var actual = await context.QueryFirstAsync<long>("select count(*) from TestTable1");
                 Assert.Equal(5, actual);
             }
         }

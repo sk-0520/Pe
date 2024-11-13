@@ -369,7 +369,7 @@ values
             using(var transaction = DatabaseAccessor.BeginReadOnlyTransaction()) {
                 Assert.Null(transaction.Transaction);
 
-                var actualNone = transaction.QueryFirstOrDefault<string>("select ColVal from TestTable1 where ColKey = 0");
+                var actualNone = await transaction.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 0");
                 Assert.Null(actualNone);
 
                 Assert.Throws<NotSupportedException>(() => transaction.Execute("insert into TestTable1(ColKey, ColVal) values (0, 'Z')"));
@@ -378,7 +378,7 @@ values
                 Assert.Throws<NotSupportedException>(() => transaction.Commit());
             }
 
-            var actualNone2 = DatabaseAccessor.QueryFirstOrDefault<string>("select ColVal from TestTable1 where ColKey = 0");
+            var actualNone2 = await DatabaseAccessor.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 0");
             Assert.Null(actualNone2);
         }
 
