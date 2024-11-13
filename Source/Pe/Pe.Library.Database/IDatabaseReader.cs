@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
         /// <param name="buffered"><see cref="Dapper.SqlMapper.Query"/>の<c>buffered</c></param>
         /// <returns>問い合わせ結果。</returns>
-        IEnumerable<T> Query<T>(string statement, object? parameter = null, bool buffered = true);
+        IEnumerable<T> Query<T>(string statement, object? parameter, bool buffered);
 
         /// <summary>
         /// 非同期で指定の型で問い合わせ。
@@ -69,7 +69,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="buffered"><see cref="Dapper.SqlMapper.Query"/>の<c>buffered</c></param>
         /// <param name="cancellationToken"></param>
         /// <returns>問い合わせ結果。</returns>
-        Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default);
+        Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter, bool buffered, CancellationToken cancellationToken);
 
         /// <summary>
         /// 動的型で問い合わせ。
@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
         /// <param name="buffered"><see cref="Dapper.SqlMapper.Query"/>の<c>buffered</c></param>
         /// <returns>問い合わせ結果。</returns>
-        IEnumerable<dynamic> Query(string statement, object? parameter = null, bool buffered = true);
+        IEnumerable<dynamic> Query(string statement, object? parameter, bool buffered);
 
         /// <summary>
         /// 非同期で動的型で問い合わせ。
@@ -88,7 +88,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="buffered"><see cref="Dapper.SqlMapper.Query"/>の<c>buffered</c></param>
         /// <param name="cancellationToken"></param>
         /// <returns>問い合わせ結果。</returns>
-        Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default);
+        Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter, bool buffered, CancellationToken cancellationToken);
 
         /// <summary>
         /// 最初のデータを取得。

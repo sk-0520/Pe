@@ -58,6 +58,31 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return reader.GetScalarAsync<TResult>(statement, parameter, cancellationToken);
         }
 
+        /// <inheritdoc cref="IDatabaseReader.Query{T}(string, object?, bool)"/>
+        public static IEnumerable<T> Query<T>(this IDatabaseReader reader, string statement, object? parameter = null, bool buffered = true)
+        {
+            return reader.Query<T>(statement, parameter, buffered);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QueryAsync{T}(string, object?, bool, CancellationToken)"/>
+        public static Task<IEnumerable<T>> QueryAsync<T>(this IDatabaseReader reader, string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        {
+            return reader.QueryAsync<T>(statement, parameter, buffered, cancellationToken);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.Query(string, object?, bool)"/>
+        public static IEnumerable<dynamic> Query(this IDatabaseReader reader, string statement, object? parameter = null, bool buffered = true)
+        {
+            return reader.Query(statement, parameter, buffered);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QueryAsync(string, object?, bool, CancellationToken)"/>
+        public static Task<IEnumerable<dynamic>> QueryAsync(this IDatabaseReader reader, string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        {
+            return reader.QueryAsync(statement, parameter, buffered, cancellationToken);
+        }
+
+
         [Conditional("DEBUG")]
         private static void ThrowIfNotOrderBy(string statement)
         {

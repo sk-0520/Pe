@@ -254,7 +254,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return dataTable;
         }
 
-        public virtual Task<DataTable> GetDataTableAsync(string statement, object? parameter , CancellationToken cancellationToken)
+        public virtual Task<DataTable> GetDataTableAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -310,7 +310,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseAccessor.Query{T}(IDatabaseTransaction?, string, object?, bool)"/>
-        public virtual IEnumerable<T> Query<T>(IDatabaseTransaction? transaction, string statement, object? parameter = null, bool buffered = true)
+        public virtual IEnumerable<T> Query<T>(IDatabaseTransaction? transaction, string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
@@ -325,7 +325,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseReader.Query{T}(string, object?, bool)"/>
-        public virtual IEnumerable<T> Query<T>(string statement, object? parameter = null, bool buffered = true)
+        public virtual IEnumerable<T> Query<T>(string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
@@ -333,7 +333,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseAccessor.QueryAsync{T}(IDatabaseTransaction?, string, object?, bool, CancellationToken)"/>
-        public virtual async Task<IEnumerable<T>> QueryAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        public virtual async Task<IEnumerable<T>> QueryAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -355,7 +355,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseReader.QueryAsync{T}(string, object?, bool, CancellationToken)"/>
-        public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -363,7 +363,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseReader.Query(string, object?, bool)"/>
-        public virtual IEnumerable<dynamic> Query(IDatabaseTransaction? transaction, string statement, object? parameter = null, bool buffered = true)
+        public virtual IEnumerable<dynamic> Query(IDatabaseTransaction? transaction, string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
@@ -378,7 +378,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseReader.Query(string, object?, bool)"/>
-        public virtual IEnumerable<dynamic> Query(string statement, object? parameter = null, bool buffered = true)
+        public virtual IEnumerable<dynamic> Query(string statement, object? parameter , bool buffered )
         {
             ThrowIfDisposed();
 
@@ -386,7 +386,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseAccessor.QueryAsync{T}(IDatabaseTransaction?, string, object?, bool, CancellationToken)"/>
-        public virtual async Task<IEnumerable<dynamic>> QueryAsync(IDatabaseTransaction? transaction, string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        public virtual async Task<IEnumerable<dynamic>> QueryAsync(IDatabaseTransaction? transaction, string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -408,7 +408,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseReader.QueryAsync(string, object?, bool, CancellationToken)"/>
-        public virtual Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        public virtual Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 

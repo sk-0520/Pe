@@ -87,28 +87,28 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return Transaction.GetScalarAsync<TResult?>(statement, parameter, cancellationToken);
         }
 
-        public IEnumerable<T> Query<T>(string statement, object? parameter = null, bool buffered = true)
+        public IEnumerable<T> Query<T>(string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
             return Transaction.Query<T>(statement, parameter, buffered);
         }
 
-        public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return Transaction.QueryAsync<T>(statement, parameter, buffered, cancellationToken);
         }
 
-        public IEnumerable<dynamic> Query(string statement, object? parameter = null, bool buffered = true)
+        public IEnumerable<dynamic> Query(string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
             return Transaction.Query(statement, parameter, buffered);
         }
 
-        public Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
