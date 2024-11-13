@@ -19,101 +19,101 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao
 
         class Dc: IDatabaseContext
         {
-            public IDataReader GetDataReader(string statement, object? parameter = null)
+            public IDataReader GetDataReader(string statement, object? parameter)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+            public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
 
-            public DataTable GetDataTable(string statement, object? parameter = null)
+            public DataTable GetDataTable(string statement, object? parameter)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<DataTable> GetDataTableAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+            public Task<DataTable> GetDataTableAsync(string statement, object? parameter, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
 
-            public TResult? GetScalar<TResult>(string statement, object? parameter = null)
+            public TResult? GetScalar<TResult>(string statement, object? parameter)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+            public Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<T> Query<T>(string statement, object? parameter = null, bool buffered = true)
+            public IEnumerable<T> Query<T>(string statement, object? parameter, bool buffered)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+            public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
 
-            public IEnumerable<dynamic> Query(string statement, object? parameter = null, bool buffered = true)
+            public IEnumerable<dynamic> Query(string statement, object? parameter, bool buffered)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+            public Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
 
-            public T QueryFirst<T>(string statement, object? parameter = null)
+            public T QueryFirst<T>(string statement, object? parameter)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<T> QueryFirstAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+            public Task<T> QueryFirstAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
 
-            public T QueryFirstOrDefault<T>(string statement, object? parameter = null)
+            public T QueryFirstOrDefault<T>(string statement, object? parameter)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+            public Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
 
-            public T QuerySingle<T>(string statement, object? parameter = null)
+            public T QuerySingle<T>(string statement, object? parameter)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<T> QuerySingleAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+            public Task<T> QuerySingleAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
 
-            public T QuerySingleOrDefault<T>(string statement, object? parameter = null)
+            public T QuerySingleOrDefault<T>(string statement, object? parameter)
             {
                 throw new NotImplementedException();
             }
 
-            public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+            public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
 
-            public int Execute(string statement, object? parameter = null)
+            public int Execute(string statement, object? parameter)
             {
                 throw new NotImplementedException();
             }
-            public Task<int> ExecuteAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+            public Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

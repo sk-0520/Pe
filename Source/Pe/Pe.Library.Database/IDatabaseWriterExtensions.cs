@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ContentTypeTextNet.Pe.Library.Database
 {
     /// <summary>
-    /// 書き込み処理の安全のしおり。
+    /// <see cref="IDatabaseWriter"/>の各種メソッドデフォルト引数追加と書き込み処理の安全のしおり。
     /// </summary>
     /// <remarks>
     /// <para>問い合わせ文として非ユーザー入力でデバッグ中に検証可能なものを想定している。</para>
@@ -19,6 +19,19 @@ namespace ContentTypeTextNet.Pe.Library.Database
     public static class IDatabaseWriterExtensions
     {
         #region function
+
+        /// <inheritdoc cref="IDatabaseWriter.Execute(string, object?)"/>
+        public static int Execute(this IDatabaseWriter writer, string statement, object? parameter = null)
+        {
+            return writer.Execute(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseWriter.ExecuteAsync(string, object?, CancellationToken)"/>
+        public static Task<int> ExecuteAsync(this IDatabaseWriter writer, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return writer.ExecuteAsync(statement, parameter, cancellationToken);
+        }
+
 
         [Conditional("DEBUG")]
         private static void ThrowIfNotUpdate(string statement)

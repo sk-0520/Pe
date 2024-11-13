@@ -86,84 +86,84 @@ namespace ContentTypeTextNet.Pe.Library.Database
             }
         }
 
-        public IDataReader GetDataReader(string statement, object? parameter = null)
+        public IDataReader GetDataReader(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.GetDataReader(this, statement, parameter);
         }
 
-        public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.GetDataReaderAsync(this, statement, parameter, cancellationToken);
         }
 
-        public DataTable GetDataTable(string statement, object? parameter = null)
+        public DataTable GetDataTable(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.GetDataTable(this, statement, parameter);
         }
 
-        public Task<DataTable> GetDataTableAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<DataTable> GetDataTableAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.GetDataTableAsync(statement, parameter, cancellationToken);
         }
 
-        public virtual TResult? GetScalar<TResult>(string statement, object? parameter = null)
+        public virtual TResult? GetScalar<TResult>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.GetScalar<TResult?>(this, statement, parameter);
         }
 
-        public virtual Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.GetScalarAsync<TResult?>(this, statement, parameter, cancellationToken);
         }
 
-        public IEnumerable<T> Query<T>(string statement, object? parameter = null, bool buffered = true)
+        public IEnumerable<T> Query<T>(string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.Query<T>(this, statement, parameter, buffered);
         }
 
-        public IEnumerable<dynamic> Query(string statement, object? parameter = null, bool buffered = true)
+        public IEnumerable<dynamic> Query(string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.Query(this, statement, parameter, buffered);
         }
 
-        public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.QueryAsync<T>(statement, parameter, buffered, cancellationToken);
         }
 
-        public Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.QueryAsync(statement, parameter, buffered, cancellationToken);
         }
 
-        public T QueryFirst<T>(string statement, object? parameter = null)
+        public T QueryFirst<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.QueryFirst<T>(this, statement, parameter);
         }
 
-        public Task<T> QueryFirstAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<T> QueryFirstAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -171,28 +171,28 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         [return: MaybeNull]
-        public T QueryFirstOrDefault<T>(string statement, object? parameter = null)
+        public T QueryFirstOrDefault<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.QueryFirstOrDefault<T>(this, statement, parameter);
         }
 
-        public Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.QueryFirstOrDefaultAsync<T>(this, statement, parameter, cancellationToken);
         }
 
-        public T QuerySingle<T>(string statement, object? parameter = null)
+        public T QuerySingle<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.QuerySingle<T>(this, statement, parameter);
         }
 
-        public Task<T> QuerySingleAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<T> QuerySingleAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -200,28 +200,28 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         [return: MaybeNull]
-        public T QuerySingleOrDefault<T>(string statement, object? parameter = null)
+        public T QuerySingleOrDefault<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.QuerySingleOrDefault<T>(this, statement, parameter);
         }
 
-        public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.QuerySingleOrDefaultAsync<T>(this, statement, parameter, cancellationToken);
         }
 
-        public virtual int Execute(string statement, object? parameter = null)
+        public virtual int Execute(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.Execute(this, statement, parameter);
         }
 
-        public virtual Task<int> ExecuteAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
