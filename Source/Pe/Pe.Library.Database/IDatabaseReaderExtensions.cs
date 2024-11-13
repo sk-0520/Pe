@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Reflection.PortableExecutable;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,6 +34,17 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return reader.GetDataReaderAsync(statement, parameter, cancellationToken);
         }
 
+        /// <inheritdoc cref="IDatabaseReader.GetDataTable(string, object?)"/>
+        public static DataTable GetDataTable(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.GetDataTable(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.GetDataTableAsync(string, object?, CancellationToken)"/>
+        public static Task<DataTable> GetDataTableAsync(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.GetDataTableAsync(statement, parameter, cancellationToken);
+        }
 
         [Conditional("DEBUG")]
         private static void ThrowIfNotOrderBy(string statement)

@@ -229,14 +229,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return dataTable;
         }
 
-        public virtual DataTable GetDataTable(string statement, object? parameter = null)
+        public virtual DataTable GetDataTable(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return GetDataTable(null, statement, parameter);
         }
 
-        public async virtual Task<DataTable> GetDataTableAsync(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken = default)
+        public async virtual Task<DataTable> GetDataTableAsync(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -254,7 +254,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return dataTable;
         }
 
-        public virtual Task<DataTable> GetDataTableAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual Task<DataTable> GetDataTableAsync(string statement, object? parameter , CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 

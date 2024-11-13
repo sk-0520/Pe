@@ -47,6 +47,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         /// <inheritdoc cref="IDatabaseReader.GetDataTable(string, object?)"/>
         DataTable GetDataTable(IDatabaseTransaction? transaction, string statement, object? parameter);
+        /// <inheritdoc cref="IDatabaseReader.GetDataTableAsync(string, object?, CancellationToken)"/>
+        Task<DataTable> GetDataTableAsync(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken);
 
         TResult? GetScalar<TResult>(IDatabaseTransaction? transaction, string statement, object? parameter = null);
         Task<TResult?> GetScalarAsync<TResult>(IDatabaseTransaction? transaction, string statement, object? parameter = null, CancellationToken cancellationToken = default);

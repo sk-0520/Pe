@@ -61,14 +61,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return Transaction.GetDataReaderAsync(statement, parameter, cancellationToken);
         }
 
-        public DataTable GetDataTable(string statement, object? parameter = null)
+        public DataTable GetDataTable(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.GetDataTable(statement, parameter);
         }
 
-        public Task<DataTable> GetDataTableAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<DataTable> GetDataTableAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             return Transaction.GetDataTableAsync(statement, parameter, cancellationToken);
         }

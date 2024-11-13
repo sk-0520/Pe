@@ -39,10 +39,10 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="statement">データベース問い合わせ文。</param>
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
         /// <returns><see cref="DataTable"/></returns>
-        DataTable GetDataTable(string statement, object? parameter = null);
+        DataTable GetDataTable(string statement, object? parameter);
 
         /// <inheritdoc cref="GetDataTable(string, object?)"/>
-        Task<DataTable> GetDataTableAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default);
+        Task<DataTable> GetDataTableAsync(string statement, object? parameter, CancellationToken cancellationToken);
 
         /// <inheritdoc cref="IDbCommand.ExecuteScalar"/>
         TResult? GetScalar<TResult>(string statement, object? parameter = null);
