@@ -162,6 +162,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [InlineData("", "abc", new[] { 'a', 'b', 'c' })]
         [InlineData("def", "abcdef", new[] { 'a', 'b', 'c' })]
         [InlineData("def", "abcdefabc", new[] { 'a', 'b', 'c' })]
+        [InlineData("aいbえ-aいbえ", "あaいbうcえdお-あaいbうcえdお", new [] {'あ', 'う', 'お', 'c', 'd'})]
         public void RemoveCharactersTest(string expected, string input, char[] cs)
         {
             var actual = TextUtility.RemoveCharacters(input, cs.ToHashSet());

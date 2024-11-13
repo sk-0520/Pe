@@ -1,8 +1,10 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -218,25 +220,33 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <param name="target">対象文字列。</param>
         /// <param name="characters">削除対象文字。</param>
         /// <returns>削除後文字列。</returns>
-        public static string RemoveCharacters(string target, IReadOnlyCollection<char> characters)
+        public static string RemoveCharacters(string target, IReadOnlySet<char> characters)
         {
             if(characters.Count == 0) {
                 return target;
             }
 
-            if(target.IndexOfAny(characters.ToArray()) == -1) {
-                return target;
-            }
-
-            var sb = new StringBuilder(target.Length);
+            bool isRemoved = false;
+            char[]? buffer = null;
+            int index = 0;
             foreach(var c in target) {
                 if(characters.Contains(c)) {
+                    isRemoved = true;
                     continue;
                 }
-                sb.Append(c);
+                if(buffer is null) {
+                    buffer = ArrayPool<char>.Shared.Rent(target.Length);
+                }
+                buffer[index++] = c;
             }
 
-            return sb.ToString();
+            if(buffer is not null) {
+                var result = new string(buffer, 0, index);
+                ArrayPool<char>.Shared.Return(buffer);
+                return result;
+            }
+
+            return isRemoved ? string.Empty : target;
         }
 
         /// <summary>
