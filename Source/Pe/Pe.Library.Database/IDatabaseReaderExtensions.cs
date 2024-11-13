@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -81,6 +82,19 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             return reader.QueryAsync(statement, parameter, buffered, cancellationToken);
         }
+
+        /// <inheritdoc cref="IDatabaseReader.QueryFirst{T}(string, object?)"/>
+        public static T QueryFirst<T>(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.QueryFirst<T>(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QueryFirstAsync{T}(string, object?, CancellationToken)"/>
+        public static Task<T> QueryFirstAsync<T>(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.QueryFirstAsync<T>(statement, parameter, cancellationToken);
+        }
+
 
 
         [Conditional("DEBUG")]

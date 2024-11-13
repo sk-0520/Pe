@@ -98,7 +98,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
         /// <exception cref="InvalidOperationException">空っぽ。</exception>
         /// <returns>一番最初に見つかったデータ。</returns>
-        T QueryFirst<T>(string statement, object? parameter = null);
+        T QueryFirst<T>(string statement, object? parameter);
 
         /// <summary>
         /// 非同期で最初のデータを取得。
@@ -109,7 +109,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="cancellationToken"></param>
         /// <exception cref="InvalidOperationException">空っぽ。</exception>
         /// <returns>一番最初に見つかったデータ。</returns>
-        Task<T> QueryFirstAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default);
+        Task<T> QueryFirstAsync<T>(string statement, object? parameter, CancellationToken cancellationToken);
 
         /// <summary>
         /// 最初のデータを取得。

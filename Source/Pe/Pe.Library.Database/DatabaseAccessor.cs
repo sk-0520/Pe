@@ -378,7 +378,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseReader.Query(string, object?, bool)"/>
-        public virtual IEnumerable<dynamic> Query(string statement, object? parameter , bool buffered )
+        public virtual IEnumerable<dynamic> Query(string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
@@ -416,7 +416,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseAccessor.QueryFirst{T}(IDatabaseTransaction?, string, object?)"/>
-        public virtual T QueryFirst<T>(IDatabaseTransaction? transaction, string statement, object? parameter = null)
+        public virtual T QueryFirst<T>(IDatabaseTransaction? transaction, string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -431,14 +431,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseReader.QueryFirst{T}(string, object?)"/>
-        public virtual T QueryFirst<T>(string statement, object? parameter = null)
+        public virtual T QueryFirst<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return QueryFirst<T>(null, statement, parameter);
         }
 
-        public virtual async Task<T> QueryFirstAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual async Task<T> QueryFirstAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -458,7 +458,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual Task<T> QueryFirstAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual Task<T> QueryFirstAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 

@@ -12,6 +12,7 @@ using Dapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
+using ContentTypeTextNet.Pe.Library.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
 {
@@ -91,7 +92,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
         public void LoggingStatement_Disabled_Test()
         {
             var test = CreateAppDB(LogLevel.Debug);
-            var actual = test.accessor.GetScalar<long>("select 1 + 2", null);
+            var actual = test.accessor.GetScalar<long>("select 1 + 2");
             test.log.VerifyLogNever();
             Assert.Equal(3, actual);
         }
@@ -100,7 +101,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
         public void LoggingStatement_Enabled_WithoutParameter_Test()
         {
             var test = CreateAppDB(LogLevel.Trace);
-            var actual = test.accessor.GetScalar<long>("select 1 + 2", null);
+            var actual = test.accessor.GetScalar<long>("select 1 + 2");
             test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", Moq.Times.Once());
             test.log.VerifyMessageContains(LogLevel.Trace, "[PARAM]", Moq.Times.Never());
             Assert.Equal(3, actual);

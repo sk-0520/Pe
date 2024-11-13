@@ -66,10 +66,10 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <inheritdoc cref="IDatabaseReader.Query(string, object?, bool)"/>
         Task<IEnumerable<dynamic>> QueryAsync(IDatabaseTransaction? transaction, string statement, object? parameter, bool buffered, CancellationToken cancellationToken);
         /// <inheritdoc cref="IDatabaseReader.QueryFirst{T}(string, object?)"/>
-        T QueryFirst<T>(IDatabaseTransaction? transaction, string statement, object? parameter = null);
+        T QueryFirst<T>(IDatabaseTransaction? transaction, string statement, object? parameter);
 
         /// <inheritdoc cref="IDatabaseReader.QueryFirstAsync{T}(string, object?, CancellationToken)"/>
-        Task<T> QueryFirstAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter = null, CancellationToken cancellationToken = default);
+        Task<T> QueryFirstAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken);
 
         /// <inheritdoc cref="IDatabaseReader.QueryFirstOrDefault{T}(string, object?)"/>
         [return: MaybeNull]

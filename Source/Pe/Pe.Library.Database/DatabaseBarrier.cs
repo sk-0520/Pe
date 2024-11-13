@@ -115,14 +115,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return Transaction.QueryAsync(statement, parameter, buffered, cancellationToken);
         }
 
-        public T QueryFirst<T>(string statement, object? parameter = null)
+        public T QueryFirst<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.QueryFirst<T>(statement, parameter);
         }
 
-        public Task<T> QueryFirstAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<T> QueryFirstAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
