@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection.PortableExecutable;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -95,6 +96,18 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return reader.QueryFirstAsync<T>(statement, parameter, cancellationToken);
         }
 
+        /// <inheritdoc cref="IDatabaseReader.QueryFirstOrDefault{T}(string, object?)"/>
+        [return: MaybeNull]
+        public static T QueryFirstOrDefault<T>(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.QueryFirstOrDefault<T>(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QueryFirstOrDefaultAsync{T}(string, object?, CancellationToken)"/>
+        public static Task<T?> QueryFirstOrDefaultAsync<T>(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.QueryFirstOrDefaultAsync<T>(statement, parameter, cancellationToken);
+        }
 
 
         [Conditional("DEBUG")]

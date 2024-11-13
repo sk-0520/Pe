@@ -119,7 +119,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
         /// <returns>一番最初に見つかったデータ。見つかんなかったら <c>default(T)</c></returns>
         [return: MaybeNull]
-        T QueryFirstOrDefault<T>(string statement, object? parameter = null);
+        T QueryFirstOrDefault<T>(string statement, object? parameter);
 
         /// <summary>
         /// 非同期で最初のデータを取得。
@@ -128,7 +128,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="statement">データベース問い合わせ文。</param>
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
         /// <returns>一番最初に見つかったデータ。見つかんなかったら <c>default(T)</c></returns>
-        Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default);
+        Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken);
 
         /// <summary>
         /// 単一データ取得。
