@@ -46,6 +46,18 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return reader.GetDataTableAsync(statement, parameter, cancellationToken);
         }
 
+        /// <inheritdoc cref="IDatabaseReader.GetScalar{TResult}(string, object?)"/>
+        public static TResult? GetScalar<TResult>(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.GetScalar<TResult>(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.GetScalarAsync{TResult}(string, object?, CancellationToken)"/>
+        public static Task<TResult?> GetScalarAsync<TResult>(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.GetScalarAsync<TResult>(statement, parameter, cancellationToken);
+        }
+
         [Conditional("DEBUG")]
         private static void ThrowIfNotOrderBy(string statement)
         {

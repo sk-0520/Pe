@@ -261,7 +261,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return GetDataTableAsync(null, statement, parameter, cancellationToken);
         }
 
-        public virtual TResult? GetScalar<TResult>(IDatabaseTransaction? transaction, string statement, object? parameter = null)
+        public virtual TResult? GetScalar<TResult>(IDatabaseTransaction? transaction, string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -275,14 +275,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual TResult? GetScalar<TResult>(string statement, object? parameter = null)
+        public virtual TResult? GetScalar<TResult>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return GetScalar<TResult>(null, statement, parameter);
         }
 
-        public virtual async Task<TResult?> GetScalarAsync<TResult>(IDatabaseTransaction? transaction, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual async Task<TResult?> GetScalarAsync<TResult>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -302,7 +302,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 

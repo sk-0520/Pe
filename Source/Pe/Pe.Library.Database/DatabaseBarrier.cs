@@ -73,14 +73,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return Transaction.GetDataTableAsync(statement, parameter, cancellationToken);
         }
 
-        public TResult? GetScalar<TResult>(string statement, object? parameter = null)
+        public TResult? GetScalar<TResult>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.GetScalar<TResult?>(statement, parameter);
         }
 
-        public Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
