@@ -185,14 +185,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return DatabaseAccessor.QueryFirstOrDefaultAsync<T>(this, statement, parameter, cancellationToken);
         }
 
-        public T QuerySingle<T>(string statement, object? parameter = null)
+        public T QuerySingle<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.QuerySingle<T>(this, statement, parameter);
         }
 
-        public Task<T> QuerySingleAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<T> QuerySingleAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 

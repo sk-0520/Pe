@@ -80,6 +80,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         /// <inheritdoc cref="IDatabaseReader.QuerySingle{T}(string, object?)"/>
         T QuerySingle<T>(IDatabaseTransaction? transaction, string statement, object? parameter);
+        /// <inheritdoc cref="IDatabaseReader.QuerySingleAsync{T}(string, object?, CancellationToken)"/>
+        Task<T> QuerySingleAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken);
 
         /// <inheritdoc cref="IDatabaseReader.QuerySingleOrDefault{T}(string, object?)"/>
         [return: MaybeNull]

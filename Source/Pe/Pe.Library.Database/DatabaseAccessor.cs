@@ -531,14 +531,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual T QuerySingle<T>(string statement, object? parameter = null)
+        public virtual T QuerySingle<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return QuerySingle<T>(null, statement, parameter);
         }
 
-        public virtual async Task<T> QuerySingleAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual async Task<T> QuerySingleAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -558,7 +558,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual Task<T> QuerySingleAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual Task<T> QuerySingleAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace ContentTypeTextNet.Pe.Library.Database
 {
     /// <summary>
-    /// 読み込み処理の安全のしおり。
+    /// <see cref="IDataReader"/>の各種メソッドデフォルト引数追加と読み込み処理の安全のしおり。
     /// </summary>
     /// <remarks>
     /// <para>問い合わせ文として非ユーザー入力でデバッグ中に検証可能なものを想定している。</para>
@@ -109,6 +109,18 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return reader.QueryFirstOrDefaultAsync<T>(statement, parameter, cancellationToken);
         }
 
+        /// <inheritdoc cref="IDatabaseReader.QuerySingle{T}(string, object?)"/>
+        [return: MaybeNull]
+        public static T QuerySingle<T>(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.QueryFirstOrDefault<T>(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QuerySingleAsync{T}(string, object?, CancellationToken)"/>
+        public static Task<T> QuerySingleAsync<T>(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.QuerySingleAsync<T>(statement, parameter, cancellationToken);
+        }
 
         [Conditional("DEBUG")]
         private static void ThrowIfNotOrderBy(string statement)

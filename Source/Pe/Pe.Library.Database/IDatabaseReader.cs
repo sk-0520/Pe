@@ -138,7 +138,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
         /// <exception cref="InvalidOperationException">空っぽか複数あり。</exception>
         /// <returns>一意なデータ。</returns>
-        T QuerySingle<T>(string statement, object? parameter = null);
+        T QuerySingle<T>(string statement, object? parameter);
 
         /// <summary>
         /// 非同期で単一データ取得。
@@ -149,7 +149,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="cancellationToken"></param>
         /// <exception cref="InvalidOperationException">空っぽか複数あり。</exception>
         /// <returns>一意なデータ。</returns>
-        Task<T> QuerySingleAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default);
+        Task<T> QuerySingleAsync<T>(string statement, object? parameter, CancellationToken cancellationToken);
 
         /// <summary>
         /// 単一データ取得。
