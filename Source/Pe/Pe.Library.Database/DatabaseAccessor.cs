@@ -615,7 +615,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return QuerySingleOrDefaultAsync<T>(null, statement, parameter, cancellationToken);
         }
 
-        public virtual int Execute(IDatabaseTransaction? transaction, string statement, object? parameter = null)
+        public virtual int Execute(IDatabaseTransaction? transaction, string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -629,14 +629,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual int Execute(string statement, object? parameter = null)
+        public virtual int Execute(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Execute(null, statement, parameter);
         }
 
-        public virtual async Task<int> ExecuteAsync(IDatabaseTransaction? transaction, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual async Task<int> ExecuteAsync(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -656,7 +656,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual Task<int> ExecuteAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 

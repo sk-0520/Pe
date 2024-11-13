@@ -35,14 +35,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         public IDatabaseContext Context => this;
 
-        public int Execute(string statement, object? parameter = null)
+        public int Execute(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.Execute(statement, parameter);
         }
 
-        public Task<int> ExecuteAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 

@@ -214,14 +214,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return DatabaseAccessor.QuerySingleOrDefaultAsync<T>(this, statement, parameter, cancellationToken);
         }
 
-        public virtual int Execute(string statement, object? parameter = null)
+        public virtual int Execute(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.Execute(this, statement, parameter);
         }
 
-        public virtual Task<int> ExecuteAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
