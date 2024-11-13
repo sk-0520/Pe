@@ -110,10 +110,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseReader.QuerySingle{T}(string, object?)"/>
-        [return: MaybeNull]
         public static T QuerySingle<T>(this IDatabaseReader reader, string statement, object? parameter = null)
         {
-            return reader.QueryFirstOrDefault<T>(statement, parameter);
+            return reader.QuerySingle<T>(statement, parameter);
         }
 
         /// <inheritdoc cref="IDatabaseReader.QuerySingleAsync{T}(string, object?, CancellationToken)"/>
@@ -121,6 +120,20 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             return reader.QuerySingleAsync<T>(statement, parameter, cancellationToken);
         }
+
+        /// <inheritdoc cref="IDatabaseReader.QuerySingleOrDefault{T}(string, object?)"/>
+        [return: MaybeNull]
+        public static T QuerySingleOrDefault<T>(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.QuerySingleOrDefault<T>(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QuerySingleOrDefaultAsync{T}(string, object?, CancellationToken)"/>
+        public static Task<T?> QuerySingleOrDefaultAsync<T>(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.QuerySingleOrDefaultAsync<T>(statement, parameter, cancellationToken);
+        }
+
 
         [Conditional("DEBUG")]
         private static void ThrowIfNotOrderBy(string statement)

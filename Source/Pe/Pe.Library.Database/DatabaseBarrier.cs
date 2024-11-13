@@ -151,7 +151,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return Transaction.QuerySingle<T>(statement, parameter);
         }
 
-        public Task<T> QuerySingleAsync<T>(string statement, object? parameter, CancellationToken cancellationToken )
+        public Task<T> QuerySingleAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -159,14 +159,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         [return: MaybeNull]
-        public T QuerySingleOrDefault<T>(string statement, object? parameter = null)
+        public T QuerySingleOrDefault<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.QuerySingleOrDefault<T>(statement, parameter);
         }
 
-        public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 

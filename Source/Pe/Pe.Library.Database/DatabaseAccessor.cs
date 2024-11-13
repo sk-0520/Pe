@@ -566,7 +566,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         [return: MaybeNull]
-        public virtual T QuerySingleOrDefault<T>(IDatabaseTransaction? transaction, string statement, object? parameter = null)
+        public virtual T QuerySingleOrDefault<T>(IDatabaseTransaction? transaction, string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -581,14 +581,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         [return: MaybeNull]
-        public virtual T QuerySingleOrDefault<T>(string statement, object? parameter = null)
+        public virtual T QuerySingleOrDefault<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return QuerySingleOrDefault<T>(null, statement, parameter);
         }
 
-        public virtual async Task<T?> QuerySingleOrDefaultAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual async Task<T?> QuerySingleOrDefaultAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -608,7 +608,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public virtual Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 

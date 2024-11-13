@@ -160,7 +160,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <exception cref="InvalidOperationException">複数あり。</exception>
         /// <returns>一意なデータ。</returns>
         [return: MaybeNull]
-        T QuerySingleOrDefault<T>(string statement, object? parameter = null);
+        T QuerySingleOrDefault<T>(string statement, object? parameter);
 
         /// <summary>
         /// 非同期で単一データ取得。
@@ -170,7 +170,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
         /// <param name="cancellationToken"></param>
         /// <returns>一意なデータ。一意じゃなかったら <c>default(T)</c></returns>
-        Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default);
+        Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken);
 
         #endregion
     }

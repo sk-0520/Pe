@@ -200,14 +200,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         [return: MaybeNull]
-        public T QuerySingleOrDefault<T>(string statement, object? parameter = null)
+        public T QuerySingleOrDefault<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return DatabaseAccessor.QuerySingleOrDefault<T>(this, statement, parameter);
         }
 
-        public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
