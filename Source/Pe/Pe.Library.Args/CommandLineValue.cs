@@ -30,17 +30,6 @@ namespace ContentTypeTextNet.Pe.Library.Args
     /// </summary>
     public class CommandLineValue: ICommandLineValue
     {
-        #region ICommandLineValue
-
-        /// <inheritdoc cref="ICommandLineValue.Items"/>
-        public List<string> Items { get; } = new List<string>();
-        IReadOnlyList<string> ICommandLineValue.Items => Items;
-
-        /// <inheritdoc cref="ICommandLineValue.First"/>
-        public string First => Items.First();
-
-        #endregion
-
         #region function
 
         /// <summary>
@@ -53,4 +42,16 @@ namespace ContentTypeTextNet.Pe.Library.Args
         }
 
         #endregion
-    }}
+
+        #region ICommandLineValue
+
+        /// <inheritdoc cref="ICommandLineValue.Items"/>
+        public List<string> Items { get; } = new List<string>();
+        IReadOnlyList<string> ICommandLineValue.Items => Items;
+
+        /// <inheritdoc cref="ICommandLineValue.First"/>
+        public string First => Items.First();
+
+        #endregion
+    }
+}

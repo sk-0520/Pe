@@ -8,6 +8,12 @@ namespace ContentTypeTextNet.Pe.Library.Args
 {
     public static class CommandLineHelper
     {
+        #region property
+
+        public static string Delimiter { get; } = "--";
+
+        #endregion
+
         #region function
 
         /// <summary>
@@ -60,9 +66,9 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// </summary>
         /// <param name="map"></param>
         /// <returns></returns>
-        public static IEnumerable<string> ToCommandLineArguments(IReadOnlyDictionary<string, string> map, char separator = '=', string header = "--")
+        public static IEnumerable<string> ToCommandLineArguments(IReadOnlyDictionary<string, string> map, char separator = '=', string delimiter = "--")
         {
-            return map.Select(i => header + i.Key + separator + Escape(i.Value));
+            return map.Select(i => delimiter + i.Key + separator + Escape(i.Value));
         }
 
         #endregion

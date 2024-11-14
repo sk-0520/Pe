@@ -39,14 +39,19 @@ namespace ContentTypeTextNet.Pe.Library.Args
         {
             if(withCommand) {
                 CommandName = arguments.FirstOrDefault() ?? string.Empty;
-                Arguments = arguments.Skip(1).ToList();
+                Arguments = arguments.Skip(1).ToArray();
             } else {
                 CommandName = string.Empty;
-                Arguments = arguments.ToList();
+                Arguments = arguments.ToArray();
             }
         }
 
         #region property
+
+        /// <summary>
+        /// デミリタ。
+        /// </summary>
+        public string Delimiter { get; } = CommandLineHelper.Delimiter;
 
         /// <summary>
         /// キーアイテム一覧実体。
@@ -79,9 +84,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// <returns>追加したキー。</returns>
         public CommandLineKey Add(CommandLineKey key)
         {
-            if(key == null) {
-                throw new ArgumentNullException(nameof(key));
-            }
+            ArgumentNullException.ThrowIfNull(key);
 
             if(!key.IsEnabledLongKey) {
                 throw new ArgumentException($"{nameof(key.LongKey)} is empty");
@@ -141,81 +144,79 @@ namespace ContentTypeTextNet.Pe.Library.Args
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S127:\"for\" loop stop conditions should be invariant", Justification = "<保留中>")]
-        private bool ParseCore()
+        private void ParseCore()
         {
-            try {
-                var map = new[] {
-                    new { Key = "--", IsLong = true },
-                    //new { Key = "-",  IsLong = false },
-                    //new { Key = "/",  IsLong = true },
-                };
+            for(var i = 0; i < Arguments.Count; i++) {
+                var argument = Arguments[i];
+                var arg = CommandLineHelper.StripDoubleQuotes(argument);
+                if(string.IsNullOrWhiteSpace(arg)) {
+                    continue;
+                }
 
-                for(var i = 0; i < Arguments.Count; i++) {
-                    var argument = Arguments[i];
-                    var arg = CommandLineHelper.StripDoubleQuotes(argument);
-                    if(string.IsNullOrWhiteSpace(arg)) {
+                var hasHeader = arg.StartsWith(Delimiter);
+                if(!hasHeader) {
+                    SetUnknown(arg);
+                    continue;
+                }
+
+                var separatorIndex = arg.IndexOf('=');
+                if(separatorIndex == -1) {
+                    var key = GetCommandLineKey(arg.Substring(Delimiter.Length));
+                    if(key is null) {
+                        SetUnknown(arg);
                         continue;
                     }
 
-                    var pair = Array.Find(map, i => arg.StartsWith(i.Key));
-                    if(pair != null) {
-                        var separatorIndex = arg.IndexOf('=');
-                        if(separatorIndex == -1) {
-                            var key = GetCommandLineKey(arg.Substring(pair.Key.Length));
-                            if(key == null) {
-                                SetUnknown(arg);
-                                continue;
-                            }
-                            if(key.kind == CommandLineKeyKind.Value) {
-                                if(i < Arguments.Count - 1) {
-                                    SetValue(key, Arguments[i + 1]);
-                                    i += 1;
-                                    continue;
-                                } else {
-                                    SetValue(key, string.Empty);
-                                    continue;
-                                }
-                            } else {
-                                SetSwitch(key);
-                                continue;
-                            }
-                        } else {
-                            var key = GetCommandLineKey(arg.Substring(pair.Key.Length, separatorIndex - pair.Key.Length));
-                            if(key == null) {
-                                SetUnknown(arg);
-                                continue;
-                            }
-                            if(key.kind == CommandLineKeyKind.Value) {
-                                var val = arg.Substring(separatorIndex + 1);
-                                SetValue(key, CommandLineHelper.StripDoubleQuotes(val));
-                                continue;
-                            } else {
-                                SetSwitch(key);
-                                continue;
-                            }
+                    if(key.kind == CommandLineKeyKind.Value) {
+                        if(i < Arguments.Count - 1) {
+                            SetValue(key, Arguments[i + 1]);
+                            i += 1;
+                            continue;
                         }
-                    } else {
-                        SetUnknown(arg);
+
+                        SetValue(key, string.Empty);
+                        continue;
                     }
+
+                    SetSwitch(key);
+                } else {
+                    var key = GetCommandLineKey(arg.Substring(Delimiter.Length, separatorIndex - Delimiter.Length));
+                    if(key == null) {
+                        SetUnknown(arg);
+                        continue;
+                    }
+
+                    if(key.kind == CommandLineKeyKind.Value) {
+                        var val = arg.Substring(separatorIndex + 1);
+                        SetValue(key, CommandLineHelper.StripDoubleQuotes(val));
+                        continue;
+                    }
+
+                    SetSwitch(key);
                 }
-                return true;
-            } catch(Exception ex) {
-                ParseException = ex;
-                return false;
             }
         }
 
         /// <summary>
         /// 解析処理実行。
         /// </summary>
+        /// <remarks>これ戻り値を結果にしたいなぁ。</remarks>
         /// <returns></returns>
+        [MemberNotNullWhen(true, nameof(ParseException))]
         public bool Parse()
         {
             if(IsParsed) {
                 throw new InvalidOperationException();
             }
 
-            var result = ParseCore();
+            bool result = false;
+            try {
+                ParseCore();
+                result = true;
+            } catch(Exception ex) {
+                ParseException = ex;
+            }
+
             IsParsed = true;
 
             return result;
