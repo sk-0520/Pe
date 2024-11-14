@@ -53,6 +53,8 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// </summary>
         public string Delimiter { get; } = CommandLineHelper.Delimiter;
 
+        private IReadOnlyDictionary<CommandLineKey, ICommandLineValue>? CachedValues { get; set; }
+
         /// <summary>
         /// キーアイテム一覧実体。
         /// </summary>
@@ -61,7 +63,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// <summary>
         /// 値データ一覧実体。
         /// </summary>
-        private Dictionary<CommandLineKey, ICommandLineValue> ValueItems { get; } = new Dictionary<CommandLineKey, ICommandLineValue>();
+        private Dictionary<CommandLineKey, CommandLineValue> ValueItems { get; } = new Dictionary<CommandLineKey, CommandLineValue>();
 
         /// <summary>
         /// スイッチデータ一覧実体。
@@ -125,12 +127,13 @@ namespace ContentTypeTextNet.Pe.Library.Args
         private void SetValue(CommandLineKey key, string value)
         {
             if(ValueItems.TryGetValue(key, out var val)) {
-                ((CommandLineValue)val).Add(value);
+                val.Add(value);
             } else {
                 var commandLineValue = new CommandLineValue();
                 commandLineValue.Add(value);
                 ValueItems.Add(key, commandLineValue);
             }
+            CachedValues = null;
         }
 
         private void SetSwitch(CommandLineKey value)
@@ -234,7 +237,17 @@ namespace ContentTypeTextNet.Pe.Library.Args
 
         public IReadOnlyList<CommandLineKey> Keys => KeyItems;
 
-        public IReadOnlyDictionary<CommandLineKey, ICommandLineValue> Values => ValueItems;
+        public IReadOnlyDictionary<CommandLineKey, ICommandLineValue> Values
+        {
+            get
+            {
+                if(CachedValues is null) {
+                    CachedValues = ValueItems.ToDictionary(k => k.Key, v => (ICommandLineValue)v.Value);
+                }
+
+                return CachedValues;
+            }
+        }
 
         public IReadOnlySet<CommandLineKey> Switches => SwitchItems;
 
