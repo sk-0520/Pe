@@ -299,7 +299,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
             try {
                 var process = Process.GetProcessById(processId);
                 var fileName = process.MainModule?.FileName;
-                return System.IO.Path.GetDirectoryName(fileName) ?? throw new Exception("failed to get runtime path");
+                return System.IO.Path.GetDirectoryName(fileName) ?? throw new WebView2RuntimeNotFoundException("failed to get runtime path");
             } catch(Exception e) {
                 Logger.LogError(e, e.Message);
                 return e.Message;
