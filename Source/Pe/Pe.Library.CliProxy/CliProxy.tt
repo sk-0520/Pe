@@ -37,7 +37,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
         #region property (<#= properties.Length #>)
 <# foreach(var proeprty in properties) { #>
         /// <inheritdoc cref="<#= originalClassFulleName #>.<#= proeprty.Name #>"/>
-        public global::<#= proeprty.PropertyType.FullName #> <#= proeprty.Name #>
+        public <#= Proxy.ToSourceType(proeprty.PropertyType) #> <#= proeprty.Name #>
         {
 <# if(proeprty.CanRead) { #>
             get;
@@ -54,8 +54,8 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
 <# if(methods.Any()) { #>
         #region function (<#= methods.Length #>)
 <# foreach(var method in methods) { #>
-        /// <inheritdoc cref="<#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => a.ParameterType.FullName.Replace('+', '.'))) #>)"/>
-        public global::<#= method.ReturnType.FullName #> <#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => $"global::{a.ParameterType.FullName.Replace('+', '.')} {a.Name}")) #>);
+        /// <inheritdoc cref="<#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => Proxy.ToDocumentParameter(a))) #>)"/>
+        public <#= Proxy.ToSourceType(method.ReturnType) #> <#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => Proxy.ToSignatureParameter(a))) #>);
 <# } #>
         #endregion
 <# } #>
@@ -68,7 +68,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
         #region property (<#= properties.Length #>)
 <# foreach(var proeprty in properties) { #>
         /// <inheritdoc cref="<#= originalClassFulleName #>.<#= proeprty.Name #>"/>
-        public global::<#= proeprty.PropertyType.FullName #> <#= proeprty.Name #>
+        public <#= Proxy.ToSourceType(proeprty.PropertyType) #> <#= proeprty.Name #>
         {
 <# if(proeprty.CanRead) { #>
             get => <#= originalClassFulleName #>.<#= proeprty.Name #>;
@@ -85,9 +85,9 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
 <# if(methods.Any()) { #>
         #region function (<#= methods.Length #>)
 <# foreach(var method in methods) { #>
-        /// <inheritdoc cref="<#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => a.ParameterType.FullName.Replace('+', '.'))) #>)"/>
-        public global::<#= method.ReturnType.FullName #> <#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => $"global::{a.ParameterType.FullName.Replace('+', '.')} {a.Name}")) #>) =>
-            <#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => a.Name))#>)
+        /// <inheritdoc cref="<#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => Proxy.ToDocumentParameter(a))) #>)"/>
+        public <#= Proxy.ToSourceType(method.ReturnType) #> <#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => Proxy.ToSignatureParameter(a))) #>) =>
+            <#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => Proxy.ToMethodParameter(a)))#>)
         ;
 <# } #>
         #endregion
@@ -100,5 +100,38 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
 
 
 <#+
+    public static class Proxy
+    {
+        #region function
 
+        public static string ToSourceType(Type type)
+        {
+            switch(type.FullName) {
+                case "System.Void": return "void";
+                case "System.Int32": return "int";
+                case "System.Int64": return "long";
+                case "System.Boolean": return "bool";
+                case "System.String": return "string";
+            }
+
+            return "global::" + type.FullName.Replace('+', '.');
+        }
+
+        public static string ToDocumentParameter(ParameterInfo parameter)
+        {
+            return ToSourceType(parameter.ParameterType);
+        }
+
+        public static string ToSignatureParameter(ParameterInfo parameter)
+        {
+            return $"{ToSourceType(parameter.ParameterType)} {parameter.Name}";
+        }
+
+        public static string ToMethodParameter(ParameterInfo parameter)
+        {
+            return $"{parameter.Name}";
+        }
+
+        #endregion
+    }
 #>
