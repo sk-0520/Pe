@@ -110,7 +110,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
     {
         #region function
 
-        public static string ToSourceType(Type type)
+        private static string ToCSharpType(Type type)
         {
             switch(type.FullName) {
                 case "System.Void": return "void";
@@ -118,6 +118,24 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
                 case "System.Int64": return "long";
                 case "System.Boolean": return "bool";
                 case "System.String": return "string";
+            }
+
+            return string.Empty;
+        }
+
+        public static string ToSourceType(Type type)
+        {
+            var cstype = ToCSharpType(type);
+            if(cstype.Length != 0) {
+                return cstype;
+            }
+
+            if(type.IsArray) {
+                var elementType = type.GetElementType();
+                var csArrayType = ToCSharpType(elementType);
+                if(csArrayType.Length != 0) {
+                    return csArrayType + "[]";
+                }
             }
 
             return "global::" + type.FullName.Replace('+', '.');
