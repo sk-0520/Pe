@@ -37,7 +37,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
         #region property (<#= properties.Length #>)
 <# foreach(var proeprty in properties) { #>
         /// <inheritdoc cref="<#= originalClassFulleName #>.<#= proeprty.Name #>"/>
-        public <#= proeprty.GetAccessors(true)[0].IsStatic ? "static ": "" #>global::<#= proeprty.PropertyType.FullName #> <#= proeprty.Name #>
+        public global::<#= proeprty.PropertyType.FullName #> <#= proeprty.Name #>
         {
 <# if(proeprty.CanRead) { #>
             get;
@@ -55,7 +55,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
         #region function (<#= methods.Length #>)
 <# foreach(var method in methods) { #>
         /// <inheritdoc cref="<#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => a.ParameterType.FullName.Replace('+', '.'))) #>)"/>
-        public <#= method.IsStatic ? "static ": "" #>global::<#= method.ReturnType.FullName #> <#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => $"global::{a.ParameterType.FullName.Replace('+', '.')} {a.Name}")) #>);
+        public global::<#= method.ReturnType.FullName #> <#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => $"global::{a.ParameterType.FullName.Replace('+', '.')} {a.Name}")) #>);
 <# } #>
         #endregion
 <# } #>
@@ -68,7 +68,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
         #region property (<#= properties.Length #>)
 <# foreach(var proeprty in properties) { #>
         /// <inheritdoc cref="<#= originalClassFulleName #>.<#= proeprty.Name #>"/>
-        public <#= proeprty.GetAccessors(true)[0].IsStatic ? "static ": "" #>global::<#= proeprty.PropertyType.FullName #> <#= proeprty.Name #>
+        public global::<#= proeprty.PropertyType.FullName #> <#= proeprty.Name #>
         {
 <# if(proeprty.CanRead) { #>
             get => <#= originalClassFulleName #>.<#= proeprty.Name #>;
@@ -86,7 +86,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
         #region function (<#= methods.Length #>)
 <# foreach(var method in methods) { #>
         /// <inheritdoc cref="<#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => a.ParameterType.FullName.Replace('+', '.'))) #>)"/>
-        public <#= method.IsStatic ? "static ": "" #>global::<#= method.ReturnType.FullName #> <#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => $"global::{a.ParameterType.FullName.Replace('+', '.')} {a.Name}")) #>) =>
+        public global::<#= method.ReturnType.FullName #> <#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => $"global::{a.ParameterType.FullName.Replace('+', '.')} {a.Name}")) #>) =>
             <#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => a.Name))#>)
         ;
 <# } #>
