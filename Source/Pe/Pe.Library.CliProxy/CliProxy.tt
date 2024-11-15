@@ -25,7 +25,10 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
     var proxyInterfaceName = $"I{originalClassName}Proxy";
     var directProxyName = $"Direct{originalClassName}Proxy";
     var properties = targetType.GetProperties(BindingFlags.Public | BindingFlags.Static | BindingFlags.GetProperty | BindingFlags.SetProperty);
-    var methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod);
+    var methods = targetType.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod)
+        .Where(a => !(a.Name.StartsWith("get_") || a.Name.StartsWith("set_")))
+        .ToArray()
+    ;
 #>
     /// <inheritdoc cref="<#= originalClassFulleName #>"/>
     public interface <#= proxyInterfaceName #>
@@ -34,7 +37,8 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
         #region property (<#= properties.Length #>)
 <# foreach(var proeprty in properties) { #>
         /// <inheritdoc cref="<#= originalClassFulleName #>.<#= proeprty.Name #>"/>
-        public <#= proeprty.GetAccessors(true)[0].IsStatic ? "static ": "" #>global::<#= proeprty.PropertyType.FullName #> <#= proeprty.Name #> {
+        public <#= proeprty.GetAccessors(true)[0].IsStatic ? "static ": "" #>global::<#= proeprty.PropertyType.FullName #> <#= proeprty.Name #>
+        {
 <# if(proeprty.CanRead) { #>
             get;
 <# } #>
@@ -50,7 +54,8 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
 <# if(methods.Any()) { #>
         #region function (<#= methods.Length #>)
 <# foreach(var method in methods) { #>
-        /// <inheritdoc cref="<#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => a.ParameterType.FullName)) #>)"/>
+        /// <inheritdoc cref="<#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => a.ParameterType.FullName.Replace('+', '.'))) #>)"/>
+        public <#= method.IsStatic ? "static ": "" #>global::<#= method.ReturnType.FullName #> <#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => $"global::{a.ParameterType.FullName.Replace('+', '.')} {a.Name}")) #>);
 <# } #>
         #endregion
 <# } #>
@@ -59,6 +64,34 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
     /// <inheritdoc cref="<#= originalClassFulleName #>"/>
     public class <#= directProxyName #>
     {
+<# if(properties.Any()) { #>
+        #region property (<#= properties.Length #>)
+<# foreach(var proeprty in properties) { #>
+        /// <inheritdoc cref="<#= originalClassFulleName #>.<#= proeprty.Name #>"/>
+        public <#= proeprty.GetAccessors(true)[0].IsStatic ? "static ": "" #>global::<#= proeprty.PropertyType.FullName #> <#= proeprty.Name #>
+        {
+<# if(proeprty.CanRead) { #>
+            get => <#= originalClassFulleName #>.<#= proeprty.Name #>;
+<# } #>
+<# if(proeprty.CanWrite) { #>
+            set => <#= originalClassFulleName #>.<#= proeprty.Name #> = value;
+<# } #>
+        }
+
+<# } #>
+        #endregion
+<# } #>
+
+<# if(methods.Any()) { #>
+        #region function (<#= methods.Length #>)
+<# foreach(var method in methods) { #>
+        /// <inheritdoc cref="<#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => a.ParameterType.FullName.Replace('+', '.'))) #>)"/>
+        public <#= method.IsStatic ? "static ": "" #>global::<#= method.ReturnType.FullName #> <#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => $"global::{a.ParameterType.FullName.Replace('+', '.')} {a.Name}")) #>) =>
+            <#= originalClassFulleName #>.<#= method.Name #>(<#= string.Join(", ", method.GetParameters().Select(a => a.Name))#>)
+        ;
+<# } #>
+        #endregion
+<# } #>
     }
 }
 <#
