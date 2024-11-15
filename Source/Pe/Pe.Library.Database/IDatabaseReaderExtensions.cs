@@ -138,7 +138,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         [Conditional("DEBUG")]
         private static void ThrowIfNotOrderBy(string statement)
         {
-            if(!Regex.IsMatch(statement, @"\border\s+by\b", RegexOptions.IgnoreCase | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
+            if(!Regex.IsMatch(statement, @"\b order \s+ by \b", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
                 throw new DatabaseStatementException("order by");
             }
         }
@@ -186,7 +186,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         [Conditional("DEBUG")]
         private static void ThrowIfNotSingleCount(string statement)
         {
-            if(!Regex.IsMatch(statement, @"\bselect\s+count\s*\(", RegexOptions.IgnoreCase | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
+            if(!Regex.IsMatch(statement, @"\b select \s+ count \s*\(", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
                 throw new DatabaseStatementException("select count()");
             }
         }

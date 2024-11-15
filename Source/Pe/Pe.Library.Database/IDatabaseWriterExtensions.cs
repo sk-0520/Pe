@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         [Conditional("DEBUG")]
         private static void ThrowIfNotUpdate(string statement)
         {
-            if(!Regex.IsMatch(statement, @"\bupdate\b", RegexOptions.IgnoreCase | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
+            if(!Regex.IsMatch(statement, @"\b update \b", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
                 throw new DatabaseStatementException("update");
             }
         }
@@ -129,7 +129,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         [Conditional("DEBUG")]
         private static void ThrowIfNotInsert(string statement)
         {
-            if(!Regex.IsMatch(statement, @"\binsert\b", RegexOptions.IgnoreCase | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
+            if(!Regex.IsMatch(statement, @"\b insert \b", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
                 throw new DatabaseStatementException("insert");
             }
         }
@@ -188,7 +188,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         [Conditional("DEBUG")]
         private static void ThrowIfNotDelete(string statement)
         {
-            if(!Regex.IsMatch(statement, @"\bdelete\b", RegexOptions.IgnoreCase | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
+            if(!Regex.IsMatch(statement, @"\b delete \b", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
                 throw new DatabaseStatementException("delete");
             }
         }
