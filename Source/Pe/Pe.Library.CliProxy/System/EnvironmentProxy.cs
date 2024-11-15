@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 
@@ -104,8 +105,13 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.System
             Environment.SetEnvironmentVariable(variable, value);
         }
 
+        /// <inheritdoc cref=""/>
         public string GetFolderPath(Environment.SpecialFolder folder)
         {
+            var e = Type.GetType("Environment");
+            foreach(var a in e!.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod)) {
+            }
+
             return Environment.GetFolderPath(folder);
         }
 
