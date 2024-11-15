@@ -82,7 +82,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
     }
 
     /// <inheritdoc cref="<#= originalClassFulleName #>"/>
-    public class <#= directProxyName #>
+    public class <#= directProxyName #>: <#= proxyInterfaceName #>
     {
 <# if(properties.Any()) { #>
         #region property (<#= properties.Length #>)
@@ -116,11 +116,10 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.<#= targetType.Namespace #>
 <# } #>
     }
 }
+
 <#
 }
 #>
-
-
 <#+
     public static class Proxy
     {
