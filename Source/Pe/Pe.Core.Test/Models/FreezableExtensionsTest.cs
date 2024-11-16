@@ -10,7 +10,7 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models
 {
-    public class FreezableUtilityTest
+    public class FreezableExtensionsTest
     {
         #region define
 
@@ -61,7 +61,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         }
 
         [Fact]
-        public void GetSafeFreezeTest()
+        public void GetFreezedTest()
         {
             var test = new TestClass(true);
             var actual = test.GetFreezed();
@@ -69,7 +69,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         }
 
         [Fact]
-        public void GetSafeFreeze_null_Test()
+        public void GetFreezed_null_Test()
         {
             TestClass? test = null;
             var actual = test.GetFreezed();
