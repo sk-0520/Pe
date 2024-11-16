@@ -951,10 +951,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-ControlColor"] = colors.Control;
                 Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-BorderColor"] = colors.Border;
 
-                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-BackgroundBrush"] = FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Background));
-                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-ForegroundBrush"] = FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Foreground));
-                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-ControlBrush"] = FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Control));
-                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-BorderBrush"] = FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Border));
+                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-BackgroundBrush"] = new SolidColorBrush(colors.Background).GetFreezed();
+                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-ForegroundBrush"] = new SolidColorBrush(colors.Foreground).GetFreezed();
+                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-ControlBrush"] = new SolidColorBrush(colors.Control).GetFreezed();
+                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-BorderBrush"] = new SolidColorBrush(colors.Border).GetFreezed();
             }
         }
 
@@ -1006,7 +1006,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             void ApplyAccentBrush(string name)
             {
                 var color = (Color)Application.Current.Resources[name + "Color"];
-                var brush = FreezableUtility.GetSafeFreeze(new SolidColorBrush(color));
+                var brush = new SolidColorBrush(color).GetFreezed();
                 Application.Current.Resources[name + "Brush"] = brush;
             }
             var names = new[] {

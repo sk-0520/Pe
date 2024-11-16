@@ -138,7 +138,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
             var descriptions = ToDescriptions(applicationCommand);
             return new ApplicationCommandParameter(ToHeader(applicationCommand), descriptions.narmal, descriptions.extend, (in IconScale iconScale) => {
                 var control = new Control();
-                using(Initializer.Begin(control)) {
+                using(control.BeginInitialize()) {
                     control.Template = (ControlTemplate)Application.Current.Resources["App-Image-Command"];
                     control.Style = iconScale.Box switch {
                         IconBox.Small => (Style)Application.Current.Resources["Image-Small"],

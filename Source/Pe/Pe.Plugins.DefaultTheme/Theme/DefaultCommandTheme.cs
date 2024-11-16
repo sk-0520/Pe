@@ -43,10 +43,10 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
             var colors = PlatformTheme.GetApplicationThemeColors(PlatformTheme.ApplicationThemeKind);
 
             return inputState switch {
-                InputState.Empty => FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Border)),
-                InputState.Finding => FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Control)),
-                InputState.Complete => FreezableUtility.GetSafeFreeze(new SolidColorBrush(PlatformTheme.GetAccentColors(PlatformTheme.AccentColor).Base)),
-                InputState.NotFound => FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Foreground)),
+                InputState.Empty => new SolidColorBrush(colors.Border).GetFreezed(),
+                InputState.Finding => new SolidColorBrush(colors.Control).GetFreezed(),
+                InputState.Complete => new SolidColorBrush(PlatformTheme.GetAccentColors(PlatformTheme.AccentColor).Base).GetFreezed(),
+                InputState.NotFound => new SolidColorBrush(colors.Foreground).GetFreezed(),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -54,19 +54,19 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         public Brush GetInputBackground(InputState inputState)
         {
             var colors = PlatformTheme.GetApplicationThemeColors(PlatformTheme.ApplicationThemeKind);
-            return FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Background));
+            return new SolidColorBrush(colors.Background).GetFreezed();
         }
 
         public Brush GetInputForeground(InputState inputState)
         {
             var colors = PlatformTheme.GetApplicationThemeColors(PlatformTheme.ApplicationThemeKind);
-            return FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Foreground));
+            return new SolidColorBrush(colors.Foreground).GetFreezed();
         }
 
         public Brush GetViewBackgroundBrush(bool isActive)
         {
             var colors = PlatformTheme.GetTaskbarColor();
-            return FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors));
+            return new SolidColorBrush(colors).GetFreezed();
         }
 
         public Thickness GetViewBorderThickness()
@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         {
             var color = PlatformTheme.GetTaskbarColor();
             color.A = (byte)(isActive ? 0xff : 0x80);
-            return FreezableUtility.GetSafeFreeze(new SolidColorBrush(color));
+            return new SolidColorBrush(color).GetFreezed();
         }
 
         public ControlTemplate GetExecuteButtonControlTemplate(in IconScale iconScale)

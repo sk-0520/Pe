@@ -8,10 +8,11 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <summary>
     /// <see cref="ISupportInitialize"/>の初期化から初期化終了までを<see langword="using" />で実施できるようにする。
     /// </summary>
-    public class Initializer<TSupportInitialize>: DisposerBase
+    /// <remarks>持ち運びしない想定。</remarks>
+    public readonly ref struct SupportInitializer<TSupportInitialize>
         where TSupportInitialize : ISupportInitialize
     {
-        public Initializer(TSupportInitialize target)
+        public SupportInitializer(TSupportInitialize target)
         {
             Target = target;
         }
@@ -22,44 +23,39 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         #endregion
 
-        #region DisposerBase
+        #region IDisposable
 
-        protected override void Dispose(bool disposing)
+        public void Dispose()
         {
-            if(!IsDisposed) {
-                Target.EndInit();
-            }
-
-            base.Dispose(disposing);
+            Target.EndInit();
         }
 
         #endregion
     }
 
-    /// <summary>
-    /// <see cref="Initializer{TSupportInitialize}"/> のラッパー。
-    /// </summary>
-    public static class Initializer
+    public static class ISupportInitializeExtensions
     {
         #region function
 
         /// <summary>
         /// 初期化用処理を簡略化。
         /// </summary>
-        /// <remarks>
-        /// <para>多分こいつしか使わない。</para>
-        /// </remarks>
         /// <example>
-        /// using(Initializer.Begin(obj)) {
-        ///     obj.Property = xxx;
+        /// // 基本こちら
+        /// using(target.BeginInitialize()) {
+        ///     target.Property = xxx;
+        /// }
+        /// // なんかあれこれするならこちら
+        /// using(var obj = target.BeginInitialize()) {
+        ///     obj.Target.Property = xxx;
         /// }
         /// </example>
         /// <param name="target"></param>
         /// <returns></returns>
-        public static Initializer<TSupportInitialize> Begin<TSupportInitialize>(TSupportInitialize target)
+        public static SupportInitializer<TSupportInitialize> BeginInitialize<TSupportInitialize>(this TSupportInitialize target)
             where TSupportInitialize : ISupportInitialize
         {
-            var result = new Initializer<TSupportInitialize>(target);
+            var result = new SupportInitializer<TSupportInitialize>(target);
 
             result.Target.BeginInit();
 

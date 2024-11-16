@@ -85,7 +85,7 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
                         var rectangle = new Rectangle();
                         var edgeThickness = 2;
 
-                        using(Initializer.Begin(rectangle)) {
+                        using(rectangle.BeginInitialize()) {
                             const int separatorWidth = 1;
                             var separatorBrush = new SolidColorBrush(autoColor);
                             rectangle.Fill = separatorBrush;
@@ -111,7 +111,7 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
                 case LauncherSeparatorKind.Space: {
                         var rectangle = new Rectangle();
 
-                        using(Initializer.Begin(rectangle)) {
+                        using(rectangle.BeginInitialize()) {
                             if(isHorizontal) {
                                 rectangle.Height = width;
                             } else {

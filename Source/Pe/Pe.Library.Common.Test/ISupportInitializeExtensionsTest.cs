@@ -9,7 +9,7 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test
 {
-    public class InitializerTest
+    public class ISupportInitializeExtensionsTest
     {
         #region define
 
@@ -41,11 +41,12 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         #region function
 
         [Fact]
-        public void BeginTest()
+        public void BeginInitializeTest()
         {
             var test = new X();
             Assert.False(test.IsInitializing);
-            using(var init = Initializer.Begin(test)) {
+            using(var init = test.BeginInitialize()) {
+                Assert.True(init.Target.IsInitializing);
                 Assert.Equal(test, init.Target);
                 Assert.True(test.IsInitializing);
             }

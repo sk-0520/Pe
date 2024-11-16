@@ -10,7 +10,7 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models
 {
-    public class FreezableUtilityTest
+    public class FreezableExtensionsTest
     {
         #region define
 
@@ -18,7 +18,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         {
             #region variable
 
-            private bool _canFreeze;
+            private readonly bool _canFreeze;
 
             #endregion
 
@@ -29,6 +29,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
 
             #region Freezable
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1144:Unused private types or members should be removed", Justification = "<保留中>")]
             public new bool CanFreeze => this._canFreeze;
 
             protected override Freezable CreateInstanceCore()
@@ -47,7 +48,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         public void SafeFreezeTest()
         {
             var test = new TestClass(true);
-            var actual = FreezableUtility.SafeFreeze(test);
+            var actual = test.SafeFreeze();
             Assert.True(actual);
         }
 
@@ -55,23 +56,23 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         public void SafeFreeze_null_Test()
         {
             TestClass? test = null;
-            var actual = FreezableUtility.SafeFreeze(test);
+            var actual = test.SafeFreeze();
             Assert.False(actual);
         }
 
         [Fact]
-        public void GetSafeFreezeTest()
+        public void GetFreezedTest()
         {
             var test = new TestClass(true);
-            var actual = FreezableUtility.GetSafeFreeze(test);
+            var actual = test.GetFreezed();
             Assert.Equal(test, actual);
         }
 
         [Fact]
-        public void GetSafeFreeze_null_Test()
+        public void GetFreezed_null_Test()
         {
             TestClass? test = null;
-            var actual = FreezableUtility.GetSafeFreeze(test);
+            var actual = test.GetFreezed();
             Assert.Null(actual);
         }
 
