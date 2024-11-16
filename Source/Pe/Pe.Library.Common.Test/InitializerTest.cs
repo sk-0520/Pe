@@ -45,7 +45,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         {
             var test = new X();
             Assert.False(test.IsInitializing);
-            using(var init = Initializer.Begin(test)) {
+            using(var init = test.BeginInitialize()) {
                 Assert.Equal(test, init.Target);
                 Assert.True(test.IsInitializing);
             }

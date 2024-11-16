@@ -57,17 +57,17 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         private DependencyObject GetCaptionImageCore(NoteCaptionButtonKind noteCaption, NoteCaptionPosition captionPosition, bool isEnabled, ColorPair<Color> baseColor)
         {
             var viewBox = new Viewbox();
-            using(Initializer.Begin(viewBox)) {
+            using(viewBox.BeginInitialize()) {
                 viewBox.Width = GetCaptionHeight() * 0.8;
                 viewBox.Height = viewBox.Width;
 
                 var canvas = new Canvas();
-                using(Initializer.Begin(canvas)) {
+                using(canvas.BeginInitialize()) {
                     canvas.Width = 24;
                     canvas.Height = 24;
 
                     var path = new Path();
-                    using(Initializer.Begin(path)) {
+                    using(path.BeginInitialize()) {
                         var resourceBaseKey = GetResourceBaseKey(noteCaption, isEnabled);
                         var geometry = GetResourceValue<Geometry>(nameof(DefaultNoteTheme), resourceBaseKey);
                         FreezableUtility.SafeFreeze(geometry);
@@ -173,17 +173,17 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         public DependencyObject GetResizeGripImage(NoteCaptionPosition captionPosition, ColorPair<Color> baseColor)
         {
             var viewBox = new Viewbox();
-            using(Initializer.Begin(viewBox)) {
+            using(viewBox.BeginInitialize()) {
                 viewBox.Width = GetResizeGripSize().Width;
                 viewBox.Height = GetResizeGripSize().Height;
 
                 var canvas = new Canvas();
-                using(Initializer.Begin(canvas)) {
+                using(canvas.BeginInitialize()) {
                     canvas.Width = 24;
                     canvas.Height = 24;
 
                     var path = new Path();
-                    using(Initializer.Begin(path)) {
+                    using(path.BeginInitialize()) {
                         var resourceBaseKey = "Path-Note-ResizeGrip";
                         var geometry = GetResourceValue<Geometry>(nameof(DefaultNoteTheme), resourceBaseKey);
                         path.Data = geometry;

@@ -35,7 +35,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Note
         public string ToRichText(string plainText, IFont font, Color foregroundColor)
         {
             var document = new FlowDocument();
-            using(Initializer.Begin(document)) {
+            using(document.BeginInitialize()) {
                 var fontConverter = new FontConverter(LoggerFactory);
                 document.FontFamily = fontConverter.MakeFontFamily(font.FamilyName, SystemFonts.MessageFontFamily);
                 document.FontSize = font.Size;
@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Note
         public FlowDocument ToFlowDocument(string content)
         {
             var document = new FlowDocument();
-            using(Initializer.Begin(document)) {
+            using(document.BeginInitialize()) {
                 var range = new TextRange(document.ContentStart, document.ContentEnd);
                 using(var stream = new MemoryReleaseStream(Encoding.GetBytes(content))) {
                     stream.Seek(0, SeekOrigin.Begin);

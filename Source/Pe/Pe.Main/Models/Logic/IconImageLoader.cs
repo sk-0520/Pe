@@ -53,7 +53,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         private static BitmapSource LoadFromStream(Stream stream)
         {
             var bitmapImage = new BitmapImage();
-            using(Initializer.Begin(bitmapImage)) {
+            using(bitmapImage.BeginInitialize()) {
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.CreateOptions = BitmapCreateOptions.None;
                 bitmapImage.StreamSource = stream;

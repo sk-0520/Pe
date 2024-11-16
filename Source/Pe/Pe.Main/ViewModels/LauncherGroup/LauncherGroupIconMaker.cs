@@ -37,18 +37,18 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherGroup
         private DependencyObject GetGroupImageCore(LauncherGroupImageName imageName, Color imageColor, IconBox iconBox, Point dpiScale, bool isStrong)
         {
             var viewBox = new Viewbox();
-            using(Initializer.Begin(viewBox)) {
+            using(viewBox.BeginInitialize()) {
                 var iconSize = new IconSize(iconBox, dpiScale);
                 viewBox.Width = iconSize.Width;
                 viewBox.Height = iconSize.Height;
 
                 var canvas = new Canvas();
-                using(Initializer.Begin(canvas)) {
+                using(canvas.BeginInitialize()) {
                     canvas.Width = 24;
                     canvas.Height = 24;
 
                     var path = new Path();
-                    using(Initializer.Begin(path)) {
+                    using(path.BeginInitialize()) {
                         var resourceKey = GetResourceKey(imageName);
                         var geometry = (Geometry)Application.Current.Resources[resourceKey];
                         FreezableUtility.SafeFreeze(geometry);

@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             );
 
             var canvas = new Canvas();
-            using(Initializer.Begin(canvas)) {
+            using(canvas.BeginInitialize()) {
                 canvas.Width = drawSize.Width;
                 canvas.Height = drawSize.Height;
 
