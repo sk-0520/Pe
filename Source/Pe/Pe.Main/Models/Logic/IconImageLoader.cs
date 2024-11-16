@@ -77,7 +77,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 static BitmapSource LoadImage(Func<Stream, BitmapSource> loader, Stream stream)
                 {
                     var image = loader(stream);
-                    FreezableUtility.SafeFreeze(image);
+                    image.SafeFreeze();
                     return image;
                 }
                 var iconImage = DispatcherWrapper?.Get(s => LoadImage(LoadFromStream, s), stream) ?? LoadImage(LoadFromStream, stream);
@@ -105,8 +105,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
                 static BitmapSource ResizeCore(BitmapSource bitmapSource, double scaleX, double scaleY)
                 {
-                    var transformedBitmap = FreezableUtility.GetSafeFreeze(new TransformedBitmap(bitmapSource, new ScaleTransform(scaleX, scaleY)));
-                    return FreezableUtility.GetSafeFreeze(new WriteableBitmap(transformedBitmap));
+                    var transformedBitmap = new TransformedBitmap(bitmapSource, new ScaleTransform(scaleX, scaleY)).GetFreezed();
+                    return new WriteableBitmap(transformedBitmap).GetFreezed();
                 }
 
                 return DispatcherWrapper?.Get(args => ResizeCore(args.bitmapSource, args.scaleX, args.scaleY), (bitmapSource, scaleX, scaleY)) ?? ResizeCore(bitmapSource, scaleX, scaleY);
@@ -139,7 +139,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                         static BitmapSource LoadCore(Func<Stream, BitmapSource> loader, Stream stream)
                         {
                             var image = loader(stream);
-                            return FreezableUtility.GetSafeFreeze(image);
+                            return image.GetFreezed();
                         }
                         iconImage = DispatcherWrapper?.Get(() => LoadCore(LoadFromStream, stream)) ?? LoadCore(LoadFromStream, stream);
                     }
@@ -150,7 +150,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                     {
                         var iconSize = iconScale.ToIconSize();
                         var image = iconLoader.Load(path, index, iconSize);
-                        return FreezableUtility.GetSafeFreeze(image!);
+                        return image!.GetFreezed(); // null でもいいんだけど ? しててもダメなんか
                     }
                     iconImage = DispatcherWrapper?.Get(() => LoadCore(path, iconData.Index, iconScale, iconLoader)) ?? LoadCore(path, iconData.Index, iconScale, iconLoader);
                 }

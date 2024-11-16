@@ -70,9 +70,9 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
             using(box.BeginInitialize()) {
                 box.Width = size.Width;
                 box.Height = size.Height;
-                box.Stroke = FreezableUtility.GetSafeFreeze(new SolidColorBrush(borderColor));
+                box.Stroke = new SolidColorBrush(borderColor).GetFreezed();
                 box.StrokeThickness = 1;
-                box.Fill = FreezableUtility.GetSafeFreeze(new SolidColorBrush(fillColor));
+                box.Fill = new SolidColorBrush(fillColor).GetFreezed();
             }
             return box;
         }

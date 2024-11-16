@@ -41,7 +41,7 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         {
             var color = PlatformTheme.GetTaskbarColor();
             color.A = 255;
-            return FreezableUtility.GetSafeFreeze(new SolidColorBrush(color));
+            return new SolidColorBrush(color).GetFreezed();
         }
 
         /// <inheritdoc cref="INotifyLogTheme.GetViewBorderCornerRadius"/>
@@ -54,7 +54,7 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         public Brush GetViewBackgroundBrush()
         {
             var colors = PlatformTheme.GetTaskbarColor();
-            return FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors));
+            return new SolidColorBrush(colors).GetFreezed();
         }
         /// <inheritdoc cref="INotifyLogTheme.GetViewPaddingThickness"/>
         public Thickness GetViewPaddingThickness()

@@ -70,9 +70,9 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
                     using(path.BeginInitialize()) {
                         var resourceBaseKey = GetResourceBaseKey(noteCaption, isEnabled);
                         var geometry = GetResourceValue<Geometry>(nameof(DefaultNoteTheme), resourceBaseKey);
-                        FreezableUtility.SafeFreeze(geometry);
+                        geometry.SafeFreeze();
                         path.Data = geometry;
-                        path.Fill = FreezableUtility.GetSafeFreeze(new SolidColorBrush(baseColor.Foreground));
+                        path.Fill = new SolidColorBrush(baseColor.Foreground).GetFreezed();
                         //path.Stroke = FreezableUtility.GetSafeFreeze(new SolidColorBrush(MediaUtility.GetAutoColor(baseColor.Foreground)));
                         //path.StrokeThickness = 1;
                     }
@@ -125,15 +125,15 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         {
             var pair = new ColorPair<Brush>(new SolidColorBrush(baseColor.Foreground), new SolidColorBrush(baseColor.Background));
 
-            FreezableUtility.SafeFreeze(pair.Foreground);
-            FreezableUtility.SafeFreeze(pair.Background);
+            pair.Foreground.SafeFreeze();
+            pair.Background.SafeFreeze();
 
             return pair;
         }
 
         public Brush GetBorderBrush(NoteCaptionPosition captionPosition, ColorPair<Color> baseColor)
         {
-            return FreezableUtility.GetSafeFreeze(new SolidColorBrush(baseColor.Background));
+            return new SolidColorBrush(baseColor.Background).GetFreezed();
         }
 
         public ColorPair<Brush> GetContentBrush(NoteCaptionPosition captionPosition, ColorPair<Color> baseColor)
@@ -155,8 +155,8 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
             });
             var gradation = new LinearGradientBrush(collection, new Point(0, 0), new Point(0, 1));
             return ColorPair.Create<Brush>(
-                FreezableUtility.GetSafeFreeze(new SolidColorBrush(baseColor.Foreground)),
-                FreezableUtility.GetSafeFreeze(gradation)
+                new SolidColorBrush(baseColor.Foreground).GetFreezed(),
+                gradation.GetFreezed()
             );
         }
 
@@ -187,8 +187,8 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
                         var resourceBaseKey = "Path-Note-ResizeGrip";
                         var geometry = GetResourceValue<Geometry>(nameof(DefaultNoteTheme), resourceBaseKey);
                         path.Data = geometry;
-                        path.Fill = FreezableUtility.GetSafeFreeze(new SolidColorBrush(MediaUtility.GetAutoColor(baseColor.Foreground)));
-                        path.Stroke = FreezableUtility.GetSafeFreeze(new SolidColorBrush(baseColor.Foreground));
+                        path.Fill = new SolidColorBrush(MediaUtility.GetAutoColor(baseColor.Foreground)).GetFreezed();
+                        path.Stroke = new SolidColorBrush(baseColor.Foreground).GetFreezed();
                         path.StrokeThickness = 1;
                     }
                     canvas.Children.Add(path);

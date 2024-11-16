@@ -41,7 +41,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Note
                 document.FontSize = font.Size;
                 document.FontWeight = fontConverter.ToWeight(font.IsBold);
                 document.FontStyle = fontConverter.ToStyle(font.IsItalic);
-                document.Foreground = FreezableUtility.GetSafeFreeze(new SolidColorBrush(foregroundColor));
+                document.Foreground = new SolidColorBrush(foregroundColor).GetFreezed();
 
                 var lines = TextUtility.ReadLines(plainText)
                     .Select(i => new Run(i))

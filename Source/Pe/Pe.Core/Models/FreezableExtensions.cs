@@ -6,7 +6,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
     /// <summary>
     /// <see cref="Freezable"/>に対するあれ。
     /// </summary>
-    public static class FreezableUtility
+    public static class FreezableExtensions
     {
         /// <summary>
         /// 安全に<see cref="Freezable.Freeze()"/>する。
@@ -16,7 +16,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         /// </remarks>
         /// <param name="freezable"></param>
         /// <returns></returns>
-        public static bool SafeFreeze(Freezable? freezable)
+        public static bool SafeFreeze(this Freezable? freezable)
         {
             if(freezable == null) {
                 return false;
@@ -34,13 +34,13 @@ namespace ContentTypeTextNet.Pe.Core.Models
         /// 引数のオブジェクトに対して<see cref="SafeFreeze(Freezable?)"/>を実施したオブジェクトをそのまま返す。
         /// </summary>
         /// <code>
-        /// var brush = FreezableUtility.GetSafeFreeze(new SolidColorBrush(Colors.Red));
+        /// var brush = new SolidColorBrush(Colors.Red).GetSafeFreeze();
         /// </code>
         /// <typeparam name="TFreezable"></typeparam>
         /// <param name="freezable"></param>
         /// <returns></returns>
         [return: NotNullIfNotNull("freezable")]
-        public static TFreezable? GetSafeFreeze<TFreezable>(TFreezable? freezable)
+        public static TFreezable? GetFreezed<TFreezable>(this TFreezable? freezable)
             where TFreezable : Freezable
         {
             SafeFreeze(freezable);

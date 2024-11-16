@@ -51,10 +51,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherGroup
                     using(path.BeginInitialize()) {
                         var resourceKey = GetResourceKey(imageName);
                         var geometry = (Geometry)Application.Current.Resources[resourceKey];
-                        FreezableUtility.SafeFreeze(geometry);
+                        geometry.SafeFreeze();
                         path.Data = geometry;
-                        path.Fill = FreezableUtility.GetSafeFreeze(new SolidColorBrush(imageColor));
-                        path.Stroke = FreezableUtility.GetSafeFreeze(new SolidColorBrush(MediaUtility.GetAutoColor(imageColor)));
+                        path.Fill = new SolidColorBrush(imageColor).GetFreezed();
+                        path.Stroke = new SolidColorBrush(MediaUtility.GetAutoColor(imageColor)).GetFreezed();
                         path.StrokeThickness = 1;
                     }
                     canvas.Children.Add(path);
