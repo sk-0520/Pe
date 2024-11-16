@@ -8,7 +8,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <summary>
     /// <see cref="ISupportInitialize"/>の初期化から初期化終了までを<see langword="using" />で実施できるようにする。
     /// </summary>
-    public sealed class SupportInitializer<TSupportInitialize>: IDisposable, IDisposed
+    /// <remarks>持ち運びしない想定。</remarks>
+    public readonly ref struct SupportInitializer<TSupportInitialize>
         where TSupportInitialize : ISupportInitialize
     {
         public SupportInitializer(TSupportInitialize target)
@@ -22,29 +23,11 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         #endregion
 
-        #region IDisposed
+        #region IDisposable
 
-        public bool IsDisposed { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2953:Methods named \"Dispose\" should implement \"IDisposable.Dispose\"", Justification = "<保留中>")]
-        private void Dispose(bool disposing)
-        {
-            if(!IsDisposed) {
-                if(disposing) {
-                    Target.EndInit();
-                }
-
-                IsDisposed = true;
-            }
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA1816:Dispose メソッドは、SuppressFinalize を呼び出す必要があります", Justification = "<保留中>")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3971:\"GC.SuppressFinalize\" should not be called", Justification = "<保留中>")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2953:Methods named \"Dispose\" should implement \"IDisposable.Dispose\"", Justification = "<保留中>")]
         public void Dispose()
         {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
+            Target.EndInit();
         }
 
         #endregion
