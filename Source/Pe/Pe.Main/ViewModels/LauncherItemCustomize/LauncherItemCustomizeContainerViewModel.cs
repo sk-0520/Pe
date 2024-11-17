@@ -11,7 +11,7 @@ using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 
@@ -85,11 +85,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
-        { }
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
-        public void ReceiveViewLoaded(Window window)
-        { }
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)
         {

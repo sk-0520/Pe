@@ -88,6 +88,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         /// プラグインインストーラ(Web)。
         /// </summary>
         PluginWebInstaller,
+        /// <summary>
+        /// ヘルプ。
+        /// </summary>
+        /// <remarks>これは WebView 表示用のテスト的な UI であり、これが壊れても別に構わない。</remarks>
+        Help,
 
         /// <summary>
         /// プラグイン ウィジェット。
@@ -308,7 +313,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         #endregion
 
-        private void Window_SourceInitialized(object sender, EventArgs e)
+        private async void Window_SourceInitialized(object sender, EventArgs e)
         {
             var window = (Window)sender;
             Logger.LogDebug("ウィンドウハンドル生成: {0}", window);
@@ -352,11 +357,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 hWndSource.AddHook(WndProc);
                 WindowHandleSources.Add(item, hWndSource);
 
-                viewLifecycleReceiver.ReceiveViewInitialized(window);
+                await viewLifecycleReceiver.ReceiveViewInitializedAsync(window, CancellationToken.None);
             }
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var window = (Window)sender;
             Logger.LogDebug("ウィンドウ生成完了: {0}", window);
@@ -366,7 +371,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var item = Items.First(i => i.Window == window);
             item.IsOpened = true;
             if(item.ViewModel is IViewLifecycleReceiver viewLifecycleReceiver) {
-                viewLifecycleReceiver.ReceiveViewLoaded(window);
+                await viewLifecycleReceiver.ReceiveViewLoadedAsync(window, CancellationToken.None);
             }
         }
 

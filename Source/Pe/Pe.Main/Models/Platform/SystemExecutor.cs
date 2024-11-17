@@ -3,7 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Platform
 {
@@ -68,7 +69,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
             var process = new Process();
             process.StartInfo.UseShellExecute = true;
             process.StartInfo.FileName = "explorer.exe";
-            process.StartInfo.Arguments = $"/select,{CommandLine.Escape(filePath)}";
+            process.StartInfo.Arguments = $"/select,{CommandLineHelper.Escape(filePath)}";
             process.Start();
             return process;
         }

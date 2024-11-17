@@ -13,7 +13,7 @@ using ContentTypeTextNet.Pe.Main.Models.Plugin;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 using Xunit;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Plugin
 {

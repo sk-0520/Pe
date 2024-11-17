@@ -23,7 +23,7 @@ using ContentTypeTextNet.Pe.Main.Models.Plugin.Theme;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using ContentTypeTextNet.Pe.Main.ViewModels.Font;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 
@@ -454,17 +454,21 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
             DpiScaleOutpour = (IDpiScaleOutpour)window;
 
             var hWnd = HandleUtility.GetWindowHandle(window);
             var hWndSource = HwndSource.FromHwnd(hWnd);
             hWndSource.AddHook(WndProc);
+
+            return Task.CompletedTask;
         }
 
-        public void ReceiveViewLoaded(Window window)
-        { }
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)
         {

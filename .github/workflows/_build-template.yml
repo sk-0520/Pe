@@ -950,8 +950,9 @@ jobs:
           - macos-13
         TARGET:
           - Pe.Library.CliProxy.Test
+          - Pe.Library.Args.Test
           - Pe.Library.Property.Test
-          - Pe.Library.Base.Test
+          - Pe.Library.Common.Test
           - Pe.Library.Database.Test
           - Pe.Library.DependencyInjection.Test
 

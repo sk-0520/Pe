@@ -16,10 +16,21 @@ using ContentTypeTextNet.Pe.Main.Models.Platform;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
+using ContentTypeTextNet.Pe.Main.Models.WebView;
+using ContentTypeTextNet.Pe.Main.Views.ReleaseNote;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Windows;
+using ContentTypeTextNet.Pe.Main.Views.About;
+using Microsoft.Web.WebView2.Core;
+using System.Diagnostics;
+using Microsoft.Web.WebView2.Wpf;
+using System.Collections.Generic;
+using ContentTypeTextNet.Pe.Library.Common;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 {
-    public class AboutViewModel: ElementViewModelBase<AboutElement>
+    public class AboutViewModel: ElementViewModelBase<AboutElement>, IViewLifecycleReceiver
     {
         #region variable
 
@@ -27,9 +38,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 
         #endregion
 
-        public AboutViewModel(AboutElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public AboutViewModel(AboutElement model, IWebViewInitializer webViewInitializer, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(model, userTracker, dispatcherWrapper, loggerFactory)
         {
+            WebViewInitializer = webViewInitializer;
             ComponentCollection = new ObservableCollection<AboutComponentItemViewModel>(model.Components.Select(i => new AboutComponentItemViewModel(i, LoggerFactory)));
             ComponentItems = CollectionViewSource.GetDefaultView(ComponentCollection);
             ComponentItems.GroupDescriptions.Add(new PropertyGroupDescription(nameof(AboutComponentItemViewModel.Kind)));
@@ -37,6 +49,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
         }
 
         #region property
+
+        private IWebViewInitializer WebViewInitializer { get; }
 
         public RequestSender CloseRequest { get; } = new RequestSender();
         public RequestSender FileSelectRequest { get; } = new RequestSender();
@@ -279,6 +293,55 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
             RaisePropertyChanged(callerMemberName);
         }
 
+        private string GetRuntimePath(CoreWebView2 coreWebView)
+        {
+            var processId = (int)coreWebView.BrowserProcessId;
+            try {
+                var process = Process.GetProcessById(processId);
+                var fileName = process.MainModule?.FileName;
+                return System.IO.Path.GetDirectoryName(fileName) ?? throw new WebView2RuntimeNotFoundException("failed to get runtime path");
+            } catch(Exception e) {
+                Logger.LogError(e, e.Message);
+                return e.Message;
+            }
+        }
+
+        #endregion
+
+        #region IViewLifecycleReceiver
+
+        public async Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
+        {
+            var view = (AboutWindow)window;
+
+            await WebViewInitializer.WaitInitializeAsync(cancellationToken);
+
+            var options = new CoreWebView2EnvironmentOptions();
+            var parameter = new Dictionary<string,string>() {
+                ["ASSEMBLY_NAME"] = typeof(WebView2).Assembly.FullName!,
+                ["SDK_VERSION"] = options.TargetCompatibleBrowserVersion,
+                ["RUNTIME_VERSION"] = view.webView.CoreWebView2.Environment.BrowserVersionString,
+                ["RUNTIME_PATH"] = GetRuntimePath(view.webView.CoreWebView2),
+            };
+            var html = TextUtility.ReplaceFromDictionary(Properties.Resources.File_About_WebView, parameter);
+            view.webView.NavigateToString(html);
+        }
+
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public void ReceiveViewUserClosing(Window window, CancelEventArgs e)
+        { }
+
+        public void ReceiveViewClosing(Window window, CancelEventArgs e)
+        { }
+
+        public Task ReceiveViewClosedAsync(Window window, bool isUserOperation, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
         #endregion
     }
 }

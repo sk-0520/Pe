@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pe.Library.Base\Pe.Library.Base.csproj" />
+    <ProjectReference Include="..\Pe.Library.Common\Pe.Library.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

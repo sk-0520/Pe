@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 
 namespace ContentTypeTextNet.Pe.Core.Compatibility.Forms
 {

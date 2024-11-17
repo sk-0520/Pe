@@ -1,4 +1,8 @@
+using System;
+using System.Threading;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using Microsoft.Extensions.Logging;
@@ -7,7 +11,31 @@ using Microsoft.Web.WebView2.Wpf;
 
 namespace ContentTypeTextNet.Pe.Main.Models.WebView
 {
-    public class WebViewInitializer
+    public interface IWebViewInitializer
+    {
+        #region property
+
+        /// <summary>
+        /// WebView が初期化済みか。
+        /// </summary>
+        bool IsInitialized { get; }
+
+        #endregion
+
+        #region function
+
+        /// <summary>
+        /// WevView 初期化が完了するまで待機。
+        /// </summary>
+        /// <remarks>初期化完了済みでも呼び出し可能。</remarks>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task WaitInitializeAsync(CancellationToken cancellationToken);
+
+        #endregion
+    }
+
+    public class WebViewInitializer: DisposerBase, IWebViewInitializer
     {
         public WebViewInitializer(ILoggerFactory loggerFactory)
         {
@@ -16,6 +44,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.WebView
         }
 
         #region property
+
+        private ManualResetEventSlim InitializeCompleted { get; } = new ManualResetEventSlim(false);
 
         /// <inheritdoc cref="ILoggerFactory"/>
         private ILoggerFactory LoggerFactory { get; }
@@ -53,9 +83,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.WebView
             var webViewEnvironment = await CoreWebView2Environment.CreateAsync(null, userDataDirectoryPath);
 
             await webView.EnsureCoreWebView2Async(webViewEnvironment);
-
             webView.CoreWebView2.Settings.AreDevToolsEnabled = environmentParameters.ApplicationConfiguration.Web.DeveloperTools;
             webView.CoreWebView2.Settings.UserAgent = ApplicationStringFormats.GetHttpUserAgentWebViewValue(environmentParameters.ApplicationConfiguration.Web.ViewUserAgentFormat, webView);
+            InitializeCompleted.Set();
         }
 
         //public void AddVisualCppRuntimeRedist(EnvironmentParameters environmentParameters)
@@ -76,6 +106,79 @@ namespace ContentTypeTextNet.Pe.Main.Models.WebView
         //        File.Copy(path, dstPath);
         //    }
         //}
+
+        #endregion
+
+        #region IWebViewInitializer
+
+        public bool IsInitialized { get; private set; }
+
+        public Task WaitInitializeAsync(CancellationToken cancellationToken)
+        {
+            if(IsInitialized) {
+                return Task.FromResult(IsInitialized);
+            }
+
+            return Task.Run(() => {
+                try {
+                    InitializeCompleted.Wait(cancellationToken);
+                    IsInitialized = true;
+                } catch(Exception ex) {
+                    Logger.LogError(ex, ex.Message);
+                }
+            }, cancellationToken);
+        }
+
+        #endregion
+
+        #region DisposerBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                InitializeCompleted.Dispose();
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
+    }
+
+    public static class WebViewInitializerExtensions
+    {
+        #region function
+
+        /// <summary>
+        /// <see cref="WebViewInitializer"/>をDIコンテナに登録する。
+        /// </summary>
+        /// <param name="webViewInitializer">登録するオブジェクト。</param>
+        /// <param name="container">登録先DIコンテナ。</param>
+        public static void RegisterToDiContainer(this WebViewInitializer webViewInitializer, IDiRegisterContainer container)
+        {
+            container.Register(webViewInitializer);
+            container.Register<IWebViewInitializer>(webViewInitializer);
+        }
+
+        /// <summary>
+        /// <see cref="WebViewInitializer"/>をDIコンテナに一時的に登録する。
+        /// </summary>
+        /// <remarks>
+        /// <para>プロパティインジェクションが外部から渡せない都合でこれで一時的に登録・解除を行う。つらい設計。</para>
+        /// <para><see cref="IDiScopeContainerFactory.Scope"/>が使えるのであればそちらを使用すべき。</para>
+        /// </remarks>
+        /// <param name="webViewInitializer">登録するオブジェクト。</param>
+        /// <param name="container">登録先DIコンテナ。</param>
+        /// <returns>解除処理。</returns>
+        public static IDisposable RegisterTemporaryToDiContainer(this WebViewInitializer webViewInitializer, IDiRegisterContainer container)
+        {
+            webViewInitializer.RegisterToDiContainer(container);
+
+            return new ActionDisposer(d => {
+                container.Unregister<WebViewInitializer>();
+                container.Unregister<IWebViewInitializer>();
+            });
+        }
 
         #endregion
     }

@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 {

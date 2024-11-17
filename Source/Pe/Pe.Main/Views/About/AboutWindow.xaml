@@ -3,6 +3,8 @@
   x:Class="ContentTypeTextNet.Pe.Main.Views.About.AboutWindow"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  
+  xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
 
   xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
   xmlns:prism="http://prismlibrary.com/"
@@ -21,6 +23,8 @@
   Foreground="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
   Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
   BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+
+  SourceInitialized="root_SourceInitialized"
 
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:datacontext="clr-namespace:ContentTypeTextNet.Pe.Main.ViewModels.About" d:DataContext="{d:DesignInstance Type=datacontext:AboutViewModel}"
@@ -205,6 +209,14 @@
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>
+
+            <Separator />
+
+            <StackPanel Margin="{StaticResource AllMargin}">
+              <TextBlock Style="{StaticResource Header}" Text="{Binding Resources.String_About_WebView_Header, Source={x:Static app_main:CultureService.Instance}}" />
+
+              <wv2:WebView2 x:Name="webView" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="{StaticResource HalfMargin}" Height="200" />
+            </StackPanel>
 
             <Separator />
 

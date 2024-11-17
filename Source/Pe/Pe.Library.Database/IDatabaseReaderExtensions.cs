@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection.PortableExecutable;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +13,7 @@ using System.Threading.Tasks;
 namespace ContentTypeTextNet.Pe.Library.Database
 {
     /// <summary>
-    /// 読み込み処理の安全のしおり。
+    /// <see cref="IDataReader"/>の各種メソッドデフォルト引数追加と読み込み処理の安全のしおり。
     /// </summary>
     /// <remarks>
     /// <para>問い合わせ文として非ユーザー入力でデバッグ中に検証可能なものを想定している。</para>
@@ -20,10 +24,121 @@ namespace ContentTypeTextNet.Pe.Library.Database
     {
         #region function
 
+        /// <inheritdoc cref="IDatabaseReader.GetDataReader(string, object?)"/>
+        public static IDataReader GetDataReader(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.GetDataReader(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.GetDataReaderAsync(string, object?, CancellationToken)"/>
+        public static Task<IDataReader> GetDataReaderAsync(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.GetDataReaderAsync(statement, parameter, cancellationToken);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.GetDataTable(string, object?)"/>
+        public static DataTable GetDataTable(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.GetDataTable(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.GetDataTableAsync(string, object?, CancellationToken)"/>
+        public static Task<DataTable> GetDataTableAsync(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.GetDataTableAsync(statement, parameter, cancellationToken);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.GetScalar{TResult}(string, object?)"/>
+        public static TResult? GetScalar<TResult>(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.GetScalar<TResult>(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.GetScalarAsync{TResult}(string, object?, CancellationToken)"/>
+        public static Task<TResult?> GetScalarAsync<TResult>(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.GetScalarAsync<TResult>(statement, parameter, cancellationToken);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.Query{T}(string, object?, bool)"/>
+        public static IEnumerable<T> Query<T>(this IDatabaseReader reader, string statement, object? parameter = null, bool buffered = true)
+        {
+            return reader.Query<T>(statement, parameter, buffered);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QueryAsync{T}(string, object?, bool, CancellationToken)"/>
+        public static Task<IEnumerable<T>> QueryAsync<T>(this IDatabaseReader reader, string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        {
+            return reader.QueryAsync<T>(statement, parameter, buffered, cancellationToken);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.Query(string, object?, bool)"/>
+        public static IEnumerable<dynamic> Query(this IDatabaseReader reader, string statement, object? parameter = null, bool buffered = true)
+        {
+            return reader.Query(statement, parameter, buffered);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QueryAsync(string, object?, bool, CancellationToken)"/>
+        public static Task<IEnumerable<dynamic>> QueryAsync(this IDatabaseReader reader, string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        {
+            return reader.QueryAsync(statement, parameter, buffered, cancellationToken);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QueryFirst{T}(string, object?)"/>
+        public static T QueryFirst<T>(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.QueryFirst<T>(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QueryFirstAsync{T}(string, object?, CancellationToken)"/>
+        public static Task<T> QueryFirstAsync<T>(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.QueryFirstAsync<T>(statement, parameter, cancellationToken);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QueryFirstOrDefault{T}(string, object?)"/>
+        [return: MaybeNull]
+        public static T QueryFirstOrDefault<T>(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.QueryFirstOrDefault<T>(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QueryFirstOrDefaultAsync{T}(string, object?, CancellationToken)"/>
+        public static Task<T?> QueryFirstOrDefaultAsync<T>(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.QueryFirstOrDefaultAsync<T>(statement, parameter, cancellationToken);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QuerySingle{T}(string, object?)"/>
+        public static T QuerySingle<T>(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.QuerySingle<T>(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QuerySingleAsync{T}(string, object?, CancellationToken)"/>
+        public static Task<T> QuerySingleAsync<T>(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.QuerySingleAsync<T>(statement, parameter, cancellationToken);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QuerySingleOrDefault{T}(string, object?)"/>
+        [return: MaybeNull]
+        public static T QuerySingleOrDefault<T>(this IDatabaseReader reader, string statement, object? parameter = null)
+        {
+            return reader.QuerySingleOrDefault<T>(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseReader.QuerySingleOrDefaultAsync{T}(string, object?, CancellationToken)"/>
+        public static Task<T?> QuerySingleOrDefaultAsync<T>(this IDatabaseReader reader, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return reader.QuerySingleOrDefaultAsync<T>(statement, parameter, cancellationToken);
+        }
+
+
         [Conditional("DEBUG")]
         private static void ThrowIfNotOrderBy(string statement)
         {
-            if(!Regex.IsMatch(statement, @"\border\s+by\b", RegexOptions.IgnoreCase | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
+            if(!Regex.IsMatch(statement, @"\b order \s+ by \b", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
                 throw new DatabaseStatementException("order by");
             }
         }
@@ -71,7 +186,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         [Conditional("DEBUG")]
         private static void ThrowIfNotSingleCount(string statement)
         {
-            if(!Regex.IsMatch(statement, @"\bselect\s+count\s*\(", RegexOptions.IgnoreCase | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
+            if(!Regex.IsMatch(statement, @"\b select \s+ count \s*\(", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
                 throw new DatabaseStatementException("select count()");
             }
         }

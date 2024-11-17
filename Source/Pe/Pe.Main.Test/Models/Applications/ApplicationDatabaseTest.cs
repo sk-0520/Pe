@@ -12,6 +12,7 @@ using Dapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
+using ContentTypeTextNet.Pe.Library.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
 {

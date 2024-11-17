@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ContentTypeTextNet.Pe.Library.Database
 {
     /// <summary>
-    /// 書き込み処理の安全のしおり。
+    /// <see cref="IDatabaseWriter"/>の各種メソッドデフォルト引数追加と書き込み処理の安全のしおり。
     /// </summary>
     /// <remarks>
     /// <para>問い合わせ文として非ユーザー入力でデバッグ中に検証可能なものを想定している。</para>
@@ -20,10 +20,23 @@ namespace ContentTypeTextNet.Pe.Library.Database
     {
         #region function
 
+        /// <inheritdoc cref="IDatabaseWriter.Execute(string, object?)"/>
+        public static int Execute(this IDatabaseWriter writer, string statement, object? parameter = null)
+        {
+            return writer.Execute(statement, parameter);
+        }
+
+        /// <inheritdoc cref="IDatabaseWriter.ExecuteAsync(string, object?, CancellationToken)"/>
+        public static Task<int> ExecuteAsync(this IDatabaseWriter writer, string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        {
+            return writer.ExecuteAsync(statement, parameter, cancellationToken);
+        }
+
+
         [Conditional("DEBUG")]
         private static void ThrowIfNotUpdate(string statement)
         {
-            if(!Regex.IsMatch(statement, @"\bupdate\b", RegexOptions.IgnoreCase | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
+            if(!Regex.IsMatch(statement, @"\b update \b", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
                 throw new DatabaseStatementException("update");
             }
         }
@@ -116,7 +129,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         [Conditional("DEBUG")]
         private static void ThrowIfNotInsert(string statement)
         {
-            if(!Regex.IsMatch(statement, @"\binsert\b", RegexOptions.IgnoreCase | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
+            if(!Regex.IsMatch(statement, @"\b insert \b", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
                 throw new DatabaseStatementException("insert");
             }
         }
@@ -175,7 +188,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         [Conditional("DEBUG")]
         private static void ThrowIfNotDelete(string statement)
         {
-            if(!Regex.IsMatch(statement, @"\bdelete\b", RegexOptions.IgnoreCase | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
+            if(!Regex.IsMatch(statement, @"\b delete \b", RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline, Timeout.InfiniteTimeSpan)) {
                 throw new DatabaseStatementException("delete");
             }
         }

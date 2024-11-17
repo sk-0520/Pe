@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ContentTypeTextNet.Pe.Library.Base;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {

@@ -27,8 +27,8 @@ namespace ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite
                 return false;
             }
 
-            if(value is bool) {
-                return (bool)value;
+            if(value is bool result) {
+                return result;
             }
 
             return (long)value != 0;

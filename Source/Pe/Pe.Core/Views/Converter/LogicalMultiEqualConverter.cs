@@ -1,6 +1,6 @@
 using System;
 using System.Windows.Data;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Core.Views.Converter
 {

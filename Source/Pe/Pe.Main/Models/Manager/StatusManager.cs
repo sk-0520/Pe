@@ -1,7 +1,7 @@
 using System;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager

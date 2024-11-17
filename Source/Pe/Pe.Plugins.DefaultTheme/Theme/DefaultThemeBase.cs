@@ -5,7 +5,7 @@ using System.Windows.Shapes;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
@@ -67,12 +67,12 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         public static FrameworkElement CreateBox(Color borderColor, Color fillColor, Size size)
         {
             var box = new Rectangle();
-            using(Initializer.Begin(box)) {
+            using(box.BeginInitialize()) {
                 box.Width = size.Width;
                 box.Height = size.Height;
-                box.Stroke = FreezableUtility.GetSafeFreeze(new SolidColorBrush(borderColor));
+                box.Stroke = new SolidColorBrush(borderColor).GetFreezed();
                 box.StrokeThickness = 1;
-                box.Fill = FreezableUtility.GetSafeFreeze(new SolidColorBrush(fillColor));
+                box.Fill = new SolidColorBrush(fillColor).GetFreezed();
             }
             return box;
         }

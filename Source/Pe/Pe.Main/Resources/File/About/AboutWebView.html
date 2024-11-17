@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja">
+<head>
+	<meta charSet="utf-8" />
+	<style>
+		* {
+			font-family: monospace;
+			font-size: 10pt;
+		}
+		/* キー項目のセル */
+		tr > td:first-child {
+			white-space: nowrap;
+		}
+			/* 値項目のセル */
+			tr > td:first-child + td {
+				font-size: 90%;
+			}
+	</style>
+</head>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<th>KEY</th>
+				<th>VALUE</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Assembly Name</td>
+				<td><code>${ASSEMBLY_NAME}</code></td>
+			</tr>
+			<tr>
+				<td>SDK Version</td>
+				<td><code>${SDK_VERSION}</code></td>
+			</tr>
+			<tr>
+				<td>Runtime Version</td>
+				<td><code>${RUNTIME_VERSION}</code></td>
+			</tr>
+			<tr>
+				<td>Runtime Path</td>
+				<td><code>${RUNTIME_PATH}</code></td>
+			</tr>
+		</tbody>
+	</table>
+	<p>
+		<a target="_blank" href="https://learn.microsoft.com/microsoft-edge/">https://learn.microsoft.com/microsoft-edge/</a>
+	</p>
+</body>
+</html>

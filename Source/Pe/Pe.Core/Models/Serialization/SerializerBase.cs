@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 
 
 namespace ContentTypeTextNet.Pe.Core.Models.Serialization

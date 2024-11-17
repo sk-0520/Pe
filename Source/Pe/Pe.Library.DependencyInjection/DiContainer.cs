@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using ContentTypeTextNet.Pe.Library.Base;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 #if ENABLED_PRISM7
 using Prism.Ioc;
 #endif
@@ -476,7 +476,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
                     InjectionMembers.Where(d => d.BaseType.IsAssignableFrom(targetType)),
                     m => m.memberInfo.Name,
                     d => d.MemberInfo.Name,
-                    (m, d) => (item: m, dirty: d )
+                    (m, d) => (item: m, dirty: d)
                 )
             ;
             foreach(var pair in dirtyPairs) {
@@ -772,18 +772,17 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         /// <inheritdoc cref="IDiRegisterContainer.Unregister(Type, string)"/>
         public bool Unregister(Type interfaceType, string name)
         {
+            var mappingResult = Mapping[name].TryRemove(interfaceType, out _);
+           Constructors[name].TryRemove(interfaceType, out _);
             if(Factory[name].TryGetValue(interfaceType, out var factory)) {
-                Mapping[name].TryRemove(interfaceType, out _);
-                Factory[name].TryRemove(interfaceType, out _);
-                Constructors[name].TryRemove(interfaceType, out _);
                 if(factory.Lifecycle == DiLifecycle.Singleton) {
-                    ObjectPool[name].TryRemove(interfaceType, out _);
                     factory.Dispose();
                 }
-                return true;
+                Factory[name].Remove(interfaceType, out _);
             }
+            ObjectPool[name].TryRemove(interfaceType, out _);
 
-            return false;
+            return mappingResult  ;
         }
 
         /// <inheritdoc cref="IDiRegisterContainer.Unregister{TInterface}"/>

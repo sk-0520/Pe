@@ -3,7 +3,6 @@
 コマンドライン引数として識別するパターンは以下で始まるものです。
 
 * `--OPTION`
-* `/OPTION`
 
 値を指定する場合は以下の形式をサポートします
 
@@ -18,14 +17,10 @@
 
 * `--option value`
 * `--option=value`
-* `/option=value`
 * `--option "space value2"`
 * `--option="space value2"`
 * `"--option=space value2"`
 * `--switch`
-
-> [!WARNING]
-> `/option` 形式は将来的に整理予定なので `--option` の使用を推奨します。
 
 # 各値
 

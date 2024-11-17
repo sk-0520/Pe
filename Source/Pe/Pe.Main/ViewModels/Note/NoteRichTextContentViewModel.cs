@@ -17,7 +17,7 @@ using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Note;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 
@@ -234,9 +234,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                             decorations.Remove(current);
                         }
                     } else {
-                        var dec = FreezableUtility.GetSafeFreeze(new TextDecoration() {
+                        var dec = new TextDecoration() {
                             Location = location,
-                        });
+                        }.GetFreezed();
                         if(decorations.IsFrozen) {
                             var newDecorations = new TextDecorationCollection(decorations);
                             newDecorations.Add(dec);
@@ -270,13 +270,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         private void ApplySelectionForegroundColor()
         {
-            var brush = FreezableUtility.GetSafeFreeze(new SolidColorBrush(SelectionForegroundColor));
+            var brush = new SolidColorBrush(SelectionForegroundColor).GetFreezed();
             ApplySelectionPropertyValue(Inline.ForegroundProperty, brush);
         }
 
         private void ApplySelectionBackgroundColor()
         {
-            var brush = FreezableUtility.GetSafeFreeze(new SolidColorBrush(SelectionBackgroundColor));
+            var brush = new SolidColorBrush(SelectionBackgroundColor).GetFreezed();
             ApplySelectionPropertyValue(Inline.BackgroundProperty, brush);
         }
 

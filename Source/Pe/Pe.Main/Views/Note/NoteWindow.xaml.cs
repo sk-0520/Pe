@@ -15,7 +15,7 @@ using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Note;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Main.Views.Note
 {

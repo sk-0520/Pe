@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 {
@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             );
 
             var canvas = new Canvas();
-            using(Initializer.Begin(canvas)) {
+            using(canvas.BeginInitialize()) {
                 canvas.Width = drawSize.Width;
                 canvas.Height = drawSize.Height;
 

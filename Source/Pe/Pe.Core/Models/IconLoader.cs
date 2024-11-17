@@ -12,7 +12,7 @@ using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models.Unmanaged;
 using ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Core.Models
@@ -92,7 +92,6 @@ namespace ContentTypeTextNet.Pe.Core.Models
         /// <param name="name">リソース名。</param>
         /// <param name="resType"><inheritdoc cref="RT"/></param>
         /// <returns>取得成功した場合のリソースバイナリ。</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1168:Empty arrays and collections should be returned instead of null")]
         private byte[]? GetResourceBinaryData(IntPtr hModule, IntPtr name, RT resType)
         {
             var hGroup = NativeMethods.FindResource(hModule, name, new IntPtr((int)resType));

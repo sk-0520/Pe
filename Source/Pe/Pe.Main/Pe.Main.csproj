@@ -40,8 +40,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pe.Core\Pe.Core.csproj" />
+    <ProjectReference Include="..\Pe.Library.Args\Pe.Library.Args.csproj" />
+    <ProjectReference Include="..\Pe.Library.Common\Pe.Library.Common.csproj" />
     <ProjectReference Include="..\Pe.Plugins.DefaultTheme\Pe.Plugins.DefaultTheme.csproj" />
-    <ProjectReference Include="..\Pe.Library.Base\Pe.Library.Base.csproj" />
     <ProjectReference Include="..\Pe.Library.CliProxy\Pe.Library.CliProxy.csproj" />
     <ProjectReference Include="..\Pe.Library.Database\Pe.Library.Database.csproj" />
     <ProjectReference Include="..\Pe.Library.DependencyInjection\Pe.Library.DependencyInjection.csproj" />

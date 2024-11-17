@@ -79,7 +79,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     NotifyManager.AppendLogAsync(log, CancellationToken.None);
                 }),
                 factory.CreateParameter(ApplicationCommand.Help, p => {
-                    ShowHelp();
+                    _ = ShowHelpAsync(p.IsExtend, CancellationToken.None);
                 }),
             };
 

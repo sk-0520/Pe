@@ -6,7 +6,7 @@ using System.Windows.Shapes;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Main.Models.Data;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherGroup
 {
@@ -37,24 +37,24 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherGroup
         private DependencyObject GetGroupImageCore(LauncherGroupImageName imageName, Color imageColor, IconBox iconBox, Point dpiScale, bool isStrong)
         {
             var viewBox = new Viewbox();
-            using(Initializer.Begin(viewBox)) {
+            using(viewBox.BeginInitialize()) {
                 var iconSize = new IconSize(iconBox, dpiScale);
                 viewBox.Width = iconSize.Width;
                 viewBox.Height = iconSize.Height;
 
                 var canvas = new Canvas();
-                using(Initializer.Begin(canvas)) {
+                using(canvas.BeginInitialize()) {
                     canvas.Width = 24;
                     canvas.Height = 24;
 
                     var path = new Path();
-                    using(Initializer.Begin(path)) {
+                    using(path.BeginInitialize()) {
                         var resourceKey = GetResourceKey(imageName);
                         var geometry = (Geometry)Application.Current.Resources[resourceKey];
-                        FreezableUtility.SafeFreeze(geometry);
+                        geometry.SafeFreeze();
                         path.Data = geometry;
-                        path.Fill = FreezableUtility.GetSafeFreeze(new SolidColorBrush(imageColor));
-                        path.Stroke = FreezableUtility.GetSafeFreeze(new SolidColorBrush(MediaUtility.GetAutoColor(imageColor)));
+                        path.Fill = new SolidColorBrush(imageColor).GetFreezed();
+                        path.Stroke = new SolidColorBrush(MediaUtility.GetAutoColor(imageColor)).GetFreezed();
                         path.StrokeThickness = 1;
                     }
                     canvas.Children.Add(path);

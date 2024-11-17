@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
@@ -12,9 +12,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
     {
         #region define
 
-        private readonly struct LazyStockItem
+        private readonly struct DelayStockItem
         {
-            public LazyStockItem(Action<IDatabaseTransaction> action)
+            public DelayStockItem(Action<IDatabaseTransaction> action)
             {
                 Action = action;
                 StockUtcTimestamp = DateTime.UtcNow;
@@ -49,7 +49,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             PauseRetryTime = pauseRetryTime;
             Logger = loggerFactory.CreateLogger(GetType());
 
-            LazyTimer = new Timer(LazyCallback);
+            DelayTimer = new Timer(DelayCallback);
         }
 
         #region property
@@ -62,10 +62,10 @@ namespace ContentTypeTextNet.Pe.Library.Database
         private TimeSpan PauseRetryTime { get; }
         private ILogger Logger { get; }
 
-        private Timer LazyTimer { get; [Unused(UnusedKinds.Dispose)] set; }
+        private Timer DelayTimer { get; [Unused(UnusedKinds.Dispose)] set; }
 
-        private IList<LazyStockItem> StockItems { get; } = new List<LazyStockItem>();
-        private IDictionary<object, LazyStockItem> UniqueItems { get; } = new Dictionary<object, LazyStockItem>();
+        private List<DelayStockItem> StockItems { get; } = new List<DelayStockItem>();
+        private Dictionary<object, DelayStockItem> UniqueItems { get; } = new Dictionary<object, DelayStockItem>();
 
         #endregion
 
@@ -73,13 +73,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         private void StopTimer()
         {
-            LazyTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            DelayTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
         private void StartTimer()
         {
             ThrowIfDisposed();
 
-            LazyTimer.Change(PauseRetryTime, PauseRetryTime);
+            DelayTimer.Change(PauseRetryTime, PauseRetryTime);
         }
 
         private void StockCore(Action<IDatabaseTransaction> action, object? uniqueKey)
@@ -96,7 +96,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                     }
                 }
 
-                var item = new LazyStockItem(action);
+                var item = new DelayStockItem(action);
                 StockItems.Add(item);
                 if(uniqueKey != null) {
                     UniqueItems.Add(uniqueKey, item);
@@ -106,7 +106,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             }
         }
 
-        private void LazyCallback(object? state)
+        private void DelayCallback(object? state)
         {
             if(IsPausing) {
                 return;
@@ -114,7 +114,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             Flush();
         }
 
-        private void FlushCore(LazyStockItem[] stockItems)
+        private void FlushCore(DelayStockItem[] stockItems)
         {
             using var transaction = DatabaseBarrier.WaitWrite();
             foreach(var stockItem in stockItems) {
@@ -186,7 +186,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         void Flush(bool disposing)
         {
-            LazyStockItem[] items;
+            DelayStockItem[] items;
             lock(this._sync) {
                 if(disposing) {
                     StopTimer();
@@ -220,9 +220,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 StockItems.Clear();
                 UniqueItems.Clear();
                 if(disposing) {
-                    LazyTimer.Dispose();
+                    DelayTimer.Dispose();
                 }
-                LazyTimer = null!;
+                DelayTimer = null!;
             }
 
             base.Dispose(disposing);

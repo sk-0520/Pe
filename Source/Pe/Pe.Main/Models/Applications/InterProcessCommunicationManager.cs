@@ -24,9 +24,10 @@ using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Theme;
 using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Core.Models.Serialization;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {
@@ -58,9 +59,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             ApplicationDiContainer.RegisterDatabase(factory, delayWriterWaitTimePack, LoggerFactory);
 
             CommandLine = new CommandLine(e.Args, false);
-            var commandLineIpcHandle = CommandLine.Add(longKey: CommandLineKeyIpcHandle, hasValue: true);
-            var commandLineIpcMode = CommandLine.Add(longKey: CommandLineKeyIpcMode, hasValue: true);
-            CommandLineIpcFile = CommandLine.Add(longKey: CommandLineKeyIpcFile, hasValue: true);
+            var commandLineIpcHandle = CommandLine.Add(longKey: CommandLineKeyIpcHandle, kind: CommandLineKeyKind.Value);
+            var commandLineIpcMode = CommandLine.Add(longKey: CommandLineKeyIpcMode, kind: CommandLineKeyKind.Value);
+            CommandLineIpcFile = CommandLine.Add(longKey: CommandLineKeyIpcFile, kind: CommandLineKeyKind.Value);
 
             Logger.LogInformation("コマンドライン解析開始: {0}", e.Args.JoinString(" "));
             if(!CommandLine.Parse()) {

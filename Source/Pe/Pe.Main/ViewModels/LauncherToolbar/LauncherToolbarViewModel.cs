@@ -29,14 +29,15 @@ using ContentTypeTextNet.Pe.Main.Views.Extend;
 using ContentTypeTextNet.Pe.Main.Views.LauncherToolbar;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using System.Threading;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 {
@@ -492,7 +493,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
             if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
                 var filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
-                var argument = string.Join(' ', filePaths.Select(i => CommandLine.Escape(i)));
+                var argument = string.Join(' ', filePaths.Select(i => CommandLineHelper.Escape(i)));
                 await DispatcherWrapper.BeginAsync(async () => await ExecuteExtendDropDataAsync(launcherItemId, argument, cancellationToken));
             } else if(e.Data.IsTextPresent()) {
                 var argument = TextUtility.JoinLines(e.Data.RequireText());
@@ -636,14 +637,18 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         //#endregion
 
         #region IViewLifecycleReceiver
-        public void ReceiveViewInitialized(Window window)
-        { }
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
 
-        public void ReceiveViewLoaded(Window window)
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
             if(!IsVisible) {
                 window.Visibility = Visibility.Collapsed;
             }
+
+            return Task.CompletedTask;
         }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)

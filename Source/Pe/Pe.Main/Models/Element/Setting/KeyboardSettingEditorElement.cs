@@ -17,7 +17,7 @@ using ContentTypeTextNet.Pe.Main.Models.Manager.Setting;
 using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Library.Database;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting

@@ -4,7 +4,7 @@ using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
@@ -35,94 +35,94 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         public IDatabaseContext Context => this;
 
-        public int Execute(string statement, object? parameter = null)
+        public int Execute(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.Execute(statement, parameter);
         }
 
-        public Task<int> ExecuteAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return Transaction.ExecuteAsync(statement, parameter, cancellationToken);
         }
 
-        public IDataReader GetDataReader(string statement, object? parameter = null)
+        public IDataReader GetDataReader(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.GetDataReader(statement, parameter);
         }
 
-        public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             return Transaction.GetDataReaderAsync(statement, parameter, cancellationToken);
         }
 
-        public DataTable GetDataTable(string statement, object? parameter = null)
+        public DataTable GetDataTable(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.GetDataTable(statement, parameter);
         }
 
-        public Task<DataTable> GetDataTableAsync(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<DataTable> GetDataTableAsync(string statement, object? parameter, CancellationToken cancellationToken)
         {
             return Transaction.GetDataTableAsync(statement, parameter, cancellationToken);
         }
 
-        public TResult? GetScalar<TResult>(string statement, object? parameter = null)
+        public TResult? GetScalar<TResult>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.GetScalar<TResult?>(statement, parameter);
         }
 
-        public Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return Transaction.GetScalarAsync<TResult?>(statement, parameter, cancellationToken);
         }
 
-        public IEnumerable<T> Query<T>(string statement, object? parameter = null, bool buffered = true)
+        public IEnumerable<T> Query<T>(string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
             return Transaction.Query<T>(statement, parameter, buffered);
         }
 
-        public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return Transaction.QueryAsync<T>(statement, parameter, buffered, cancellationToken);
         }
 
-        public IEnumerable<dynamic> Query(string statement, object? parameter = null, bool buffered = true)
+        public IEnumerable<dynamic> Query(string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
             return Transaction.Query(statement, parameter, buffered);
         }
 
-        public Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter = null, bool buffered = true, CancellationToken cancellationToken = default)
+        public Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return Transaction.QueryAsync(statement, parameter, buffered, cancellationToken);
         }
 
-        public T QueryFirst<T>(string statement, object? parameter = null)
+        public T QueryFirst<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.QueryFirst<T>(statement, parameter);
         }
 
-        public Task<T> QueryFirstAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<T> QueryFirstAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -130,44 +130,43 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         [return: MaybeNull]
-        public T QueryFirstOrDefault<T>(string statement, object? parameter = null)
+        public T QueryFirstOrDefault<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.QueryFirstOrDefault<T>(statement, parameter);
         }
 
-        public Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
             return Transaction.QueryFirstOrDefaultAsync<T?>(statement, parameter, cancellationToken);
         }
 
-        public Task<T> QuerySingleAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.QuerySingleAsync<T>(statement, parameter, cancellationToken);
-        }
-
-
-        public T QuerySingle<T>(string statement, object? parameter = null)
+        public T QuerySingle<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.QuerySingle<T>(statement, parameter);
         }
 
+        public Task<T> QuerySingleAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
+        {
+            ThrowIfDisposed();
+
+            return Transaction.QuerySingleAsync<T>(statement, parameter, cancellationToken);
+        }
+
         [return: MaybeNull]
-        public T QuerySingleOrDefault<T>(string statement, object? parameter = null)
+        public T QuerySingleOrDefault<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             return Transaction.QuerySingleOrDefault<T>(statement, parameter);
         }
 
-        public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter = null, CancellationToken cancellationToken = default)
+        public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 

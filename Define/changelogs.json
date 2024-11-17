@@ -1,5 +1,79 @@
 [
 	{
+		"date": "2024/11/17",
+		"version": "0.99.248",
+		"contents": [
+			{
+				"type": "note",
+				"logs": [
+					{
+						"class": "compatibility",
+						"subject": "コマンドライン引数は --option 形式でのみ受け付けるように変更しました",
+						"comments": [
+							"/形式と-形式はもうダメです",
+							"-形式は前からダメです"
+						]
+					}
+				]
+			},
+			{
+				"type": "features",
+				"logs": [
+					{
+						"revision": "c51bab10fe817272a9602155b47fcf27f664f9ba",
+						"subject": "#690: どこかしらで WebView を表示可能にする",
+						"comments": [
+							"とてもいろいろありました",
+							"修正: DI コンテナの登録解除処理が動いてない",
+							"修正: リリースノート表示時に WebView2 の初期化処理が動いていない"
+						]
+					}
+				]
+			},
+			{
+				"type": "fixes",
+				"logs": [
+					{
+						"revision": "3ce5716aa29f15671ca22af1cc1ecb106679fc03",
+						"subject": "なんだこのコピペミスは"
+					},
+					{
+						"revision": "6d37a63d693c251e0d10a26ecd8bc6da05fc75fa",
+						"subject": "#928 のリビジョンが正しくない 06ab8d1881 -> e8338b20dc",
+						"comments": [
+							"何も解決してなかった"
+						]
+					}
+				]
+			},
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "cb9842028c52fd133f6882a532741a2cdbb5c61c",
+						"subject": "#975: node のバージョンを v22 に変更する",
+						"comments": [
+							"v22.11.0"
+						]
+					},
+					{
+						"revision": "0a576c53681bc61ce0549179e83685bb86d5bb3a",
+						"subject": "#883: コマンドラインオプションパース処理をまともにする",
+						"comments": [
+							"別にまともでもなんでもないけど --key 形式のみを受け付けるようにした",
+							"テストが弱いのともうしんどいのとでクソ適当実装",
+							"C -> C# への引数移送がもうわからんのでリリース。バグってたら今後でなおす"
+						]
+					},
+					{
+						"revision": "d9163a91ea3a2861f389cd695ad0efc0f3fa1b54",
+						"subject": "update npm"
+					}
+				]
+			}
+		]
+	},
+	{
 		"date": "2024/10/29",
 		"version": "0.99.247",
 		"contents": [
@@ -8,7 +82,7 @@
 				"logs": [
 					{
 						"revision": "b32b1ec6c5179edb7709688c9f4560623ba34950",
-						"subject": "0.99.246 #928 のリビジョンが正しくない 06ab8d1881 -> e8338b20dc"
+						"subject": "#928 のリビジョンが正しくない 06ab8d1881 -> e8338b20dc"
 					},
 					{
 						"revision": "29c19133ade144ebc5106391aa629a2f33607a0a",
@@ -52,7 +126,7 @@
 				"type": "developer",
 				"logs": [
 					{
-						"revision": "06ab8d18818b34ae31eb0f85710f3d605044d946",
+						"revision": "e8338b20dcf1a016d7db85c194c089549e8300ad",
 						"subject": "#928: アップデート処理中にアプリケーション実行されてる気がする"
 					}
 				]

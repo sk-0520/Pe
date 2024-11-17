@@ -13,7 +13,7 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using IO = System.IO;
 
 namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
@@ -57,22 +57,22 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         private DependencyObject GetCaptionImageCore(NoteCaptionButtonKind noteCaption, NoteCaptionPosition captionPosition, bool isEnabled, ColorPair<Color> baseColor)
         {
             var viewBox = new Viewbox();
-            using(Initializer.Begin(viewBox)) {
+            using(viewBox.BeginInitialize()) {
                 viewBox.Width = GetCaptionHeight() * 0.8;
                 viewBox.Height = viewBox.Width;
 
                 var canvas = new Canvas();
-                using(Initializer.Begin(canvas)) {
+                using(canvas.BeginInitialize()) {
                     canvas.Width = 24;
                     canvas.Height = 24;
 
                     var path = new Path();
-                    using(Initializer.Begin(path)) {
+                    using(path.BeginInitialize()) {
                         var resourceBaseKey = GetResourceBaseKey(noteCaption, isEnabled);
                         var geometry = GetResourceValue<Geometry>(nameof(DefaultNoteTheme), resourceBaseKey);
-                        FreezableUtility.SafeFreeze(geometry);
+                        geometry.SafeFreeze();
                         path.Data = geometry;
-                        path.Fill = FreezableUtility.GetSafeFreeze(new SolidColorBrush(baseColor.Foreground));
+                        path.Fill = new SolidColorBrush(baseColor.Foreground).GetFreezed();
                         //path.Stroke = FreezableUtility.GetSafeFreeze(new SolidColorBrush(MediaUtility.GetAutoColor(baseColor.Foreground)));
                         //path.StrokeThickness = 1;
                     }
@@ -125,15 +125,15 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         {
             var pair = new ColorPair<Brush>(new SolidColorBrush(baseColor.Foreground), new SolidColorBrush(baseColor.Background));
 
-            FreezableUtility.SafeFreeze(pair.Foreground);
-            FreezableUtility.SafeFreeze(pair.Background);
+            pair.Foreground.SafeFreeze();
+            pair.Background.SafeFreeze();
 
             return pair;
         }
 
         public Brush GetBorderBrush(NoteCaptionPosition captionPosition, ColorPair<Color> baseColor)
         {
-            return FreezableUtility.GetSafeFreeze(new SolidColorBrush(baseColor.Background));
+            return new SolidColorBrush(baseColor.Background).GetFreezed();
         }
 
         public ColorPair<Brush> GetContentBrush(NoteCaptionPosition captionPosition, ColorPair<Color> baseColor)
@@ -155,8 +155,8 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
             });
             var gradation = new LinearGradientBrush(collection, new Point(0, 0), new Point(0, 1));
             return ColorPair.Create<Brush>(
-                FreezableUtility.GetSafeFreeze(new SolidColorBrush(baseColor.Foreground)),
-                FreezableUtility.GetSafeFreeze(gradation)
+                new SolidColorBrush(baseColor.Foreground).GetFreezed(),
+                gradation.GetFreezed()
             );
         }
 
@@ -173,22 +173,22 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         public DependencyObject GetResizeGripImage(NoteCaptionPosition captionPosition, ColorPair<Color> baseColor)
         {
             var viewBox = new Viewbox();
-            using(Initializer.Begin(viewBox)) {
+            using(viewBox.BeginInitialize()) {
                 viewBox.Width = GetResizeGripSize().Width;
                 viewBox.Height = GetResizeGripSize().Height;
 
                 var canvas = new Canvas();
-                using(Initializer.Begin(canvas)) {
+                using(canvas.BeginInitialize()) {
                     canvas.Width = 24;
                     canvas.Height = 24;
 
                     var path = new Path();
-                    using(Initializer.Begin(path)) {
+                    using(path.BeginInitialize()) {
                         var resourceBaseKey = "Path-Note-ResizeGrip";
                         var geometry = GetResourceValue<Geometry>(nameof(DefaultNoteTheme), resourceBaseKey);
                         path.Data = geometry;
-                        path.Fill = FreezableUtility.GetSafeFreeze(new SolidColorBrush(MediaUtility.GetAutoColor(baseColor.Foreground)));
-                        path.Stroke = FreezableUtility.GetSafeFreeze(new SolidColorBrush(baseColor.Foreground));
+                        path.Fill = new SolidColorBrush(MediaUtility.GetAutoColor(baseColor.Foreground)).GetFreezed();
+                        path.Stroke = new SolidColorBrush(baseColor.Foreground).GetFreezed();
                         path.StrokeThickness = 1;
                     }
                     canvas.Children.Add(path);

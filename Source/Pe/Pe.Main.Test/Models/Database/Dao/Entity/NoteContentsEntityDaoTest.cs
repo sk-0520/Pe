@@ -105,7 +105,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
                 data.NoteId,
                 "LinkPath",
                 Encoding.UTF8,
-                new Library.Base.FileWatchParameter() {
+                new Library.Common.FileWatchParameter() {
                     BufferSize = 1234,
                     DelayTime = TimeSpan.FromSeconds(10),
                     IsEnabledRefresh = false,

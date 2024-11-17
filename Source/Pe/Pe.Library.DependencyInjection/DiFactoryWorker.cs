@@ -1,5 +1,5 @@
 using System;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 
 namespace ContentTypeTextNet.Pe.Library.DependencyInjection
 {

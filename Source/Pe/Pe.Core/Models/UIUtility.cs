@@ -262,7 +262,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         {
             if(dependencyObject is Window) {
                 throw new ArgumentException("window", nameof(dependencyObject));
-            };
+            }
 
             var window = GetClosest<Window>(dependencyObject);
 

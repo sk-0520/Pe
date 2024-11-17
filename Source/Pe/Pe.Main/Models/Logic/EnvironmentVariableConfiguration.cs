@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Main.Models.Data;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Extensions.Logging;
 

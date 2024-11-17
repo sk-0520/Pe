@@ -35,7 +35,7 @@ using ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog;
 using ContentTypeTextNet.Pe.Main.ViewModels.Setting;
 using ContentTypeTextNet.Pe.Main.Views.Note;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 
@@ -1318,7 +1318,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #region IViewLifecycleReceiver
 
-        public void ReceiveViewInitialized(Window window)
+        public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
             // 各ディスプレイのDPIで事故らないように原点をディスプレイへ移動してウィンドウ位置・サイズをいい感じに頑張る
             var hWnd = HandleUtility.GetWindowHandle(window);
@@ -1347,9 +1347,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             ApplyTheme();
 
             CanLayoutNotify = true;
+
+            return Task.CompletedTask;
         }
 
-        public void ReceiveViewLoaded(Window window)
+        public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
             if(IsVisible) {
                 if(!IsTopmost) {
@@ -1359,6 +1361,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             } else {
                 window.Visibility = Visibility.Collapsed;
             }
+            return Task.CompletedTask;
         }
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)

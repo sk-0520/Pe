@@ -7,7 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
@@ -152,7 +153,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 var args = arguments.Split(' ');
                 var commandLine = new CommandLine(args, false);
                 var waitKeys = new[] {
-                    commandLine.Add(longKey: "_boot-wait", hasValue: true),
+                    commandLine.Add(longKey: "_boot-wait", kind: CommandLineKeyKind.Value),
                 };
                 if(commandLine.Parse()) {
                     foreach(var waitKey in waitKeys) {

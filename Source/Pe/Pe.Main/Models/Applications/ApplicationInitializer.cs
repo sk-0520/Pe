@@ -25,9 +25,10 @@ using ContentTypeTextNet.Pe.Main.Models.Plugin.Preferences;
 using ContentTypeTextNet.Pe.Main.Models.WebView;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
+using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {
@@ -125,22 +126,22 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         {
             var commandLine = new CommandLine(arguments, false);
 
-            commandLine.Add(longKey: EnvironmentParameters.CommandLineKeyUserDirectory, hasValue: true);
-            commandLine.Add(longKey: EnvironmentParameters.CommandLineKeyMachineDirectory, hasValue: true);
-            commandLine.Add(longKey: EnvironmentParameters.CommandLineKeyTemporaryDirectory, hasValue: true);
-            commandLine.Add(longKey: CommandLineKeyRunMode, hasValue: true);
-            commandLine.Add(longKey: CommandLineKeyAppLogLimit, hasValue: true);
-            commandLine.Add(longKey: CommandLineKeyLog, hasValue: true);
-            commandLine.Add(longKey: CommandLineKeyWithLog, hasValue: true);
-            commandLine.Add(longKey: CommandLineSwitchFullTraceLog, hasValue: false);
-            commandLine.Add(longKey: CommandLineSwitchForceLog, hasValue: false);
-            commandLine.Add(longKey: CommandLineSwitchAcceptSkip, hasValue: false);
-            commandLine.Add(longKey: CommandLineSwitchBetaVersion, hasValue: false);
+            commandLine.Add(longKey: EnvironmentParameters.CommandLineKeyUserDirectory, kind: CommandLineKeyKind.Value);
+            commandLine.Add(longKey: EnvironmentParameters.CommandLineKeyMachineDirectory, kind: CommandLineKeyKind.Value);
+            commandLine.Add(longKey: EnvironmentParameters.CommandLineKeyTemporaryDirectory, kind: CommandLineKeyKind.Value);
+            commandLine.Add(longKey: CommandLineKeyRunMode, kind: CommandLineKeyKind.Value);
+            commandLine.Add(longKey: CommandLineKeyAppLogLimit, kind: CommandLineKeyKind.Value);
+            commandLine.Add(longKey: CommandLineKeyLog, kind: CommandLineKeyKind.Value);
+            commandLine.Add(longKey: CommandLineKeyWithLog, kind: CommandLineKeyKind.Value);
+            commandLine.Add(longKey: CommandLineSwitchFullTraceLog, kind: CommandLineKeyKind.Switch);
+            commandLine.Add(longKey: CommandLineSwitchForceLog, kind: CommandLineKeyKind.Switch);
+            commandLine.Add(longKey: CommandLineSwitchAcceptSkip, kind: CommandLineKeyKind.Switch);
+            commandLine.Add(longKey: CommandLineSwitchBetaVersion, kind: CommandLineKeyKind.Switch);
 #if DEBUG
-            commandLine.Add(longKey: CommandLineSwitchDebugDevelopMode, hasValue: false);
+            commandLine.Add(longKey: CommandLineSwitchDebugDevelopMode, kind: CommandLineKeyKind.Switch);
 #endif
-            commandLine.Add(longKey: CommandLineTestPluginDirectoryPath, hasValue: true);
-            commandLine.Add(longKey: CommandLineTestPluginName, hasValue: true);
+            commandLine.Add(longKey: CommandLineTestPluginDirectoryPath, kind: CommandLineKeyKind.Value);
+            commandLine.Add(longKey: CommandLineTestPluginName, kind: CommandLineKeyKind.Value);
 
             commandLine.Parse();
 

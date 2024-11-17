@@ -64,9 +64,11 @@ using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.Plugins.DefaultTheme;
 using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Main.Models.WebView;
+using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
@@ -546,6 +548,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             using var viewPausing = PauseAllViews();
 
             using(var diContainer = ApplicationDiContainer.CreateChildContainer()) {
+                var webViewInitializer = diContainer.Build<WebViewInitializer>();
+
+                webViewInitializer.RegisterToDiContainer(diContainer);
                 diContainer
                     .RegisterMvvm<Element.About.AboutElement, ViewModels.About.AboutViewModel, Views.About.AboutWindow>()
                 ;
@@ -561,7 +566,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             }
         }
 
-        public void ShowHelp()
+        /// <summary>
+        /// ヘルプの表示。
+        /// </summary>
+        /// <param name="embeddedBrowser">内蔵ブラウザで開くか。</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task ShowHelpAsync(bool embeddedBrowser, CancellationToken cancellationToken)
         {
             try {
                 var environmentParameters = ApplicationDiContainer.Get<EnvironmentParameters>();
@@ -570,16 +581,21 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             } catch(Exception ex) {
                 Logger.LogWarning(ex, ex.Message);
             }
+
+            return Task.CompletedTask;
         }
 
         private async Task ShowNewVersionReleaseNoteCoreAsync(NewVersionItemData updateItem, bool isCheckOnly, CancellationToken cancellationToken)
         {
+            var webViewInitializer = ApplicationDiContainer.Build<WebViewInitializer>();
+            using var unregisterTemporary = webViewInitializer.RegisterTemporaryToDiContainer(ApplicationDiContainer);
             var element = ApplicationDiContainer.Build<Element.ReleaseNote.ReleaseNoteElement>(ApplicationUpdateInfo, updateItem, isCheckOnly);
             await element.InitializeAsync(cancellationToken);
             var view = ApplicationDiContainer.Build<Views.ReleaseNote.ReleaseNoteWindow>();
             view.DataContext = ApplicationDiContainer.Build<ViewModels.ReleaseNote.ReleaseNoteViewModel>(element);
             WindowManager.Register(new WindowItem(WindowKind.Release, element, view));
             view.Show();
+            await webViewInitializer.WaitInitializeAsync(cancellationToken);
         }
 
         private async Task ShowNewVersionReleaseNoteAsync(NewVersionItemData updateItem, bool isCheckOnly, CancellationToken cancellationToken)
@@ -935,10 +951,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-ControlColor"] = colors.Control;
                 Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-BorderColor"] = colors.Border;
 
-                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-BackgroundBrush"] = FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Background));
-                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-ForegroundBrush"] = FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Foreground));
-                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-ControlBrush"] = FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Control));
-                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-BorderBrush"] = FreezableUtility.GetSafeFreeze(new SolidColorBrush(colors.Border));
+                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-BackgroundBrush"] = new SolidColorBrush(colors.Background).GetFreezed();
+                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-ForegroundBrush"] = new SolidColorBrush(colors.Foreground).GetFreezed();
+                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-ControlBrush"] = new SolidColorBrush(colors.Control).GetFreezed();
+                Application.Current.Resources["PlatformTheme-" + themeKey + "ThemeColors-BorderBrush"] = new SolidColorBrush(colors.Border).GetFreezed();
             }
         }
 
@@ -990,7 +1006,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             void ApplyAccentBrush(string name)
             {
                 var color = (Color)Application.Current.Resources[name + "Color"];
-                var brush = FreezableUtility.GetSafeFreeze(new SolidColorBrush(color));
+                var brush = new SolidColorBrush(color).GetFreezed();
                 Application.Current.Resources[name + "Brush"] = brush;
             }
             var names = new[] {
@@ -1821,7 +1837,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
             var currentCommands = Environment.GetCommandLineArgs()
                 .Skip(1)
-                .Select(i => CommandLine.Escape(i))
+                .Select(i => CommandLineHelper.Escape(i))
                 .ToList()
             ;
 
@@ -1834,12 +1850,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var args = new List<string> {
                 "--run-mode", "crash-report",
                 "--language", System.Globalization.CultureInfo.CurrentCulture.Name,
-                "--post-uri", CommandLine.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportUri.OriginalString),
-                "--src-uri", CommandLine.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportSourceUri.OriginalString),
-                "--report-raw-file", CommandLine.Escape(rawReport.FullName),
-                "--report-save-file", CommandLine.Escape(saveReportFilePath),
-                "--execute-command", CommandLine.Escape(environmentParameters.RootApplication.FullName),
-                "--execute-argument", CommandLine.Escape(string.Join(" ", currentCommands)),
+                "--post-uri", CommandLineHelper.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportUri.OriginalString),
+                "--src-uri", CommandLineHelper.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportSourceUri.OriginalString),
+                "--report-raw-file", CommandLineHelper.Escape(rawReport.FullName),
+                "--report-save-file", CommandLineHelper.Escape(saveReportFilePath),
+                "--execute-command", CommandLineHelper.Escape(environmentParameters.RootApplication.FullName),
+                "--execute-argument", CommandLineHelper.Escape(string.Join(" ", currentCommands)),
             };
             if(autoSend) {
                 args.Add("--auto-send");
@@ -1896,7 +1912,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             }
             var endTimestamp = DateTime.UtcNow;
             var now = GC.GetTotalMemory(false);
-            var sizeConverter = ApplicationDiContainer.Build<Library.Base.SizeConverter>();
+            var sizeConverter = ApplicationDiContainer.Build<Library.Common.SizeConverter>();
             Logger.LogInformation(
                 "GC(FULL:{0}): {1}({2}) -> {3}({4}), 差分: {5}({6}), 所要時間: {7}",
                 full,

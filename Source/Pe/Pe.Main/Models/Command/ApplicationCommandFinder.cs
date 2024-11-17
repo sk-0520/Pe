@@ -17,10 +17,10 @@ using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Element.Command;
 using ContentTypeTextNet.Pe.Main.Models.Plugin;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Command
 {
@@ -83,7 +83,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
         CopyInformation,
         [CommandDescription(nameof(Properties.Resources.String_ApplicationCommand_Description_Proxy))]
         Proxy,
-        [CommandDescription(nameof(Properties.Resources.String_ApplicationCommand_Description_Help))]
+        [CommandDescription(nameof(Properties.Resources.String_ApplicationCommand_Description_Help), false)]
         Help,
         [CommandDescription(nameof(Properties.Resources.String_ApplicationCommand_Description_Exception))]
         Exception,
@@ -138,7 +138,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
             var descriptions = ToDescriptions(applicationCommand);
             return new ApplicationCommandParameter(ToHeader(applicationCommand), descriptions.narmal, descriptions.extend, (in IconScale iconScale) => {
                 var control = new Control();
-                using(Initializer.Begin(control)) {
+                using(control.BeginInitialize()) {
                     control.Template = (ControlTemplate)Application.Current.Resources["App-Image-Command"];
                     control.Style = iconScale.Box switch {
                         IconBox.Small => (Style)Application.Current.Resources["Image-Small"],

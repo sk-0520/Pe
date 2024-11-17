@@ -10,8 +10,8 @@ using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.Base;
-using ContentTypeTextNet.Pe.Library.Base.Linq;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using System.Threading;
 using System.Reflection;
 
