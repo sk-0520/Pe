@@ -1,7 +1,7 @@
 [
 	{
-		"date": "YYYY/MM/DD",
-		"version": "0.99.247+",
+		"date": "2024/11/17",
+		"version": "0.99.248",
 		"contents": [
 			{
 				"type": "note",
@@ -13,18 +13,6 @@
 							"/形式と-形式はもうダメです",
 							"-形式は前からダメです"
 						]
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -32,25 +20,13 @@
 				"type": "features",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "c51bab10fe817272a9602155b47fcf27f664f9ba",
 						"subject": "#690: どこかしらで WebView を表示可能にする",
 						"comments": [
 							"とてもいろいろありました",
 							"修正: DI コンテナの登録解除処理が動いてない",
 							"修正: リリースノート表示時に WebView2 の初期化処理が動いていない"
 						]
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -58,23 +34,15 @@
 				"type": "fixes",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "3ce5716aa29f15671ca22af1cc1ecb106679fc03",
 						"subject": "なんだこのコピペミスは"
 					},
 					{
-						"revision": "",
+						"revision": "6d37a63d693c251e0d10a26ecd8bc6da05fc75fa",
 						"subject": "#928 のリビジョンが正しくない 06ab8d1881 -> e8338b20dc",
-						"comments":[
+						"comments": [
 							"何も解決してなかった"
 						]
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -82,14 +50,14 @@
 				"type": "developer",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "cb9842028c52fd133f6882a532741a2cdbb5c61c",
 						"subject": "#975: node のバージョンを v22 に変更する",
 						"comments": [
 							"v22.11.0"
 						]
 					},
 					{
-						"revision": "",
+						"revision": "0a576c53681bc61ce0549179e83685bb86d5bb3a",
 						"subject": "#883: コマンドラインオプションパース処理をまともにする",
 						"comments": [
 							"別にまともでもなんでもないけど --key 形式のみを受け付けるようにした",
@@ -98,12 +66,8 @@
 						]
 					},
 					{
-						"revision": "",
+						"revision": "d9163a91ea3a2861f389cd695ad0efc0f3fa1b54",
 						"subject": "update npm"
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			}
