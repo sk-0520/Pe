@@ -26,7 +26,8 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
 
         #endregion
 
-        public EventSource() {
+        public EventSource()
+        {
             WeakEvent = new WeakEvent<EventArgs>(nameof(Weak));
             NoGenericsEvent = new WeakEvent(nameof(NoGenerics));
 
@@ -102,6 +103,8 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         #endregion
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S1215:\"GC.Collect\" should not be called", Justification = "テストなのでOK")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1854:Unused assignments should be removed", Justification = "テストなのでOK")]
     public class WeakEventTest
     {
         #region property
