@@ -39,7 +39,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         /// <typeparam name="TFreezable"></typeparam>
         /// <param name="freezable"></param>
         /// <returns></returns>
-        [return: NotNullIfNotNull("freezable")]
+        [return: NotNullIfNotNull(nameof(freezable))]
         public static TFreezable? GetFreezed<TFreezable>(this TFreezable? freezable)
             where TFreezable : Freezable
         {
