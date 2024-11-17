@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 using System.Xml;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Main.Views;
-using ContentTypeTextNet.Pe.Library.Base;
+using ContentTypeTextNet.Pe.Library.Common;
 
 namespace AvalonEditSyntax
 {
