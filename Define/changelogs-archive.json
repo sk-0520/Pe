@@ -886,7 +886,6 @@
 				"type": "note",
 				"logs": [
 					{
-						"revision": "compatibility",
 						"class": "compatibility",
 						"subject": "本バージョンから .NET 8 で稼働します",
 						"comments": [
