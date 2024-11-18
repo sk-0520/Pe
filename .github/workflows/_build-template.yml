@@ -130,13 +130,18 @@ jobs:
           path: Output/help
           if-no-files-found: error
 
-  documment-comment:
+  document-comment:
     name: Document Comment
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     steps:
       - name: <Checkout> Repository
         uses: actions/checkout@v4
+
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: <Prepare> docfx
         run: |
