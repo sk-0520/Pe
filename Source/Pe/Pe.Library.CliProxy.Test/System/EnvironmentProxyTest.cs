@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.CliProxy.System;
+using ContentTypeTextNet.Pe.Library.CliProxy;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
@@ -18,6 +19,9 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.Test.System
         [Fact]
         public void CommandLineTest()
         {
+            var x = new XXX() {
+                Value = 123,
+            };
             var test = new DirectEnvironmentProxy();
             Assert.Equal(Environment.CommandLine, test.CommandLine);
         }

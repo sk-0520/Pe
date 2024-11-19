@@ -10,7 +10,18 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            throw new NotImplementedException();
+            context.RegisterPostInitializationOutput(
+                static context => {
+                    
+                    context.AddSource(
+                        "a.cs",
+                        """
+namespace ContentTypeTextNet.Pe.Library.CliProxy;
+public class XXX { public int Value { get;set;} }
+""");
+                }
+            );
+
         }
     }
 }

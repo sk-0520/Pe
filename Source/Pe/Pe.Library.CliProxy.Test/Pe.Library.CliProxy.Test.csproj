@@ -25,6 +25,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Pe.CommonTest\Pe.CommonTest.csproj" />
     <ProjectReference Include="..\Pe.Library.CliProxy\Pe.Library.CliProxy.csproj" />
+    <ProjectReference Include="..\Pe.Library.CliProxy\Pe.Library.CliProxy.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>
