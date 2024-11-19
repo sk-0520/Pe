@@ -107,6 +107,9 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
                 source.AppendLine("{");
                 if(properties.Any()) {
                     source.AppendLine($"#region property (<#= {properties.Length} #>)");
+                    foreach(var property in properties) {
+                        source.AppendLine($"/// <inheritdoc cref=\"<#= originalClassFulleName #>.<#= proeprty.Name #>\"/>")
+                    }
                     source.AppendLine("#endregion");
                 }
                 if(methods.Any()) {
