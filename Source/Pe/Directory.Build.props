@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Version>0.99.248</Version>
 
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <Platforms>x64;x86</Platforms>
     <WarningLevel>9999</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>

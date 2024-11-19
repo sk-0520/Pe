@@ -2,14 +2,17 @@
 	{
 		"date": "YYYY/MM/DD",
 		"version": "0.99.248+",
+		"group": ".NET 9",
 		"contents": [
 			{
 				"type": "note",
 				"logs": [
 					{
-						"revision": "",
-						"class": "",
-						"subject": ""
+						"class": "compatibility",
+						"subject": "本バージョンから .NET 9 で稼働します",
+						"comments": [
+							"多分大丈夫だと思うけど一応互換性注意(.NET 8 移行時と同じ)"
+						]
 					},
 					{
 						"revision": "",
@@ -72,7 +75,7 @@
 				"logs": [
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "#976: .NET 9 へ移行"
 					},
 					{
 						"revision": "",
