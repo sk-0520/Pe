@@ -17,3 +17,4 @@
 | 0.99.199	| Visual Studio Community 2022(17.6.4) |
 | 0.99.214	| Visual Studio Community 2022(17.7.6) |
 | 0.99.236	| Visual Studio Community 2022(17.10.2) |
+| 0.99.249	| Visual Studio Community 2022(17.12.0) |
