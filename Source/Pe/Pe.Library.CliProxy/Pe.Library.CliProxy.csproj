@@ -3,8 +3,12 @@
   <PropertyGroup>
     <AssemblyName>Pe.Library.CliProxy</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Library.CliProxy</RootNamespace>
+    
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AnalyzerLanguage>cs</AnalyzerLanguage>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <None Include="CliProxy.cs">
       <DesignTime>True</DesignTime>
@@ -32,4 +36,8 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+  </ItemGroup>
+  
 </Project>
