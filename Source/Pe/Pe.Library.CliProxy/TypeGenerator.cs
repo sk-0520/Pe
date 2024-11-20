@@ -113,7 +113,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
             source.AppendLine(CreateRefDocument(method));
             source.Append($"public {SourceHelper.ToSourceType(method.ReturnType)} {method.Name}({CreateMethodParameters(method)})");
             if(isImplement) {
-                source.AppendLine($"=> {OriginalAbsoluteName}.{method.Name}({SourceHelper.ToSignatureParameters(method)})");
+                source.AppendLine($"=> {OriginalAbsoluteName}.{method.Name}({SourceHelper.ToCalleParameters(method)})");
             }
             source.AppendLine(";");
         }

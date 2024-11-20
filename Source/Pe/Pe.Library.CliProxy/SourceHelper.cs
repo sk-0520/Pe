@@ -72,9 +72,9 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
             return $"{parameter.Name}";
         }
 
-        public static string ToCalleParameters(IEnumerable<ParameterInfo> parameters)
+        public static string ToCalleParameters(MethodInfo method)
         {
-            return string.Join(", ", parameters.Select(a => ToCalleParameter(a)));
+            return string.Join(", ", method.GetParameters().Select(a => ToCalleParameter(a)));
         }
 
         #endregion
