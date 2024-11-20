@@ -52,7 +52,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
 
         public string CreateUsingStatement()
         {
-            return "using {originalFullName};";
+            return $"using global::{TargetType.Namespace};";
         }
 
         public string CreateNamespaceStatement()
@@ -72,7 +72,61 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
 
         public string CreateMethodParameters(MethodInfo method)
         {
-            return string.Join(", ", method.GetParameters().Select(a => $"{SourceHelper.ToCSharpType(a.ParameterType)} {a.Name}"));
+            return string.Join(", ", SourceHelper.ToSignatureParameters(method));
+        }
+
+        private void WritePropertyStatement(SourceWriter source, bool isImplement, PropertyInfo property)
+        {
+            source.AppendLine(CreateRefDocument(property));
+            source.AppendLine($"public {SourceHelper.ToSourceType(property.PropertyType)} {property.Name}");
+            using(source.Block()) {
+                if(property.CanRead) {
+                    if(isImplement) {
+                        source.AppendLine($"get => {OriginalAbsoluteName}.{property.Name};");
+                    } else {
+                        source.AppendLine("get;");
+                    }
+                }
+                if(property.CanWrite) {
+                    if(isImplement) {
+                        source.AppendLine($"set => {OriginalAbsoluteName}.{property.Name} = value;");
+                    } else {
+                        source.AppendLine("set;");
+                    }
+                }
+            }
+        }
+
+        private void WritePropertiesStatement(SourceWriter source, bool isImplement)
+        {
+            if(Properties.Any()) {
+                using(source.Region(Properties.Count.ToString(CultureInfo.InvariantCulture))) {
+                    foreach(var property in Properties) {
+                        WritePropertyStatement(source, isImplement, property);
+                    }
+                }
+            }
+        }
+
+        private void WriteMethodStatement(SourceWriter source, bool isImplement, MethodInfo method)
+        {
+            source.AppendLine(CreateRefDocument(method));
+            source.Append($"public {SourceHelper.ToSourceType(method.ReturnType)} {method.Name}({CreateMethodParameters(method)})");
+            if(isImplement) {
+                source.AppendLine($"=> {OriginalAbsoluteName}.{method.Name}({SourceHelper.ToSignatureParameters(method)})");
+            }
+            source.AppendLine(";");
+        }
+
+        private void WriteMethodsStatement(SourceWriter source, bool isImplement)
+        {
+            if(Methods.Any()) {
+                using(source.Region(Methods.Count.ToString(CultureInfo.InvariantCulture))) {
+                    foreach(var method in Methods) {
+                        WriteMethodStatement(source, isImplement, method);
+                    }
+                }
+            }
         }
 
         public string CreateInterfaceStatement()
@@ -81,53 +135,26 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
 
             source.AppendLine($"public interface {ProxyInterface}");
             using(source.Block()) {
-                if(Properties.Any()) {
-                    using(source.Region(Properties.Count.ToString(CultureInfo.InvariantCulture))) {
-                        foreach(var property in Properties) {
-                            source.AppendLine(CreateRefDocument(property));
-                            source.AppendLine($"public {SourceHelper.ToSourceType(property.PropertyType)} {property.Name}");
-                            using(source.Block()) {
-                                if(property.CanRead) {
-                                    source.AppendLine("get;");
-                                }
-                                if(property.CanWrite) {
-                                    source.AppendLine("set;");
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if(Methods.Any()) {
-                    using(source.Region(Methods.Count.ToString(CultureInfo.InvariantCulture))) {
-                        foreach(var method in Methods) {
-                            source.AppendLine(CreateRefDocument(method));
-                            source.AppendLine($"public {SourceHelper.ToSourceType(method.ReturnType)} {method.Name}({CreateMethodParameters(method)})");
-                        }
-                    }
-                }
+                WritePropertiesStatement(source, false);
+                WriteMethodsStatement(source, false);
             }
 
             return source.ToString();
         }
 
-        public string CreateImplementStatement()
+        public string CreateImplementStatement(bool implementsProxy)
         {
-            var source = new StringBuilder();
+            var source = new SourceWriter(SourceSetting);
 
-            source.AppendLine($"public class {ProxyImplement}");
-            source.AppendLine("{");
-
-            if(Properties.Any()) {
-                source.AppendLine($"#region property (<#= {Properties.Count} #>)");
-                source.AppendLine("#endregion");
+            if(implementsProxy) {
+                source.AppendLine($"public class {ProxyImplement}: {ProxyInterface}");
+            } else {
+                source.AppendLine($"public class {ProxyImplement}");
             }
-            if(Methods.Any()) {
-                source.AppendLine($"#region function (<#= {Methods.Count} #>)");
-                source.AppendLine("#endregion");
+            using(source.Block()) {
+                WritePropertiesStatement(source, true);
+                WriteMethodsStatement(source, true);
             }
-
-            source.AppendLine("}");
 
             return source.ToString();
         }

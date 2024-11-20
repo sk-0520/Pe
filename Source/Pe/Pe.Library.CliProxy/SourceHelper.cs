@@ -62,6 +62,21 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
             return $"{ToSourceType(parameter.ParameterType)} {parameter.Name}";
         }
 
+        public static string ToSignatureParameters(MethodInfo method)
+        {
+            return string.Join(", ", method.GetParameters().Select(a => ToSignatureParameter(a)));
+        }
+
+        public static string ToCalleParameter(ParameterInfo parameter)
+        {
+            return $"{parameter.Name}";
+        }
+
+        public static string ToCalleParameters(IEnumerable<ParameterInfo> parameters)
+        {
+            return string.Join(", ", parameters.Select(a => ToCalleParameter(a)));
+        }
+
         #endregion
     }
 }
