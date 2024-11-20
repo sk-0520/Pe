@@ -107,10 +107,11 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
         {
             var indent = GetIndent();
             using(var reader = new StringReader(s)) {
-                string? line = null;
-                while((line = reader.ReadLine()) is not null) {
+                var lines = reader.ReadLine().ToArray();
+                foreach(var line in lines) {
                     Buffer.Append(indent);
-                    Buffer.AppendLine(line);
+                    Buffer.Append(line);
+                    Buffer.Append('\n');
                 }
             }
         }
@@ -118,13 +119,13 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
         public void AppendLine(string s)
         {
             Append(s);
-            Buffer.AppendLine();
+            Buffer.Append('\n');
         }
 
         public void AppendEmptyLine()
         {
-            Buffer.Append(GetIndent());
-            Buffer.AppendLine();
+            //Buffer.Append(GetIndent());
+            Buffer.Append('\n');
         }
 
         public IDisposable Block() => Block("{", "}");
