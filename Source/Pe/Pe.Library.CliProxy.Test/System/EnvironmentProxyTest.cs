@@ -18,6 +18,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy.Test.System
         [Fact]
         public void CommandLineTest()
         {
+            IDirectEnvironmentProxy a;
             var test = new DirectEnvironmentProxy();
             Assert.Equal(Environment.CommandLine, test.CommandLine);
         }
