@@ -90,10 +90,8 @@ namespace ContentTypeTextNet.Pe.Library.Args
 
             if(!key.IsEnabledLongKey) {
                 throw new ArgumentException($"{nameof(key.LongKey)} is empty");
-            }
-
-            if(key.IsEnabledLongKey && key.LongKey.Length == 1) {
-                throw new ArgumentException($"{nameof(key.IsEnabledLongKey)} and {nameof(key.LongKey)}.{nameof(key.LongKey.Length)} == 1", nameof(key));
+            } else if(key.LongKey.Length == 1) {
+                throw new ArgumentException($"{nameof(key.LongKey)}.{nameof(key.LongKey.Length)} == 1", nameof(key));
             }
 
             if(KeyItems.Where(k => k.IsEnabledLongKey).Any(k => k.LongKey == key.LongKey)) {
