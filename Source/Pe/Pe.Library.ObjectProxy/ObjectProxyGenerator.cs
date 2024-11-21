@@ -16,7 +16,7 @@ namespace ContentTypeTextNet.Pe.Library.ObjectProxy
 
         #region function
 
-       
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("MicrosoftCodeAnalysisCorrectness", "RS1035:アナライザーに対して禁止された API を使用しない", Justification = "<保留中>")]
         private void GenerateSource(IncrementalGeneratorPostInitializationContext context)
         {
@@ -58,14 +58,44 @@ namespace ContentTypeTextNet.Pe.Library.ObjectProxy
             }
         }
 
+        private void RegisterSource(SourceProductionContext context, GeneratorAttributeSyntaxContext source)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region IIncrementalGenerator
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.RegisterPostInitializationOutput(GenerateSource);
+            //context.RegisterPostInitializationOutput(GenerateSource);
+            var attributeNamespace = GetType().Namespace;
+            var attributeClassName = "ObjectProxyAttribute";
+
+            context.RegisterPostInitializationOutput(context => {
+                context.AddSource("SampleGeneratorAttribute.cs", $$"""
+namespace {{attributeNamespace}};
+
+using System;
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+public sealed class {{attributeClassName}} : Attribute
+{
+}
+""");
+            });
+
+            var source = context.SyntaxProvider.ForAttributeWithMetadataName(
+                $"{attributeNamespace}.{attributeClassName}",
+                static (node, token) => true,
+                static (context, token) => context
+            );
+
+            context.RegisterSourceOutput(source, RegisterSource);
         }
+
+
 
         #endregion
     }
