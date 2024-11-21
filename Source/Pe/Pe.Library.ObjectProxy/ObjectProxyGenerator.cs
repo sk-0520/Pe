@@ -5,10 +5,10 @@ using System.Text;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace ContentTypeTextNet.Pe.Library.CliProxy
+namespace ContentTypeTextNet.Pe.Library.ObjectProxy
 {
     [Generator(LanguageNames.CSharp)]
-    public partial class CliProxyGenerator: IIncrementalGenerator
+    public partial class ObjectProxyGenerator: IIncrementalGenerator
     {
         #region define
 

@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>Pe.Library.CliProxy</AssemblyName>
-    <RootNamespace>ContentTypeTextNet.Pe.Library.CliProxy</RootNamespace>
+    <AssemblyName>Pe.Library.ObjectProxy</AssemblyName>
+    <RootNamespace>ContentTypeTextNet.Pe.Library.ObjectProxy</RootNamespace>
     
     <TargetFramework>netstandard2.0</TargetFramework>
     <AnalyzerLanguage>cs</AnalyzerLanguage>

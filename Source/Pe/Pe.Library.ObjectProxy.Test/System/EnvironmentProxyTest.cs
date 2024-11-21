@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.CliProxy.System;
+using ContentTypeTextNet.Pe.Library.ObjectProxy.System;
 using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace ContentTypeTextNet.Pe.Library.CliProxy.Test.System
+namespace ContentTypeTextNet.Pe.Library.ObjectProxy.Test.System
 {
     public class DirectEnvironmentProxyTest
     {

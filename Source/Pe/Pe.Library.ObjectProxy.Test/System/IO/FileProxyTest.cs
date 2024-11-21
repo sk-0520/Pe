@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.CliProxy.System.IO;
+using ContentTypeTextNet.Pe.Library.ObjectProxy.System.IO;
 using ContentTypeTextNet.Pe.CommonTest;
 using Xunit;
 
-namespace ContentTypeTextNet.Pe.Library.CliProxy.Test.System.IO
+namespace ContentTypeTextNet.Pe.Library.ObjectProxy.Test.System.IO
 {
     public class DirectFileProxyTest
     {

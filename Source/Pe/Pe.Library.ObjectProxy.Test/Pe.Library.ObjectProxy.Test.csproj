@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>Pe.Library.CliProxy.Test</AssemblyName>
-    <RootNamespace>ContentTypeTextNet.Pe.Library.CliProxy.Test</RootNamespace>
+    <AssemblyName>Pe.Library.ObjectProxy.Test</AssemblyName>
+    <RootNamespace>ContentTypeTextNet.Pe.Library.ObjectProxy.Test</RootNamespace>
     <IsTestProject>true</IsTestProject>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
@@ -24,8 +24,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pe.CommonTest\Pe.CommonTest.csproj" />
-    <ProjectReference Include="..\Pe.Library.CliProxy\Pe.Library.CliProxy.csproj" />
-    <ProjectReference Include="..\Pe.Library.CliProxy\Pe.Library.CliProxy.csproj">
+    <ProjectReference Include="..\Pe.Library.ObjectProxy\Pe.Library.ObjectProxy.csproj" />
+    <ProjectReference Include="..\Pe.Library.ObjectProxy\Pe.Library.ObjectProxy.csproj">
       <OutputItemType>Analyzer</OutputItemType>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

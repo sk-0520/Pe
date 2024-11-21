@@ -64,9 +64,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.Property", "Pe.L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.Property.Test", "Pe.Library.Property.Test\Pe.Library.Property.Test.csproj", "{2C126598-F933-4F0B-AF12-BD4642A37EFF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.CliProxy", "Pe.Library.CliProxy\Pe.Library.CliProxy.csproj", "{391E9157-81A9-47D1-A757-D110C6D2D375}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.ObjectProxy", "Pe.Library.ObjectProxy\Pe.Library.ObjectProxy.csproj", "{391E9157-81A9-47D1-A757-D110C6D2D375}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.CliProxy.Test", "Pe.Library.CliProxy.Test\Pe.Library.CliProxy.Test.csproj", "{8CAF4F50-CE0B-4D6B-948C-C7B83CD59E27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.ObjectProxy.Test", "Pe.Library.ObjectProxy.Test\Pe.Library.ObjectProxy.Test.csproj", "{8CAF4F50-CE0B-4D6B-948C-C7B83CD59E27}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common-test", "common-test", "{0A9EE77F-5AB6-4D3C-8493-145E5122DD0E}"
 EndProject
