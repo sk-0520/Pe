@@ -91,7 +91,7 @@ namespace ContentTypeTextNet.Pe.Core.Compatibility.Forms
             }
         }
 
-        public static BitmapSource ImageSourceFromBinaryIcon(ArrayPoolObject<byte> binaryIcon, System.Windows.Size iconSize)
+        public static BitmapSource ImageSourceFromBinaryIcon(DisposableArrayPool<byte> binaryIcon, System.Windows.Size iconSize)
         {
             using(var ms = new MemoryReleaseStream(binaryIcon.Items, 0, binaryIcon.Length)) {
                 return ImageSourceFromBinaryStreamIcon(ms, iconSize);

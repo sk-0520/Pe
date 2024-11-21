@@ -74,7 +74,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             Logger.LogInformation("ハッシュ: {0}, {1}", updateItem.ArchiveHashKind, updateItem.ArchiveHashValue);
             using(var hashAlgorithm = HashUtility.Create(updateItem.ArchiveHashKind)) {
                 using var stream = targetFile.OpenRead();
-                using var checkSumBuffer = new ArrayPoolObject<byte>(ChecksumSize);
+                using var checkSumBuffer = new DisposableArrayPool<byte>(ChecksumSize);
                 long totalReadSize = 0;
                 while(true) {
                     var readSize = await stream.ReadAsync(checkSumBuffer.Items, 0, checkSumBuffer.Items.Length, cancellationToken);
@@ -119,7 +119,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 sizePerTime.Start();
 
                 using(var networkStream = await content.Content.ReadAsStreamAsync(cancellationToken)) {
-                    using var downloadChunkBuffer = new ArrayPoolObject<byte>(DownloadChunkSize);
+                    using var downloadChunkBuffer = new DisposableArrayPool<byte>(DownloadChunkSize);
                     using var localStream = downloadFile.Create();
                     var sizeConverter = new SizeConverter();
                     var units = new[] {

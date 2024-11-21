@@ -171,7 +171,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
 
         private static List<KeyValuePair<Type, object?>> BuildManualParameters(IReadOnlyCollection<object> manualParameters)
         {
-            using var arrayPoolDisposer = new ArrayPoolObject<KeyValuePair<Type, object?>>(manualParameters.Count);
+            using var arrayPoolDisposer = new DisposableArrayPool<KeyValuePair<Type, object?>>(manualParameters.Count);
             int resultIndex = 0;
             foreach(var manualParameter in manualParameters) {
                 if(manualParameter is null) {

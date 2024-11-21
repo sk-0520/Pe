@@ -59,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         public string CreateFromRandom()
         {
             var bufferCount = 20 * 1024;
-            using var buffer = new ArrayPoolObject<byte>(bufferCount);
+            using var buffer = new DisposableArrayPool<byte>(bufferCount);
             var rand = new Random();
             rand.NextBytes(buffer.Items);
             return ComputeHash(buffer.Items, bufferCount);

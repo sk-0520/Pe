@@ -305,13 +305,13 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <see cref="ArrayPool{T}"/> のラッパー。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public readonly ref struct ArrayPoolValue<T>: IDisposable
+    public readonly ref struct ValueArrayPool<T>: IDisposable
     {
-        public ArrayPoolValue(int length)
+        public ValueArrayPool(int length)
             : this(length, ArrayPool<T>.Shared)
         { }
 
-        public ArrayPoolValue(int length, ArrayPool<T> pool)
+        public ValueArrayPool(int length, ArrayPool<T> pool)
         {
             Pool = pool;
             Items = Pool.Rent(length);
@@ -347,13 +347,13 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <see cref="ArrayPool{T}"/> のラッパー。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public sealed class ArrayPoolObject<T>: DisposerBase
+    public sealed class DisposableArrayPool<T>: DisposerBase
     {
-        public ArrayPoolObject(int length)
+        public DisposableArrayPool(int length)
             : this(length, ArrayPool<T>.Shared)
         { }
 
-        public ArrayPoolObject(int length, ArrayPool<T> pool)
+        public DisposableArrayPool(int length, ArrayPool<T> pool)
         {
             Pool = pool;
             Items = Pool.Rent(length);
