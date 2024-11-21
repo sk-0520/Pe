@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
@@ -6,7 +7,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
     /// <summary>
     /// 名前あり・なしでの分岐を管理するコンテナ。
     /// </summary>
-    public class DiNamedContainer<TData>
+    public class DiNamedContainer<TData>: IEnumerable<KeyValuePair<string, TData>>
         where TData : class, new()
     {
         public DiNamedContainer()
@@ -41,6 +42,20 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         /// </summary>
         /// <returns></returns>
         public KeyValuePair<string, TData>[] ToArray() => Container.ToArray();
+
+        #endregion
+
+        #region IEnumerable 
+
+        public IEnumerator<KeyValuePair<string, TData>> GetEnumerator()
+        {
+            return Container.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
         #endregion
     }

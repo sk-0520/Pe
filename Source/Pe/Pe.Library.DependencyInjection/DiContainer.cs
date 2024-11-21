@@ -620,25 +620,25 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         public virtual IScopeDiContainer Scope()
         {
             var cloneContainer = new ScopeDiContainer(ManagingResource);
-            foreach(var pair in Mapping.ToArray()) {
+            foreach(var pair in Mapping) {
                 var map = cloneContainer.Mapping[pair.Key];
                 foreach(var sub in pair.Value) {
                     map.TryAdd(sub.Key, sub.Value);
                 }
             }
-            foreach(var pair in Factory.ToArray()) {
+            foreach(var pair in Factory) {
                 var factory = cloneContainer.Factory[pair.Key];
                 foreach(var sub in pair.Value) {
                     factory.TryAdd(sub.Key, sub.Value);
                 }
             }
-            foreach(var pair in ObjectPool.ToArray()) {
+            foreach(var pair in ObjectPool) {
                 var objectPool = cloneContainer.ObjectPool[pair.Key];
                 foreach(var sub in pair.Value) {
                     objectPool.TryAdd(sub.Key, sub.Value);
                 }
             }
-            foreach(var pair in Constructors.ToArray()) {
+            foreach(var pair in Constructors) {
                 var constructor = cloneContainer.Constructors[pair.Key];
                 foreach(var sub in pair.Value) {
                     constructor.TryAdd(sub.Key, sub.Value);
