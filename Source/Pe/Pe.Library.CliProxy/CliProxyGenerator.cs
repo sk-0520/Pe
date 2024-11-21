@@ -22,9 +22,9 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
         {
             var baseNamespace = "ContentTypeTextNet.Pe.Library.CliProxy";
             var targetDefines = new[] {
-                typeof(System.Environment),
+                //typeof(System.Environment),
                 typeof(System.IO.File),
-                typeof(System.IO.Directory),
+                //typeof(System.IO.Directory),
             };
 
             foreach(var targetDefine in targetDefines) {
@@ -50,6 +50,7 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
                 source.AppendLine(typeGenerator.CreateImplementStatement(true));
                 source.AppendEmptyLine();
 
+                var code = source.ToString();
                 context.AddSource(
                     hintName: typeGenerator.FilePath,
                     source: source.ToString()

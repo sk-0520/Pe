@@ -107,11 +107,14 @@ namespace ContentTypeTextNet.Pe.Library.CliProxy
         {
             var indent = GetIndent();
             using(var reader = new StringReader(s)) {
-                var lines = reader.ReadLine().ToArray();
-                foreach(var line in lines) {
+                string? line;
+                int i = 0;
+                while((line = reader.ReadLine()) is not null) {
+                    if(0 < i++) {
+                        Buffer.Append('\n');
+                    }
                     Buffer.Append(indent);
                     Buffer.Append(line);
-                    Buffer.Append('\n');
                 }
             }
         }
