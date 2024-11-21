@@ -1,7 +1,3 @@
-#if DEBUG || BETA
-#   define CHECK_PROPERTY_NAME
-#endif
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -40,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Library.Property
 
         private ParameterExpression OwnerExpression { get; }
 
-        private IReadOnlyDictionary<string, PropertyInfo> Properties { get; }
+        private Dictionary<string, PropertyInfo> Properties { get; }
 
         private ConcurrentDictionary<string, PropertyAccessor> AccessorCache { get; } = new ConcurrentDictionary<string, PropertyAccessor>(); // CPUの数とかこの層で取得するのしんどいのでコンストラクタでキャパ指定せず。
 
