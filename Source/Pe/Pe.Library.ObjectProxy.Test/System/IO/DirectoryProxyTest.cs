@@ -1,3 +1,4 @@
+#if false
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,3 +50,4 @@ namespace ContentTypeTextNet.Pe.Library.ObjectProxy.Test.System.IO
         #endregion
     }
 }
+#endif

@@ -8,6 +8,13 @@ namespace ContentTypeTextNet.Pe.Library.ObjectProxy
 {
     public static class SourceHelper
     {
+        #region property
+
+        public static string AttributeNamespace => typeof(SourceHelper).Namespace;
+        public static string AttributeClassName => "ObjectProxyAttribute";
+
+        #endregion
+
         #region function
 
         public static string ToCSharpType(Type type)

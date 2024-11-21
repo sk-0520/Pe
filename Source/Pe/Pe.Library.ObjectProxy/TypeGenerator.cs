@@ -4,15 +4,26 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace ContentTypeTextNet.Pe.Library.ObjectProxy
 {
     public class TypeGenerator
     {
-        public TypeGenerator(ISourceSetting sourceSetting, Type type, string baseNamespace, string filePath)
+        public TypeGenerator(ISourceSetting sourceSetting, INamedTypeSymbol symbol, TypeDeclarationSyntax node)
         {
             SourceSetting = sourceSetting;
-            TargetType = type;
+
+            Symbol = symbol;
+            Node = node;
+
+            var attribute = Symbol.GetAttributes().First(a => a.AttributeClass?.Name == SourceHelper.AttributeClassName);
+            var targetType = (INamedTypeSymbol)attribute.ConstructorArguments[0].Value!;
+            TargetType = Type.GetType(targetType.Name);
+
+            TargetAbsoluteName = $"global::{TargetType.FullName}";
 
             Properties = TargetType.GetProperties(BindingFlags.Public | BindingFlags.Static)
                 .ToArray()
@@ -22,26 +33,31 @@ namespace ContentTypeTextNet.Pe.Library.ObjectProxy
                 .ToArray()
             ;
 
-            BaseNamespace = baseNamespace;
-            FilePath = filePath;
+            SourceNamespace = Symbol.ContainingNamespace.IsGlobalNamespace
+                ? string.Empty
+                : Symbol.ContainingNamespace.ToString()
+            ;
+            SourceFilePath = $"{Symbol.Name}.g.cs";
 
-            OriginalAbsoluteName = "global::" + TargetType.FullName;
-            ProxyInterface = $"IDirect{TargetType.Name}Proxy";
-            ProxyImplement = $"Direct{TargetType.Name}Proxy";
+            ProxyInterface = Symbol.Name;
+            ProxyImplement = $"I{Symbol.Name}";
         }
 
         #region property
 
         private ISourceSetting SourceSetting { get; }
 
-        public string BaseNamespace { get; }
-        public string FilePath { get; }
+        public string SourceNamespace { get; }
+        public string SourceFilePath { get; }
 
-        public Type TargetType { get; }
+        private INamedTypeSymbol Symbol { get; }
+        private TypeDeclarationSyntax Node { get; }
+        private Type TargetType { get; }
+        private string TargetAbsoluteName { get; }
+
         public IReadOnlyList<PropertyInfo> Properties { get; }
         public IReadOnlyList<MethodInfo> Methods { get; }
 
-        public string OriginalAbsoluteName { get; }
         public string ProxyInterface { get; }
         public string ProxyImplement { get; }
 
@@ -57,17 +73,17 @@ namespace ContentTypeTextNet.Pe.Library.ObjectProxy
 
         public string CreateNamespaceStatement()
         {
-            return $"namespace {BaseNamespace}.{TargetType.Namespace};";
+            return $"namespace {SourceNamespace};";
         }
 
         public string CreateRefDocument(PropertyInfo property)
         {
-            return $"/// <inheritdoc cref=\"{OriginalAbsoluteName}.{property.Name}\"/>";
+            return $"/// <inheritdoc cref=\"{TargetAbsoluteName}.{property.Name}\"/>";
         }
 
         public string CreateRefDocument(MethodInfo method)
         {
-            return $"/// <inheritdoc cref=\"{OriginalAbsoluteName}.{method.Name}({string.Join(", ", method.GetParameters().Select(a => SourceHelper.ToSourceType(a.ParameterType)))})\"/>";
+            return $"/// <inheritdoc cref=\"{TargetAbsoluteName}.{method.Name}({string.Join(", ", method.GetParameters().Select(a => SourceHelper.ToSourceType(a.ParameterType)))})\"/>";
         }
 
         public string CreateMethodParameters(MethodInfo method)
@@ -82,14 +98,14 @@ namespace ContentTypeTextNet.Pe.Library.ObjectProxy
             using(source.Block()) {
                 if(property.CanRead) {
                     if(isImplement) {
-                        source.AppendLine($"get => {OriginalAbsoluteName}.{property.Name};");
+                        source.AppendLine($"get => {TargetAbsoluteName}.{property.Name};");
                     } else {
                         source.AppendLine("get;");
                     }
                 }
                 if(property.CanWrite) {
                     if(isImplement) {
-                        source.AppendLine($"set => {OriginalAbsoluteName}.{property.Name} = value;");
+                        source.AppendLine($"set => {TargetAbsoluteName}.{property.Name} = value;");
                     } else {
                         source.AppendLine("set;");
                     }
@@ -113,7 +129,7 @@ namespace ContentTypeTextNet.Pe.Library.ObjectProxy
             source.AppendLine(CreateRefDocument(method));
             source.Append($"public {SourceHelper.ToSourceType(method.ReturnType)} {method.Name}({CreateMethodParameters(method)})");
             if(isImplement) {
-                source.AppendLine($"=> {OriginalAbsoluteName}.{method.Name}({SourceHelper.ToCalleParameters(method)})");
+                source.AppendLine($"=> {TargetAbsoluteName}.{method.Name}({SourceHelper.ToCalleParameters(method)})");
             }
             source.AppendLine(";");
         }
@@ -147,9 +163,9 @@ namespace ContentTypeTextNet.Pe.Library.ObjectProxy
             var source = new SourceWriter(SourceSetting);
 
             if(implementsProxy) {
-                source.AppendLine($"public class {ProxyImplement}: {ProxyInterface}");
+                source.AppendLine($"partial class {ProxyImplement}: {ProxyInterface}");
             } else {
-                source.AppendLine($"public class {ProxyImplement}");
+                source.AppendLine($"partial interface {ProxyInterface}");
             }
             using(source.Block()) {
                 WritePropertiesStatement(source, true);
