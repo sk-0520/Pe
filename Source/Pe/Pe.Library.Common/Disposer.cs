@@ -305,7 +305,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <see cref="ArrayPool{T}"/> のラッパー。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public readonly ref struct ArrayPoolValue<T>
+    public readonly ref struct ArrayPoolValue<T>: IDisposable
     {
         public ArrayPoolValue(int length)
             : this(length, ArrayPool<T>.Shared)
