@@ -1,7 +1,7 @@
 [
 	{
-		"date": "YYYY/MM/DD",
-		"version": "0.99.248+",
+		"date": "2024/11/22",
+		"version": "0.99.249",
 		"group": ".NET 9",
 		"contents": [
 			{
@@ -13,60 +13,6 @@
 						"comments": [
 							"多分大丈夫だと思うけど一応互換性注意(.NET 8 移行時と同じ)"
 						]
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
-			{
-				"type": "features",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
-			{
-				"type": "fixes",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -74,21 +20,13 @@
 				"type": "developer",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "67a8885352f7b733f3c70a358c365c8efd87e2e6",
 						"subject": "#976: .NET 9 へ移行"
 					},
 					{
-						"revision": "",
+						"revision": "bf04e84eeabf9d336e73368c0e7558713dff9661",
 						"class": "nuget",
 						"subject": "Microsoft.Web.WebView2 1.0.2849.39 -> 1.0.2903.40"
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			}
