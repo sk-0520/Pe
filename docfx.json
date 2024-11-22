@@ -25,7 +25,10 @@
 				}
 			],
 			"dest": "_doc-comment/metadata",
-			"namespaceLayout": "nested"
+			"namespaceLayout": "nested",
+			"properties": {
+				"DefineConstants": "DOC_FX"
+			}
 		}
 	],
 	"build": {
