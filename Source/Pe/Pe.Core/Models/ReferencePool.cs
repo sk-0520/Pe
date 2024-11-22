@@ -118,7 +118,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
             {
                 return map.GetOrAdd(key, (key, args) => {
 #if DEBUG
-                    logger.LogTrace("参照アイテム生成: {0}", key);
+                    logger.LogTrace("参照アイテム生成: {Key}", key);
 #endif
                     var value = args.creator(key);
                     var item = new ReferenceItem<TValue>(value, args.timeout, args.isManage);
@@ -130,7 +130,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
             lock(result) {
                 if(result.Alive) {
 #if DEBUG
-                    Logger.LogTrace("参照アイテム生成/再使用: {0}", key);
+                    Logger.LogTrace("参照アイテム生成/再使用: {Key}", key);
 #endif
                     result.Recycle();
                     return result.Value;
@@ -172,11 +172,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
             }
 
 #if DEBUG
-#pragma warning disable HAA0101 // Array allocation for params parameter
-#pragma warning disable HAA0601 // Value type to reference type conversion causing boxing allocation
-            Logger.LogTrace("参照アイテム削除: {0}", key);
-#pragma warning restore HAA0601 // Value type to reference type conversion causing boxing allocation
-#pragma warning restore HAA0101 // Array allocation for params parameter
+            Logger.LogTrace("参照アイテム削除: {Key}", key);
 #endif
             if(!item.IsManage) {
                 return;
@@ -184,11 +180,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
             if(item.Value is IDisposable disposer) {
 #if DEBUG
-#pragma warning disable HAA0101 // Array allocation for params parameter
-#pragma warning disable HAA0601 // Value type to reference type conversion causing boxing allocation
-                Logger.LogTrace("参照アイテム破棄: {0}", key);
-#pragma warning restore HAA0601 // Value type to reference type conversion causing boxing allocation
-#pragma warning restore HAA0101 // Array allocation for params parameter
+                Logger.LogTrace("参照アイテム破棄: {Key}", key);
 #endif
                 disposer.Dispose();
             }
@@ -222,6 +214,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
                 }
             }
+
             base.Dispose(disposing);
         }
 

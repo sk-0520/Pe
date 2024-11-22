@@ -1,5 +1,38 @@
 [
 	{
+		"date": "2024/11/22",
+		"version": "0.99.249",
+		"group": ".NET 9",
+		"contents": [
+			{
+				"type": "note",
+				"logs": [
+					{
+						"class": "compatibility",
+						"subject": "本バージョンから .NET 9 で稼働します",
+						"comments": [
+							"多分大丈夫だと思うけど一応互換性注意(.NET 8 移行時と同じ)"
+						]
+					}
+				]
+			},
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "67a8885352f7b733f3c70a358c365c8efd87e2e6",
+						"subject": "#976: .NET 9 へ移行"
+					},
+					{
+						"revision": "bf04e84eeabf9d336e73368c0e7558713dff9661",
+						"class": "nuget",
+						"subject": "Microsoft.Web.WebView2 1.0.2849.39 -> 1.0.2903.40"
+					}
+				]
+			}
+		]
+	},
+	{
 		"date": "2024/11/17",
 		"version": "0.99.248",
 		"contents": [

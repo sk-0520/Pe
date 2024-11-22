@@ -34,7 +34,7 @@ Pe は Windows 10 以上で動作するデスクトップユーティリティ�
 
 ## 開発
 
-* `dotnet`: [8](https://dotnet.microsoft.com/download/dotnet/8.0)
+* `dotnet`: [9](https://dotnet.microsoft.com/download/dotnet/9.0)
 * `node`: `<Pe.git>/.node-version` 参照
 
 ### ローカルでのテスト(C#)

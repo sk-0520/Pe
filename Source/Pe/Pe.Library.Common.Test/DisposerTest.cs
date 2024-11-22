@@ -109,7 +109,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [InlineData(33554432)]
         public void ConstructorTest(int size)
         {
-            using var array = new ArrayPoolValue<byte>(size);
+            using var array = new ValueArrayPool<byte>(size);
             Assert.True(size <= array.Items.Length);
             Assert.Equal(size, array.Length);
         }
@@ -118,7 +118,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         public void ConstructorPoolTest()
         {
             var ap = ArrayPool<byte>.Create();
-            using var array = new ArrayPoolValue<byte>(128, ap);
+            using var array = new ValueArrayPool<byte>(128, ap);
             Assert.True(128 <= array.Items.Length);
         }
 
@@ -127,7 +127,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [InlineData(127, 255)]
         public void Index(int index, byte input)
         {
-            using var array = new ArrayPoolValue<byte>(128);
+            using var array = new ValueArrayPool<byte>(128);
             array.Items[index] = input;
             Assert.Equal(input, array.Items[index]);
             Assert.Equal(input, array[index]);
@@ -170,7 +170,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [InlineData(33554432)]
         public void ConstructorTest(int size)
         {
-            using var array = new ArrayPoolObject<byte>(size);
+            using var array = new DisposableArrayPool<byte>(size);
             Assert.True(size <= array.Items.Length);
             Assert.Equal(size, array.Length);
         }
@@ -179,7 +179,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         public void ConstructorPoolTest()
         {
             var ap = ArrayPool<byte>.Create();
-            using var array = new ArrayPoolObject<byte>(128, ap);
+            using var array = new DisposableArrayPool<byte>(128, ap);
             Assert.True(128 <= array.Items.Length);
         }
 
@@ -188,7 +188,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [InlineData(127, 255)]
         public void Index(int index, byte input)
         {
-            using var array = new ArrayPoolObject<byte>(128);
+            using var array = new DisposableArrayPool<byte>(128);
             array.Items[index] = input;
             Assert.Equal(input, array.Items[index]);
             Assert.Equal(input, array[index]);

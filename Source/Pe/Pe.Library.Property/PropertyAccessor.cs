@@ -53,7 +53,6 @@ namespace ContentTypeTextNet.Pe.Library.Property
 
         #endregion
 
-
         #region IPropertyGetter
 
         /// <inheritdoc cref="IPropertyGetter.Get(object)"/>

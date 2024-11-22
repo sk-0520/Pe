@@ -315,7 +315,7 @@ try {
 			directory = 'Pe\bridge'
 		},
 		@{
-			project = 'Pe.Library.Commmon'
+			project = 'Pe.Library.Common'
 			directory = 'Pe\lib\library'
 		},
 		@{

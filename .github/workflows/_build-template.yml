@@ -28,7 +28,7 @@ env:
   MINIMUM_VERSION: 0.91.0
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
   PLATFORMS: x86,x64
-  DOTNET_VERSION: 8.0.x
+  DOTNET_VERSION: 9.0.x
   VS_TEST_CONSOLE_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow
   PLUGIN_TEMPLATE_REPOSITORY_OWNER: sk-0520
   PLUGIN_TEMPLATE_REPOSITORY_NAME: Pe.PluginTemplate
@@ -130,13 +130,18 @@ jobs:
           path: Output/help
           if-no-files-found: error
 
-  documment-comment:
+  document-comment:
     name: Document Comment
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     steps:
       - name: <Checkout> Repository
         uses: actions/checkout@v4
+
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: <Prepare> docfx
         run: |

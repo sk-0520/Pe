@@ -1,7 +1,3 @@
-#if DEBUG || BETA
-#   define CHECK_PROPERTY_NAME
-#endif
-
 namespace ContentTypeTextNet.Pe.Library.Property
 {
     /// <summary>

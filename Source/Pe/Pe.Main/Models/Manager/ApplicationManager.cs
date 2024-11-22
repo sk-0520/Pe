@@ -1822,8 +1822,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 Debug.Assert(stream.Length == diffStream.Length);
                 var s = new byte[stream.Length];
                 var d = new byte[diffStream.Length];
-                stream.Read(s);
-                diffStream.Read(d);
+                stream.ReadExactly(s);
+                diffStream.ReadExactly(d);
                 Debug.Assert(s.SequenceEqual(d));
             }
 #endif

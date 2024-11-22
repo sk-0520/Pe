@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             },
             {
                 typeof(ArgumentException),
-                "IsEnabledLongKey and LongKey.Length == 1 (Parameter 'key')",
+                "LongKey.Length == 1 (Parameter 'key')",
                 new CommandLineKey("a", CommandLineKeyKind.Value, "")
             }
         };
