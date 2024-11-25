@@ -11,7 +11,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     {
         #region variable
 
-        private readonly object _sync = new object();
+        private readonly System.Threading.Lock _sync = new System.Threading.Lock();
 
         #endregion
 

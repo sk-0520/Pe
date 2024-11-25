@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region variable
 
-        private readonly object _sync = new object();
+        private readonly Lock _sync = new Lock();
 
         #endregion
 
