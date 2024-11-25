@@ -41,7 +41,45 @@ namespace ContentTypeTextNet.Pe.CommonTest
         #endregion
     }
 
-    public class ProjectPath
+    public class ProjectDirectoryPath
+    { }
+
+    public abstract class DirectoryPath
+    {
+        protected DirectoryPath(string rootDirectoryName)
+        {
+            RootDirectoryPath = rootDirectoryName;
+
+            if(!InitializedDirectories.Contains(RootDirectoryPath)) {
+                Directory.CreateDirectory(RootDirectoryPath);
+                InitializedDirectories.Add(RootDirectoryPath);
+            }
+        }
+
+        #region property
+
+        private static HashSet<string> InitializedDirectories = new HashSet<string>();
+
+        public string RootDirectoryPath { get; }
+
+        #endregion
+    }
+
+    public class MethodPath: DirectoryPath
+    {
+        internal MethodPath(string rootDirectoryName)
+           : base(rootDirectoryName)
+        { }
+    }
+
+    public class ClassPath: DirectoryPath
+    {
+        internal ClassPath(string rootDirectoryName)
+            : base(rootDirectoryName)
+        { }
+    }
+
+    public class ProjectPath: DirectoryPath
     {
         #region variable
 
@@ -50,13 +88,10 @@ namespace ContentTypeTextNet.Pe.CommonTest
         #endregion
 
         internal ProjectPath(string rootDirectoryName)
-        {
-            RootDirectoryName = rootDirectoryName;
-        }
+            : base(rootDirectoryName)
+        { }
 
         #region property
-
-        public string RootDirectoryName { get; }
 
         public static ProjectPathFactory Factory
         {
@@ -69,9 +104,6 @@ namespace ContentTypeTextNet.Pe.CommonTest
         #endregion
 
         #region function
-
-
-
 
         #endregion
     }
