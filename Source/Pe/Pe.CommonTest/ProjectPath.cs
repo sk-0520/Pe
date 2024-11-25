@@ -75,24 +75,54 @@ namespace ContentTypeTextNet.Pe.CommonTest
         public TestDirectoryKind DirectoryKind { get; }
 
         #endregion
+
+        #region function
+
+        //public static DirectoryInfo CreateDirectory(DirectoryInfo directory, string name)
+        //{
+        //    var dirPath = Path.Combine(directory.FullName, name);
+        //    return Directory.CreateDirectory(dirPath);
+        //}
+
+        //public static FileInfo CreateEmptyFile(DirectoryInfo directory, string name)
+        //{
+        //    var filePath = Path.Combine(directory.FullName, name);
+        //    File.Create(filePath).Dispose();
+        //    return new FileInfo(filePath);
+        //}
+
+        //public static FileInfo CreateTextFile(DirectoryInfo directory, string name, string content, Encoding encoding)
+        //{
+        //    var filePath = Path.Combine(directory.FullName, name);
+
+        //    using(var stream = File.Create(filePath)) {
+        //        using var writer = new StreamWriter(stream, encoding);
+        //        writer.Write(content);
+        //    }
+
+        //    return new FileInfo(filePath);
+        //}
+        //public static FileInfo CreateTextFile(DirectoryInfo directory, string name, string content) => CreateTextFile(directory, name, content, Encoding.UTF8);
+
+        #endregion
     }
 
     public class MethodDirectoryPath: DirectoryPath
     {
-        internal MethodDirectoryPath(string rootDirectoryName, bool resetDirectory, TestDirectoryKind directoryKind)
+        public MethodDirectoryPath(string rootDirectoryName, bool resetDirectory, TestDirectoryKind directoryKind)
            : base(rootDirectoryName, resetDirectory, directoryKind)
         { }
     }
 
     public class ClassDirectoryPath: DirectoryPath
     {
-        internal ClassDirectoryPath(string rootDirectoryName, bool resetDirectory, TestDirectoryKind directoryKind)
+        public ClassDirectoryPath(string rootDirectoryName, bool resetDirectory, TestDirectoryKind directoryKind)
            : base(rootDirectoryName, resetDirectory, directoryKind)
         { }
 
         #region function
 
-        public MethodDirectoryPath CreateMethod(string suffix = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
+        public MethodDirectoryPath CreateMethodDirectory(string suffix = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
         {
             var dirName = string.IsNullOrWhiteSpace(suffix)
                 ? Path.Combine(RootDirectoryPath, callerMemberName)
@@ -113,7 +143,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         #endregion
 
-        internal ProjectPath(string rootDirectoryName, bool resetDirectory, TestDirectoryKind directoryKind)
+        public ProjectPath(string rootDirectoryName, bool resetDirectory, TestDirectoryKind directoryKind)
             : base(rootDirectoryName, resetDirectory, directoryKind)
         { }
 
@@ -131,7 +161,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         #region function
 
-        public ClassDirectoryPath CreateClass(object test)
+        public ClassDirectoryPath CreateClassDirectory(object test)
         {
             var dirName = test.GetType().FullName!;
             if(DirectoryKind == TestDirectoryKind.Tree) {
@@ -141,10 +171,10 @@ namespace ContentTypeTextNet.Pe.CommonTest
             return new ClassDirectoryPath(path, IsResetDirectory, DirectoryKind);
         }
 
-        public MethodDirectoryPath CreateMethod(object test, string suffix = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
+        public MethodDirectoryPath CreateMethodDirectory(object test, string suffix = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            var classPath = CreateClass(this);
-            return classPath.CreateMethod(suffix, callerMemberName, callerLineNumber);
+            var classPath = CreateClassDirectory(this);
+            return classPath.CreateMethodDirectory(suffix, callerMemberName, callerLineNumber);
         }
 
         #endregion
