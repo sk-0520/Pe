@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Castle.DynamicProxy.Generators;
 
 namespace ContentTypeTextNet.Pe.CommonTest
 {
@@ -24,33 +25,35 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         #region function
 
-        public ProjectPath Create(string baseDirectoryName)
+        public ProjectPath Create(string baseDirectoryName, bool resetDirectory)
         {
             var rootDirectoryName = string.IsNullOrWhiteSpace(baseDirectoryName)
                 ? ProjectTestPath
                 : Path.Combine(ProjectTestPath, baseDirectoryName)
             ;
 
-            return new ProjectPath(rootDirectoryName);
+            return new ProjectPath(rootDirectoryName, resetDirectory);
         }
 
-        public ProjectPath CreateOutput() => Create(string.Empty);
+        public ProjectPath CreateOutput() => Create(string.Empty, false);
 
-        public ProjectPath CreateIO() => Create("_test_io_");
+        public ProjectPath CreateIO() => Create("_test_io_", true);
 
         #endregion
     }
 
-    public class ProjectDirectoryPath
-    { }
 
     public abstract class DirectoryPath
     {
-        protected DirectoryPath(string rootDirectoryName)
+        protected DirectoryPath(string rootDirectoryName, bool isResetDirectory)
         {
             RootDirectoryPath = rootDirectoryName;
+            IsResetDirectory = isResetDirectory;
 
             if(!InitializedDirectories.Contains(RootDirectoryPath)) {
+                if(IsResetDirectory) {
+                    Directory.Delete(RootDirectoryPath, true);
+                }
                 Directory.CreateDirectory(RootDirectoryPath);
                 InitializedDirectories.Add(RootDirectoryPath);
             }
@@ -61,21 +64,22 @@ namespace ContentTypeTextNet.Pe.CommonTest
         private static HashSet<string> InitializedDirectories = new HashSet<string>();
 
         public string RootDirectoryPath { get; }
+        public bool IsResetDirectory { get; }
 
         #endregion
     }
 
-    public class MethodPath: DirectoryPath
+    public class MethodDirectoryPath: DirectoryPath
     {
-        internal MethodPath(string rootDirectoryName)
-           : base(rootDirectoryName)
+        internal MethodDirectoryPath(string rootDirectoryName, bool resetDirectory)
+           : base(rootDirectoryName, resetDirectory)
         { }
     }
 
-    public class ClassPath: DirectoryPath
+    public class ClassDirectoryPath: DirectoryPath
     {
-        internal ClassPath(string rootDirectoryName)
-            : base(rootDirectoryName)
+        internal ClassDirectoryPath(string rootDirectoryName, bool resetDirectory)
+           : base(rootDirectoryName, resetDirectory)
         { }
     }
 
@@ -87,8 +91,8 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         #endregion
 
-        internal ProjectPath(string rootDirectoryName)
-            : base(rootDirectoryName)
+        internal ProjectPath(string rootDirectoryName, bool resetDirectory)
+            : base(rootDirectoryName, resetDirectory)
         { }
 
         #region property
@@ -104,6 +108,13 @@ namespace ContentTypeTextNet.Pe.CommonTest
         #endregion
 
         #region function
+
+        public ClassDirectoryPath GetClassDirectory(Type type)
+        {
+            var typePath = type.FullName!.Split('.', );
+            var path = Path.Combine(RootDirectoryPath, );
+            return new ClassDirectoryPath(path, IsResetDirectory);
+        }
 
         #endregion
     }
