@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Castle.DynamicProxy.Generators;
@@ -88,6 +89,20 @@ namespace ContentTypeTextNet.Pe.CommonTest
         internal ClassDirectoryPath(string rootDirectoryName, bool resetDirectory, TestDirectoryKind directoryKind)
            : base(rootDirectoryName, resetDirectory, directoryKind)
         { }
+
+        #region function
+
+        public MethodDirectoryPath CreateMethod(string suffix = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
+        {
+            var dirName = string.IsNullOrWhiteSpace(suffix)
+                ? Path.Combine(RootDirectoryPath, callerMemberName)
+                : Path.Combine(RootDirectoryPath, callerMemberName, $"_{callerLineNumber}")
+            ;
+            var path = Path.Combine(RootDirectoryPath, dirName);
+            return new MethodDirectoryPath(path, IsResetDirectory, DirectoryKind);
+        }
+
+        #endregion
     }
 
     public class ProjectPath: DirectoryPath
@@ -116,14 +131,20 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         #region function
 
-        public ClassDirectoryPath GetClassDirectory(Type type)
+        public ClassDirectoryPath CreateClass(object test)
         {
-            var dirPath = type.FullName!;
+            var dirName = test.GetType().FullName!;
             if(DirectoryKind == TestDirectoryKind.Tree) {
-                dirPath = dirPath.Replace('.', Path.DirectorySeparatorChar);
+                dirName = dirName.Replace('.', Path.DirectorySeparatorChar);
             }
-            var path = Path.Combine(RootDirectoryPath, dirPath);
+            var path = Path.Combine(RootDirectoryPath, dirName);
             return new ClassDirectoryPath(path, IsResetDirectory, DirectoryKind);
+        }
+
+        public MethodDirectoryPath CreateMethod(object test, string suffix = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
+        {
+            var classPath = CreateClass(this);
+            return classPath.CreateMethod(suffix, callerMemberName, callerLineNumber);
         }
 
         #endregion
