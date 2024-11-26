@@ -76,6 +76,11 @@ namespace ContentTypeTextNet.Pe.CommonTest
             writer.Write(content);
         }
 
+        public StreamWriter AppendText()
+        {
+            return File.AppendText();
+        }
+
         #endregion
     }
 

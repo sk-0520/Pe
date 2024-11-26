@@ -14,19 +14,25 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
 {
     public class FileWatcherTest
     {
+        #region property
+
+        private ProjectPath IOProjectPath { get; } = ProjectPath.Factory.CreateIO();
+
+        #endregion
+
         #region function
 
         [Fact]
         public void WatchTest()
         {
-            var dir = TestIO.InitializeMethod(this);
-            var file = TestIO.CreateEmptyFile(dir, "a.txt");
+            var methodPath = IOProjectPath.CreateMethodDirectory(this);
+            var filePath = methodPath.CreateEmptyFile("a.txt");
             var time = TimeSpan.FromMicroseconds(1);
 
             var called = new HashSet<int>();
 
             using var test = new FileWatcher(new FileWatchParameter {
-                File = file,
+                File = filePath.File,
                 DelayTime = time,
             }, NullLoggerFactory.Instance);
             test.Start();
@@ -74,14 +80,14 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             };
 
             step += 1;
-            using(var stream = file.AppendText()) {
+            using(var stream = filePath.AppendText()) {
                 stream.WriteLine("abc");
             }
             ev.WaitOne();
             Assert.Contains(1, called);
 
             step += 1;
-            using(var stream = file.AppendText()) {
+            using(var stream = filePath.AppendText()) {
                 stream.WriteLine("def");
             }
             ev.WaitOne();
@@ -89,14 +95,14 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
 
             test.Stop();
             step += 1;
-            using(var stream = file.AppendText()) {
+            using(var stream = filePath.AppendText()) {
                 stream.WriteLine("ghi");
             }
             Assert.DoesNotContain(3, called);
 
             test.Start();
             step += 1;
-            using(var stream = file.AppendText()) {
+            using(var stream = filePath.AppendText()) {
                 stream.WriteLine("jkl");
             }
             ev.WaitOne();

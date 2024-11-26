@@ -12,13 +12,18 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
 {
     public class DirectoryCleanerTest
     {
+        #region property
+
+        private ProjectPath IOProjectPath { get; } = ProjectPath.Factory.CreateIO();
+
+        #endregion
+
         #region function
 
         [Fact]
         public void ConstructorTest()
         {
-            var projectPath = ProjectPath.Factory.CreateIO();
-            var methodPath = projectPath.CreateMethodDirectory(this);
+            var methodPath = IOProjectPath.CreateMethodDirectory(this);
 
             var actual = new DirectoryCleaner(
                 methodPath.Directory,

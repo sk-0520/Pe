@@ -12,6 +12,12 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
 {
     public class FileRotatorTest
     {
+        #region property
+
+        private ProjectPath IOProjectPath { get; } = ProjectPath.Factory.CreateIO();
+
+        #endregion
+
         #region function
 
         [Fact]
@@ -26,15 +32,16 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [Fact]
         public void ExecuteRegex()
         {
-            var dir = TestIO.InitializeMethod(this);
-            TestIO.CreateEmptyFile(dir, "target_1.dmy");
-            TestIO.CreateEmptyFile(dir, "target_2.dmy");
-            TestIO.CreateEmptyFile(dir, "target_3.dmy");
-            TestIO.CreateEmptyFile(dir, "target_4.dmy");
-            TestIO.CreateEmptyFile(dir, "target_5.dmy");
+            var methodPath = IOProjectPath.CreateMethodDirectory(this);
+
+            methodPath.CreateEmptyFile("target_1.dmy");
+            methodPath.CreateEmptyFile("target_2.dmy");
+            methodPath.CreateEmptyFile("target_3.dmy");
+            methodPath.CreateEmptyFile("target_4.dmy");
+            methodPath.CreateEmptyFile("target_5.dmy");
 
             var fileRotator = new FileRotator();
-            var actual = fileRotator.ExecuteRegex(dir, new Regex("^target"), 3, ex => true);
+            var actual = fileRotator.ExecuteRegex(methodPath.Directory, new Regex("^target"), 3, ex => true);
             Assert.Equal(2, actual);
         }
 
