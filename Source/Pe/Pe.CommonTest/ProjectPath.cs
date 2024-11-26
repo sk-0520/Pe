@@ -49,7 +49,37 @@ namespace ContentTypeTextNet.Pe.CommonTest
         #endregion
     }
 
-    public abstract class DirectoryPath
+    public class FilePath
+    {
+        public FilePath(FileInfo file)
+        {
+            File = file;
+        }
+
+        #region property
+
+        public FileInfo File { get; }
+
+        #endregion
+
+        #region function
+
+        public void Create()
+        {
+            File.Create().Dispose();
+        }
+
+        public void CreateText(string content, Encoding encoding)
+        {
+            using var stream = File.Create();
+            using var writer = new StreamWriter(stream, encoding);
+            writer.Write(content);
+        }
+
+        #endregion
+    }
+
+    public class DirectoryPath
     {
         protected DirectoryPath(string rootDirectoryName, bool directoryClean, TestDirectoryKind directoryKind)
         {
@@ -81,30 +111,27 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         #region function
 
-        //public static DirectoryInfo CreateDirectory(DirectoryInfo directory, string name)
-        //{
-        //    var dirPath = Path.Combine(directory.FullName, name);
-        //    return Directory.CreateDirectory(dirPath);
-        //}
+        public DirectoryPath CreateDirectory(string directoryName)
+        {
+            var dirPath = Path.Combine(Directory.FullName, directoryName);
+            return new DirectoryPath(dirPath, true, DirectoryKind);
+        }
 
-        //public static FileInfo CreateEmptyFile(DirectoryInfo directory, string name)
-        //{
-        //    var filePath = Path.Combine(directory.FullName, name);
-        //    File.Create(filePath).Dispose();
-        //    return new FileInfo(filePath);
-        //}
+        public FilePath CreateEmptyFile(string name)
+        {
+            var filePath = Path.Combine(Directory.FullName, name);
+            var file = new FilePath(new FileInfo(filePath));
+            file.Create();
+            return file;
+        }
 
-        //public static FileInfo CreateTextFile(DirectoryInfo directory, string name, string content, Encoding encoding)
-        //{
-        //    var filePath = Path.Combine(directory.FullName, name);
-
-        //    using(var stream = File.Create(filePath)) {
-        //        using var writer = new StreamWriter(stream, encoding);
-        //        writer.Write(content);
-        //    }
-
-        //    return new FileInfo(filePath);
-        //}
+        public FilePath CreateTextFile(string name, string content, Encoding encoding)
+        {
+            var filePath = Path.Combine(Directory.FullName, name);
+            var file = new FilePath(new FileInfo(filePath));
+            file.CreateText(content, encoding);
+            return file;
+        }
         //public static FileInfo CreateTextFile(DirectoryInfo directory, string name, string content) => CreateTextFile(directory, name, content, Encoding.UTF8);
 
         #endregion
