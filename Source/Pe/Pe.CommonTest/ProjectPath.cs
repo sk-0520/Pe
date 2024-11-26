@@ -32,14 +32,14 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         #region function
 
-        public ProjectPath Create(string baseDirectoryName, bool resetDirectory, TestDirectoryKind directoryKind)
+        public ProjectPath Create(string baseDirectoryName, bool directoryClean, TestDirectoryKind directoryKind)
         {
             var rootDirectoryName = string.IsNullOrWhiteSpace(baseDirectoryName)
                 ? ProjectTestPath
                 : Path.Combine(ProjectTestPath, baseDirectoryName)
             ;
 
-            return new ProjectPath(rootDirectoryName, resetDirectory, directoryKind);
+            return new ProjectPath(rootDirectoryName, directoryClean, directoryKind);
         }
 
         public ProjectPath CreateOutput() => Create(string.Empty, false, TestDirectoryKind.Tree);
@@ -51,18 +51,21 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
     public abstract class DirectoryPath
     {
-        protected DirectoryPath(string rootDirectoryName, bool isResetDirectory, TestDirectoryKind directoryKind)
+        protected DirectoryPath(string rootDirectoryName, bool directoryClean, TestDirectoryKind directoryKind)
         {
-            RootDirectoryPath = rootDirectoryName;
-            IsResetDirectory = isResetDirectory;
+            Directory = new DirectoryInfo(rootDirectoryName);
+            DirectoryClean = directoryClean;
             DirectoryKind = directoryKind;
 
-            if(!InitializedDirectories.Contains(RootDirectoryPath)) {
-                if(IsResetDirectory) {
-                    Directory.Delete(RootDirectoryPath, true);
+            if(!InitializedDirectories.Contains(Directory.FullName)) {
+                if(DirectoryClean) {
+                    Directory.Refresh();
+                    if(Directory.Exists) {
+                        Directory.Delete(true);
+                    }
                 }
-                Directory.CreateDirectory(RootDirectoryPath);
-                InitializedDirectories.Add(RootDirectoryPath);
+                Directory.Create();
+                InitializedDirectories.Add(Directory.FullName);
             }
         }
 
@@ -70,8 +73,8 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         private static HashSet<string> InitializedDirectories = new HashSet<string>();
 
-        public string RootDirectoryPath { get; }
-        public bool IsResetDirectory { get; }
+        public DirectoryInfo Directory { get; }
+        public bool DirectoryClean { get; }
         public TestDirectoryKind DirectoryKind { get; }
 
         #endregion
@@ -109,8 +112,8 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
     public class MethodDirectoryPath: DirectoryPath
     {
-        public MethodDirectoryPath(string rootDirectoryName, bool resetDirectory, TestDirectoryKind directoryKind)
-           : base(rootDirectoryName, resetDirectory, directoryKind)
+        public MethodDirectoryPath(string rootDirectoryName, bool directoryClean, TestDirectoryKind directoryKind)
+           : base(rootDirectoryName, directoryClean, directoryKind)
         { }
     }
 
@@ -124,12 +127,12 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         public MethodDirectoryPath CreateMethodDirectory(string suffix = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            var dirName = string.IsNullOrWhiteSpace(suffix)
-                ? Path.Combine(RootDirectoryPath, callerMemberName)
-                : Path.Combine(RootDirectoryPath, callerMemberName, $"_{callerLineNumber}")
+            var dirName = DirectoryClean
+                ? Path.Combine(Directory.FullName, $"{suffix}{callerMemberName}-L{callerLineNumber}")
+                : Path.Combine(Directory.FullName, $"{suffix}{callerMemberName}")
             ;
-            var path = Path.Combine(RootDirectoryPath, dirName);
-            return new MethodDirectoryPath(path, IsResetDirectory, DirectoryKind);
+            var path = Path.Combine(Directory.FullName, dirName);
+            return new MethodDirectoryPath(path, DirectoryClean, DirectoryKind);
         }
 
         #endregion
@@ -143,8 +146,8 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         #endregion
 
-        public ProjectPath(string rootDirectoryName, bool resetDirectory, TestDirectoryKind directoryKind)
-            : base(rootDirectoryName, resetDirectory, directoryKind)
+        public ProjectPath(string rootDirectoryName, bool directoryClean, TestDirectoryKind directoryKind)
+            : base(rootDirectoryName, directoryClean, directoryKind)
         { }
 
         #region property
@@ -167,13 +170,13 @@ namespace ContentTypeTextNet.Pe.CommonTest
             if(DirectoryKind == TestDirectoryKind.Tree) {
                 dirName = dirName.Replace('.', Path.DirectorySeparatorChar);
             }
-            var path = Path.Combine(RootDirectoryPath, dirName);
-            return new ClassDirectoryPath(path, IsResetDirectory, DirectoryKind);
+            var path = Path.Combine(Directory.FullName, dirName);
+            return new ClassDirectoryPath(path, DirectoryClean, DirectoryKind);
         }
 
         public MethodDirectoryPath CreateMethodDirectory(object test, string suffix = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            var classPath = CreateClassDirectory(this);
+            var classPath = CreateClassDirectory(test);
             return classPath.CreateMethodDirectory(suffix, callerMemberName, callerLineNumber);
         }
 

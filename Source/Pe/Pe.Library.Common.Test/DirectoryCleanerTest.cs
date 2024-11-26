@@ -17,17 +17,17 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [Fact]
         public void ConstructorTest()
         {
-            var methodDir = TestIO.InitializeMethod(this);
-            var dir = TestIO.CreateDirectory(methodDir, "");
+            var pp = ProjectPath.Factory.CreateIO();
+            var md = pp.CreateMethodDirectory(this);
 
             var actual = new DirectoryCleaner(
-                dir,
+                md.Directory,
                 10,
                 TimeSpan.FromSeconds(3),
                 NullLoggerFactory.Instance
             );
 
-            Assert.Equal(dir, actual.Directory);
+            Assert.Equal(md.Directory, actual.Directory);
         }
 
         #endregion
