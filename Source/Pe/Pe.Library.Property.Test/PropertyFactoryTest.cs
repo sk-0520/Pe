@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Property.Test
@@ -14,6 +14,7 @@ namespace ContentTypeTextNet.Pe.Library.Property.Test
 
         private class GetSet
         {
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1144:Unused private types or members should be removed", Justification = "OK")]
             private int Property { get; set; }
         }
 
