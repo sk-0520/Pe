@@ -9,8 +9,4 @@
     <ProjectReference Include="..\Pe.Library.Common\Pe.Library.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Binding\Collection\" />
-  </ItemGroup>
-
 </Project>
