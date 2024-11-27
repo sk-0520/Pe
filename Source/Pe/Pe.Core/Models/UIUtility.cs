@@ -43,6 +43,17 @@ namespace ContentTypeTextNet.Pe.Core.Models
     /// </remarks>
     public sealed class EmptyDpiScaleOutpour: IDpiScaleOutpour
     {
+        static EmptyDpiScaleOutpour()
+        {
+            Default = new EmptyDpiScaleOutpour();
+        }
+
+        #region property
+
+        public static EmptyDpiScaleOutpour Default { get; }
+
+        #endregion
+
         #region IDpiScaleOutputor
 
         /// <inheritdoc cref="IDpiScaleOutpour.GetDpiScale"/>

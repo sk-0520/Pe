@@ -109,7 +109,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         private ThemeProperties ThemeProperties { get; }
         private PropertyChangedObserver PropertyChangedObserver { get; }
 
-        private IDpiScaleOutpour DpiScaleOutpour { get; set; } = new EmptyDpiScaleOutpour();
+        private IDpiScaleOutpour DpiScaleOutpour { get; set; } = EmptyDpiScaleOutpour.Default;
 
         public double WindowWidth
         {
