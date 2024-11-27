@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Pe.Mvvm</AssemblyName>
+    <RootNamespace>ContentTypeTextNet.Pe.Mvvm</RootNamespace>
+  </PropertyGroup>
+
+</Project>
