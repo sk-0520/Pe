@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using ContentTypeTextNet.Pe.Library.Common;
 
-namespace ContentTypeTextNet.Pe.Mvvm.Binding
+namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 {
     /// <summary>
     /// MVVM で使用するモデル基底。

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace ContentTypeTextNet.Pe.Mvvm.Binding
+namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 {
     public abstract class BindModelWithLoggerBase: BindModelBase
     {

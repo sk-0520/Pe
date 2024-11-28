@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Mvvm.Binding;
+using ContentTypeTextNet.Pe.Mvvm.Bindings;
 using Xunit;
 
-namespace ContentTypeTextNet.Pe.Mvvm.Test.Binding
+namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings
 {
     public class BindModelBaseTest
     {

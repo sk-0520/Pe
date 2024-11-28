@@ -3,6 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Pe.Mvvm</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Mvvm</RootNamespace>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>

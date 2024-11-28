@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ContentTypeTextNet.Pe.Mvvm.Binding
+namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 {
     /// <summary>
     /// 通知モデル基底。
