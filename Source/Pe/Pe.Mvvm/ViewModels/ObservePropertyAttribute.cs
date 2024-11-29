@@ -18,6 +18,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         /// <param name="propertyName">監視対象プロパティ名。</param>
         public ObservePropertyAttribute(string propertyName)
         {
+            ArgumentException.ThrowIfNullOrWhiteSpace(propertyName);
+
             PropertyName = propertyName;
         }
 

@@ -15,12 +15,14 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 {
     /// <summary>
     /// <typeparamref name="TModel"/> と <typeparamref name="TViewModel"/> の一元的管理。
-    /// <para>対になっている部分は内部で対応するがその前後処理までは面倒見ない。</para>
     /// </summary>
+    /// <remarks>
+    /// <para>対になっている部分は内部で対応するがその前後処理までは面倒見ない。</para>
+    /// </remarks>
     /// <typeparam name="TModel"></typeparam>
     /// <typeparam name="TViewModel"></typeparam>
     public class ModelViewModelObservableCollectionManager<TModel, TViewModel>: ObservableCollectionManagerBase<TModel>
-        where TViewModel : ViewModelBase
+        where TViewModel : INotifyPropertyChanged
     {
         #region variable
 
@@ -148,6 +150,17 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             return true;
         }
 
+        /// <summary>
+        /// ViewModel が <see cref="IDisposable"/> を実装している場合に破棄する。
+        /// </summary>
+        /// <param name="viewModel"></param>
+        private void DisposeIfDisposable(TViewModel viewModel)
+        {
+            if(viewModel is IDisposable disposable) {
+                disposable.Dispose();
+            }
+        }
+
         #endregion
 
         #region ObservableCollectionManagerBase
@@ -226,7 +239,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             }
             if(Options.AutoDisposeViewModel) {
                 foreach(var oldViewModel in oldViewModels) {
-                    oldViewModel.Dispose();
+                    DisposeIfDisposable(oldViewModel);
                 }
             }
 
@@ -307,7 +320,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             EditableViewModels.Clear();
             if(Options.AutoDisposeViewModel) {
                 foreach(var viewModel in oldViewModels) {
-                    viewModel.Dispose();
+                    DisposeIfDisposable(viewModel);
                 }
             }
 
@@ -334,7 +347,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
                     if(Options.AutoDisposeViewModel) {
                         foreach(var oldItem in oldItems) {
-                            oldItem.Dispose();
+                            DisposeIfDisposable(oldItem);
                         }
                     }
                 }

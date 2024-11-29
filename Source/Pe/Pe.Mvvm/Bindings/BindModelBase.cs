@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
     /// <summary>
     /// MVVM で使用するモデル基底。
     /// </summary>
-    public abstract class BindModelBase: NotifyPropertyBase, IDisposed
+    public abstract class BindModelBase: NotifyPropertyBase, IDisposable, IDisposed
     {
         /// <summary>
         /// プロパティ値変更処理。
@@ -40,11 +40,11 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 
         #region IDisposed
 
-        /// <summary>
-        /// <see cref="IDisposable.Dispose"/>されたか。
-        /// </summary>
-        [IgnoreDataMember, XmlIgnore]
         public bool IsDisposed { get; protected set; }
+
+        #endregion
+
+        #region IDisposable
 
         /// <summary>
         /// 既に破棄済みの場合は処理を中断する。

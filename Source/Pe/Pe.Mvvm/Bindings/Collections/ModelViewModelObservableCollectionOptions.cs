@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,7 +15,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
     /// <typeparam name="TModel"></typeparam>
     /// <typeparam name="TViewModel"></typeparam>
     public class ModelViewModelObservableCollectionOptions<TModel, TViewModel>
-        where TViewModel : ViewModelBase
+        where TViewModel : INotifyPropertyChanged
     {
         #region define
 
@@ -186,8 +187,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         /// <summary>
         /// アイテム削除時に対象 ViewModel の <see cref="IDisposable.Dispose"/> を呼び出すか。
-        /// <para>置き換え時(<c>list[n] = newViewModel</c>)には破棄されない点に注意。</para>
         /// </summary>
+        /// <remarks>
+        /// <para>置き換え時(<c>list[n] = newViewModel</c>)には破棄されない点に注意。</para>
+        /// </remarks>
         public bool AutoDisposeViewModel { get; set; } = true;
 
         #endregion

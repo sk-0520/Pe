@@ -18,6 +18,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
     /// <summary>
     /// ビューモデルの基底。
     /// </summary>
+    /// TODO: CachedProperty を使用すべきなんだけどいろいろな事情により未対応
     public abstract class ViewModelBase: BindModelBase, INotifyDataErrorInfo
     {
         protected ViewModelBase()
