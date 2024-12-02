@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Messages
 
         #region function
 
-        [WpfFact]
+        [UIFact]
         public void Constructor_none_Test()
         {
             var ui = new Window();
@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Messages
             });
         }
 
-        [WpfFact]
+        [UIFact]
         public void Constructor_DataContextIsNull_Test()
         {
             var ui = new TestWindow();
@@ -55,7 +55,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Messages
         }
 
 
-        [WpfFact]
+        [UIFact]
         public void Constructor_NotLoaded_Test()
         {
             var callCount = 0;
@@ -70,7 +70,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Messages
             Assert.Equal(1, callCount);
         }
 
-        [WpfFact]
+        [UIFact]
         public void Constructor_Loaded_Test()
         {
             var callCount = 0;
@@ -87,7 +87,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Messages
             Assert.Equal(1, callCount);
         }
 
-        [WpfFact]
+        [UIFact]
         public void Constructor_Change_Test()
         {
             var callCount = 0;
@@ -107,7 +107,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Messages
             Assert.Equal(2, callCount);
         }
 
-        [WpfFact]
+        [UIFact]
         public void Constructor_Unload_Test()
         {
             var callCount = 0;

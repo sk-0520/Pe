@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Compatibility.Windows
 
         #region function
 
-        [WpfFact]
+        [UIFact]
         public void GetWindowHandleTest()
         {
             var ui = new TestWindow();

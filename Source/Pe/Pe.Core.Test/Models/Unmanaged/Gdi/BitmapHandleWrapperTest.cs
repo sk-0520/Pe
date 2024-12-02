@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi;
 using Xunit;
@@ -9,7 +9,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged.Gdi
     {
         #region function
 
-        [WpfFact]
+        [UIFact]
         public void Test()
         {
             using var gdiBitmap = new Bitmap(32, 32);
