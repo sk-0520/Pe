@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <summary>
     /// <see cref="IDisposable.Dispose"/>が行われたかどうかを確認できるようにする。
     /// </summary>
-    public interface IDisposed
+    public interface IDisposed: IDisposable
     {
         #region property
 
@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <summary>
     /// <see cref="IDisposable"/> と <see cref="IDisposed"/> を組み合わせたIF。
     /// </summary>
-    public interface IDisposer: IDisposed, IDisposable
+    public interface IDisposer: IDisposed
     {
         #region event
 
