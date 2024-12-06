@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
     /// <summary>
     /// ViewModel の基底。
     /// </summary>
-    public abstract class ViewModelBase: BindableBase, INotifyDataErrorInfo, IDisposer
+    public abstract class ViewModelBase: BindableBase, INotifyDataErrorInfo, IDisposed, IDisposeObservable
     {
         /// <summary>
         /// 生成。

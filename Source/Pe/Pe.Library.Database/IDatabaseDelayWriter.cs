@@ -25,7 +25,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// 周期処理を一時停止。
         /// </summary>
         /// <returns></returns>
-        IDisposer Pause();
+        IDisposeObservable Pause();
         /// <summary>
         /// DB処理を遅延実行。
         /// </summary>

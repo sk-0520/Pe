@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Core.Views
 {
-    public interface IExtendData: INotifyPropertyChanged, IDisposer
+    public interface IExtendData: INotifyPropertyChanged, IDisposeObservable
     { }
 
     public abstract class ViewExtendBase<TView, TExtendData>: DisposerBase

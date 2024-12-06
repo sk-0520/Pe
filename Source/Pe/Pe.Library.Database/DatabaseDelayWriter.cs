@@ -132,7 +132,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         public bool IsPausing { get; private set; }
 
         /// <inheritdoc cref="IDatabaseDelayWriter.Pause"/>
-        public IDisposer Pause()
+        public IDisposeObservable Pause()
         {
             ThrowIfDisposed();
 
