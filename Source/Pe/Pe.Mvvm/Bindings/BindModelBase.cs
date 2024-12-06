@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
     /// <summary>
     /// MVVM で使用するモデル基底。
     /// </summary>
-    public abstract class BindModelBase: NotifyPropertyBase, IDisposed
+    public abstract class BindModelBase: NotifyPropertyBase, IDisposed, IDisposable
     {
         /// <summary>
         /// プロパティ値変更処理。

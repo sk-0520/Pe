@@ -20,7 +20,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
     /// <typeparam name="TModel"></typeparam>
     /// <typeparam name="TViewModel"></typeparam>
     public class ModelViewModelObservableCollectionManager<TModel, TViewModel>: ObservableCollectionManagerBase<TModel>
-        where TViewModel : ViewModelBase
+        where TViewModel : INotifyPropertyChanged
     {
         #region variable
 
@@ -148,6 +148,36 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             return true;
         }
 
+        /// <summary>
+        /// ViewModel を解放する。
+        /// </summary>
+        /// <remarks><see cref="IDisposable"/>を実装している場合にのみ実行される。</remarks>
+        /// <param name="viewModel"></param>
+        /// <returns><see cref="IDisposable.Dispose"/>が実行されたか。</returns>
+        private bool DisposeViewModelIfDisposable(TViewModel viewModel)
+        {
+            if(viewModel is IDisposable disposable) {
+                disposable.Dispose();
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// <see cref="Options.AutoDisposeViewModel"/> が真の場合に指定の ViewModel 一覧を解放する。
+        /// </summary>
+        /// <remarks>古いデータの解放を想定している。</remarks>
+        /// <param name="viewModels"></param>
+        protected void DisposeViewModelsIfAutoDispose(IEnumerable<TViewModel> viewModels)
+        {
+            if(Options.AutoDisposeViewModel) {
+                foreach(var viewModel in viewModels) {
+                    DisposeViewModelIfDisposable(viewModel);
+                }
+            }
+        }
+
         #endregion
 
         #region ObservableCollectionManagerBase
@@ -224,11 +254,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             foreach(var _ in Enumerable.Range(0, oldViewModels.Length)) {
                 EditableViewModels.RemoveAt(oldStartingIndex);
             }
-            if(Options.AutoDisposeViewModel) {
-                foreach(var oldViewModel in oldViewModels) {
-                    oldViewModel.Dispose();
-                }
-            }
+            DisposeViewModelsIfAutoDispose(oldViewModels);
 
             parameter.Apply = ModelViewModelObservableCollectionViewModelApply.After;
             RemoveItemsKindImpl(parameter);
@@ -305,11 +331,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             ResetItemsKindImpl(parameter);
 
             EditableViewModels.Clear();
-            if(Options.AutoDisposeViewModel) {
-                foreach(var viewModel in oldViewModels) {
-                    viewModel.Dispose();
-                }
-            }
+            DisposeViewModelsIfAutoDispose(oldViewModels);
 
             parameter.Apply = ModelViewModelObservableCollectionViewModelApply.After;
             ResetItemsKindImpl(parameter);
@@ -331,12 +353,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
                 if(disposing) {
                     var oldItems = EditableViewModels.ToArray();
                     EditableViewModels.Clear();
-
-                    if(Options.AutoDisposeViewModel) {
-                        foreach(var oldItem in oldItems) {
-                            oldItem.Dispose();
-                        }
-                    }
+                    DisposeViewModelsIfAutoDispose(oldItems);
                 }
                 Options = null!;
             }

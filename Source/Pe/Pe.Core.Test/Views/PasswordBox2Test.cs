@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Views
     {
         #region function
 
-        [WpfFact]
+        [UIFact]
         public void Test()
         {
             var test = new PasswordBox2();
