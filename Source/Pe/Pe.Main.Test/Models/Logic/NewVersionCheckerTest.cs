@@ -22,7 +22,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Xunit;
-using static System.Net.WebRequestMethods;
+using System.Net.Http.Json;
+using ContentTypeTextNet.Pe.Main.Models.Data.ServerApi;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
 {
@@ -37,6 +39,49 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         #endregion
 
         #region function
+
+        [Theory]
+        [InlineData(false, "enabled")]
+        [InlineData(false, "check_failed")]
+        [InlineData(true, "reserved")]
+        [InlineData(true, "disabled")]
+        [InlineData(true, "")]
+        [InlineData(true, "Enabled")]
+        public async Task GetPluginVersionInfoByApiAsync_Test(bool expectedIsNull, string state)
+        {
+            var mockLog = MockLog.Create();
+            var pluginId = PluginId.NewId();
+            Test.MockHttpUserAgent
+                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Post), It.IsAny<CancellationToken>()))
+                .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
+                    Content = JsonContent.Create(new ServerApiResultData<PluginInformationResultData>() {
+                        Data = new() {
+                            Plugins = {
+                                [pluginId.Id] = new () {
+                                    State = state,
+                                    UserId = Guid.Empty,
+                                    CheckUrl = nameof(PluginInformationItemData.CheckUrl),
+                                    ProjectUrl = nameof(PluginInformationItemData.ProjectUrl),
+                                    Description = nameof(PluginInformationItemData.Description),
+                                    DisplayName = nameof(PluginInformationItemData.DisplayName),
+                                    PluginName = nameof(PluginInformationItemData.PluginName),
+                                }
+                            }
+                        }
+                    })
+                }))
+            ;
+
+            var test = new NewVersionChecker(IgnoreApplicationProcessInformation, Test.UserAgentManager, mockLog.Factory.Object);
+            var actual = await test.GetPluginVersionInfoByApiAsync(new Uri("http://localhost.invalid"), pluginId, CancellationToken.None);
+            if(expectedIsNull) {
+                Assert.Null(actual);
+                mockLog.VerifyMessageContains(LogLevel.Warning, $"[{pluginId}] {nameof(PluginInformationItemData.PluginName)} can not install, state: {state}", Times.Once());
+            } else {
+                Assert.NotNull(actual);
+                mockLog.VerifyLogNever();
+            }
+        }
 
         [Theory]
         [InlineData(HttpStatusCode.Continue)]

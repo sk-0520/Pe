@@ -45,6 +45,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         private IApplicationInformation ApplicationInformation { get; }
         private IUserAgentManager UserAgentManager { get; }
 
+        private HashSet<string> CanInstallState { get; } = ["enabled", "check_failed"];
+
         #endregion
 
         #region function
@@ -222,7 +224,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             var serializer = new JsonTextSerializer();
             var result = serializer.Load<ServerApiResultData<PluginInformationResultData>>(stream);
             if(result.Data is not null && result.Data.Plugins.TryGetValue(pluginId.Id, out var item)) {
-                return item;
+                if(CanInstallState.Contains(item.State)) {
+                    return item;
+                }
+                Logger.LogWarning("[{PluginId}] {PluginName} can not install, state: {State}", pluginId, item.PluginName, item.State);
             }
 
             return null;
