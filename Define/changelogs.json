@@ -77,7 +77,11 @@
 				"logs": [
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "UT周りのライブラリ更新",
+						"class": "nuget",
+						"comments": [
+							"ライブラリが多い、つらい"
+						]
 					},
 					{
 						"revision": "",
