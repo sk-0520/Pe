@@ -90,7 +90,8 @@
 					},
 					{
 						"revision": "",
-						"subject": ""
+						"class": "nuget",
+						"subject": "SevenZipExtractor 1.0.17 -> 1.0.19"
 					},
 					{
 						"revision": "",
