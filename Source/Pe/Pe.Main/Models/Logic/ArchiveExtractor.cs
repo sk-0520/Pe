@@ -31,20 +31,32 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         private void ExtractZip(FileInfo archiveFile, DirectoryInfo extractDirectory, UserNotifyProgress userNotifyProgress)
         {
             var createdDirs = new HashSet<string>();
+            var dirSpes = new char[] { '/', '\\' };
 
             // 使い方間違えてんのか知らんけど ZipFile.ExtractToDirectory ってやたら例外吐かん？
             using(var zipArchive = ZipFile.OpenRead(archiveFile.FullName)) {
-                var totalExtractItemCount = zipArchive.Entries.Count;
+                var dirEntries = zipArchive.Entries.Where(a => a.Name.Length == 0 && a.FullName.Length > 0 && dirSpes.Contains(a.FullName[^1])).ToArray();
+                var fileEntries = zipArchive.Entries.Where(a => a.Name.Length > 0).Except(dirEntries).ToArray();
+
+                var totalExtractItemCount = dirEntries.Length + fileEntries.Length;
                 var extractedItemCount = 0;
+
                 userNotifyProgress.Start();
-                foreach(var entry in zipArchive.Entries.Where(e => e.Name.Length > 0)) {
-                    var expandPath = PathUtility.SafeCombine(extractDirectory.FullName, entry.FullName);
-                    var dirPath = Path.GetDirectoryName(expandPath) ?? string.Empty;
+
+                foreach(var entry in dirEntries) {
+                    var dirPath = PathUtility.SafeCombine(extractDirectory.FullName, entry.FullName);
                     if(!createdDirs.Contains(dirPath) && !Directory.Exists(dirPath)) {
                         Logger.LogTrace("作成: {0}", dirPath);
                         Directory.CreateDirectory(dirPath);
                         createdDirs.Add(dirPath);
+
+                        extractedItemCount += 1;
+                        userNotifyProgress.Report(extractedItemCount / (double)totalExtractItemCount, entry.FullName);
                     }
+                }
+
+                foreach(var entry in fileEntries) {
+                    var expandPath = PathUtility.SafeCombine(extractDirectory.FullName, entry.FullName);
                     Logger.LogTrace("展開: {0}", expandPath);
                     entry.ExtractToFile(expandPath, true);
                     extractedItemCount += 1;

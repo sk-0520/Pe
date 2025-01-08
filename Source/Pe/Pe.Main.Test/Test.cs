@@ -190,12 +190,29 @@ namespace ContentTypeTextNet.Pe.Main.Test
             return new Test(diContainer, userAgentManager, mockHttpUserAgent, loggerFactory);
         }
 
-        public static ApplicationConfiguration GetApplicationConfiguration(object obj, [CallerMemberName] string configurationBaseName = "")
+        /// <summary>
+        /// コピー対象のディレクトリパスを取得。
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="extension">ディレクトリの拡張子。 . は自動で付与される。</param>
+        /// <param name="directoryBaseName"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public static string GetCopiedDirectoryPath(object obj,string extension, [CallerMemberName] string directoryBaseName = "")
         {
+            ArgumentException.ThrowIfNullOrWhiteSpace(extension);
+
             var projectTestPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
             var fullName = obj.GetType().FullName ?? throw new Exception(obj.ToString());
             var subName = fullName.Substring("ContentTypeTextNet.Pe.Main.Test.".Length);
-            var configurationPath = Path.Combine(projectTestPath, subName.Replace('.', Path.DirectorySeparatorChar) + ".config", $"{configurationBaseName}.json");
+            var dirPath = Path.Combine(projectTestPath, subName.Replace('.', Path.DirectorySeparatorChar)) + "." + extension;
+
+            return dirPath;
+        }
+
+        public static ApplicationConfiguration GetApplicationConfiguration(object obj, [CallerMemberName] string configurationBaseName = "")
+        {
+            var configurationPath = Path.Combine(GetCopiedDirectoryPath(obj, "config"), $"{configurationBaseName}.json");
 
             if(!File.Exists(configurationPath)) {
                 throw new NotFoundApplicationConfigurationException(configurationPath);
