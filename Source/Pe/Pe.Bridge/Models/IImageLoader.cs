@@ -34,7 +34,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
         /// <param name="frames"></param>
         /// <param name="iconScale"></param>
         /// <returns></returns>
-        public BitmapSource GetImageFromFrames(IReadOnlyCollection<BitmapSource> frames, in IconScale iconScale);
+        BitmapSource GetImageFromFrames(IReadOnlyCollection<BitmapSource> frames, in IconScale iconScale);
 
         /// <summary>
         /// ファイルからアイコンを取得。
@@ -42,8 +42,8 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
         /// <param name="iconPath">対象ファイルパス。</param>
         /// <param name="iconIndex">アイコンインデックス(0基点)。</param>
         /// <param name="iconScale">サイズ。</param>
-        /// <returns>取得したアイコン。取得失敗時は null が返る。</returns>
-        public BitmapSource? LoadIconFromFile(string iconPath, int iconIndex, in IconScale iconScale);
+        /// <returns>取得したアイコン。取得失敗時は <see langword="null"/> が返る。</returns>
+        BitmapSource? LoadIconFromFile(string iconPath, int iconIndex, in IconScale iconScale);
 
         #endregion
     }
