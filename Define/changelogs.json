@@ -1,74 +1,19 @@
 [
 	{
-		"date": "YYYY/MM/DD",
-		"version": "0.99.249+",
+		"date": "2025/01/13",
+		"version": "0.99.250",
 		"contents": [
-			{
-				"type": "note",
-				"logs": [
-					{
-						"revision": "",
-						"class": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
 			{
 				"type": "features",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "6f03f098aa48173751482b8ad5fab5ee2ee2e909",
 						"subject": "#979: プラグインインストールにステータスの確認を行う",
 						"comments": [
 							"有効・チェック失敗をインストール対象とした",
 							"無効・予約はインストール対象外",
 							"チェック失敗はサーバー側の未確定処理なので現状OKとしておく"
 						]
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
-			{
-				"type": "fixes",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -76,7 +21,7 @@
 				"type": "developer",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "66ca3d56059e80b6a380df34a86f204a6d9e2998",
 						"subject": "UT周りのライブラリ更新",
 						"class": "nuget",
 						"comments": [
@@ -84,22 +29,18 @@
 						]
 					},
 					{
-						"revision": "",
+						"revision": "24a3449f38f5c2e393af55892aaef1cb143c8983",
 						"class": "nuget",
 						"subject": "NLog.Extensions.Logging 5.3.14 -> 5.3.15"
 					},
 					{
-						"revision": "",
+						"revision": "331727764b8259869818d0cc5de6ca2327cf62c0",
 						"class": "nuget",
 						"subject": "SevenZipExtractor 1.0.17 -> 1.0.19"
 					},
 					{
-						"revision": "",
+						"revision": "1ee78e74be4755bb4a7d9f1cc381da2fd0cd2c25",
 						"subject": "update npm"
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			}
