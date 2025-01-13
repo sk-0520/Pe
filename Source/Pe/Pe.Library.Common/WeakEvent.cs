@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
@@ -55,7 +56,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <summary>
         /// <see cref="Handlers"/> の処理ロックオブジェクト。
         /// </summary>
-        private readonly object _sync = new();
+        private readonly Lock _sync = new Lock();
 
         #endregion
 

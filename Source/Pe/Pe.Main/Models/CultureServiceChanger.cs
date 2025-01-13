@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.Pe.Main.Models
 
         #region function
 
-        private string LoadLanguageName()
+        private string? LoadLanguageName()
         {
             string lang;
             using(var context = MainDatabaseBarrier.WaitRead()) {
@@ -51,7 +51,6 @@ namespace ContentTypeTextNet.Pe.Main.Models
             // もうちょっと柔軟性あってもいいと思うよ
             return ApplicationConfiguration.General.SupportCultures
                 .FirstOrDefault(i => i.Equals(lang, StringComparison.OrdinalIgnoreCase))
-                ?? string.Empty
             ;
         }
 

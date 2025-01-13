@@ -9,6 +9,9 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.DependencyInjection.Test
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1144:Unused private types or members should be removed", Justification = "OK")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3459:Unassigned members should be removed", Justification = "OK")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S4487:Unread \"private\" fields should be removed", Justification = "OK")]
     public class DiContainerTest
     {
         #region define
@@ -44,7 +47,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection.Test
         {
             public int Func(int a, int b) => a + b;
         }
-        class C1_other: I1
+        class C1_Other: I1
         {
             public int Func(int a, int b) => a - b;
         }
@@ -104,7 +107,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection.Test
 
         abstract class C5
         {
-            public C5(int a, int b, IEnumerable<I1> i1s)
+            protected C5(int a, int b, IEnumerable<I1> i1s)
             {
                 A = a;
                 B = b;
@@ -492,6 +495,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection.Test
                 ad2 = dic2.Get<ActionDisposer>();
             }
 
+            // これいったい何のテストしてるんだ
         }
 
         [Fact]
@@ -499,7 +503,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection.Test
         {
             var dic = new DiContainer();
             dic.Register<I1, C1>(DiLifecycle.Transient);
-            dic.Register<I1, C1_other>("other", DiLifecycle.Transient);
+            dic.Register<I1, C1_Other>("other", DiLifecycle.Transient);
 
             Assert.Equal(3, dic.Get<I1>().Func(1, 2));
             Assert.Equal(-1, dic.Get<I1>("other").Func(1, 2));
@@ -524,7 +528,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection.Test
         {
             var dic = new DiContainer();
             dic.Register<I1, C1>(DiLifecycle.Transient);
-            dic.Register<I1, C1_other>("name", DiLifecycle.Transient);
+            dic.Register<I1, C1_Other>("name", DiLifecycle.Transient);
 
             // 引数のない人はそのまんま生成される
             var i1 = dic.New<I1>();

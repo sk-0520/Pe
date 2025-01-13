@@ -143,7 +143,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         private IClipboardManager ClipboardManager { get; }
         private PropertyChangedObserver PropertyChangedObserver { get; }
 
-        private IDpiScaleOutpour DpiScaleOutpour { get; set; } = new EmptyDpiScaleOutpour();
+        private IDpiScaleOutpour DpiScaleOutpour { get; set; } = EmptyDpiScaleOutpour.Default;
         private FrameworkElement? CaptionElement { get; set; }
         private TextBoxBase? InputSearchElement { get; set; }
         private IDisposable? WindowHandleSource { get; set; }

@@ -249,7 +249,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         /// <summary>
         /// ログデータの排他用オブジェクト。
         /// </summary>
-        readonly object _sync = new object();
+        private readonly Lock _sync = new Lock();
 
         #endregion
 

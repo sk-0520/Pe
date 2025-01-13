@@ -8,7 +8,7 @@ using Prism.Mvvm;
 
 namespace ContentTypeTextNet.Pe.Core.Models
 {
-    public abstract class NotifyPropertyBase: BindableBase, IDisposer
+    public abstract class NotifyPropertyBase: BindableBase, IDisposed, IDisposeObservable
     {
         protected NotifyPropertyBase()
         { }

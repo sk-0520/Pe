@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Views
     {
         #region function
 
-        [WpfFact]
+        [UIFact]
         public void Minimum_Enable_Test()
         {
             var test = new NumericUpDown() {
@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Views
             Assert.False(test.PART_DOWN_BUTTON.IsEnabled);
         }
 
-        [WpfFact]
+        [UIFact]
         public void Maximum_Enable_Test()
         {
             var test = new NumericUpDown() {

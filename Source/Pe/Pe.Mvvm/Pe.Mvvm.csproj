@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Pe.Mvvm</AssemblyName>
+    <RootNamespace>ContentTypeTextNet.Pe.Mvvm</RootNamespace>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pe.Library.Common\Pe.Library.Common.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -127,9 +127,8 @@ void* RC_HEAP_FUNC(allocate_raw_memory, byte_t bytes, bool zero_fill, const MEMO
 
 /// <summary>
 /// 指定したサイズ以上のヒープ領域を0クリアで確保。
-/// <para>ライブラリ層以外では原則こちらを使用する。</para>
-/// <para>TODO: オーバーフローの確認。</para>
 /// </summary>
+/// <remark>ライブラリ層以外では原則こちらを使用する。</remark>
 /// <param name="count">確保する個数。</param>
 /// <param name="type_size">型サイズ。</param>
 /// <returns>確保した領域。<see cref="release_memory"/>にて開放が必要。失敗時は<c>NULL</c>を返す。</returns>

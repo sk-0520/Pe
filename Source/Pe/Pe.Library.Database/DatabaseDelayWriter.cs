@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region variable
 
-        private readonly object _sync = new object();
+        private readonly Lock _sync = new Lock();
 
         #endregion
 
@@ -132,7 +132,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         public bool IsPausing { get; private set; }
 
         /// <inheritdoc cref="IDatabaseDelayWriter.Pause"/>
-        public IDisposer Pause()
+        public IDisposeObservable Pause()
         {
             ThrowIfDisposed();
 

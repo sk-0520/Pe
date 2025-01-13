@@ -26,12 +26,12 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection.Test
         }
 
         [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData(" ")]
-        public void Constructor_throw_Test(string? s)
+        [InlineData(typeof(ArgumentNullException), null)]
+        [InlineData(typeof(ArgumentException), "")]
+        [InlineData(typeof(ArgumentException), " ")]
+        public void Constructor_throw_Test(Type expectedType, string? s)
         {
-            Assert.Throws<ArgumentException>(() => new DiInjectionAttribute(s!));
+            Assert.Throws(expectedType, () => new DiInjectionAttribute(s!));
         }
 
         #endregion

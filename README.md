@@ -37,11 +37,16 @@ Pe は Windows 10 以上で動作するデスクトップユーティリティ�
 * `dotnet`: [9](https://dotnet.microsoft.com/download/dotnet/9.0)
 * `node`: `<Pe.git>/.node-version` 参照
 
+## dotnet tool のインストール
+
+1. リポジトリルートへ移動
+1. `install-dotnet-tool.bat`
+
+.NET ツールは `<Pe.git>\_tool` にインストールされ、バージョンはあんまり気にしない運用。
+
 ### ローカルでのテスト(C#)
 
 1. リポジトリルートへ移動
-1. reportgenerator のローカルインストール  
-   `PS> dotnet tool install dotnet-reportgenerator-globaltool --tool-path _tools`
 1. テスト実行  
    `PS1> .\Build\local-main-test-.ps1 -Project Pe.Main.Test`
    * `Source\Pe` 内の `*.Test` プロジェクトを指定
@@ -52,7 +57,5 @@ Pe は Windows 10 以上で動作するデスクトップユーティリティ�
 ### ローカルでのドキュメントコメント生成(C#)
 
 1. リポジトリルートへ移動
-1. reportgenerator のローカルインストール  
-   `PS> dotnet tool install docfx --tool-path _tools`
 1. 生成
    `PS1> .\_tools\docfx docfx.json --template statictoc`

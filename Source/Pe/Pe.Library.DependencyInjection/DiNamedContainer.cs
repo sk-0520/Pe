@@ -17,6 +17,15 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
 
         internal ConcurrentDictionary<string, TData> Container { get; } = new ConcurrentDictionary<string, TData>();
 
+        /// <summary>
+        /// 名前一覧。
+        /// </summary>
+        public IEnumerable<TData> Values => Container.Values;
+        /// <summary>
+        /// 各コンテナ一覧。
+        /// </summary>
+        public IEnumerable<string> Keys => Container.Keys;
+
         #endregion
 
         #region function
@@ -27,15 +36,6 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         /// <param name="name">対象の名前。無名の場合は<see cref="string.Empty"/>となるが、" " は別名と扱われる(トリムなんてしない)。</param>
         /// <returns></returns>
         public TData this[string name] => Container.GetOrAdd(name, s => new TData());
-
-        /// <summary>
-        /// 名前一覧。
-        /// </summary>
-        public IEnumerable<TData> Values => Container.Values;
-        /// <summary>
-        /// 各コンテナ一覧。
-        /// </summary>
-        public IEnumerable<string> Keys => Container.Keys;
 
         /// <summary>
         /// 名前とコンテナを対とした全件データの取得。

@@ -27,9 +27,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         /// <param name="name">名前。</param>
         public DiInjectionAttribute(string name)
         {
-            if(string.IsNullOrWhiteSpace(name)) {
-                throw new ArgumentException("empty", nameof(name));
-            }
+            ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
             Name = name;
         }
