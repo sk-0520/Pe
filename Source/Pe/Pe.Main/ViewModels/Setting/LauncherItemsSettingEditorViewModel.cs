@@ -18,6 +18,7 @@ using Prism.Commands;
 using ContentTypeTextNet.Pe.Library.Common;
 using System.Threading.Tasks;
 using System.Threading;
+using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 {

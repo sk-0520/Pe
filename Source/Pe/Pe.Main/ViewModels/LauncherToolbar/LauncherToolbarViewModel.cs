@@ -38,6 +38,7 @@ using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 {

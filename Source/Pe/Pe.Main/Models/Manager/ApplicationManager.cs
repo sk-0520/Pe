@@ -69,6 +69,7 @@ using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Main.Models.WebView;
 using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
