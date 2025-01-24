@@ -12,6 +12,7 @@ using ContentTypeTextNet.Pe.Main.Models.Element.Plugin;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
+using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 {
