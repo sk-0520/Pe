@@ -76,6 +76,13 @@
 						"subject": "nuget をいっぱい更新"
 					},
 					{
+						"revision": "fc24fdfc3e99d946f611271a6202ede0964930cb",
+						"subject": "Prism 脱却の第一歩",
+						"comment": [
+							"当分無理だけど組み込んでおく"
+						]
+					},
+					{
 						"revision": "",
 						"subject": ""
 					},
