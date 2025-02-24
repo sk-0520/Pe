@@ -129,6 +129,7 @@
 					},
 					{
 						"revision": "",
+						"class": "nuget",
 						"subject": "テスト系のなんか"
 					},
 					{

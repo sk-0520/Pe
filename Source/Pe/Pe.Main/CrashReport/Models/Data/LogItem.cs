@@ -87,7 +87,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Data
                 LoggerName = logEventInfo.LoggerName,
                 FormattedMessage = logEventInfo.FormattedMessage,
                 Message = logEventInfo.Message,
-                StackTrace = TextUtility.ReadLines(logEventInfo.StackTrace.ToString()).Skip(logEventInfo.UserStackFrameNumber).ToArray(),
+                StackTrace = TextUtility.ReadLines(logEventInfo.StackTrace.ToString()).Skip(logEventInfo.CallerLineNumber).ToArray(),
                 Level = Convert(logEventInfo.Level),
                 SequenceID = logEventInfo.SequenceID,
                 TimeStamp = logEventInfo.TimeStamp.ToUniversalTime(),
