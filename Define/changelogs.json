@@ -1,80 +1,19 @@
 [
 	{
-		"date": "YYYY/MM/DD",
-		"version": "0.99.250+",
+		"date": "2025/02/24",
+		"version": "0.99.251",
 		"contents": [
 			{
 				"type": "note",
 				"logs": [
 					{
-						"revision": "",
-						"class": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
-			{
-				"type": "features",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
-			{
-				"type": "fixes",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
+						"subject": "ライブラリ周りの更新だけ"
 					}
 				]
 			},
 			{
 				"type": "developer",
 				"logs": [
-					{
-						"revision": "",
-						"class": "nuget",
-						"subject": "nuget をいっぱい更新"
-					},
 					{
 						"revision": "fc24fdfc3e99d946f611271a6202ede0964930cb",
 						"subject": "Prism 脱却の第一歩",
@@ -83,58 +22,53 @@
 						]
 					},
 					{
-						"revision": "",
+						"revision": "0f179dca086a68f2fe379c4e53c711dda17bd3fe",
 						"class": "nuget",
 						"subject": "Dapper 2.1.35 -> 2.1.66"
 					},
 					{
-						"revision": "",
+						"revision": "7c169116eea9288309f8c7a5fdba29bf8c57eff9",
 						"class": "nuget",
 						"subject": "Microsoft.Extensions.Configuration.* 9.0.1 -> 9.0.2"
 					},
 					{
-						"revision": "",
-						"class": "nuget",
-						"subject": "Microsoft.Extensions.Configuration.* 9.0.1 -> 9.0.2"
-					},
-					{
-						"revision": "",
+						"revision": "94d96ca2afe2b075bc6c456a819c0e701f41ff9a",
 						"class": "nuget",
 						"subject": "Microsoft.Extensions.Logging.* 9.0.1 -> 9.0.2"
 					},
 					{
-						"revision": "",
+						"revision": "7e823de85663b8e87de88a672ac777c5333cc87c",
 						"class": "nuget",
 						"subject": "Microsoft.Web.WebView2 1.0.2957.106 -> 1.0.3065.39"
 					},
 					{
-						"revision": "",
+						"revision": "12001ab0d8041e88d31e20d291d74d5310cb6e92",
 						"class": "nuget",
 						"subject": "System.DirectoryServices.AccountManagement 9.0.1 -> 9.0.2"
 					},
 					{
-						"revision": "",
+						"revision": "be0257589a666132db6aa090065ba8551722f295",
 						"class": "nuget",
 						"subject": "System.Management 9.0.1 -> 9.0.2"
 					},
 					{
-						"revision": "",
+						"revision": "687f3e040ec670883fe241d45145d65ceab4d0d9",
 						"class": "nuget",
 						"subject": "System.Text.Encoding.CodePages 9.0.1 -> 9.0.2"
 					},
 					{
-						"revision": "",
+						"revision": "6166c9bce6cf8c5e087e971bea4abd51c472508f",
 						"class": "nuget",
 						"subject": "NLog.Extensions.Logging 5.3.15 -> 5.4.0"
 					},
 					{
-						"revision": "",
+						"revision": "850646f2f41b4a4fbb7e54350b1f19bb730a84a5",
 						"class": "nuget",
 						"subject": "テスト系のなんか"
 					},
 					{
-						"revision": "",
-						"subject": ""
+						"revision": "0f07cac9afeb3fc2ad3f552366faf584145897f4",
+						"subject": "update npm"
 					}
 				]
 			}
