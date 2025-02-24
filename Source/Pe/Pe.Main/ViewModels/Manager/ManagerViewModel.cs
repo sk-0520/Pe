@@ -19,6 +19,7 @@ using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar;
 using ContentTypeTextNet.Pe.Main.ViewModels.Note;
 using ContentTypeTextNet.Pe.Main.ViewModels.Widget;
+using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
