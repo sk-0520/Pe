@@ -84,6 +84,11 @@
 					},
 					{
 						"revision": "",
+						"class": "nuget",
+						"subject": "Dapper 2.1.35 -> 2.1.66"
+					},
+					{
+						"revision": "",
 						"subject": ""
 					},
 					{
