@@ -109,6 +109,11 @@
 					},
 					{
 						"revision": "",
+						"class": "nuget",
+						"subject": "System.DirectoryServices.AccountManagement 9.0.1 -> 9.0.2"
+					},
+					{
+						"revision": "",
 						"subject": ""
 					},
 					{
