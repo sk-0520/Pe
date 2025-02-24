@@ -31,7 +31,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.2" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3065.39" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="5.3.15" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.4.0" />
     <PackageReference Include="Prism.Wpf" Version="9.0.537" />
     <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.2" />
