@@ -119,7 +119,8 @@
 					},
 					{
 						"revision": "",
-						"subject": ""
+						"class": "nuget",
+						"subject": "System.Text.Encoding.CodePages 9.0.1 -> 9.0.2"
 					},
 					{
 						"revision": "",
