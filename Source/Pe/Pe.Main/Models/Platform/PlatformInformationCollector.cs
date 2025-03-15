@@ -8,6 +8,7 @@ using System.Text;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.PInvoke.Windows;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Platform
 {
@@ -37,12 +38,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
 
         #region function
 
-        protected List<PlatformInformationItem> GetInfo(ManagementClass managementClass)
+        protected IReadOnlyList<PlatformInformationItem> GetInfo(ManagementClass managementClass)
         {
-            var result = new List<PlatformInformationItem>();
-
-            using(var mc = managementClass.GetInstances()) {
-                foreach(var mo in mc) {
+            try {
+                using var managementInstance = managementClass.GetInstances();
+                var result = new List<PlatformInformationItem>(managementInstance.Count);
+                foreach(var mo in managementInstance) {
                     var collection = mo.Properties
                         .OfType<PropertyData>()
                     ;
@@ -50,9 +51,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                         result.Add(new PlatformInformationItem(property.Name, property.Value));
                     }
                 }
-            }
 
-            return result;
+                return result;
+            } catch(Exception ex) {
+                return [new PlatformInformationItem(ex.Message, ex)];
+            }
         }
 
         public virtual IList<PlatformInformationItem> GetCPU()
