@@ -38,11 +38,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
 
         #region function
 
-        protected IReadOnlyList<PlatformInformationItem> GetInfo(ManagementClass managementClass)
+        protected List<PlatformInformationItem> GetInfo(ManagementClass managementClass)
         {
             try {
                 using var managementInstance = managementClass.GetInstances();
                 var result = new List<PlatformInformationItem>(managementInstance.Count);
+
                 foreach(var mo in managementInstance) {
                     var collection = mo.Properties
                         .OfType<PropertyData>()
