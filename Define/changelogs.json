@@ -94,7 +94,8 @@
 					},
 					{
 						"revision": "",
-						"subject": ""
+						"class": "nuget",
+						"subject": "Microsoft.Extensions.Configuration.* 9.0.2 -> 9.0.3"
 					},
 					{
 						"revision": "",
