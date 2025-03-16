@@ -89,6 +89,11 @@
 					},
 					{
 						"revision": "",
+						"class": "nuget",
+						"subject": "Microsoft.Extensions.Logging.Abstractions.* 9.0.2 -> 9.0.3"
+					},
+					{
+						"revision": "",
 						"subject": ""
 					},
 					{
