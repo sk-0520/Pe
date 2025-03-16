@@ -1,6 +1,6 @@
 import AnnouncementOutlinedIcon from "@mui/icons-material/AnnouncementOutlined";
 import LightbulbOutlinedIcon from "@mui/icons-material/LightbulbOutlined";
-import { Alert, AlertTitle, styled } from "@mui/material";
+import { Alert, AlertTitle, Box, styled } from "@mui/material";
 import type { FC, ReactNode } from "react";
 
 const AlertKinds = ["NOTE", "TIP", "IMPORTANT", "WARNING", "CAUTION"] as const;
@@ -17,10 +17,10 @@ const AlertDisplays: { [key in AlertKind]: string } = {
 const StyledAlert = styled(Alert)({
 	marginBlock: "1em",
 	fontSize: "1rem",
+});
 
-	// ".MuiAlert-message": {
-	// 	fontSize: "1rem",
-	// },
+const StyledBox = styled(Box)({
+	fontSize: "1rem",
 });
 
 interface MdAlertProps {
@@ -34,7 +34,7 @@ export const MdAlert: FC<MdAlertProps> = (props: MdAlertProps) => {
 	const alertChildren = (
 		<>
 			<AlertTitle sx={{ fontWeight: "bold" }}>{AlertDisplays[kind]}</AlertTitle>
-			{children}
+			<StyledBox>{children}</StyledBox>
 		</>
 	);
 
