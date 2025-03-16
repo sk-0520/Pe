@@ -38,9 +38,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
 
         #region function
 
-        protected List<PlatformInformationItem> GetInfo(ManagementClass managementClass)
+        protected List<PlatformInformationItem> GetInfo(string path)
         {
             try {
+                using var managementClass = new ManagementClass(path);
                 using var managementInstance = managementClass.GetInstances();
                 var result = new List<PlatformInformationItem>(managementInstance.Count);
 
@@ -61,16 +62,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
 
         public virtual IList<PlatformInformationItem> GetCPU()
         {
-            using(var managementCpu = new ManagementClass("Win32_Processor")) {
-                return GetInfo(managementCpu);
-            }
+            return GetInfo("Win32_Processor");
         }
 
         public virtual IList<PlatformInformationItem> GetOS()
         {
-            using(var managementOs = new ManagementClass("Win32_OperatingSystem")) {
-                return GetInfo(managementOs);
-            }
+            return GetInfo("Win32_OperatingSystem");
         }
 
         public virtual IList<PlatformInformationItem> GetEnvironment()
