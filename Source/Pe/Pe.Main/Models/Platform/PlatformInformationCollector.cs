@@ -8,6 +8,7 @@ using System.Text;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.PInvoke.Windows;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Platform
 {
@@ -37,12 +38,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
 
         #region function
 
-        protected List<PlatformInformationItem> GetInfo(ManagementClass managementClass)
+        protected List<PlatformInformationItem> GetInfo(string path)
         {
-            var result = new List<PlatformInformationItem>();
+            try {
+                using var managementClass = new ManagementClass(path);
+                using var managementInstance = managementClass.GetInstances();
+                var result = new List<PlatformInformationItem>(managementInstance.Count);
 
-            using(var mc = managementClass.GetInstances()) {
-                foreach(var mo in mc) {
+                foreach(var mo in managementInstance) {
                     var collection = mo.Properties
                         .OfType<PropertyData>()
                     ;
@@ -50,23 +53,21 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                         result.Add(new PlatformInformationItem(property.Name, property.Value));
                     }
                 }
-            }
 
-            return result;
+                return result;
+            } catch(Exception ex) {
+                return [new PlatformInformationItem(ex.Message, ex)];
+            }
         }
 
         public virtual IList<PlatformInformationItem> GetCPU()
         {
-            using(var managementCpu = new ManagementClass("Win32_Processor")) {
-                return GetInfo(managementCpu);
-            }
+            return GetInfo("Win32_Processor");
         }
 
         public virtual IList<PlatformInformationItem> GetOS()
         {
-            using(var managementOs = new ManagementClass("Win32_OperatingSystem")) {
-                return GetInfo(managementOs);
-            }
+            return GetInfo("Win32_OperatingSystem");
         }
 
         public virtual IList<PlatformInformationItem> GetEnvironment()

@@ -13,26 +13,28 @@
 
 Peの配置されているディレクトリをそのまま削除すればアンインストールは完了します。
 
-> [!NOTE]
-> スタートアップに登録している場合はアンインストール前に登録を解除してください。
+<MdAlert kind="NOTE">
+  スタートアップに登録している場合はアンインストール前に登録を解除してください。
+</MdAlert>
 
 ## レジストリ
 
 0.84.0 以降ではレジストリは使用されません。
 
-> [!NOTE]
-> 0.83.0 からバージョンアップした場合、以下のレジストリに PeMain.exe が残っている可能性があります。
-> 
-> * `HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION`
-> * `HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_DOCUMENT_COMPATIBLE_MODE`
-> 
-> 実稼働に影響はありませんが、気になる場合は削除しても問題ありません。
+<MdAlert kind="NOTE">
+  0.83.0 からバージョンアップした場合、以下のレジストリに PeMain.exe が残っている可能性があります。
 
+  * `HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION`
+  * `HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_DOCUMENT_COMPATIBLE_MODE`
+
+  実稼働に影響はありませんが、気になる場合は削除しても問題ありません。
+</MdAlert>
 
 # 保存データ
 
-> [!TIP]
-> 明示的なパス指定は <MdLink page="help.others_commandline" /> を参照してください
+<MdAlert kind="TIP">
+  明示的なパス指定は <MdLink page="help.others_commandline" /> を参照してください
+</MdAlert>
 
 設定データは大まかに3種類あります。
 
@@ -59,6 +61,6 @@ Peの配置されているディレクトリをそのまま削除すればアン
 | 端末データ | <MdPath>%APPDATA%\Pe\settings</MdPath> |
 | 一時データ | <MdPath>%TEMP%\Pe</MdPath> |
 
-> [!IMPORTANT]
-> Pe 格納ディレクトリを移動する場合、スタートアップに登録している場合はディレクトリ移動前に登録を解除してください。
-
+<MdAlert kind="IMPORTANT">
+  Pe 格納ディレクトリを移動する場合、スタートアップに登録している場合はディレクトリ移動前に登録を解除してください。
+</MdAlert>

@@ -292,6 +292,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Database.Vender.Public.SQLite
 
             {
                 var actualTarget = actual[0];
+                Assert.Equal("t", actualTarget.Name);
                 Assert.True(actualTarget.IsPrimary);
                 Assert.True(actualTarget.IsNullable);
                 Assert.Empty(actualTarget.DefaultValue);
@@ -300,6 +301,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Database.Vender.Public.SQLite
             }
             {
                 var actualTarget = actual[1];
+                Assert.Equal("i", actualTarget.Name);
                 Assert.False(actualTarget.IsPrimary);
                 Assert.True(actualTarget.IsNullable);
                 Assert.Empty(actualTarget.DefaultValue);
@@ -308,6 +310,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Database.Vender.Public.SQLite
             }
             {
                 var actualTarget = actual[2];
+                Assert.Equal("r", actualTarget.Name);
                 Assert.False(actualTarget.IsPrimary);
                 Assert.True(actualTarget.IsNullable);
                 Assert.Empty(actualTarget.DefaultValue);
@@ -316,6 +319,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Database.Vender.Public.SQLite
             }
             {
                 var actualTarget = actual[3];
+                Assert.Equal("b", actualTarget.Name);
                 Assert.False(actualTarget.IsPrimary);
                 Assert.True(actualTarget.IsNullable);
                 Assert.Empty(actualTarget.DefaultValue);
@@ -324,6 +328,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Database.Vender.Public.SQLite
             }
             {
                 var actualTarget = actual[4];
+                Assert.Equal("nn", actualTarget.Name);
                 Assert.False(actualTarget.IsPrimary);
                 Assert.False(actualTarget.IsNullable);
                 Assert.Empty(actualTarget.DefaultValue);
@@ -332,6 +337,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Database.Vender.Public.SQLite
             }
             {
                 var actualTarget = actual[5];
+                Assert.Equal("dv", actualTarget.Name);
                 Assert.False(actualTarget.IsPrimary);
                 Assert.True(actualTarget.IsNullable);
                 Assert.Equal("'TEXT'", actualTarget.DefaultValue);
@@ -340,6 +346,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Database.Vender.Public.SQLite
             }
             {
                 var actualTarget = actual[6];
+                Assert.Equal("n", actualTarget.Name);
                 Assert.False(actualTarget.IsPrimary);
                 Assert.True(actualTarget.IsNullable);
                 Assert.Empty(actualTarget.DefaultValue);

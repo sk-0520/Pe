@@ -1,6 +1,7 @@
-> [!WARNING]
-> うまくいってないんじゃわ  
-> [#980: プラグインテンプレートのデプロイ処理が死んでる](https://github.com/sk-0520/Pe/issues/980)
+<MdAlert kind="NOTE">
+  うまくいってないんじゃわ  
+  [#980: プラグインテンプレートのデプロイ処理が死んでる](https://github.com/sk-0520/Pe/issues/980)
+</MdAlert>
 
 プラグイン生成テンプレートを用いることでプラグインのひな形を簡単に生成する。
 
@@ -14,16 +15,19 @@ Powershell で <MdPath>create-project.ps1</MdPath> を実行することでプ�
 
 `Get-Help .\create-project.ps1 -full`
 
-> [!WARNING]
-> PowerShell 処理書き換え云々で追い付いていないのでダメかも(0.99.215～)
+<MdAlert kind="WARNING">
+  PowerShell 処理書き換え云々で追い付いていないのでダメかも(0.99.215～)
+</MdAlert>
 
-> [!WARNING]
-> ドライブ直下に作れたり作れなかったりする問題ありだけど🐛無視無視🐞
+<MdAlert kind="WARNING">
+  ドライブ直下に作れたり作れなかったりする問題ありだけど🐛無視無視🐞
+</MdAlert>
 
-> [!TIP]
-> 必要に応じてセキュリティ設定を一時的にファイル読み込み可能にする必要あり。
->
-> `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process`
+<MdAlert kind="TIP">
+  必要に応じてセキュリティ設定を一時的にファイル読み込み可能にする必要あり。
+
+  `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process`
+</MdAlert>
 
 ## パラメータ生成
 

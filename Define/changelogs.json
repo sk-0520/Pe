@@ -1,5 +1,61 @@
 [
 	{
+		"date": "2025/03/16",
+		"version": "0.99.252",
+		"contents": [
+			{
+				"type": "fixes",
+				"logs": [
+					{
+						"revision": "1c400f1c71578c525fd3ee95fddc79a142df6a23",
+						"subject": "#982: [CR:32] PlatformInformationCollector の取得処理が死んでる"
+					},
+					{
+						"revision": "987b9dfea04c3380d05c0ed803705686222e2438",
+						"subject": "#981: ヘルプの alert 表記が動いてない",
+						"comments": [
+							"頑張ればできたかもしれんけど頑張る気力なし、mdxの表記でふわふわ対応"
+						]
+					}
+				]
+			},
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "e858a184a7c0f3708e9e74c464215327c169c659",
+						"subject": "update npm"
+					},
+					{
+						"revision": "c3f2157b01b013c5e269fe4f6b2a868dc4d850b4",
+						"class": "nuget",
+						"subject": "System.* 9.0.2 -> 9.0.3",
+						"comments": [
+							"System.Text.Encoding.CodePages",
+							"System.Management",
+							"System.DirectoryServices.AccountManagement"
+						]
+					},
+					{
+						"revision": "65a05d96b9a94c24c3171fe5b41a0ba4d4859a88",
+						"class": "nuget",
+						"subject": "Microsoft.Extensions.Logging.Abstractions.* 9.0.2 -> 9.0.3"
+					},
+					{
+						"revision": "639bb6fcfcd9a11605ab37d8d805c7abce4d451b",
+						"class": "nuget",
+						"subject": "Microsoft.Extensions.Configuration.* 9.0.2 -> 9.0.3"
+					},
+					{
+						"revision": "2d8c54d8dc97d59e9671d6490e4eff44668c6f88",
+						"class": "nuget",
+						"subject": "Microsoft.Web.WebView2 1.0.3065.39 -> 1.0.3124.44"
+					}
+				]
+			}
+		]
+	},
+	{
 		"date": "2025/02/24",
 		"version": "0.99.251",
 		"contents": [
