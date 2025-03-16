@@ -55,7 +55,10 @@
 					},
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "#981: ヘルプの alert 表記が動いてない",
+						"comments": [
+							"頑張ればできたかもしれんけど頑張る気力なし、mdxの表記でふわふわ対応"
+						]
 					},
 					{
 						"revision": "",

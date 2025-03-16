@@ -1,5 +1,6 @@
-> [!WARNING]
-> プラグインはバージョン [0.99.000](https://github.com/sk-0520/Pe/milestone/16?closed=1) の [#509](https://github.com/sk-0520/Pe/issues/509) にて実装されましたが試行錯誤しながらやってるのでinterfaceはころころ変わる。
+<MdAlert kind="WARNING">
+  プラグインはバージョン [0.99.000](https://github.com/sk-0520/Pe/milestone/16?closed=1) の [#509](https://github.com/sk-0520/Pe/issues/509) にて実装されましたが試行錯誤しながらやってるのでinterfaceはころころ変わる。
+</MdAlert>
 
 ラグインの参考実装は <MdPath>&lt;Pe.git&gt;/Source/Pe/Pe.Plugins.Reference.*</MdPath> に配置されています。
 
@@ -28,5 +29,6 @@ xeyes のおめめ。
 
 ---
 
-> [!NOTE]
-> [リリース](https://github.com/sk-0520/Pe/releases/latest) に最新のプラグインを配置している。
+<MdAlert kind="NOTE">
+  [リリース](https://github.com/sk-0520/Pe/releases/latest) に最新のプラグインを配置している。
+</MdAlert>

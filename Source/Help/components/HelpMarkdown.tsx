@@ -2,10 +2,10 @@ import { Typography, type TypographyProps, useTheme } from "@mui/material";
 import { MuiMarkdown, defaultOverrides } from "mui-markdown";
 import { Highlight, themes } from "prism-react-renderer";
 import type { FC } from "react";
+import { MdAlert } from "./markdown/MdAlert";
 import { MdInline } from "./markdown/MdInline";
 import { MdLink } from "./markdown/MdLink";
 import { MdPath } from "./markdown/MdPath";
-import { renderAlert } from "./markdown/alert";
 
 type HelpMarkdownProps = {
 	children: string;
@@ -81,14 +81,7 @@ export const HelpMarkdown: FC<HelpMarkdownProps> = (
 					MdLink,
 					MdPath,
 					MdInline,
-				},
-				renderRule: (next, node, renderChildren, state) => {
-					const child = renderAlert(node, renderChildren, state);
-					if (child) {
-						return child;
-					}
-
-					return next();
+					MdAlert,
 				},
 			}}
 		>
