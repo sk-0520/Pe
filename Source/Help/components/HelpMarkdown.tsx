@@ -6,7 +6,6 @@ import { MdAlert } from "./markdown/MdAlert";
 import { MdInline } from "./markdown/MdInline";
 import { MdLink } from "./markdown/MdLink";
 import { MdPath } from "./markdown/MdPath";
-import { renderAlert } from "./markdown/alert";
 
 type HelpMarkdownProps = {
 	children: string;
@@ -83,14 +82,6 @@ export const HelpMarkdown: FC<HelpMarkdownProps> = (
 					MdPath,
 					MdInline,
 					MdAlert,
-				},
-				renderRule: (next, node, renderChildren, state) => {
-					const child = renderAlert(node, renderChildren, state);
-					if (child) {
-						return child;
-					}
-
-					return next();
 				},
 			}}
 		>
