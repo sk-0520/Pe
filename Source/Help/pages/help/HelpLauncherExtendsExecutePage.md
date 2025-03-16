@@ -16,8 +16,10 @@
 
 ファイル実行時の標準入出力を送受信します。
 
-> [!NOTE]
-> [#581: 標準入出力をもうちょっとターミナル的な感じにしたい](https://github.com/sk-0520/Pe/issues/581)
+<MdAlert kind="NOTE">
+  [#581: 標準入出力をもうちょっとターミナル的な感じにしたい](https://github.com/sk-0520/Pe/issues/581)
+</MdAlert>
+
 
 ## 管理者実行
 
