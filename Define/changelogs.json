@@ -79,7 +79,13 @@
 					},
 					{
 						"revision": "",
-						"subject": ""
+						"class": "nuget",
+						"subject": "System.* 9.0.2 -> 9.0.3",
+						"comments": [
+							"System.Text.Encoding.CodePages",
+							"System.Management",
+							"System.DirectoryServices.AccountManagement"
+						]
 					},
 					{
 						"revision": "",
