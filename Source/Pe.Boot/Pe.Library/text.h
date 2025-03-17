@@ -176,7 +176,7 @@ TEXT RC_HEAP_FUNC(clone_text, const TEXT* source, const MEMORY_ARENA_RESOURCE* m
 /// <param name="index">開始位置。</param>
 /// <param name="length">長さ。0を指定すれば残りすべて。</param>
 /// <returns>参照として複製されたテキスト。参照元が生きている限り生きている。解放不要。番兵使用不可。参照できない場合は無効テキスト。</returns>
-TEXT reference_text_width_length(const TEXT* source, size_t index, size_t length);
+TEXT reference_text_with_length(const TEXT* source, size_t index, size_t length);
 
 /// <summary>
 /// テキストを参照として複製。

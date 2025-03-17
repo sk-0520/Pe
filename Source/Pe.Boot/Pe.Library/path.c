@@ -96,7 +96,7 @@ static TEXT split_path_core(const TEXT* source, size_t* next_index, const MEMORY
 
     *next_index = source->length;
     if (source->length && 0 < (source->length - skip_index)) {
-        return reference_text_width_length(source, skip_index, source->length - skip_index);
+        return reference_text_with_length(source, skip_index, source->length - skip_index);
     }
 
     return create_invalid_text();
@@ -268,19 +268,19 @@ PATH_INFO get_path_info_stack(const TEXT* path)
         return create_invalid_path_info();
     }
 
-    TEXT parent_path = reference_text_width_length(&trim_path, 0, last_sep_index);
-    TEXT name = reference_text_width_length(&trim_path, last_sep_index + 1, 0);
+    TEXT parent_path = reference_text_with_length(&trim_path, 0, last_sep_index);
+    TEXT name = reference_text_with_length(&trim_path, last_sep_index + 1, 0);
 
     ssize_t last_ext_index = index_of_character(&name, _T('.'), INDEX_START_POSITION_TAIL);
     //TODO: あまあま処理なのできちんと修正が必要
     TEXT name_without_extension = last_ext_index < 0
         ? name
         : (last_ext_index
-            ? reference_text_width_length(&name, 0, last_ext_index)
+            ? reference_text_with_length(&name, 0, last_ext_index)
             : create_invalid_text()
         )
         ;
-    TEXT extension = last_ext_index < 0 ? create_invalid_text() : reference_text_width_length(&name, last_ext_index + 1, 0);
+    TEXT extension = last_ext_index < 0 ? create_invalid_text() : reference_text_with_length(&name, last_ext_index + 1, 0);
 
     return (PATH_INFO)
     {

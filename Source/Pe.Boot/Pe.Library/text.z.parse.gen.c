@@ -57,19 +57,19 @@ static TEXT skip_base_header(const TEXT* text, size_t base)
         switch (base) {
             case 2:
                 if (text->value[0] == _T('0') && (text->value[1] == _T('b') || text->value[0] == _T('B'))) {
-                    return reference_text_width_length(text, 2, 0);
+                    return reference_text_with_length(text, 2, 0);
                 }
                 break;
 
             case 8:
                 if (text->value[0] == _T('0') && (text->value[1] == _T('o') || text->value[0] == _T('O'))) {
-                    return reference_text_width_length(text, 2, 0);
+                    return reference_text_with_length(text, 2, 0);
                 }
                 break;
 
             case 16:
                 if (text->value[0] == _T('0') && (text->value[1] == _T('x') || text->value[0] == _T('X'))) {
-                    return reference_text_width_length(text, 2, 0);
+                    return reference_text_with_length(text, 2, 0);
                 }
                 break;
 
@@ -96,7 +96,7 @@ TEXT_PARSED_I32_RESULT parse_i32_from_text(const TEXT* input, size_t base)
 
     bool has_signed = check_has_i_signed(&trimmed_input);
 
-    TEXT sign_skip_text = has_signed ? reference_text_width_length(&trimmed_input, 1, 0) : trimmed_input;
+    TEXT sign_skip_text = has_signed ? reference_text_with_length(&trimmed_input, 1, 0) : trimmed_input;
     TEXT parse_target_text = skip_base_header(&sign_skip_text, base);
 
     int32_t total = 0;
@@ -154,7 +154,7 @@ TEXT_PARSED_U32_RESULT parse_u32_from_text(const TEXT* input, size_t base)
 
     bool has_signed = check_has_u_signed(&trimmed_input);
 
-    TEXT sign_skip_text = has_signed ? reference_text_width_length(&trimmed_input, 1, 0) : trimmed_input;
+    TEXT sign_skip_text = has_signed ? reference_text_with_length(&trimmed_input, 1, 0) : trimmed_input;
     TEXT parse_target_text = skip_base_header(&sign_skip_text, base);
 
     uint32_t total = 0;
@@ -210,7 +210,7 @@ TEXT_PARSED_I64_RESULT parse_i64_from_text(const TEXT* input, size_t base)
 
     bool has_signed = check_has_i_signed(&trimmed_input);
 
-    TEXT sign_skip_text = has_signed ? reference_text_width_length(&trimmed_input, 1, 0) : trimmed_input;
+    TEXT sign_skip_text = has_signed ? reference_text_with_length(&trimmed_input, 1, 0) : trimmed_input;
     TEXT parse_target_text = skip_base_header(&sign_skip_text, base);
 
     int64_t total = 0;
@@ -270,7 +270,7 @@ TEXT_PARSED_U64_RESULT parse_u64_from_text(const TEXT* input, size_t base)
 
     bool has_signed = check_has_u_signed(&trimmed_input);
 
-    TEXT sign_skip_text = has_signed ? reference_text_width_length(&trimmed_input, 1, 0) : trimmed_input;
+    TEXT sign_skip_text = has_signed ? reference_text_with_length(&trimmed_input, 1, 0) : trimmed_input;
     TEXT parse_target_text = skip_base_header(&sign_skip_text, base);
 
     uint64_t total = 0;

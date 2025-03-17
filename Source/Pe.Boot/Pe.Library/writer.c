@@ -522,7 +522,7 @@ static size_t get_write_format_width(FORMAT_WIDTH* result, const TEXT* format, c
             continue;
         }
 
-        TEXT number = reference_text_width_length(format, 0, i);
+        TEXT number = reference_text_with_length(format, 0, i);
         TEXT_PARSED_I32_RESULT parsed_result = parse_i32_from_text(&number, PARSE_BASE_NUMBER_D);
 
         result->width = parsed_result.value;
@@ -546,14 +546,14 @@ static WRITE_RESULT write_format_value(func_string_writer string_writer, func_ch
 {
     WRITE_FORMAT_FLAGS flags;
     size_t flag_skip_index = get_write_format_flags(&flags, format);
-    TEXT convert_format = reference_text_width_length(format, flag_skip_index, 0);
+    TEXT convert_format = reference_text_with_length(format, flag_skip_index, 0);
 
     // 幅
     FORMAT_WIDTH format_waidth;
     size_t width_skip_index = get_write_format_width(&format_waidth, &convert_format, memory_arena_resource);
 
     // 長さ
-    TEXT format_length = reference_text_width_length(&convert_format, width_skip_index, convert_format.length - width_skip_index - 1);
+    TEXT format_length = reference_text_with_length(&convert_format, width_skip_index, convert_format.length - width_skip_index - 1);
 
     // 変換指定子
     TCHAR format_type = convert_format.value[convert_format.length - 1];

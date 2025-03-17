@@ -266,7 +266,7 @@ static TEXT split_newline_text_core(const TEXT* source, size_t* next_index, cons
     }
 
     *next_index = source->length;
-    return reference_text_width_length(source, 0, source->length);
+    return reference_text_with_length(source, 0, source->length);
 }
 
 OBJECT_LIST RC_HEAP_FUNC(split_newline_text, const TEXT* text, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
