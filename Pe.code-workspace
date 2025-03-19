@@ -93,6 +93,12 @@
 		}
 	},
 	"extensions": {
-		"recommendations": ["biomejs.biome", "bierner.comment-tagged-templates"]
+		"recommendations": [
+			"biomejs.biome",
+			"bierner.comment-tagged-templates",
+			"ms-vscode.powershell",
+			"editorconfig.editorconfig",
+			"santacodes.santacodes-region-viewer"
+		]
 	}
 }
