@@ -14,15 +14,19 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         /// <summary>
         /// ボタンへのD&amp;D実行時の処理方法。
         /// </summary>
-        public LauncherToolbarContentDropMode ContentDropMode { get; set; }
+        public LauncherToolbarContentDropMode ContentDropMode { get; init; }
         /// <summary>
         /// D&amp;Dファイルがショートカットの場合の処理方法。
         /// </summary>
-        public LauncherToolbarShortcutDropMode ShortcutDropMode { get; set; }
+        public LauncherToolbarShortcutDropMode ShortcutDropMode { get; init; }
         /// <summary>
         /// グループメニューの位置。
         /// </summary>
-        public LauncherGroupPosition GroupMenuPosition { get; set; }
+        public LauncherGroupPosition GroupMenuPosition { get; init; }
+        /// <summary>
+        /// アイテムの重複確認方法。
+        /// </summary>
+        public LauncherToolbarDuplicatedFileRegisterMode DuplicatedFileRegisterMode { get; init; }
 
         #endregion
     }
