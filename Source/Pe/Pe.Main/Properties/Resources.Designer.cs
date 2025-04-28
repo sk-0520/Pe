@@ -1969,6 +1969,36 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
+        ///   ファイルパス に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_LauncherToolbarDuplicatedFileRegisterMode_FilePathOnly_A {
+            get {
+                return ResourceManager.GetString("String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarDuplicatedFileR" +
+                        "egisterMode.FilePathOnly_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ファイルパスとオプション に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_LauncherToolbarDuplicatedFileRegisterMode_FilePathWithOption_A {
+            get {
+                return ResourceManager.GetString("String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarDuplicatedFileR" +
+                        "egisterMode.FilePathWithOption_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   なし に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_LauncherToolbarDuplicatedFileRegisterMode_None_A {
+            get {
+                return ResourceManager.GetString("String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarDuplicatedFileR" +
+                        "egisterMode.None_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   中央 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_LauncherToolbarIconDirection_Center {

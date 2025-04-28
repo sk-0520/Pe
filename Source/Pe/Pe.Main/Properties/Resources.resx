@@ -2381,4 +2381,13 @@ URL: バージョンチェックURLを指定すればその内容からプラグ
   <data name="File_About_WebView" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\File\About\AboutWebView.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
+  <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarDuplicatedFileRegisterMode.None_A" xml:space="preserve">
+    <value>なし</value>
+  </data>
+  <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarDuplicatedFileRegisterMode.FilePathOnly_A" xml:space="preserve">
+    <value>ファイルパス</value>
+  </data>
+  <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarDuplicatedFileRegisterMode.FilePathWithOption_A" xml:space="preserve">
+    <value>ファイルパスとオプション</value>
+  </data>
 </root>

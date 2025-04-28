@@ -115,6 +115,30 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         Shortcut,
     }
 
+    /// <summary>
+    /// 重複ファイルアイテム登録方法。
+    /// </summary>
+    public enum LauncherToolbarDuplicatedFileRegisterMode
+    {
+        /// <summary>
+        /// 重複を考慮しない。
+        /// </summary>
+        [EnumResource]
+        None,
+        /// <summary>
+        /// ファイルパスが重複している場合に重複元アイテムを使用する。
+        /// </summary>
+        [EnumResource]
+        FilePathOnly,
+        /// <summary>
+        /// ファイルパスとオプションが重複している場合に重複元アイテムを使用する。
+        /// </summary>
+        [EnumResource]
+        FilePathWithOption,
+    }
+
+
+
     public interface ILauncherExecutePathParameter
     {
         #region property
