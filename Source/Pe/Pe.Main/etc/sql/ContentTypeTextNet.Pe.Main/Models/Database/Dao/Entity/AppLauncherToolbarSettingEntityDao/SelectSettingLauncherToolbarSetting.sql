@@ -1,7 +1,8 @@
 select
 	AppLauncherToolbarSetting.ContentDropMode,
 	AppLauncherToolbarSetting.ShortcutDropMode,
-	AppLauncherToolbarSetting.GroupMenuPosition
+	AppLauncherToolbarSetting.GroupMenuPosition,
+	AppLauncherToolbarSetting.DuplicatedFileRegisterMode
 from
 	AppLauncherToolbarSetting
 where

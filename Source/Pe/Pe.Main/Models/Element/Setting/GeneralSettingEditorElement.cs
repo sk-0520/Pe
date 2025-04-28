@@ -303,6 +303,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         public LauncherToolbarShortcutDropMode ShortcutDropMode { get; set; }
         public LauncherGroupPosition GroupMenuPosition { get; set; }
 
+        public LauncherToolbarDuplicatedFileRegisterMode DuplicatedFileRegisterMode { get; set; }
+
         #endregion
 
         #region function
@@ -331,6 +333,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 ContentDropMode = ContentDropMode,
                 ShortcutDropMode = ShortcutDropMode,
                 GroupMenuPosition = GroupMenuPosition,
+                DuplicatedFileRegisterMode = DuplicatedFileRegisterMode,
             };
 
             appLauncherToolbarSettingEntityDao.UpdateSettingLauncherToolbarSetting(data, contextsPack.CommonStatus);
