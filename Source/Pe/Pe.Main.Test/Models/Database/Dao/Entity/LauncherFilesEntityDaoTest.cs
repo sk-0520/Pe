@@ -86,6 +86,93 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
             Assert.Throws<InvalidOperationException>(() => testFile.SelectFile(item.LauncherItemId));
         }
 
+        [Theory]
+        [InlineData(false, "X:\\dir\\Name.exe", "Z:\\dir\\Name.exe")]
+        [InlineData(true, "X:\\dir\\Name.exe", "X:\\dir\\Name.exe")]
+        [InlineData(true, "X:\\dir\\Name.exe", "x:\\DIR\\NAME.EXE")]
+        [InlineData(true, "X:\\dir\\Name.exe", "x:/dir/Name.exe")]
+        [InlineData(true, "X:/dir/Name.exe", "x:\\dir\\Name.exe")]
+        [InlineData(true, "X:/dir/Name.exe", "x:/dir/Name.exe")]
+        [InlineData(true, "X:\\dir", "x:\\dir\\")]
+        [InlineData(true, "X:\\dir\\", "x:\\dir")]
+        [InlineData(true, "X:/dir", "x:/dir/")]
+        [InlineData(true, "X:/dir/", "x:/dir")]
+        public void SelectSearchFileFromPath_Normal_Test(bool expectedSearchResult, string registerPath, string searchPath)
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            var testItem = Test.BuildDao<LauncherItemsEntityDao>(AccessorKind.Main);
+            var testFile = Test.BuildDao<LauncherFilesEntityDao>(AccessorKind.Main);
+
+            var item1 = new LauncherItemData() {
+                LauncherItemId = LauncherItemId.NewId(),
+                Name = "Data1",
+                Kind = LauncherItemKind.File,
+            };
+            testItem.InsertLauncherItem(item1, Test.DiContainer.Build<IDatabaseCommonStatus>());
+
+            var file1 = new LauncherFileData() {
+                Caption = "Caption",
+                IsEnabledCustomEnvironmentVariable = true,
+                IsEnabledStandardInputOutput = true,
+                Option = "Option",
+                Path = registerPath,
+                RunAdministrator = true,
+                ShowMode = ShowMode.Normal,
+                WorkDirectoryPath = "Dir",
+            };
+            testFile.InsertFile(item1.LauncherItemId, file1, Test.DiContainer.Build<IDatabaseCommonStatus>());
+
+            var actualExistsIds = testFile.SelectSearchFileFromPath(searchPath);
+            if(expectedSearchResult) {
+                // TODO: 複数件は datetime が制御できる実装ではないので気が向いたら対応する(テスト自体は別途作成)
+                Assert.Single(actualExistsIds);
+                Assert.Equal(item1.LauncherItemId, actualExistsIds.First());
+            } else {
+                Assert.Empty(actualExistsIds);
+            }
+        }
+
+        [Theory]
+        [InlineData(false, "X:\\dir\\Name.exe", "option", "Z:\\dir\\Name.exe", "option")]
+        [InlineData(false, "X:\\dir\\Name.exe", "OPTION", "X:\\dir\\Name.exe", "option")]
+        [InlineData(true, "X:\\dir\\Name.exe", "option", "X:\\dir\\Name.exe", "option")]
+        public void SelectSearchFileFromPathAndOption_Normal_Test(bool expectedSearchResult, string registerPath, string registerOption, string searchPath, string searchOption)
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            var testItem = Test.BuildDao<LauncherItemsEntityDao>(AccessorKind.Main);
+            var testFile = Test.BuildDao<LauncherFilesEntityDao>(AccessorKind.Main);
+
+            var item1 = new LauncherItemData() {
+                LauncherItemId = LauncherItemId.NewId(),
+                Name = "Data1",
+                Kind = LauncherItemKind.File,
+            };
+            testItem.InsertLauncherItem(item1, Test.DiContainer.Build<IDatabaseCommonStatus>());
+
+            var file1 = new LauncherFileData() {
+                Caption = "Caption",
+                IsEnabledCustomEnvironmentVariable = true,
+                IsEnabledStandardInputOutput = true,
+                Option = registerOption,
+                Path = registerPath,
+                RunAdministrator = true,
+                ShowMode = ShowMode.Normal,
+                WorkDirectoryPath = "Dir",
+            };
+            testFile.InsertFile(item1.LauncherItemId, file1, Test.DiContainer.Build<IDatabaseCommonStatus>());
+
+            var actualExistsIds = testFile.SelectSearchFileFromPathAndOption(searchPath, searchOption);
+            if(expectedSearchResult) {
+                // TODO: 複数件は datetime が制御できる実装ではないので気が向いたら対応する(テスト自体は別途作成)
+                Assert.Single(actualExistsIds);
+                Assert.Equal(item1.LauncherItemId, actualExistsIds.First());
+            } else {
+                Assert.Empty(actualExistsIds);
+            }
+        }
+
         #endregion
     }
 }

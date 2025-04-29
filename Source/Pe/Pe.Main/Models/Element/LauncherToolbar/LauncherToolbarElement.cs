@@ -198,6 +198,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
 
         public LauncherToolbarContentDropMode ContentDropMode { get; private set; }
         public LauncherGroupPosition GroupMenuPosition { get; private set; }
+        public LauncherToolbarDuplicatedFileRegisterMode DuplicatedFileRegisterMode { get; private set; }
 
 
         #endregion
@@ -349,6 +350,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
 
             ContentDropMode = appLauncherToolbarSettingData.ContentDropMode;
             GroupMenuPosition = appLauncherToolbarSettingData.GroupMenuPosition;
+            DuplicatedFileRegisterMode = appLauncherToolbarSettingData.DuplicatedFileRegisterMode;
 
             SelectedLauncherGroup = LauncherGroups
                 .FirstOrDefault(i => i.LauncherGroupId == displayData.LauncherGroupId)
@@ -457,10 +459,29 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
                 var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
                 var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
 
-                launcherItemsDao.InsertLauncherItem(data.Item, DatabaseCommonStatus.CreateCurrentAccount());
-                launcherFilesDao.InsertFile(data.Item.LauncherItemId, data.File, DatabaseCommonStatus.CreateCurrentAccount());
-                launcherTagsDao.InsertTags(data.Item.LauncherItemId, tags, DatabaseCommonStatus.CreateCurrentAccount());
-                launcherRedoItemsEntityDao.InsertRedoItem(data.Item.LauncherItemId, LauncherRedoData.GetDisable(), DatabaseCommonStatus.CreateCurrentAccount());
+                bool isNewItem = true;
+                if(DuplicatedFileRegisterMode != LauncherToolbarDuplicatedFileRegisterMode.None) {
+                    var dupItemIds = DuplicatedFileRegisterMode switch {
+                        LauncherToolbarDuplicatedFileRegisterMode.FilePathOnly => launcherFilesDao.SelectSearchFileFromPath(data.File.Path),
+                        LauncherToolbarDuplicatedFileRegisterMode.FilePathWithOption => launcherFilesDao.SelectSearchFileFromPathAndOption(data.File.Path, data.File.Option),
+                        _ => throw new NotImplementedException(),
+                    };
+                    launcherFilesDao.SelectSearchFileFromPath(data.File.Path);
+                    var dupItemId = dupItemIds.FirstOrDefault();
+                    if(dupItemId != LauncherItemId.Empty) {
+                        data.Item.LauncherItemId = dupItemId;
+                        Logger.LogInformation("重複のため再利用: {LauncherItemId}", data.Item.LauncherItemId);
+                        isNewItem = false;
+                    }
+                }
+
+                if(isNewItem) {
+                    Logger.LogInformation("新規登録: {LauncherItemId}", data.Item.LauncherItemId);
+                    launcherItemsDao.InsertLauncherItem(data.Item, DatabaseCommonStatus.CreateCurrentAccount());
+                    launcherFilesDao.InsertFile(data.Item.LauncherItemId, data.File, DatabaseCommonStatus.CreateCurrentAccount());
+                    launcherTagsDao.InsertTags(data.Item.LauncherItemId, tags, DatabaseCommonStatus.CreateCurrentAccount());
+                    launcherRedoItemsEntityDao.InsertRedoItem(data.Item.LauncherItemId, LauncherRedoData.GetDisable(), DatabaseCommonStatus.CreateCurrentAccount());
+                }
 
                 var currentMaxSequence = launcherGroupItemsDao.SelectMaxSequence(SelectedLauncherGroup.LauncherGroupId);
                 launcherGroupItemsDao.InsertNewItems(SelectedLauncherGroup.LauncherGroupId, new[] { data.Item.LauncherItemId }, currentMaxSequence + launcherFactory.GroupItemsStep, launcherFactory.GroupItemsStep, DatabaseCommonStatus.CreateCurrentAccount());
