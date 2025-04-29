@@ -3,7 +3,7 @@ select
 from
 	LauncherFiles
 where
-	RTRIM(REPLACE(LauncherFiles.File, '/', '\'), '\') collate nocase = RTRIM(REPLACE(@File, '/', '\'), '\')
+	RTRIM(REPLACE(LauncherFiles.File, '/', '\'), '\') = RTRIM(REPLACE(@File, '/', '\'), '\') collate nocase -- noqa: PRS
 order by
 	LauncherFiles.CreatedTimestamp,
 	LauncherFiles.LauncherItemId
