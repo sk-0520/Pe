@@ -322,6 +322,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             ContentDropMode = setting.ContentDropMode;
             ShortcutDropMode = setting.ShortcutDropMode;
             GroupMenuPosition = setting.GroupMenuPosition;
+            DuplicatedFileRegisterMode = setting.DuplicatedFileRegisterMode;
 
             return Task.CompletedTask;
         }

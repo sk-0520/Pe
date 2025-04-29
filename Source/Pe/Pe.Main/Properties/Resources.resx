@@ -2354,13 +2354,13 @@ URL: バージョンチェックURLを指定すればその内容からプラグ
     <value>セパレータ</value>
   </data>
   <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarShortcutDropMode.Confirm_A" xml:space="preserve">
-    <value>確認する</value>
+    <value>確認する(_C)</value>
   </data>
   <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarShortcutDropMode.Target_A" xml:space="preserve">
-    <value>ショートカットのリンク先を登録する</value>
+    <value>ショートカットのリンク先を登録する(_L)</value>
   </data>
   <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarShortcutDropMode.Shortcut_A" xml:space="preserve">
-    <value>ショートカット自体を登録する</value>
+    <value>ショートカット自体を登録する(_S)</value>
   </data>
   <data name="String_Setting_Generals_LauncherToolbar_ShortcutModeDropMode_A" xml:space="preserve">
     <value>D&amp;Dファイルがショートカットの場合</value>
@@ -2382,12 +2382,15 @@ URL: バージョンチェックURLを指定すればその内容からプラグ
     <value>..\Resources\File\About\AboutWebView.html;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
   <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarDuplicatedFileRegisterMode.None_A" xml:space="preserve">
-    <value>なし</value>
+    <value>なし(_N)</value>
   </data>
   <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarDuplicatedFileRegisterMode.FilePathOnly_A" xml:space="preserve">
-    <value>ファイルパス</value>
+    <value>ファイルパス(_F)</value>
   </data>
   <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.LauncherToolbarDuplicatedFileRegisterMode.FilePathWithOption_A" xml:space="preserve">
-    <value>ファイルパスとオプション</value>
+    <value>ファイルパスとオプション(_O)</value>
+  </data>
+  <data name="String_Setting_Generals_LauncherToolbar_DuplicatedFileRegisterMode_A" xml:space="preserve">
+    <value>D&amp;Dファイルの重複判定</value>
   </data>
 </root>

@@ -350,6 +350,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
             set => SetModelValue(value);
         }
 
+        public LauncherToolbarDuplicatedFileRegisterMode DuplicatedFileRegisterMode
+        {
+            get => Model.DuplicatedFileRegisterMode;
+            set => SetModelValue(value);
+        }
+
         #endregion
 
         #region command

@@ -66,12 +66,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
             var launcherToolbarContentDropModeTransfer = new EnumTransfer<LauncherToolbarContentDropMode>();
             var launcherToolbarShortcutDropModeTransfer = new EnumTransfer<LauncherToolbarShortcutDropMode>();
             var launcherGroupPositionTransfer = new EnumTransfer<LauncherGroupPosition>();
+            var launcherToolbarDuplicatedFileRegisterModeTransfer = new EnumTransfer<LauncherToolbarDuplicatedFileRegisterMode>();
 
             var statement = LoadStatement();
             var dto = new AppLauncherToolbarSettingEntityDto() {
                 ContentDropMode = launcherToolbarContentDropModeTransfer.ToString(data.ContentDropMode),
                 ShortcutDropMode = launcherToolbarShortcutDropModeTransfer.ToString(data.ShortcutDropMode),
                 GroupMenuPosition = launcherGroupPositionTransfer.ToString(data.GroupMenuPosition),
+                DuplicatedFileRegisterMode = launcherToolbarDuplicatedFileRegisterModeTransfer.ToString(data.DuplicatedFileRegisterMode),
             };
             commonStatus.WriteCommonTo(dto);
             Context.UpdateByKey(statement, dto);

@@ -1969,7 +1969,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
-        ///   ファイルパス に類似しているローカライズされた文字列を検索します。
+        ///   ファイルパス(_F) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_LauncherToolbarDuplicatedFileRegisterMode_FilePathOnly_A {
             get {
@@ -1979,7 +1979,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
-        ///   ファイルパスとオプション に類似しているローカライズされた文字列を検索します。
+        ///   ファイルパスとオプション(_O) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_LauncherToolbarDuplicatedFileRegisterMode_FilePathWithOption_A {
             get {
@@ -1989,7 +1989,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
-        ///   なし に類似しているローカライズされた文字列を検索します。
+        ///   なし(_N) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_LauncherToolbarDuplicatedFileRegisterMode_None_A {
             get {
@@ -2059,7 +2059,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
-        ///   確認する に類似しているローカライズされた文字列を検索します。
+        ///   確認する(_C) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_LauncherToolbarShortcutDropMode_Confirm_A {
             get {
@@ -2069,7 +2069,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
-        ///   ショートカット自体を登録する に類似しているローカライズされた文字列を検索します。
+        ///   ショートカット自体を登録する(_S) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_LauncherToolbarShortcutDropMode_Shortcut_A {
             get {
@@ -2079,7 +2079,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
-        ///   ショートカットのリンク先を登録する に類似しているローカライズされた文字列を検索します。
+        ///   ショートカットのリンク先を登録する(_L) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_LauncherToolbarShortcutDropMode_Target_A {
             get {
@@ -5627,6 +5627,15 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         public static string String_Setting_Generals_LauncherToolbar_ContentDropMode_A {
             get {
                 return ResourceManager.GetString("String_Setting_Generals_LauncherToolbar_ContentDropMode_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   D&amp;Dファイルの重複判定 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Setting_Generals_LauncherToolbar_DuplicatedFileRegisterMode_A {
+            get {
+                return ResourceManager.GetString("String_Setting_Generals_LauncherToolbar_DuplicatedFileRegisterMode_A", resourceCulture);
             }
         }
         
