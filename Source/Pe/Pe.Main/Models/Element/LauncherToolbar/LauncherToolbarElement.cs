@@ -459,16 +459,29 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
                 var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
                 var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
 
-                var dupItemIds = launcherFilesDao.SelectSearchFileFromPath(data.File.Path);
-                var dupItemId = dupItemIds.FirstOrDefault();
-                if(dupItemId != LauncherItemId.Empty) {
-                    // TODO: 既存のアイテムを使用するか選択させる
+                bool isNewItem = true;
+                if(DuplicatedFileRegisterMode != LauncherToolbarDuplicatedFileRegisterMode.None) {
+                    var dupItemIds = DuplicatedFileRegisterMode switch {
+                        LauncherToolbarDuplicatedFileRegisterMode.FilePathOnly => launcherFilesDao.SelectSearchFileFromPath(data.File.Path),
+                        LauncherToolbarDuplicatedFileRegisterMode.FilePathWithOption => launcherFilesDao.SelectSearchFileFromPathAndOption(data.File.Path, data.File.Option),
+                        _ => throw new NotImplementedException(),
+                    };
+                    launcherFilesDao.SelectSearchFileFromPath(data.File.Path);
+                    var dupItemId = dupItemIds.FirstOrDefault();
+                    if(dupItemId != LauncherItemId.Empty) {
+                        data.Item.LauncherItemId = dupItemId;
+                        Logger.LogInformation("重複のため再利用: {LauncherItemId}", data.Item.LauncherItemId);
+                        isNewItem = false;
+                    }
                 }
 
-                launcherItemsDao.InsertLauncherItem(data.Item, DatabaseCommonStatus.CreateCurrentAccount());
-                launcherFilesDao.InsertFile(data.Item.LauncherItemId, data.File, DatabaseCommonStatus.CreateCurrentAccount());
-                launcherTagsDao.InsertTags(data.Item.LauncherItemId, tags, DatabaseCommonStatus.CreateCurrentAccount());
-                launcherRedoItemsEntityDao.InsertRedoItem(data.Item.LauncherItemId, LauncherRedoData.GetDisable(), DatabaseCommonStatus.CreateCurrentAccount());
+                if(isNewItem) {
+                    Logger.LogInformation("新規登録: {LauncherItemId}", data.Item.LauncherItemId);
+                    launcherItemsDao.InsertLauncherItem(data.Item, DatabaseCommonStatus.CreateCurrentAccount());
+                    launcherFilesDao.InsertFile(data.Item.LauncherItemId, data.File, DatabaseCommonStatus.CreateCurrentAccount());
+                    launcherTagsDao.InsertTags(data.Item.LauncherItemId, tags, DatabaseCommonStatus.CreateCurrentAccount());
+                    launcherRedoItemsEntityDao.InsertRedoItem(data.Item.LauncherItemId, LauncherRedoData.GetDisable(), DatabaseCommonStatus.CreateCurrentAccount());
+                }
 
                 var currentMaxSequence = launcherGroupItemsDao.SelectMaxSequence(SelectedLauncherGroup.LauncherGroupId);
                 launcherGroupItemsDao.InsertNewItems(SelectedLauncherGroup.LauncherGroupId, new[] { data.Item.LauncherItemId }, currentMaxSequence + launcherFactory.GroupItemsStep, launcherFactory.GroupItemsStep, DatabaseCommonStatus.CreateCurrentAccount());
