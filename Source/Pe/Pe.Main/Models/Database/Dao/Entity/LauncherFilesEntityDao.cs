@@ -6,6 +6,7 @@ using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
 {
@@ -124,6 +125,29 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
 
         }
 
+        /// <summary>
+        /// ファイルパスから該当の <see cref="LauncherItemId"/> 一覧を取得する。
+        /// </summary>
+        /// <remarks>
+        /// <list type="bullet">
+        ///     <item>大文字小文字は区別しない</item>
+        ///     <item>'/' は `\` として扱われる</item>
+        ///     <item>末尾 `\` は無視される</item>
+        /// </list>
+        /// <para>SQL側であれこれしてるので本アプリにおいては比較的重めの処理かも。</para>
+        /// </remarks>
+        /// <param name="path">ファイルパス。</param>
+        /// <returns></returns>
+        public IEnumerable<LauncherItemId> SelectSearchFileFromPath(string path)
+        {
+            var statement = LoadStatement();
+            var param = new Dictionary<string, object?>() {
+                [Column.File] = path,
+            };
+
+            return Context.SelectOrdered<LauncherItemId>(statement, param);
+        }
+
         public void InsertFile(LauncherItemId launcherItemId, LauncherExecutePathData data, IDatabaseCommonStatus commonStatus)
         {
             var statement = LoadStatement();
@@ -139,7 +163,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
 
         public void UpdateCustomizeLauncherFile(LauncherItemId launcherItemId, ILauncherExecutePathParameter pathParameter, ILauncherExecuteCustomParameter customParameter, IDatabaseCommonStatus commonStatus)
         {
-            var showModeEnumTransfer =  new EnumTransfer<ShowMode>();
+            var showModeEnumTransfer = new EnumTransfer<ShowMode>();
 
             var statement = LoadStatement();
             var parameter = commonStatus.CreateCommonDtoMapping();

@@ -198,6 +198,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
 
         public LauncherToolbarContentDropMode ContentDropMode { get; private set; }
         public LauncherGroupPosition GroupMenuPosition { get; private set; }
+        public LauncherToolbarDuplicatedFileRegisterMode DuplicatedFileRegisterMode { get; private set; }
 
 
         #endregion
@@ -349,6 +350,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
 
             ContentDropMode = appLauncherToolbarSettingData.ContentDropMode;
             GroupMenuPosition = appLauncherToolbarSettingData.GroupMenuPosition;
+            DuplicatedFileRegisterMode = appLauncherToolbarSettingData.DuplicatedFileRegisterMode;
 
             SelectedLauncherGroup = LauncherGroups
                 .FirstOrDefault(i => i.LauncherGroupId == displayData.LauncherGroupId)
@@ -456,6 +458,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
                 var launcherFilesDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
                 var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
                 var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+
+                var dupItemIds = launcherFilesDao.SelectSearchFileFromPath(data.File.Path);
+                var dupItemId = dupItemIds.FirstOrDefault();
+                if(dupItemId != LauncherItemId.Empty) {
+                    // TODO: 既存のアイテムを使用するか選択させる
+                }
 
                 launcherItemsDao.InsertLauncherItem(data.Item, DatabaseCommonStatus.CreateCurrentAccount());
                 launcherFilesDao.InsertFile(data.Item.LauncherItemId, data.File, DatabaseCommonStatus.CreateCurrentAccount());
