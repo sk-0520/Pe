@@ -76,7 +76,7 @@ select
 	[AppLauncherToolbarSetting2].[ContentDropMode],
 	[AppLauncherToolbarSetting2].[GroupMenuPosition],
 	[AppLauncherToolbarSetting2].[ShortcutDropMode],
-	'FilePathOnly'
+	'file-path-only'
 from
 	[AppLauncherToolbarSetting2]
 ;
