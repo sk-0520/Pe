@@ -125,6 +125,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
 
         }
 
+        private IEnumerable<LauncherItemId> SelectSearchFileFromParameters(Dictionary<string, object?> parameters)
+        {
+            var statement = LoadStatement();
+            var blocks = new Dictionary<string, string>() {
+                ["OPTION"] = parameters.ContainsKey(Column.Option) ? "ON": string.Empty,
+            };
+            var processedStatement = ProcessStatement(statement, blocks);
+
+            return Context.SelectOrdered<LauncherItemId>(processedStatement, parameters);
+        }
+
         /// <summary>
         /// ファイルパスから該当の <see cref="LauncherItemId"/> 一覧を取得する。
         /// </summary>
@@ -137,15 +148,34 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
         /// <para>SQL側であれこれしてるので本アプリにおいては比較的重めの処理かも。</para>
         /// </remarks>
         /// <param name="path">ファイルパス。</param>
-        /// <returns></returns>
+        /// <returns>該当するランチャーアイテムID一覧。</returns>
         public IEnumerable<LauncherItemId> SelectSearchFileFromPath(string path)
         {
-            var statement = LoadStatement();
             var param = new Dictionary<string, object?>() {
                 [Column.File] = path,
             };
 
-            return Context.SelectOrdered<LauncherItemId>(statement, param);
+            return SelectSearchFileFromParameters(param);
+        }
+
+        /// <summary>
+        /// ファイルパスとオプションから該当の <see cref="LauncherItemId"/> 一覧を取得する。
+        /// </summary>
+        /// <remarks>
+        /// <inheritdoc cref="SelectSearchFileFromPath(string)"/>
+        /// <para>オプションは通常文字列として比較される。</para>
+        /// </remarks>
+        /// <param name="path"><inheritdoc cref="SelectSearchFileFromPath(string)"/></param>
+        /// <param name="option">オプション。</param>
+        /// <returns><inheritdoc cref="SelectSearchFileFromPath(string)"/></returns>
+        public IEnumerable<LauncherItemId> SelectSearchFileFromPathAndOption(string path, string option)
+        {
+            var param = new Dictionary<string, object?>() {
+                [Column.File] = path,
+                [Column.Option] = option,
+            };
+
+            return SelectSearchFileFromParameters(param);
         }
 
         public void InsertFile(LauncherItemId launcherItemId, LauncherExecutePathData data, IDatabaseCommonStatus commonStatus)
