@@ -947,12 +947,10 @@ jobs:
     strategy:
       matrix:
         OS:
+          - windows-2025
           - windows-2019
           - ubuntu-24.04
           - ubuntu-22.04
-          - ubuntu-20.04
-          # - macos-14
-          - macos-13
         TARGET:
           - Pe.Library.CliProxy.Test
           - Pe.Library.Args.Test

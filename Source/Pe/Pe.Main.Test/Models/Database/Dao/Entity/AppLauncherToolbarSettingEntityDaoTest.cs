@@ -40,6 +40,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
                 ContentDropMode = LauncherToolbarContentDropMode.ExtendsExecute,
                 ShortcutDropMode = LauncherToolbarShortcutDropMode.Target,
                 GroupMenuPosition = LauncherGroupPosition.Bottom,
+                DuplicatedFileRegisterMode = LauncherToolbarDuplicatedFileRegisterMode.FilePathOnly,
             };
 
             test.UpdateSettingLauncherToolbarSetting(expected, Test.DiContainer.New<IDatabaseCommonStatus>());
@@ -49,6 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
             Assert.Equal(expected.ContentDropMode, actual.ContentDropMode);
             Assert.Equal(expected.ShortcutDropMode, actual.ShortcutDropMode);
             Assert.Equal(expected.GroupMenuPosition, actual.GroupMenuPosition);
+            Assert.Equal(expected.DuplicatedFileRegisterMode, actual.DuplicatedFileRegisterMode);
         }
 
 

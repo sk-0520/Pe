@@ -150,7 +150,7 @@ TEXT RC_HEAP_FUNC(clone_text, const TEXT* source, const MEMORY_ARENA_RESOURCE* m
     return result;
 }
 
-TEXT reference_text_width_length(const TEXT* source, size_t index, size_t length)
+TEXT reference_text_with_length(const TEXT* source, size_t index, size_t length)
 {
     if (!source->library.need_release && !index && source->length == length) {
         return *source;

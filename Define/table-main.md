@@ -197,32 +197,33 @@ ___
 
 ## layout
 
-| PK | NN |      FK      |       論理カラム名        |     物理カラム名      | 論理データ型 |  マッピング型   |       コメント       |
-|:--:|:--:|:-------------|:--------------------------|:----------------------|:-------------|:----------------|:---------------------|
-| x  | x  |              | 世代                      | Generation            | integer      | System.Int64    | 最大のものを使用する |
-|    | x  |              | 作成タイムスタンプ        | CreatedTimestamp      | datetime     | System.DateTime | UTC                  |
-|    | x  |              | 作成ユーザー名            | CreatedAccount        | text         | System.String   |                      |
-|    | x  |              | 作成プログラム名          | CreatedProgramName    | text         | System.String   |                      |
-|    | x  |              | 作成プログラムバージョン  | CreatedProgramVersion | text         | System.Version  |                      |
-|    | x  |              | 更新タイムスタンプ        | UpdatedTimestamp      | datetime     | System.DateTime | UTC                  |
-|    | x  |              | 更新ユーザー名            | UpdatedAccount        | text         | System.String   |                      |
-|    | x  |              | 更新プログラム名          | UpdatedProgramName    | text         | System.String   |                      |
-|    | x  |              | 更新プログラムバージョン  | UpdatedProgramVersion | text         | System.Version  |                      |
-|    | x  |              | 更新回数                  | UpdatedCount          | integer      | System.Int64    | 0始まり              |
-|    | x  |              | 表示位置                  | PositionKind          | text         | System.String   | 上下左右             |
-|    | x  |              | 方向                      | Direction             | text         | System.String   | アイコンの並びの基点 |
-|    | x  |              | アイコンサイズ            | IconBox               | text         | System.String   |                      |
-|    | x  | Fonts.FontId | フォント                  | FontId                | text         | System.Guid     |                      |
-|    | x  |              | 表示するまでの抑制時間    | DisplayDelayTime      | text         | System.TimeSpan |                      |
-|    | x  |              | 自動的に隠す時間          | AutoHideTime          | text         | System.TimeSpan |                      |
-|    | x  |              | 文字幅                    | TextWidth             | integer      | System.Int64    |                      |
-|    | x  |              | 表示                      | IsVisible             | boolean      | System.Boolean  |                      |
-|    | x  |              | 最前面                    | IsTopmost             | boolean      | System.Boolean  |                      |
-|    | x  |              | 自動的に隠す              | IsAutoHide            | boolean      | System.Boolean  |                      |
-|    | x  |              | アイコンのみ              | IsIconOnly            | boolean      | System.Boolean  |                      |
-|    | x  |              | ツールバーへのD&D処理     | ContentDropMode       | text         | System.String   |                      |
-|    | x  |              | グループメニュー表示位置  | GroupMenuPosition     | text         | System.String   |                      |
-|    | x  |              | ショートカットD&D時の挙動 | ShortcutDropMode      | text         | System.String   |                      |
+| PK | NN |      FK      |         論理カラム名         |        物理カラム名        | 論理データ型 |  マッピング型   |       コメント       |
+|:--:|:--:|:-------------|:-----------------------------|:---------------------------|:-------------|:----------------|:---------------------|
+| x  | x  |              | 世代                         | Generation                 | integer      | System.Int64    | 最大のものを使用する |
+|    | x  |              | 作成タイムスタンプ           | CreatedTimestamp           | datetime     | System.DateTime | UTC                  |
+|    | x  |              | 作成ユーザー名               | CreatedAccount             | text         | System.String   |                      |
+|    | x  |              | 作成プログラム名             | CreatedProgramName         | text         | System.String   |                      |
+|    | x  |              | 作成プログラムバージョン     | CreatedProgramVersion      | text         | System.Version  |                      |
+|    | x  |              | 更新タイムスタンプ           | UpdatedTimestamp           | datetime     | System.DateTime | UTC                  |
+|    | x  |              | 更新ユーザー名               | UpdatedAccount             | text         | System.String   |                      |
+|    | x  |              | 更新プログラム名             | UpdatedProgramName         | text         | System.String   |                      |
+|    | x  |              | 更新プログラムバージョン     | UpdatedProgramVersion      | text         | System.Version  |                      |
+|    | x  |              | 更新回数                     | UpdatedCount               | integer      | System.Int64    | 0始まり              |
+|    | x  |              | 表示位置                     | PositionKind               | text         | System.String   | 上下左右             |
+|    | x  |              | 方向                         | Direction                  | text         | System.String   | アイコンの並びの基点 |
+|    | x  |              | アイコンサイズ               | IconBox                    | text         | System.String   |                      |
+|    | x  | Fonts.FontId | フォント                     | FontId                     | text         | System.Guid     |                      |
+|    | x  |              | 表示するまでの抑制時間       | DisplayDelayTime           | text         | System.TimeSpan |                      |
+|    | x  |              | 自動的に隠す時間             | AutoHideTime               | text         | System.TimeSpan |                      |
+|    | x  |              | 文字幅                       | TextWidth                  | integer      | System.Int64    |                      |
+|    | x  |              | 表示                         | IsVisible                  | boolean      | System.Boolean  |                      |
+|    | x  |              | 最前面                       | IsTopmost                  | boolean      | System.Boolean  |                      |
+|    | x  |              | 自動的に隠す                 | IsAutoHide                 | boolean      | System.Boolean  |                      |
+|    | x  |              | アイコンのみ                 | IsIconOnly                 | boolean      | System.Boolean  |                      |
+|    | x  |              | ツールバーへのD&D処理        | ContentDropMode            | text         | System.String   |                      |
+|    | x  |              | グループメニュー表示位置     | GroupMenuPosition          | text         | System.String   |                      |
+|    | x  |              | ショートカットD&D時の挙動    | ShortcutDropMode           | text         | System.String   |                      |
+|    | x  |              | 重複ファイルアイテム登録方法 | DuplicatedFileRegisterMode | text         | System.String   |                      |
 
 ## index
 

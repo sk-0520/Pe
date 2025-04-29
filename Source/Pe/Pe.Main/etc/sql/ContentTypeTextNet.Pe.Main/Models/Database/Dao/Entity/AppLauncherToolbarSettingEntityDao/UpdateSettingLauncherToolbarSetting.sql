@@ -4,6 +4,7 @@ set
 	ContentDropMode = @ContentDropMode,
 	ShortcutDropMode = @ShortcutDropMode,
 	GroupMenuPosition = @GroupMenuPosition,
+	DuplicatedFileRegisterMode = @DuplicatedFileRegisterMode,
 
 	UpdatedTimestamp = @UpdatedTimestamp,
 	UpdatedAccount = @UpdatedAccount,

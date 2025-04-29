@@ -307,6 +307,7 @@
                   <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                   </Grid.RowDefinitions>
                   <Grid.ColumnDefinitions>
                     <ColumnDefinition Style="{StaticResource LabelDefinition}" />
@@ -332,6 +333,21 @@
                       <RadioButton Style="{StaticResource Horizontal-RadioButton}" Content="{Binding Source={x:Static app_main_models_data:LauncherToolbarShortcutDropMode.Shortcut}, Converter={StaticResource EnumToCultureConverter}, ConverterParameter=A}" IsChecked="{Binding ShortcutDropMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_main_models_data:LauncherToolbarShortcutDropMode.Shortcut}}" />
                     </WrapPanel>
                   </Grid>
+
+                  <Grid Grid.Row="2" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                      <RowDefinition Height="Auto" />
+                      <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Style="{StaticResource HeaderLabel}" Content="{Binding Resources.String_Setting_Generals_LauncherToolbar_DuplicatedFileRegisterMode_A, Source={x:Static app_main:CultureService.Instance}}" />
+                    <WrapPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                      <RadioButton Style="{StaticResource Horizontal-RadioButton}" Content="{Binding Source={x:Static app_main_models_data:LauncherToolbarDuplicatedFileRegisterMode.None}, Converter={StaticResource EnumToCultureConverter}, ConverterParameter=A}" IsChecked="{Binding DuplicatedFileRegisterMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_main_models_data:LauncherToolbarDuplicatedFileRegisterMode.None}}" />
+                      <RadioButton Style="{StaticResource Horizontal-RadioButton}" Content="{Binding Source={x:Static app_main_models_data:LauncherToolbarDuplicatedFileRegisterMode.FilePathOnly}, Converter={StaticResource EnumToCultureConverter}, ConverterParameter=A}" IsChecked="{Binding DuplicatedFileRegisterMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_main_models_data:LauncherToolbarDuplicatedFileRegisterMode.FilePathOnly}}" />
+                      <RadioButton Style="{StaticResource Horizontal-RadioButton}" Content="{Binding Source={x:Static app_main_models_data:LauncherToolbarDuplicatedFileRegisterMode.FilePathWithOption}, Converter={StaticResource EnumToCultureConverter}, ConverterParameter=A}" IsChecked="{Binding DuplicatedFileRegisterMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static app_main_models_data:LauncherToolbarDuplicatedFileRegisterMode.FilePathWithOption}}" />
+                    </WrapPanel>
+                  </Grid>
+
                 </Grid>
                 
                 <!--
