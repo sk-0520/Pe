@@ -46,6 +46,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
         #endregion
     }
 
+
     public class DelegateCommand: DelegateCommandBase<object>
     {
         public DelegateCommand(Action<object> executeAction)
@@ -54,6 +55,14 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
 
         public DelegateCommand(Action<object> executeAction, Func<object, bool> canExecuteFunc)
             : base(executeAction, canExecuteFunc)
+        { }
+
+        public DelegateCommand(Action executeAction)
+            : this(_ => executeAction())
+        { }
+
+        public DelegateCommand(Action executeAction, Func<bool> canExecuteFunc)
+            : this(_ => executeAction(), _ => canExecuteFunc())
         { }
     }
 

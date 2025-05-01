@@ -85,6 +85,14 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
         public AsyncDelegateCommand(Func<object, Task> executeAction, Func<object, bool> canExecuteFunc)
             : base(executeAction, canExecuteFunc)
         { }
+
+        public AsyncDelegateCommand(Func<Task> executeAction)
+            : this(_ => executeAction())
+        { }
+
+        public AsyncDelegateCommand(Func<Task> executeAction, Func<bool> canExecuteFunc)
+            : this(_ => executeAction(), _ => canExecuteFunc())
+        { }
     }
 
     public class AsyncDelegateCommand<TParameter>: AsyncDelegateCommandBase<TParameter>
