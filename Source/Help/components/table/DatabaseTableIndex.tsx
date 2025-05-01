@@ -73,13 +73,19 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 	}
 
 	function handleAddColum(event: MouseEvent): void {
-		columnIds.push(getValue(workIndex.columnIds, 0));
-		setColumnIds([...columnIds]);
-		updateWorkIndex({
-			...workIndex,
-			columns: getRawColumns(columnIds),
-			columnIds: columnIds,
-		});
+		console.debug({ columnIds, workIndex, workColumns });
+		const columns = workColumns.items.filter(
+			(a) => !isCommonColumnName(a.physicalName),
+		);
+		if (columns.length) {
+			columnIds.push(getValue(columns, 0).id);
+			setColumnIds([...columnIds]);
+			updateWorkIndex({
+				...workIndex,
+				columns: getRawColumns(columnIds),
+				columnIds: columnIds,
+			});
+		}
 	}
 
 	function handleRemoveIndex(event: MouseEvent): void {
@@ -155,7 +161,7 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 					{workIndex.columnIds.map((a, i) => {
 						return (
 							<Box
-								key={a}
+								key={`${i}_${a}`}
 								sx={{
 									display: "flex",
 								}}

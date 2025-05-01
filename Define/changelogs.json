@@ -51,7 +51,7 @@
 				"logs": [
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "#984: DB設計のインデックス追加が死んでる"
 					},
 					{
 						"revision": "",
