@@ -96,7 +96,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 #pragma warning disable CA1305 // IFormatProvider を指定します
             var badge = new BadgeData() {
                 IsEnabled = true,
-                BadgeShape = BadgeShape.SolidSquare,
+                BadgeShape = BadgeShape.Circle,
                 Display = DateTime.Now.Second.ToString(),
                 Background = Colors.Red,
             };

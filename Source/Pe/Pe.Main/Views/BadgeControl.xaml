@@ -17,6 +17,7 @@
 >
   <UserControl.Resources>
     <app_views_converter:AutoColorConverter x:Key="AutoColorConverter" />
+    <app_views_converter:IconBoxToWidthConverter x:Key="IconBoxToWidthConverter" />
     <app_main_views_converter:BadgeSizeConverter x:Key="CornerRadiusBadgeSizeConverter" Scale="0.3" />
 
     <SolidColorBrush Color="{Binding Badge.Background, RelativeSource={RelativeSource AncestorType=UserControl}}" x:Key="BackgroundBrush" />
@@ -32,7 +33,12 @@
       </DataTemplate>
       <DataTemplate DataType="{x:Type app_main_viewmodels_iconviewer:BadgeSolidSquareViewModel}">
         <Border Background="{StaticResource BackgroundBrush}">
-          <TextBlock Padding="2"  Text="{Binding Display, Mode=OneTime}" Foreground="{StaticResource ForegroundBrush}" />
+          <TextBlock Padding="2" Text="{Binding Display, Mode=OneTime}" Foreground="{StaticResource ForegroundBrush}" />
+        </Border>
+      </DataTemplate>
+      <DataTemplate DataType="{x:Type app_main_viewmodels_iconviewer:BadgeCircleViewModel}">
+        <Border Background="{StaticResource BackgroundBrush}" CornerRadius="{Binding IconBox, Converter={StaticResource IconBoxToWidthConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}">
+          <TextBlock Padding="2" Text="{Binding Display, Mode=OneTime}" Foreground="{StaticResource ForegroundBrush}" />
         </Border>
       </DataTemplate>
     </ContentControl.Resources>
