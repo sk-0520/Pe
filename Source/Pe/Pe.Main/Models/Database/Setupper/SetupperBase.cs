@@ -101,6 +101,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Setupper
         private void ExecuteStatementCore(IDatabaseContext context, string statement, IReadOnlyDictionary<string, object> parameters)
         {
             var pairs = SplitMultiStatement(statement);
+            if(!pairs.Any()) {
+                throw new Exception("分解失敗: " + statement);
+            }
             foreach(var pair in pairs) {
                 Logger.LogInformation("{0}", pair.Key);
                 var result = context.Execute(pair.Value, parameters);
