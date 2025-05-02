@@ -550,6 +550,33 @@ ___
 
 ___
 
+# LauncherBadges
+
+## layout
+
+| PK | NN |              FK              |       論理カラム名       |     物理カラム名      | 論理データ型 |  マッピング型   | コメント  |
+|:--:|:--:|:-----------------------------|:-------------------------|:----------------------|:-------------|:----------------|:----------|
+| x  | x  | LauncherItems.LauncherItemId | ランチャーアイテムID     | LauncherItemId        | text         | System.Guid     |           |
+|    | x  |                              | 作成タイムスタンプ       | CreatedTimestamp      | datetime     | System.DateTime | UTC       |
+|    | x  |                              | 作成ユーザー名           | CreatedAccount        | text         | System.String   |           |
+|    | x  |                              | 作成プログラム名         | CreatedProgramName    | text         | System.String   |           |
+|    | x  |                              | 作成プログラムバージョン | CreatedProgramVersion | text         | System.Version  |           |
+|    | x  |                              | 更新タイムスタンプ       | UpdatedTimestamp      | datetime     | System.DateTime | UTC       |
+|    | x  |                              | 更新ユーザー名           | UpdatedAccount        | text         | System.String   |           |
+|    | x  |                              | 更新プログラム名         | UpdatedProgramName    | text         | System.String   |           |
+|    | x  |                              | 更新プログラムバージョン | UpdatedProgramVersion | text         | System.Version  |           |
+|    | x  |                              | 更新回数                 | UpdatedCount          | integer      | System.Int64    | 0始まり   |
+|    | x  |                              | 表示するか               | IsVisible             | boolean      | System.String   |           |
+|    | x  |                              | 表示文言                 | Display               | text         | System.String   |           |
+|    | x  |                              | 図形                     | Shape                 | text         | System.String   |           |
+|    | x  |                              | 待機時間                 | Background            | text         | System.String   | #AARRGGBB |
+
+## index
+
+*NONE*
+
+___
+
 # Fonts
 
 ## layout

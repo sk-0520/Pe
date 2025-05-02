@@ -46,12 +46,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         #region function
 
-        [Obsolete("なんだこれ")]
-        private IconImageLoaderBase CreateFileIconLoader(IDispatcherWrapper dispatcherWrapper)
-        {
-            return new LauncherIconLoader(LauncherItemId, MainDatabaseBarrier, LargeDatabaseBarrier, DatabaseStatementLoader, dispatcherWrapper, LoggerFactory);
-        }
-
         public object CreateIconSource(IDispatcherWrapper dispatcherWrapper)
         {
             switch(LauncherItemKind) {
