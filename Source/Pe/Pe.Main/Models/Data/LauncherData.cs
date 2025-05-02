@@ -561,4 +561,63 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
         #endregion
     }
+
+    public enum BadgeShape
+    {
+        Square,
+        Circle
+    }
+
+    public interface IReadOnlyBadgeData
+    {
+        #region property
+
+        /// <summary>
+        /// バッジが有効か。
+        /// </summary>
+        bool IsEnabled { get; }
+
+        /// <summary>
+        /// バッジ表記。
+        /// </summary>
+        /// <remarks>
+        /// <para>いわゆるSJIS2バイトくらいの長さを想定。</para>
+        /// </remarks>
+        string Display { get; }
+
+        /// <summary>
+        /// バッジ種別。
+        /// </summary>
+        BadgeShape BadgeShape { get; }
+
+        /// <summary>
+        /// 背景色。
+        /// </summary>
+        Color Background { get; }
+
+        #endregion
+    }
+
+    public class BadgeData: IReadOnlyBadgeData
+    {
+        #region IReadOnlyBadgeData
+
+        public bool IsEnabled { get; init; }
+        public required string Display { get; init; }
+        public BadgeShape BadgeShape { get; init; }
+        public Color Background { get; init; }
+
+        #endregion
+
+        #region property
+
+        public static BadgeData None => new BadgeData() {
+            IsEnabled = false,
+            Display = string.Empty,
+            BadgeShape = BadgeShape.Square,
+            Background = Colors.Transparent,
+        };
+
+        #endregion
+    }
 }

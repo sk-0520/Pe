@@ -9,6 +9,7 @@ using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Addon;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using Microsoft.Extensions.Logging;
 
@@ -79,13 +80,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
 
         #endregion
 
-        public IconViewerViewModel(IconImageLoaderBase model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        private IconViewerViewModel(IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(loggerFactory)
+        {
+            Badge = new BadgeViewModel(badge, dispatcherWrapper, LoggerFactory);
+            DispatcherWrapper = dispatcherWrapper;
+        }
+
+        public IconViewerViewModel(IconImageLoaderBase model, IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+            : this(badge, dispatcherWrapper, loggerFactory)
         {
             IconKind = IconImageKind.IconImageLoader;
 
             IconImageLoader = model;
-            DispatcherWrapper = dispatcherWrapper;
             RunningStatus = new RunningStatusViewModel(IconImageLoader.RunningStatus, LoggerFactory);
 
             IconImageLoader.PropertyChanged += Model_PropertyChanged;
@@ -94,23 +101,21 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
             PropertyChangedObserver.AddObserver(nameof(RunningStatus), new string[] { nameof(RunningStatus), nameof(ImageSource) });
         }
 
-        public IconViewerViewModel(LauncherItemId launcherItemId, ILauncherItemExtension launcherItemExtension, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(loggerFactory)
+        public IconViewerViewModel(LauncherItemId launcherItemId, ILauncherItemExtension launcherItemExtension, IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+            : this(badge, dispatcherWrapper, loggerFactory)
         {
             IconKind = IconImageKind.LauncherItemExtension;
 
             LauncherItemId = launcherItemId;
             LauncherItemExtension = launcherItemExtension;
-            DispatcherWrapper = dispatcherWrapper;
         }
 
-        public IconViewerViewModel(DependencyObject dependencyObject, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(loggerFactory)
+        public IconViewerViewModel(DependencyObject dependencyObject, IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+            : this(badge, dispatcherWrapper, loggerFactory)
         {
             IconKind = IconImageKind.DependencyObject;
 
             DependencyObject = dependencyObject;
-            DispatcherWrapper = dispatcherWrapper;
         }
 
         #region property
@@ -155,6 +160,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
             get => this._useCache;
             set => SetProperty(ref this._useCache, value);
         }
+
+        public BadgeViewModel Badge { get; }
 
         #endregion
 

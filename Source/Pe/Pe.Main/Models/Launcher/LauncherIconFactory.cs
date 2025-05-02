@@ -45,6 +45,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         #region function
 
+        [Obsolete("なんだこれ")]
         private IconImageLoaderBase CreateFileIconLoader(IDispatcherWrapper dispatcherWrapper)
         {
             return new LauncherIconLoader(LauncherItemId, MainDatabaseBarrier, LargeDatabaseBarrier, DatabaseStatementLoader, dispatcherWrapper, LoggerFactory);
@@ -90,19 +91,24 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                 return null!;
             }
 
+            //TODO: DB読んだりあれこれ
+#pragma warning disable CA1305 // IFormatProvider を指定します
+            var badge = new BadgeData() { IsEnabled = true, Display = DateTime.Now.ToString("HH:mm"), };
+#pragma warning restore CA1305 // IFormatProvider を指定します
+
             switch(iconSource) {
                 case IconImageLoaderBase iconImageLoader:
-                    return new IconViewerViewModel(iconImageLoader, dispatcherWrapper, LoggerFactory) {
+                    return new IconViewerViewModel(iconImageLoader, badge, dispatcherWrapper, LoggerFactory) {
                         UseCache = useCache,
                     };
 
                 case ILauncherItemExtension launcherItemExtension:
-                    return new IconViewerViewModel(LauncherItemId, launcherItemExtension, dispatcherWrapper, LoggerFactory) {
+                    return new IconViewerViewModel(LauncherItemId, launcherItemExtension, badge, dispatcherWrapper, LoggerFactory) {
                         UseCache = useCache,
                     };
 
                 case DependencyObject dependencyObject:
-                    return new IconViewerViewModel(dependencyObject, dispatcherWrapper, LoggerFactory) {
+                    return new IconViewerViewModel(dependencyObject, badge, dispatcherWrapper, LoggerFactory) {
                         UseCache = useCache,
                     };
 
