@@ -564,7 +564,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
     public enum BadgeShape
     {
-        Square,
+        /// <summary>
+        /// ふわっとした四角形。
+        /// </summary>
+        RoundedSquare,
+        /// <summary>
+        /// かっちりした四角形。
+        /// </summary>
+        SolidSquare,
+        /// <summary>
+        /// 円。
+        /// </summary>
         Circle
     }
 
@@ -614,7 +624,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         public static BadgeData None => new BadgeData() {
             IsEnabled = false,
             Display = string.Empty,
-            BadgeShape = BadgeShape.Square,
+            BadgeShape = default(BadgeShape),
             Background = Colors.Transparent,
         };
 

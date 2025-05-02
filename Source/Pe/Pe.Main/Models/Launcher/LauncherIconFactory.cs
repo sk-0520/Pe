@@ -13,6 +13,7 @@ using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
 using ContentTypeTextNet.Pe.Main.ViewModels.IconViewer;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
+using System.Windows.Media;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 {
@@ -93,7 +94,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
             //TODO: DB読んだりあれこれ
 #pragma warning disable CA1305 // IFormatProvider を指定します
-            var badge = new BadgeData() { IsEnabled = true, Display = DateTime.Now.ToString("HH:mm"), };
+            var badge = new BadgeData() {
+                IsEnabled = true,
+                BadgeShape = BadgeShape.SolidSquare,
+                Display = DateTime.Now.Second.ToString(),
+                Background = Colors.Red,
+            };
 #pragma warning restore CA1305 // IFormatProvider を指定します
 
             switch(iconSource) {

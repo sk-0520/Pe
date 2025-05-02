@@ -31,21 +31,47 @@ namespace ContentTypeTextNet.Pe.Main.Views
 
         public static readonly DependencyProperty BadgeProperty = DependencyProperty.Register(
             nameof(Badge),
-            typeof(BadgeViewModel),
+            typeof(BadgeViewModelBase),
             typeof(BadgeControl),
             new FrameworkPropertyMetadata(
-                default(BadgeViewModel),
+                default(BadgeViewModelBase),
                 new PropertyChangedCallback(OnBadgeChanged)
             )
         );
 
-        public BadgeViewModel? Badge
+        public BadgeViewModelBase? Badge
         {
-            get { return GetValue(BadgeProperty) as BadgeViewModel; }
+            get { return GetValue(BadgeProperty) as BadgeViewModelBase; }
             set { SetValue(BadgeProperty, value); }
         }
 
         private static void OnBadgeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if(d is BadgeControl control) {
+            }
+        }
+
+        #endregion
+
+        #region IconBox
+
+        public static readonly DependencyProperty IconBoxProperty = DependencyProperty.Register(
+            nameof(IconBox),
+            typeof(IconBox),
+            typeof(BadgeControl),
+            new FrameworkPropertyMetadata(
+                IconBox.Small,
+                new PropertyChangedCallback(OnIconBoxChanged)
+            )
+        );
+
+        public IconBox IconBox
+        {
+            get { return (IconBox)GetValue(IconBoxProperty); }
+            set { SetValue(IconBoxProperty, value); }
+        }
+
+        private static void OnIconBoxChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if(d is BadgeControl control) {
             }

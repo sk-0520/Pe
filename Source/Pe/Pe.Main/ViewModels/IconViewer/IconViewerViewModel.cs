@@ -83,7 +83,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
         private IconViewerViewModel(IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
-            Badge = new BadgeViewModel(badge, dispatcherWrapper, LoggerFactory);
+            Badge = badge.BadgeShape switch {
+                BadgeShape.RoundedSquare => new BadgeRoundedSquareViewModel(badge, dispatcherWrapper, LoggerFactory),
+                BadgeShape.SolidSquare => new BadgeSolidSquareViewModel(badge, dispatcherWrapper, LoggerFactory),
+                BadgeShape.Circle => new BadgeCircleViewModel(badge, dispatcherWrapper, LoggerFactory),
+                _ => throw new NotImplementedException(),
+            };
             DispatcherWrapper = dispatcherWrapper;
         }
 
@@ -161,7 +166,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
             set => SetProperty(ref this._useCache, value);
         }
 
-        public BadgeViewModel Badge { get; }
+        public BadgeViewModelBase Badge { get; }
 
         #endregion
 

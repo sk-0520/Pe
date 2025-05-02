@@ -11,9 +11,9 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
 {
-    public class BadgeViewModel: ViewModelBase
+    public abstract class BadgeViewModelBase: ViewModelBase
     {
-        public BadgeViewModel(IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected BadgeViewModelBase(IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             Badge = badge;
@@ -36,6 +36,27 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
         #endregion
 
         #endregion
-
     }
+
+    public sealed class BadgeRoundedSquareViewModel: BadgeViewModelBase
+    {
+        public BadgeRoundedSquareViewModel(IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+            : base(badge, dispatcherWrapper, loggerFactory)
+        { }
+    }
+
+    public sealed class BadgeSolidSquareViewModel: BadgeViewModelBase
+    {
+        public BadgeSolidSquareViewModel(IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+            : base(badge, dispatcherWrapper, loggerFactory)
+        { }
+    }
+
+    public sealed class BadgeCircleViewModel: BadgeViewModelBase
+    {
+        public BadgeCircleViewModel(IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+            : base(badge, dispatcherWrapper, loggerFactory)
+        { }
+    }
+
 }

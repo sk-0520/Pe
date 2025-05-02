@@ -6,6 +6,7 @@
 
   xmlns:app_main_views="clr-namespace:ContentTypeTextNet.Pe.Main.Views"
   xmlns:app_main_viewmodels_iconviewer="clr-namespace:ContentTypeTextNet.Pe.Main.ViewModels.IconViewer"
+  xmlns:app_main_views_converter="clr-namespace:ContentTypeTextNet.Pe.Main.Views.Converter"
 
   IsTabStop="False"
   Focusable="False"
@@ -17,10 +18,11 @@
 >
   <UserControl.Resources>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <app_main_views_converter:BadgeSizeConverter x:Key="BadgeSizeConverter" />
   </UserControl.Resources>
 
   <Grid>
-    <ContentControl x:Name="parent" IsTabStop="False" Content="{Binding IconViewer.Icon, RelativeSource={RelativeSource AncestorType=UserControl}}">
+    <ContentControl x:Name="parent" IsTabStop="False" Focusable="False" Content="{Binding IconViewer.Icon, RelativeSource={RelativeSource AncestorType=UserControl}}">
       <ContentControl.Resources>
         <DataTemplate DataType="{x:Type app_main_viewmodels_iconviewer:ImageViewModel}">
           <Image UseLayoutRounding="True" Source="{Binding ImageSource, Mode=OneTime}" />
@@ -30,14 +32,22 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type DependencyObject}">
           <!--<ContentControl IsTabStop="False" Content="{Binding Mode=OneTime}" />-->
-          <TextBlock>asd</TextBlock>
+          <!--<TextBlock>asd</TextBlock>-->
         </DataTemplate>
       </ContentControl.Resources>
     </ContentControl>
-    
-    <app_main_views:BadgeControl
-      Visibility="{Binding IconViewer.Badge.IsEnabled, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
-      Badge="{Binding IconViewer.Badge, RelativeSource={RelativeSource AncestorType=UserControl}}"
-    />
+
+    <Viewbox
+      VerticalAlignment="Bottom"
+      HorizontalAlignment="Right"
+      Visibility="{Binding IconViewer.Badge.IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+      Width="{Binding IconBox, Converter={StaticResource BadgeSizeConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+      Height="{Binding IconBox, Converter={StaticResource BadgeSizeConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+    >
+      <app_main_views:BadgeControl
+        Badge="{Binding IconViewer.Badge, RelativeSource={RelativeSource AncestorType=UserControl}}"
+        IconBox="{Binding IconBox, RelativeSource={RelativeSource AncestorType=UserControl}}"
+      />
+    </Viewbox>
   </Grid>
 </UserControl>
