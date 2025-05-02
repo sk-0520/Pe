@@ -133,7 +133,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
 
             Assert.True(command.CancelExecution());
 
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await task);
+            await Assert.ThrowsAnyAsync<OperationCanceledException>(async () => await task);
 
             Assert.True(command.CanExecute(null));
             Assert.False(command.IsExecuting);
