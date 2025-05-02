@@ -2393,4 +2393,13 @@ URL: バージョンチェックURLを指定すればその内容からプラグ
   <data name="String_Setting_Generals_LauncherToolbar_DuplicatedFileRegisterMode_A" xml:space="preserve">
     <value>D&amp;Dファイルの重複判定</value>
   </data>
+  <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.BadgeShape.RoundedSquare" xml:space="preserve">
+    <value>角丸四角形</value>
+  </data>
+  <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.BadgeShape.SolidSquare" xml:space="preserve">
+    <value>四角形</value>
+  </data>
+  <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.BadgeShape.Circle" xml:space="preserve">
+    <value>円形</value>
+  </data>
 </root>

@@ -567,14 +567,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         /// <summary>
         /// ふわっとした四角形。
         /// </summary>
+        [EnumResource]
         RoundedSquare,
         /// <summary>
         /// かっちりした四角形。
         /// </summary>
+        [EnumResource]
         SolidSquare,
         /// <summary>
         /// 円。
         /// </summary>
+        [EnumResource]
         Circle
     }
 
