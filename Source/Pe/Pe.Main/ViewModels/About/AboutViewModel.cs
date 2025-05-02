@@ -15,7 +15,6 @@ using ContentTypeTextNet.Pe.Main.Models.Element.About;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using Microsoft.Extensions.Logging;
-using Prism.Commands;
 using ContentTypeTextNet.Pe.Main.Models.WebView;
 using ContentTypeTextNet.Pe.Main.Views.ReleaseNote;
 using System.Threading.Tasks;
@@ -27,6 +26,7 @@ using System.Diagnostics;
 using Microsoft.Web.WebView2.Wpf;
 using System.Collections.Generic;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 {
