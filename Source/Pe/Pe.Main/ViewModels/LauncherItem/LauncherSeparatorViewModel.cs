@@ -73,7 +73,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
             return Task.CompletedTask;
         }
 
-        protected override object GetIcon(IconKind iconKind)
+        protected override object GetIcon(IconKind iconKind, bool isEnabledBadge)
         {
             throw new NotSupportedException();
         }

@@ -80,8 +80,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         protected IKeyGestureGuide KeyGestureGuide { get; }
         protected IDispatcherWrapper DispatcherWrapper { get; }
         protected ILauncherToolbarTheme LauncherToolbarTheme { get; }
-        public object MainIcon => this._mainIcon ??= GetIcon(IconKind.Main);
-        public object TooltipIcon => this._tooltipIcon ??= GetIcon(IconKind.Tooltip);
+        public object MainIcon => this._mainIcon ??= GetIcon(IconKind.Main, true);
+        public object TooltipIcon => this._tooltipIcon ??= GetIcon(IconKind.Tooltip, false);
 
         public virtual string? Name => Model.Name;
         public string? Comment => Model.Comment;
@@ -179,7 +179,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
             }
         }
 
-        protected abstract object GetIcon(IconKind iconKind);
+        protected abstract object GetIcon(IconKind iconKind, bool isEnabledBadge);
 
         #endregion
 

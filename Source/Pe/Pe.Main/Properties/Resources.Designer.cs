@@ -1722,6 +1722,33 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
+        ///   円形 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_BadgeShape_Circle {
+            get {
+                return ResourceManager.GetString("String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.BadgeShape.Circle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   角丸四角形 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_BadgeShape_RoundedSquare {
+            get {
+                return ResourceManager.GetString("String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.BadgeShape.RoundedSquare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   四角形 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_BadgeShape_SolidSquare {
+            get {
+                return ResourceManager.GetString("String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.BadgeShape.SolidSquare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   不具合報告 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_FeedbackKind_Bug {
@@ -4201,6 +4228,33 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         public static string String_LauncherItemCustomizeControl_Comment_Header {
             get {
                 return ResourceManager.GetString("String_LauncherItemCustomizeControl_Comment_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   バッジ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_LauncherItemCustomizeControl_Common_Badge_A {
+            get {
+                return ResourceManager.GetString("String_LauncherItemCustomizeControl_Common_Badge_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1-2文字を想定 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_LauncherItemCustomizeControl_Common_Badge_Display_Remark {
+            get {
+                return ResourceManager.GetString("String_LauncherItemCustomizeControl_Common_Badge_Display_Remark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   表示する(_V) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_LauncherItemCustomizeControl_Common_Badge_IsVisible_A {
+            get {
+                return ResourceManager.GetString("String_LauncherItemCustomizeControl_Common_Badge_IsVisible_A", resourceCulture);
             }
         }
         

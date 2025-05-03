@@ -561,4 +561,79 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
         #endregion
     }
+
+    public enum BadgeShape
+    {
+        /// <summary>
+        /// ふわっとした四角形。
+        /// </summary>
+        [EnumResource]
+        RoundedSquare,
+        /// <summary>
+        /// かっちりした四角形。
+        /// </summary>
+        [EnumResource]
+        SolidSquare,
+        /// <summary>
+        /// 円。
+        /// </summary>
+        [EnumResource]
+        Circle
+    }
+
+    public interface IReadOnlyBadgeData
+    {
+        #region property
+
+        /// <summary>
+        /// バッジが有効か。
+        /// </summary>
+        bool IsVisible { get; }
+
+        /// <summary>
+        /// バッジ表記。
+        /// </summary>
+        /// <remarks>
+        /// <para>いわゆるSJIS2バイトくらいの長さを想定。</para>
+        /// </remarks>
+        string Display { get; }
+
+        /// <summary>
+        /// バッジ種別。
+        /// </summary>
+        BadgeShape BadgeShape { get; }
+
+        /// <summary>
+        /// 背景色。
+        /// </summary>
+        Color Background { get; }
+
+        #endregion
+    }
+
+    public record class BadgeData: IReadOnlyBadgeData
+    {
+        #region IReadOnlyBadgeData
+
+        public bool IsVisible { get; init; }
+        public required string Display { get; init; }
+        public BadgeShape BadgeShape { get; init; }
+        public Color Background { get; init; }
+
+        #endregion
+
+        #region property
+
+        /// <summary>
+        /// バッジ非表示データ。
+        /// </summary>
+        public static BadgeData CreateEmpty() => new BadgeData() {
+            IsVisible = false,
+            Display = string.Empty,
+            BadgeShape = default(BadgeShape),
+            Background = Colors.Black,
+        };
+
+        #endregion
+    }
 }

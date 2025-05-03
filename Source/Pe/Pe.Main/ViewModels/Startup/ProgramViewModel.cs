@@ -1,5 +1,6 @@
 using System.IO;
 using ContentTypeTextNet.Pe.Bridge.Models;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.Startup;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using ContentTypeTextNet.Pe.Main.ViewModels.IconViewer;
@@ -12,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Startup
         public ProgramViewModel(ProgramElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(model, userTracker, dispatcherWrapper, loggerFactory)
         {
-            IconViewer = new IconViewerViewModel(Model.IconImageLoader, DispatcherWrapper, LoggerFactory) {
+            IconViewer = new IconViewerViewModel(Model.IconImageLoader, BadgeData.CreateEmpty(), DispatcherWrapper, LoggerFactory) {
                 UseCache = true,
             };
         }
