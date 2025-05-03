@@ -25,10 +25,15 @@
   d:DesignHeight="450" d:DesignWidth="800"
 >
   <UserControl.Resources>
-    <app_views_converter:EscapeAccessKeyConverter x:Key="EscapeAccessKeyConverter" />
-    <app_views_converter:DoubleToParameterPercentConverter x:Key="DoubleToParameterPercentConverter" />
-    <app_views_converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-    <app_main_views_converter:EnumToCultureConverter x:Key="EnumToCultureConverter" />
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Pe.Core;component/Views/ColorPickerDictionary.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <app_views_converter:EscapeAccessKeyConverter x:Key="EscapeAccessKeyConverter" />
+      <app_views_converter:DoubleToParameterPercentConverter x:Key="DoubleToParameterPercentConverter" />
+      <app_views_converter:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+      <app_main_views_converter:EnumToCultureConverter x:Key="EnumToCultureConverter" />
+    </ResourceDictionary>
   </UserControl.Resources>
 
 
@@ -108,7 +113,29 @@
               </Grid>
             </Grid>
 
-            <Grid IsEnabled="{Binding IsEnabledCommandLauncherSetting}">
+            <Grid IsEnabled="{Binding IsEnabledBadgeSetting}">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Style="{StaticResource LabelDefinition}" />
+                <ColumnDefinition Style="{StaticResource ContentDefinition}" />
+              </Grid.ColumnDefinitions>
+
+              <Label Grid.Column="0" Style="{StaticResource HeaderLabel}" Content="{Binding Resources.String_LauncherItemCustomizeControl_Common_Badge_A, Source={x:Static app_main:CultureService.Instance}, Converter={StaticResource EscapeAccessKeyConverter}}" />
+              <WrapPanel Grid.Column="1" VerticalAlignment="Center">
+                <CheckBox Style="{StaticResource Horizontal-CheckBox}" IsChecked="{Binding BadgeIsVisible}" Content="{Binding Resources.String_LauncherItemCustomizeControl_Common_Badge_IsVisible_A, Source={x:Static app_main:CultureService.Instance}}" />
+                <app_views:ColorCanvas Width="80" Style="{StaticResource ColorPicker}" SelectedColor="{Binding BadgeBackground, Mode=TwoWay}" />
+                <ComboBox Width="120" ItemsSource="{Binding BadgeShapeCollection}" SelectedItem="{Binding BadgeShape}">
+                  <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding Converter={StaticResource EnumToCultureConverter}}" />
+                    </DataTemplate>
+                  </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBox Width="80" Style="{StaticResource Horizontal-TextBox}" Text="{Binding BadgeDisplay}" ToolTip="{Binding Resources.String_LauncherItemCustomizeControl_Common_Badge_Display_Remark, Source={x:Static app_main:CultureService.Instance}}" />
+                
+              </WrapPanel>
+            </Grid>
+
+            <Grid IsEnabled="{Binding IsEnabledOtherSetting}">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Style="{StaticResource LabelDefinition}" />
                 <ColumnDefinition Style="{StaticResource ContentDefinition}" />

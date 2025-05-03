@@ -1,11 +1,14 @@
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize;
@@ -69,8 +72,34 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
             get => Model.IsEnabledCommandLauncher;
             set => SetModelValue(value);
         }
+        public bool IsEnabledBadgeSetting => Model.Kind != LauncherItemKind.Separator;
 
-        public bool IsEnabledCommandLauncherSetting=> Model.Kind != LauncherItemKind.Separator;
+        public bool BadgeIsVisible
+        {
+            get => Model.Badge.IsVisible;
+            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.IsVisible));
+        }
+        public Color BadgeBackground
+        {
+            get => Model.Badge.Background;
+            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.Background));
+        }
+
+        public ObservableCollection<BadgeShape> BadgeShapeCollection { get; } = new ObservableCollection<BadgeShape>(Enum.GetValues<BadgeShape>());
+
+        public BadgeShape BadgeShape
+        {
+            get => Model.Badge.BadgeShape;
+            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.BadgeShape));
+        }
+        public string BadgeDisplay
+        {
+            get => Model.Badge.Display;
+            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.Display));
+        }
+
+
+        public bool IsEnabledOtherSetting=> Model.Kind != LauncherItemKind.Separator;
 
         #endregion
 

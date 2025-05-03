@@ -283,7 +283,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         {
             var factory = Model.CreateLauncherIconFactory();
             var iconSource = factory.CreateIconSource(DispatcherWrapper);
-            return factory.CreateView(iconSource, false, DispatcherWrapper);
+            return factory.CreateView(iconSource, false, true, DispatcherWrapper);
         }
 
         #endregion

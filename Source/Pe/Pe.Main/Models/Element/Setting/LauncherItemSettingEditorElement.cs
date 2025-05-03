@@ -51,6 +51,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         internal void LazyLoad()
         {
+            LoadBadge();
+
             switch(Kind) {
                 case LauncherItemKind.File:
                     LoadFile();

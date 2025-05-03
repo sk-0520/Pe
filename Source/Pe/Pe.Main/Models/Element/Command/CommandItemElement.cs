@@ -139,7 +139,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
         {
             var factory = LauncherItemElement.CreateLauncherIconFactory();
             var iconSource = factory.CreateIconSource(DispatcherWrapper);
-            return factory.CreateView(iconSource, true, DispatcherWrapper);
+            return factory.CreateView(iconSource, true, true, DispatcherWrapper);
         }
 
         protected override void ExecuteImpl(ICommandExecuteParameter parameter)

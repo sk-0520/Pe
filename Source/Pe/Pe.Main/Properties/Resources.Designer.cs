@@ -4232,6 +4232,33 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
+        ///   バッジ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_LauncherItemCustomizeControl_Common_Badge_A {
+            get {
+                return ResourceManager.GetString("String_LauncherItemCustomizeControl_Common_Badge_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   1-2文字を想定 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_LauncherItemCustomizeControl_Common_Badge_Display_Remark {
+            get {
+                return ResourceManager.GetString("String_LauncherItemCustomizeControl_Common_Badge_Display_Remark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   表示する(_V) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_LauncherItemCustomizeControl_Common_Badge_IsVisible_A {
+            get {
+                return ResourceManager.GetString("String_LauncherItemCustomizeControl_Common_Badge_IsVisible_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   共通 に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_LauncherItemCustomizeControl_Common_Header {

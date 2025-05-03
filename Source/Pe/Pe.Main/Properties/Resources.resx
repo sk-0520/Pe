@@ -2402,4 +2402,13 @@ URL: バージョンチェックURLを指定すればその内容からプラグ
   <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.BadgeShape.Circle" xml:space="preserve">
     <value>円形</value>
   </data>
+  <data name="String_LauncherItemCustomizeControl_Common_Badge_A" xml:space="preserve">
+    <value>バッジ</value>
+  </data>
+  <data name="String_LauncherItemCustomizeControl_Common_Badge_IsVisible_A" xml:space="preserve">
+    <value>表示する(_V)</value>
+  </data>
+  <data name="String_LauncherItemCustomizeControl_Common_Badge_Display_Remark" xml:space="preserve">
+    <value>1-2文字を想定</value>
+  </data>
 </root>

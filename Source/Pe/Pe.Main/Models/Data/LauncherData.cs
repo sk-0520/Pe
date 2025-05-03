@@ -624,6 +624,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
         #region property
 
+        /// <summary>
+        /// バッジ非表示データ。
+        /// </summary>
         public static BadgeData None => new BadgeData() {
             IsVisible = false,
             Display = string.Empty,
