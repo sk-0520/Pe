@@ -24,7 +24,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         public NoteFileViewModel(NoteFileElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(model, userTracker, dispatcherWrapper, loggerFactory)
         {
-            IconViewer = new IconViewerViewModel(Model.IconImageLoader, BadgeData.None, DispatcherWrapper, LoggerFactory);
+            IconViewer = new IconViewerViewModel(Model.IconImageLoader, BadgeData.CreateEmpty(), DispatcherWrapper, LoggerFactory);
         }
 
         #region property

@@ -34,7 +34,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
             };
             testItem.InsertLauncherItem(data, Test.DiContainer.Build<IDatabaseCommonStatus>());
             Assert.Null(testBadge.SelectLauncherBadge(data.LauncherItemId));
-            Assert.Throws<DatabaseManipulationException>(() => testBadge.UpdateLauncherBadge(data.LauncherItemId, BadgeData.None, Test.DiContainer.Build<IDatabaseCommonStatus>()));
+            Assert.Throws<DatabaseManipulationException>(() => testBadge.UpdateLauncherBadge(data.LauncherItemId, BadgeData.CreateEmpty, Test.DiContainer.Build<IDatabaseCommonStatus>()));
 
             var badgeData1 = new BadgeData() {
                 IsVisible = true,

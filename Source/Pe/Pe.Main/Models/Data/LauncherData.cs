@@ -627,11 +627,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         /// <summary>
         /// バッジ非表示データ。
         /// </summary>
-        public static BadgeData None => new BadgeData() {
+        public static BadgeData CreateEmpty() => new BadgeData() {
             IsVisible = false,
             Display = string.Empty,
             BadgeShape = default(BadgeShape),
-            Background = Colors.Transparent,
+            Background = Colors.Black,
         };
 
         #endregion

@@ -17,13 +17,24 @@
 >
   <UserControl.Resources>
     <app_core_views_converter:AutoColorConverter x:Key="AutoColorConverter" />
+    <app_core_views_converter:AutoColorConverter x:Key="AutoOpaqueColorConverter" Opaque="True" />
     <app_main_views_converter:BadgeSizeConverter x:Key="CornerRadiusBadgeSizeConverter" Scale="0.5" />
 
     <SolidColorBrush x:Key="BackgroundBrush" Color="{Binding Badge.Background, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-    <SolidColorBrush x:Key="ForegroundBrush" Color="{Binding Badge.Background, Converter={StaticResource AutoColorConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-    <TextBlock x:Key="Display" Padding="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Display, Mode=OneTime}" Foreground="{StaticResource ForegroundBrush}" />
+    <SolidColorBrush x:Key="ForegroundBrush" Color="{Binding Badge.Background, Converter={StaticResource AutoOpaqueColorConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+    <TextBlock x:Key="Display" x:Shared="False" Padding="2" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Display, Mode=OneTime}" Foreground="{StaticResource ForegroundBrush}" />
     <Style x:Key="BadgeBorder" TargetType="Border">
-      
+      <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
+      <Setter Property="Effect">
+        <Setter.Value>
+          <DropShadowEffect
+            ShadowDepth="0"
+            Color="{Binding Badge.Background, Converter={StaticResource AutoOpaqueColorConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+            Opacity="1"
+            BlurRadius="1"
+          />
+        </Setter.Value>
+      </Setter>
     </Style>
   </UserControl.Resources>
   
@@ -38,13 +49,13 @@
   >
     <ContentControl.Resources>
       <DataTemplate DataType="{x:Type app_main_viewmodels_iconviewer:BadgeRoundedSquareViewModel}">
-        <Border Background="{StaticResource BackgroundBrush}" CornerRadius="4" Child="{StaticResource Display}" />
+        <Border CornerRadius="4" Style="{StaticResource BadgeBorder}" Child="{StaticResource Display}" />
       </DataTemplate>
       <DataTemplate DataType="{x:Type app_main_viewmodels_iconviewer:BadgeSolidSquareViewModel}">
-        <Border Background="{StaticResource BackgroundBrush}" Child="{StaticResource Display}" />
+        <Border Style="{StaticResource BadgeBorder}" Child="{StaticResource Display}" />
       </DataTemplate>
       <DataTemplate DataType="{x:Type app_main_viewmodels_iconviewer:BadgeCircleViewModel}">
-        <Border Background="{StaticResource BackgroundBrush}" CornerRadius="8" Child="{StaticResource Display}" />
+        <Border CornerRadius="8" Style="{StaticResource BadgeBorder}" Child="{StaticResource Display}" />
       </DataTemplate>
     </ContentControl.Resources>
   </ContentControl>

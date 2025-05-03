@@ -91,10 +91,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                 using(var context = MainDatabaseBarrier.WaitRead()) {
                     var launcherBadgesEntityDao = new LauncherBadgesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
 
-                    badge = launcherBadgesEntityDao.SelectLauncherBadge(LauncherItemId) ?? BadgeData.None;
+                    badge = launcherBadgesEntityDao.SelectLauncherBadge(LauncherItemId) ?? BadgeData.CreateEmpty();
                 }
             } else {
-                badge = BadgeData.None;
+                badge = BadgeData.CreateEmpty();
             }
 
                 switch(iconSource) {

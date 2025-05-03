@@ -80,7 +80,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
         public string Comment { get; set; } = string.Empty;
 
         public ObservableCollection<string> TagItems { get; } = new ObservableCollection<string>();
-        public BadgeData Badge { get; set; } = BadgeData.None;
+        public BadgeData Badge { get; set; } = BadgeData.CreateEmpty();
         private bool IsSaved { get; set; }
 
         #region file
@@ -119,7 +119,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
         private void LoadBadgeCore(IDatabaseContext context, IDatabaseImplementation implementation)
         {
             var launcherBadgesEntityDao = new LauncherBadgesEntityDao(context, DatabaseStatementLoader, implementation, LoggerFactory);
-            Badge = launcherBadgesEntityDao.SelectLauncherBadge(LauncherItemId) ?? BadgeData.None;
+            Badge = launcherBadgesEntityDao.SelectLauncherBadge(LauncherItemId) ?? BadgeData.CreateEmpty();
         }
 
         protected void LoadBadge()
@@ -382,7 +382,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
 
             var currentBadge = launcherBadgesEntityDao.SelectLauncherBadge(LauncherItemId);
             if(currentBadge is null) {
-                if(Badge != BadgeData.None) {
+                if(Badge != BadgeData.CreateEmpty()) {
                     launcherBadgesEntityDao.InsertLauncherBadge(itemData.LauncherItemId, Badge, commandsPack.CommonStatus);
                 }
             } else {

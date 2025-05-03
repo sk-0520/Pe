@@ -128,7 +128,7 @@
               <WrapPanel Grid.Column="1" VerticalAlignment="Center">
                 <CheckBox Style="{StaticResource Horizontal-CheckBox}" IsChecked="{Binding BadgeIsVisible}" Content="{Binding Resources.String_LauncherItemCustomizeControl_Common_Badge_IsVisible_A, Source={x:Static app_main:CultureService.Instance}}" />
 
-                <app_views:ColorCanvas Width="80" Style="{StaticResource ColorPicker}" SelectedColor="{Binding BadgeBackground, Mode=TwoWay}" />
+                <app_views:ColorCanvas Width="80" HasAlpha="True" Style="{StaticResource ColorPicker}" SelectedColor="{Binding BadgeBackground, Mode=TwoWay}" />
 
                 <ComboBox Width="120" ItemsSource="{Binding BadgeShapeCollection}" SelectedItem="{Binding BadgeShape}">
                   <ComboBox.ItemTemplate>

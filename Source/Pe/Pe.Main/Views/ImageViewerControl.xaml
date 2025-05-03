@@ -40,7 +40,7 @@
       </ContentControl.Resources>
     </ContentControl>
 
-    <Grid
+    <Viewbox
       VerticalAlignment="Bottom"
       HorizontalAlignment="Right"
       Visibility="{Binding IconViewer.Badge.IsVisible, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
@@ -50,6 +50,6 @@
       <app_main_views:BadgeControl
         Badge="{Binding IconViewer.Badge, RelativeSource={RelativeSource AncestorType=UserControl}}"
       />
-    </Grid>
+    </Viewbox>
   </Grid>
 </UserControl>
