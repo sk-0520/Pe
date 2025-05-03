@@ -36,6 +36,20 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
         #endregion
 
         #endregion
+
+        #region function
+
+        internal static BadgeViewModelBase Create(IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        {
+            return badge.BadgeShape switch {
+                BadgeShape.RoundedSquare => new BadgeRoundedSquareViewModel(badge, dispatcherWrapper, loggerFactory),
+                BadgeShape.SolidSquare => new BadgeSolidSquareViewModel(badge, dispatcherWrapper, loggerFactory),
+                BadgeShape.Circle => new BadgeCircleViewModel(badge, dispatcherWrapper, loggerFactory),
+                _ => throw new NotImplementedException(),
+            };
+        }
+
+        #endregion
     }
 
     public sealed class BadgeRoundedSquareViewModel: BadgeViewModelBase

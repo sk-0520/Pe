@@ -83,12 +83,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
         private IconViewerViewModel(IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
-            Badge = badge.BadgeShape switch {
-                BadgeShape.RoundedSquare => new BadgeRoundedSquareViewModel(badge, dispatcherWrapper, LoggerFactory),
-                BadgeShape.SolidSquare => new BadgeSolidSquareViewModel(badge, dispatcherWrapper, LoggerFactory),
-                BadgeShape.Circle => new BadgeCircleViewModel(badge, dispatcherWrapper, LoggerFactory),
-                _ => throw new NotImplementedException(),
-            };
+            Badge = BadgeViewModelBase.Create(badge, dispatcherWrapper, LoggerFactory);
             DispatcherWrapper = dispatcherWrapper;
         }
 

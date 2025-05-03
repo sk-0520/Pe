@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Input;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models;
+using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Library.Common;
@@ -14,6 +15,7 @@ using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize;
 using ContentTypeTextNet.Pe.Main.Models.Launcher;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
+using ContentTypeTextNet.Pe.Main.ViewModels.IconViewer;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 
@@ -74,15 +76,28 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
         }
         public bool IsEnabledBadgeSetting => Model.Kind != LauncherItemKind.Separator;
 
+        public BadgeViewModelBase? Badge => Model.Badge.IsVisible
+            ? BadgeViewModelBase.Create(Model.Badge, DispatcherWrapper, LoggerFactory)
+            : null
+        ;
+
         public bool BadgeIsVisible
         {
             get => Model.Badge.IsVisible;
-            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.IsVisible));
+            set
+            {
+                SetPropertyValue(Model.Badge, value, nameof(Model.Badge.IsVisible));
+                RaisePropertyChanged(nameof(Badge));
+            }
         }
         public Color BadgeBackground
         {
             get => Model.Badge.Background;
-            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.Background));
+            set
+            {
+                SetPropertyValue(Model.Badge, value, nameof(Model.Badge.Background));
+                RaisePropertyChanged(nameof(Badge));
+            }
         }
 
         public ObservableCollection<BadgeShape> BadgeShapeCollection { get; } = new ObservableCollection<BadgeShape>(Enum.GetValues<BadgeShape>());
@@ -90,16 +105,24 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
         public BadgeShape BadgeShape
         {
             get => Model.Badge.BadgeShape;
-            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.BadgeShape));
+            set
+            {
+                SetPropertyValue(Model.Badge, value, nameof(Model.Badge.BadgeShape));
+                RaisePropertyChanged(nameof(Badge));
+            }
         }
         public string BadgeDisplay
         {
             get => Model.Badge.Display;
-            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.Display));
+            set
+            {
+                SetPropertyValue(Model.Badge, value, nameof(Model.Badge.Display));
+                RaisePropertyChanged(nameof(Badge));
+            }
         }
 
 
-        public bool IsEnabledOtherSetting=> Model.Kind != LauncherItemKind.Separator;
+        public bool IsEnabledOtherSetting => Model.Kind != LauncherItemKind.Separator;
 
         #endregion
 

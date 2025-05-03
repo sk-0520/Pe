@@ -52,32 +52,5 @@ namespace ContentTypeTextNet.Pe.Main.Views
         }
 
         #endregion
-
-        #region IconBox
-
-        public static readonly DependencyProperty IconBoxProperty = DependencyProperty.Register(
-            nameof(IconBox),
-            typeof(IconBox),
-            typeof(BadgeControl),
-            new FrameworkPropertyMetadata(
-                IconBox.Small,
-                new PropertyChangedCallback(OnIconBoxChanged)
-            )
-        );
-
-        public IconBox IconBox
-        {
-            get { return (IconBox)GetValue(IconBoxProperty); }
-            set { SetValue(IconBoxProperty, value); }
-        }
-
-        private static void OnIconBoxChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if(d is BadgeControl control) {
-            }
-        }
-
-        #endregion
-
     }
 }
