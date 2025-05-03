@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
 
         #region IReadOnlyBadgeData
 
-        public bool IsEnabled => Badge.IsEnabled;
+        public bool IsVisible => Badge.IsVisible;
         public string Display => Badge.Display;
         public BadgeShape BadgeShape => Badge.BadgeShape;
         public Color Background => Badge.Background;

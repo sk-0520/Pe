@@ -569,7 +569,7 @@ ___
 |    | x  |                              | 表示するか               | IsVisible             | boolean      | System.String   |           |
 |    | x  |                              | 表示文言                 | Display               | text         | System.String   |           |
 |    | x  |                              | 図形                     | Shape                 | text         | System.String   |           |
-|    | x  |                              | 待機時間                 | Background            | text         | System.String   | #AARRGGBB |
+|    | x  |                              | 背景色                   | Background            | text         | System.String   | #AARRGGBB |
 
 ## index
 

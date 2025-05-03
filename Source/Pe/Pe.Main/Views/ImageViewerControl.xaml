@@ -40,7 +40,7 @@
     <Viewbox
       VerticalAlignment="Bottom"
       HorizontalAlignment="Right"
-      Visibility="{Binding IconViewer.Badge.IsEnabled, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+      Visibility="{Binding IconViewer.Badge.IsVisible, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
       Width="{Binding IconBox, Converter={StaticResource BadgeSizeConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
       Height="{Binding IconBox, Converter={StaticResource BadgeSizeConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
     >

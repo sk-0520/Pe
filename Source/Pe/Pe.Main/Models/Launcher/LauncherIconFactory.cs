@@ -86,15 +86,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                 return null!;
             }
 
-            //TODO: DB読んだりあれこれ
-#pragma warning disable CA1305 // IFormatProvider を指定します
-            var badge = new BadgeData() {
-                IsEnabled = true,
-                BadgeShape = BadgeShape.Circle,
-                Display = DateTime.Now.Second.ToString(),
-                Background = Colors.Red,
-            };
-#pragma warning restore CA1305 // IFormatProvider を指定します
+            BadgeData badge;
+            using(var context = MainDatabaseBarrier.WaitRead()) {
+                var launcherBadgesEntityDao = new LauncherBadgesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+
+                badge = launcherBadgesEntityDao.SelectLauncherBadge(LauncherItemId) ?? BadgeData.None;
+            }
 
             switch(iconSource) {
                 case IconImageLoaderBase iconImageLoader:

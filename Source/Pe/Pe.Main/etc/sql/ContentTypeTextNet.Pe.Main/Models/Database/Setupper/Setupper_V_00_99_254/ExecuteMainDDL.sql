@@ -14,7 +14,7 @@ create table LauncherBadges
 	IsVisible boolean not null, -- 表示するか
 	Display text not null, -- 表示文言
 	Shape text not null, -- 図形
-	Background text not null, -- 待機時間 #AARRGGBB
+	Background text not null, -- 背景色 #AARRGGBB
 	primary key
 	(
 		LauncherItemId

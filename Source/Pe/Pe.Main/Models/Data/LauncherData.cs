@@ -588,7 +588,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         /// <summary>
         /// バッジが有効か。
         /// </summary>
-        bool IsEnabled { get; }
+        bool IsVisible { get; }
 
         /// <summary>
         /// バッジ表記。
@@ -611,11 +611,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         #endregion
     }
 
-    public class BadgeData: IReadOnlyBadgeData
+    public record class BadgeData: IReadOnlyBadgeData
     {
         #region IReadOnlyBadgeData
 
-        public bool IsEnabled { get; init; }
+        public bool IsVisible { get; init; }
         public required string Display { get; init; }
         public BadgeShape BadgeShape { get; init; }
         public Color Background { get; init; }
@@ -625,7 +625,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         #region property
 
         public static BadgeData None => new BadgeData() {
-            IsEnabled = false,
+            IsVisible = false,
             Display = string.Empty,
             BadgeShape = default(BadgeShape),
             Background = Colors.Transparent,
