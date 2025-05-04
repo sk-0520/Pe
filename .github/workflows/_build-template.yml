@@ -167,10 +167,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: <Install> winget
+        uses: Cyberboss/install-winget@v1
+
       - name: <Install> apps
         shell: cmd
         run: |
-          winget install inkscape
+          winget install inkscape --disable-interactivity --accept-source-agreements
 
       - name: <Build> Main
         shell: cmd
