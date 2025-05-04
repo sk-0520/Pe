@@ -59,7 +59,14 @@
                   <Style TargetType="TextBlock">
                     <Style.Triggers>
                       <DataTrigger Binding="{Binding EnabledScreen}" Value="True">
-                        <Setter Property="Text" Value="{Binding ScreenDisplayName}" />
+                        <Setter Property="Text">
+                          <Setter.Value>
+                            <MultiBinding StringFormat="{}{0} ({1})">
+                              <Binding Path="ScreenDisplayName" />
+                              <Binding Path="ScreenName" />
+                            </MultiBinding>
+                          </Setter.Value>
+                        </Setter>
                       </DataTrigger>
                     </Style.Triggers>
                     <Setter Property="Text" Value="{Binding ScreenName}" />
