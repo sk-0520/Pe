@@ -33,6 +33,8 @@ jobs:
       - name: <Build> Main
         shell: cmd
         run: |
+          inkscape.exe -v
+          convert.exe -v
           .\Resource\icon.bat
 
       - name: <Artifact> Release Note
