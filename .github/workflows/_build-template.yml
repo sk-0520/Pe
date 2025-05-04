@@ -162,6 +162,21 @@ jobs:
           path: |
             doc-comment.7z
 
+  icon:
+    name: Document Comment
+    runs-on: windows-latest
+
+    steps:
+      - name: <Install> apps
+        shell: cmd
+        run: |
+          winget install inkscape
+
+      - name: <Build> Main
+        shell: cmd
+        run: |
+          .\Resource\icon.bat
+
   plugin-template:
     name: Plugin Template
     needs:
