@@ -175,7 +175,7 @@ jobs:
         run: |
           winget install --id Inkscape.Inkscape --disable-interactivity --accept-source-agreements
           winget install --id GIMP.GIMP.2 --disable-interactivity --accept-source-agreements
-          winget info
+          winget --info
 
       - name: <Build> Main
         shell: cmd
