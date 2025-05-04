@@ -108,7 +108,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
         protected virtual bool SetPropertyValue<TValue>(object obj, TValue value, [CallerMemberName] string targetMemberName = "", [CallerMemberName] string notifyPropertyName = "")
         {
 #if DEBUG
-            using var _ = ActionDisposerHelper.Create((d, sw) => Logger.LogTrace("PROP TIME: {0}", sw.Elapsed), Stopwatch.StartNew());
+            using var _ = ActionDisposerHelper.Create((d, sw) => Logger.LogTrace("PROP TIME: {Elapsed}, {TargetMemberName} {NotifyPropertyName}", sw.Elapsed, targetMemberName, notifyPropertyName), Stopwatch.StartNew());
 #endif
             ThrowIfDisposed();
 
