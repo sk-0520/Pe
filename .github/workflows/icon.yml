@@ -1,0 +1,42 @@
+name: Icon
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - master
+      - ci-test
+      - develop
+
+jobs:
+  icon:
+    name: Icon
+    runs-on: windows-latest
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Install> winget
+        uses: Cyberboss/install-winget@v1
+
+      - name: <Install> apps
+        shell: pwsh
+        run: |
+          winget install --id Inkscape.Inkscape --silent --disable-interactivity --accept-source-agreements
+          winget install --id GIMP.GIMP.2 --silent --disable-interactivity --accept-source-agreements
+          winget --info
+
+      - name: <Build> Main
+        shell: cmd
+        run: |
+          .\Resource\icon.bat
+
+      - name: <Artifact> Release Note
+        uses: actions/upload-artifact@v4
+        with:
+          name: Icons
+          path: Resource/Icon
+          if-no-files-found: error

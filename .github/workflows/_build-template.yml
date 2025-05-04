@@ -162,29 +162,6 @@ jobs:
           path: |
             doc-comment.7z
 
-  icon:
-    name: Icon
-    runs-on: windows-latest
-
-    steps:
-      - name: <Checkout> Repository
-        uses: actions/checkout@v4
-
-      - name: <Install> winget
-        uses: Cyberboss/install-winget@v1
-
-      - name: <Install> apps
-        shell: pwsh
-        run: |
-          winget install --id Inkscape.Inkscape --disable-interactivity --accept-source-agreements
-          winget install --id GIMP.GIMP.2 --disable-interactivity --accept-source-agreements
-          winget --info
-
-      - name: <Build> Main
-        shell: cmd
-        run: |
-          .\Resource\icon.bat
-
   plugin-template:
     name: Plugin Template
     needs:
