@@ -171,10 +171,11 @@ jobs:
         uses: Cyberboss/install-winget@v1
 
       - name: <Install> apps
-        shell: cmd
+        shell: pwsh
         run: |
           winget install --id Inkscape.Inkscape --disable-interactivity --accept-source-agreements
           winget install --id GIMP.GIMP.2 --disable-interactivity --accept-source-agreements
+          winget list
 
       - name: <Build> Main
         shell: cmd
