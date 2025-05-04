@@ -2411,4 +2411,7 @@ URL: バージョンチェックURLを指定すればその内容からプラグ
   <data name="String_LauncherItemCustomizeControl_Common_Badge_Display_Remark" xml:space="preserve">
     <value>1-2文字を想定</value>
   </data>
+  <data name="String_LauncherItemCustomizeControl_Separator_Header" xml:space="preserve">
+    <value>セパレータ</value>
+  </data>
 </root>

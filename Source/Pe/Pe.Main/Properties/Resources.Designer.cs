@@ -4449,6 +4449,15 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
+        ///   セパレータ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_LauncherItemCustomizeControl_Separator_Header {
+            get {
+                return ResourceManager.GetString("String_LauncherItemCustomizeControl_Separator_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   種類(_K) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_LauncherItemCustomizeControl_Separator_Kind_A {
