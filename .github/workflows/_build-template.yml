@@ -163,7 +163,7 @@ jobs:
             doc-comment.7z
 
   icon:
-    name: Document Comment
+    name: Icon
     runs-on: windows-latest
 
     steps:
@@ -173,7 +173,8 @@ jobs:
       - name: <Install> apps
         shell: cmd
         run: |
-          winget install inkscape --disable-interactivity --accept-source-agreements
+          winget install Inkscape.Inkscape --disable-interactivity --accept-source-agreements
+          winget install GIMP.GIMP --disable-interactivity --accept-source-agreements
 
       - name: <Build> Main
         shell: cmd
