@@ -1719,9 +1719,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         private async Task ResetScreenViewElementsAsync(CancellationToken cancellationToken)
         {
-            ClearScreenViewElements();
-
-            ResetNotifyArea();
+            var dispatcherWrapper = ApplicationDiContainer.Get<IDispatcherWrapper>();
+            await dispatcherWrapper.BeginAsync(() => {
+                ClearScreenViewElements();
+                ResetNotifyArea();
+            }, DispatcherPriority.SystemIdle);
 
             await ExecuteElementsAsync(cancellationToken);
         }
@@ -1741,21 +1743,24 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         private void DelayResetScreenViewElements()
         {
-            void DelayExecuteElements()
-            {
-                DelayScreenElementReset.Callback(() => {
-                    ApplicationDiContainer.Get<IDispatcherWrapper>().BeginAsync(async () => await ResetScreenViewElementsAsync(CancellationToken.None), DispatcherPriority.SystemIdle);
-                    ResetWaiting = false;
-                });
+            if(ResetWaiting) {
+                Logger.LogInformation("表示要素リセット抑制");
+                return;
             }
 
-            if(!ResetWaiting) {
-                ResetWaiting = true;
-                ClearScreenViewElements();
-                DelayExecuteElements();
-            } else {
-                DelayExecuteElements();
-            }
+            Logger.LogInformation("表示要素リセット開始");
+            ResetWaiting = true;
+            DelayScreenElementReset.Callback(() => {
+                ApplicationDiContainer.Get<IDispatcherWrapper>().BeginAsync(async () => {
+                    try {
+                        ClearScreenViewElements();
+                        await ResetScreenViewElementsAsync(CancellationToken.None);
+                    } finally {
+                        ResetWaiting = false;
+                    }
+                }, DispatcherPriority.SystemIdle);
+            });
+
         }
 
         internal FileInfo OutputRawCrashReport(Exception exception)

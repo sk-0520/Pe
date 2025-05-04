@@ -90,11 +90,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 #endif
 
             switch(msg) {
-                case (int)WM.WM_DEVICECHANGE: {
-                        var deviceChangedData = new DeviceChangedData(hWnd, msg, wParam, lParam);
-                        CatchDeviceChanged(deviceChangedData);
-                    }
-                    break;
+                //case (int)WM.WM_DEVICECHANGE: {
+                //        var deviceChangedData = new DeviceChangedData(hWnd, msg, wParam, lParam);
+                //        CatchDeviceChanged(deviceChangedData);
+                //    }
+                //    break;
 
                 case (int)WM.WM_SETTINGCHANGE:
                     PlatformThemeLoader.WndProc_WM_SETTINGCHANGE(hWnd, msg, wParam, lParam, ref handled);
@@ -112,14 +112,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         {
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
             SystemEvents.SessionEnding += SystemEvents_SessionEnding;
-            SystemEvents.DisplaySettingsChanging += SystemEvents_DisplaySettingsChanging;
+            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
         }
 
         private void FinalizeSystem()
         {
             SystemEvents.SessionSwitch -= SystemEvents_SessionSwitch;
             SystemEvents.SessionEnding -= SystemEvents_SessionEnding;
-            SystemEvents.DisplaySettingsChanging -= SystemEvents_DisplaySettingsChanging;
+            SystemEvents.DisplaySettingsChanged -= SystemEvents_DisplaySettingsChanged;
         }
 
         private void InitializeHook()
@@ -427,6 +427,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             return jobs.OfType<KeyActionPressedJobBase>().Any(i => i.ThroughSystem);
         }
 
+        [Obsolete("DisplaySettingsChanged でいける気がするんよ")]
         private void CatchDeviceChanged(DeviceChangedData deviceChangedData)
         {
             Logger.LogInformation("デバイス状態検知: {0}", deviceChangedData.DBT);
@@ -749,7 +750,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             }
         }
 
-        private void SystemEvents_DisplaySettingsChanging(object? sender, EventArgs e)
+        private void SystemEvents_DisplaySettingsChanged(object? sender, EventArgs e)
         {
             Logger.LogInformation("ディスプレイ変更検知");
 
