@@ -151,13 +151,16 @@ jobs:
         run: |
           .\_tools\docfx docfx.json --template statictoc
 
+      - name: <Archive> Document Comment
+        run: |
+          7z a doc-comment.7z _doc-comment\*
+
       - name: <Artifact> Document Comment
         uses: actions/upload-artifact@v4
         with:
           name: DocumentComment
           path: |
-            _doc-comment\metadata
-            _doc-comment\document
+            doc-comment.7z
 
   plugin-template:
     name: Plugin Template
