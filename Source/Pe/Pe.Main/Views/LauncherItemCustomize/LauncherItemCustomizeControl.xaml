@@ -137,28 +137,14 @@
                     </DataTemplate>
                   </ComboBox.ItemTemplate>
                 </ComboBox>
-                
+
                 <TextBox Width="80" Style="{StaticResource Horizontal-TextBox}" Text="{Binding BadgeDisplay, UpdateSourceTrigger=PropertyChanged}" ToolTip="{Binding Resources.String_LauncherItemCustomizeControl_Common_Badge_Display_Remark, Source={x:Static app_main:CultureService.Instance}}" />
 
-                <ContentControl Content="{Binding Badge}">
-                  <ContentControl.Style>
-                    <Style TargetType="ContentControl">
-                      <Style.Triggers>
-                        <DataTrigger Binding="{Binding Badge, Converter={StaticResource LogicalIsNotNullConverter}}" Value="True">
-                          <Setter Property="ContentTemplate">
-                            <Setter.Value>
-                              <DataTemplate>
-                                <app_main_views:BadgeControl Badge="{Binding}" />
-                              </DataTemplate>
-                            </Setter.Value>
-                          </Setter>
-                          <Setter Property="Visibility" Value="Visible" />
-                        </DataTrigger>
-                      </Style.Triggers>
-                      <Setter Property="Visibility" Value="Collapsed" />
-                    </Style>
-                  </ContentControl.Style>
-                </ContentControl>
+                <app_main_views:BadgeControl
+                  BadgeShape="{Binding BadgeShape}"
+                  Text="{Binding BadgeDisplay}"
+                  BaseColor="{Binding BadgeBackground}"
+                />
               </WrapPanel>
             </Grid>
 

@@ -8,57 +8,67 @@
   xmlns:app_core_views_converter="clr-namespace:ContentTypeTextNet.Pe.Core.Views.Converter;assembly=Pe.Core"
   xmlns:app_main_viewmodels_iconviewer="clr-namespace:ContentTypeTextNet.Pe.Main.ViewModels.IconViewer"
   xmlns:app_main_views_converter="clr-namespace:ContentTypeTextNet.Pe.Main.Views.Converter"
+  xmlns:app_main_models_data="clr-namespace:ContentTypeTextNet.Pe.Main.Models.Data"
 
   IsTabStop="False"
   Focusable="False"
+  Width="16"
+  Height="16"
 
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
   mc:Ignorable="d" 
-  d:DesignHeight="32"
-  d:DesignWidth="32"
 >
   <UserControl.Resources>
     <app_core_views_converter:AutoColorConverter x:Key="AutoColorConverter" />
     <app_core_views_converter:AutoColorConverter x:Key="AutoOpaqueColorConverter" Opaque="True" />
     <app_main_views_converter:BadgeSizeConverter x:Key="CornerRadiusBadgeSizeConverter" Scale="0.5" />
-
-    <SolidColorBrush x:Key="BackgroundBrush" Color="{Binding Badge.Background, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-    <SolidColorBrush x:Key="ForegroundBrush" Color="{Binding Badge.Background, Converter={StaticResource AutoOpaqueColorConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-    <emoji:TextBlock x:Key="Display" x:Shared="False" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Display, Mode=OneTime}" Foreground="{StaticResource ForegroundBrush}" />
-    <Style x:Key="BadgeBorder" TargetType="Border">
-      <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
-      <Setter Property="Effect">
-        <Setter.Value>
-          <DropShadowEffect
-            ShadowDepth="0"
-            Color="{Binding Badge.Background, Converter={StaticResource AutoOpaqueColorConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
-            Opacity="1"
-            BlurRadius="1"
-          />
-        </Setter.Value>
-      </Setter>
-    </Style>
   </UserControl.Resources>
   
-  <ContentControl
-    IsTabStop="False"
-    Focusable="False"
-    Content="{Binding Badge, RelativeSource={RelativeSource AncestorType=UserControl}}"
-    VerticalContentAlignment="Stretch"
-    HorizontalContentAlignment="Stretch"
-    Width="16"
-    Height="16"
-  >
-    <ContentControl.Resources>
-      <DataTemplate DataType="{x:Type app_main_viewmodels_iconviewer:BadgeRoundedSquareViewModel}">
-        <Border CornerRadius="4" Style="{StaticResource BadgeBorder}" Child="{StaticResource Display}" />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type app_main_viewmodels_iconviewer:BadgeSolidSquareViewModel}">
-        <Border Style="{StaticResource BadgeBorder}" Child="{StaticResource Display}" />
-      </DataTemplate>
-      <DataTemplate DataType="{x:Type app_main_viewmodels_iconviewer:BadgeCircleViewModel}">
-        <Border CornerRadius="8" Style="{StaticResource BadgeBorder}" Child="{StaticResource Display}" />
-      </DataTemplate>
-    </ContentControl.Resources>
-  </ContentControl>
+  <UserControl.Template>
+    <ControlTemplate TargetType="UserControl">
+      <ContentPresenter />
+    </ControlTemplate>
+  </UserControl.Template>
+
+  <Border>
+    <Border.Style>
+      <Style TargetType="Border">
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding BadgeShape, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static app_main_models_data:BadgeShape.RoundedSquare}">
+            <Setter Property="CornerRadius" Value="4" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding BadgeShape, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static app_main_models_data:BadgeShape.SolidSquare}">
+            <Setter Property="CornerRadius" Value="0" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding BadgeShape, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static app_main_models_data:BadgeShape.Circle}">
+            <Setter Property="CornerRadius" Value="8" />
+          </DataTrigger>
+        </Style.Triggers>
+        <Setter Property="Background">
+          <Setter.Value>
+            <SolidColorBrush Color="{Binding BaseColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Effect">
+          <Setter.Value>
+            <DropShadowEffect
+              ShadowDepth="0"
+              Color="{Binding BaseColor, Converter={StaticResource AutoOpaqueColorConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+              Opacity="1"
+              BlurRadius="1"
+            />
+          </Setter.Value>
+        </Setter>
+      </Style>
+    </Border.Style>
+    <emoji:TextBlock
+      VerticalAlignment="Center"
+      HorizontalAlignment="Center"
+      Text="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}}"
+    >
+      <emoji:TextBlock.Foreground>
+        <SolidColorBrush Color="{Binding BaseColor, Converter={StaticResource AutoOpaqueColorConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+      </emoji:TextBlock.Foreground>
+    </emoji:TextBlock>
+  </Border>
 </UserControl>

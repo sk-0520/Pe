@@ -83,7 +83,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
         private IconViewerViewModel(IReadOnlyBadgeData badge, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
-            Badge = BadgeViewModelBase.Create(badge, dispatcherWrapper, LoggerFactory);
+            Badge = badge;
             DispatcherWrapper = dispatcherWrapper;
         }
 
@@ -161,7 +161,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
             set => SetProperty(ref this._useCache, value);
         }
 
-        public BadgeViewModelBase Badge { get; }
+        private IReadOnlyBadgeData Badge { get; }
+        public bool BadgeIsVisible => Badge.IsVisible;
+        public BadgeShape BadgeShape => Badge.BadgeShape;
+        public string BadgeDisplay => Badge.Display;
+        public Color BadgeBackground => Badge.Background;
 
         #endregion
 

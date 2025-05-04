@@ -76,28 +76,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
         }
         public bool IsEnabledBadgeSetting => Model.Kind != LauncherItemKind.Separator;
 
-        public BadgeViewModelBase? Badge => Model.Badge.IsVisible
-            ? BadgeViewModelBase.Create(Model.Badge, DispatcherWrapper, LoggerFactory)
-            : null
-        ;
-
         public bool BadgeIsVisible
         {
             get => Model.Badge.IsVisible;
-            set
-            {
-                SetPropertyValue(Model.Badge, value, nameof(Model.Badge.IsVisible));
-                RaisePropertyChanged(nameof(Badge));
-            }
+            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.IsVisible));
         }
         public Color BadgeBackground
         {
             get => Model.Badge.Background;
-            set
-            {
-                SetPropertyValue(Model.Badge, value, nameof(Model.Badge.Background));
-                RaisePropertyChanged(nameof(Badge));
-            }
+            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.Background));
         }
 
         public ObservableCollection<BadgeShape> BadgeShapeCollection { get; } = new ObservableCollection<BadgeShape>(Enum.GetValues<BadgeShape>());
@@ -105,20 +92,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
         public BadgeShape BadgeShape
         {
             get => Model.Badge.BadgeShape;
-            set
-            {
-                SetPropertyValue(Model.Badge, value, nameof(Model.Badge.BadgeShape));
-                RaisePropertyChanged(nameof(Badge));
-            }
+            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.BadgeShape));
         }
         public string BadgeDisplay
         {
             get => Model.Badge.Display;
-            set
-            {
-                SetPropertyValue(Model.Badge, value, nameof(Model.Badge.Display));
-                RaisePropertyChanged(nameof(Badge));
-            }
+            set => SetPropertyValue(Model.Badge, value, nameof(Model.Badge.Display));
         }
 
 
