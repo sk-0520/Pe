@@ -167,6 +167,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
       - name: <Install> winget
         uses: Cyberboss/install-winget@v1
 
