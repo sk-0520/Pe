@@ -111,8 +111,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 
         private ICommand? _LoadCommand;
         public ICommand LoadCommand => this._LoadCommand ??= new DelegateCommand(
-            () => {
-                LoadAsync(CancellationToken.None);
+            async () => {
+                await LoadAsync(CancellationToken.None);
             }
         );
 
@@ -145,19 +145,25 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         protected abstract Task LoadImplAsync(CancellationToken cancellationToken);
         protected abstract Task UnloadImplAsync(CancellationToken cancellationToken);
 
-        private Task LoadAsync(CancellationToken cancellationToken)
+        private async Task LoadAsync(CancellationToken cancellationToken)
         {
             NowLoading = true;
-            return LoadImplAsync(cancellationToken).ContinueWith(_ => {
-                var keys = KeyGestureGuide.GetLauncherItemKeys(LauncherItemId);
-                ExecuteKeyGestures = new ObservableCollection<string>(keys);
-                HasExecuteKeyGestures = ExecuteKeyGestures.Any();
 
-                RaisePropertyChanged(nameof(HasExecuteKeyGestures));
-                RaisePropertyChanged(nameof(ExecuteKeyGestures));
+            await LoadImplAsync(cancellationToken);
 
-                NowLoading = false;
-            }, cancellationToken);
+            if(Model is null) {
+                Logger.LogDebug("Model is null.");
+                return;
+            }
+
+            var keys = KeyGestureGuide.GetLauncherItemKeys(LauncherItemId);
+            ExecuteKeyGestures = new ObservableCollection<string>(keys);
+            HasExecuteKeyGestures = ExecuteKeyGestures.Any();
+
+            RaisePropertyChanged(nameof(HasExecuteKeyGestures));
+            RaisePropertyChanged(nameof(ExecuteKeyGestures));
+
+            NowLoading = false;
         }
 
         private Task UnloadAsync(CancellationToken cancellationToken)
