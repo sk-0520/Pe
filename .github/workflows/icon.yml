@@ -26,7 +26,8 @@ jobs:
         shell: pwsh
         run: |
           winget install --id Inkscape.Inkscape --silent --disable-interactivity --accept-source-agreements
-          winget install --id GIMP.GIMP.2 --silent --disable-interactivity --accept-source-agreements
+          winget install --id ImageMagick.ImageMagick --silent --disable-interactivity --accept-source-agreements
+          # winget install --id GIMP.GIMP.2 --silent --disable-interactivity --accept-source-agreements
           winget --info
 
       - name: <Build> Main
