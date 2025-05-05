@@ -168,7 +168,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
             var statement = LoadStatement();
             var parameter = databaseCommonStatus.CreateCommonDtoMapping();
             parameter[Column.NoteId] = noteId;
-            parameter[Column.IsLink] = true;
+            parameter[Column.IsLink] = false;
             parameter[Column.Address] = string.Empty;
 
             Context.UpdateByKey(statement, parameter);
