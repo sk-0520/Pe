@@ -186,21 +186,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
         }
 
         /// <summary>
-        /// 安全に<see cref="string.Trim"/>を行う。
-        /// </summary>
-        /// <inheritdoc cref="string.Trim"/>
-        /// <param name="s">対象文字列。</param>
-        /// <returns><paramref name="s"/>が<see langword="null" />の場合は空文字列、それ以外はトリムされた文字列。</returns>
-        public static string SafeTrim(string? s)
-        {
-            if(s == null) {
-                return string.Empty;
-            }
-
-            return s.Trim();
-        }
-
-        /// <summary>
         /// 複数行を指定文字列で結合。
         /// </summary>
         /// <param name="lines">行分割された文字列。</param>

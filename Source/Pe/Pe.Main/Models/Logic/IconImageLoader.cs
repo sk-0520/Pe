@@ -119,7 +119,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         {
             ThrowIfDisposed();
 
-            var path = TextUtility.SafeTrim(iconData.Path);
+            var path = iconData.Path;
             if(string.IsNullOrEmpty(path)) {
                 return Task.FromResult(default(BitmapSource));
             }
