@@ -90,10 +90,10 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <inheritdoc cref="IDatabaseReader.QuerySingleOrDefaultAsync{T}(string, object?, CancellationToken)"/>
         Task<T?> QuerySingleOrDefaultAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken);
 
-        /// <inheritdoc cref="IDatabaseWriter.Execute(string, object?)"/>
+        /// <inheritdoc cref="IDatabaseExecutor.Execute(string, object?)"/>
         int Execute(IDatabaseTransaction? transaction, string statement, object? parameter);
 
-        /// <inheritdoc cref="IDatabaseWriter.ExecuteAsync(string, object?, CancellationToken)"/>
+        /// <inheritdoc cref="IDatabaseExecutor.ExecuteAsync(string, object?, CancellationToken)"/>
         Task<int> ExecuteAsync(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken);
 
         /// <inheritdoc cref="BeginTransaction(IsolationLevel)"/>

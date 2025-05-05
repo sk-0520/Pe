@@ -11,9 +11,9 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Test.Vender.Public.SQLite
 {
-    public class IDatabaseWriterExtensionsTest
+    public class IDatabaseExecutorExtensionsTest
     {
-        public IDatabaseWriterExtensionsTest()
+        public IDatabaseExecutorExtensionsTest()
         {
             var factory = new InMemorySqliteFactory();
             DatabaseAccessor = new SqliteAccessor(factory, NullLoggerFactory.Instance);

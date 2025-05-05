@@ -213,7 +213,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         /// 実行結果のログ出力。
         /// </summary>
         /// <remarks>
-        /// <para><see cref="IDatabaseWriter.Execute(string, object?)"/>で使用される。</para>
+        /// <para><see cref="IDatabaseExecutor.Execute(string, object?)"/>で使用される。</para>
         /// </remarks>
         /// <param name="result"></param>
         /// <param name="startUtcTime"></param>

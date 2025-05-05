@@ -158,15 +158,17 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <para><see cref="IDatabaseImplementation.BlockComments"/>最初の要素が使用される。</para>
         /// </remarks>
         /// <example>
+        /// <code language="sql">
         /// select *
         /// from /*{{*//*KEY[改行]
-        /// KEY-A:CODE[改行] <paramref name="blocks"/>["KEY"] -> KEY-A
+        /// KEY-A:CODE[改行] (<paramref name="blocks"/>["KEY"] -> KEY-A)
         ///     TABLE_A
-        /// KEY-B:CODE[改行] <paramref name="blocks"/>["KEY"] -> KEY-B
+        /// KEY-B:CODE[改行] (<paramref name="blocks"/>["KEY"] -> KEY-B)
         ///     TABLE_B
-        /// KEY-C:LOAD[改行] <paramref name="blocks"/>["KEY"] -> KEY-C, <see cref="LoadStatement"/>(callerMemberName<see cref="JoinSeparator"/>NAME)
+        /// KEY-C:LOAD[改行] (<paramref name="blocks"/>["KEY"] -> KEY-C, <see cref="LoadStatement"/>(callerMemberName<see cref="JoinSeparator"/>NAME))
         ///     NAME
-        /// */TABLE_C/*}}*/ <paramref name="blocks"/>["KEY"] not KEY-A,KEY-B,KEY-C
+        /// */TABLE_ELSE/*}}*/ -- <paramref name="blocks"/>["KEY"] が KEY-A,KEY-B,KEY-C に当てはまらない
+        /// </code>
         /// </example>
         /// <param name="statement"></param>
         /// <param name="blocks"></param>

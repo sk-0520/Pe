@@ -143,6 +143,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         /// <inheritdoc cref="IDatabaseDelayWriter.Stock(Action{IDatabaseTransaction}, object)"/>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly", Justification = "デバッグ時のみのあれ")]
         public void Stock(Action<IDatabaseTransaction> action, object uniqueKey)
         {
             if(uniqueKey == null) {
