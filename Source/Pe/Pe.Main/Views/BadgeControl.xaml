@@ -22,6 +22,7 @@
     <app_core_views_converter:AutoColorConverter x:Key="AutoColorConverter" />
     <app_core_views_converter:AutoColorConverter x:Key="AutoOpaqueColorConverter" Opaque="True" />
     <app_main_views_converter:BadgeSizeConverter x:Key="CornerRadiusBadgeSizeConverter" Scale="0.5" />
+    <Color x:Key="FallbackColor">Transparent</Color>
   </UserControl.Resources>
   
   <UserControl.Template>
@@ -46,14 +47,14 @@
         </Style.Triggers>
         <Setter Property="Background">
           <Setter.Value>
-            <SolidColorBrush Color="{Binding BaseColor, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+            <SolidColorBrush Color="{Binding BaseColor, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue={StaticResource FallbackColor}}" />
           </Setter.Value>
         </Setter>
         <Setter Property="Effect">
           <Setter.Value>
             <DropShadowEffect
               ShadowDepth="0"
-              Color="{Binding BaseColor, Converter={StaticResource AutoOpaqueColorConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
+              Color="{Binding BaseColor, Converter={StaticResource AutoOpaqueColorConverter}, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue={StaticResource FallbackColor}}"
               Opacity="1"
               BlurRadius="1"
             />
