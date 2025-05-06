@@ -26,7 +26,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Setupper
         }
 
         public override void ExecuteMainDML(IDatabaseContext context, IReadOnlySetupDto dto)
-        { }
+        {
+            ExecuteStatement(context, StatementLoader.LoadStatementByCurrent(GetType()), dto);
+        }
 
         public override void ExecuteFileDDL(IDatabaseContext context, IReadOnlySetupDto dto)
         { }
