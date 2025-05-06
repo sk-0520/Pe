@@ -82,7 +82,8 @@
 					},
 					{
 						"revision": "",
-						"subject": ""
+						"class": "nuget",
+						"subject": "Microsoft.Web.WebView2 1.0.3179.45 -> 1.0.3240.44"
 					},
 					{
 						"revision": "",
