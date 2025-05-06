@@ -149,7 +149,7 @@ jobs:
 
       - name: <Build> Main
         run: |
-          .\_tools\docfx docfx.json --template statictoc
+          .\_tools\docfx docfx.json
 
       - name: <Archive> Document Comment
         run: |
