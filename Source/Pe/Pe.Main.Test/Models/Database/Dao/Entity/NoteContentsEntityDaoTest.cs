@@ -96,9 +96,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
 
             testContents.UpdateLinkDisabled(data.NoteId, Test.DiContainer.Build<IDatabaseCommonStatus>());
             var actual2 = testContents.SelectLinkParameter(data.NoteId);
-            //TODO: 偽じゃないとダメなはず
-            Assert.True(actual2.IsLink);
-            //Assert.False(actual2.IsLink);
+            Assert.False(actual2.IsLink);
             Assert.Empty(actual2.FilePath);
 
             testContents.UpdateLinkEnabled(

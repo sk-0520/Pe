@@ -45,9 +45,10 @@
       </Grid.RowDefinitions>
 
       <ToolBar Grid.Row="0">
-        <ComboBox x:Name="listDefines" SelectedIndex="0">
+        <ComboBox x:Name="listDefines" SelectedIndex="0" Width="200">
           <ComboBoxItem Tag="env-merge" Content="環境変数 マージ" />
           <ComboBoxItem Tag="env-remove" Content="環境変数 削除" />
+          <ComboBoxItem Tag="empty" Content="空" />
         </ComboBox>
         <Button Content="読み込み" Click="Button_Click_1" />
       </ToolBar>

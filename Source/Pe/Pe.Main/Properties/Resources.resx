@@ -2393,4 +2393,25 @@ URL: バージョンチェックURLを指定すればその内容からプラグ
   <data name="String_Setting_Generals_LauncherToolbar_DuplicatedFileRegisterMode_A" xml:space="preserve">
     <value>D&amp;Dファイルの重複判定</value>
   </data>
+  <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.BadgeShape.RoundedSquare" xml:space="preserve">
+    <value>角丸四角形</value>
+  </data>
+  <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.BadgeShape.SolidSquare" xml:space="preserve">
+    <value>四角形</value>
+  </data>
+  <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.BadgeShape.Circle" xml:space="preserve">
+    <value>円形</value>
+  </data>
+  <data name="String_LauncherItemCustomizeControl_Common_Badge_A" xml:space="preserve">
+    <value>バッジ</value>
+  </data>
+  <data name="String_LauncherItemCustomizeControl_Common_Badge_IsVisible_A" xml:space="preserve">
+    <value>表示する(_V)</value>
+  </data>
+  <data name="String_LauncherItemCustomizeControl_Common_Badge_Display_Remark" xml:space="preserve">
+    <value>1-2文字を想定</value>
+  </data>
+  <data name="String_LauncherItemCustomizeControl_Separator_Header" xml:space="preserve">
+    <value>セパレータ</value>
+  </data>
 </root>

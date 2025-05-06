@@ -279,11 +279,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
             return Task.CompletedTask;
         }
 
-        protected override object GetIcon(IconKind iconKind)
+        protected override object GetIcon(IconKind iconKind, bool isEnabledBadge)
         {
             var factory = Model.CreateLauncherIconFactory();
             var iconSource = factory.CreateIconSource(DispatcherWrapper);
-            return factory.CreateView(iconSource, false, DispatcherWrapper);
+            return factory.CreateView(iconSource, false, isEnabledBadge, DispatcherWrapper);
         }
 
         #endregion

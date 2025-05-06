@@ -7,6 +7,8 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 {
+    
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public abstract class BindModelWithLoggerBase: BindModelBase
     {
         protected BindModelWithLoggerBase(ILoggerFactory loggerFactory)

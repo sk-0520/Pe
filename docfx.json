@@ -32,6 +32,10 @@
 		}
 	],
 	"build": {
+		"template": [
+			"statictoc",
+			"Define/doxfx/templates/statictoc/ja"
+		],
 		"content": [
 			{
 				"files": [
@@ -39,6 +43,10 @@
 				]
 			}
 		],
+		"globalMetadata": {
+			"_appTitle": "Pe Document",
+			"_appName": "Pe"
+		},
 		"dest": "_doc-comment/document"
 	}
 }

@@ -80,6 +80,15 @@
 				"uri": "https://github.com/adoconnection/SevenZipExtractor/blob/master/LICENSE"
 			},
 			"comment": "7z"
+		},
+		{
+			"name": "Emoji.Wpf",
+			"uri": "https://github.com/samhocevar/emoji.wpf",
+			"license": {
+				"name": "WTFPLv2",
+				"uri": "https://github.com/samhocevar/emoji.wpf/blob/main/COPYING"
+			},
+			"comment": "絵文字"
 		}
 	],
 	"resource": [

@@ -5,6 +5,7 @@ using ContentTypeTextNet.Pe.Bridge.Models.Data;
 
 namespace ContentTypeTextNet.Pe.Core.Views.Converter
 {
+    [ValueConversion(typeof(IconBox), typeof(int))]
     public class IconBoxToWidthConverter: IValueConverter
     {
         #region IValueConverter

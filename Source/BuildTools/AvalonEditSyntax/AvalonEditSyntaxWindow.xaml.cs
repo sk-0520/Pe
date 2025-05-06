@@ -79,7 +79,16 @@ KEY = VALUE
 KEY =VALUE
 ",
             global::ContentTypeTextNet.Pe.Main.Properties.Resources.File_Highlighting_EnvironmentVariable_Remove
-),
+            ),
+            ["empty"] = new EditorValue(
+                "",
+                //lang=xml
+                """
+                <?xml version="1.0" encoding="utf-8" ?>
+                <SyntaxDefinition xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008" name="empty">
+                </SyntaxDefinition>
+                """
+            )
 
             #endregion
         };
@@ -156,13 +165,6 @@ KEY =VALUE
             base.OnInitialized(e);
 
             LoadSelectedDefine();
-
-            this.inputSyntax.Text =
-@"<?xml version=""1.0"" encoding=""utf-8"" ?>
-<SyntaxDefinition xmlns=""http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008"">
-</SyntaxDefinition>
-";
-            ApplyCurrent();
         }
 
         #endregion

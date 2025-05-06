@@ -12,10 +12,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
         [Fact]
         public void Constructor_throw_Test()
         {
-            var actual1 = Assert.Throws<ArgumentNullException>(() => new DelegateCommand(null!, null!));
+            var actual1 = Assert.Throws<ArgumentNullException>(() => new DelegateCommand((Action<object>)null!, null!));
             Assert.Equal("executeAction", actual1.ParamName);
 
-            var actual2 = Assert.Throws<ArgumentNullException>(() => new DelegateCommand(null!));
+            var actual2 = Assert.Throws<ArgumentNullException>(() => new DelegateCommand((Action<object>)null!));
             Assert.Equal("executeAction", actual2.ParamName);
 
             var actual3 = Assert.Throws<ArgumentNullException>(() => new DelegateCommand(o => { }, null!));
@@ -23,7 +23,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
         }
 
         [Fact]
-        public void SuppressCommandWhileExecutingTest()
+        public void ExecutingTest()
         {
             DelegateCommand? command = null;
             command = new DelegateCommand(
@@ -65,7 +65,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
         }
 
         [Fact]
-        public void SuppressCommandWhileExecutingTest()
+        public void ExecutingTest()
         {
             DelegateCommand<int>? command = null;
             command = new DelegateCommand<int>(

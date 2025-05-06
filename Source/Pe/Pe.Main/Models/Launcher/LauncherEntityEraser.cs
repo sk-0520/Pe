@@ -41,7 +41,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         protected override void ExecuteMainImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
+            var launcherBadgesEntityDao = new LauncherBadgesEntityDao(context, statementLoader, implementation, LoggerFactory);
             var launcherEnvVarsEntityDao = new LauncherEnvVarsEntityDao(context, statementLoader, implementation, LoggerFactory);
+
+            launcherBadgesEntityDao.DeleteLauncherBadge(LauncherItemId);
             launcherEnvVarsEntityDao.DeleteEnvVarItemsByLauncherItemId(LauncherItemId);
 
             switch(LauncherItemKind) {

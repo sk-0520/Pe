@@ -15,6 +15,7 @@ using ContentTypeTextNet.Pe.Main.Models.Note;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
+using System.Reflection.Metadata;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 {
@@ -160,6 +161,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         private NoteLinkWatchParameter? GetLinkParameter() => (NoteLinkWatchParameter?)LinkWatcher?.WatchParameter;
 
+        private static string ReadFileContent(FileInfo file, Encoding encoding)
+        {
+            using(var stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.Read)) {
+                using(var reader = new StreamReader(stream, encoding!)) {
+                    return reader.ReadToEnd();
+                }
+            }
+        }
+
         private string LoadLinkContent()
         {
             ThrowIfDisposed();
@@ -170,11 +180,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                 return string.Empty;
             }
 
-            using(var stream = parameter.File!.Open(FileMode.Open, FileAccess.Read, FileShare.Read)) {
-                using(var reader = new StreamReader(stream, parameter.Encoding!)) {
-                    return reader.ReadToEnd();
-                }
-            }
+            return ReadFileContent(parameter.File!, parameter.Encoding!);
         }
 
         public void StartLinkWatch(NoteLinkWatchParameter noteLinkWatchParameter)
@@ -332,11 +338,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                 Logger.LogWarning("リンク状態が不正: {0}", NoteId);
                 return;
             }
+
             DisposeLinkWatcher();
+            IsLink = false;
 
             parameter.File.Refresh();
             if(parameter.File.Exists) {
-                var content = LoadLinkContent();
+                var content = ReadFileContent(parameter.File, parameter.Encoding!);
 
                 switch(ContentKind) {
                     case NoteContentKind.Plain:
@@ -354,8 +362,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                 Logger.LogWarning("リンク先が存在しない: {0}, {1}", parameter.File.FullName, NoteId);
             }
 
-            IsLink = false;
-
             using(var context = MainDatabaseBarrier.WaitWrite()) {
                 var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
                 dao.UpdateLinkDisabled(NoteId, DatabaseCommonStatus.CreateCurrentAccount());
@@ -366,7 +372,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             if(isRemove) {
                 if(parameter.File.Exists) {
                     try {
-                        parameter.File!.Delete();
+                        parameter.File.Delete();
                     } catch(Exception ex) {
                         Logger.LogError(ex, ex.Message);
                     }

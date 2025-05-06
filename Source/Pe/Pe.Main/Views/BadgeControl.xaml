@@ -1,0 +1,75 @@
+<UserControl
+  x:Class="ContentTypeTextNet.Pe.Main.Views.BadgeControl"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+  xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
+  
+  xmlns:app_core_views_converter="clr-namespace:ContentTypeTextNet.Pe.Core.Views.Converter;assembly=Pe.Core"
+  xmlns:app_main_viewmodels_iconviewer="clr-namespace:ContentTypeTextNet.Pe.Main.ViewModels.IconViewer"
+  xmlns:app_main_views_converter="clr-namespace:ContentTypeTextNet.Pe.Main.Views.Converter"
+  xmlns:app_main_models_data="clr-namespace:ContentTypeTextNet.Pe.Main.Models.Data"
+
+  IsTabStop="False"
+  Focusable="False"
+  Width="16"
+  Height="16"
+
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+  mc:Ignorable="d" 
+>
+  <UserControl.Resources>
+    <app_core_views_converter:AutoColorConverter x:Key="AutoColorConverter" />
+    <app_core_views_converter:AutoColorConverter x:Key="AutoOpaqueColorConverter" Opaque="True" />
+    <app_main_views_converter:BadgeSizeConverter x:Key="CornerRadiusBadgeSizeConverter" Scale="0.5" />
+    <Color x:Key="FallbackColor">Transparent</Color>
+  </UserControl.Resources>
+  
+  <UserControl.Template>
+    <ControlTemplate TargetType="UserControl">
+      <ContentPresenter />
+    </ControlTemplate>
+  </UserControl.Template>
+
+  <Border>
+    <Border.Style>
+      <Style TargetType="Border">
+        <Style.Triggers>
+          <DataTrigger Binding="{Binding BadgeShape, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static app_main_models_data:BadgeShape.RoundedSquare}">
+            <Setter Property="CornerRadius" Value="4" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding BadgeShape, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static app_main_models_data:BadgeShape.SolidSquare}">
+            <Setter Property="CornerRadius" Value="0" />
+          </DataTrigger>
+          <DataTrigger Binding="{Binding BadgeShape, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{x:Static app_main_models_data:BadgeShape.Circle}">
+            <Setter Property="CornerRadius" Value="8" />
+          </DataTrigger>
+        </Style.Triggers>
+        <Setter Property="Background">
+          <Setter.Value>
+            <SolidColorBrush Color="{Binding BaseColor, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue={StaticResource FallbackColor}}" />
+          </Setter.Value>
+        </Setter>
+        <Setter Property="Effect">
+          <Setter.Value>
+            <DropShadowEffect
+              ShadowDepth="0"
+              Color="{Binding BaseColor, Converter={StaticResource AutoOpaqueColorConverter}, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue={StaticResource FallbackColor}}"
+              Opacity="1"
+              BlurRadius="1"
+            />
+          </Setter.Value>
+        </Setter>
+      </Style>
+    </Border.Style>
+    <emoji:TextBlock
+      VerticalAlignment="Center"
+      HorizontalAlignment="Center"
+      Text="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}}"
+    >
+      <emoji:TextBlock.Foreground>
+        <SolidColorBrush Color="{Binding BaseColor, Converter={StaticResource AutoOpaqueColorConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+      </emoji:TextBlock.Foreground>
+    </emoji:TextBlock>
+  </Border>
+</UserControl>

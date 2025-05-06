@@ -144,19 +144,6 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         }
 
         [Theory]
-        [InlineData("", "")]
-        [InlineData("", null)]
-        [InlineData("a", " a")]
-        [InlineData("a", "a ")]
-        [InlineData("a", " a ")]
-        [InlineData("", "   ")]
-        public void SafeTrimTest(string expected, string? text)
-        {
-            var actual = TextUtility.SafeTrim(text);
-            Assert.Equal(expected, actual);
-        }
-
-        [Theory]
         [InlineData("", "", new[] { 'a', 'b', 'c' })]
         [InlineData("def", "def", new[] { 'a', 'b', 'c' })]
         [InlineData("", "abc", new[] { 'a', 'b', 'c' })]

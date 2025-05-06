@@ -18,6 +18,7 @@ export function useWorkTable(tableId: string) {
 		useState<Omit<WorkTable, "lastUpdateTimestamp">>();
 
 	// 子から親更新であれこれ警告出る対策
+	// biome-ignore lint/correctness/useExhaustiveDependencies: workTables
 	useEffect(() => {
 		if (!tempTable) {
 			return;
@@ -31,7 +32,7 @@ export function useWorkTable(tableId: string) {
 			lastUpdateTimestamp: generateTimestamp(),
 		};
 		setWorkTable([...workTables]);
-	}, [tableId, workTables, setWorkTable, tempTable]);
+	}, [tableId, setWorkTable, tempTable]);
 
 	const workTable = workTables.find((a) => a.id === tableId);
 	if (!workTable) {

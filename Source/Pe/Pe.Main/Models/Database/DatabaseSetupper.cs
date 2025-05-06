@@ -98,42 +98,22 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
 
             var dto = CreateSetupDto(lastVersion);
 
-            //var setuppers = new SetupperBase[] {
-            //    new Setupper_V_00_94_000(IdFactory, StatementLoader, LoggerFactory),
-            //    new Setupper_V_00_98_000(IdFactory, StatementLoader, LoggerFactory),
-            //    new Setupper_V_00_99_000(IdFactory, StatementLoader, LoggerFactory),
-            //    new Setupper_V_00_99_010(IdFactory, StatementLoader, LoggerFactory),
-            //    new Setupper_V_00_99_038(IdFactory, StatementLoader, LoggerFactory),
-            //    new Setupper_V_00_99_063(IdFactory, StatementLoader, LoggerFactory),
-            //    new Setupper_V_00_99_147(IdFactory, StatementLoader, LoggerFactory),
-            //    new Setupper_V_00_99_160(IdFactory, StatementLoader, LoggerFactory),
-            //    new Setupper_V_00_99_169(IdFactory, StatementLoader, LoggerFactory),
-            //    new Setupper_V_00_99_174(IdFactory, StatementLoader, LoggerFactory),
-            //};
-            var setupperTypes = new[] {
-                typeof(Setupper_V_00_94_000),
-                typeof(Setupper_V_00_98_000),
-                typeof(Setupper_V_00_99_000),
-                typeof(Setupper_V_00_99_010),
-                typeof(Setupper_V_00_99_038),
-                typeof(Setupper_V_00_99_063),
-                typeof(Setupper_V_00_99_147),
-                typeof(Setupper_V_00_99_160),
-                typeof(Setupper_V_00_99_169),
-                typeof(Setupper_V_00_99_174),
-                typeof(Setupper_V_00_99_190),
-                typeof(Setupper_V_00_99_193),
-                typeof(Setupper_V_00_99_235),
-                typeof(Setupper_V_00_99_237),
-                typeof(Setupper_V_00_99_241),
-                typeof(Setupper_V_00_99_253),
-            };
+            var setupperTypes = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(a => a.IsClass && a.Namespace == "ContentTypeTextNet.Pe.Main.Models.Database.Setupper")
+                .Where(a => a.IsSubclassOf(typeof(SetupperBase)))
+                .Where(a => a.GetCustomAttribute<ObsoleteAttribute>() is null)
+                .Where(a => a.GetCustomAttribute<DatabaseNoSetupAttribute>() is null)
+                .Select(a => (setupperType: a, version: a.GetCustomAttribute<DatabaseSetupVersionAttribute>()))
+                .Where(a => a.version is not null)
+                .Select(a => (a.setupperType, version: a.version!.Version))
+                .OrderBy(a => a.version)
+                .ToArray()
+            ;
 
-            foreach(var setupperType in setupperTypes) {
-                var databaseSetupVersion = setupperType.GetCustomAttribute<DatabaseSetupVersionAttribute>();
-                Throws.ThrowIfNull(databaseSetupVersion);
-                if(lastVersion < databaseSetupVersion.Version) {
-                    Logger.LogInformation("マイグレーション対象: {0} < {1}", lastVersion, databaseSetupVersion.Version);
+            foreach(var (setupperType, version) in setupperTypes) {
+                if(lastVersion < version) {
+                    Logger.LogInformation("マイグレーション対象: {0} < {1}", lastVersion, version);
                     var setupper = (SetupperBase?)Activator.CreateInstance(setupperType, new object[] { IdFactory, StatementLoader, LoggerFactory });
                     Throws.ThrowIfNull(setupper);
                     Execute(accessorPack, dto, setupper);

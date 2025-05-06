@@ -74,14 +74,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 }
                 stream.Position = 0;
 
-                static BitmapSource LoadImage(Func<Stream, BitmapSource> loader, Stream stream)
+                static BitmapSource LoadImage(Stream stream)
                 {
-                    var image = loader(stream);
+                    var image = LoadFromStream(stream);
                     image.SafeFreeze();
                     return image;
                 }
-                var iconImage = DispatcherWrapper?.Get(s => LoadImage(LoadFromStream, s), stream) ?? LoadImage(LoadFromStream, stream);
-
+                var iconImage = DispatcherWrapper?.Get(static s => LoadImage(s), stream) ?? LoadImage(stream);
                 return iconImage;
             }
         }
@@ -119,7 +118,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         {
             ThrowIfDisposed();
 
-            var path = TextUtility.SafeTrim(iconData.Path);
+            var path = iconData.Path;
             if(string.IsNullOrEmpty(path)) {
                 return Task.FromResult(default(BitmapSource));
             }
@@ -136,23 +135,24 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 if(isFile && PathUtility.HasExtensions(path, ImageFileExtensions)) {
                     Logger.LogDebug("画像ファイルとして読み込み {0}", path);
                     using(var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)) {
-                        static BitmapSource LoadCore(Func<Stream, BitmapSource> loader, Stream stream)
+                        static BitmapSource LoadCore(Stream stream)
                         {
-                            var image = loader(stream);
+                            var image = LoadFromStream(stream);
                             return image.GetFreezed();
                         }
-                        iconImage = DispatcherWrapper?.Get(() => LoadCore(LoadFromStream, stream)) ?? LoadCore(LoadFromStream, stream);
+                        iconImage = DispatcherWrapper?.Get(static (s) => LoadCore(s), stream) ?? LoadCore(stream);
                     }
                 } else {
                     Logger.LogDebug("アイコンファイルとして読み込み {0}", path);
                     var iconLoader = new IconLoader(LoggerFactory);
-                    static BitmapSource LoadCore(string path, int index, in IconScale iconScale, IconLoader iconLoader)
+                    static BitmapSource? LoadCore(string path, int index, in IconScale iconScale, IconLoader iconLoader)
                     {
                         var iconSize = iconScale.ToIconSize();
                         var image = iconLoader.Load(path, index, iconSize);
-                        return image!.GetFreezed(); // null でもいいんだけど ? しててもダメなんか
+                        image.SafeFreeze();
+                        return image;
                     }
-                    iconImage = DispatcherWrapper?.Get(() => LoadCore(path, iconData.Index, iconScale, iconLoader)) ?? LoadCore(path, iconData.Index, iconScale, iconLoader);
+                    iconImage = DispatcherWrapper?.Get(static (args) => LoadCore(args.path, args.iconData.Index, args.iconScale, args.iconLoader), (path, iconData, iconScale, iconLoader)) ?? LoadCore(path, iconData.Index, iconScale, iconLoader);
                 }
 
                 return iconImage;

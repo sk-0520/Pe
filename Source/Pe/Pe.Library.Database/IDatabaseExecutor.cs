@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// <remarks>
     /// <para>それが実際に書き込んでいるのかはDBMS依存。</para>
     /// </remarks>
-    public interface IDatabaseWriter
+    public interface IDatabaseExecutor
     {
         #region function
 

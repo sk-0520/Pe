@@ -1,7 +1,12 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Box, IconButton, MenuItem, TableRow, Typography } from "@mui/material";
 import { useAtomValue } from "jotai";
-import type { BaseSyntheticEvent, FC, MouseEvent } from "react";
+import {
+	type BaseSyntheticEvent,
+	type FC,
+	type MouseEvent,
+	useEffect,
+} from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
 	WorkTablesAtom,
@@ -156,10 +161,13 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 	const physicalType = getValue(SqliteTypeMap, watch("logicalType"));
 	const selectableClrTypes = getValue(ClrMap, watch("logicalType"));
 	console.debug(selectableClrTypes);
-	if (!selectableClrTypes.includes(clrType)) {
-		const value = selectableClrTypes[0];
-		setValue("clrType", value as ClrTypeFullName);
-	}
+
+	useEffect(() => {
+		if (!selectableClrTypes.includes(clrType)) {
+			const value = selectableClrTypes[0];
+			setValue("clrType", value as ClrTypeFullName);
+		}
+	}, [selectableClrTypes, clrType, setValue]);
 
 	function handleInput(
 		data: InputValues,

@@ -211,20 +211,16 @@ namespace ContentTypeTextNet.Pe.Core.Models
         private BitmapSource? LoadNormalIcon(string iconPath, int iconIndex, bool hasIcon, IconSize iconSize)
         {
             Debug.Assert(iconSize.Width == (int)IconBox.Small || iconSize.Width == (int)IconBox.Normal);
-            Debug.Assert(0 <= iconIndex, iconIndex.ToString(CultureInfo.InvariantCulture));
+            Debug.Assert(0 <= iconIndex);
 
             // 16, 32 px
             if(hasIcon) {
                 var iconHandle = new IntPtr[1];
                 if(iconSize.Width == (int)IconBox.Small) {
-#pragma warning disable CS8625 // null リテラルを null 非許容参照型に変換できません。
-                    _ = NativeMethods.ExtractIconEx(iconPath, iconIndex, null, iconHandle, 1);
-#pragma warning restore CS8625 // null リテラルを null 非許容参照型に変換できません。
+                    _ = NativeMethods.ExtractIconEx(iconPath, iconIndex, null!, iconHandle, 1);
                 } else {
                     Debug.Assert(iconSize.Width == (int)IconBox.Normal);
-#pragma warning disable CS8625 // null リテラルを null 非許容参照型に変換できません。
-                    NativeMethods.ExtractIconEx(iconPath, iconIndex, iconHandle, null, 1);
-#pragma warning restore CS8625 // null リテラルを null 非許容参照型に変換できません。
+                    _ = NativeMethods.ExtractIconEx(iconPath, iconIndex, iconHandle, null!, 1);
                 }
                 if(iconHandle[0] != IntPtr.Zero) {
                     using(var hIcon = new IconHandleWrapper(iconHandle[0])) {
@@ -273,7 +269,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         /// <returns></returns>
         private BitmapSource? LoadLargeIcon(string iconPath, int iconIndex, bool hasIcon, IconSize iconSize)
         {
-            Debug.Assert(0 <= iconIndex, iconIndex.ToString(CultureInfo.InvariantCulture));
+            Debug.Assert(0 <= iconIndex);
 
             if(hasIcon) {
                 try {

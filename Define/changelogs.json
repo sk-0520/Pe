@@ -1,5 +1,62 @@
 [
 	{
+		"date": "2025/05/06",
+		"version": "0.99.254",
+		"contents": [
+			{
+				"type": "features",
+				"logs": [
+					{
+						"revision": "7e250feee9043a562111b4eeecc3937a8360ad9e",
+						"subject": "#793: ランチャーアイコンにバッジ的なものを追加できるようにする",
+						"comments": [
+							"動的なバッジではなくアイテム自体に設定した静的なバッジとして使用する想定",
+							"ランチャーアイテム設定 -> 共通 -> バッジ",
+							"所謂 SJIS 2Byte 程度を表示する前提",
+							"絵文字表示のためにライブラリ入れたけど、つっらいなぁこれ"
+						]
+					}
+				]
+			},
+			{
+				"type": "fixes",
+				"logs": [
+					{
+						"revision": "bdcf54498d9f077ff03ad86254c0f4b79b8721ac",
+						"subject": "#984: DB設計のインデックス追加が死んでる"
+					},
+					{
+						"revision": "8f09a28c973e9287bf4fa444bfd00c6c7ac2218c",
+						"subject": "#985: セパレータの設定項目名がファイルになってる"
+					},
+					{
+						"revision": "0dade130c5bf067b2903b66808fbe2b889ebbc2c",
+						"subject": "#986: ノートのリンクを切断した際にリンク状態が維持されている"
+					},
+					{
+						"revision": "eff86a925bfd74cd4f0859f000462bf64c6d7b7f",
+						"subject": "ディスプレイ変更検知を SystemEvents.DisplaySettingsChanged に一元化し、WM_DEVICECHANGE は破棄"
+					}
+				]
+			},
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "43a7235a90c7a77ff5cedaca42907eb645c5de95",
+						"class": "nuget",
+						"subject": "xunit.runner.visualstudio 3.0.2 -> 3.1.0"
+					},
+					{
+						"revision": "0e9f99a22b4f2fd68aff4b9208bfe884b48b0706",
+						"class": "nuget",
+						"subject": "Microsoft.Web.WebView2 1.0.3179.45 -> 1.0.3240.44"
+					}
+				]
+			}
+		]
+	},
+	{
 		"date": "2025/04/29",
 		"version": "0.99.253",
 		"contents": [

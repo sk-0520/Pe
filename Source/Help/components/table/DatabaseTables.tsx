@@ -13,7 +13,6 @@ import {
 	type MouseEvent,
 	type ReactNode,
 	useEffect,
-	useMemo,
 	useState,
 } from "react";
 import { WorkTablesAtom } from "../../stores/TableStore";
@@ -44,9 +43,8 @@ export const DatabaseTables: FC<DatabaseTablesProps> = (
 	const [workTables, setWorkTables] = useAtom(WorkTablesAtom);
 	const [selectedTableId, setSelectedTableId] = useState<string>("");
 
-	const tables = useMemo(() => {
-		console.debug("memo!");
-
+	// biome-ignore lint/correctness/useExhaustiveDependencies: 初期化のみ
+	useEffect(() => {
 		const tables = splitRawEntities(markdown)
 			.map((a) => splitRawSection(a))
 			//.sort((a, b) => a.table.localeCompare(b.table))
@@ -54,16 +52,36 @@ export const DatabaseTables: FC<DatabaseTablesProps> = (
 			.map((a) => convertWorkTable(a));
 
 		updateRelations(tables);
+		setWorkTables(tables);
+		setSelectedTableId(getValue(tables, 0).id);
+	}, []);
 
-		return tables;
-	}, [markdown]);
-	setWorkTables(tables);
+	// const tables = useMemo(() => {
+	// 	console.debug("memo!");
 
-	useEffect(() => {
-		if (tables.length) {
-			setSelectedTableId(getValue(tables, 0).id);
-		}
-	}, [tables]);
+	// 	const tables = splitRawEntities(markdown)
+	// 		.map((a) => splitRawSection(a))
+	// 		//.sort((a, b) => a.table.localeCompare(b.table))
+	// 		.map((a) => convertTable(a))
+	// 		.map((a) => convertWorkTable(a));
+
+	// 	updateRelations(tables);
+
+	// 	return tables;
+	// }, [markdown]);
+	// setWorkTables(tables);
+
+	// useEffect(() => {
+	// 	if (tables.length) {
+	// 		setSelectedTableId(getValue(tables, 0).id);
+	// 	}
+	// }, [tables]);
+
+	// useEffect(() => {
+	// 	if (workTables.length) {
+	// 		setSelectedTableId(getValue(workTables, 0).id);
+	// 	}
+	// }, [workTables]);
 
 	if (!workTables.length || !selectedTableId) {
 		return <>...loading...</>;
