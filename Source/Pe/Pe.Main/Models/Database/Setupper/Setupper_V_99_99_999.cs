@@ -11,6 +11,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Setupper
     /// マイグレーションの最後に実行される。
     /// </summary>
     [DatabaseSetupVersion(99, 99, 999)]
+    [DatabaseNoSetup("最終処理はマイグレーション一覧とは別枠(補正的な感じ)")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase")]
     public class Setupper_V_99_99_999: SetupperBase
     {
