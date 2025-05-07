@@ -1,3 +1,4 @@
+import DifferenceIcon from "@mui/icons-material/Difference";
 import {
 	Box,
 	List,
@@ -13,6 +14,7 @@ import type { FC } from "react";
 import type * as changelog from "../../types/changelog";
 import { selectDateTime, splitVersionInfos } from "../../utils/changelog";
 import { ChangelogContent } from "./ChangelogContent";
+import { ChangelogReplaceLink } from "./ChangelogReplaceLink";
 
 const FirstCommit = "275d6b5f1a41dcb99d56e6448b9249236cdd75c0";
 
@@ -42,7 +44,8 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 	const versionInfos = splitVersionInfos(version);
 	const versionCommit = versionInfos.findLast((a) => a.isVersion)?.value;
 	const prevVersionCommit = prevVersion
-		? splitVersionInfos(prevVersion).findLast((a) => a.isVersion)?.value
+		? (splitVersionInfos(prevVersion).findLast((a) => a.isVersion)?.value ??
+			FirstCommit)
 		: FirstCommit;
 
 	return (
@@ -82,9 +85,15 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 							{a.value}
 						</StyledVersionListItem>
 					))}
-					<StyledVersionListItem sx={{ marginLeft: "1ch" }}>
-						差分 ({prevVersionCommit} ... {versionCommit})
-					</StyledVersionListItem>
+					{versionCommit !== undefined && (
+						<StyledVersionListItem sx={{ marginLeft: "1ch" }}>
+							<ChangelogReplaceLink
+								commit={{ prev: prevVersionCommit, current: versionCommit }}
+							>
+								<DifferenceIcon sx={{ color: "white" }} />
+							</ChangelogReplaceLink>
+						</StyledVersionListItem>
+					)}
 				</List>
 			</Typography>
 
