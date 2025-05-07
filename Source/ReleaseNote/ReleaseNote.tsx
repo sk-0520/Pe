@@ -6,7 +6,9 @@ import { ChangelogVersion } from "../Help/components/changelog/ChangelogVersion"
 import type { ChangelogVersion as ChangelogVersionType } from "../Help/types/changelog";
 
 export const ReleaseNote: FC = () => {
-	const changelog = json as ChangelogVersionType;
+	const changelog = json as unknown as ChangelogVersionType & {
+		prevVersion: string;
+	};
 	return (
 		<>
 			<ChangelogVersion {...changelog} />
