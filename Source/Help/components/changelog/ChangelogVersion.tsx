@@ -18,6 +18,8 @@ const FirstCommit = "275d6b5f1a41dcb99d56e6448b9249236cdd75c0";
 
 const StyledVersionListItem = styled(ListItem)({
 	display: "inline",
+	margin: 0,
+	padding: 0,
 });
 
 const HeaderStyle: SxProps<Theme> = {
@@ -59,13 +61,28 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 					{date}
 				</Typography>
 				,
-				<List component={Stack} direction="row" sx={{ display: "inline" }}>
-					{versionInfos.map((a) => (
-						<StyledVersionListItem key={a.value}>
+				<List
+					component={Stack}
+					direction="row"
+					sx={{ display: "inline", marginLeft: "0.5ch" }}
+				>
+					{versionInfos.map((a, i) => (
+						<StyledVersionListItem
+							key={a.value}
+							sx={
+								i
+									? {
+											"&::before": {
+												content: "'-'",
+											},
+										}
+									: undefined
+							}
+						>
 							{a.value}
 						</StyledVersionListItem>
 					))}
-					<StyledVersionListItem>
+					<StyledVersionListItem sx={{ marginLeft: "1ch" }}>
 						差分 ({prevVersionCommit} ... {versionCommit})
 					</StyledVersionListItem>
 				</List>
