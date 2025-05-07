@@ -21,9 +21,15 @@ export const HelpChangelogPage: FC<PageProps> = (props: PageProps) => {
 				<ChangelogVersionSelector changelogs={changelogs} />
 			</Toolbar>
 			<Box>
-				{changelogs.map((a) => (
-					<ChangelogVersion key={a.version} {...a} />
-				))}
+				{changelogs.map((a, i) => {
+					return (
+						<ChangelogVersion
+							key={a.version}
+							{...a}
+							prevVersion={changelogs[i + 1]?.version}
+						/>
+					);
+				})}
 			</Box>
 		</Box>
 	);

@@ -1,15 +1,52 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import DifferenceIcon from "@mui/icons-material/Difference";
+import {
+	Box,
+	List,
+	ListItem,
+	Stack,
+	type SxProps,
+	type Theme,
+	Typography,
+	styled,
+	useTheme,
+} from "@mui/material";
 import type { FC } from "react";
 import type * as changelog from "../../types/changelog";
+import { selectDateTime, splitVersionInfos } from "../../utils/changelog";
 import { ChangelogContent } from "./ChangelogContent";
+import { ChangelogReplaceLink } from "./ChangelogReplaceLink";
 
-interface ChangelogVersionProps extends changelog.ChangelogVersion {}
+const FirstCommit = "275d6b5f1a41dcb99d56e6448b9249236cdd75c0";
+
+const StyledVersionListItem = styled(ListItem)({
+	display: "inline",
+	margin: 0,
+	padding: 0,
+});
+
+const HeaderStyle: SxProps<Theme> = {
+	fontSize: "18pt",
+	fontWeight: "bold",
+	lineHeight: "1.5em",
+};
+
+interface ChangelogVersionProps extends changelog.ChangelogVersion {
+	prevVersion?: string;
+}
 
 export const ChangelogVersion: FC<ChangelogVersionProps> = (
 	props: ChangelogVersionProps,
 ) => {
-	const { date, contents, version } = props;
+	const { date, contents, version, prevVersion } = props;
 	const theme = useTheme();
+
+	const datetime = selectDateTime(date);
+	const versionInfos = splitVersionInfos(version);
+	const versionCommit = versionInfos.findLast((a) => a.isVersion)?.value;
+	const prevVersionCommit = prevVersion
+		? (splitVersionInfos(prevVersion).findLast((a) => a.isVersion)?.value ??
+			FirstCommit)
+		: FirstCommit;
 
 	return (
 		<Box id={version}>
@@ -20,12 +57,44 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 					marginBlock: "1rem",
 					background: theme.palette.primary.light,
 					color: theme.palette.primary.contrastText,
-					fontSize: "18pt",
-					fontWeight: "bold",
-					lineHeight: "1.5em",
+					...HeaderStyle,
 				}}
 			>
-				{date}, {version}
+				<Typography component="time" dateTime={datetime} sx={HeaderStyle}>
+					{date}
+				</Typography>
+				,
+				<List
+					component={Stack}
+					direction="row"
+					sx={{ display: "inline", marginLeft: "0.5ch" }}
+				>
+					{versionInfos.map((a, i) => (
+						<StyledVersionListItem
+							key={a.value}
+							sx={
+								i
+									? {
+											"&::before": {
+												content: "'-'",
+											},
+										}
+									: undefined
+							}
+						>
+							{a.value}
+						</StyledVersionListItem>
+					))}
+					{versionCommit !== undefined && (
+						<StyledVersionListItem sx={{ marginLeft: "1ch" }}>
+							<ChangelogReplaceLink
+								commit={{ prev: prevVersionCommit, current: versionCommit }}
+							>
+								<DifferenceIcon sx={{ color: "white" }} />
+							</ChangelogReplaceLink>
+						</StyledVersionListItem>
+					)}
+				</List>
 			</Typography>
 
 			{contents.map((a, i) => (
