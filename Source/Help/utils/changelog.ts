@@ -66,12 +66,34 @@ export function splitTokens(s: string): Token[] {
 	return result;
 }
 
+export function selectDateTime(rawDate: string): string {
+	const dateItems = rawDate
+		.split(",")
+		.map((a) => a.trim())
+		.filter((a) => a.length)
+		.filter((a) => /\d{4}\/\d{2}\/\d{2}/.test(a));
+
+	const dateItem = dateItems.pop();
+	if (dateItem) {
+		const y = dateItem.substring(0, 4);
+		const m = dateItem.substring(5, 7);
+		const d = dateItem.substring(8, 10);
+		return `${y}-${m}-${d}T00:00:00+09:00`;
+	}
+	return new Date().toISOString();
+}
+
 export interface VersionInfo {
 	value: string;
 	isVersion: boolean;
 }
 
-const VersionRegex = /^(?<VERSION>\d+\.\d+\.\d+)$/;
+/**
+ * バージョン正規表現。
+ *
+ * 末尾 + はどうにも正しいタグなんよ。かなしみ。
+ */
+const VersionRegex = /^(?<VERSION>\d+\.\d+\.\d+(\+?))$/;
 
 export function splitVersionInfos(rawVersion: string): VersionInfo[] {
 	if (!rawVersion.length) {

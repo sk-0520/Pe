@@ -3,14 +3,28 @@ import {
 	List,
 	ListItem,
 	Stack,
+	type SxProps,
+	type Theme,
 	Typography,
+	styled,
 	useTheme,
 } from "@mui/material";
 import type { FC } from "react";
 import type * as changelog from "../../types/changelog";
-import { splitVersionInfos } from "../../utils/changelog";
+import { selectDateTime, splitVersionInfos } from "../../utils/changelog";
 import { ChangelogContent } from "./ChangelogContent";
-import { ChangelogVersionInfo } from "./ChangelogVersionInfo";
+
+const FirstCommit = "275d6b5f1a41dcb99d56e6448b9249236cdd75c0";
+
+const StyledVersionListItem = styled(ListItem)({
+	display: "inline",
+});
+
+const HeaderStyle: SxProps<Theme> = {
+	fontSize: "18pt",
+	fontWeight: "bold",
+	lineHeight: "1.5em",
+};
 
 interface ChangelogVersionProps extends changelog.ChangelogVersion {
 	prevVersion?: string;
@@ -22,7 +36,12 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 	const { date, contents, version, prevVersion } = props;
 	const theme = useTheme();
 
+	const datetime = selectDateTime(date);
 	const versionInfos = splitVersionInfos(version);
+	const versionCommit = versionInfos.findLast((a) => a.isVersion)?.value;
+	const prevVersionCommit = prevVersion
+		? splitVersionInfos(prevVersion).findLast((a) => a.isVersion)?.value
+		: FirstCommit;
 
 	return (
 		<Box id={version}>
@@ -33,25 +52,22 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 					marginBlock: "1rem",
 					background: theme.palette.primary.light,
 					color: theme.palette.primary.contrastText,
-					fontSize: "18pt",
-					fontWeight: "bold",
-					lineHeight: "1.5em",
+					...HeaderStyle,
 				}}
 			>
-				<Typography
-					component="time"
-					dateTime={date}
-					sx={{ fontSize: "18pt", fontWeight: "bold", lineHeight: "1.5em" }}
-				>
+				<Typography component="time" dateTime={datetime} sx={HeaderStyle}>
 					{date}
 				</Typography>
 				,
 				<List component={Stack} direction="row" sx={{ display: "inline" }}>
 					{versionInfos.map((a) => (
-						<ListItem key={a.value} sx={{ display: "inline" }}>
-							<ChangelogVersionInfo version={a} />
-						</ListItem>
+						<StyledVersionListItem key={a.value}>
+							{a.value}
+						</StyledVersionListItem>
 					))}
+					<StyledVersionListItem>
+						差分 ({prevVersionCommit} ... {versionCommit})
+					</StyledVersionListItem>
 				</List>
 			</Typography>
 
