@@ -1,4 +1,9 @@
-import { type Token, splitTokens } from "../../utils/changelog";
+import {
+	type Token,
+	type VersionInfo,
+	splitTokens,
+	splitVersionInfos,
+} from "../../utils/changelog";
 
 describe("splitTokens", () => {
 	test("empty", () => {
@@ -81,4 +86,50 @@ describe("splitTokens", () => {
 		const actual = splitTokens(input);
 		expect(actual).toEqual(expected);
 	});
+
+	test.each([
+		[[] satisfies VersionInfo[], ""],
+		[[{ value: "a", isVersion: false }] satisfies VersionInfo[], "a"],
+		[
+			[{ value: "1.2.3.4", isVersion: false }] satisfies VersionInfo[],
+			"1.2.3.4",
+		],
+		[[{ value: "1.2.3", isVersion: true }] satisfies VersionInfo[], "1.2.3"],
+		[
+			[
+				{ value: "1.2.3", isVersion: true },
+				{ value: "4.5.6", isVersion: true },
+			] satisfies VersionInfo[],
+			"1.2.3,4.5.6",
+		],
+		[
+			[
+				{ value: "1.2.3", isVersion: true },
+				{ value: "4.5.6", isVersion: true },
+			] satisfies VersionInfo[],
+			"1.2.3, 4.5.6",
+		],
+		[
+			[
+				{ value: "1.2.3", isVersion: true },
+				{ value: "4.5.6", isVersion: true },
+			] satisfies VersionInfo[],
+			"1.2.3 ,4.5.6",
+		],
+		[
+			[
+				{ value: "1.2.3", isVersion: true },
+				{ value: "4.5.6", isVersion: true },
+				{ value: "version", isVersion: false },
+				{ value: "7.8.9", isVersion: true },
+			] satisfies VersionInfo[],
+			"1.2.3 , 4.5.6 , version,7.8.9",
+		],
+	])(
+		"tokens: 期待値: [%o], 入力: [%s]",
+		(expected: VersionInfo[], input: string) => {
+			const actual = splitVersionInfos(input);
+			expect(actual).toEqual(expected);
+		},
+	);
 });

@@ -1,5 +1,5 @@
 import { Link } from "@mui/material";
-import type { FC } from "react";
+import { type FC, Fragment } from "react";
 import { splitTokens } from "../../utils/changelog";
 
 const issueLink = "https://github.com/sk-0520/Pe/issues/";
@@ -22,16 +22,19 @@ export const ChangelogReplaceLink: FC<ChangelogReplaceLinkProps> = (
 	return tokens.map((a, i) => {
 		switch (a.kind) {
 			case "text":
-				return `${a.value}`;
+				// biome-ignore lint/suspicious/noArrayIndexKey: key がねぇ
+				return <Fragment key={i}>{a.value}</Fragment>;
 			case "issue":
 				return (
-					<Link href={issueLink + a.value} target="_blank">
+					// biome-ignore lint/suspicious/noArrayIndexKey: key がねぇ
+					<Link key={i} href={issueLink + a.value} target="_blank">
 						#{a.value}
 					</Link>
 				);
 			case "url":
 				return (
-					<Link href={a.value} target="_blank">
+					// biome-ignore lint/suspicious/noArrayIndexKey: key がねぇ
+					<Link key={i} href={a.value} target="_blank">
 						{a.value}
 					</Link>
 				);
