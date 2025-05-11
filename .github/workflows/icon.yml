@@ -33,9 +33,15 @@ jobs:
           cd Resource
           docker compose run retouch pwsh work/EntryRetouch.ps1 -mode ${{ matrix.TYPE }}
 
-      - name: <Artifact> Retouch
+      - name: SVG -> PNG
+        shell: bash
+        run: |
+          cd Resource
+          docker compose run inkscape /bin/bash -ue /work/export-png.sh --svg /data/@data/${{ matrix.TYPE }}/App.svg --output /data/@data/${{ matrix.TYPE }}
+
+      - name: <Artifact> Icon
         uses: actions/upload-artifact@v4
         with:
-          name: Resource-${{ matrix.TYPE }}
+          name: Retouch-${{ matrix.TYPE }}
           path: Resource/Icon
           if-no-files-found: error
