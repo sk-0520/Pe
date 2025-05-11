@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           cd Resource
-          docker compose run inkscape /bin/bash -ue /work/export-png.sh --svg /data/@data/${{ matrix.TYPE }}/App.svg --output /data/@data/${{ matrix.TYPE }}/App.ico
+          docker compose run inkscape /bin/bash -ue /work/export-png.sh --svg /data/@data/${{ matrix.TYPE }}/App.svg --output /data/@data/${{ matrix.TYPE }}
 
       - name: PNG -> ICO
         shell: bash
