@@ -26,10 +26,9 @@ $iconMappings = @{
 }
 $icon = $iconMappings[$Mode]
 
-
 . ./$PSScriptRoot/Retouch.ps1 `
 	-SourcePath "/data/App.svg" `
-	-OutputPath "/data/@data/$($icon['name']).svg" `
+	-OutputPath "/data/@data/${Mode}/App.svg" `
 	-Color $icon['color']
 
 
