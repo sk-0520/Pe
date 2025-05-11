@@ -1,12 +1,18 @@
 services:
+  retouch:
+    build:
+      context: images/retouch
+    volumes:
+      - ./Icon:/data
+
   inkscape:
     build:
       context: images/inkscape
     volumes:
-      - ./:/data
+      - ./Icon:/data
 
   imagemagic:
     image: dpokidov/imagemagick
     volumes:
-      - ./:/data
+      - ./Icon:/data
 
