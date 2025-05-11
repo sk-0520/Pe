@@ -33,9 +33,9 @@ jobs:
           cd Resource
           docker compose run retouch pwsh work/EntryRetouch.ps1 -mode ${{ matrix.TYPE }}
 
-      - name: <Artifact> Release Note
+      - name: <Artifact> Retouch
         uses: actions/upload-artifact@v4
         with:
-          name: Icons
+          name: Resource-${{ matrix.TYPE }}
           path: Resource/Icon
           if-no-files-found: error
