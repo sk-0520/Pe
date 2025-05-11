@@ -25,6 +25,8 @@ chmod +x "${GIMP_SCRIPT_DIR}/${SCRIPT_NAME}"
 
 ls -al ${GIMP_SCRIPT_DIR}
 
+#gimp-console --version
 #gimp-console -i -b "(process-image \"${INPUT_ICON_PATH}\" \"${OUTPUT_ICON_PATH}\")" -b "(gimp-quit 0)"
-gimp -i -b "(python-fu-compress-icon \"${INPUT_ICON_PATH}\" \"${OUTPUT_ICON_PATH}\")" -b '(gimp-quit 0)'
+#gimp --verbose -i -b "(python-fu-compress-icon \"${INPUT_ICON_PATH}\" \"${OUTPUT_ICON_PATH}\")" -b '(gimp-quit 0)'
+gimp-console -i -b "(python-fu-compress-icon \"${INPUT_ICON_PATH}\" \"${OUTPUT_ICON_PATH}\")" -b '(gimp-quit 0)'
 
