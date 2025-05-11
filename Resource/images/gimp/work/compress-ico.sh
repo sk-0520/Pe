@@ -16,7 +16,8 @@ echo $OUTPUT_ICON_PATH
 SCRIPT_NAME=compress-ico.py
 SCRIPT_PATH="$(cd "$(dirname "${0}")"; pwd)/${SCRIPT_NAME}"
 
-GIMP_SCRIPT_DIR=~/.config/GIMP/2.10/plug-ins
+#GIMP_SCRIPT_DIR=~/.config/GIMP/2.10/plug-ins
+GIMP_SCRIPT_DIR=~/.config/GIMP/2.10/plug-ins/
 mkdir -v -p "${GIMP_SCRIPT_DIR}"
 cp -v "${SCRIPT_PATH}" "${GIMP_SCRIPT_DIR}"
 ls -al "${GIMP_SCRIPT_DIR}"
