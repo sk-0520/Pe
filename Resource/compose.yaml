@@ -1,0 +1,12 @@
+services:
+  inkscape:
+    build:
+      context: images/inkscape
+    volumes:
+      - ./:/data
+
+  imagemagic:
+    image: dpokidov/imagemagick
+    volumes:
+      - ./:/data
+
