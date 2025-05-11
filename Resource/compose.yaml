@@ -4,15 +4,18 @@ services:
       context: images/retouch
     volumes:
       - ./Icon:/data
+      - ./images/retouch/work:/work
 
   inkscape:
     build:
       context: images/inkscape
     volumes:
       - ./Icon:/data
+      - ./images/inkscape/work:/work
 
   imagemagic:
     image: dpokidov/imagemagick
     volumes:
       - ./Icon:/data
+      - ./images/imagemagick/work:/work
 
