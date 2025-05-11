@@ -20,9 +20,9 @@ services:
       - ./Icon:/data
       - ./images/imagemagick/work:/work
 
-  gimp:
+  python:
     build:
-      context: images/gimp
+      context: images/python
     volumes:
       - ./Icon:/data
-      - ./images/gimp/work:/work
+      - ./images/python/work:/work
