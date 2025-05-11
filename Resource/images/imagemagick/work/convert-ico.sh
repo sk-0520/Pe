@@ -11,6 +11,10 @@ while [ $# -gt 0 ]; do
 done
 
 ICONS=$(find "${INPUT_DIR_PATH}" -maxdepth 1 -name "*.png" | sort --version-sort | tr '\n' ' ')
+
+echo "ICONS -> ${ICONS}"
+echo "OUTPUT_ICON_PATH -> ${OUTPUT_ICON_PATH}"
+
 # shellcheck disable=SC2086
 convert ${ICONS} "${OUTPUT_ICON_PATH}"
 
