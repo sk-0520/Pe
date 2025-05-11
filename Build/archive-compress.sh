@@ -8,6 +8,6 @@ INPUT_DIR=${2}
 
 CURRENT_DIR="$(pwd)"
 pushd "${INPUT_DIR}"
-    tar cfv "${OUTPUT_FILE}" ./*
-    mv "${OUTPUT_FILE}" "${CURRENT_DIR}"
+	tar cfv "${OUTPUT_FILE}" ./*
+	mv "${OUTPUT_FILE}" "${CURRENT_DIR}"
 popd
