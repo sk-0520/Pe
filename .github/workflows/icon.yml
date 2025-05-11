@@ -37,7 +37,13 @@ jobs:
         shell: bash
         run: |
           cd Resource
-          docker compose run inkscape /bin/bash -ue /work/export-png.sh --svg /data/@data/${{ matrix.TYPE }}/App.svg --output /data/@data/${{ matrix.TYPE }}
+          docker compose run inkscape /bin/bash -ue /work/export-png.sh --svg /data/@data/${{ matrix.TYPE }}/App.svg --output /data/@data/${{ matrix.TYPE }}/App.ico
+
+      - name: PNG -> ICO
+        shell: bash
+        run: |
+          cd Resource
+          docker compose run --entrypoint "/bin/bash -ue /work/convert-ico.sh --input /data/@data/${{ matrix.TYPE }} --output /data/@data/${{ matrix.TYPE }}/App.ico" imagemagick
 
       - name: <Artifact> Icon
         uses: actions/upload-artifact@v4

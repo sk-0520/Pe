@@ -13,8 +13,9 @@ services:
       - ./Icon:/data
       - ./images/inkscape/work:/work
 
-  imagemagic:
-    image: dpokidov/imagemagick
+  imagemagick:
+    build:
+      context: images/imagemagick
     volumes:
       - ./Icon:/data
       - ./images/imagemagick/work:/work

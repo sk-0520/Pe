@@ -8,19 +8,15 @@ Set-StrictMode -Version Latest
 
 $iconMappings = @{
 	"release" = @{
-		name = 'App-release'
 		color = '#ffffff'
 	}
 	"debug" = @{
-		name = 'App-debug'
 		color = '#ff8888'
 	}
 	"beta" = @{
-		name = 'App-beta'
 		color = '#8888ff'
 	}
 	"plugin" = @{
-		name = 'App-plugin'
 		color = '#88ff88'
 	}
 }
