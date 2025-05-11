@@ -2,9 +2,7 @@
 
 ARGS=$(getopt -o '' -l "svg:,output:" -- "$@") || exit 1
 eval "set -- $ARGS"
-echo "ARGS -> $ARGS"
 while [ $# -gt 0 ]; do
-echo "-> $1"
   case $1 in
     --svg) SOURCE_SVG_PATH=$2; shift 2 ;;
     --output) OUTPUT_DIR_PATH=$2; shift 2 ;;
