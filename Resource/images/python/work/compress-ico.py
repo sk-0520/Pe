@@ -5,14 +5,16 @@ def convert(input_path: str, output_path: str) -> None:
     print(f"{input_path=}, {output_path=}")
     source_icon = Image.open(input_path).convert('RGBA')
 
-    output_image = Image.new()
+    #output_image = Image.new(mode="RGBA")
 
     print(f"{source_icon=}")
     image_sizes = source_icon.info['sizes']
     #source_icon.
     for image_size in image_sizes:
-        print(f"{image=}")
-        print(f"{image[0]}")
+        print(f"{image_size=}")
+        print(f"{image_size[0]}")
+
+    source_icon.save(output_path)
 
     pass
 
