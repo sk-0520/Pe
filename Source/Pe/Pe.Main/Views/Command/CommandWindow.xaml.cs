@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -186,6 +187,37 @@ namespace ContentTypeTextNet.Pe.Main.Views.Command
                 WindowsUtility.ShowActiveForeground(HandleUtility.GetWindowHandle(this));
                 InputMethod.SetPreferredImeState(this.inputCommand, InputMethodState.Off);
                 this.inputCommand.Focus();
+            }
+        }
+
+        private void inputCommand_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.PageDown || e.Key == Key.PageUp) {
+                Logger?.LogTrace("{Key} {ActualHeight}", e.Key, this.listItems.ActualHeight);
+                if(this.listItems.Items.Count < 1) {
+                    return;
+                }
+
+                var container = this.listItems.ItemContainerGenerator.ContainerFromIndex(this.listItems.SelectedIndex);
+                if(container is ListBoxItem listBoxItem) {
+                    var count = (int)(this.listItems.ActualHeight / listBoxItem.ActualHeight) - 1;
+                    if(count < 1) {
+                        return;
+                    }
+
+                    var nextIndex = this.listItems.SelectedIndex + (count * (e.Key == Key.PageDown ? 1 : -1));
+                    Logger?.LogTrace("count: {Count}, nextIndex: {NextIndex}", count, nextIndex);
+                    if(nextIndex < 0) {
+                        nextIndex = 0;
+                    } else if(this.listItems.Items.Count - 1 < nextIndex) {
+                        nextIndex = this.listItems.Items.Count - 1;
+                    }
+                    Logger?.LogTrace("nextIndex: {NextIndex}", nextIndex);
+                    this.listItems.SelectedIndex = nextIndex;
+                    this.listItems.ScrollIntoView(this.listItems.SelectedItem);
+
+                    e.Handled = true;
+                }
             }
         }
     }

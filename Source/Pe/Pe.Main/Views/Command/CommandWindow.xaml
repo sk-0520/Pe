@@ -178,6 +178,7 @@
             FontSize="{Binding Font.FontSize}"
             FontStyle="{Binding Font.FontStyle}"
             FontWeight="{Binding Font.FontWeight}"
+            PreviewKeyDown="inputCommand_PreviewKeyDown"
           >
             <TextBox.InputBindings>
               <KeyBinding Gesture="Enter" Command="{Binding ExecuteCommand}" />
