@@ -32,3 +32,5 @@
 | <MdInline kind="key">Ctrl + →</MdInline><br /><MdInline kind="key">TAB</MdInline> | 現在選択を補正 |
 | <MdInline kind="key">PageUp</MdInline> | ページ上のアイテムを選択 |
 | <MdInline kind="key">PageDown</MdInline> | ページ下のアイテムを選択 |
+| <MdInline kind="key">Ctrl + PageUp</MdInline> | 最初のアイテムを選択 |
+| <MdInline kind="key">Ctrl + PageDown</MdInline> | 最後のアイテムを選択 |

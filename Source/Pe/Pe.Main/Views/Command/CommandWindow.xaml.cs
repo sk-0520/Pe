@@ -205,7 +205,13 @@ namespace ContentTypeTextNet.Pe.Main.Views.Command
                         return;
                     }
 
-                    var nextIndex = this.listItems.SelectedIndex + (count * (e.Key == Key.PageDown ? 1 : -1));
+                    int nextIndex;
+                    if(e.KeyboardDevice.IsKeyDown(Key.LeftCtrl) || e.KeyboardDevice.IsKeyDown(Key.RightCtrl)) {
+                        nextIndex = e.Key == Key.PageUp ? 0 : this.listItems.Items.Count - 1;
+                    } else {
+                        nextIndex = this.listItems.SelectedIndex + (count * (e.Key == Key.PageDown ? 1 : -1));
+                    }
+
                     Logger?.LogTrace("count: {Count}, nextIndex: {NextIndex}", count, nextIndex);
                     if(nextIndex < 0) {
                         nextIndex = 0;
