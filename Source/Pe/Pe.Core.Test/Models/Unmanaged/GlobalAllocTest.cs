@@ -67,6 +67,42 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
             Assert.Equal(input.Int, actual.Int);
             Assert.Equal(input.Double, actual.Double);
         }
+
+        [Fact]
+        public void ToArrayTest()
+        {
+            using var test1 = new GlobalAlloc(4);
+            var actual1 = test1.ToArray();
+            Assert.Equal(4, actual1.Length);
+        }
+
+        [Fact]
+        public void Index_Test()
+        {
+            using var test = GlobalAlloc.Create(4);
+            test[0] = (byte)1;
+            test[1] = (byte)2;
+            test[2] = (byte)3;
+            test[3] = (byte)4;
+
+            Assert.Equal(1, test[0]);
+            Assert.Equal(2, test[1]);
+            Assert.Equal(3, test[2]);
+            Assert.Equal(4, test[3]);
+        }
+
+        [Fact]
+        public void Index_OutOfRange_Test()
+        {
+            using var test = GlobalAlloc.Create(4);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => test[-1]);
+            Assert.Throws<ArgumentOutOfRangeException>(() => test[4]);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => test[-1] = 0);
+            Assert.Throws<ArgumentOutOfRangeException>(() => test[4] = 0);
+        }
+
         #endregion
     }
 }
