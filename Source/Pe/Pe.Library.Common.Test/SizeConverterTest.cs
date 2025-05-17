@@ -61,6 +61,15 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void ConvertHumanReadableByte_Throw_Test()
+        {
+            var sc = new SizeConverter() {
+                Units = []
+            };
+            Assert.Throws<ArgumentException>(() => sc.ConvertHumanReadableByte(1024));
+        }
+
         #endregion
     }
 }
