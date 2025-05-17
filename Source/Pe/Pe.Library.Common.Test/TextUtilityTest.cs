@@ -13,6 +13,8 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
     {
         [Theory]
         [InlineData("", "", "<", ">")]
+        [InlineData("aa", "aa", "", ">")]
+        [InlineData("aa", "aa", "<", "")]
         [InlineData("a", "a", "<", ">")]
         [InlineData("<a", "<a", "<", ">")]
         [InlineData("a>", "a>", "<", ">")]
@@ -22,8 +24,15 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [InlineData("[a][b]", "<a><b>", "<", ">")]
         public void ReplacePlaceholderTest(string expected, string src, string head, string tail)
         {
-            var actual = TextUtility.ReplacePlaceholder(src, head, tail, s => "[" + s + "]");
+            var actual = TextUtility.ReplacePlaceholder(src, head, tail, (s,w) => w(string.Concat("[", s, "]")));
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ReplacePlaceholder_Throw_Test()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(() => TextUtility.ReplacePlaceholder("s", "{", "}", null!));
+            Assert.Equal("writer", exception.ParamName);
         }
 
         [Theory]
@@ -149,7 +158,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [InlineData("", "abc", new[] { 'a', 'b', 'c' })]
         [InlineData("def", "abcdef", new[] { 'a', 'b', 'c' })]
         [InlineData("def", "abcdefabc", new[] { 'a', 'b', 'c' })]
-        [InlineData("aいbえ-aいbえ", "あaいbうcえdお-あaいbうcえdお", new [] {'あ', 'う', 'お', 'c', 'd'})]
+        [InlineData("aいbえ-aいbえ", "あaいbうcえdお-あaいbうcえdお", new[] { 'あ', 'う', 'お', 'c', 'd' })]
         public void RemoveCharactersTest(string expected, string input, char[] cs)
         {
             var actual = TextUtility.RemoveCharacters(input, cs.ToHashSet());

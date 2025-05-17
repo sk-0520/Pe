@@ -15,6 +15,17 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// </summary>
     public static class TextUtility
     {
+        #region define
+
+        /// <summary>
+        /// <see cref="ReplacePlaceholder"/> 書き込み処理。
+        /// </summary>
+        /// <param name="placeholder">プレースホルダー。</param>
+        /// <param name="writer">書き込み処理。</param>
+        public delegate void ReplacePlaceholderDelegate(ReadOnlySpan<char> placeholder, Action<ReadOnlySpan<char>> writer);
+
+        #endregion
+
         #region function
 
         /// <summary>
@@ -85,15 +96,62 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <param name="source">対象。</param>
         /// <param name="head">置き換え開始文字列。</param>
         /// <param name="tail">置き換え終了文字列。</param>
-        /// <param name="dg">処理。</param>
+        /// <param name="writer">処理。</param>
         /// <returns>置き換え後文字列。</returns>
-        public static string ReplacePlaceholder(string source, string head, string tail, Func<string, string> dg)
+        public static string ReplacePlaceholder(string source, ReadOnlySpan<char> head, ReadOnlySpan<char> tail, ReplacePlaceholderDelegate writer)
         {
-            var escHead = Regex.Escape(head);
-            var escTail = Regex.Escape(tail);
-            var pattern = escHead + "(.+?)" + escTail;
-            var replacedText = Regex.Replace(source, pattern, (m) => dg(m.Groups[1].Value));
-            return replacedText;
+            if(string.IsNullOrEmpty(source) || head.IsEmpty || tail.IsEmpty) {
+                return source;
+            }
+            ArgumentNullException.ThrowIfNull(writer);
+
+            var sourceSpan = source.AsSpan();
+            var headLength = head.Length;
+            var tailLength = tail.Length;
+
+            var sb = new StringBuilder(source.Length);
+            int startIndex = 0;
+
+            while(true) {
+                // 現在の startIndex 以降で head を検索
+                int relativeHeadIndex = sourceSpan.Slice(startIndex).IndexOf(head);
+                if(relativeHeadIndex < 0) {
+                    sb.Append(sourceSpan.Slice(startIndex));
+                    break;
+                }
+                var headIndex = startIndex + relativeHeadIndex;
+
+                //TODO: 同じ head が続く場合はエスケープ扱いしたい、けど、テスト書くのだるい
+
+                // head の直後から tail を検索
+                int relativeTailIndex = sourceSpan.Slice(headIndex + headLength).IndexOf(tail);
+                if(relativeTailIndex < 0) {
+                    var rest = sourceSpan.Slice(startIndex);
+                    sb.Append(rest);
+                    break;
+                }
+                int tailIndex = headIndex + headLength + relativeTailIndex;
+
+                // head と tail の間が空の場合は、プレースホルダー部分をそのまま出力
+                if(tailIndex == headIndex + headLength) {
+                    var onlyPlaceholder = sourceSpan.Slice(startIndex, tailIndex + tailLength - startIndex);
+                    sb.Append(onlyPlaceholder);
+                    startIndex = tailIndex + tailLength;
+                    continue;
+                }
+
+                // プレースホルダーの直前部分を追加
+                var prev = sourceSpan.Slice(startIndex, headIndex - startIndex);
+                sb.Append(prev);
+
+                // プレースホルダーをもとに呼び出し側で指定された書き込み処理実施
+                var placeholder = sourceSpan.Slice(headIndex + headLength, tailIndex - (headIndex + headLength));
+                writer(placeholder, a => sb.Append(a));
+
+                startIndex = tailIndex + tailLength;
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -106,7 +164,13 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>置き換え後文字列。</returns>
         public static string ReplacePlaceholderFromDictionary(string source, string head, string tail, IReadOnlyDictionary<string, string> map)
         {
-            return ReplacePlaceholder(source, head, tail, s => map.ContainsKey(s) ? map[s] : head + s + tail);
+            return ReplacePlaceholder(source, head, tail, (placeholder, writer) => {
+                var value = map.TryGetValue(new(placeholder), out var r)
+                    ? r
+                    : string.Concat(head, placeholder, tail)
+                ;
+                writer(value);
+            });
         }
         /// <summary>
         /// 文字列中の<c>${key}</c>を<see cref="IReadOnlyDictionary{string, string}"/>の対応で置き換える。
