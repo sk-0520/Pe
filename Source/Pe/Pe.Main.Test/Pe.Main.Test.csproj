@@ -45,19 +45,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="**\*.config\*.json">
+    <None Update="**\*Test\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Models\Logic\ArchiveExtractorTest.dat\7zip.7z">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Models\Logic\ArchiveExtractorTest.dat\7zip.zip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Models\Logic\ArchiveExtractorTest.dat\win11explorer.zip">
+    <None Update="Models\Logic\ArchiveExtractorTest\ExtractTest\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

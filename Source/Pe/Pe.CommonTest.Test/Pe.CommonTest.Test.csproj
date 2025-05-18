@@ -31,4 +31,19 @@
     <ProjectReference Include="..\Pe.CommonTest\Pe.CommonTest.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestIOTest\InitializeMethod_Data_Extension_Test.ext\sub.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestIOTest\InitializeMethod_Data_GetDirectory_Test\sub\child.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestIOTest\InitializeMethod_Data_GetFile_Test\sub.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestIOTest\InitializeMethod_Data_Test\sub.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

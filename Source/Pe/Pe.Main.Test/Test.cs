@@ -23,6 +23,7 @@ using Moq;
 using Xunit;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
+using ContentTypeTextNet.Pe.CommonTest;
 
 namespace ContentTypeTextNet.Pe.Main.Test
 {
@@ -190,29 +191,9 @@ namespace ContentTypeTextNet.Pe.Main.Test
             return new Test(diContainer, userAgentManager, mockHttpUserAgent, loggerFactory);
         }
 
-        /// <summary>
-        /// コピー対象のディレクトリパスを取得。
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="extension">ディレクトリの拡張子。 . は自動で付与される。</param>
-        /// <param name="directoryBaseName"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public static string GetCopiedDirectoryPath(object obj,string extension, [CallerMemberName] string directoryBaseName = "")
+        public static ApplicationConfiguration GetApplicationConfiguration(TestIO testIO, [CallerMemberName] string callerMemberName = "")
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(extension);
-
-            var projectTestPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-            var fullName = obj.GetType().FullName ?? throw new Exception(obj.ToString());
-            var subName = fullName.Substring("ContentTypeTextNet.Pe.Main.Test.".Length);
-            var dirPath = Path.Combine(projectTestPath, subName.Replace('.', Path.DirectorySeparatorChar)) + "." + extension;
-
-            return dirPath;
-        }
-
-        public static ApplicationConfiguration GetApplicationConfiguration(object obj, [CallerMemberName] string configurationBaseName = "")
-        {
-            var configurationPath = Path.Combine(GetCopiedDirectoryPath(obj, "config"), $"{configurationBaseName}.json");
+            var configurationPath = testIO.Data.CombinePath($"{callerMemberName}.json");
 
             if(!File.Exists(configurationPath)) {
                 throw new NotFoundApplicationConfigurationException(configurationPath);

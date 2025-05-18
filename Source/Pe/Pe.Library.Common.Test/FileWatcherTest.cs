@@ -19,8 +19,8 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [Fact]
         public void WatchTest()
         {
-            var dir = TestIO.InitializeMethod(this);
-            var file = TestIO.CreateEmptyFile(dir, "a.txt");
+            var testIO = TestIO.InitializeMethod(this);
+            var file = testIO.Work.CreateEmptyFile("a.txt");
             var time = TimeSpan.FromMicroseconds(1);
 
             var called = new HashSet<int>();

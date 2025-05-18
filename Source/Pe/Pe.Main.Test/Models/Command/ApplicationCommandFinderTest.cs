@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using System.Security.Cryptography;
+using ContentTypeTextNet.Pe.CommonTest;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Main.Models.Command;
 using Xunit;
@@ -40,7 +41,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Command
         [Fact]
         public void CreateParameterTest()
         {
-            var applicationConfiguration = Test.GetApplicationConfiguration(this);
+            var testIO = TestIO.InitializeMethod(this);
+            var applicationConfiguration = Test.GetApplicationConfiguration(testIO);
 
             var test = new ApplicationCommandParameterFactory(applicationConfiguration.Command, new CurrentDispatcherWrapper());
             var actual = test.CreateParameter(ApplicationCommand.Help, a => {
