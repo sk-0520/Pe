@@ -449,6 +449,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             var appButton = UIUtility.GetClosest<ToggleButton>(sender);
             var overAppButton = appButton?.Name == nameof(LauncherToolbarWindow.appButton.Name);
 
+            var data = e.Data.GetData(typeof(LauncherDetailViewModelBase));
+            Logger.LogDebug("Data: {Data}", data);
+
             if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
                 if(overAppButton) {
                     ViewDragOverOrEnter(sender, e);

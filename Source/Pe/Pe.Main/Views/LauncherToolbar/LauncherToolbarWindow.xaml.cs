@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Prism.Commands;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
+using ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem;
 
 namespace ContentTypeTextNet.Pe.Main.Views.LauncherToolbar
 {
@@ -90,6 +91,18 @@ namespace ContentTypeTextNet.Pe.Main.Views.LauncherToolbar
         {
             if(!ViewModel.IsVerticalLayout) {
                 this.scrollViewer.ScrollToHorizontalOffset(this.scrollViewer.HorizontalOffset + -e.Delta);
+                e.Handled = true;
+            }
+        }
+
+        private void LauncherContentControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var itemDraggable = Keyboard.Modifiers.HasFlag(ModifierKeys.Alt);
+            if(itemDraggable) {
+                var ctrl = (LauncherContentControl)e.Source;
+                var data = new DataObject(typeof(LauncherDetailViewModelBase), ctrl.DataContext);
+                Logger!.LogDebug("DataContext: {DataContext}", ctrl.DataContext);
+                DragDrop.DoDragDrop(ctrl, data, DragDropEffects.Move);
                 e.Handled = true;
             }
         }
