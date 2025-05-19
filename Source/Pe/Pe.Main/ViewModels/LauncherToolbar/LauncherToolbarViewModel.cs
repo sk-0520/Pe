@@ -397,7 +397,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             }
         }
 
-        private bool TrySenderIsLauncherDetail(UIElement sender, [NotNullWhen(true)]  out LauncherDetailViewModelBase? result)
+        private bool TrySenderIsLauncherDetail(UIElement sender, [NotNullWhen(true)] out LauncherDetailViewModelBase? result)
         {
             var frameworkElement = sender as FrameworkElement;
             if(frameworkElement is not null) {
@@ -409,7 +409,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 }
             }
 
-                        result = null;
+            result = null;
             return false;
         }
 
@@ -467,14 +467,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             var appButton = UIUtility.GetClosest<ToggleButton>(sender);
             var overAppButton = appButton?.Name == nameof(LauncherToolbarWindow.appButton);
 
-            var draggingItemData = e.Data.GetData(typeof(LauncherDetailViewModelBase));
-            if(draggingItemData is not null) {
+            var launcherDetailViewModel = e.Data.GetData(typeof(LauncherDetailViewModelBase));
+            if(launcherDetailViewModel is LauncherDetailViewModelBase draggingItemData) {
                 // ランチャーアイテムのD&D中
                 Logger.LogTrace("appButton: {Sender}", appButton);
                 if(overAppButton) {
                     e.Effects = DragDropEffects.None;
                 } else if(TrySenderIsLauncherDetail(sender, out var detail)) {
-                        Logger.LogDebug("{Detail}", detail);
+                    Logger.LogDebug("{Detail}", detail);
+                    if(draggingItemData.LauncherItemId == detail.LauncherItemId) {
+                        e.Effects = DragDropEffects.None;
+                    } else {
+                        e.Effects = DragDropEffects.Move;
+                    }
                 } else {
                     e.Effects = DragDropEffects.None;
                 }
