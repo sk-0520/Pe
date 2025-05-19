@@ -447,23 +447,30 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         private void ItemDragOverOrEnter(UIElement sender, DragEventArgs e)
         {
             var appButton = UIUtility.GetClosest<ToggleButton>(sender);
-            var overAppButton = appButton?.Name == nameof(LauncherToolbarWindow.appButton.Name);
+            var overAppButton = appButton?.Name == nameof(LauncherToolbarWindow.appButton);
 
-            var data = e.Data.GetData(typeof(LauncherDetailViewModelBase));
-            Logger.LogDebug("Data: {Data}", data);
-
-            if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
-                if(overAppButton) {
-                    ViewDragOverOrEnter(sender, e);
-                    return;
-                } else {
-                    e.Effects = DragDropEffects.Move;
-                }
-            } else if(e.Data.IsTextPresent()) {
+            var draggingItemData = e.Data.GetData(typeof(LauncherDetailViewModelBase));
+            if(draggingItemData is not null) {
+                Logger.LogTrace("appButton: {Sender}", appButton);
                 if(overAppButton) {
                     e.Effects = DragDropEffects.None;
                 } else {
-                    e.Effects = DragDropEffects.Move;
+
+                }
+            } else {
+                if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                    if(overAppButton) {
+                        ViewDragOverOrEnter(sender, e);
+                        return;
+                    } else {
+                        e.Effects = DragDropEffects.Move;
+                    }
+                } else if(e.Data.IsTextPresent()) {
+                    if(overAppButton) {
+                        e.Effects = DragDropEffects.None;
+                    } else {
+                        e.Effects = DragDropEffects.Move;
+                    }
                 }
             }
 
@@ -488,7 +495,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 if(appButton is null) {
                     return;
                 }
-                if(appButton.Name != nameof(LauncherToolbarWindow.appButton.Name)) {
+                if(appButton.Name != nameof(LauncherToolbarWindow.appButton)) {
                     return;
                 }
                 await ViewDropAsync(sender, e, cancellationToken);
