@@ -39,6 +39,8 @@ using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Args;
 using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
+using System.Diagnostics.CodeAnalysis;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 {
@@ -395,6 +397,22 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             }
         }
 
+        private bool TrySenderIsLauncherDetail(UIElement sender, [NotNullWhen(true)]  out LauncherDetailViewModelBase? result)
+        {
+            var frameworkElement = sender as FrameworkElement;
+            if(frameworkElement is not null) {
+                if(frameworkElement.DataContext is LauncherContentControl launcherContentControl) {
+                    if(launcherContentControl.DataContext is LauncherDetailViewModelBase detail) {
+                        result = detail;
+                        return true;
+                    }
+                }
+            }
+
+                        result = null;
+            return false;
+        }
+
 
         #region ViewDragAndDrop
 
@@ -451,11 +469,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
             var draggingItemData = e.Data.GetData(typeof(LauncherDetailViewModelBase));
             if(draggingItemData is not null) {
+                // ランチャーアイテムのD&D中
                 Logger.LogTrace("appButton: {Sender}", appButton);
                 if(overAppButton) {
                     e.Effects = DragDropEffects.None;
+                } else if(TrySenderIsLauncherDetail(sender, out var detail)) {
+                        Logger.LogDebug("{Detail}", detail);
                 } else {
-
+                    e.Effects = DragDropEffects.None;
                 }
             } else {
                 if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
