@@ -65,7 +65,7 @@
 
 # アイテムの移動
 
-ランチャーアイテムを Sfift 押下状態で D&D することにより移動可能です。
+ランチャーアイテムを <MdInline kind="key">Shift</MdInline> 押下状態で D&D することにより移動可能です。
 
 <MdAlert kind="CAUTION">
   * ファイルアイテムの移動は問題ありません
