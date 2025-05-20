@@ -21,6 +21,27 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
     public class NotifyEventArgs: EventArgs
     { }
 
+    public class LauncherGroupChangedEventArgs: NotifyEventArgs, ILauncherToolbarId, ILauncherGroupId
+    {
+        public LauncherGroupChangedEventArgs(LauncherToolbarId launcherToolbarId,  LauncherGroupId launcherGroupId)
+        {
+            LauncherToolbarId = launcherToolbarId;
+            LauncherGroupId = launcherGroupId;
+        }
+
+        #region ILauncherGroupId
+
+        public LauncherToolbarId LauncherToolbarId { get; }
+
+        #endregion
+
+        #region ILauncherGroupId
+
+        public LauncherGroupId LauncherGroupId { get; }
+
+        #endregion
+    }
+
     public class LauncherItemChangedEventArgs: NotifyEventArgs
     {
         public LauncherItemChangedEventArgs(LauncherItemId launcherItemId)
@@ -153,6 +174,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
     {
         #region event
 
+        event EventHandler<LauncherGroupChangedEventArgs>? LauncherGroupChanged;
         event EventHandler<LauncherItemChangedEventArgs>? LauncherItemChanged;
         event EventHandler<LauncherItemRemoveInLauncherGroupEventArgs>? LauncherItemRemovedInLauncherGroup;
         event EventHandler<LauncherItemRegisteredEventArgs>? LauncherItemRegistered;
@@ -179,6 +201,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         #endregion
 
         #region function
+
+        /// <summary>
+        /// ランチャーグループアイテムの変更通知。
+        /// </summary>
+        /// <param name="launcherToolbarId"></param>
+        /// <param name="launcherGroupId"></param>
+        void SendLauncherGroupChanged(LauncherToolbarId launcherToolbarId, LauncherGroupId launcherGroupId);
 
         /// <summary>
         /// ランチャーアイテム変更通知。
@@ -244,7 +273,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
     internal class NotifyManager: ManagerBase, INotifyManager
     {
-        #region property
+        #region variable
 
         /// <summary>
         /// ログデータの排他用オブジェクト。
@@ -327,6 +356,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         [Conditional("DEBUG")]
         private void ThrowIfEmptyLauncherGroupItemId(LauncherGroupId launcherGroupItemId) => ThrowIfEmptyGuid(launcherGroupItemId);
 
+        private void OnLauncherGroupChanged(LauncherToolbarId launcherToolbarId, LauncherGroupId launcherGroupId)
+        {
+            ThrowIfEmptyLauncherGroupItemId(launcherGroupId);
+
+            var e = new LauncherGroupChangedEventArgs(launcherToolbarId, launcherGroupId);
+            LauncherGroupChanged?.Invoke(this, e);
+        }
+
         private void OnLauncherItemChanged(LauncherItemId launcherItemId)
         {
             ThrowIfEmptyLauncherItemId(launcherItemId);
@@ -398,6 +435,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         #region INotifyManager
 
+        public event EventHandler<LauncherGroupChangedEventArgs>? LauncherGroupChanged;
         public event EventHandler<LauncherItemChangedEventArgs>? LauncherItemChanged;
         public event EventHandler<LauncherItemRemoveInLauncherGroupEventArgs>? LauncherItemRemovedInLauncherGroup;
         public event EventHandler<LauncherItemRegisteredEventArgs>? LauncherItemRegistered;
@@ -411,6 +449,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         public ReadOnlyObservableCollection<NotifyLogItemElement> TopmostNotifyLogs { get; }
         public ReadOnlyObservableCollection<NotifyLogItemElement> StreamNotifyLogs { get; }
+
+        public void SendLauncherGroupChanged(LauncherToolbarId launcherToolbarId, LauncherGroupId launcherGroupId)
+        {
+            OnLauncherGroupChanged(launcherToolbarId, launcherGroupId);
+        }
 
         public void SendLauncherItemChanged(LauncherItemId launcherItemId)
         {

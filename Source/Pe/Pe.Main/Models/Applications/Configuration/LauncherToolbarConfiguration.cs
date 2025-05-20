@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Input;
 using Microsoft.Extensions.Configuration;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
@@ -19,6 +20,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
         /// </summary>
         [Configuration]
         public TimeSpan AutoHideShowWaitTime { get; }
+
+        /// <summary>
+        /// ランチャーアイテムのD&amp;D開始装飾キー。
+        /// </summary>
+        [Configuration]
+        public ModifierKeys DragModifierKey { get; }
 
         #endregion
     }

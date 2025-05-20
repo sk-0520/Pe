@@ -82,6 +82,7 @@
         </DataTrigger>
       </Style.Triggers>
       -->
+      <EventSetter Event="PreviewMouseDown" Handler="LauncherContentControl_PreviewMouseDown" />
       <EventSetter Event="PreviewMouseDoubleClick" Handler="LauncherContentControl_PreviewMouseDoubleClick" />
       <Setter Property="Icon" Value="{Binding MainIcon}" />
       <Setter Property="IconBox" Value="{Binding DataContext.IconBox, ElementName=root}" />
