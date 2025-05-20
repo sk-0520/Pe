@@ -11,6 +11,8 @@ using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem;
 using ContentTypeTextNet.Pe.Main.Models.Data;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
+using System.Diagnostics;
 
 namespace ContentTypeTextNet.Pe.Main.Views.LauncherToolbar
 {
@@ -28,6 +30,10 @@ namespace ContentTypeTextNet.Pe.Main.Views.LauncherToolbar
 
         [DiInjection]
         private ILogger? Logger { get; set; }
+
+        [DiInjection]
+        private LauncherToolbarConfiguration? LauncherToolbarConfiguration { get; set; }
+
         private LauncherToolbarViewModel ViewModel => (LauncherToolbarViewModel)DataContext;
 
         #endregion
@@ -98,11 +104,13 @@ namespace ContentTypeTextNet.Pe.Main.Views.LauncherToolbar
 
         private void LauncherContentControl_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            var itemDraggable = Keyboard.Modifiers.HasFlag(ModifierKeys.Alt);
+            Debug.Assert(LauncherToolbarConfiguration is not null);
+
+            var itemDraggable = Keyboard.Modifiers.HasFlag(LauncherToolbarConfiguration.DragModifierKey);
             if(itemDraggable) {
                 var ctrl = (LauncherContentControl)e.Source;
                 var data = new DataObject(typeof(LauncherItemDragItem), new LauncherItemDragItem(this, (LauncherDetailViewModelBase)ctrl.DataContext));
-                Logger!.LogDebug("DataContext: {DataContext}", ctrl.DataContext);
+                Logger?.LogDebug("DataContext: {DataContext}", ctrl.DataContext);
                 DragDrop.DoDragDrop(ctrl, data, DragDropEffects.Move);
                 e.Handled = true;
             }
