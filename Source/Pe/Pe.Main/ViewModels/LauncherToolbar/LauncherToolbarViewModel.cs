@@ -397,7 +397,26 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             }
         }
 
-        private bool TrySenderIsLauncherDetail(UIElement sender, [NotNullWhen(true)] out LauncherDetailViewModelBase? result)
+        private bool TryGetDragDataIsDetailViewModel(IDataObject data, [NotNullWhen(true)] out LauncherDetailViewModelBase? result)
+        {
+            var launcherDetailViewModel = data.GetData(typeof(LauncherDetailViewModelBase));
+
+            if(launcherDetailViewModel is LauncherDetailViewModelBase draggingItemData) {
+                result = draggingItemData;
+                return true;
+            }
+
+            result = null;
+            return false;
+        }
+
+        /// <summary>
+        /// D&amp;D 送信要素からランチャーアイテムVMを取得。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="result"></param>
+        /// <returns>取得できたか。</returns>
+        private bool TryGetSenderIsDetailViewModel(UIElement sender, [NotNullWhen(true)] out LauncherDetailViewModelBase? result)
         {
             var frameworkElement = sender as FrameworkElement;
             if(frameworkElement is not null) {
@@ -413,6 +432,18 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             return false;
         }
 
+        /// <summary>
+        /// D&amp;D 送信要素はアプリボタンか。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
+        private bool IsOverAppButton(UIElement sender)
+        {
+            var appButton = UIUtility.GetClosest<ToggleButton>(sender);
+            var overAppButton = appButton?.Name == nameof(LauncherToolbarWindow.appButton);
+
+            return overAppButton;
+        }
 
         #region ViewDragAndDrop
 
@@ -464,16 +495,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private void ItemDragOverOrEnter(UIElement sender, DragEventArgs e)
         {
-            var appButton = UIUtility.GetClosest<ToggleButton>(sender);
-            var overAppButton = appButton?.Name == nameof(LauncherToolbarWindow.appButton);
+            var overAppButton = IsOverAppButton(sender);
 
-            var launcherDetailViewModel = e.Data.GetData(typeof(LauncherDetailViewModelBase));
-            if(launcherDetailViewModel is LauncherDetailViewModelBase draggingItemData) {
+            if(TryGetDragDataIsDetailViewModel(e.Data, out var draggingItemData)) {
                 // ランチャーアイテムのD&D中
-                Logger.LogTrace("appButton: {Sender}", appButton);
                 if(overAppButton) {
                     e.Effects = DragDropEffects.None;
-                } else if(TrySenderIsLauncherDetail(sender, out var detail)) {
+                } else if(TryGetSenderIsDetailViewModel(sender, out var detail)) {
                     Logger.LogDebug("{Detail}", detail);
                     if(draggingItemData.LauncherItemId == detail.LauncherItemId) {
                         e.Effects = DragDropEffects.None;
@@ -505,36 +533,43 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private async Task ItemDropAsync(UIElement sender, DragEventArgs e, CancellationToken cancellationToken)
         {
-            LauncherItemId launcherItemId = LauncherItemId.Empty;
-            var frameworkElement = (FrameworkElement)sender;
+            var overAppButton = IsOverAppButton(sender);
 
-            if(frameworkElement.DataContext is LauncherContentControl launcherContentControl) {
-                var launcherItem = (ILauncherItemId)launcherContentControl.DataContext;
-                launcherItemId = launcherItem.LauncherItemId;
+            if(TryGetDragDataIsDetailViewModel(e.Data, out var draggingItemData)) {
+                if(TryGetSenderIsDetailViewModel(sender, out var detail)) {
+                    var selfIndex = LauncherItemCollection.IndexOf(draggingItemData);
+                    var nextIndex = LauncherItemCollection.IndexOf(detail);
+                    Model.MoveLauncherItemId(selfIndex, nextIndex);
 
-                if(LauncherItemId.Empty == launcherItemId) {
-                    Logger.LogError("ランチャーアイテムID取得できず, {0}, {1}", sender, e);
-                    return;
                 }
             } else {
-                var appButton = UIUtility.GetClosest<ToggleButton>(frameworkElement);
-                if(appButton is null) {
-                    return;
-                }
-                if(appButton.Name != nameof(LauncherToolbarWindow.appButton)) {
-                    return;
-                }
-                await ViewDropAsync(sender, e, cancellationToken);
-                return;
-            }
+                LauncherItemId launcherItemId = LauncherItemId.Empty;
+                var frameworkElement = (FrameworkElement)sender;
 
-            if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
-                var filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
-                var argument = string.Join(' ', filePaths.Select(i => CommandLineHelper.Escape(i)));
-                await DispatcherWrapper.BeginAsync(async () => await ExecuteExtendDropDataAsync(launcherItemId, argument, cancellationToken));
-            } else if(e.Data.IsTextPresent()) {
-                var argument = TextUtility.JoinLines(e.Data.RequireText());
-                await DispatcherWrapper.BeginAsync(async () => await ExecuteExtendDropDataAsync(launcherItemId, argument, cancellationToken));
+                if(frameworkElement.DataContext is LauncherContentControl launcherContentControl) {
+                    var launcherItem = (ILauncherItemId)launcherContentControl.DataContext;
+                    launcherItemId = launcherItem.LauncherItemId;
+
+                    if(LauncherItemId.Empty == launcherItemId) {
+                        Logger.LogError("ランチャーアイテムID取得できず, {0}, {1}", sender, e);
+                        return;
+                    }
+                } else {
+                    if(!overAppButton) {
+                        return;
+                    }
+                    await ViewDropAsync(sender, e, cancellationToken);
+                    return;
+                }
+
+                if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                    var filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
+                    var argument = string.Join(' ', filePaths.Select(i => CommandLineHelper.Escape(i)));
+                    await DispatcherWrapper.BeginAsync(async () => await ExecuteExtendDropDataAsync(launcherItemId, argument, cancellationToken));
+                } else if(e.Data.IsTextPresent()) {
+                    var argument = TextUtility.JoinLines(e.Data.RequireText());
+                    await DispatcherWrapper.BeginAsync(async () => await ExecuteExtendDropDataAsync(launcherItemId, argument, cancellationToken));
+                }
             }
 
             e.Handled = true;

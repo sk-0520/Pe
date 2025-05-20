@@ -518,6 +518,31 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             return launcherItem.DirectExecuteAsync(argument, DockScreen, cancellationToken);
         }
 
+        public void MoveLauncherItemId(int startIndex, int insertIndex)
+        {
+            Debug.Assert(SelectedLauncherGroup is not null);
+
+            var item = LauncherItems[startIndex];
+            LauncherItems.RemoveAt(startIndex);
+            LauncherItems.Insert(insertIndex, item);
+
+            var launcherFactory = new LauncherFactory(IdFactory, LoggerFactory);
+            var launcherGroupId = SelectedLauncherGroup.LauncherGroupId;
+            var launcherItemIds = LauncherItems.Select(a => a.LauncherItemId).ToArray();
+
+            using(var context = MainDatabaseBarrier.WaitWrite()) {
+                var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                launcherGroupItemsDao.DeleteGroupItemsByLauncherGroupId(launcherGroupId);
+
+                var currentMaxSequence = launcherGroupItemsDao.SelectMaxSequence(launcherGroupId);
+                launcherGroupItemsDao.InsertNewItems(launcherGroupId, launcherItemIds, currentMaxSequence + launcherFactory.GroupItemsStep, launcherFactory.GroupItemsStep, DatabaseCommonStatus.CreateCurrentAccount());
+
+                context.Commit();
+            }
+
+            NotifyManager.SendLauncherGroupChanged(LauncherToolbarId, launcherGroupId);
+        }
+
         #endregion
 
         #region ElementBase
@@ -526,6 +551,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
         {
             Logger.LogInformation("initialize {0}:{1}, {2}: {3}", DockScreen.DeviceName, DockScreen.DeviceBounds, nameof(DockScreen.Primary), DockScreen.Primary);
 
+            NotifyManager.LauncherGroupChanged += NotifyManager_LauncherGroupChanged;
             NotifyManager.LauncherItemChanged += NotifyManager_LauncherItemChanged;
             NotifyManager.LauncherItemRegistered += NotifyManager_LauncherItemRegistered;
             NotifyManager.LauncherItemRemovedInLauncherGroup += NotifyManager_LauncherItemRemovedInLauncherGroup;
@@ -545,6 +571,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
         protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
+                NotifyManager.LauncherGroupChanged -= NotifyManager_LauncherGroupChanged;
                 NotifyManager.LauncherItemChanged -= NotifyManager_LauncherItemChanged;
                 NotifyManager.LauncherItemRegistered -= NotifyManager_LauncherItemRegistered;
                 NotifyManager.LauncherItemRemovedInLauncherGroup -= NotifyManager_LauncherItemRemovedInLauncherGroup;
@@ -737,6 +764,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
         public IScreen DockScreen { get; }
 
         #endregion
+
+        private void NotifyManager_LauncherGroupChanged(object? sender, LauncherGroupChangedEventArgs e)
+        {
+            Debug.Assert(SelectedLauncherGroup is not null);
+
+            if(LauncherToolbarId != e.LauncherToolbarId && SelectedLauncherGroup.LauncherGroupId == e.LauncherGroupId) {
+                SelectedLauncherGroup.LoadLauncherItems();
+                LoadLauncherItems();
+            }
+        }
 
         private void NotifyManager_LauncherItemChanged(object? sender, LauncherItemChangedEventArgs e)
         {
