@@ -397,11 +397,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             }
         }
 
-        private bool TryGetDragDataIsDetailViewModel(IDataObject data, [NotNullWhen(true)] out LauncherDetailViewModelBase? result)
+        private bool TryGetDragDataIsDetailViewModel(IDataObject data, [NotNullWhen(true)] out LauncherItemDragItem? result)
         {
-            var launcherDetailViewModel = data.GetData(typeof(LauncherDetailViewModelBase));
+            var launcherDetailViewModel = data.GetData(typeof(LauncherItemDragItem));
 
-            if(launcherDetailViewModel is LauncherDetailViewModelBase draggingItemData) {
+            if(launcherDetailViewModel is LauncherItemDragItem draggingItemData) {
                 result = draggingItemData;
                 return true;
             }
@@ -503,7 +503,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                     e.Effects = DragDropEffects.None;
                 } else if(TryGetSenderIsDetailViewModel(sender, out var detail)) {
                     Logger.LogDebug("{Detail}", detail);
-                    if(draggingItemData.LauncherItemId == detail.LauncherItemId) {
+                    if(draggingItemData.ViewModel.LauncherItemId == detail.LauncherItemId) {
+                        e.Effects = DragDropEffects.None;
+                    } else if(draggingItemData.View != UIUtility.GetClosest<Window>(sender)) {
+                        // D&Dは同じウィンドウのみに限定(わけわからんくなる)
                         e.Effects = DragDropEffects.None;
                     } else {
                         e.Effects = DragDropEffects.Move;
@@ -537,7 +540,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
             if(TryGetDragDataIsDetailViewModel(e.Data, out var draggingItemData)) {
                 if(TryGetSenderIsDetailViewModel(sender, out var detail)) {
-                    var selfIndex = LauncherItemCollection.IndexOf(draggingItemData);
+                    var selfIndex = LauncherItemCollection.IndexOf(draggingItemData.ViewModel);
                     var nextIndex = LauncherItemCollection.IndexOf(detail);
                     Model.MoveLauncherItemId(selfIndex, nextIndex);
 
