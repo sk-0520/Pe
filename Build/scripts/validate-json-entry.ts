@@ -15,7 +15,7 @@ const appSettingsDirPath = path.resolve(
 const jsons: string[] = [
 	...globSync("*appsettings*.json", {
 		cwd: appSettingsDirPath,
-	}),
+	}).map((a) => path.resolve(appSettingsDirPath, a)),
 ];
 
 validate_josn.main(jsons);
