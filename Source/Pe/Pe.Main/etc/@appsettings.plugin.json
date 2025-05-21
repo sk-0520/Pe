@@ -1,4 +1,5 @@
 {
+	"$schema": "../Properties/appsettings.schema.json",
 	"general": {
 		"project_name": "Pe-plugin-TEMPLATE_PluginName",
 		"mutex_name": "Pe-plugin-TEMPLATE_PluginName",
