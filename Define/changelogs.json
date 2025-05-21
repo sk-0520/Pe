@@ -40,16 +40,6 @@
 					}
 
 				]
-			},
-			{
-				"type": "developer",
-				"logs": [
-					{
-						"revision": "f26ace63b073e35464800ee1038c03f36e712919",
-						"class": "nuget",
-						"subject": "System.*, Microsoft.* 更新"
-					}
-				]
 			}
 		]
 	},
