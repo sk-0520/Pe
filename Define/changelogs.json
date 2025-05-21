@@ -34,10 +34,6 @@
 					},
 					{
 						"revision": "",
-						"subject": "#988: 更新履歴のコメント部分に対する font-family が未指定"
-					},
-					{
-						"revision": "",
 						"subject": "#653: コマンド入力で PageUP/PageDown を有効にする"
 					},
 					{
@@ -59,6 +55,10 @@
 			{
 				"type": "fixes",
 				"logs": [
+					{
+						"revision": "",
+						"subject": "#988: 更新履歴のコメント部分に対する font-family が未指定"
+					},
 					{
 						"revision": "",
 						"subject": ""
