@@ -18,7 +18,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <typeparam name="TEnum"></typeparam>
         /// <param name="value"></param>
         /// <param name="defaultValue"></param>
-        /// <returns>指定値がEnumに存在すれば指定値、存在しなければ<paramref name="defaultValue"/>を返す。</returns>
+        /// <returns>指定値が <typeparamref name="TEnum"/> に存在すれば指定値、存在しなければ<paramref name="defaultValue"/>を返す。</returns>
         public static TEnum Normalize<TEnum>(string value, TEnum defaultValue)
             where TEnum : struct, Enum
         {

@@ -17,8 +17,8 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void CreateLoadTest()
         {
-            var dir = TestIO.InitializeMethod(this);
-            var file = TestIO.CreateEmptyFile(dir, "𩸽.dat");
+            var testIO = TestIO.InitializeMethod(this);
+            var file = testIO.Work.CreateEmptyFile("𩸽.dat");
 
             using(var test = new ShortcutFile()) {
                 test.TargetPath = file.FullName;
@@ -37,10 +37,10 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
                 Assert.Equal(42, test.IconIndex);
                 Assert.Equal(PInvoke.Windows.SW.SW_NORMAL, test.ShowCommand);
 
-                test.Save(Path.Combine(dir.FullName, "𩸽.lnk"));
+                test.Save(Path.Combine(testIO.Work.Directory.FullName, "𩸽.lnk"));
             }
 
-            using(var test = new ShortcutFile(Path.Combine(dir.FullName, "𩸽.lnk"))) {
+            using(var test = new ShortcutFile(Path.Combine(testIO.Work.Directory.FullName, "𩸽.lnk"))) {
                 Assert.Equal(file.FullName, test.TargetPath);
                 Assert.Equal(nameof(test.Arguments), test.Arguments);
                 Assert.Equal(nameof(test.Description), test.Description);
@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
             }
 
             {
-                var test = new ShortcutFile(Path.Combine(dir.FullName, "𩸽.lnk"));
+                var test = new ShortcutFile(Path.Combine(testIO.Work.Directory.FullName, "𩸽.lnk"));
                 test.Dispose();
 
                 Assert.Throws<ObjectDisposedException>(() => test.TargetPath);

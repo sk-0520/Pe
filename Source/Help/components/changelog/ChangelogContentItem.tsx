@@ -4,6 +4,7 @@ import {
 	type SxProps,
 	type Theme,
 	Typography,
+	useTheme,
 } from "@mui/material";
 import type { FC } from "react";
 import type * as changelog from "../../types/changelog";
@@ -68,6 +69,7 @@ interface ChangelogContentItemProps extends changelog.ChangelogContentItem {}
 export const ChangelogContentItem: FC<ChangelogContentItemProps> = (
 	props: ChangelogContentItemProps,
 ) => {
+	const theme = useTheme();
 	const { revision, subject, comments } = props;
 	const type = props.class;
 
@@ -107,6 +109,7 @@ export const ChangelogContentItem: FC<ChangelogContentItemProps> = (
 								display: "list-item",
 								marginLeft: "3ch",
 								width: "initial",
+								fontFamily: theme.typography.fontFamily,
 							}}
 						>
 							<ChangelogReplaceLink>{a}</ChangelogReplaceLink>

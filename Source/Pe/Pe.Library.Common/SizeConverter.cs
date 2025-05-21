@@ -15,12 +15,12 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <summary>
         /// サイズ単位。
         /// </summary>
-        public string[] Units { get; } = new[] { "byte", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", }; // YB とか生きている間に見ることあるんだろうか
+        public string[] Units { get; init; } = new[] { "byte", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", }; // YB とか生きている間に見ることあるんだろうか
 
         /// <summary>
         /// 1KB のサイズ。
         /// </summary>
-        public int KbSize { get; } = 1024;
+        public int KbSize { get; init; } = 1024;
 
         #endregion
 
@@ -35,14 +35,16 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns></returns>
         public string ConvertHumanReadableByte(long byteSize, string sizeFormat, IReadOnlyList<string> units)
         {
-            double size = byteSize;
-            int order = 0;
-            while(KbSize <= size && ++order < units.Count) {
-                size = size / KbSize;
+            if(units.Count == 0) {
+                throw new ArgumentException(nameof(units));
             }
 
-            if(units.Count <= order) {
-                order -= 1;
+            double size = byteSize;
+            int order = 0;
+
+            while(size >= KbSize && order < units.Count - 1) {
+                size /= KbSize;
+                order += 1;
             }
 
             return string.Format(CultureInfo.InvariantCulture, sizeFormat, size, units[order]);

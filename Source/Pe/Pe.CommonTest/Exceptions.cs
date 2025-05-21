@@ -2,6 +2,10 @@ using System;
 
 namespace ContentTypeTextNet.Pe.CommonTest
 {
+    /// <summary>
+    /// テストインフラ系例外。
+    /// </summary>
+    /// <remarks>こいつを捕まえてどうこうすることはない。</remarks>
     [Serializable]
     public class TestException: System.Exception
     {

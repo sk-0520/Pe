@@ -62,7 +62,8 @@
 		]
 	},
 	"launcher_toolbar": {
-		"auto_hide_show_wait_time": "0.00:00:00.0"
+		"auto_hide_show_wait_time": "0.00:00:00.0",
+		"drag_modifier_key": "Shift"
 	},
 	"launcher_group": {},
 	"note": {
@@ -96,7 +97,6 @@
 			"prefix": "",
 			"separator": "",
 			"mapping": {
-				"Help": "help"
 			},
 			"is_enabled_exception": false
 		}

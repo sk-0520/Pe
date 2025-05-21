@@ -43,8 +43,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
         [Fact]
         public void Constructor_File_Editable()
         {
-            var dir = TestIO.InitializeMethod(this);
-            var file = new FileInfo(Path.Combine(dir.FullName, "test.sqlite3"));
+            var testIO = TestIO.InitializeMethod(this);
+            var file = testIO.Work.NewFile("test.sqlite3");
 
             var test = new ApplicationDatabaseFactory(file, true, false);
             using var connection = test.CreateConnection();
@@ -56,8 +56,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
         [Fact]
         public void Constructor_File_Readonly()
         {
-            var dir = TestIO.InitializeMethod(this);
-            var file = new FileInfo(Path.Combine(dir.FullName, "test.sqlite3"));
+            var testIO = TestIO.InitializeMethod(this);
+            var file = testIO.Work.NewFile("test.sqlite3");
 
             // 読み込み専用で開くために作っておく
             {

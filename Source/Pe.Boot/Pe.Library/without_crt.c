@@ -50,17 +50,19 @@ void* __cdecl memmove(void* dest, const void* src, size_t bytes)
 #pragma function(memcmp)
 int __cdecl memcmp(const void* buf1, const void* buf2, size_t bytes)
 {
-    const uint8_t* m1 = (const uint8_t*)buf1;
-    const uint8_t* m2 = (const uint8_t*)buf2;
-
     if (!bytes) {
         return 0;
     }
 
+    const uint8_t* m1 = (const uint8_t*)buf1;
+    const uint8_t* m2 = (const uint8_t*)buf2;
+
     while (bytes--) {
-        if (*m1++ != *m2++) {
-            return *m1 < *m2 ? -1 : 1;
+        if (*m1 != *m2) {
+            return *m1 - *m2;
         }
+        m1 += 1;
+        m2 += 1;
     }
 
     return 0;

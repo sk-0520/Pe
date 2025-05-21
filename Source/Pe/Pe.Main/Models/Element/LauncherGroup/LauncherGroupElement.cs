@@ -51,6 +51,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup
 
         public IReadOnlyList<LauncherItemId> GetLauncherItemIds() => LauncherItemIds.ToList();
 
+        public void LoadLauncherItems()
+        {
+            IEnumerable<LauncherItemId> launcherItemIds;
+            using(var context = MainDatabaseBarrier.WaitRead()) {
+                var launcherItemsLoader = new LauncherItemsLoader(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                launcherItemIds = launcherItemsLoader.LoadLauncherItemIds(LauncherGroupId, Kind);
+            }
+
+            LauncherItemIds.SetRange(launcherItemIds);
+        }
+
         private void LoadGroup()
         {
             ThrowIfDisposed();

@@ -168,12 +168,12 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
         [Fact]
         public void CopyTest()
         {
-            var dir = TestIO.InitializeMethod(this);
-            var srcPath = Path.Combine(dir.FullName, "src.sqlite3");
-            var dstPath = Path.Combine(dir.FullName, "dst.sqlite3");
+            var testIO = TestIO.InitializeMethod(this);
+            var srcFile = testIO.Work.NewFile("src.sqlite3");
+            var dstFile = testIO.Work.NewFile("dst.sqlite3");
 
             using(var src = new SqliteAccessor(
-                    new ApplicationDatabaseFactory(new FileInfo(srcPath), true, false),
+                    new ApplicationDatabaseFactory(srcFile, true, false),
                     NullLoggerFactory.Instance
             )) {
                 src.Execute("create table MAIN1(id integer, value text)");
@@ -181,7 +181,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
                 Assert.Equal(0, src.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'MAIN2'"));
 
                 using var dst = new SqliteAccessor(
-                    new ApplicationDatabaseFactory(new FileInfo(dstPath), true, false),
+                    new ApplicationDatabaseFactory(dstFile, true, false),
                     NullLoggerFactory.Instance
                 );
                 dst.Execute("create table MAIN2(id integer, value text)");
@@ -192,11 +192,11 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
             }
 
             using(var src = new SqliteAccessor(
-                new ApplicationDatabaseFactory(new FileInfo(srcPath), true, false),
+                new ApplicationDatabaseFactory(srcFile, true, false),
                 NullLoggerFactory.Instance
             )) {
                 using var dst = new SqliteAccessor(
-                    new ApplicationDatabaseFactory(new FileInfo(dstPath), true, false),
+                    new ApplicationDatabaseFactory(dstFile, true, false),
                     NullLoggerFactory.Instance
                 );
 

@@ -29,8 +29,9 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         [Fact]
         public async Task ChecksumAsync_NotExists_Test()
         {
+            var testIO = TestIO.InitializeMethod(this);
             var mockLog = MockLog.Create();
-            var applicationConfiguration = Test.GetApplicationConfiguration(this);
+            var applicationConfiguration = Test.GetApplicationConfiguration(testIO);
             var test = Test.DiContainer.Build<NewVersionDownloader>(applicationConfiguration, mockLog.Factory.Object);
 
             var actual = await test.ChecksumAsync(
@@ -47,11 +48,11 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         [Fact]
         public async Task ChecksumAsync_NotFileSize_Test()
         {
-            var methodDir = TestIO.InitializeMethod(this);
-            var file = TestIO.CreateTextFile(methodDir, "data.dat", "abc");
+            var testIO = TestIO.InitializeMethod(this);
+            var file = testIO.Work.CreateTextFile("data.dat", "abc");
 
             var mockLog = MockLog.Create();
-            var applicationConfiguration = Test.GetApplicationConfiguration(this);
+            var applicationConfiguration = Test.GetApplicationConfiguration(testIO);
             var test = Test.DiContainer.Build<NewVersionDownloader>(applicationConfiguration, mockLog.Factory.Object);
 
             var actual = await test.ChecksumAsync(

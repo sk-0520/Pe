@@ -56,22 +56,20 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         [InlineData("7zip.7z")]
         public void ExtractTest(string archiveFileName)
         {
-            var testDir = TestIO.InitializeMethod(this, archiveFileName);
+            var testIO = TestIO.InitializeMethod(this, workSuffix: archiveFileName);
 
-            var dir = Test.GetCopiedDirectoryPath(this, "dat");
-            var archivePath = Path.Combine(dir, archiveFileName);
-            var archiveFile = new FileInfo(archivePath);
+            var archiveFile = testIO.Data.GetFile(archiveFileName);
 
             var ext = archiveFile.Extension.Substring(1).ToLowerInvariant();
 
             var archiveExtractor = new ArchiveExtractor(Test.LoggerFactory);
-            archiveExtractor.Extract(new FileInfo(archivePath), testDir, ext, new NullNotifyProgress(Test.LoggerFactory));
+            archiveExtractor.Extract(archiveFile, testIO.Work.Directory, ext, new NullNotifyProgress(Test.LoggerFactory));
 
-            var flatFiles = testDir.EnumerateFiles().Select(a => a.Name).ToHashSet();
+            var flatFiles = testIO.Work.Directory.EnumerateFiles().Select(a => a.Name).ToHashSet();
             var flatFileNodes = Nodes.Where(a => a.Type == NodeType.File).ToArray();
             Assert.Equal(flatFileNodes.Length, flatFiles.Count);
 
-            var flatDirs = testDir.EnumerateDirectories().Select(a => a.Name).ToHashSet();
+            var flatDirs = testIO.Work.Directory.EnumerateDirectories().Select(a => a.Name).ToHashSet();
             var flatDirNodes = Nodes.Where(a => a.Type == NodeType.Directory).ToArray();
             Assert.Equal(flatDirNodes.Length, flatDirs.Count);
         }

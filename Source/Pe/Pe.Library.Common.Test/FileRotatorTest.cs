@@ -26,15 +26,15 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [Fact]
         public void ExecuteRegex()
         {
-            var dir = TestIO.InitializeMethod(this);
-            TestIO.CreateEmptyFile(dir, "target_1.dmy");
-            TestIO.CreateEmptyFile(dir, "target_2.dmy");
-            TestIO.CreateEmptyFile(dir, "target_3.dmy");
-            TestIO.CreateEmptyFile(dir, "target_4.dmy");
-            TestIO.CreateEmptyFile(dir, "target_5.dmy");
+            var testIO = TestIO.InitializeMethod(this);
+            testIO.Work.CreateEmptyFile("target_1.dmy");
+            testIO.Work.CreateEmptyFile("target_2.dmy");
+            testIO.Work.CreateEmptyFile("target_3.dmy");
+            testIO.Work.CreateEmptyFile("target_4.dmy");
+            testIO.Work.CreateEmptyFile("target_5.dmy");
 
             var fileRotator = new FileRotator();
-            var actual = fileRotator.ExecuteRegex(dir, new Regex("^target"), 3, ex => true);
+            var actual = fileRotator.ExecuteRegex(testIO.Work.Directory, new Regex("^target"), 3, ex => true);
             Assert.Equal(2, actual);
         }
 

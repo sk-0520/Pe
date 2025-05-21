@@ -16,9 +16,9 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [Fact]
         public void MakeFileParentDirectoryTest()
         {
-            var dir = TestIO.InitializeMethod(this);
+            var testIO = TestIO.InitializeMethod(this);
 
-            var nextDirPath = Path.Combine(dir.FullName, "next");
+            var nextDirPath = Path.Combine(testIO.Work.Directory.FullName, "next");
             var nextFilePath = Path.Combine(nextDirPath, "file");
             var nextSubFilePath = Path.Combine(nextDirPath, "file-sub");
 
@@ -37,9 +37,9 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [Fact]
         public void MakeFileParentDirectory_FileInfo_Test()
         {
-            var dir = TestIO.InitializeMethod(this);
+            var testIO = TestIO.InitializeMethod(this);
 
-            var nextDirPath = Path.Combine(dir.FullName, "next");
+            var nextDirPath = Path.Combine(testIO.Work.Directory.FullName, "next");
             var nextFilePath = Path.Combine(nextDirPath, "file");
             var nextSubFilePath = Path.Combine(nextDirPath, "file-sub");
 
@@ -80,120 +80,120 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [Fact]
         public void ExistsTest()
         {
-            var dir = TestIO.InitializeMethod(this);
+            var testIO = TestIO.InitializeMethod(this);
 
-            var f = TestIO.CreateEmptyFile(dir, "f");
+            var f = testIO.Work.CreateEmptyFile("f");
             Assert.True(IOUtility.Exists(f.FullName));
 
-            var d = TestIO.CreateDirectory(dir, "d");
-            Assert.True(IOUtility.Exists(d.FullName));
+            var d = testIO.Work.CreateDirectory("d");
+            Assert.True(IOUtility.Exists(d.Directory.FullName));
 
             f.Delete();
-            d.Delete(true);
+            d.Directory.Delete(true);
 
             Assert.False(IOUtility.Exists(f.FullName));
-            Assert.False(IOUtility.Exists(d.FullName));
+            Assert.False(IOUtility.Exists(d.Directory.FullName));
             Assert.False(IOUtility.Exists(null));
         }
 
         [Fact]
         public async Task ExistsAsyncTest()
         {
-            var dir = TestIO.InitializeMethod(this);
+            var testIO = TestIO.InitializeMethod(this);
 
-            var f = TestIO.CreateEmptyFile(dir, "f");
+            var f = testIO.Work.CreateEmptyFile("f");
             Assert.True(await IOUtility.ExistsAsync(f.FullName));
 
-            var d = TestIO.CreateDirectory(dir, "d");
-            Assert.True(await IOUtility.ExistsAsync(d.FullName));
+            var d = testIO.Work.CreateDirectory("d");
+            Assert.True(await IOUtility.ExistsAsync(d.Directory.FullName));
 
             f.Delete();
-            d.Delete(true);
+            d.Directory.Delete(true);
 
             Assert.False(await IOUtility.ExistsAsync(f.FullName));
-            Assert.False(await IOUtility.ExistsAsync(d.FullName));
+            Assert.False(await IOUtility.ExistsAsync(d.Directory.FullName));
         }
 
         [Fact]
         public async Task ExistsFileAsyncTest()
         {
-            var dir = TestIO.InitializeMethod(this);
+            var testIO = TestIO.InitializeMethod(this);
 
-            var f = TestIO.CreateEmptyFile(dir, "f");
+            var f = testIO.Work.CreateEmptyFile("f");
             Assert.True(await IOUtility.ExistsFileAsync(f.FullName));
 
-            var d = TestIO.CreateDirectory(dir, "d");
-            Assert.False(await IOUtility.ExistsFileAsync(d.FullName));
+            var d = testIO.Work.CreateDirectory("d");
+            Assert.False(await IOUtility.ExistsFileAsync(d.Directory.FullName));
 
             f.Delete();
-            d.Delete(true);
+            d.Directory.Delete(true);
 
             Assert.False(await IOUtility.ExistsAsync(f.FullName));
-            Assert.False(await IOUtility.ExistsAsync(d.FullName));
+            Assert.False(await IOUtility.ExistsAsync(d.Directory.FullName));
         }
 
         [Fact]
         public async Task ExistsDirectoryAsyncTest()
         {
-            var dir = TestIO.InitializeMethod(this);
+            var testIO = TestIO.InitializeMethod(this);
 
-            var f = TestIO.CreateEmptyFile(dir, "f");
+            var f = testIO.Work.CreateEmptyFile("f");
             Assert.False(await IOUtility.ExistsDirectoryAsync(f.FullName));
 
-            var d = TestIO.CreateDirectory(dir, "d");
-            Assert.True(await IOUtility.ExistsDirectoryAsync(d.FullName));
+            var d = testIO.Work.CreateDirectory("d");
+            Assert.True(await IOUtility.ExistsDirectoryAsync(d.Directory.FullName));
 
             f.Delete();
-            d.Delete(true);
+            d.Directory.Delete(true);
 
             Assert.False(await IOUtility.ExistsDirectoryAsync(f.FullName));
-            Assert.False(await IOUtility.ExistsDirectoryAsync(d.FullName));
+            Assert.False(await IOUtility.ExistsDirectoryAsync(d.Directory.FullName));
         }
 
         [Fact]
         public void DeleteTest()
         {
-            var dir = TestIO.InitializeMethod(this);
+            var testIO = TestIO.InitializeMethod(this);
 
-            var f = TestIO.CreateEmptyFile(dir, "f");
-            var d = TestIO.CreateDirectory(dir, "d");
+            var f = testIO.Work.CreateEmptyFile("f");
+            var d = testIO.Work.CreateDirectory("d");
 
-            var child = TestIO.CreateEmptyFile(d, "child");
+            var child = d.CreateEmptyFile("child");
 
             Assert.True(IOUtility.Exists(f.FullName));
-            Assert.True(IOUtility.Exists(d.FullName));
+            Assert.True(IOUtility.Exists(d.Directory.FullName));
             Assert.True(IOUtility.Exists(child.FullName));
 
             IOUtility.Delete(f.FullName);
             Assert.False(IOUtility.Exists(f.FullName));
 
-            IOUtility.Delete(dir.FullName);
-            Assert.False(IOUtility.Exists(d.FullName));
+            IOUtility.Delete(testIO.Work.Directory.FullName);
+            Assert.False(IOUtility.Exists(d.Directory.FullName));
             Assert.False(IOUtility.Exists(child.FullName));
-            Assert.False(IOUtility.Exists(dir.FullName));
+            Assert.False(IOUtility.Exists(testIO.Work.Directory.FullName));
         }
 
         [Fact]
         public async Task DeleteAsyncTest()
         {
-            var dir = TestIO.InitializeMethod(this);
+            var testIO = TestIO.InitializeMethod(this);
 
-            var f = TestIO.CreateEmptyFile(dir, "f");
-            var d = TestIO.CreateDirectory(dir, "d");
+            var f = testIO.Work.CreateEmptyFile("f");
+            var d = testIO.Work.CreateDirectory("d");
 
-            var child = TestIO.CreateEmptyFile(d, "child");
+            var child = d.CreateEmptyFile("child");
 
             Assert.True(IOUtility.Exists(f.FullName));
-            Assert.True(IOUtility.Exists(d.FullName));
+            Assert.True(IOUtility.Exists(d.Directory.FullName));
             Assert.True(IOUtility.Exists(child.FullName));
 
             await IOUtility.DeleteAsync(f.FullName);
             Assert.False(IOUtility.Exists(f.FullName));
 
-            await IOUtility.DeleteAsync(dir.FullName);
-            Assert.False(IOUtility.Exists(d.FullName));
+            await IOUtility.DeleteAsync(testIO.Work.Directory.FullName);
+            Assert.False(IOUtility.Exists(d.Directory.FullName));
             Assert.False(IOUtility.Exists(child.FullName));
-            Assert.False(IOUtility.Exists(dir.FullName));
+            Assert.False(IOUtility.Exists(testIO.Work.Directory.FullName));
         }
 
         [Fact]

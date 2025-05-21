@@ -31,8 +31,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Vender.Public.SQLite
             /// <returns></returns>
             public override string LoadStatement(string key)
             {
-                var current = TestIO.InitializeMethod(this);
-                var file = TestIO.CreateTextFile(current, "MEMBER!NAME.sql", "file-sql1\nfile-sql2");
+                var testIO = TestIO.InitializeMethod(this);
+                
+                var file = testIO.Work.CreateTextFile("MEMBER!NAME.sql", "file-sql1\nfile-sql2");
                 using var reader = file.OpenText();
                 return reader.ReadToEnd();
             }

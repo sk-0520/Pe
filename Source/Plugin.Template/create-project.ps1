@@ -319,10 +319,6 @@ try {
 			directory = 'Pe\lib\library'
 		},
 		@{
-			project = 'Pe.Library.CliProxy'
-			directory = 'Pe\lib\library'
-		},
-		@{
 			project = 'Pe.Library.Property'
 			directory = 'Pe\lib\library'
 		},

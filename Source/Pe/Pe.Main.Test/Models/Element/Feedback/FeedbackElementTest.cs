@@ -40,7 +40,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Element.Feedback
         [Fact]
         public async Task SuccessTest()
         {
-            var applicationConfiguration = Test.GetApplicationConfiguration(this);
+            var testIO = TestIO.InitializeMethod(this);
+            var applicationConfiguration = Test.GetApplicationConfiguration(testIO);
 
             var mockCultureService = new Mock<ICultureService>();
             var mockOrderManager = new Mock<IOrderManager>();

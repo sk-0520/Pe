@@ -47,6 +47,33 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged
             return result;
         }
 
+
+
+        public byte[] ToArray()
+        {
+            var result = new byte[Size];
+            Marshal.Copy(this.handle, result, 0, Size);
+            return result;
+        }
+
+        public byte this[int index]
+        {
+            get
+            {
+                if(index < 0 || Size <= index) {
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
+                return Marshal.ReadByte(this.handle, index);
+            }
+            set
+            {
+                if(index < 0 || Size <= index) {
+                    throw new ArgumentOutOfRangeException(nameof(index));
+                }
+                Marshal.WriteByte(this.handle, index, value);
+            }
+        }
+
         #endregion
 
         #region SafeHandle
