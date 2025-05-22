@@ -105,11 +105,11 @@ export const Pages: PageElement[] = [
 				key: "help.others_plugin",
 				title: "プラグイン",
 			},
-			{
-				key: "help.search",
-				title: "🔍検索",
-			},
 		],
+	},
+	{
+		key: "help.search",
+		title: "🔍検索",
 	},
 	{
 		key: "help.changelog",
