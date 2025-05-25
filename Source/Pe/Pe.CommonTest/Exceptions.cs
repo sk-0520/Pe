@@ -99,4 +99,36 @@ namespace ContentTypeTextNet.Pe.CommonTest
     }
 
     #endregion
+
+    #region TestIO
+
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    public class TestIOException: TestException
+    {
+        public TestIOException()
+        { }
+
+        public TestIOException(string message)
+            : base(message)
+        { }
+
+        public TestIOException(string message, Exception inner)
+            : base(message, inner)
+        { }
+    }
+
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    public class TestIOInitializedException: TestIOException
+    {
+        public TestIOInitializedException()
+        { }
+        public TestIOInitializedException(string message)
+            : base(message)
+        { }
+        public TestIOInitializedException(string message, Exception inner)
+            : base(message, inner)
+        { }
+    }
+
+    #endregion
 }

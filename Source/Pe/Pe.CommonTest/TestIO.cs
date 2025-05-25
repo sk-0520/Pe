@@ -64,14 +64,14 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// </summary>
         /// <param name="name">ファイル名。</param>
         /// <returns></returns>
-        /// <exception cref="TestException"></exception>
+        /// <exception cref="TestIOException"></exception>
         public FileInfo GetFile(string name)
         {
             var path = CombinePath(name);
             var file = new FileInfo(path);
             file.Refresh();
             if(!file.Exists) {
-                throw new TestException($"File not found: {path}.");
+                throw new TestIOException($"File not found: {path}.");
             }
             return file;
         }
@@ -81,14 +81,14 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// </summary>
         /// <param name="name">ディレクトリ名。</param>
         /// <returns></returns>
-        /// <exception cref="TestException"></exception>
+        /// <exception cref="TestIOException"></exception>
         public DirectoryInfo GetDirectory(string name)
         {
             var path = CombinePath(name);
             var dir = new DirectoryInfo(path);
             dir.Refresh();
             if(!dir.Exists) {
-                throw new TestException($"Directory not found: {path}.");
+                throw new TestIOException($"Directory not found: {path}.");
             }
             return dir;
         }
@@ -227,7 +227,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         public void Initialize(TestIO testIO)
         {
             if(WorkDirectory.Contains(testIO.Work.Directory.FullName)) {
-                throw new TestException(testIO.Work.Directory.FullName);
+                throw new TestIOInitializedException(testIO.Work.Directory.FullName);
             }
 
             InitializeDirectory(testIO.Work.Directory);
@@ -309,7 +309,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// テストメソッドの初期化。
         /// </summary>
         /// <param name="test">テスト実行中のインスタンス。</param>
-        /// <param name="workSuffix">作業ディレクトリのサフィックス。指定した場合 「作業ディレクトリ@<paramref name="workSuffix"/>」となる。</param>
+        /// <param name="workSuffix">作業ディレクトリのサフィックス。指定した場合 「作業ディレクトリ@<paramref name="workSuffix"/>」となる。パラメータを使用した場合のテストではこれがないとダメ。</param>
         /// <param name="dataExtension">データディレクトリの拡張子。指定した場合 「データディレクトリ@<paramref name="dataExtension"/>」となる。</param>
         /// <param name="callerFilePath"></param>
         /// <param name="callerLineNumber"></param>
