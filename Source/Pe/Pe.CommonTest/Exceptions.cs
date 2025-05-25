@@ -7,6 +7,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
     /// </summary>
     /// <remarks>こいつを捕まえてどうこうすることはない。</remarks>
     [Serializable]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class TestException: System.Exception
     {
         public TestException()
@@ -22,6 +23,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
     #region PrivateObject
 
     [Serializable]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PrivateObjectException: TestException
     {
         public PrivateObjectException()
@@ -36,6 +38,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         { }
     }
 
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PrivateObjectFieldException: PrivateObjectException
     {
         public PrivateObjectFieldException()
@@ -50,6 +53,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         { }
     }
 
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PrivateObjectPropertyException: PrivateObjectException
     {
         public PrivateObjectPropertyException()
@@ -64,6 +68,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         { }
     }
 
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PrivateObjectMethodException: PrivateObjectException
     {
         public PrivateObjectMethodException()
@@ -78,6 +83,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         { }
     }
 
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PrivateObjectMethodParametersException: PrivateObjectException
     {
         public PrivateObjectMethodParametersException()
