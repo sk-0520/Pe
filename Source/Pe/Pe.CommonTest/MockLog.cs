@@ -86,6 +86,24 @@ namespace ContentTypeTextNet.Pe.CommonTest
         }
 
         /// <summary>
+        /// <see cref="Logger"/>の<see cref="ILogger.Log"/> は指定回数呼び出された。
+        /// </summary>
+        /// <param name="logLevel">対象ログレベル。<see cref="LogLevel.None"/>は全てを指す。</param>
+        /// <param name="times"></param>
+        public void VerifyLog(LogLevel logLevel, Times times)
+        {
+            Logger.Verify(
+                a => a.Log(
+                    It.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    It.IsAny<Exception>(),
+                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
+                times
+            );
+        }
+
+        /// <summary>
         /// <see cref="Logger"/>の<see cref="ILogger.Log"/> のメッセージを検証。
         /// </summary>
         /// <param name="logLevel">対象ログレベル。<see cref="LogLevel.None"/>は全てを指す。</param>
