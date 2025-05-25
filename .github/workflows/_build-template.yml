@@ -221,8 +221,8 @@ jobs:
           .\FullBuild.ps1 -Verbose -InformationAction Continue -Platforms ${{ matrix.PLATFORM }}
 
       - name: <Test> Plugin Template
-        # x86 が動かない問題, あとで対処
-        #if: matrix.PLATFORM == 'x64'
+        # x86 が動かない問題, あとで対処, 2025/05/25 またかよ！
+        if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: |
           Set-Location ${{ env.PROJECT_DIR }}
