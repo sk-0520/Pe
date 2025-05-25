@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Property
@@ -21,9 +22,17 @@ namespace ContentTypeTextNet.Pe.Library.Property
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PropertyCanNotAccessException: PropertyException
     {
-        public PropertyCanNotAccessException(Type ownerType, string propertyName)
-            : base($"{ownerType.FullName}.{propertyName}")
-        { }
+        public PropertyCanNotAccessException(Type ownerType, MemberInfo member)
+            : base($"{ownerType.FullName}.{member.Name}")
+        {
+            Member = member;
+        }
+
+        #region property
+
+        public MemberInfo Member { get; }
+
+        #endregion
     }
 
     [Serializable]
@@ -31,8 +40,8 @@ namespace ContentTypeTextNet.Pe.Library.Property
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly", Justification = "<保留中>")]
     public sealed class PropertyCanNotReadException: PropertyCanNotAccessException
     {
-        public PropertyCanNotReadException(Type ownerType, string propertyName)
-            : base(ownerType, propertyName)
+        public PropertyCanNotReadException(Type ownerType, MemberInfo member)
+            : base(ownerType, member)
         { }
     }
 
@@ -41,8 +50,8 @@ namespace ContentTypeTextNet.Pe.Library.Property
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly", Justification = "<保留中>")]
     public sealed class PropertyCanNotWriteException: PropertyCanNotAccessException
     {
-        public PropertyCanNotWriteException(Type ownerType, string propertyName)
-            : base(ownerType, propertyName)
+        public PropertyCanNotWriteException(Type ownerType, MemberInfo member)
+            : base(ownerType, member)
         { }
     }
 
