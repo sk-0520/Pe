@@ -256,7 +256,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         {
             get
             {
-                return _ProjectDirectory ??= new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new TestException());
+                return _ProjectDirectory ??= new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new TestException("どうやって到達するのか知らん例外"));
             }
         }
 
