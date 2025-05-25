@@ -85,7 +85,6 @@ jobs:
 
       - name: <Delete> TEST Tag
         if: github.ref == 'refs/heads/ci-test'
-        runs-on: ubuntu-latest
         continue-on-error: true
         run: gh release delete "${{ steps.version.outputs.version }}" --cleanup-tag
         env:
