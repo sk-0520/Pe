@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Core.Models;
-using Prism.Commands;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.Views.Feedback
 {
@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Main.Views.Feedback
         #region command
 
         private ICommand? _CloseCommand;
-        public ICommand CloseCommand => this._CloseCommand ??= new DelegateCommand(
+        public ICommand CloseCommand => this._CloseCommand ??= CommandFactory.Create(
             () => Close()
         );
 

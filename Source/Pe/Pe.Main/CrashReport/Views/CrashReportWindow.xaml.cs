@@ -3,8 +3,8 @@ using System.Windows;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using Prism.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.CrashReport.Views
 {
@@ -26,7 +26,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Views
         #region command
 
         private ICommand? _CloseCommand;
-        public ICommand CloseCommand => this._CloseCommand ??= new DelegateCommand(
+        public ICommand CloseCommand => this._CloseCommand ??= CommandFactory.Create(
             () => Close()
         );
 

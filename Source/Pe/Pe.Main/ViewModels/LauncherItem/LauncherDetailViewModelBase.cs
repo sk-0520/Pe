@@ -10,8 +10,8 @@ using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem;
 using ContentTypeTextNet.Pe.Main.Models.KeyAction;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 using Microsoft.Extensions.Logging;
-using Prism.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 {
@@ -110,21 +110,21 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         #region command
 
         private ICommand? _LoadCommand;
-        public ICommand LoadCommand => this._LoadCommand ??= new DelegateCommand(
+        public ICommand LoadCommand => this._LoadCommand ??= CommandFactory.Create(
             async () => {
                 await LoadAsync(CancellationToken.None);
             }
         );
 
         private ICommand? _UnloadCommand;
-        public ICommand UnloadCommand => this._UnloadCommand ??= new DelegateCommand(
+        public ICommand UnloadCommand => this._UnloadCommand ??= CommandFactory.Create(
             () => {
                 UnloadAsync(CancellationToken.None);
             }
         );
 
         private ICommand? _ExecuteMainCommand;
-        public ICommand ExecuteMainCommand => this._ExecuteMainCommand ??= new DelegateCommand(
+        public ICommand ExecuteMainCommand => this._ExecuteMainCommand ??= CommandFactory.Create(
             () => {
                 _ = ExecuteMainAsync(CancellationToken.None);
             },
@@ -132,7 +132,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         );
 
         private ICommand? _CustomizeCommand;
-        public ICommand CustomizeCommand => this._CustomizeCommand ??= new DelegateCommand(
+        public ICommand CustomizeCommand => this._CustomizeCommand ??= CommandFactory.Create(
             async () => {
                 await Model.OpenCustomizeViewAsync(Screen, CancellationToken.None);
             }

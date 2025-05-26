@@ -105,84 +105,84 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
         #region command
 
         private ICommand? _OpenLicenseCommand;
-        public ICommand OpenLicenseCommand => this._OpenLicenseCommand ??= new DelegateCommand<AboutComponentItemViewModel>(
+        public ICommand OpenLicenseCommand => this._OpenLicenseCommand ??= CommandFactory.Create<AboutComponentItemViewModel>(
             o => {
                 Model.OpenUri(o.LicenseUri);
             }
         );
 
         private ICommand? _OpenUriCommand;
-        public ICommand OpenUriCommand => this._OpenUriCommand ??= new DelegateCommand<AboutComponentItemViewModel>(
+        public ICommand OpenUriCommand => this._OpenUriCommand ??= CommandFactory.Create<AboutComponentItemViewModel>(
             o => {
                 Model.OpenUri(o.Uri);
             }
         );
 
         private ICommand? _OpenForumUriCommand;
-        public ICommand OpenForumUriCommand => this._OpenForumUriCommand ??= new DelegateCommand(
+        public ICommand OpenForumUriCommand => this._OpenForumUriCommand ??= CommandFactory.Create(
             () => {
                 Model.OpenForumUri();
             }
         );
 
         private ICommand? _OpenRepositoryUriCommand;
-        public ICommand OpenRepositoryUriCommand => this._OpenRepositoryUriCommand ??= new DelegateCommand(
+        public ICommand OpenRepositoryUriCommand => this._OpenRepositoryUriCommand ??= CommandFactory.Create(
             () => {
                 Model.OpenRepositoryUri();
             }
         );
 
         private ICommand? _OpenWebsiteUriCommand;
-        public ICommand OpenWebsiteUriCommand => this._OpenWebsiteUriCommand ??= new DelegateCommand(
+        public ICommand OpenWebsiteUriCommand => this._OpenWebsiteUriCommand ??= CommandFactory.Create(
             () => {
                 Model.OpenWebsiteUri();
             }
         );
 
         private ICommand? _CopyShortInformationCommand;
-        public ICommand CopyShortInformationCommand => this._CopyShortInformationCommand ??= new DelegateCommand(
+        public ICommand CopyShortInformationCommand => this._CopyShortInformationCommand ??= CommandFactory.Create(
             () => {
                 Model.CopyShortInformation();
             }
         );
 
         private ICommand? _CopyLongInformationCommand;
-        public ICommand CopyLongInformationCommand => this._CopyLongInformationCommand ??= new DelegateCommand(
+        public ICommand CopyLongInformationCommand => this._CopyLongInformationCommand ??= CommandFactory.Create(
             () => {
                 Model.CopyLongInformation();
             }
         );
 
         private ICommand? _OpenApplicationDirectoryCommand;
-        public ICommand OpenApplicationDirectoryCommand => this._OpenApplicationDirectoryCommand ??= new DelegateCommand(
+        public ICommand OpenApplicationDirectoryCommand => this._OpenApplicationDirectoryCommand ??= CommandFactory.Create(
             () => {
                 Model.OpenApplicationDirectory();
             }
         );
 
         private ICommand? _OpenUserDirectoryCommand;
-        public ICommand OpenUserDirectoryCommand => this._OpenUserDirectoryCommand ??= new DelegateCommand(
+        public ICommand OpenUserDirectoryCommand => this._OpenUserDirectoryCommand ??= CommandFactory.Create(
             () => {
                 Model.OpenUserDirectory();
             }
         );
 
         private ICommand? _OpenMachineDirectoryCommand;
-        public ICommand OpenMachineDirectoryCommand => this._OpenMachineDirectoryCommand ??= new DelegateCommand(
+        public ICommand OpenMachineDirectoryCommand => this._OpenMachineDirectoryCommand ??= CommandFactory.Create(
             () => {
                 Model.OpenMachineDirectory();
             }
         );
 
         private ICommand? _OpenTemporaryDirectoryCommand;
-        public ICommand OpenTemporaryDirectoryCommand => this._OpenTemporaryDirectoryCommand ??= new DelegateCommand(
+        public ICommand OpenTemporaryDirectoryCommand => this._OpenTemporaryDirectoryCommand ??= CommandFactory.Create(
             () => {
                 Model.OpenTemporaryDirectory();
             }
         );
 
         private ICommand? _OutputSettingCommand;
-        public ICommand OutputSettingCommand => this._OutputSettingCommand ??= new DelegateCommand(
+        public ICommand OutputSettingCommand => this._OutputSettingCommand ??= CommandFactory.Create(
             () => {
                 var dialogRequester = new DialogRequester(LoggerFactory);
                 dialogRequester.SelectFile(
@@ -207,7 +207,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 
 #if DEBUG
         private ICommand? _DebugOutputSettingCommand;
-        public ICommand DebugOutputSettingCommand => this._DebugOutputSettingCommand ??= new DelegateCommand(
+        public ICommand DebugOutputSettingCommand => this._DebugOutputSettingCommand ??= CommandFactory.Create(
             () => {
                 try {
                     var path = "x:\\a.html";
@@ -221,7 +221,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 #endif
 
         private ICommand? _SelectUninstallBatchFilePathCommand;
-        public ICommand SelectUninstallBatchFilePathCommand => this._SelectUninstallBatchFilePathCommand ??= new DelegateCommand(
+        public ICommand SelectUninstallBatchFilePathCommand => this._SelectUninstallBatchFilePathCommand ??= CommandFactory.Create(
              () => {
                  var dialogRequester = new DialogRequester(LoggerFactory);
                  dialogRequester.SelectFile(
@@ -244,7 +244,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
          );
 
         private ICommand? _CreateUninstallBatchCommand;
-        public ICommand CreateUninstallBatchCommand => this._CreateUninstallBatchCommand ??= new DelegateCommand(
+        public ICommand CreateUninstallBatchCommand => this._CreateUninstallBatchCommand ??= CommandFactory.Create(
             () => {
                 if(Model.CheckCreateUninstallBatch(UninstallBatchFilePath, UninstallTargets)) {
                     try {

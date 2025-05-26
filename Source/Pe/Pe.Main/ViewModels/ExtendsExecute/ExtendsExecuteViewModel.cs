@@ -22,12 +22,12 @@ using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Extensions.Logging;
-using Prism.Commands;
 using ContentTypeTextNet.Pe.Library.Common;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
 using System.Threading;
 using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 {
@@ -221,7 +221,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
         #region command
 
         private ICommand? _ExecuteCommand;
-        public ICommand ExecuteCommand => this._ExecuteCommand ??= new DelegateCommand(
+        public ICommand ExecuteCommand => this._ExecuteCommand ??= CommandFactory.Create(
             () => {
                 if(Validate()) {
                     ExecuteAsync(CancellationToken.None);
@@ -231,7 +231,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
         );
 
         private ICommand? _OptionFileSelectCommand;
-        public ICommand OptionFileSelectCommand => this._OptionFileSelectCommand ??= new DelegateCommand(
+        public ICommand OptionFileSelectCommand => this._OptionFileSelectCommand ??= CommandFactory.Create(
             () => {
                 var environmentExecuteFile = new EnvironmentExecuteFile(LoggerFactory);
                 var exeExtensions = environmentExecuteFile.GetSystemExecuteExtensions(true);
@@ -250,7 +250,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
          );
 
         private ICommand? _OptionDirectorySelectCommand;
-        public ICommand OptionDirectorySelectCommand => this._OptionDirectorySelectCommand ??= new DelegateCommand(
+        public ICommand OptionDirectorySelectCommand => this._OptionDirectorySelectCommand ??= CommandFactory.Create(
             () => {
                 var dialogRequester = new DialogRequester(LoggerFactory);
                 dialogRequester.SelectDirectory(
@@ -264,7 +264,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
         );
 
         private ICommand? _WorkDirectorySelectCommand;
-        public ICommand WorkDirectorySelectCommand => this._WorkDirectorySelectCommand ??= new DelegateCommand(
+        public ICommand WorkDirectorySelectCommand => this._WorkDirectorySelectCommand ??= CommandFactory.Create(
             () => {
                 var dialogRequester = new DialogRequester(LoggerFactory);
                 dialogRequester.SelectDirectory(
@@ -278,7 +278,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
         );
 
         private ICommand? _RemoveHistoryCommand;
-        public ICommand RemoveHistoryCommand => this._RemoveHistoryCommand ??= new DelegateCommand<HistoryViewModel>(
+        public ICommand RemoveHistoryCommand => this._RemoveHistoryCommand ??= CommandFactory.Create<HistoryViewModel>(
             o => {
                 var removed = Model.RemoveHistory(o.Kind, o.LastExecuteTimestamp);
                 var items = o.Kind switch {

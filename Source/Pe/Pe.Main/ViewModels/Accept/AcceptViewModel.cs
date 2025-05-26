@@ -13,8 +13,8 @@ using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.Accept;
 using ContentTypeTextNet.Pe.Main.Views.Accept;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 using Microsoft.Extensions.Logging;
-using Prism.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Accept
 {
@@ -55,7 +55,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Accept
         #region command
 
         private ICommand? _OpenUriCommand;
-        public ICommand OpenUriCommand => this._OpenUriCommand ??= new DelegateCommand<string>(
+        public ICommand OpenUriCommand => this._OpenUriCommand ??= CommandFactory.Create<string>(
            (o) => {
                try {
                    var uri = new Uri(o);
@@ -83,7 +83,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Accept
         #region IDialogCommand
 
         private ICommand? _AffirmativeCommand;
-        public ICommand AffirmativeCommand => this._AffirmativeCommand ??= new DelegateCommand(
+        public ICommand AffirmativeCommand => this._AffirmativeCommand ??= CommandFactory.Create(
             () => {
                 ThrowIfDisposed();
 
@@ -93,7 +93,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Accept
         );
 
         private ICommand? _NegativeCommand;
-        public ICommand NegativeCommand => this._NegativeCommand ??= new DelegateCommand(
+        public ICommand NegativeCommand => this._NegativeCommand ??= CommandFactory.Create(
             () => {
                 ThrowIfDisposed();
 

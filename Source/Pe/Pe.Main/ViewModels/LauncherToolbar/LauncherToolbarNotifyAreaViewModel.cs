@@ -10,8 +10,8 @@ using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 using Microsoft.Extensions.Logging;
-using Prism.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 {
@@ -80,7 +80,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         public bool MenuIsChecked => Model.IsVisible;
 
         private ICommand? _MenuCommand;
-        public ICommand MenuCommand => this._MenuCommand ??= new DelegateCommand(
+        public ICommand MenuCommand => this._MenuCommand ??= CommandFactory.Create(
              () => {
                  var isVisible = Model.IsVisible;
                  Model.ChangeVisibleDelaySave(!isVisible);

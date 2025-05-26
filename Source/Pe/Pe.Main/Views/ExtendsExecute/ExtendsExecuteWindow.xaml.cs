@@ -5,8 +5,8 @@ using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 using Microsoft.Extensions.Logging;
-using Prism.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.Views.ExtendsExecute
 {
@@ -33,12 +33,12 @@ namespace ContentTypeTextNet.Pe.Main.Views.ExtendsExecute
         #region command
 
         private ICommand? _CloseCommand;
-        public ICommand CloseCommand => this._CloseCommand ??= new DelegateCommand(
+        public ICommand CloseCommand => this._CloseCommand ??= CommandFactory.Create(
             () => Close()
         );
 
         private ICommand? _FileSelectCommand;
-        public ICommand FileSelectCommand => this._FileSelectCommand ??= new DelegateCommand<RequestEventArgs>(
+        public ICommand FileSelectCommand => this._FileSelectCommand ??= CommandFactory.Create<RequestEventArgs>(
             o => {
                 DialogRequestReceiver.ReceiveFileSystemSelectDialogRequest(o);
             }
