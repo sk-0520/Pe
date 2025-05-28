@@ -544,40 +544,6 @@
           </Style.Triggers>
         </Style>
       </ToggleButton.Style>
-      <ToggleButton.ToolTip>
-        <ToolTip x:Name="appGroup">
-          <ToolTip.Style>
-            <Style TargetType="ToolTip" BasedOn="{StaticResource LauncherItemTooltip}">
-              <Style.Triggers>
-                <DataTrigger Value="True">
-                  <DataTrigger.Binding>
-                    <MultiBinding Converter="{StaticResource LogicalMultiOrConverter}">
-                      <Binding Path="IsMouseOver" Mode="OneWay" ElementName="appButton" />
-                      <Binding Path="IsMouseOver" Mode="OneWay" ElementName="appGroup" />
-                    </MultiBinding>
-                  </DataTrigger.Binding>
-                  <Setter Property="IsOpen" Value="True" />
-                </DataTrigger>
-              </Style.Triggers>
-            </Style>
-          </ToolTip.Style>
-          <Border Style="{StaticResource PopupMenuBorder}">
-            <StackPanel>
-              <ScrollViewer>
-                <StackPanel>
-                  <ItemsControl ItemsSource="{Binding LauncherGroupItems}">
-                    <ItemsControl.ItemTemplate>
-                      <DataTemplate>
-                        <MenuItem Style="{StaticResource GroupMenuItem}" />
-                      </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                  </ItemsControl>
-                </StackPanel>
-              </ScrollViewer>
-            </StackPanel>
-          </Border>
-        </ToolTip>
-      </ToggleButton.ToolTip>
       <Grid>
         <app_main_views_lt:LauncherContentControl Title="{Binding DataContext.SelectedLauncherGroup.Name, ElementName=root}">
           <app_main_views_lt:LauncherContentControl.Icon>
@@ -651,6 +617,53 @@
             </StackPanel>
           </Border>
         </Popup>
+
+        <Popup x:Name="appGroup">
+          <Popup.Style>
+            <Style TargetType="Popup">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding ToolbarPosition}" Value="Left">
+                  <Setter Property="Placement" Value="Right" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ToolbarPosition}" Value="Right">
+                  <Setter Property="Placement" Value="Left" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ToolbarPosition}" Value="Top">
+                  <Setter Property="Placement" Value="Bottom" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ToolbarPosition}" Value="Bottom">
+                  <Setter Property="Placement" Value="Top" />
+                </DataTrigger>
+
+                <DataTrigger Value="True">
+                  <DataTrigger.Binding>
+                    <MultiBinding Converter="{StaticResource LogicalMultiOrConverter}">
+                      <Binding Path="IsMouseOver" Mode="OneWay" ElementName="appButton" />
+                      <Binding Path="IsMouseOver" Mode="OneWay" ElementName="appGroup" />
+                    </MultiBinding>
+                  </DataTrigger.Binding>
+                  <Setter Property="IsOpen" Value="True" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Popup.Style>
+          <Border Style="{StaticResource PopupMenuBorder}">
+            <StackPanel>
+              <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                <StackPanel>
+                  <ItemsControl ItemsSource="{Binding LauncherGroupItems}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <MenuItem Style="{StaticResource GroupMenuItem}" />
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </ScrollViewer>
+            </StackPanel>
+          </Border>
+        </Popup>
+
       </Grid>
     </ToggleButton>
 
