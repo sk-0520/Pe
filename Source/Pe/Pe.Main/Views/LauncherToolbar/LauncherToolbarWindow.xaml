@@ -45,6 +45,7 @@
     <app_views_converter:IconBoxToHeightConverter x:Key="IconScaleToHeightConverter" />
     <app_views_converter:LogicalMultiEqualConverter x:Key="LogicalMultiEqualConverter" />
     <app_views_converter:EscapeAccessKeyConverter x:Key="EscapeAccessKeyConverter" />
+    <app_views_converter:LogicalMultiOrConverter x:Key="LogicalMultiOrConverter" />
 
     <app_main_views_converter:TitleConverter x:Key="TitleConverter" />
 
@@ -543,6 +544,40 @@
           </Style.Triggers>
         </Style>
       </ToggleButton.Style>
+      <ToggleButton.ToolTip>
+        <ToolTip x:Name="appGroup">
+          <ToolTip.Style>
+            <Style TargetType="ToolTip" BasedOn="{StaticResource LauncherItemTooltip}">
+              <Style.Triggers>
+                <DataTrigger Value="True">
+                  <DataTrigger.Binding>
+                    <MultiBinding Converter="{StaticResource LogicalMultiOrConverter}">
+                      <Binding Path="IsMouseOver" Mode="OneWay" ElementName="appButton" />
+                      <Binding Path="IsMouseOver" Mode="OneWay" ElementName="appGroup" />
+                    </MultiBinding>
+                  </DataTrigger.Binding>
+                  <Setter Property="IsOpen" Value="True" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </ToolTip.Style>
+          <Border Style="{StaticResource PopupMenuBorder}">
+            <StackPanel>
+              <ScrollViewer>
+                <StackPanel>
+                  <ItemsControl ItemsSource="{Binding LauncherGroupItems}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate>
+                        <MenuItem Style="{StaticResource GroupMenuItem}" />
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </ScrollViewer>
+            </StackPanel>
+          </Border>
+        </ToolTip>
+      </ToggleButton.ToolTip>
       <Grid>
         <app_main_views_lt:LauncherContentControl Title="{Binding DataContext.SelectedLauncherGroup.Name, ElementName=root}">
           <app_main_views_lt:LauncherContentControl.Icon>
