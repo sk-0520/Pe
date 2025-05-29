@@ -618,7 +618,7 @@
           </Border>
         </Popup>
 
-        <Popup x:Name="appGroup" IsOpen="{Binding IsOpenedAppGroupMenu, Mode=OneWay}">
+        <Popup x:Name="appGroup" IsOpen="{Binding IsOpenedAppGroupMenu, Mode=OneWay}" PlacementTarget="{Binding ElementName=appButton}">
           <Popup.Style>
             <Style TargetType="Popup">
               <Style.Triggers>

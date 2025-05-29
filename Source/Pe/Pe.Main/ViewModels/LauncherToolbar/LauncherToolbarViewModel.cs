@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private LauncherDetailViewModelBase? _contextMenuOpenedItem;
         private bool _showWaiting;
-        private bool _isOpenedAppGroupMenu = true;
+        private bool _isOpenedAppGroupMenu;
 
         #endregion
 
@@ -730,8 +730,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 window.Visibility = Visibility.Collapsed;
             }
 
+            var view = (LauncherToolbarWindow)window;
+            view.appButton.MouseEnter += AppGroupMenuElement_MouseEnter;
+            view.appButton.MouseLeave += AppGroupMenu_MouseLeave;
+            view.appGroup.MouseEnter += AppGroupMenuElement_MouseEnter;
+            view.appGroup.MouseLeave += AppGroupMenu_MouseLeave;
+
             return Task.CompletedTask;
         }
+
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)
         {
@@ -811,5 +818,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 AutoHideShowWaitTimer = null;
             }
         }
+
+        private void AppGroupMenuElement_MouseEnter(object sender, MouseEventArgs e)
+        {
+            IsOpenedAppGroupMenu = true;
+        }
+
+        private void AppGroupMenu_MouseLeave(object sender, MouseEventArgs e)
+        {
+            IsOpenedAppGroupMenu = false;
+        }
+
     }
 }
