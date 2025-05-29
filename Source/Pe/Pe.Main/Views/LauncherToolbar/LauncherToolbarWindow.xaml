@@ -618,7 +618,7 @@
           </Border>
         </Popup>
 
-        <Popup x:Name="appGroup">
+        <Popup x:Name="appGroup" IsOpen="{Binding IsOpenedAppGroupMenu, Mode=OneWay}">
           <Popup.Style>
             <Style TargetType="Popup">
               <Style.Triggers>
@@ -635,15 +635,16 @@
                   <Setter Property="Placement" Value="Top" />
                 </DataTrigger>
 
-                <DataTrigger Value="True">
+                <!--<DataTrigger Value="True">
                   <DataTrigger.Binding>
                     <MultiBinding Converter="{StaticResource LogicalMultiOrConverter}">
+                      <Binding Path="IsVisibleAppGroupMenu" Mode="OneWay" />
                       <Binding Path="IsMouseOver" Mode="OneWay" ElementName="appButton" />
                       <Binding Path="IsMouseOver" Mode="OneWay" ElementName="appGroup" />
                     </MultiBinding>
                   </DataTrigger.Binding>
                   <Setter Property="IsOpen" Value="True" />
-                </DataTrigger>
+                </DataTrigger>-->
               </Style.Triggers>
             </Style>
           </Popup.Style>

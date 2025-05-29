@@ -50,6 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private LauncherDetailViewModelBase? _contextMenuOpenedItem;
         private bool _showWaiting;
+        private bool _isOpenedAppGroupMenu = true;
 
         #endregion
 
@@ -235,6 +236,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         public LauncherGroupPosition GroupMenuPosition => Model.GroupMenuPosition;
 
         private LauncherToolbarIconMaker IconMaker { get; } = new LauncherToolbarIconMaker();
+
+        public bool IsOpenedAppGroupMenu
+        {
+            get => this._isOpenedAppGroupMenu;
+            set => SetProperty(ref this._isOpenedAppGroupMenu, value);
+        }
 
         #region theme
 
