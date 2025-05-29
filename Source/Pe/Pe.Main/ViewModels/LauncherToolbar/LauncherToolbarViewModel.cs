@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private LauncherDetailViewModelBase? _contextMenuOpenedItem;
         private bool _showWaiting;
-        private bool _isOpenedAppGroupMenu;
+        private LauncherGroupId _temporarySelectionLauncherGroupId;
 
         #endregion
 
@@ -237,10 +237,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private LauncherToolbarIconMaker IconMaker { get; } = new LauncherToolbarIconMaker();
 
-        public bool IsOpenedAppGroupMenu
+        public LauncherGroupId TemporarySelectionLauncherGroupId
         {
-            get => this._isOpenedAppGroupMenu;
-            set => SetProperty(ref this._isOpenedAppGroupMenu, value);
+            get => this._temporarySelectionLauncherGroupId;
+            set => SetProperty(ref this._temporarySelectionLauncherGroupId, value);
         }
 
         #region theme
