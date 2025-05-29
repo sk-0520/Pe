@@ -730,11 +730,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 window.Visibility = Visibility.Collapsed;
             }
 
-            var view = (LauncherToolbarWindow)window;
-            view.appButton.MouseEnter += AppGroupMenuElement_MouseEnter;
-            view.appButton.MouseLeave += AppGroupMenu_MouseLeave;
-            view.appGroup.MouseEnter += AppGroupMenuElement_MouseEnter;
-            view.appGroup.MouseLeave += AppGroupMenu_MouseLeave;
+            //var view = (LauncherToolbarWindow)window;
+            //view.appButton.MouseEnter += AppGroupMenuElement_MouseEnter;
+            //view.appButton.MouseLeave += AppGroupMenu_MouseLeave;
+            //view.appGroup.MouseEnter += AppGroupMenuElement_MouseEnter;
+            //view.appGroup.MouseLeave += AppGroupMenu_MouseLeave;
 
             return Task.CompletedTask;
         }
@@ -819,15 +819,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             }
         }
 
-        private void AppGroupMenuElement_MouseEnter(object sender, MouseEventArgs e)
-        {
-            IsOpenedAppGroupMenu = true;
-        }
+        //private void AppGroupMenuElement_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    IsOpenedAppGroupMenu = true;
+        //}
 
-        private void AppGroupMenu_MouseLeave(object sender, MouseEventArgs e)
-        {
-            IsOpenedAppGroupMenu = false;
-        }
+        //private void AppGroupMenu_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    IsOpenedAppGroupMenu = false;
+        //}
 
     }
 }

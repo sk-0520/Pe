@@ -544,6 +544,34 @@
           </Style.Triggers>
         </Style>
       </ToggleButton.Style>
+      <ToggleButton.ToolTip>
+        <ToolTip>
+          <ToolTip.Style>
+            <Style TargetType="ToolTip" BasedOn="{StaticResource LauncherItemTooltip}">
+
+            </Style>
+          </ToolTip.Style>
+          <StackPanel>
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+              <StackPanel>
+                <ItemsControl ItemsSource="{Binding LauncherGroupItems}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <MenuItem>
+                        <MenuItem.Style>
+                          <Style TargetType="MenuItem" BasedOn="{StaticResource GroupMenuItem}">
+                            
+                          </Style>
+                        </MenuItem.Style>
+                      </MenuItem>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </ScrollViewer>
+          </StackPanel>
+        </ToolTip>
+      </ToggleButton.ToolTip>
       <Grid>
         <app_main_views_lt:LauncherContentControl Title="{Binding DataContext.SelectedLauncherGroup.Name, ElementName=root}">
           <app_main_views_lt:LauncherContentControl.Icon>
@@ -618,6 +646,7 @@
           </Border>
         </Popup>
 
+        <!--
         <Popup x:Name="appGroup" IsOpen="{Binding IsOpenedAppGroupMenu, Mode=OneWay}" PlacementTarget="{Binding ElementName=appButton}">
           <Popup.Style>
             <Style TargetType="Popup">
@@ -635,7 +664,8 @@
                   <Setter Property="Placement" Value="Top" />
                 </DataTrigger>
 
-                <!--<DataTrigger Value="True">
+                -->
+        <!--<DataTrigger Value="True">
                   <DataTrigger.Binding>
                     <MultiBinding Converter="{StaticResource LogicalMultiOrConverter}">
                       <Binding Path="IsVisibleAppGroupMenu" Mode="OneWay" />
@@ -645,6 +675,7 @@
                   </DataTrigger.Binding>
                   <Setter Property="IsOpen" Value="True" />
                 </DataTrigger>-->
+        <!--
               </Style.Triggers>
             </Style>
           </Popup.Style>
@@ -664,6 +695,7 @@
             </StackPanel>
           </Border>
         </Popup>
+        -->
 
       </Grid>
     </ToggleButton>
