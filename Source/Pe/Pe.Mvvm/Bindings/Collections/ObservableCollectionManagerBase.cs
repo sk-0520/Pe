@@ -16,7 +16,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
     /// <remarks>
     /// <para>原則このクラスは使用せず、<see cref="ModelViewModelObservableCollectionOptions{TModel, TViewModel}"/>の使用を想定している。ただし実装上一本にまとめると複雑になるために本クラスを継承元として分割している。</para>
     /// </remarks>
-    public abstract class ObservableCollectionManagerBase<TValue>: BindModelBase
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1710:識別子は、正しいサフィックスを含んでいなければなりません", Justification = "<保留中>")]
+    public abstract class ObservableCollectionManagerBase<TValue>: BindModelBase, IReadOnlyCollection<TValue>
     {
         private ObservableCollectionManagerBase(IReadOnlyList<TValue> collection, INotifyCollectionChanged collectionNotifyCollectionChanged)
         {
@@ -206,9 +207,26 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         #endregion
 
+        #region IReadOnlyCollection
+
+        public int Count => Collection.Count;
+
+        public IEnumerator<TValue> GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        #endregion
+
         private void Collection_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             CollectionChanged(e);
         }
+
     }
 }

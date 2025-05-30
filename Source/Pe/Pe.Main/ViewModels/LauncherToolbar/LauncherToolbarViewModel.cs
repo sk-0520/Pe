@@ -386,6 +386,28 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
              }
          );
 
+        private ICommand? _AppGroupChangeCommand;
+        public ICommand AppGroupChangeCommand => this._AppGroupChangeCommand ??= new DelegateCommand<MouseWheelEventArgs>(
+            (ev) => {
+                Debug.Assert(SelectedLauncherGroup is not null);
+
+                var distance = (ev.Delta / Mouse.MouseWheelDeltaForOneLine) * -1; // 下に回した場合は次のグループなんや
+                if(distance == 0) {
+                    return;
+                }
+
+                var currentIndex = LauncherGroupCollection.IndexOf(SelectedLauncherGroup);
+                var nextIndex = LauncherGroupCollection.GetNextIndex(
+                     currentIndex,
+                     distance
+                 );
+                Logger.LogDebug("{CurrentIndex} {Distance} {NextIndex}", currentIndex, distance, nextIndex);
+                var nextGroup = LauncherGroupCollection.ViewModels[nextIndex];
+                ChangeLauncherGroup(nextGroup);
+            }
+        );
+
+
         #endregion
 
         #region function

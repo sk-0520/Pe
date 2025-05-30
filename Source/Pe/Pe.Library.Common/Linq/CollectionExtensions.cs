@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Linq
 {
@@ -35,6 +36,34 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
             foreach(var item in collection) {
                 source.Add(item);
             }
+        }
+
+        /// <summary>
+        /// 次のインデックスを取得する。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="startIndex">開始インデックス。</param>
+        /// <param name="distance">進める距離。</param>
+        /// <returns></returns>
+        public static int GetNextIndex<T>(this IReadOnlyCollection<T> source, int startIndex, int distance)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+            // startIndex < 0 
+            ArgumentOutOfRangeException.ThrowIfLessThan(startIndex, 0);
+            // startIndex > source.Count-1
+            ArgumentOutOfRangeException.ThrowIfGreaterThan(startIndex, source.Count - 1);
+
+            if(distance == 0) {
+                return startIndex;
+            }
+
+            var result = (startIndex + distance) % source.Count;
+            if(result < 0) {
+                result += source.Count;
+            }
+
+            return result;
         }
     }
 }
