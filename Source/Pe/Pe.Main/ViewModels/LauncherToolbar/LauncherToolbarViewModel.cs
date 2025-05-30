@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private LauncherDetailViewModelBase? _contextMenuOpenedItem;
         private bool _showWaiting;
-        private LauncherGroupId _temporarySelectionLauncherGroupId;
+        private LauncherGroupViewModel? _temporarySelectionLauncherGroup;
 
         #endregion
 
@@ -110,7 +110,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             PlatformThemeLoader.Changed += PlatformThemeLoader_Changed;
             ThemeProperties = new ThemeProperties(this);
 
-            ApplyTemporarySelectionLauncherGroupDelayAction = new DelayAction(nameof(ApplyTemporarySelectionLauncherGroupDelayAction), TimeSpan.FromMilliseconds(500), LoggerFactory);
+            ApplyTemporarySelectionLauncherGroupDelayAction = new DelayAction(nameof(ApplyTemporarySelectionLauncherGroupDelayAction), TimeSpan.FromMilliseconds(250), LoggerFactory);
         }
 
         #region property
@@ -226,6 +226,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             {
                 if(Model?.SelectedLauncherGroup != null) {
                     if(LauncherGroupCollection.TryGetViewModel(Model.SelectedLauncherGroup, out var result)) {
+                        if(TemporarySelectionLauncherGroup is null) {
+                            TemporarySelectionLauncherGroup = result;
+                        }
                         return result;
                     }
                 }
@@ -239,13 +242,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private LauncherToolbarIconMaker IconMaker { get; } = new LauncherToolbarIconMaker();
 
-        public LauncherGroupId TemporarySelectionLauncherGroupId
+        public LauncherGroupViewModel? TemporarySelectionLauncherGroup
         {
-            get => this._temporarySelectionLauncherGroupId;
-            set => SetProperty(ref this._temporarySelectionLauncherGroupId, value);
+            get => this._temporarySelectionLauncherGroup;
+            set => SetProperty(ref this._temporarySelectionLauncherGroup, value);
         }
 
-        private DelayAction ApplyTemporarySelectionLauncherGroupDelayAction { get; } 
+        private DelayAction ApplyTemporarySelectionLauncherGroupDelayAction { get; }
 
         #region theme
 
@@ -394,23 +397,24 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         public ICommand AppGroupChangeCommand => this._AppGroupChangeCommand ??= new DelegateCommand<MouseWheelEventArgs>(
             (ev) => {
                 Debug.Assert(SelectedLauncherGroup is not null);
+                Debug.Assert(TemporarySelectionLauncherGroup is not null);
 
                 var distance = (ev.Delta / Mouse.MouseWheelDeltaForOneLine) * -1; // 下に回した場合は次のグループなんや
                 if(distance == 0) {
                     return;
                 }
 
-                var currentIndex = LauncherGroupCollection.IndexOf(SelectedLauncherGroup);
+                var temporaryIndex = LauncherGroupCollection.IndexOf(TemporarySelectionLauncherGroup);
                 var nextIndex = LauncherGroupCollection.GetNextIndex(
-                     currentIndex,
+                     temporaryIndex,
                      distance
                  );
-                Logger.LogDebug("{CurrentIndex} {Distance} {NextIndex}", currentIndex, distance, nextIndex);
+                Logger.LogDebug("{TemporaryIndex} {Distance} {NextIndex}", temporaryIndex, distance, nextIndex);
 
                 var nextGroup = LauncherGroupCollection.ViewModels[nextIndex];
                 if(nextGroup != SelectedLauncherGroup) {
-                    TemporarySelectionLauncherGroupId = nextGroup.LauncherGroupId;
-                    Logger.LogDebug("TemporarySelectionLauncherGroupId: {TemporarySelectionLauncherGroupId}", TemporarySelectionLauncherGroupId);
+                    TemporarySelectionLauncherGroup = nextGroup;
+                    Logger.LogDebug("TemporarySelectionLauncherGroup: {TemporarySelectionLauncherGroup}", TemporarySelectionLauncherGroup.LauncherGroupId);
                     ApplyTemporarySelectionLauncherGroupDelayAction.Callback(ApplyTemporarySelectionLauncherGroup);
                 }
             }
@@ -434,18 +438,20 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 }
 
                 // 実際のグループ変更を優先する
-                TemporarySelectionLauncherGroupId = targetGroup.LauncherGroupId;
+                TemporarySelectionLauncherGroup = targetGroup;
             }
         }
 
         private void ApplyTemporarySelectionLauncherGroup()
         {
-            var group = LauncherGroupCollection.ViewModels.FirstOrDefault(a => a.LauncherGroupId == TemporarySelectionLauncherGroupId);
-            if(group is not null && group != SelectedLauncherGroup) {
-                this.DispatcherWrapper.BeginAsync(() => {
-                    ChangeLauncherGroup(group);
-                });
-            }
+            Debug.Assert(TemporarySelectionLauncherGroup is not null);
+
+            this.DispatcherWrapper.BeginAsync(() => {
+                var groupIndex = LauncherGroupCollection.IndexOf(TemporarySelectionLauncherGroup);
+                Logger.LogDebug("groupIndex: {GroupIndex}", groupIndex);
+                var group = LauncherGroupCollection.ViewModels[groupIndex];
+                ChangeLauncherGroup(group);
+            });
         }
 
         private bool TryGetDragDataIsDetailViewModel(IDataObject data, [NotNullWhen(true)] out LauncherItemDragItem? result)
