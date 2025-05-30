@@ -570,7 +570,17 @@
                       <MenuItem>
                         <MenuItem.Style>
                           <Style TargetType="MenuItem" BasedOn="{StaticResource GroupMenuItem}">
-                            
+                            <Style.Triggers>
+                              <DataTrigger Value="True">
+                                <DataTrigger.Binding>
+                                  <MultiBinding Converter="{StaticResource LogicalMultiEqualConverter}">
+                                    <Binding Path="DataContext.TemporarySelectionLauncherGroup" Source="{x:Reference root}" />
+                                    <Binding Path="." />
+                                  </MultiBinding>
+                                </DataTrigger.Binding>
+                                <Setter Property="Effect" Value="{StaticResource Effect-Strong}" />
+                              </DataTrigger>
+                            </Style.Triggers>
                           </Style>
                         </MenuItem.Style>
                       </MenuItem>
