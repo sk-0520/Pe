@@ -109,6 +109,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
             PlatformThemeLoader.Changed += PlatformThemeLoader_Changed;
             ThemeProperties = new ThemeProperties(this);
+
+            ApplyTemporarySelectionLauncherGroupDelayAction = new DelayAction(nameof(ApplyTemporarySelectionLauncherGroupDelayAction), TimeSpan.FromMilliseconds(500), LoggerFactory);
         }
 
         #region property
@@ -242,6 +244,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             get => this._temporarySelectionLauncherGroupId;
             set => SetProperty(ref this._temporarySelectionLauncherGroupId, value);
         }
+
+        private DelayAction ApplyTemporarySelectionLauncherGroupDelayAction { get; } 
 
         #region theme
 
@@ -402,8 +406,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                      distance
                  );
                 Logger.LogDebug("{CurrentIndex} {Distance} {NextIndex}", currentIndex, distance, nextIndex);
+
                 var nextGroup = LauncherGroupCollection.ViewModels[nextIndex];
-                ChangeLauncherGroup(nextGroup);
+                if(nextGroup != SelectedLauncherGroup) {
+                    TemporarySelectionLauncherGroupId = nextGroup.LauncherGroupId;
+                    Logger.LogDebug("TemporarySelectionLauncherGroupId: {TemporarySelectionLauncherGroupId}", TemporarySelectionLauncherGroupId);
+                    ApplyTemporarySelectionLauncherGroupDelayAction.Callback(ApplyTemporarySelectionLauncherGroup);
+                }
             }
         );
 
@@ -423,6 +432,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 foreach(var vm in currentLauncherItems) {
                     vm.Dispose();
                 }
+
+                // 実際のグループ変更を優先する
+                TemporarySelectionLauncherGroupId = targetGroup.LauncherGroupId;
+            }
+        }
+
+        private void ApplyTemporarySelectionLauncherGroup()
+        {
+            var group = LauncherGroupCollection.ViewModels.FirstOrDefault(a => a.LauncherGroupId == TemporarySelectionLauncherGroupId);
+            if(group is not null && group != SelectedLauncherGroup) {
+                this.DispatcherWrapper.BeginAsync(() => {
+                    ChangeLauncherGroup(group);
+                });
             }
         }
 
