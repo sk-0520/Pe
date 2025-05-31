@@ -481,7 +481,16 @@
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
 
-    <ToggleButton x:Name="appButton" AllowDrop="True" IsChecked="{Binding IsOpenedAppMenu}" ContentTemplate="{StaticResource LauncherItemContentTemplate}" Template="{Binding DataContext.LauncherItemToggleButtonControlTemplate, ElementName=root}" IsEnabled="{Binding IsOpen, ElementName=appPopup, Converter={StaticResource LogicalNotConverter}}">
+    <ToggleButton
+      x:Name="appButton"
+      AllowDrop="True"
+      IsChecked="{Binding IsOpenedAppMenu}"
+      ContentTemplate="{StaticResource LauncherItemContentTemplate}"
+      Template="{Binding DataContext.LauncherItemToggleButtonControlTemplate, ElementName=root}"
+      IsEnabled="{Binding IsOpen, ElementName=appPopup, Converter={StaticResource LogicalNotConverter}}"
+      ToolTipService.InitialShowDelay="{Binding TemporaryGroupTooltipInitialShowDelayMilliseconds}"
+      ToolTipService.ShowDuration="{Binding TemporaryGroupTooltipShowDurationMilliseconds}"
+    >
       <behaviors:Interaction.Triggers>
         <behaviors:EventTrigger EventName="MouseWheel">
           <behaviors:InvokeCommandAction

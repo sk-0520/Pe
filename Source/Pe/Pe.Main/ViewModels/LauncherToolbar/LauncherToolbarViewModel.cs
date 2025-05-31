@@ -110,7 +110,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             PlatformThemeLoader.Changed += PlatformThemeLoader_Changed;
             ThemeProperties = new ThemeProperties(this);
 
-            ApplyTemporarySelectionLauncherGroupDelayAction = new DelayAction(nameof(ApplyTemporarySelectionLauncherGroupDelayAction), TimeSpan.FromMilliseconds(250), LoggerFactory);
+            TemporaryGroupTooltipInitialShowDelayMilliseconds = (int)LauncherToolbarConfiguration.TemporaryGroupTooltipInitialShowDelay.TotalMilliseconds;
+            TemporaryGroupTooltipShowDurationMilliseconds = (int)LauncherToolbarConfiguration.TemporaryGroupTooltipShowDuration.TotalMilliseconds;
+            TemporaryGroupApplyDelayAction = new DelayAction("temp group", LauncherToolbarConfiguration.TemporaryGroupApplyDelayTime, LoggerFactory);
         }
 
         #region property
@@ -248,7 +250,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             set => SetProperty(ref this._temporarySelectionLauncherGroup, value);
         }
 
-        private DelayAction ApplyTemporarySelectionLauncherGroupDelayAction { get; }
+        public int TemporaryGroupTooltipInitialShowDelayMilliseconds { get; }
+        public int TemporaryGroupTooltipShowDurationMilliseconds { get; }
+        private DelayAction TemporaryGroupApplyDelayAction { get; }
 
         #region theme
 
@@ -415,7 +419,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 if(nextGroup != SelectedLauncherGroup) {
                     TemporarySelectionLauncherGroup = nextGroup;
                     Logger.LogDebug("TemporarySelectionLauncherGroup: {TemporarySelectionLauncherGroup}", TemporarySelectionLauncherGroup.LauncherGroupId);
-                    ApplyTemporarySelectionLauncherGroupDelayAction.Callback(ApplyTemporarySelectionLauncherGroup);
+                    TemporaryGroupApplyDelayAction.Callback(ApplyTemporaryGroup);
                 }
             }
         );
@@ -442,7 +446,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             }
         }
 
-        private void ApplyTemporarySelectionLauncherGroup()
+        private void ApplyTemporaryGroup()
         {
             Debug.Assert(TemporarySelectionLauncherGroup is not null);
 
