@@ -415,12 +415,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                  );
                 Logger.LogDebug("{TemporaryIndex} {Distance} {NextIndex}", temporaryIndex, distance, nextIndex);
 
-                var nextGroup = LauncherGroupCollection.ViewModels[nextIndex];
-                if(nextGroup != SelectedLauncherGroup) {
-                    TemporarySelectionLauncherGroup = nextGroup;
-                    Logger.LogDebug("TemporarySelectionLauncherGroup: {TemporarySelectionLauncherGroup}", TemporarySelectionLauncherGroup.LauncherGroupId);
-                    TemporaryGroupApplyDelayAction.Callback(ApplyTemporaryGroup);
-                }
+                TemporarySelectionLauncherGroup = LauncherGroupCollection.ViewModels[nextIndex];
+                Logger.LogDebug("TemporarySelectionLauncherGroup: {LauncherGroupId}", TemporarySelectionLauncherGroup.LauncherGroupId);
+                TemporaryGroupApplyDelayAction.Callback(ApplyTemporaryGroup);
             }
         );
 
@@ -449,6 +446,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         private void ApplyTemporaryGroup()
         {
             Debug.Assert(TemporarySelectionLauncherGroup is not null);
+
+            if(TemporarySelectionLauncherGroup == SelectedLauncherGroup) {
+                Logger.LogTrace("同じグループのため無視: {LauncherGroupId}", TemporarySelectionLauncherGroup.LauncherGroupId);
+                return;
+            }
 
             this.DispatcherWrapper.BeginAsync(() => {
                 var groupIndex = LauncherGroupCollection.IndexOf(TemporarySelectionLauncherGroup);
