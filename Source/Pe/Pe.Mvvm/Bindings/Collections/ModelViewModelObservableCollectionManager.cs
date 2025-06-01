@@ -63,9 +63,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         /// </summary>
         public ReadOnlyObservableCollection<TViewModel> ViewModels => this._readOnlyViewModels ??= new ReadOnlyObservableCollection<TViewModel>(EditableViewModels);
 
-        /// <inheritdoc cref="ICollection{TViewModel}.Count"/>
-        public int Count => EditableViewModels.Count;
-
         #endregion
 
         #region function

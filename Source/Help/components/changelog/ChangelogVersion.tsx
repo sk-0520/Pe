@@ -88,7 +88,7 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 					{versionCommit !== undefined && (
 						<StyledVersionListItem sx={{ marginLeft: "1ch" }}>
 							<ChangelogReplaceLink
-								commit={{ prev: prevVersionCommit, current: versionCommit }}
+								diff={{ prev: prevVersionCommit, current: versionCommit }}
 							>
 								<DifferenceIcon sx={{ color: "white" }} />
 							</ChangelogReplaceLink>

@@ -1,5 +1,88 @@
 [
 	{
+		"date": "2025/06/01",
+		"version": "0.99.256",
+		"contents": [
+			{
+				"type": "features",
+				"logs": [
+					{
+						"revision": "4f0bd29e1923f37e9bf1d170687c659b11740a9f",
+						"subject": "#992: [FB:24] ツールバーのグループ切替について",
+						"comments": [
+							"ランチャーツールバー上の Pe アプリケーションボタンでマウスホイールをコロコロするとグループが切り替わります",
+							"ちなみに前後のグループ変更はマウスの4,5ボタンでも変更可能です(多分 0.84.0 くらいから, わからんけど)",
+							"あんまり設定で制御するのも忙しいのでアプリケーション構成ファイルで以下を変更可能にしています",
+							"ツールチップ表示までの時間: $.launcher_toolbar.temporary_group_tooltip_initial_show_delay",
+							"ツールチップ表示時間: $.launcher_toolbar.temporary_group_tooltip_show_duration",
+							"一時的なグループ選択の適用までの時間: $.launcher_toolbar.temporary_group_apply_delay_time",
+							"※RFC 9535"
+						]
+					}
+				]
+			},
+			{
+				"type": "fixes",
+				"logs": [
+					{
+						"revision": "5d091fb5e677f59e4bf9e6fb74e5b8ef1b8f375b",
+						"subject": "#995: 更新履歴差分の N.000 がダメ"
+					},
+					{
+						"revision": "d61fe652722a522b5597da47b00ab9d7fd30cddf",
+						"subject": "ヘルプ内の検索ページはルートに移動"
+					}
+				]
+			},
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "531da8067166273154ea35f043121774e4e1fc7f",
+						"subject": "update npm"
+					},
+					{
+						"revision": "9631cc26f3f5d5239083d4c3b1865e29935f1714",
+						"class": "nuget",
+						"subject": "Microsoft.Extensions.* 9.0.4 -> 9.0.5",
+						"comments": [
+							"Microsoft.Extensions.Configuration",
+							"Microsoft.Extensions.Configuration.Abstractions",
+							"Microsoft.Extensions.Configuration.Binder",
+							"Microsoft.Extensions.Configuration.FileExtensions",
+							"Microsoft.Extensions.Configuration.Json",
+							"Microsoft.Extensions.DependencyInjection",
+							"Microsoft.Extensions.DependencyInjection.Abstractions",
+							"Microsoft.Extensions.FileProviders.Abstractions",
+							"Microsoft.Extensions.FileProviders.Physical",
+							"Microsoft.Extensions.FileSystemGlobbing",
+							"Microsoft.Extensions.Logging",
+							"Microsoft.Extensions.Logging.Abstractions",
+							"Microsoft.Extensions.Options",
+							"Microsoft.Extensions.Primitives"
+						]
+					},
+					{
+						"revision": "fce72076a090eedec52f8c63fb3f4edbc493d66d",
+						"class": "nuget",
+						"subject": "System.* 9.0.4 -> 9.0.5",
+						"comments": [
+							"System.CodeDom",
+							"System.Management",
+							"System.Configuration.ConfigurationManager",
+							"System.Diagnostics.EventLog",
+							"System.DirectoryServices",
+							"System.DirectoryServices.AccountManagement",
+							"System.DirectoryServices.Protocols",
+							"System.Security.Cryptography.ProtectedData",
+							"System.Text.Encoding.CodePages"
+						]
+					}
+				]
+			}
+		]
+	},
+	{
 		"date": "2025/05/21",
 		"version": "0.99.255",
 		"contents": [

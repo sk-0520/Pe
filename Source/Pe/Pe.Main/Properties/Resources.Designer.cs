@@ -4593,6 +4593,15 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
+        ///   マウスホイールでグループ選択 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_LauncherToolbar_AppToolTip_Group_Header {
+            get {
+                return ResourceManager.GetString("String_LauncherToolbar_AppToolTip_Group_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   コピー に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_LauncherToolbar_FileContextMenu_Copy_Header {

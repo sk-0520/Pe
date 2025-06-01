@@ -18,7 +18,7 @@ namespace ContentTypeTextNet.Pe.Library.Property
             switch(member.Member) {
                 case PropertyInfo info:
                     if(!info.CanRead) {
-                        throw new PropertyCanNotReadException(owner.GetType(), member.Member.Name);
+                        throw new PropertyCanNotReadException(owner.GetType(), member.Member);
                     }
                     break;
 
@@ -66,13 +66,13 @@ namespace ContentTypeTextNet.Pe.Library.Property
             switch(member.Member) {
                 case PropertyInfo info:
                     if(!info.CanWrite) {
-                        throw new PropertyCanNotWriteException(owner.GetType(), member.Member.Name);
+                        throw new PropertyCanNotWriteException(owner.GetType(), member.Member);
                     }
                     break;
 
                 case FieldInfo info:
                     if(info.IsInitOnly) {
-                        throw new PropertyCanNotWriteException(owner.GetType(), member.Member.Name);
+                        throw new PropertyCanNotWriteException(owner.GetType(), member.Member);
                     }
                     break;
 

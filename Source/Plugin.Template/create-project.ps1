@@ -315,6 +315,10 @@ try {
 			directory = 'Pe\bridge'
 		},
 		@{
+			project = 'Pe.Library.Args'
+			directory = 'Pe\lib\library'
+		},
+		@{
 			project = 'Pe.Library.Common'
 			directory = 'Pe\lib\library'
 		},
@@ -329,6 +333,10 @@ try {
 		@{
 			project = 'Pe.Library.DependencyInjection'
 			directory = 'Pe\lib\library'
+		},
+		@{
+			project = 'Pe.Mvvm'
+			directory = 'Pe\lib'
 		},
 		@{
 			project = 'Pe.PInvoke'

@@ -13,6 +13,17 @@ namespace ContentTypeTextNet.Pe.CommonTest.Test
         #region function
 
         [Fact]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly", Justification = "<保留中>")]
+        public void InitializeMethod_Initialized_Test()
+        {
+            // 行番号をもとに一意としているため無理やり一意とする
+            // [Theory] なんかで同じテストを回す場合は workSuffix を使用する想定。
+            var line = 0;
+            TestIO.InitializeMethod(this, callerLineNumber: line);
+            Assert.Throws<TestIOInitializedException>(() => TestIO.InitializeMethod(this, callerLineNumber: line));
+        }
+
+        [Fact]
         public void InitializeMethod_Simple_Test()
         {
             var testIO = TestIO.InitializeMethod(this);
@@ -99,7 +110,7 @@ namespace ContentTypeTextNet.Pe.CommonTest.Test
         public void InitializeMethod_Data_GetFile_Throw_Test()
         {
             var testIO = TestIO.InitializeMethod(this);
-            Assert.Throws<TestException>(() => testIO.Data.GetFile("sub.txt"));
+            Assert.Throws<TestIOException>(() => testIO.Data.GetFile("sub.txt"));
         }
 
         [Fact]
@@ -117,7 +128,7 @@ namespace ContentTypeTextNet.Pe.CommonTest.Test
         public void InitializeMethod_Data_GetDirectory_Throw_Test()
         {
             var testIO = TestIO.InitializeMethod(this);
-            Assert.Throws<TestException>(() => testIO.Data.GetDirectory("sub"));
+            Assert.Throws<TestIOException>(() => testIO.Data.GetDirectory("sub"));
         }
 
         #endregion

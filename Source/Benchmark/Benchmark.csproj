@@ -10,6 +10,12 @@
     <StartupObject>Benchmark.Program</StartupObject>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <PredefinedCulturesOnly>false</PredefinedCulturesOnly>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="-Bench.cs.txt" />
   </ItemGroup>

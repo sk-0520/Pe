@@ -9,8 +9,8 @@ using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem;
 using ContentTypeTextNet.Pe.Main.Models.KeyAction;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 using Microsoft.Extensions.Logging;
-using Prism.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 {
@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         #region command
 
         private ICommand? _ExecuteSimpleCommand;
-        public ICommand ExecuteSimpleCommand => this._ExecuteSimpleCommand ??= new DelegateCommand(
+        public ICommand ExecuteSimpleCommand => this._ExecuteSimpleCommand ??= CommandFactory.Create(
             () => {
                 ExecuteMainAsync(CancellationToken.None).ConfigureAwait(false);
             },

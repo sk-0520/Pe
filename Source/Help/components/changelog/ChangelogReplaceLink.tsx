@@ -1,13 +1,13 @@
 import { Link } from "@mui/material";
 import { type FC, Fragment, type ReactNode } from "react";
-import { splitTokens } from "../../utils/changelog";
+import { convertTagFromVersion, splitTokens } from "../../utils/changelog";
 
 const IssueLink = "https://github.com/sk-0520/Pe/issues/";
 const DiffLink = "https://github.com/sk-0520/Pe/compare/";
 
 interface ChangelogReplaceLinkProps {
 	children: ReactNode | string;
-	commit?: {
+	diff?: {
 		prev: string;
 		current: string;
 	};
@@ -16,14 +16,14 @@ interface ChangelogReplaceLinkProps {
 export const ChangelogReplaceLink: FC<ChangelogReplaceLinkProps> = (
 	props: ChangelogReplaceLinkProps,
 ) => {
-	const { children, commit } = props;
+	const { children, diff } = props;
 
-	if (commit) {
+	if (diff) {
+		const prevTag = convertTagFromVersion(diff.prev);
+		const currentTag = convertTagFromVersion(diff.current);
+		const link = `${DiffLink + prevTag}...${currentTag}`;
 		return (
-			<Link
-				href={`${DiffLink + commit.prev}...${commit.current}`}
-				target="_blank"
-			>
+			<Link href={link} target="_blank">
 				{children}
 			</Link>
 		);

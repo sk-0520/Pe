@@ -12,7 +12,7 @@ using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem;
 using ContentTypeTextNet.Pe.Main.Models.KeyAction;
 using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
-using Prism.Commands;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 {
@@ -49,7 +49,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         #region command
 
         private ICommand? _ExecuteExtendsCommand;
-        public ICommand ExecuteExtendsCommand => this._ExecuteExtendsCommand ??= new DelegateCommand(
+        public ICommand ExecuteExtendsCommand => this._ExecuteExtendsCommand ??= CommandFactory.Create(
             () => {
                 Model.OpenExtendsExecuteViewAsync(Screen, CancellationToken.None);
             },
@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 
 
         private ICommand? _ExecuteSimpleCommand;
-        public ICommand ExecuteSimpleCommand => this._ExecuteSimpleCommand ??= new DelegateCommand(
+        public ICommand ExecuteSimpleCommand => this._ExecuteSimpleCommand ??= CommandFactory.Create(
             () => {
                 ExecuteMainAsync(CancellationToken.None).ConfigureAwait(false);
             },
@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         );
 
         private ICommand? _OpenParentDirectoryCommand;
-        public ICommand OpenParentDirectoryCommand => this._OpenParentDirectoryCommand ??= new DelegateCommand(
+        public ICommand OpenParentDirectoryCommand => this._OpenParentDirectoryCommand ??= CommandFactory.Create(
             () => {
                 Model.OpenParentDirectory();
             },
@@ -74,7 +74,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         );
 
         private ICommand? _CopyOptionCommand;
-        public ICommand CopyOptionCommand => this._CopyOptionCommand ??= new DelegateCommand(
+        public ICommand CopyOptionCommand => this._CopyOptionCommand ??= CommandFactory.Create(
             () => {
                 Model.CopyOption();
             },
@@ -82,7 +82,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         );
 
         private ICommand? _CopyExecutePathCommand;
-        public ICommand CopyExecutePathCommand => this._CopyExecutePathCommand ??= new DelegateCommand(
+        public ICommand CopyExecutePathCommand => this._CopyExecutePathCommand ??= CommandFactory.Create(
               () => {
                   Model.CopyExecutePath();
               },
@@ -90,7 +90,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
           );
 
         private ICommand? _CopyParentDirectoryCommand;
-        public ICommand CopyParentDirectoryCommand => this._CopyParentDirectoryCommand ??= new DelegateCommand(
+        public ICommand CopyParentDirectoryCommand => this._CopyParentDirectoryCommand ??= CommandFactory.Create(
              () => {
                  Model.CopyParentDirectory();
              },
@@ -98,7 +98,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
          );
 
         private ICommand? _OpenWorkingDirectoryCommand;
-        public ICommand OpenWorkingDirectoryCommand => this._OpenWorkingDirectoryCommand ??= new DelegateCommand(
+        public ICommand OpenWorkingDirectoryCommand => this._OpenWorkingDirectoryCommand ??= CommandFactory.Create(
             () => {
                 Model.OpenWorkingDirectory();
             },
@@ -106,7 +106,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         );
 
         private ICommand? _CopyWorkingDirectoryCommand;
-        public ICommand CopyWorkingDirectoryCommand => this._CopyWorkingDirectoryCommand ??= new DelegateCommand(
+        public ICommand CopyWorkingDirectoryCommand => this._CopyWorkingDirectoryCommand ??= CommandFactory.Create(
             () => {
                 Model.CopyWorkingDirectory();
             },
@@ -114,7 +114,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         );
 
         private ICommand? _ShowPropertyCommand;
-        public ICommand ShowPropertyCommand => this._ShowPropertyCommand ??= new DelegateCommand(
+        public ICommand ShowPropertyCommand => this._ShowPropertyCommand ??= CommandFactory.Create(
              () => {
                  Model.ShowProperty();
              },

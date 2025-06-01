@@ -12,9 +12,9 @@ using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.Feedback;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Extensions.Logging;
-using Prism.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Feedback
 {
@@ -65,14 +65,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Feedback
         #region command
 
         private ICommand? _ShowSourceUriCommand;
-        public ICommand ShowSourceUriCommand => this._ShowSourceUriCommand ??= new DelegateCommand(
+        public ICommand ShowSourceUriCommand => this._ShowSourceUriCommand ??= CommandFactory.Create(
              () => {
                  Model.ShowSourceUri();
              }
         );
 
         private ICommand? _SetTemplateCommand;
-        public ICommand SetTemplateCommand => this._SetTemplateCommand ??= new DelegateCommand(
+        public ICommand SetTemplateCommand => this._SetTemplateCommand ??= CommandFactory.Create(
             () => {
                 var text = SelectedFeedbackKind switch {
                     FeedbackKind.Bug => Properties.Resources.String_Feedback_Comment_Kind_Bug,
@@ -98,7 +98,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Feedback
         //));
 
         private ICommand? _SendCommand;
-        public ICommand SendCommand => this._SendCommand ??= new DelegateCommand(
+        public ICommand SendCommand => this._SendCommand ??= CommandFactory.Create(
             async () => {
                 if(Validate()) {
                     var data = new FeedbackInputData() {
@@ -113,7 +113,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Feedback
         );
 
         private ICommand? _CorrectCommand;
-        public ICommand CorrectCommand => this._CorrectCommand ??= new DelegateCommand(
+        public ICommand CorrectCommand => this._CorrectCommand ??= CommandFactory.Create(
              () => {
                  Model.Cancel();
              }

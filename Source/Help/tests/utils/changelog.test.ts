@@ -1,6 +1,7 @@
 import {
 	type Token,
 	type VersionInfo,
+	convertTagFromVersion,
 	splitTokens,
 	splitVersionInfos,
 } from "../../utils/changelog";
@@ -129,6 +130,27 @@ describe("splitTokens", () => {
 		"tokens: 期待値: [%o], 入力: [%s]",
 		(expected: VersionInfo[], input: string) => {
 			const actual = splitVersionInfos(input);
+			expect(actual).toEqual(expected);
+		},
+	);
+
+	test.each([
+		["", ""],
+		["0.0.0", "0.0.0"],
+		["0.00.000", "0.00.000"],
+		["0.83.0", "0.83.0"],
+		["0.84.0", "0.84.0"],
+		["0.84.00", "0.84.00"],
+		["0.84.0", "0.84.000"],
+		["0.99.096", "0.99.096"],
+		["0.100.0", "0.100.0"],
+		["ABC", "ABC"],
+		["A.B.C", "A.B.C"],
+		["1.2.3.4", "1.2.3.4"],
+	])(
+		"convertTagFromVersion: 期待値: [%s], 入力: [%s]",
+		(expected: string, input: string) => {
+			const actual = convertTagFromVersion(input);
 			expect(actual).toEqual(expected);
 		},
 	);

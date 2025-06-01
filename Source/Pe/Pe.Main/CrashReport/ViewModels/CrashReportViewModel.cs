@@ -9,8 +9,8 @@ using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.CrashReport.Models.Element;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using ContentTypeTextNet.Pe.Main.ViewModels;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 using Microsoft.Extensions.Logging;
-using Prism.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
 {
@@ -81,7 +81,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
         #region command
 
         private ICommand? _LoadedCommand;
-        public ICommand LoadedCommand => this._LoadedCommand ??= new DelegateCommand(
+        public ICommand LoadedCommand => this._LoadedCommand ??= CommandFactory.Create(
             () => {
                 if(AutoSend) {
                     AutoSendWaitTimer = new DispatcherTimer();
@@ -99,30 +99,30 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
         );
 
         private ICommand? _StopAutoSendCommand;
-        public ICommand StopAutoSendCommand => this._StopAutoSendCommand ??= new DelegateCommand(
+        public ICommand StopAutoSendCommand => this._StopAutoSendCommand ??= CommandFactory.Create(
             () => {
                 StopAutoSend();
             }
         );
 
         private ICommand? _ShowSourceUriCommand;
-        public ICommand ShowSourceUriCommand => this._ShowSourceUriCommand ??= new DelegateCommand(
+        public ICommand ShowSourceUriCommand => this._ShowSourceUriCommand ??= CommandFactory.Create(
              () => {
                  Model.ShowSourceUri();
              }
          );
 
         private ICommand? _SendCommand;
-        public ICommand SendCommand => this._SendCommand ??= new DelegateCommand(
-            () => {
+        public ICommand SendCommand => this._SendCommand ??= CommandFactory.Create(
+            async () => {
                 StopAutoSend();
 
-                Model.SendAsync(CancellationToken.None).ConfigureAwait(false);
+                await Model.SendAsync(CancellationToken.None).ConfigureAwait(false);
             }
         );
 
         private ICommand? _RebootCommand;
-        public ICommand RebootCommand => this._RebootCommand ??= new DelegateCommand(
+        public ICommand RebootCommand => this._RebootCommand ??= CommandFactory.Create(
             () => {
                 Model.Reboot();
                 CloseRequest.Send();
@@ -130,7 +130,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
         );
 
         private ICommand? _CancelCommand;
-        public ICommand CancelCommand => this._CancelCommand ??= new DelegateCommand(
+        public ICommand CancelCommand => this._CancelCommand ??= CommandFactory.Create(
              () => {
                  Model.Cancel();
              }
