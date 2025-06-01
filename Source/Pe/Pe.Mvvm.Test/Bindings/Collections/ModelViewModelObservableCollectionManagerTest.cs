@@ -77,7 +77,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings.Collections
                 ToViewModel = m => new ViewModel(m, NullLoggerFactory.Instance),
             });
             Assert.Empty(cm.Model);
-            Assert.Equal(0, cm.ViewModel.Count);
+            Assert.Empty(cm.ViewModel);
         }
 
         [Fact]
@@ -301,7 +301,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings.Collections
                 ToViewModel = m => new ViewModel(m, NullLoggerFactory.Instance),
             });
             cm.Model.Clear();
-            Assert.Equal(0, cm.ViewModel.Count);
+            Assert.Empty(cm.ViewModel);
         }
 
         [Fact]
@@ -319,7 +319,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings.Collections
                 }
             });
             cm.Model.Clear();
-            Assert.Equal(0, cm.ViewModel.Count);
+            Assert.Empty(cm.ViewModel);
         }
 
         [Fact]
@@ -332,7 +332,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings.Collections
                 }
             });
             cm.Model.Clear();
-            Assert.Equal(0, cm.ViewModel.Count);
+            Assert.Empty(cm.ViewModel);
         }
 
         #endregion

@@ -213,7 +213,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         public IEnumerator<TValue> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return Collection.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
