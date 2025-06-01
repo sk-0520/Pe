@@ -226,13 +226,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         {
             get
             {
-                if(Model?.SelectedLauncherGroup != null) {
-                    if(LauncherGroupCollection.TryGetViewModel(Model.SelectedLauncherGroup, out var result)) {
-                        if(TemporarySelectionLauncherGroup is null) {
-                            TemporarySelectionLauncherGroup = result;
-                        }
-                        return result;
+                if(Model?.SelectedLauncherGroup is null) {
+                    return null;
+                }
+
+                if(IsDisposed || LauncherGroupCollection.IsDisposed) {
+                    return null;
+                }
+
+                if(LauncherGroupCollection.TryGetViewModel(Model.SelectedLauncherGroup, out var result)) {
+                    if(TemporarySelectionLauncherGroup is null) {
+                        TemporarySelectionLauncherGroup = result;
                     }
+                    return result;
                 }
 
                 return null;
@@ -440,6 +446,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
                 // 実際のグループ変更を優先する
                 TemporarySelectionLauncherGroup = targetGroup;
+                // 一時グループ選択の待機中にグループ変更がある場合はユーザー入力のはずなので遅延処理破棄
+                TemporaryGroupApplyDelayAction.Clear();
             }
         }
 
@@ -453,10 +461,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             }
 
             this.DispatcherWrapper.BeginAsync(() => {
+                if(IsDisposed || LauncherGroupCollection.IsDisposed) {
+                    return;
+                }
+
                 var groupIndex = LauncherGroupCollection.IndexOf(TemporarySelectionLauncherGroup);
                 Logger.LogDebug("groupIndex: {GroupIndex}", groupIndex);
-                var group = LauncherGroupCollection.ViewModels[groupIndex];
-                ChangeLauncherGroup(group);
+                if(groupIndex != -1) {
+                    var group = LauncherGroupCollection.ViewModels[groupIndex];
+                    ChangeLauncherGroup(group);
+                }
             });
         }
 
@@ -837,6 +851,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                     LauncherItemCollection.Dispose();
                     LauncherGroupCollection.Dispose();
                     Font.Dispose();
+                    TemporaryGroupApplyDelayAction.Dispose();
                 }
 
             }
