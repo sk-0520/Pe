@@ -1,35 +1,13 @@
 [
 	{
-		"date": "YYYY/MM/DD",
-		"version": "0.99.255+",
+		"date": "2025/06/01",
+		"version": "0.99.256",
 		"contents": [
-			{
-				"type": "note",
-				"logs": [
-					{
-						"revision": "",
-						"class": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
 			{
 				"type": "features",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "4f0bd29e1923f37e9bf1d170687c659b11740a9f",
 						"subject": "#992: [FB:24] ツールバーのグループ切替について",
 						"comments": [
 							"ランチャーツールバー上の Pe アプリケーションボタンでマウスホイールをコロコロするとグループが切り替わります",
@@ -40,18 +18,6 @@
 							"一時的なグループ選択の適用までの時間: $.launcher_toolbar.temporary_group_apply_delay_time",
 							"※RFC 9535"
 						]
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -59,20 +25,12 @@
 				"type": "fixes",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "5d091fb5e677f59e4bf9e6fb74e5b8ef1b8f375b",
 						"subject": "#995: 更新履歴差分の N.000 がダメ"
 					},
 					{
-						"revision": "",
+						"revision": "d61fe652722a522b5597da47b00ab9d7fd30cddf",
 						"subject": "ヘルプ内の検索ページはルートに移動"
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -80,11 +38,11 @@
 				"type": "developer",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "531da8067166273154ea35f043121774e4e1fc7f",
 						"subject": "update npm"
 					},
 					{
-						"revision": "",
+						"revision": "9631cc26f3f5d5239083d4c3b1865e29935f1714",
 						"class": "nuget",
 						"subject": "Microsoft.Extensions.* 9.0.4 -> 9.0.5",
 						"comments": [
@@ -105,7 +63,7 @@
 						]
 					},
 					{
-						"revision": "",
+						"revision": "fce72076a090eedec52f8c63fb3f4edbc493d66d",
 						"class": "nuget",
 						"subject": "System.* 9.0.4 -> 9.0.5",
 						"comments": [
@@ -119,10 +77,6 @@
 							"System.Security.Cryptography.ProtectedData",
 							"System.Text.Encoding.CodePages"
 						]
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			}
