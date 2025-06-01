@@ -27,6 +27,24 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
         [Configuration]
         public ModifierKeys DragModifierKey { get; }
 
+        /// <summary>
+        /// グループ変更ツールチップ表示までの時間。
+        /// </summary>
+        [Configuration]
+        public TimeSpan TemporaryGroupTooltipInitialShowDelay { get; }
+        
+        /// <summary>
+        /// グループ変更ツールチップ表示時間。
+        /// </summary>
+        [Configuration]
+        public TimeSpan TemporaryGroupTooltipShowDuration { get; }
+
+        /// <summary>
+        /// マウスホイールによるグループ変更が適用されるまでの時間。
+        /// </summary>
+        [Configuration]
+        public TimeSpan TemporaryGroupApplyDelayTime { get; }
+
         #endregion
     }
 }

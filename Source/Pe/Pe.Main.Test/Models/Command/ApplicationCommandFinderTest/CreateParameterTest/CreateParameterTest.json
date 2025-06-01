@@ -63,7 +63,10 @@
 	},
 	"launcher_toolbar": {
 		"auto_hide_show_wait_time": "0.00:00:00.0",
-		"drag_modifier_key": "Shift"
+		"drag_modifier_key": "Shift",
+		"temporary_group_tooltip_initial_show_delay": "0.00:00:00.25",
+		"temporary_group_tooltip_show_duration": "0.00:10:00.0",
+		"temporary_group_apply_delay_time": "0.00:00:00.5"
 	},
 	"launcher_group": {},
 	"note": {

@@ -50,6 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private LauncherDetailViewModelBase? _contextMenuOpenedItem;
         private bool _showWaiting;
+        private LauncherGroupViewModel? _temporarySelectionLauncherGroup;
 
         #endregion
 
@@ -108,6 +109,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
             PlatformThemeLoader.Changed += PlatformThemeLoader_Changed;
             ThemeProperties = new ThemeProperties(this);
+
+            TemporaryGroupTooltipInitialShowDelayMilliseconds = (int)LauncherToolbarConfiguration.TemporaryGroupTooltipInitialShowDelay.TotalMilliseconds;
+            TemporaryGroupTooltipShowDurationMilliseconds = (int)LauncherToolbarConfiguration.TemporaryGroupTooltipShowDuration.TotalMilliseconds;
+            TemporaryGroupApplyDelayAction = new DelayAction("temp group", LauncherToolbarConfiguration.TemporaryGroupApplyDelayTime, LoggerFactory);
         }
 
         #region property
@@ -221,10 +226,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         {
             get
             {
-                if(Model?.SelectedLauncherGroup != null) {
-                    if(LauncherGroupCollection.TryGetViewModel(Model.SelectedLauncherGroup, out var result)) {
-                        return result;
+                if(Model?.SelectedLauncherGroup is null) {
+                    return null;
+                }
+
+                if(IsDisposed || LauncherGroupCollection.IsDisposed) {
+                    return null;
+                }
+
+                if(LauncherGroupCollection.TryGetViewModel(Model.SelectedLauncherGroup, out var result)) {
+                    if(TemporarySelectionLauncherGroup is null) {
+                        TemporarySelectionLauncherGroup = result;
                     }
+                    return result;
                 }
 
                 return null;
@@ -235,6 +249,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         public LauncherGroupPosition GroupMenuPosition => Model.GroupMenuPosition;
 
         private LauncherToolbarIconMaker IconMaker { get; } = new LauncherToolbarIconMaker();
+
+        public LauncherGroupViewModel? TemporarySelectionLauncherGroup
+        {
+            get => this._temporarySelectionLauncherGroup;
+            set => SetProperty(ref this._temporarySelectionLauncherGroup, value);
+        }
+
+        public int TemporaryGroupTooltipInitialShowDelayMilliseconds { get; }
+        public int TemporaryGroupTooltipShowDurationMilliseconds { get; }
+        private DelayAction TemporaryGroupApplyDelayAction { get; }
 
         #region theme
 
@@ -341,21 +365,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 var prev = o.MouseDevice.XButton1.HasFlag(MouseButtonState.Pressed);
                 var next = o.MouseDevice.XButton2.HasFlag(MouseButtonState.Pressed);
                 if((prev || next) && o.ButtonState == MouseButtonState.Pressed) {
-
                     var currentIndex = LauncherGroupCollection.IndexOf(SelectedLauncherGroup);
-                    int nextIndex;
-                    if(prev) {
-                        nextIndex = currentIndex == 0
-                            ? LauncherGroupCollection.Count - 1
-                            : currentIndex - 1
-                        ;
-                    } else {
-                        Debug.Assert(next);
-                        nextIndex = currentIndex == LauncherGroupCollection.Count - 1
-                            ? 0
-                            : currentIndex + 1
-                        ;
-                    }
+                    var nextIndex = LauncherGroupCollection.GetNextIndex(
+                        currentIndex,
+                        prev ? -1 : 1
+                    );
 
                     var vm = LauncherGroupCollection.ViewModels[nextIndex];
                     ChangeLauncherGroup(vm);
@@ -379,6 +393,31 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
              }
          );
 
+        private ICommand? _AppGroupChangeCommand;
+        public ICommand AppGroupChangeCommand => this._AppGroupChangeCommand ??= new DelegateCommand<MouseWheelEventArgs>(
+            (ev) => {
+                Debug.Assert(SelectedLauncherGroup is not null);
+                Debug.Assert(TemporarySelectionLauncherGroup is not null);
+
+                var distance = (ev.Delta / Mouse.MouseWheelDeltaForOneLine) * -1; // 下に回した場合は次のグループなんや
+                if(distance == 0) {
+                    return;
+                }
+
+                var temporaryIndex = LauncherGroupCollection.IndexOf(TemporarySelectionLauncherGroup);
+                var nextIndex = LauncherGroupCollection.GetNextIndex(
+                     temporaryIndex,
+                     distance
+                 );
+                Logger.LogDebug("{TemporaryIndex} {Distance} {NextIndex}", temporaryIndex, distance, nextIndex);
+
+                TemporarySelectionLauncherGroup = LauncherGroupCollection.ViewModels[nextIndex];
+                Logger.LogDebug("TemporarySelectionLauncherGroup: {LauncherGroupId}", TemporarySelectionLauncherGroup.LauncherGroupId);
+                TemporaryGroupApplyDelayAction.Callback(ApplyTemporaryGroup);
+            }
+        );
+
+
         #endregion
 
         #region function
@@ -394,7 +433,35 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 foreach(var vm in currentLauncherItems) {
                     vm.Dispose();
                 }
+
+                // 実際のグループ変更を優先する
+                TemporarySelectionLauncherGroup = targetGroup;
+                // 一時グループ選択の待機中にグループ変更がある場合はユーザー入力のはずなので遅延処理破棄
+                TemporaryGroupApplyDelayAction.Clear();
             }
+        }
+
+        private void ApplyTemporaryGroup()
+        {
+            Debug.Assert(TemporarySelectionLauncherGroup is not null);
+
+            if(TemporarySelectionLauncherGroup == SelectedLauncherGroup) {
+                Logger.LogTrace("同じグループのため無視: {LauncherGroupId}", TemporarySelectionLauncherGroup.LauncherGroupId);
+                return;
+            }
+
+            this.DispatcherWrapper.BeginAsync(() => {
+                if(IsDisposed || LauncherGroupCollection.IsDisposed) {
+                    return;
+                }
+
+                var groupIndex = LauncherGroupCollection.IndexOf(TemporarySelectionLauncherGroup);
+                Logger.LogDebug("groupIndex: {GroupIndex}", groupIndex);
+                if(groupIndex != -1) {
+                    var group = LauncherGroupCollection.ViewModels[groupIndex];
+                    ChangeLauncherGroup(group);
+                }
+            });
         }
 
         private bool TryGetDragDataIsDetailViewModel(IDataObject data, [NotNullWhen(true)] out LauncherItemDragItem? result)
@@ -723,8 +790,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 window.Visibility = Visibility.Collapsed;
             }
 
+            //var view = (LauncherToolbarWindow)window;
+            //view.appButton.MouseEnter += AppGroupMenuElement_MouseEnter;
+            //view.appButton.MouseLeave += AppGroupMenu_MouseLeave;
+            //view.appGroup.MouseEnter += AppGroupMenuElement_MouseEnter;
+            //view.appGroup.MouseLeave += AppGroupMenu_MouseLeave;
+
             return Task.CompletedTask;
         }
+
 
         public void ReceiveViewUserClosing(Window window, CancelEventArgs e)
         {
@@ -767,6 +841,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                     LauncherItemCollection.Dispose();
                     LauncherGroupCollection.Dispose();
                     Font.Dispose();
+                    TemporaryGroupApplyDelayAction.Dispose();
                 }
 
             }
@@ -804,5 +879,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 AutoHideShowWaitTimer = null;
             }
         }
+
+        //private void AppGroupMenuElement_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    IsOpenedAppGroupMenu = true;
+        //}
+
+        //private void AppGroupMenu_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    IsOpenedAppGroupMenu = false;
+        //}
+
     }
 }

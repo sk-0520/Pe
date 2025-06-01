@@ -2414,4 +2414,7 @@ URL: バージョンチェックURLを指定すればその内容からプラグ
   <data name="String_LauncherItemCustomizeControl_Separator_Header" xml:space="preserve">
     <value>セパレータ</value>
   </data>
+  <data name="String_LauncherToolbar_AppToolTip_Group_Header" xml:space="preserve">
+    <value>マウスホイールでグループ選択</value>
+  </data>
 </root>

@@ -30,7 +30,16 @@
 				"logs": [
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "#992: [FB:24] ツールバーのグループ切替について",
+						"comments": [
+							"ランチャーツールバー上の Pe アプリケーションボタンでマウスホイールをコロコロするとグループが切り替わります",
+							"ちなみに前後のグループ変更はマウスの4,5ボタンでも変更可能です(多分 0.84.0 くらいから, わからんけど)",
+							"あんまり設定で制御するのも忙しいのでアプリケーション構成ファイルで以下を変更可能にしています",
+							"ツールチップ表示までの時間: $.launcher_toolbar.temporary_group_tooltip_initial_show_delay",
+							"ツールチップ表示時間: $.launcher_toolbar.temporary_group_tooltip_show_duration",
+							"一時的なグループ選択の適用までの時間: $.launcher_toolbar.temporary_group_apply_delay_time",
+							"※RFC 9535"
+						]
 					},
 					{
 						"revision": "",
