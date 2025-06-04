@@ -14,13 +14,25 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
     /// </summary>
     public abstract class NotifyPropertyBase: INotifyPropertyChanged
     {
-        #region INotifyPropertyChanged
+        #region event
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+        private event PropertyChangedEventHandler? StrongPropertyChanged;
 
         #endregion
 
+        protected NotifyPropertyBase(EventReference propertyChangedEventReference)
+        {
+            PropertyChangedEventReference = propertyChangedEventReference;
+            if(PropertyChangedEventReference == EventReference.Weak) {
+                PropertyChangedWeakEvent = new PropertyChangedWeakEvent(nameof(PropertyChanged));
+            }
+        }
+
         #region property
+
+        public EventReference PropertyChangedEventReference { get; }
+
+        private PropertyChangedWeakEvent? PropertyChangedWeakEvent { get; }
 
         #endregion
 
@@ -28,12 +40,40 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if(PropertyChangedWeakEvent is null) {
+                StrongPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            } else {
+                PropertyChangedWeakEvent.Raise(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         protected void RaisePropertyChanged(string notifyPropertyName)
         {
             OnPropertyChanged(notifyPropertyName);
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler? PropertyChanged
+        {
+            add
+            {
+                if(PropertyChangedWeakEvent is null) {
+                    StrongPropertyChanged += value;
+                } else {
+                    PropertyChangedWeakEvent.Add(value);
+                }
+            }
+            remove
+            {
+                if(PropertyChangedWeakEvent is null) {
+                    StrongPropertyChanged -= value;
+                } else {
+                    PropertyChangedWeakEvent.Remove(value);
+                }
+            }
         }
 
         #endregion

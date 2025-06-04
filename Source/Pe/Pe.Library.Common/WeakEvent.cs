@@ -8,6 +8,12 @@ using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
+    public enum EventReference
+    {
+        Strong,
+        Weak
+    }
+
     public class WeakEventBase<TEventListener, TEventArgs>
         where TEventListener : class
         where TEventArgs : EventArgs

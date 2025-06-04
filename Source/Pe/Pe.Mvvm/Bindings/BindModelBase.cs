@@ -15,6 +15,14 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
     /// </summary>
     public abstract class BindModelBase: NotifyPropertyBase, IDisposed
     {
+        protected BindModelBase(EventReference propertyChangedEventType)
+            : base(propertyChangedEventType)
+        { }
+
+        protected BindModelBase()
+            : this(EventReference.Weak)
+        { }
+
         /// <summary>
         /// プロパティ値変更処理。
         /// </summary>
