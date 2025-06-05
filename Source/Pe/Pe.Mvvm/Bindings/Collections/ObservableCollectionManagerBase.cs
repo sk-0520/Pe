@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
@@ -17,7 +19,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
     /// <para>原則このクラスは使用せず、<see cref="ModelViewModelObservableCollectionOptions{TModel, TViewModel}"/>の使用を想定している。ただし実装上一本にまとめると複雑になるために本クラスを継承元として分割している。</para>
     /// </remarks>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1710:識別子は、正しいサフィックスを含んでいなければなりません", Justification = "<保留中>")]
-    public abstract class ObservableCollectionManagerBase<TValue>: BindModelBase, IReadOnlyCollection<TValue>
+    public abstract class ObservableCollectionManagerBase<TValue>: BindModelBase, IReadOnlyCollection<TValue>, IDisposed
     {
         private ObservableCollectionManagerBase(IReadOnlyList<TValue> collection, INotifyCollectionChanged collectionNotifyCollectionChanged)
         {
@@ -34,6 +36,11 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         protected ObservableCollectionManagerBase(ObservableCollection<TValue> collection)
             : this(collection, collection)
         { }
+
+        ~ObservableCollectionManagerBase()
+        {
+            Dispose(disposing: false);
+        }
 
 
         #region property
@@ -192,27 +199,73 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         #endregion
 
-        #region BindModelBase
+        #region IDisposed
 
-        protected override void Dispose(bool disposing)
+        /// <summary>
+        /// <see cref="IDisposable.Dispose"/>されたか。
+        /// </summary>
+        public bool IsDisposed { get; private set; }
+
+        /// <summary>
+        /// 既に破棄済みの場合は処理を中断する。
+        /// </summary>
+        /// <param name="callerMemberName"></param>
+        /// <exception cref="ObjectDisposedException">破棄済み。</exception>
+        /// <seealso cref="IDisposed"/>
+        protected void ThrowIfDisposed([CallerMemberName] string callerMemberName = "")
         {
-            if(!IsDisposed && Collection != null) {
-                CollectionNotifyCollectionChanged.CollectionChanged -= Collection_CollectionChanged;
+            if(IsDisposed) {
+                throw new ObjectDisposedException(callerMemberName);
+            }
+        }
+
+        /// <summary>
+        /// <see cref="IDisposable.Dispose"/>の内部処理。
+        /// </summary>
+        /// <remarks>
+        /// <para>継承先クラスでは本メソッドを呼び出す必要がある。</para>
+        /// </remarks>
+        /// <param name="disposing">CLRの管理下か。</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2953:Methods named \"Dispose\" should implement \"IDisposable.Dispose\"", Justification = "OK")]
+        protected virtual void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                if(disposing) {
+                    CollectionNotifyCollectionChanged.CollectionChanged -= Collection_CollectionChanged;
+                }
                 CollectionNotifyCollectionChanged = null!;
                 Collection = null!;
-            }
 
-            base.Dispose(disposing);
+                IsDisposed = true;
+            }
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3971:\"GC.SuppressFinalize\" should not be called", Justification = "OK")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2953:Methods named \"Dispose\" should implement \"IDisposable.Dispose\"", Justification = "OK")]
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion
 
         #region IReadOnlyCollection
 
-        public int Count => Collection.Count;
+        public int Count
+        {
+            get
+            {
+                ThrowIfDisposed();
+
+                return Collection.Count;
+            }
+        }
 
         public IEnumerator<TValue> GetEnumerator()
         {
+            ThrowIfDisposed();
+
             return Collection.GetEnumerator();
         }
 
@@ -225,6 +278,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         private void Collection_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
+            ThrowIfDisposed();
+
             CollectionChanged(e);
         }
 
