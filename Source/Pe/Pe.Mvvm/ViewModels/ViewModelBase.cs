@@ -224,13 +224,18 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         public bool HasErrors => Errors.Any();
 
-        public IEnumerable GetErrors(string? propertyName)
+        public IEnumerable<ValidateMessage> GetErrors(string? propertyName)
         {
             if(propertyName is not null && Errors.TryGetValue(propertyName, out var errors)) {
                 return errors;
             }
 
-            return Array.Empty<DataErrorsChangedEventArgs>();
+            return Array.Empty<ValidateMessage>();
+        }
+
+        IEnumerable INotifyDataErrorInfo.GetErrors(string? propertyName)
+        {
+            return GetErrors(propertyName);
         }
 
         ///// <summary>
