@@ -137,7 +137,7 @@ namespace PeLibraryTest
             release_map(&map);
         }
 
-        static bool foreach_map_test(const KEY_VALUE_PAIR* pair, size_t index, size_t length, void* arg)
+        static bool foreach_map_test(const KEY_VALUE_PAIR* pair, size_t index, size_t length, const void* arg)
         {
             //TEXT format = wrap("key-%d");
             //TEXT key = format_text(DEFAULT_MEMORY_ARENA, &format, index);

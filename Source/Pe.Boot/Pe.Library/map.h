@@ -115,7 +115,7 @@ typedef struct tag_MAP
 /// <param name="length">最大件数。</param>
 /// <param name="arg">ご自由にどうぞ。</param>
 /// <returns>継続状態。</returns>
-typedef bool (*func_foreach_map)(const KEY_VALUE_PAIR* pair, size_t index, size_t length, void* arg);
+typedef bool (*func_foreach_map)(const KEY_VALUE_PAIR* pair, size_t index, size_t length, const void* arg);
 
 size_t calc_map_hash_default(const TEXT* key);
 /// <summary>

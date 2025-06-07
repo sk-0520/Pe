@@ -50,20 +50,20 @@ bool has_root_path(const TEXT* text)
 
 TEXT RC_HEAP_FUNC(get_parent_directory_path, const TEXT* path, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
 {
-    bool hittingSeparator = false;
+    bool hitting_separator = false;
     for (size_t i = 0; i < path->length; i++) {
         const TCHAR* tail = path->value + (path->length - i - 1);
 
         bool isSeparator = is_directory_separator(*tail);
         if (isSeparator) {
-            if (hittingSeparator) {
+            if (hitting_separator) {
                 continue;
             }
-            hittingSeparator = true;
+            hitting_separator = true;
             continue;
         }
 
-        if (hittingSeparator) {
+        if (hitting_separator) {
             size_t length = tail - path->value + 1;
 
             // ドライブの場合、セパレータを付与
@@ -104,7 +104,7 @@ static TEXT split_path_core(const TEXT* source, size_t* next_index, const MEMORY
 
 OBJECT_LIST RC_HEAP_FUNC(split_path, const TEXT* path, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
 {
-    if (!path || !path->length) {
+    if (!path || !is_enabled_text(path) || is_empty_text(path)) {
         return RC_HEAP_CALL(new_object_list, sizeof(TEXT), 0, NULL, compare_object_list_value_text, release_object_list_value_text, memory_arena_resource);
     }
 
@@ -117,8 +117,8 @@ TEXT RC_HEAP_FUNC(canonicalize_path, const TEXT* path, const MEMORY_ARENA_RESOUR
 {
     OBJECT_LIST list = RC_HEAP_CALL(split_path, path, memory_arena_resource);
 
-    const TEXT currentName = wrap_text(_T("."));
-    const TEXT parentName = wrap_text(_T(".."));
+    const TEXT currentName = static_text(".");
+    const TEXT parentName = static_text("..");
 
     const TEXT** items = (TEXT**)RC_HEAP_CALL(new_memory, list.length, sizeof(TEXT*), memory_arena_resource);
     size_t item_length = 0;

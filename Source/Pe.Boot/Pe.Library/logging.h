@@ -103,7 +103,7 @@ void initialize_logger(const MEMORY_ARENA_RESOURCE* memory_arena_resource);
 /// 標準のログファイル設定。
 /// </summary>
 /// <param name="file_writer">書き込み処理。<c>NULL</c>の場合は無効化。</param>
-void set_default_log_file(FILE_WRITER* file_writer);
+void set_default_log_file(const FILE_WRITER* file_writer);
 /// <summary>
 /// 標準のログレベルを設定。
 /// </summary>

@@ -37,8 +37,8 @@ EXIT_CODE app_main(HINSTANCE hInstance, const COMMAND_LINE_OPTION* command_line_
         case EXECUTE_MODE_DRY_RUN:
             return dry_run(hInstance, command_line_option);
 
-        //case EXECUTE_MODE_CONSOLE:
-        //    return console_execute(hInstance, command_line_option);
+        case EXECUTE_MODE_CONSOLE:
+            return console_execute(hInstance, command_line_option);
 
         default:
             assert(false);

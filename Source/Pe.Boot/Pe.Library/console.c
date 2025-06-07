@@ -11,9 +11,10 @@ CONSOLE_RESOURCE begin_console(const MEMORY_ARENA_RESOURCE* memory_arena_resourc
         AllocConsole();
     }
 
-    TEXT stdio_input_test = wrap_text(_T("CONIN$"));
-    TEXT stdio_output_test = wrap_text(_T("CONOUT$"));
-    TEXT stdio_error_test = wrap_text(_T("CONOUT$"));
+    // こやつらの解放は不要(open_file_resource -> new_file_resource の path 参照)
+    TEXT stdio_input_test = static_text("CONIN$");
+    TEXT stdio_output_test = static_text("CONOUT$");
+    TEXT stdio_error_test = static_text("CONOUT$");
 
     CONSOLE_RESOURCE console_resource = {
         .handle = {
@@ -31,8 +32,8 @@ CONSOLE_RESOURCE begin_console(const MEMORY_ARENA_RESOURCE* memory_arena_resourc
     }
     };
 
-    DWORD consoleMode;
-    GetConsoleMode(console_resource.handle.output, &consoleMode);
+    DWORD console_mode;
+    GetConsoleMode(console_resource.handle.output, &console_mode);
 
     return console_resource;
 }
@@ -58,18 +59,6 @@ size_t output_console_text(const CONSOLE_RESOURCE* console_resource, const TEXT*
         TEXT new_line = wrap_text(NEWLINET);
         WriteConsole(console_resource->handle.output, new_line.value, (DWORD)new_line.length, &newline_length, NULL);
         write_length += newline_length;
-    }
-
-    return (size_t)write_length;
-}
-
-size_t write_console_text(const CONSOLE_RESOURCE* console_resource, const TEXT* text, bool newline)
-{
-    DWORD write_length = (DWORD)write_file_resource(&console_resource->stdio.output, text->value, (text->length * sizeof(TCHAR)));
-
-    if (newline) {
-        TEXT new_line = wrap_text(NEWLINET);
-        write_length += (DWORD)write_file_resource(&console_resource->stdio.output, new_line.value, (new_line.length * sizeof(TCHAR)));
     }
 
     return (size_t)write_length;

@@ -54,7 +54,7 @@ static KEY_VALUE_PAIR RC_HEAP_FUNC(new_map_pair, const MAP* map, const TEXT* key
     return pair;
 }
 
-static bool search_map_from_key_core(const void* needle, const void* value, void* data, void* arg)
+static bool search_map_from_key_core(const void* needle, const void* value, void* data, const void* arg)
 {
     const TEXT* needle_key = (const TEXT*)needle;
     const KEY_VALUE_PAIR* pair = (const KEY_VALUE_PAIR*)value;
@@ -63,9 +63,9 @@ static bool search_map_from_key_core(const void* needle, const void* value, void
     return map->library.equals_map_key(needle_key, &pair->key);
 }
 
-static LINK_NODE* search_map_from_key(const LINKED_LIST* linked_list, const TEXT* needle, const MAP* map)
+static const LINK_NODE* search_map_from_key(const LINKED_LIST* linked_list, const TEXT* needle, const MAP* map)
 {
-    return (LINK_NODE*)search_linked_list(linked_list, needle, (void*)map, search_map_from_key_core);
+    return search_linked_list(linked_list, needle, map, search_map_from_key_core);
 }
 
 static void release_link_item_value(void* value, void* data, const MEMORY_ARENA_RESOURCE* memory_arena_resource)
@@ -264,7 +264,7 @@ void RC_HEAP_FUNC(set_map, MAP* map, const TEXT* key, void* value)
     size_t index = get_hash_index(map, key);
 
     LINKED_LIST* linked_list = map->library.items + index;
-    LINK_NODE* node = search_map_from_key(linked_list, key, map);
+    LINK_NODE* node = (LINK_NODE*)search_map_from_key(linked_list, key, map);
     if (node && linked_list->length) {
         //TODO: もう色々諦め感がすごい
         RC_HEAP_CALL(remove_linked_list_by_node, linked_list, node);
@@ -285,7 +285,7 @@ bool RC_HEAP_FUNC(remove_map, MAP* map, const TEXT* key)
     size_t index = get_hash_index(map, key);
 
     LINKED_LIST* linked_list = map->library.items + index;
-    LINK_NODE* node = search_map_from_key(linked_list, key, map);
+    LINK_NODE* node = (LINK_NODE*)search_map_from_key(linked_list, key, map);
     if (node && linked_list->length) {
         RC_HEAP_CALL(remove_linked_list_by_node, linked_list, node);
         map->length -= 1;
@@ -300,13 +300,13 @@ typedef struct
 {
     size_t length;
     size_t* index;
-    void* arg;
+    const void* arg;
     func_foreach_map func;
 } FOREACH_MAP_DATA;
 
-static bool foreach_map_core(const void* value, size_t index, size_t length, void* data, void* arg)
+static bool foreach_map_core(const void* value, size_t index, size_t length, void* data, const void* arg)
 {
-    FOREACH_MAP_DATA* foreach_arg = arg;
+    const FOREACH_MAP_DATA* foreach_arg = arg;
     const KEY_VALUE_PAIR* pair = (const KEY_VALUE_PAIR*)value;
 
     foreach_arg->func(pair, *foreach_arg->index, foreach_arg->length, foreach_arg->arg);
@@ -316,7 +316,7 @@ static bool foreach_map_core(const void* value, size_t index, size_t length, voi
     return true;
 }
 
-void foreach_map(const MAP* map, func_foreach_map func, void* arg)
+void foreach_map(const MAP* map, func_foreach_map func, const void* arg)
 {
     size_t length = map->length;
     size_t index = 0;
