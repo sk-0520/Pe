@@ -238,26 +238,30 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             return GetErrors(propertyName);
         }
 
-        ///// <summary>
-        ///// プロパティ検証。
-        ///// </summary>
-        ///// <param name="value"></param>
-        ///// <param name="propertyName"></param>
-        //protected void ValidateProperty(object? value, [CallerMemberName] string propertyName = "")
-        //{
-        //    ThrowIfDisposed();
+        /// <summary>
+        /// プロパティ検証。
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="propertyName"></param>
+        protected void ValidateProperty(object? value, [CallerMemberName] string propertyName = "")
+        {
+            ThrowIfDisposed();
 
-        //    var context = new ValidationContext(this) {
-        //        MemberName = propertyName
-        //    };
-        //    var validationErrors = new List<ValidationResult>();
-        //    if(!Validator.TryValidateProperty(value, context, validationErrors)) {
-        //        var errors = validationErrors.Select(error => error.ErrorMessage ?? string.Empty);
-        //        ErrorsContainer.SetErrors(propertyName, errors);
-        //    } else {
-        //        ErrorsContainer.ClearErrors(propertyName);
-        //    }
-        //}
+            var context = new ValidationContext(this) {
+                MemberName = propertyName
+            };
+            var validationErrors = new List<ValidationResult>();
+            if(!Validator.TryValidateProperty(value, context, validationErrors)) {
+                var errors = validationErrors
+                    .Select(error => error.ErrorMessage ?? string.Empty)
+                    .Select(errorMessage => new ValidateMessage(errorMessage))
+                    .ToList()
+                ;
+                Errors[propertyName] = errors;
+            } else {
+                Errors.Remove(propertyName);
+            }
+        }
 
         ///// <summary>
         ///// 子を含む全ての検証要素を取得。
