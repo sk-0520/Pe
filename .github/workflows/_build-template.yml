@@ -951,7 +951,7 @@ jobs:
       matrix:
         OS:
           - windows-2025
-          - windows-2019
+          - windows-2022
           - ubuntu-24.04
           - ubuntu-22.04
         TARGET:
