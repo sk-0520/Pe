@@ -21,23 +21,31 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </remarks>
     public class DatabaseAccessor: DisposerBase, IDatabaseAccessor
     {
-        public DatabaseAccessor(IDatabaseFactory databaseFactory, ILogger logger)
+#pragma warning disable CS8618 // null 非許容のフィールドには、コンストラクターの終了時に null 以外の値が入っていなければなりません。'required' 修飾子を追加するか、Null 許容として宣言することを検討してください。
+        private DatabaseAccessor(IDatabaseTransaction? transaction, IDatabaseFactory databaseFactory)
+#pragma warning restore CS8618 // null 非許容のフィールドには、コンストラクターの終了時に null 以外の値が入っていなければなりません。'required' 修飾子を追加するか、Null 許容として宣言することを検討してください。
         {
-            Logger = logger;
+            Transaction = transaction;
             DatabaseFactory = databaseFactory;
             LazyConnection = new Lazy<IDbConnection>(OpenConnection);
             LazyImplementation = new Lazy<IDatabaseImplementation>(DatabaseFactory.CreateImplementation);
         }
 
-        public DatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
+        public DatabaseAccessor(IDatabaseTransaction? transaction, IDatabaseFactory databaseFactory, ILogger logger)
+            : this(transaction, databaseFactory)
+        {
+            Logger = logger;
+        }
+
+        public DatabaseAccessor(IDatabaseTransaction? transaction, IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
+            : this(transaction, databaseFactory)
         {
             Logger = loggerFactory.CreateLogger(GetType());
-            DatabaseFactory = databaseFactory;
-            LazyConnection = new Lazy<IDbConnection>(OpenConnection);
-            LazyImplementation = new Lazy<IDatabaseImplementation>(DatabaseFactory.CreateImplementation);
         }
 
         #region property
+
+        private IDatabaseTransaction? Transaction { get; }
 
         private Lazy<IDbConnection> LazyConnection { get; set; }
 
@@ -728,12 +736,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
     public class DatabaseAccessor<TDbConnection>: DatabaseAccessor
         where TDbConnection : IDbConnection
     {
-        public DatabaseAccessor(IDatabaseFactory connectionFactory, ILogger logger)
-            : base(connectionFactory, logger)
+        public DatabaseAccessor(IDatabaseTransaction? transaction, IDatabaseFactory connectionFactory, ILogger logger)
+            : base(transaction, connectionFactory, logger)
         { }
 
-        public DatabaseAccessor(IDatabaseFactory connectionFactory, ILoggerFactory loggerFactory)
-            : base(connectionFactory, loggerFactory)
+        public DatabaseAccessor(IDatabaseTransaction? transaction, IDatabaseFactory connectionFactory, ILoggerFactory loggerFactory)
+            : base(transaction, connectionFactory, loggerFactory)
         { }
 
         #region property
