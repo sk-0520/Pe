@@ -1,7 +1,13 @@
-import { Typography, type TypographyProps, useTheme } from "@mui/material";
+import {
+	type TableProps,
+	Typography,
+	type TypographyProps,
+	useTheme,
+} from "@mui/material";
 import { MuiMarkdown, defaultOverrides } from "mui-markdown";
 import { Highlight, themes } from "prism-react-renderer";
 import type { FC } from "react";
+import { StickyTable } from "./StickyTable";
 import { MdAlert } from "./markdown/MdAlert";
 import { MdInline } from "./markdown/MdInline";
 import { MdLink } from "./markdown/MdLink";
@@ -77,6 +83,12 @@ export const HelpMarkdown: FC<HelpMarkdownProps> = (
 								borderRadius: "4px",
 							},
 						} satisfies TypographyProps,
+					},
+					table: {
+						component: StickyTable,
+						props: {
+							stickyHeader: true,
+						} satisfies TableProps,
 					},
 					MdLink,
 					MdPath,
