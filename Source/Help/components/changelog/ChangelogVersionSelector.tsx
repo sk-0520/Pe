@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import { type FC, type ReactNode, useMemo, useState } from "react";
 import type { ChangelogVersion, Changelogs } from "../../types/changelog";
-import { getValue } from "../../utils/access";
+import { getElement } from "../../utils/access";
 import { ListGroupHeader } from "../ListGroupHeader";
 
 function getChangelogGroup(
@@ -47,7 +47,7 @@ export const ChangelogVersionSelector: FC<ChangelogVersionSelectorProps> = (
 ) => {
 	const { changelogs } = props;
 	const [selectedValue, setSelectedValue] = useState(
-		getValue(changelogs, 0).version,
+		getElement(changelogs, 0).version,
 	);
 	const theme = useTheme();
 	const items = useMemo(() => getChangelogGroup(changelogs), [changelogs]);

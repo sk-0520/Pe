@@ -1,4 +1,4 @@
-import { getValue } from "./access";
+import { getElement } from "./access";
 
 export type Kind = "text" | "issue" | "url";
 
@@ -48,7 +48,7 @@ export function splitTokens(s: string): Token[] {
 	const result: Token[] = [];
 	for (let i = 0; i < buffer.length; i++) {
 		if (i) {
-			const work = getValue(result, result.length - 1);
+			const work = getElement(result, result.length - 1);
 			// @ts-expect-error ts(2345)
 			if (work.kind === "text" && buffer[i].kind === "text") {
 				// @ts-expect-error ts(2345)

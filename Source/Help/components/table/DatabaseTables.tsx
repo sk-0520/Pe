@@ -16,7 +16,7 @@ import {
 	useState,
 } from "react";
 import { WorkTablesAtom } from "../../stores/TableStore";
-import { getValue } from "../../utils/access";
+import { getElement } from "../../utils/access";
 import { copy } from "../../utils/clipboard";
 import {
 	convertDefineTable,
@@ -53,7 +53,7 @@ export const DatabaseTables: FC<DatabaseTablesProps> = (
 
 		updateRelations(tables);
 		setWorkTables(tables);
-		setSelectedTableId(getValue(tables, 0).id);
+		setSelectedTableId(getElement(tables, 0).id);
 	}, []);
 
 	// const tables = useMemo(() => {

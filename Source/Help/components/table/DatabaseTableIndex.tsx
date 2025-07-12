@@ -13,7 +13,7 @@ import {
 	useWorkIndexes,
 } from "../../stores/TableStore";
 import type { TableBaseProps } from "../../types/table";
-import { getValue } from "../../utils/access";
+import { getElement } from "../../utils/access";
 import { isCommonColumnName } from "../../utils/table";
 import {
 	EditorButton,
@@ -78,7 +78,7 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 			(a) => !isCommonColumnName(a.physicalName),
 		);
 		if (columns.length) {
-			columnIds.push(getValue(columns, 0).id);
+			columnIds.push(getElement(columns, 0).id);
 			setColumnIds([...columnIds]);
 			updateWorkIndex({
 				...workIndex,

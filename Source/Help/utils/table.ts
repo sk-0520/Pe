@@ -1,4 +1,4 @@
-import { getValue } from "./access";
+import { getElement } from "./access";
 import * as markdown from "./markdown";
 import * as sqlite3 from "./sqlite";
 import { NewLine, escapeRegexPattern, splitLines, trim } from "./string";
@@ -200,8 +200,8 @@ export function splitRawSection(rawEntity: string): RawSection {
 		throw new Error("layout/index");
 	}
 
-	const layout = getValue(blocks, 0).trim();
-	const index = getValue(blocks, 1).trim();
+	const layout = getElement(blocks, 0).trim();
+	const index = getElement(blocks, 1).trim();
 
 	section.layout = splitLines(layout);
 	if (index !== NoneIndex) {
@@ -226,7 +226,7 @@ export function convertColumns(lines: string[]): TableColumn[] {
 		throw new Error("table markdown");
 	}
 
-	const headers = toCells(getValue(lines, 0));
+	const headers = toCells(getElement(lines, 0));
 
 	if (headers.length !== LayoutColumnLength) {
 		throw new Error("column length");
@@ -241,20 +241,20 @@ export function convertColumns(lines: string[]): TableColumn[] {
 			throw new Error("data length");
 		}
 
-		const primaryKey = getValue(columns, LayoutColumnIndex.primaryKey);
-		const notNull = getValue(columns, LayoutColumnIndex.notNull);
-		const foreignKey = getValue(columns, LayoutColumnIndex.foreignKey);
-		const logicalName = getValue(columns, LayoutColumnIndex.logicalName);
-		const physicalName = getValue(columns, LayoutColumnIndex.physicalName);
-		const logicalType = getValue(
+		const primaryKey = getElement(columns, LayoutColumnIndex.primaryKey);
+		const notNull = getElement(columns, LayoutColumnIndex.notNull);
+		const foreignKey = getElement(columns, LayoutColumnIndex.foreignKey);
+		const logicalName = getElement(columns, LayoutColumnIndex.logicalName);
+		const physicalName = getElement(columns, LayoutColumnIndex.physicalName);
+		const logicalType = getElement(
 			columns,
 			LayoutColumnIndex.logicalType,
 		) as sqlite3.Sqlite3Type; //TODO: 値チェック
-		const clrType = getValue(
+		const clrType = getElement(
 			columns,
 			LayoutColumnIndex.clrType,
 		) as ClrTypeFullName; //TODO: 値チェック
-		const comment = getValue(columns, LayoutColumnIndex.comment);
+		const comment = getElement(columns, LayoutColumnIndex.comment);
 
 		const foreignKeys = foreignKey
 			.trim()
@@ -268,8 +268,8 @@ export function convertColumns(lines: string[]): TableColumn[] {
 			foreignKey:
 				foreignKeys.length === 2
 					? {
-							table: getValue(foreignKeys, 0),
-							column: getValue(foreignKeys, 1),
+							table: getElement(foreignKeys, 0),
+							column: getElement(foreignKeys, 1),
 						}
 					: undefined,
 			logical: {
@@ -292,7 +292,7 @@ export function convertIndexes(lines: string[]): TableIndex[] {
 		throw new Error("table markdown");
 	}
 
-	const headers = toCells(getValue(lines, 0));
+	const headers = toCells(getElement(lines, 0));
 
 	if (headers.length !== IndexDefinedLength) {
 		throw new Error("column length");
@@ -307,9 +307,9 @@ export function convertIndexes(lines: string[]): TableIndex[] {
 			throw new Error("data length");
 		}
 
-		const uniqueKey = getValue(columns, IndexDefinedIndex.uniqueKey);
-		const name = getValue(columns, IndexDefinedIndex.name);
-		const rawColumnNames = getValue(columns, IndexDefinedIndex.columnNames);
+		const uniqueKey = getElement(columns, IndexDefinedIndex.uniqueKey);
+		const name = getElement(columns, IndexDefinedIndex.name);
+		const rawColumnNames = getElement(columns, IndexDefinedIndex.columnNames);
 
 		const columnNames = rawColumnNames.split(",").map((a) => a.trim());
 		if (!columnNames.length) {
@@ -513,35 +513,35 @@ function toMarkdownCore(defineTable: TableDefine): string {
 		markdown.buildTable(
 			[
 				{
-					title: getValue(LayoutColumnNames, LayoutColumnIndex.primaryKey),
+					title: getElement(LayoutColumnNames, LayoutColumnIndex.primaryKey),
 					align: "center",
 				},
 				{
-					title: getValue(LayoutColumnNames, LayoutColumnIndex.notNull),
+					title: getElement(LayoutColumnNames, LayoutColumnIndex.notNull),
 					align: "center",
 				},
 				{
-					title: getValue(LayoutColumnNames, LayoutColumnIndex.foreignKey),
+					title: getElement(LayoutColumnNames, LayoutColumnIndex.foreignKey),
 					align: "left",
 				},
 				{
-					title: getValue(LayoutColumnNames, LayoutColumnIndex.logicalName),
+					title: getElement(LayoutColumnNames, LayoutColumnIndex.logicalName),
 					align: "left",
 				},
 				{
-					title: getValue(LayoutColumnNames, LayoutColumnIndex.physicalName),
+					title: getElement(LayoutColumnNames, LayoutColumnIndex.physicalName),
 					align: "left",
 				},
 				{
-					title: getValue(LayoutColumnNames, LayoutColumnIndex.logicalType),
+					title: getElement(LayoutColumnNames, LayoutColumnIndex.logicalType),
 					align: "left",
 				},
 				{
-					title: getValue(LayoutColumnNames, LayoutColumnIndex.clrType),
+					title: getElement(LayoutColumnNames, LayoutColumnIndex.clrType),
 					align: "left",
 				},
 				{
-					title: getValue(LayoutColumnNames, LayoutColumnIndex.comment),
+					title: getElement(LayoutColumnNames, LayoutColumnIndex.comment),
 					align: "left",
 				},
 			],
