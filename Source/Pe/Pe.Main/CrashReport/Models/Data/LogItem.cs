@@ -18,13 +18,13 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Data
 
         [DataMember]
         [JsonPropertyName("caller_class_name")]
-        public string CallerClassName { get; set; } = string.Empty;
+        public string? CallerClassName { get; set; } = string.Empty;
         [DataMember]
         [JsonPropertyName("caller_member_name")]
-        public string CallerMemberName { get; set; } = string.Empty;
+        public string? CallerMemberName { get; set; } = string.Empty;
         [DataMember]
         [JsonPropertyName("caller_file_path")]
-        public string CallerFilePath { get; set; } = string.Empty;
+        public string? CallerFilePath { get; set; } = string.Empty;
         [DataMember]
         [JsonPropertyName("caller_line_number")]
         public int CallerLineNumber { get; set; }
@@ -49,9 +49,9 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Data
         [DataMember]
         [JsonPropertyName("stack_trace")]
         public string[] StackTrace { get; set; } = Array.Empty<string>();
-        [DataMember]
-        [JsonPropertyName("sequence_id")]
-        public int SequenceID { get; set; }
+        //[DataMember]
+        //[JsonPropertyName("sequence_id")]
+        //public int SequenceID { get; set; }
         [DataMember]
         [DateTimeKind(DateTimeKind.Utc)]
         [JsonPropertyName("timestamp")]
@@ -87,9 +87,9 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Data
                 LoggerName = logEventInfo.LoggerName,
                 FormattedMessage = logEventInfo.FormattedMessage,
                 Message = logEventInfo.Message,
-                StackTrace = TextUtility.ReadLines(logEventInfo.StackTrace.ToString()).Skip(logEventInfo.CallerLineNumber).ToArray(),
+                StackTrace = logEventInfo.StackTrace is not null ? TextUtility.ReadLines(logEventInfo.StackTrace.ToString()).Skip(logEventInfo.CallerLineNumber).ToArray(): [],
                 Level = Convert(logEventInfo.Level),
-                SequenceID = logEventInfo.SequenceID,
+                //SequenceID = logEventInfo.SequenceID,
                 TimeStamp = logEventInfo.TimeStamp.ToUniversalTime(),
             };
             foreach(var parameter in logEventInfo.Parameters ?? Array.Empty<object>()) {

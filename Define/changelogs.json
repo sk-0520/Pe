@@ -94,6 +94,13 @@
 					},
 					{
 						"revision": "",
+						"subject": "NLog.Extensions.Logging 5.4.0 -> 6.0.1",
+						"comments": [
+							"？つけまくってもうわからん"
+						]
+					},
+					{
+						"revision": "",
 						"subject": ""
 					}
 				]

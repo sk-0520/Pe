@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             Factory.AddProvider(prov);
 
             var appTarget = new NLog.Targets.MethodCallTarget("APPLOG", ReceiveLog);
-            LogManager.Configuration.AddTarget(appTarget);
+            LogManager.Configuration?.AddTarget(appTarget);
 
             var logger = Factory.CreateLogger(GetType());
             logger.LogInformation("ログ出力開始");
@@ -60,52 +60,52 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 //TODO: なんかうまいことする
                 switch(Path.GetExtension(filePath)?.ToLowerInvariant() ?? string.Empty) {
                     case ".log":
-                        LogManager.LogFactory.Configuration.Variables.Add("logPath", filePath);
+                        LogManager.LogFactory.Configuration?.Variables.Add("logPath", filePath);
                         enabledLog.Add("log");
                         switch(withLog) {
                             case "xml":
-                                LogManager.LogFactory.Configuration.Variables.Add("xmlPath", Path.ChangeExtension(filePath, "xml"));
+                                LogManager.LogFactory.Configuration?.Variables.Add("xmlPath", Path.ChangeExtension(filePath, "xml"));
                                 enabledLog.Add("xml");
                                 break;
                         }
                         break;
 
                     case ".xml":
-                        LogManager.LogFactory.Configuration.Variables.Add("xmlPath", filePath);
+                        LogManager.LogFactory.Configuration?.Variables.Add("xmlPath", filePath);
                         enabledLog.Add("xml");
                         switch(withLog) {
                             case "log":
-                                LogManager.LogFactory.Configuration.Variables.Add("logPath", Path.ChangeExtension(filePath, "log"));
+                                LogManager.LogFactory.Configuration?.Variables.Add("logPath", Path.ChangeExtension(filePath, "log"));
                                 enabledLog.Add("log");
                                 break;
                         }
                         break;
                 }
-                LogManager.LogFactory.Configuration.Variables.Add("dirPath", Path.GetDirectoryName(filePath));
+                LogManager.LogFactory.Configuration?.Variables.Add("dirPath", Path.GetDirectoryName(filePath) ?? string.Empty);
             }
 
             var traceTargets = enabledLog
-                .Select(i => LogManager.Configuration.FindTargetByName(i))
+                .Select(i => LogManager.Configuration?.FindTargetByName(i))
                 .ToList()
             ;
 
 
-            foreach(var loggingRule in LogManager.Configuration.LoggingRules) {
+            foreach(var loggingRule in LogManager.Configuration?.LoggingRules ?? []) {
                 if(isFullTrace) {
                     if(loggingRule.RuleName == "fulltrace") {
-                        foreach(var traceTarget in traceTargets) {
-                            loggingRule.Targets.Add(traceTarget);
+                        foreach(var traceTarget in traceTargets.Where(a => a is not null)) {
+                            loggingRule.Targets.Add(traceTarget!);
                         }
                     }
                 } else {
                     if(loggingRule.RuleName != "fulltrace") {
-                        foreach(var traceTarget in traceTargets) {
-                            loggingRule.Targets.Add(traceTarget);
+                        foreach(var traceTarget in traceTargets.Where(a => a is not null)) {
+                            loggingRule.Targets.Add(traceTarget!);
                         }
                     }
                 }
             }
-            foreach(var loggingRule in LogManager.Configuration.LoggingRules.Where(i => i.RuleName == "fulltrace")) {
+            foreach(var loggingRule in LogManager.Configuration?.LoggingRules.Where(i => i.RuleName == "fulltrace") ?? []) {
                 loggingRule.Targets.Insert(0, appTarget);
             }
 
@@ -139,7 +139,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
         #region function
 
-        public void ReceiveLog(LogEventInfo logEventInfo, object[] parameters)
+        public void ReceiveLog(LogEventInfo logEventInfo, object?[] parameters)
         {
             if(ReceivePausing) {
                 return;
