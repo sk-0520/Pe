@@ -169,21 +169,34 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 								<EditorSelect
 									value={columnIds[i]}
 									onChange={(ev) =>
-										handleChangeColumn(i, ev.target.value as string)
+										handleChangeColumn(
+											i,
+											ev.target.value as string,
+										)
 									}
 									onBlur={handleSubmit(handleInput)}
 								>
 									{workColumns.items
-										.filter((a) => !isCommonColumnName(a.physicalName))
+										.filter(
+											(a) =>
+												!isCommonColumnName(
+													a.physicalName,
+												),
+										)
 										.map((b) => {
 											return (
-												<MenuItem key={b.id} value={b.id}>
+												<MenuItem
+													key={b.id}
+													value={b.id}
+												>
 													{b.physicalName}
 												</MenuItem>
 											);
 										})}
 								</EditorSelect>
-								<IconButton onClick={(ev) => handleRemoveColumn(ev, a)}>
+								<IconButton
+									onClick={(ev) => handleRemoveColumn(ev, a)}
+								>
 									<DeleteIcon />
 								</IconButton>
 							</Box>

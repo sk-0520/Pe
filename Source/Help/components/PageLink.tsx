@@ -25,11 +25,14 @@ export const PageLink: FC<PageLinkProps> = (props: PageLinkProps) => {
 		const pageElement = getPage(page, Pages);
 
 		return (
-			<Link href={url.href} onClick={(ev) => handleLinkClick(ev, page, url)}>
+			<Link
+				href={url.href}
+				onClick={(ev) => handleLinkClick(ev, page, url)}
+			>
 				{pageElement.title}
 			</Link>
 		);
-	} catch (ex: unknown) {
+	} catch (_ex: unknown) {
 		return <Typography color="error">{page}</Typography>;
 	}
 };

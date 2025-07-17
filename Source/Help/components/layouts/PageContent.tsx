@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import type { FC, ReactNode } from "react";
 import type { PageKey } from "../../pages";
 import {
@@ -31,8 +32,6 @@ import {
 	HelpPrivacyPage,
 	HelpSearchPage,
 } from "../../pages/help";
-
-import { Typography } from "@mui/material";
 import type { PageProps } from "../../types/page";
 
 interface PageContentProps extends PageProps {}
@@ -70,7 +69,9 @@ const pageFactory: { [key in PageKey]: (props: PageProps) => ReactNode } = {
 	"help.others_commandline": (props: PageProps) => (
 		<HelpOthersCommandLinePage {...props} />
 	),
-	"help.others_proxy": (props: PageProps) => <HelpOthersProxyPage {...props} />,
+	"help.others_proxy": (props: PageProps) => (
+		<HelpOthersProxyPage {...props} />
+	),
 	"help.others_plugin": (props: PageProps) => (
 		<HelpOthersPluginPage {...props} />
 	),

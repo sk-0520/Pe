@@ -78,7 +78,9 @@ export function buildTable(table: TableDefine): string {
 			for (let i = 0; i < primaries.length; i++) {
 				const isLast = i === primaries.length - 1;
 				const primary = primaries[i];
-				workLines.push(`${Indent}${Indent}${primary}${isLast ? "" : ","}`);
+				workLines.push(
+					`${Indent}${Indent}${primary}${isLast ? "" : ","}`,
+				);
 			}
 			workLines.push(`${Indent})${foreignKeys.length ? "," : ""}`);
 		}

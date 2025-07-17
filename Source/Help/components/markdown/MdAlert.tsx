@@ -33,7 +33,9 @@ export const MdAlert: FC<MdAlertProps> = (props: MdAlertProps) => {
 
 	const alertChildren = (
 		<>
-			<AlertTitle sx={{ fontWeight: "bold" }}>{AlertDisplays[kind]}</AlertTitle>
+			<AlertTitle sx={{ fontWeight: "bold" }}>
+				{AlertDisplays[kind]}
+			</AlertTitle>
 			<StyledBox>{children}</StyledBox>
 		</>
 	);
@@ -46,7 +48,12 @@ export const MdAlert: FC<MdAlertProps> = (props: MdAlertProps) => {
 			return (
 				<StyledAlert
 					severity="info"
-					icon={<LightbulbOutlinedIcon htmlColor="green" fontSize="inherit" />}
+					icon={
+						<LightbulbOutlinedIcon
+							htmlColor="green"
+							fontSize="inherit"
+						/>
+					}
 					sx={{
 						background: "#CBFFD3",
 					}}
@@ -60,7 +67,10 @@ export const MdAlert: FC<MdAlertProps> = (props: MdAlertProps) => {
 				<StyledAlert
 					severity="info"
 					icon={
-						<AnnouncementOutlinedIcon htmlColor="purple" fontSize="inherit" />
+						<AnnouncementOutlinedIcon
+							htmlColor="purple"
+							fontSize="inherit"
+						/>
 					}
 					sx={{
 						background: "#DCC2FF",
@@ -71,7 +81,9 @@ export const MdAlert: FC<MdAlertProps> = (props: MdAlertProps) => {
 			);
 
 		case "WARNING":
-			return <StyledAlert severity="warning">{alertChildren}</StyledAlert>;
+			return (
+				<StyledAlert severity="warning">{alertChildren}</StyledAlert>
+			);
 
 		case "CAUTION":
 			return <StyledAlert severity="error">{alertChildren}</StyledAlert>;

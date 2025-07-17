@@ -87,7 +87,9 @@ export const ChangelogContentItem: FC<ChangelogContentItemProps> = (
 					<Typography
 						component="span"
 						sx={{
-							...(type && type in TypeMap ? TypeMap[type].styles.header : {}),
+							...(type && type in TypeMap
+								? TypeMap[type].styles.header
+								: {}),
 							marginRight: "1ch",
 						}}
 					>

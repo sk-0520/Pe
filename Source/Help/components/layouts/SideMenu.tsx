@@ -1,6 +1,5 @@
 import { Box, List } from "@mui/material";
 import type { FC } from "react";
-import React from "react";
 import { type PageKey, Pages } from "../../pages";
 import { SideMenuItem } from "./SideMenuItem";
 

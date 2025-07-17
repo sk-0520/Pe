@@ -1,7 +1,7 @@
 import { getElement } from "./access";
 import * as markdown from "./markdown";
 import * as sqlite3 from "./sqlite";
-import { NewLine, escapeRegexPattern, splitLines, trim } from "./string";
+import { escapeRegexPattern, NewLine, splitLines, trim } from "./string";
 
 export const TableSeparator = "___";
 
@@ -245,7 +245,10 @@ export function convertColumns(lines: string[]): TableColumn[] {
 		const notNull = getElement(columns, LayoutColumnIndex.notNull);
 		const foreignKey = getElement(columns, LayoutColumnIndex.foreignKey);
 		const logicalName = getElement(columns, LayoutColumnIndex.logicalName);
-		const physicalName = getElement(columns, LayoutColumnIndex.physicalName);
+		const physicalName = getElement(
+			columns,
+			LayoutColumnIndex.physicalName,
+		);
 		const logicalType = getElement(
 			columns,
 			LayoutColumnIndex.logicalType,
@@ -309,7 +312,10 @@ export function convertIndexes(lines: string[]): TableIndex[] {
 
 		const uniqueKey = getElement(columns, IndexDefinedIndex.uniqueKey);
 		const name = getElement(columns, IndexDefinedIndex.name);
-		const rawColumnNames = getElement(columns, IndexDefinedIndex.columnNames);
+		const rawColumnNames = getElement(
+			columns,
+			IndexDefinedIndex.columnNames,
+		);
 
 		const columnNames = rawColumnNames.split(",").map((a) => a.trim());
 		if (!columnNames.length) {
@@ -379,7 +385,7 @@ export interface WorkTable extends WorkUpdateState {
 }
 
 export function generateTimestamp(): number {
-	return new Date().getTime();
+	return Date.now();
 }
 
 function generateId() {
@@ -502,7 +508,7 @@ function toTrue(b: boolean): string {
 }
 
 function toMarkdownCore(defineTable: TableDefine): string {
-	const result = new Array<string>();
+	const result: string[] = [];
 
 	result.push(`# ${defineTable.name}`);
 	result.push("");
@@ -513,42 +519,68 @@ function toMarkdownCore(defineTable: TableDefine): string {
 		markdown.buildTable(
 			[
 				{
-					title: getElement(LayoutColumnNames, LayoutColumnIndex.primaryKey),
+					title: getElement(
+						LayoutColumnNames,
+						LayoutColumnIndex.primaryKey,
+					),
 					align: "center",
 				},
 				{
-					title: getElement(LayoutColumnNames, LayoutColumnIndex.notNull),
+					title: getElement(
+						LayoutColumnNames,
+						LayoutColumnIndex.notNull,
+					),
 					align: "center",
 				},
 				{
-					title: getElement(LayoutColumnNames, LayoutColumnIndex.foreignKey),
+					title: getElement(
+						LayoutColumnNames,
+						LayoutColumnIndex.foreignKey,
+					),
 					align: "left",
 				},
 				{
-					title: getElement(LayoutColumnNames, LayoutColumnIndex.logicalName),
+					title: getElement(
+						LayoutColumnNames,
+						LayoutColumnIndex.logicalName,
+					),
 					align: "left",
 				},
 				{
-					title: getElement(LayoutColumnNames, LayoutColumnIndex.physicalName),
+					title: getElement(
+						LayoutColumnNames,
+						LayoutColumnIndex.physicalName,
+					),
 					align: "left",
 				},
 				{
-					title: getElement(LayoutColumnNames, LayoutColumnIndex.logicalType),
+					title: getElement(
+						LayoutColumnNames,
+						LayoutColumnIndex.logicalType,
+					),
 					align: "left",
 				},
 				{
-					title: getElement(LayoutColumnNames, LayoutColumnIndex.clrType),
+					title: getElement(
+						LayoutColumnNames,
+						LayoutColumnIndex.clrType,
+					),
 					align: "left",
 				},
 				{
-					title: getElement(LayoutColumnNames, LayoutColumnIndex.comment),
+					title: getElement(
+						LayoutColumnNames,
+						LayoutColumnIndex.comment,
+					),
 					align: "left",
 				},
 			],
 			defineTable.columns.map((a) => [
 				toTrue(a.isPrimary),
 				toTrue(a.notNull),
-				a.foreignKey ? `${a.foreignKey.table}.${a.foreignKey.column}` : "",
+				a.foreignKey
+					? `${a.foreignKey.table}.${a.foreignKey.column}`
+					: "",
 				a.logical.name,
 				a.physicalName,
 				a.logical.type,

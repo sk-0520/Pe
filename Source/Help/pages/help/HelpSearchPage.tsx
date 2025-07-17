@@ -14,8 +14,8 @@ import { convert } from "html-to-text";
 import { type FC, useState } from "react";
 import ReactDOMServer from "react-dom/server";
 import { Controller, useForm } from "react-hook-form";
-import { PageLink } from "../../components/PageLink";
 import { PageContent } from "../../components/layouts/PageContent";
+import { PageLink } from "../../components/PageLink";
 import {
 	DevPageKeys,
 	HelpPageKeys,
@@ -53,7 +53,9 @@ const TargetHelpPageKeys: PageKey[] = HelpPageKeys.filter(
 );
 const TargetDevPageKeys: PageKey[] = DevPageKeys.filter(
 	(a) =>
-		!["dev.table_main", "dev.table_large", "dev.table_temporary"].includes(a),
+		!["dev.table_main", "dev.table_large", "dev.table_temporary"].includes(
+			a,
+		),
 );
 
 function handleSelectPageKey(pageKey: PageKey): void {
@@ -126,7 +128,10 @@ export const HelpSearchPage: FC<PageProps> = (props: PageProps) => {
 					"Warning: useLayoutEffect does nothing on the server, because its effect cannot be encoded into the server renderer's output format.",
 					"Warning: Detected multiple renderers concurrently rendering the same context provider. This is currently unsupported.",
 				];
-				console.error = (message?: unknown, ...optionalParams: unknown[]) => {
+				console.error = (
+					message?: unknown,
+					...optionalParams: unknown[]
+				) => {
 					if (typeof message === "string") {
 						if (ignoreMessages.some((a) => message.startsWith(a))) {
 							return;
@@ -178,7 +183,13 @@ export const HelpSearchPage: FC<PageProps> = (props: PageProps) => {
 					positions: [],
 				};
 
-				const index = indexOf(line, query, startIndex, isRegex, caseSensitive);
+				const index = indexOf(
+					line,
+					query,
+					startIndex,
+					isRegex,
+					caseSensitive,
+				);
 				if (index === -1) {
 					continue;
 				}
@@ -226,7 +237,12 @@ export const HelpSearchPage: FC<PageProps> = (props: PageProps) => {
 							name="caseSensitive"
 							render={({ field, formState: { errors } }) => (
 								<FormControlLabel
-									control={<Checkbox {...field} checked={field.value} />}
+									control={
+										<Checkbox
+											{...field}
+											checked={field.value}
+										/>
+									}
 									label="大文字と小文字を区別する"
 								/>
 							)}
@@ -236,7 +252,12 @@ export const HelpSearchPage: FC<PageProps> = (props: PageProps) => {
 							name="isRegex"
 							render={({ field, formState: { errors } }) => (
 								<FormControlLabel
-									control={<Checkbox {...field} checked={field.value} />}
+									control={
+										<Checkbox
+											{...field}
+											checked={field.value}
+										/>
+									}
 									label="正規表現を使用する"
 								/>
 							)}
@@ -246,7 +267,12 @@ export const HelpSearchPage: FC<PageProps> = (props: PageProps) => {
 							name="includeDevelopment"
 							render={({ field, formState: { errors } }) => (
 								<FormControlLabel
-									control={<Checkbox {...field} checked={field.value} />}
+									control={
+										<Checkbox
+											{...field}
+											checked={field.value}
+										/>
+									}
 									label="開発ドキュメントを含める"
 								/>
 							)}
@@ -272,7 +298,10 @@ export const HelpSearchPage: FC<PageProps> = (props: PageProps) => {
 					<List>
 						{searchItems.map((a) => {
 							return (
-								<ListItem key={a.element.key} sx={{ display: "block" }}>
+								<ListItem
+									key={a.element.key}
+									sx={{ display: "block" }}
+								>
 									<PageLink page={a.element.key} />
 									<List
 										sx={{
@@ -286,7 +315,10 @@ export const HelpSearchPage: FC<PageProps> = (props: PageProps) => {
 											<ListItem
 												// biome-ignore lint/suspicious/noArrayIndexKey: いやまぁ他にないし
 												key={i}
-												sx={{ padding: 0, display: "list-item" }}
+												sx={{
+													padding: 0,
+													display: "list-item",
+												}}
 											>
 												{b.content}
 											</ListItem>

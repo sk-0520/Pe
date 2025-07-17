@@ -84,7 +84,7 @@ export const DatabaseTables: FC<DatabaseTablesProps> = (
 	// }, [workTables]);
 
 	if (!workTables.length || !selectedTableId) {
-		return <>...loading...</>;
+		return "...loading...";
 	}
 
 	function handleChange(
@@ -140,7 +140,10 @@ export const DatabaseTables: FC<DatabaseTablesProps> = (
 
 			<Box sx={{ marginTop: "1em" }}>
 				<Stack direction="row" spacing={1}>
-					<EditorButton size="medium" onClick={handleCopyMarkdownClick}>
+					<EditorButton
+						size="medium"
+						onClick={handleCopyMarkdownClick}
+					>
 						コピー: Markdown
 					</EditorButton>
 					<EditorButton size="medium" onClick={handleCopySqlClick}>

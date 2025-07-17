@@ -10,7 +10,7 @@ import {
 	Typography,
 } from "@mui/material";
 import { useAtom } from "jotai";
-import { type FC, type MouseEvent, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { PageContent } from "./components/layouts/PageContent";
 import { SideMenu } from "./components/layouts/SideMenu";
 import { type PageKey, Pages } from "./pages";
@@ -73,16 +73,14 @@ export const App: FC = () => {
 		history.pushState({}, "", url);
 	};
 
-	function handleDrawerOpen(
-		event: MouseEvent<HTMLButtonElement, MouseEvent>,
-	): void {
+	function handleDrawerOpen(): void {
 		setIsOpen((a) => !a);
 	}
 
 	const currentPage = getPage(selectedPageKey, Pages);
 
 	if (isLoading) {
-		return <>loading...</>;
+		return "loading...";
 	}
 
 	return (

@@ -12,14 +12,21 @@
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"recommended": true
+			"recommended": true,
+			"correctness": {
+				"noUnusedVariables": "off",
+				"noUnusedFunctionParameters": "off"
+			}
 		}
 	},
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git"
 	},
+	"formatter": {
+		"useEditorconfig": true
+	},
 	"files": {
-		"includes": ["*/Source/Help/**/*"]
+		"includes": ["Source/Help/**/*", "Build/scripts/**/*"]
 	}
 }

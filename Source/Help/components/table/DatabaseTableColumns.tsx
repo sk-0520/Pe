@@ -71,7 +71,11 @@ export const DatabaseTableColumns: FC<DatabaseTableColumnsProps> = (
 				</TableHead>
 				<TableBody>
 					{workColumns.items.map((a) => (
-						<DatabaseTableColumn key={a.id} tableId={tableId} columnId={a.id} />
+						<DatabaseTableColumn
+							key={a.id}
+							tableId={tableId}
+							columnId={a.id}
+						/>
 					))}
 					<TableRow>
 						<EditorCell colSpan={11}>

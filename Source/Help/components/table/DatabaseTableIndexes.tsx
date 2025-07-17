@@ -44,7 +44,11 @@ export const DatabaseTableIndexes: FC<DatabaseTableIndexesProps> = (
 					</TableHead>
 					<TableBody>
 						{workIndexes.items.map((a) => (
-							<DatabaseTableIndex key={a.id} tableId={tableId} indexId={a.id} />
+							<DatabaseTableIndex
+								key={a.id}
+								tableId={tableId}
+								indexId={a.id}
+							/>
 						))}
 						<TableRow>
 							<EditorCell colSpan={11}>

@@ -4,14 +4,14 @@ import {
 	type TypographyProps,
 	useTheme,
 } from "@mui/material";
-import { MuiMarkdown, defaultOverrides } from "mui-markdown";
+import { defaultOverrides, MuiMarkdown } from "mui-markdown";
 import { Highlight, themes } from "prism-react-renderer";
 import type { FC } from "react";
-import { StickyTable } from "./StickyTable";
 import { MdAlert } from "./markdown/MdAlert";
 import { MdInline } from "./markdown/MdInline";
 import { MdLink } from "./markdown/MdLink";
 import { MdPath } from "./markdown/MdPath";
+import { StickyTable } from "./StickyTable";
 
 type HelpMarkdownProps = {
 	children: string;

@@ -5,9 +5,9 @@ import {
 	ListItem,
 	Stack,
 	type SxProps,
+	styled,
 	type Theme,
 	Typography,
-	styled,
 	useTheme,
 } from "@mui/material";
 import type { FC } from "react";
@@ -60,7 +60,11 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 					...HeaderStyle,
 				}}
 			>
-				<Typography component="time" dateTime={datetime} sx={HeaderStyle}>
+				<Typography
+					component="time"
+					dateTime={datetime}
+					sx={HeaderStyle}
+				>
 					{date}
 				</Typography>
 				,
@@ -88,7 +92,10 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 					{versionCommit !== undefined && (
 						<StyledVersionListItem sx={{ marginLeft: "1ch" }}>
 							<ChangelogReplaceLink
-								diff={{ prev: prevVersionCommit, current: versionCommit }}
+								diff={{
+									prev: prevVersionCommit,
+									current: versionCommit,
+								}}
 							>
 								<DifferenceIcon sx={{ color: "white" }} />
 							</ChangelogReplaceLink>

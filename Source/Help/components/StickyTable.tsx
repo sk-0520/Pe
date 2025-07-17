@@ -1,4 +1,4 @@
-import { Table, type TableProps, styled } from "@mui/material";
+import { styled, Table, type TableProps } from "@mui/material";
 
 export const StickyTable = styled((props: TableProps) => {
 	const { sx, stickyHeader } = props;

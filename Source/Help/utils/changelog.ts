@@ -23,7 +23,8 @@ export function splitTokens(s: string): Token[] {
 				kind: "issue",
 				value: issueMatch.groups.ISSUE,
 			});
-			currentIndex += issueMatch.groups.ISSUE.length + 1 /* #の分を追加 */;
+			currentIndex +=
+				issueMatch.groups.ISSUE.length + 1 /* #の分を追加 */;
 			continue;
 		}
 

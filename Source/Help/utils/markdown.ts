@@ -59,7 +59,10 @@ export function buildTable(
 	}
 
 	const cellMaxLengths = columns.map((a) =>
-		Math.max(CellMinWidth, countSingleChar(escapeCell(a.title)) + CellPadding),
+		Math.max(
+			CellMinWidth,
+			countSingleChar(escapeCell(a.title)) + CellPadding,
+		),
 	);
 	const workRows: string[][] = [];
 	for (const row of rows) {

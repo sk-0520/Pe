@@ -5,7 +5,7 @@ import {
 	useTheme,
 } from "@mui/material";
 import { type FC, type ReactNode, useMemo, useState } from "react";
-import type { ChangelogVersion, Changelogs } from "../../types/changelog";
+import type { Changelogs, ChangelogVersion } from "../../types/changelog";
 import { getElement } from "../../utils/access";
 import { ListGroupHeader } from "../ListGroupHeader";
 
@@ -14,7 +14,7 @@ function getChangelogGroup(
 ): Array<ChangelogVersion | string> {
 	const groupItems = new Map<object, string>();
 
-	let prevGroup: string | undefined = undefined;
+	let prevGroup: string | undefined;
 	for (const changelog of [...changelogs].reverse()) {
 		if (changelog.group) {
 			prevGroup = changelog.group;
