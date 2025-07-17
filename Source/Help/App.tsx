@@ -9,12 +9,11 @@ import {
 	Toolbar,
 	Typography,
 } from "@mui/material";
-import { useAtom } from "jotai";
 import { type FC, useEffect, useState } from "react";
 import { PageContent } from "./components/layouts/PageContent";
 import { SideMenu } from "./components/layouts/SideMenu";
 import { type PageKey, Pages } from "./pages";
-import { SelectedPageKeyAtom } from "./stores/SideMenuStore";
+import { useSideMenuStore } from "./stores/SideMenuStore";
 import { getPage, getPageKey, makeUrl } from "./utils/page";
 
 const sidebarWidth = 240;
@@ -22,14 +21,15 @@ const sidebarWidth = 240;
 export const App: FC = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [isOpen, setIsOpen] = useState(true);
-	const [selectedPageKey, setSelectedPageKey] = useAtom(SelectedPageKeyAtom);
+	const pageKey = useSideMenuStore((a) => a.pageKey);
+	const setPageKey = useSideMenuStore((a) => a.setPageKey);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: 初回にイベント設定
 	useEffect(() => {
 		const handleHistory = (pathName: URLSearchParams) => {
 			try {
 				const pageKey = getPageKey(pathName);
-				setSelectedPageKey(pageKey);
+				setPageKey(pageKey);
 			} catch (ex) {
 				console.warn(ex);
 			}
@@ -49,7 +49,7 @@ export const App: FC = () => {
 		if (url.searchParams.has("page")) {
 			try {
 				const pageKey = getPageKey(url.searchParams);
-				setSelectedPageKey(pageKey);
+				setPageKey(pageKey);
 			} catch (ex) {
 				console.warn(ex);
 			}
@@ -59,16 +59,16 @@ export const App: FC = () => {
 
 	// タイトル変更 + スクロール位置変更
 	useEffect(() => {
-		const page = getPage(selectedPageKey, Pages);
+		const page = getPage(pageKey, Pages);
 		document.title = `${page.title} - Pe Help`;
 
 		window.scroll({
 			top: 0,
 		});
-	}, [selectedPageKey]);
+	}, [pageKey]);
 
 	const handleSelectPageKey = (pageKey: PageKey) => {
-		setSelectedPageKey(pageKey);
+		setPageKey(pageKey);
 		const url = makeUrl(pageKey);
 		history.pushState({}, "", url);
 	};
@@ -77,7 +77,7 @@ export const App: FC = () => {
 		setIsOpen((a) => !a);
 	}
 
-	const currentPage = getPage(selectedPageKey, Pages);
+	const currentPage = getPage(pageKey, Pages);
 
 	if (isLoading) {
 		return "loading...";
@@ -123,7 +123,7 @@ export const App: FC = () => {
 				<Toolbar />
 				<Divider />
 				<SideMenu
-					selectedPageKey={selectedPageKey}
+					selectedPageKey={pageKey}
 					handleSelectPageKey={handleSelectPageKey}
 				/>
 			</Drawer>
@@ -138,7 +138,7 @@ export const App: FC = () => {
 			>
 				<Toolbar />
 				<PageContent
-					selectedPageKey={selectedPageKey}
+					selectedPageKey={pageKey}
 					callbackSelectPageKey={handleSelectPageKey}
 					currentPage={currentPage}
 				/>
