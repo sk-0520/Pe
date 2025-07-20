@@ -519,6 +519,7 @@ jobs:
       - name: <Build> Module
         shell: pwsh
         run: |
+          Remove-Item -Path Env:DOTNET_ROOT
           $productMode = [System.Convert]::ToBoolean('${{ inputs.IS_PRODUCT }}')
           $buildType = $productMode ? '': 'BETA'
           .\Build\build-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType $buildType -Platform ${{ matrix.PLATFORM }}
@@ -578,7 +579,9 @@ jobs:
 
       - name: <Test> Module
         shell: pwsh
-        run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
+        run: |
+          Remove-Item -Path Env:DOTNET_ROOT
+          .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
       - name: <Make> CodeCoverage
         shell: pwsh
