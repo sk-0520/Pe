@@ -470,11 +470,8 @@ jobs:
       - name: <Test> Module
         shell: pwsh
         run: |
-          Remove-Item -Path Env:DOTNET_ROOT
           $env:Path += ';${{env.VS_TEST_CONSOLE_PATH}}'
-          echo AAAAAAAAAAAAAAAAAAA
           echo $env:Path
-          dotnet --version
           .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
 
 
@@ -583,6 +580,7 @@ jobs:
       - name: <Test> Module
         shell: pwsh
         run: |
+          Remove-Item -Path Env:DOTNET_ROOT
           .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
       - name: <Make> CodeCoverage
