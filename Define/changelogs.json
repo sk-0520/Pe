@@ -1,67 +1,16 @@
 [
 	{
-		"date": "YYYY/MM/DD",
-		"version": "0.99.256+",
+		"date": "2025/07/22",
+		"version": "0.99.257",
 		"contents": [
 			{
 				"type": "note",
 				"logs": [
 					{
+						"subject": "依存ライブラリ系アップデートのみ"
+					},
+					{
 						"subject": "CI で x86 のテストがうまくいかないので x86 自動テスト系は封印中"
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
-			{
-				"type": "features",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
-			{
-				"type": "fixes",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -123,7 +72,7 @@
 						"subject": "Microsoft.Web.WebView2 1.0.3240.44 -> 1.0.3351.48"
 					},
 					{
-						"revision": "",
+						"revision": "aa32ad76cd9baf95db51c576e846f70d0db5bb19",
 						"subject": "update npm"
 					}
 				]
