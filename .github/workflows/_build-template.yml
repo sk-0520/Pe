@@ -470,6 +470,7 @@ jobs:
       - name: <Test> Module
         shell: pwsh
         run: |
+          Remove-Item -Path Env:DOTNET_ROOT
           $env:Path += ';${{env.VS_TEST_CONSOLE_PATH}}'
           echo AAAAAAAAAAAAAAAAAAA
           echo $env:Path
