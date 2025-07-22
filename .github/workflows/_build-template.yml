@@ -551,10 +551,18 @@ jobs:
       - name: <Checkout> Repository
         uses: actions/checkout@v4
 
+      - name: AAAAAAAAAAAAAA
+        shell: pwsh
+        run: (get-command dotnet).Source
+
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: BBBBBBBBBBBBBB
+        shell: pwsh
+        run: (get-command dotnet).Source
 
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v2
@@ -580,9 +588,9 @@ jobs:
       - name: <Test> Module
         shell: pwsh
         run: |
-          dotnet --version
+          (get-command dotnet).Source
           Remove-Item -Path Env:DOTNET_ROOT
-          dotnet --version
+          (get-command dotnet).Source
           .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
       - name: <Make> CodeCoverage
