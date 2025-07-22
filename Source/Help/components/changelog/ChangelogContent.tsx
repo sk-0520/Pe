@@ -5,6 +5,7 @@ import type {
 	ChangelogContent as ChangelogContentType,
 } from "../../types/changelog";
 import { ChangelogContentItem } from "./ChangelogContentItem";
+
 const KindMap: {
 	[key in ChangelogContentKind]: {
 		title: string;

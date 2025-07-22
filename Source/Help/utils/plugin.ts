@@ -48,7 +48,7 @@ export function isGuid(guid: string): boolean {
 // https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid/8809472#8809472
 function generateUUID(): string {
 	// Public Domain/MIT
-	let d = new Date().getTime(); //Timestamp
+	let d = Date.now(); //Timestamp
 	let d2 =
 		(typeof performance !== "undefined" &&
 			performance.now &&
@@ -75,7 +75,8 @@ function existsPluginId(pluginId: string): boolean {
 			.map((i) => convertInnerTextFromGuid(i))
 			.filter(
 				(i) =>
-					convertInnerTextFromGuid(pluginId) === convertInnerTextFromGuid(i),
+					convertInnerTextFromGuid(pluginId) ===
+					convertInnerTextFromGuid(i),
 			).length !== 0
 	);
 }

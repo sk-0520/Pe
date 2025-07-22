@@ -110,7 +110,7 @@ export function countSingleChar(s: string): number {
 	let length = 0;
 	for (const c of chars) {
 		if (c.length === 1) {
-			// biome-ignore lint/suspicious/noControlCharactersInRegex: <explanation>
+			// biome-ignore lint/suspicious/noControlCharactersInRegex: はい
 			if (!c.match(/[^\x01-\x7E]/) || !c.match(/[^\uFF65-\uFF9F]/)) {
 				length += 1;
 			} else {

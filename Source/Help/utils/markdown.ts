@@ -1,4 +1,4 @@
-import { NewLine, countSingleChar } from "./string";
+import { countSingleChar, NewLine } from "./string";
 
 export class MarkdownError extends Error {
 	constructor(message: string) {
@@ -59,12 +59,15 @@ export function buildTable(
 	}
 
 	const cellMaxLengths = columns.map((a) =>
-		Math.max(CellMinWidth, countSingleChar(escapeCell(a.title)) + CellPadding),
+		Math.max(
+			CellMinWidth,
+			countSingleChar(escapeCell(a.title)) + CellPadding,
+		),
 	);
 	const workRows: string[][] = [];
 	for (const row of rows) {
 		if (columns.length !== row.length) {
-			throw new MarkdownError("size not equal columns rows.cells");
+			throw new MarkdownTableError("size not equal columns rows.cells");
 		}
 		const workRow: string[] = [];
 		for (let i = 0; i < row.length; i++) {

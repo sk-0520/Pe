@@ -5,8 +5,8 @@ import {
 	useTheme,
 } from "@mui/material";
 import { type FC, type ReactNode, useMemo, useState } from "react";
-import type { ChangelogVersion, Changelogs } from "../../types/changelog";
-import { getValue } from "../../utils/access";
+import type { Changelogs, ChangelogVersion } from "../../types/changelog";
+import { getElement } from "../../utils/access";
 import { ListGroupHeader } from "../ListGroupHeader";
 
 function getChangelogGroup(
@@ -14,7 +14,7 @@ function getChangelogGroup(
 ): Array<ChangelogVersion | string> {
 	const groupItems = new Map<object, string>();
 
-	let prevGroup: string | undefined = undefined;
+	let prevGroup: string | undefined;
 	for (const changelog of [...changelogs].reverse()) {
 		if (changelog.group) {
 			prevGroup = changelog.group;
@@ -47,7 +47,7 @@ export const ChangelogVersionSelector: FC<ChangelogVersionSelectorProps> = (
 ) => {
 	const { changelogs } = props;
 	const [selectedValue, setSelectedValue] = useState(
-		getValue(changelogs, 0).version,
+		getElement(changelogs, 0).version,
 	);
 	const theme = useTheme();
 	const items = useMemo(() => getChangelogGroup(changelogs), [changelogs]);

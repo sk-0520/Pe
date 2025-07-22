@@ -1,4 +1,4 @@
-import { getValue } from "./access";
+import { getElement } from "./access";
 import { NewLine } from "./string";
 import type { ForeignKey, TableColumn, TableDefine } from "./table";
 
@@ -50,7 +50,7 @@ export function buildTable(table: TableDefine): string {
 	const hasNext = primaryColumns.length || foreignKeys.length;
 
 	for (let i = 0; i < table.columns.length; i++) {
-		const column = getValue(table.columns, i);
+		const column = getElement(table.columns, i);
 		let columnStatement = `${column.physicalName} ${column.logical.type}`;
 		if (column.notNull) {
 			columnStatement += " not null";
@@ -78,7 +78,9 @@ export function buildTable(table: TableDefine): string {
 			for (let i = 0; i < primaries.length; i++) {
 				const isLast = i === primaries.length - 1;
 				const primary = primaries[i];
-				workLines.push(`${Indent}${Indent}${primary}${isLast ? "" : ","}`);
+				workLines.push(
+					`${Indent}${Indent}${primary}${isLast ? "" : ","}`,
+				);
 			}
 			workLines.push(`${Indent})${foreignKeys.length ? "," : ""}`);
 		}

@@ -1,9 +1,9 @@
 import {
-	type Token,
-	type VersionInfo,
 	convertTagFromVersion,
 	splitTokens,
 	splitVersionInfos,
+	type Token,
+	type VersionInfo,
 } from "../../utils/changelog";
 
 describe("splitTokens", () => {
@@ -83,10 +83,13 @@ describe("splitTokens", () => {
 			] satisfies Token[],
 			"#1 text1 http://localhost/1 #2 text2 http://localhost/2 #3 text3 http://localhost/3",
 		],
-	])("tokens: 期待値: [%o], 入力: [%s]", (expected: Token[], input: string) => {
-		const actual = splitTokens(input);
-		expect(actual).toEqual(expected);
-	});
+	])(
+		"tokens: 期待値: [%o], 入力: [%s]",
+		(expected: Token[], input: string) => {
+			const actual = splitTokens(input);
+			expect(actual).toEqual(expected);
+		},
+	);
 
 	test.each([
 		[[] satisfies VersionInfo[], ""],
@@ -95,7 +98,10 @@ describe("splitTokens", () => {
 			[{ value: "1.2.3.4", isVersion: false }] satisfies VersionInfo[],
 			"1.2.3.4",
 		],
-		[[{ value: "1.2.3", isVersion: true }] satisfies VersionInfo[], "1.2.3"],
+		[
+			[{ value: "1.2.3", isVersion: true }] satisfies VersionInfo[],
+			"1.2.3",
+		],
 		[
 			[
 				{ value: "1.2.3", isVersion: true },

@@ -5,16 +5,16 @@ import {
 	type CheckboxProps,
 	Select,
 	type SelectProps,
-	Table,
 	TableCell,
 	type TableCellProps,
 	type TableProps,
 	TextField,
 	type TextFieldProps,
 } from "@mui/material";
+import { StickyTable } from "../../components/StickyTable";
 
 export function EditorTable(props: TableProps) {
-	return <Table size="small" {...props} />;
+	return <StickyTable stickyHeader size="small" {...props} />;
 }
 
 export function EditorCell(props: TableCellProps) {

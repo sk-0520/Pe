@@ -100,10 +100,11 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>置き換え後文字列。</returns>
         public static string ReplacePlaceholder(string source, ReadOnlySpan<char> head, ReadOnlySpan<char> tail, ReplacePlaceholderDelegate writer)
         {
+            ArgumentNullException.ThrowIfNull(writer);
+
             if(string.IsNullOrEmpty(source) || head.IsEmpty || tail.IsEmpty) {
                 return source;
             }
-            ArgumentNullException.ThrowIfNull(writer);
 
             var sourceSpan = source.AsSpan();
             var headLength = head.Length;

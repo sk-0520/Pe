@@ -1,9 +1,9 @@
 import {
+	buildCell,
+	buildTable,
 	MarkdownTableError,
 	type TableColumn,
 	type TableColumnAlign,
-	buildCell,
-	buildTable,
 } from "../../utils/markdown";
 
 describe("buildCell", () => {

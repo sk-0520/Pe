@@ -1,5 +1,5 @@
 import path from "node:path";
-import { type Input, type Options, main } from "./check-release-note";
+import { type Input, main, type Options } from "./check-release-note";
 
 const rootDirPath = path.resolve(__dirname, "..", "..");
 

@@ -205,7 +205,7 @@ namespace PeLibraryTest
             release_linked_list(&linked_list, true);
         }
 
-        static bool search_linked_list_num(const void* needle, const void* value, void* data, void* arg)
+        static bool search_linked_list_num(const void* needle, const void* value, void* data, const void* arg)
         {
             int needle_num = *(int*)needle;
             int value_num = *(int*)value;

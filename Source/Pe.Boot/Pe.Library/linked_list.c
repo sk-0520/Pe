@@ -31,7 +31,7 @@ const void* get_link_node_value(const LINK_NODE* node)
     return node->value;
 }
 
-static LINK_NODE* search_linked_list_core(const LINKED_LIST* linked_list, const void* needle, void* arg, func_search_linked_list func)
+static LINK_NODE* search_linked_list_core(const LINKED_LIST* linked_list, const void* needle, const void* arg, func_search_linked_list func)
 {
     if (!linked_list) {
         return NULL;
@@ -323,7 +323,7 @@ bool RC_HEAP_FUNC(set_linked_list, LINKED_LIST* linked_list, size_t index, void*
     return true;
 }
 
-size_t foreach_linked_list(const LINKED_LIST* linked_list, func_foreach_linked_list func, void* arg)
+size_t foreach_linked_list(const LINKED_LIST* linked_list, func_foreach_linked_list func,const  void* arg)
 {
     assert(linked_list);
     assert(func);
@@ -342,7 +342,7 @@ size_t foreach_linked_list(const LINKED_LIST* linked_list, func_foreach_linked_l
     return result;
 }
 
-const LINK_NODE* search_linked_list(const LINKED_LIST* linked_list, const void* needle, void* arg, func_search_linked_list func)
+const LINK_NODE* search_linked_list(const LINKED_LIST* linked_list, const void* needle, const void* arg, func_search_linked_list func)
 {
     return search_linked_list_core(linked_list, needle, arg, func);
 }
@@ -362,7 +362,7 @@ bool RC_HEAP_FUNC(remove_linked_list_by_node, LINKED_LIST* linked_list, LINK_NOD
     return true;
 }
 
-static bool to_object_list_from_linked_list_core(const void* value, size_t index, size_t length, void* data, void* arg)
+static bool to_object_list_from_linked_list_core(const void* value, size_t index, size_t length, void* data, const void* arg)
 {
     OBJECT_LIST* list = (OBJECT_LIST*)arg;
 

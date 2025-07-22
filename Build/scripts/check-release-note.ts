@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import type { ChangelogVersion } from "../../Source/Help/types/changelog";
-import { getValue } from "../../Source/Help/utils/access";
+import { getElement } from "../../Source/Help/utils/access";
 
 export interface Input {
 	rootDirPath: string;
@@ -14,7 +14,7 @@ export interface Options {
 export function main(input: Input, options: Options) {
 	const changelogsJson = fs.readFileSync(input.changelogsJsonPath).toString();
 	const changelogs = JSON.parse(changelogsJson);
-	const changelog = getValue(changelogs, 0) as ChangelogVersion;
+	const changelog = getElement(changelogs, 0) as ChangelogVersion;
 
 	if (!options.isRelease) {
 		return;

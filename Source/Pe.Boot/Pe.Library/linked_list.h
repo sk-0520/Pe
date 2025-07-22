@@ -27,11 +27,12 @@ typedef void (*func_release_linked_list_value)(void* value, void* data, const ME
 /// <param name="value">現在値。</param>
 /// <param name="index">現在処理数。</param>
 /// <param name="length">最大件数。</param>
-/// <param name="arg">ご自由にどうぞ。</param>
+/// <param name="data">ご自由にどうぞ。</param>
+/// <param name="arg">引数。</param>
 /// <returns>継続状態。</returns>
-typedef bool (*func_foreach_linked_list)(const void* value, size_t index, size_t length, void* data, void* arg);
+typedef bool (*func_foreach_linked_list)(const void* value, size_t index, size_t length, void* data, const void* arg);
 
-typedef bool (*func_search_linked_list)(const void* needle, const void* value, void* data, void* arg);
+typedef bool (*func_search_linked_list)(const void* needle, const void* value, void* data, const void* arg);
 
 /// <summary>
 /// 連結リストノード。
@@ -188,9 +189,17 @@ bool RC_HEAP_FUNC(set_linked_list, LINKED_LIST* linked_list, size_t index, void*
 /// <param name="linked_list"></param>
 /// <param name="func"></param>
 /// <returns>処理件数。</returns>
-size_t foreach_linked_list(const LINKED_LIST* linked_list, func_foreach_linked_list func, void* arg);
+size_t foreach_linked_list(const LINKED_LIST* linked_list, func_foreach_linked_list func, const void* arg);
 
-const LINK_NODE* search_linked_list(const LINKED_LIST* linked_list, const void* needle, void* arg, func_search_linked_list func);
+/// <summary>
+/// 連結リストから値を検索する。
+/// </summary>
+/// <param name="linked_list">対象リスト</param>
+/// <param name="needle">検索アイテム</param>
+/// <param name="arg">引数</param>
+/// <param name="func">検索処理</param>
+/// <returns>対象アイテム。const を外せるかは呼び出し側で担保。</returns>
+const LINK_NODE* search_linked_list(const LINKED_LIST* linked_list, const void* needle, const void* arg, func_search_linked_list func);
 
 bool RC_HEAP_FUNC(remove_linked_list_by_node, LINKED_LIST* linked_list, LINK_NODE* node);
 #ifdef RES_CHECK

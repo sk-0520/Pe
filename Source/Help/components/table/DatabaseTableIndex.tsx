@@ -13,7 +13,7 @@ import {
 	useWorkIndexes,
 } from "../../stores/TableStore";
 import type { TableBaseProps } from "../../types/table";
-import { getValue } from "../../utils/access";
+import { getElement } from "../../utils/access";
 import { isCommonColumnName } from "../../utils/table";
 import {
 	EditorButton,
@@ -78,7 +78,7 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 			(a) => !isCommonColumnName(a.physicalName),
 		);
 		if (columns.length) {
-			columnIds.push(getValue(columns, 0).id);
+			columnIds.push(getElement(columns, 0).id);
 			setColumnIds([...columnIds]);
 			updateWorkIndex({
 				...workIndex,
@@ -169,21 +169,34 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 								<EditorSelect
 									value={columnIds[i]}
 									onChange={(ev) =>
-										handleChangeColumn(i, ev.target.value as string)
+										handleChangeColumn(
+											i,
+											ev.target.value as string,
+										)
 									}
 									onBlur={handleSubmit(handleInput)}
 								>
 									{workColumns.items
-										.filter((a) => !isCommonColumnName(a.physicalName))
+										.filter(
+											(a) =>
+												!isCommonColumnName(
+													a.physicalName,
+												),
+										)
 										.map((b) => {
 											return (
-												<MenuItem key={b.id} value={b.id}>
+												<MenuItem
+													key={b.id}
+													value={b.id}
+												>
 													{b.physicalName}
 												</MenuItem>
 											);
 										})}
 								</EditorSelect>
-								<IconButton onClick={(ev) => handleRemoveColumn(ev, a)}>
+								<IconButton
+									onClick={(ev) => handleRemoveColumn(ev, a)}
+								>
 									<DeleteIcon />
 								</IconButton>
 							</Box>

@@ -14,7 +14,7 @@ static void output(const TCHAR* s)
 #endif
 
 static ssize_t log_id;
-static void logging(const LOG_ITEM* log_item, void* data)
+static void logging(const LOG_ITEM* log_item, const void* data)
 {
     static TCHAR* log_levels[] = {
         _T("TRACE"),

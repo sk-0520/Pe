@@ -68,8 +68,3 @@ void end_console(CONSOLE_RESOURCE* console_resource);
 /// <param name="newline"></param>
 /// <returns></returns>
 size_t output_console_text(const CONSOLE_RESOURCE* console_resource, const TEXT* text, bool newline);
-
-/// <summary>
-/// なんだこれ、なんだ。
-/// </summary>
-size_t write_console_text(const CONSOLE_RESOURCE* console_resource, const TEXT* text, bool newline);

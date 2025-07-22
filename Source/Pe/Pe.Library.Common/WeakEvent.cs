@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,12 @@ using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
+    public enum EventReference
+    {
+        Strong,
+        Weak
+    }
+
     public class WeakEventBase<TEventListener, TEventArgs>
         where TEventListener : class
         where TEventArgs : EventArgs
@@ -233,27 +240,45 @@ namespace ContentTypeTextNet.Pe.Library.Common
         { }
     }
 
-    public sealed class WeakEvent: WeakEventBase<object, EventArgs>
+    public class NoGenericsWeakEventBase<TEventHandler, TEventArgs>: WeakEventBase<object, TEventArgs>
+        where TEventHandler : Delegate
+        where TEventArgs : EventArgs
     {
         /// <inheritdoc />
-        public WeakEvent(string eventName)
+        public NoGenericsWeakEventBase(string eventName)
             : base(eventName)
         { }
 
         #region function
 
         /// <inheritdoc cref="WeakEventBase{TEventListener, TEventArgs}.AddCore(Delegate?)"/>
-        public bool Add(EventHandler? eventHandler)
+        public bool Add(TEventHandler? eventHandler)
         {
             return AddCore(eventHandler);
         }
 
-        /// <inheritdoc cref="WeakEventBase{TEventListener, TEventArgs}.Remove(Delegate?)"/>
-        public bool Remove(EventHandler? eventHandler)
+        /// <inheritdoc cref="WeakEventBase{TEventListener, TEventArgs}.RemoveCore(Delegate?)"/>
+        public bool Remove(TEventHandler? eventHandler)
         {
             return RemoveCore(eventHandler);
         }
 
         #endregion
+    }
+
+    public sealed class WeakEvent: NoGenericsWeakEventBase<EventHandler, EventArgs>
+    {
+        /// <inheritdoc />
+        public WeakEvent(string eventName)
+            : base(eventName)
+        { }
+    }
+
+    public sealed class PropertyChangedWeakEvent: NoGenericsWeakEventBase<PropertyChangedEventHandler, PropertyChangedEventArgs>
+    {
+        /// <inheritdoc />
+        public PropertyChangedWeakEvent(string eventName)
+            : base(eventName)
+        { }
     }
 }

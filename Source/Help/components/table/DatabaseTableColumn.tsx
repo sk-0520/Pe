@@ -9,12 +9,12 @@ import {
 } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
-	WorkTablesAtom,
 	useWorkColumn,
 	useWorkColumns,
+	WorkTablesAtom,
 } from "../../stores/TableStore";
 import type { TableBaseProps } from "../../types/table";
-import { getValue } from "../../utils/access";
+import { getElement } from "../../utils/access";
 import {
 	Sqlite3AffinityTypes,
 	Sqlite3BasicTypes,
@@ -29,10 +29,10 @@ import {
 	CommonCreatedColumnNames,
 	CommonUpdatedColumnNames,
 	type ForeignKey,
+	isCommonColumnName,
 	type WorkColumn,
 	type WorkForeignKey,
 	type WorkTable,
-	isCommonColumnName,
 } from "../../utils/table";
 import { ListGroupHeader } from "../ListGroupHeader";
 import {
@@ -74,11 +74,13 @@ type Sqlite3TypeItem = Sqlite3Item<"Type"> & {
 const Sqlite3Items: ReadonlyArray<Sqlite3TitleItem | Sqlite3TypeItem> = [
 	{ type: "Title", display: "SQLite3" } satisfies Sqlite3TitleItem,
 	...Sqlite3BasicTypes.map(
-		(a) => ({ type: "Type", display: a, data: a }) satisfies Sqlite3TypeItem,
+		(a) =>
+			({ type: "Type", display: a, data: a }) satisfies Sqlite3TypeItem,
 	),
 	{ type: "Title", display: "affinity" } satisfies Sqlite3TitleItem,
 	...Sqlite3AffinityTypes.map(
-		(a) => ({ type: "Type", display: a, data: a }) satisfies Sqlite3TypeItem,
+		(a) =>
+			({ type: "Type", display: a, data: a }) satisfies Sqlite3TypeItem,
 	),
 ] as const;
 
@@ -128,7 +130,9 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 		: undefined;
 	const foreignColumn =
 		foreignTable && foreignKeyId
-			? foreignTable.columns.items.find((a) => a.id === foreignKeyId.columnId)
+			? foreignTable.columns.items.find(
+					(a) => a.id === foreignKeyId.columnId,
+				)
 			: undefined;
 
 	const { control, handleSubmit, watch, setValue } = useForm<InputValues>({
@@ -158,8 +162,8 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 	const isCommonColumn = isCommonCreatedColumn || isCommonUpdatedColumn;
 
 	// この辺データ構造全くわからんわ
-	const physicalType = getValue(SqliteTypeMap, watch("logicalType"));
-	const selectableClrTypes = getValue(ClrMap, watch("logicalType"));
+	const physicalType = getElement(SqliteTypeMap, watch("logicalType"));
+	const selectableClrTypes = getElement(ClrMap, watch("logicalType"));
 	console.debug(selectableClrTypes);
 
 	useEffect(() => {
@@ -173,8 +177,8 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 		data: InputValues,
 		event?: BaseSyntheticEvent<object>,
 	): void {
-		let foreignKey: ForeignKey | undefined = undefined;
-		let foreignKeyId: WorkForeignKey | undefined = undefined;
+		let foreignKey: ForeignKey | undefined;
+		let foreignKeyId: WorkForeignKey | undefined;
 		if (data.foreignKey) {
 			const [foreignKeyTableId, foreignKeyColumnId] =
 				data.foreignKey.split(".");
@@ -286,7 +290,9 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 									switch (a.type) {
 										case "Table":
 											return (
-												<ListGroupHeader key={a.data.id}>
+												<ListGroupHeader
+													key={a.data.id}
+												>
 													{a.data.define.tableName}
 												</ListGroupHeader>
 											);
@@ -312,7 +318,10 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 					name="logicalName"
 					control={control}
 					render={({ field, formState: { errors } }) => (
-						<EditorTextField {...field} onBlur={handleSubmit(handleInput)} />
+						<EditorTextField
+							{...field}
+							onBlur={handleSubmit(handleInput)}
+						/>
 					)}
 				/>
 			</EditorCell>
@@ -321,7 +330,10 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 					name="physicalName"
 					control={control}
 					render={({ field, formState: { errors } }) => (
-						<EditorTextField {...field} onBlur={handleSubmit(handleInput)} />
+						<EditorTextField
+							{...field}
+							onBlur={handleSubmit(handleInput)}
+						/>
 					)}
 				/>
 			</EditorCell>
@@ -330,19 +342,27 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 					name="logicalType"
 					control={control}
 					render={({ field, formState: { errors } }) => (
-						<EditorSelect {...field} onBlur={handleSubmit(handleInput)}>
+						<EditorSelect
+							{...field}
+							onBlur={handleSubmit(handleInput)}
+						>
 							{Sqlite3Items.map((a) => {
 								switch (a.type) {
 									case "Title":
 										return (
-											<ListGroupHeader key={`${a.type}.${a.display}`}>
+											<ListGroupHeader
+												key={`${a.type}.${a.display}`}
+											>
 												{a.display}
 											</ListGroupHeader>
 										);
 
 									case "Type":
 										return (
-											<MenuItem key={a.data} value={a.data}>
+											<MenuItem
+												key={a.data}
+												value={a.data}
+											>
 												{a.display}
 											</MenuItem>
 										);
@@ -360,13 +380,18 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 					name="clrType"
 					control={control}
 					render={({ field, formState: { errors } }) => (
-						<EditorSelect {...field} onBlur={handleSubmit(handleInput)}>
+						<EditorSelect
+							{...field}
+							onBlur={handleSubmit(handleInput)}
+						>
 							{ClrTypeFullNames.map((a) => {
 								return (
 									<MenuItem
 										key={a}
 										value={a}
-										disabled={!selectableClrTypes.includes(a)}
+										disabled={
+											!selectableClrTypes.includes(a)
+										}
 									>
 										{ClrTypeMap.get(a)}
 									</MenuItem>
@@ -381,7 +406,10 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 					name="comment"
 					control={control}
 					render={({ field, formState: { errors } }) => (
-						<EditorTextField {...field} onBlur={handleSubmit(handleInput)} />
+						<EditorTextField
+							{...field}
+							onBlur={handleSubmit(handleInput)}
+						/>
 					)}
 				/>
 			</EditorCell>

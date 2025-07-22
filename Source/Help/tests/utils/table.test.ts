@@ -173,7 +173,11 @@ describe("convertColumns", () => {
 	});
 
 	test("logical", () => {
-		const columns = convertColumns(["0|1|2|3|4|5|6|7", "", "0|1|2|3|4|5|6|7"]);
+		const columns = convertColumns([
+			"0|1|2|3|4|5|6|7",
+			"",
+			"0|1|2|3|4|5|6|7",
+		]);
 		expect(columns).toHaveLength(1);
 		expect(columns[0]).toHaveProperty("logical", {
 			name: "3",
@@ -182,14 +186,22 @@ describe("convertColumns", () => {
 	});
 
 	test("physical", () => {
-		const columns = convertColumns(["0|1|2|3|4|5|6|7", "", "0|1|2|3|4|5|6|7"]);
+		const columns = convertColumns([
+			"0|1|2|3|4|5|6|7",
+			"",
+			"0|1|2|3|4|5|6|7",
+		]);
 		expect(columns).toHaveLength(1);
 		expect(columns[0]).toHaveProperty("physicalName", "4");
 		expect(columns[0]).toHaveProperty("clrType", "6");
 	});
 
 	test("check", () => {
-		const columns = convertColumns(["0|1|2|3|4|5|6|7", "", "0|1|2|3|4|5|6|7"]);
+		const columns = convertColumns([
+			"0|1|2|3|4|5|6|7",
+			"",
+			"0|1|2|3|4|5|6|7",
+		]);
 		expect(columns).toHaveLength(1);
 		expect(columns[0]).toHaveProperty("comment", "7");
 	});
@@ -213,11 +225,15 @@ describe("convertIndexes", () => {
 	});
 
 	test("header long", () => {
-		expect(() => convertIndexes(["0|1|*|3", "", ""])).toThrow("column length");
+		expect(() => convertIndexes(["0|1|*|3", "", ""])).toThrow(
+			"column length",
+		);
 	});
 
 	test("header short", () => {
-		expect(() => convertIndexes(["0|1|2", "", "0|1"])).toThrow("data length");
+		expect(() => convertIndexes(["0|1|2", "", "0|1"])).toThrow(
+			"data length",
+		);
 	});
 
 	test("header long", () => {
