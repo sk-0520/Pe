@@ -553,7 +553,9 @@ jobs:
 
       - name: AAAAAAAAAAAAAA
         shell: pwsh
-        run: (get-command dotnet).Source
+        run: |
+          (get-command dotnet).Source
+          Remove-Item -Path Env:DOTNET_ROOT
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v4
