@@ -219,7 +219,7 @@ static void library_rc_print_core(bool leak, RES_CHECK_TYPE type)
 void library_rc_print(bool leak)
 {
     for (size_t i = 0; i < SIZEOF_ARRAY(library_res_check_formats); i++) {
-        library_rc_print_core(leak, i); //TODO: この i 正しい？
+        library_rc_print_core(leak, i); //TODO: これの i 正しい？
     }
 }
 
