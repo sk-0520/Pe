@@ -484,7 +484,7 @@ jobs:
     strategy:
       matrix:
         PLATFORM:
-          - x86
+          # - x86
           - x64
 
     steps:
@@ -544,7 +544,7 @@ jobs:
     strategy:
       matrix:
         PLATFORM:
-          - x86
+          # - x86
           - x64
 
     steps:
