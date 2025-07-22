@@ -174,7 +174,7 @@ jobs:
     strategy:
       matrix:
         PLATFORM:
-          # - x86
+          - x86
           - x64
 
     runs-on: ${{ inputs.OS_WINDOWS }}
@@ -222,7 +222,7 @@ jobs:
 
       - name: <Test> Plugin Template
         # x86 が動かない問題, あとで対処
-        #if: matrix.PLATFORM == 'x64'
+        if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: |
           Set-Location ${{ env.PROJECT_DIR }}
@@ -543,7 +543,7 @@ jobs:
     strategy:
       matrix:
         PLATFORM:
-          # - x86
+          - x86
           - x64
 
     steps:
@@ -577,6 +577,7 @@ jobs:
         run: .\Build\setup-test-module.ps1 -InformationAction Continue -Service github -Module ${{ env.MODULE }}
 
       - name: <Test> Module
+        if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: |
           Remove-Item -Path Env:DOTNET_ROOT
@@ -796,7 +797,7 @@ jobs:
     strategy:
       matrix:
         PLATFORM:
-          # - x86
+          - x86
           - x64
 
     steps:
@@ -830,6 +831,8 @@ jobs:
         run: .\Build\setup-test-module.ps1 -InformationAction Continue -Service github -Module ${{ env.MODULE }}
 
       - name: <Test> Module
+        # x86 が動かない問題, あとで対処
+        if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
