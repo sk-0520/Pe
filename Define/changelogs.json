@@ -7,9 +7,7 @@
 				"type": "note",
 				"logs": [
 					{
-						"revision": "",
-						"class": "",
-						"subject": ""
+						"subject": "CI で x86 のテストがうまくいかないので x86 自動テスト系は封印中"
 					},
 					{
 						"revision": "",
