@@ -174,7 +174,7 @@ jobs:
     strategy:
       matrix:
         PLATFORM:
-          - x86
+          # - x86
           - x64
 
     runs-on: ${{ inputs.OS_WINDOWS }}
@@ -519,7 +519,6 @@ jobs:
       - name: <Build> Module
         shell: pwsh
         run: |
-          Remove-Item -Path Env:DOTNET_ROOT
           $productMode = [System.Convert]::ToBoolean('${{ inputs.IS_PRODUCT }}')
           $buildType = $productMode ? '': 'BETA'
           .\Build\build-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType $buildType -Platform ${{ matrix.PLATFORM }}
@@ -544,7 +543,7 @@ jobs:
     strategy:
       matrix:
         PLATFORM:
-          #- x86
+          # - x86
           - x64
 
     steps:
@@ -797,7 +796,7 @@ jobs:
     strategy:
       matrix:
         PLATFORM:
-          #- x86
+          # - x86
           - x64
 
     steps:
