@@ -471,7 +471,9 @@ jobs:
         shell: pwsh
         run: |
           $env:Path += ';${{env.VS_TEST_CONSOLE_PATH}}'
+          echo AAAAAAAAAAAAAAAAAAA
           echo $env:Path
+          dotnet --version
           .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
 
 
