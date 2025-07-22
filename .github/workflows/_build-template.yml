@@ -580,7 +580,9 @@ jobs:
       - name: <Test> Module
         shell: pwsh
         run: |
+          dotnet --version
           Remove-Item -Path Env:DOTNET_ROOT
+          dotnet --version
           .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
       - name: <Make> CodeCoverage
