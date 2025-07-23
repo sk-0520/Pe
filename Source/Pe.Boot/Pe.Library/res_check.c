@@ -22,7 +22,7 @@ typedef enum
     RES_CHECK_TYPE_FILE = 1,
 } RES_CHECK_TYPE;
 
-static const struct RES_CHECK_FORMAT
+typedef struct tag_RES_CHECK_FORMAT
 {
     const TCHAR* alloc_msg;
     const TCHAR* alloc_err;
@@ -31,7 +31,9 @@ static const struct RES_CHECK_FORMAT
     const TCHAR* stock_count;
     const TCHAR* stock_list;
     const TCHAR* stock_leak;
-} library_res_check_formats[] = {
+} RES_CHECK_FORMAT;
+
+static const RES_CHECK_FORMAT library_res_check_formats[] = {
     {
         .alloc_msg = _T("[HEAP:+] %p (%s) %s:") FMT_D_ZU,
         .alloc_err = _T("[HEAP:STOCK:ERROR] %p (%s) %s") FMT_D_ZU,
@@ -57,7 +59,7 @@ typedef struct tag_RES_CHECK_ITEM
     RES_CHECK_STOCK_ITEM* stock_items;
     size_t stock_items_length;
     size_t* stock_item_count;
-    const struct RES_CHECK_FORMAT* formats;
+    const RES_CHECK_FORMAT* formats;
 } RES_CHECK_ITEM;
 
 static library_func_rc_output library_rc_output;
@@ -207,6 +209,7 @@ static void library_rc_print_core(bool leak, RES_CHECK_TYPE type)
     for (size_t i = 0; i < rc_item.stock_items_length; i++) {
         RES_CHECK_STOCK_ITEM* item = rc_item.stock_items + i;
         if (item->p) {
+            // これなんだ、わからん
             const TCHAR* format = leak
                 ? library_res_check_formats->stock_list
                 : library_res_check_formats->stock_leak
@@ -218,8 +221,8 @@ static void library_rc_print_core(bool leak, RES_CHECK_TYPE type)
 
 void library_rc_print(bool leak)
 {
-    for (size_t i = 0; i < SIZEOF_ARRAY(library_res_check_formats); i++) {
-        library_rc_print_core(leak, i); //TODO: この i 正しい？
+    for (RES_CHECK_TYPE i = 0; i < SIZEOF_ARRAY(library_res_check_formats); i++) {
+        library_rc_print_core(leak, i);
     }
 }
 
