@@ -1,0 +1,430 @@
+name: Issue 998
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 0"
+
+env:
+  MINIMUM_VERSION: 0.91.0
+  NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+  PLATFORMS: x86,x64
+  DOTNET_VERSION: 9.0.x
+  VS_TEST_CONSOLE_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow
+  PLUGIN_TEMPLATE_REPOSITORY_OWNER: sk-0520
+  PLUGIN_TEMPLATE_REPOSITORY_NAME: Pe.PluginTemplate
+
+
+jobs:
+
+  help:
+    name: Help
+    runs-on: windows-latest
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Add> Node/NPM
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ./.node-version
+          cache: npm
+
+      - name: <Install> NPM
+        shell: bash
+        run: npm ci
+
+      - name: <Code> Type
+        shell: bash
+        run: npm run typescript
+
+      - name: <Test> Script
+        shell: bash
+        run: npm test
+
+      - name: <Build> Help
+        shell: bash
+        run: npm run help-build
+
+      - name: <Artifact> Help
+        uses: actions/upload-artifact@v4
+        with:
+          name: Help
+          path: Output/help
+          if-no-files-found: error
+
+
+  plugin-template:
+    name: Plugin Template
+    needs:
+      - help
+    env:
+      EXPAND_DIR: plugin-template
+      PROJECT_DIR: \test-plugin
+      PROJECT_NAME: Plugin.Template
+
+    strategy:
+      fail-fast: false
+      matrix:
+        PLATFORM:
+          - x86
+          - x64
+
+    runs-on: windows-latest
+
+    steps:
+      - name: <Setting> Job
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          git config --global user.email "${{ github.job }}@example.com"
+          git config --global user.name "${{ github.job }}"
+
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: <Add> msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: ${{ matrix.PLATFORM }}
+
+      - name: <Download> Help
+        uses: actions/download-artifact@v4
+        with:
+          name: Help
+          path: artifacts/help
+
+      - name: <Expand> Plugin Template
+        shell: pwsh
+        run: Expand-Archive -Verbose -Path artifacts/help/archives/plugin-template.zip -DestinationPath ${{ env.EXPAND_DIR }}
+
+      - name: <Create> Plugin Template
+        shell: pwsh
+        run: .\${{ env.EXPAND_DIR }}\create-project.ps1 -Verbose -InformationAction Continue -ProjectDirectory ${{ env.PROJECT_DIR }} -PluginName ${{ env.PROJECT_NAME }} -PluginId ([Guid]::Empty) -DefaultNamespace ${{ env.PROJECT_NAME }}  -AppTargetBranch '${{ github.ref_name }}'
+
+      - name: <Build> Plugin Template
+        shell: pwsh
+        run: |
+          Set-Location ${{ env.PROJECT_DIR }}
+          .\FullBuild.ps1 -Verbose -InformationAction Continue -Platforms ${{ matrix.PLATFORM }}
+
+      - name: <Test> Plugin Template
+        # x86 が動かない問題, 確認中
+        # if: matrix.PLATFORM == 'x64'
+        shell: pwsh
+        run: |
+          Set-Location ${{ env.PROJECT_DIR }}
+          .\FullTest.ps1 -Verbose -InformationAction Continue -Platforms ${{ matrix.PLATFORM }}
+
+      - name: <Archive> Plugin Template
+        # x86 が動かない問題, 確認中
+        # if: matrix.PLATFORM == 'x64'
+        shell: bash
+        run: ./Build/archive-compress.sh "plugin-template.tar" "${{ env.PROJECT_DIR }}"
+
+      - name: <Artifact> Plugin Template
+        # x86 が動かない問題, 確認中
+        # if: matrix.PLATFORM == 'x64'
+        uses: actions/upload-artifact@v4
+        with:
+          name: template-plugin-${{ matrix.PLATFORM }}
+          path: plugin-template.tar
+          if-no-files-found: error
+
+  build-tools:
+    name: Build BuildTools
+    runs-on: windows-latest
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: <Add> msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: x64
+
+      - name: <Cache> Nuget
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: nuget-${{ github.job }}-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ github.job }}-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
+
+      - name: <Build> BuildTools
+        shell: pwsh
+        run: .\Build\make-buildtools.ps1 -InformationAction Continue
+
+      - name: <Artifact> BuildTools
+        uses: actions/upload-artifact@v4
+        with:
+          name: BuildTools
+          path: Output\tools
+          if-no-files-found: error
+
+
+  build-main:
+    name: Build Main
+    env:
+      MODULE: main
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        PLATFORM:
+          - x86
+          - x64
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: <Add> msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: ${{ matrix.PLATFORM }}
+
+      - name: <Cache> Nuget
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
+
+      - name: <Rewrite> Module
+        shell: pwsh
+        run: |
+          $productMode = [System.Convert]::ToBoolean('false')
+          $buildType = $productMode ? '': 'BETA'
+          .\Build\rewrite-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType $buildType -Revision ${{ github.sha }}
+
+      - name: <Build> Module
+        shell: pwsh
+        run: |
+          $productMode = [System.Convert]::ToBoolean('false')
+          $buildType = $productMode ? '': 'BETA'
+          .\Build\build-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType $buildType -Platform ${{ matrix.PLATFORM }}
+
+      - name: <Archive> Application
+        shell: bash
+        run: ./Build/archive-compress.sh "bin.tar" "Output/Release/${{ matrix.PLATFORM }}/Pe/bin"
+
+      - name: <Artifact> Module
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.MODULE }}-bin-${{ matrix.PLATFORM }}
+          path: bin.tar
+          if-no-files-found: error
+
+  test-main:
+    name: Test Main
+    env:
+      MODULE: main
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        PLATFORM:
+          - x86
+          - x64
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: <Add> msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: ${{ matrix.PLATFORM }}
+
+      - name: <Cache> Nuget
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
+
+      - name: <Rewrite> Module
+        shell: pwsh
+        run: .\Build\rewrite-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Revision ${{ github.sha }}
+
+      - name: <Setup> Module
+        shell: pwsh
+        run: .\Build\setup-test-module.ps1 -InformationAction Continue -Service github -Module ${{ env.MODULE }}
+
+      - name: <Test> Module
+        # x86 が動かない問題, 確認中
+        # if: matrix.PLATFORM == 'x64'
+        shell: pwsh
+        run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
+
+      - name: <Make> CodeCoverage
+        # x86 が動かない問題, 確認中
+        # if: matrix.PLATFORM == 'x64'
+        shell: pwsh
+        run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          $files = @(Get-ChildItem -Filter coverage.cobertura.xml -Recurse)
+          # ソースファイルの位置を渡しておかないとソースが読めない問題対応(Pe.Bridge/Pe.CommonTestがはしゃいでるので補正)
+          $sources = @(
+            Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe
+            Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.Bridge
+            Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.CommonTest
+          )
+          reportgenerator `
+            -reports:$($files -join ';') `
+            -sourcedirs:$($sources -join ';') `
+            -targetdir:"coveragereport" `
+            -reporttypes:Html
+          Get-Location
+
+      - name: <Artifact> CodeCoverage
+        # x86 が動かない問題, 確認中
+        # if: matrix.PLATFORM == 'x64'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test_Pe.Main_${{ matrix.PLATFORM }}
+          path: |
+            Source/Pe/*.Test/TestResults/**/coverage.cobertura.xml
+            coveragereport
+          if-no-files-found: error
+
+
+  build-plugins:
+    name: Build Plugins
+    env:
+      MODULE: plugins
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        PLATFORM:
+          - x86
+          - x64
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: <Add> msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: ${{ matrix.PLATFORM }}
+
+      - name: <Cache> Nuget
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
+
+      - name: <Rewrite> Module
+        shell: pwsh
+        run: |
+          $productMode = [System.Convert]::ToBoolean('false')
+          $buildType = $productMode ? '': 'BETA'
+          .\Build\rewrite-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType $buildType -Revision ${{ github.sha }}
+
+      - name: <Build> Module
+        shell: pwsh
+        run: |
+          $productMode = [System.Convert]::ToBoolean('false')
+          $buildType = $productMode ? '': 'BETA'
+          .\Build\build-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType $buildType -Platform ${{ matrix.PLATFORM }}
+          ls Output\Release\${{ matrix.PLATFORM }}\Plugins
+
+      - name: <Artifact> Module
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugins-${{ matrix.PLATFORM }}
+          path: Output\Release\${{ matrix.PLATFORM }}\Plugins
+          if-no-files-found: error
+
+  test-plugins:
+    name: Test Plugins
+    env:
+      MODULE: plugins
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        PLATFORM:
+          - x86
+          - x64
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: <Add> msbuild to PATH
+        uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: ${{ matrix.PLATFORM }}
+
+      - name: <Cache> Nuget
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
+
+      - name: <Rewrite> Module
+        shell: pwsh
+        run: .\Build\rewrite-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Revision ${{ github.sha }}
+
+      - name: <Setup> Module
+        shell: pwsh
+        run: .\Build\setup-test-module.ps1 -InformationAction Continue -Service github -Module ${{ env.MODULE }}
+
+      - name: <Test> Module
+        # x86 が動かない問題, 確認中
+        # if: matrix.PLATFORM == 'x64'
+        shell: pwsh
+        run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
+
+      # - name: <Artifact> result
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: Test_Pe.Plugins.Reference_${{ matrix.PLATFORM }}
+      #     path: Source/**/coverage.cobertura.xml
+      #     if-no-files-found: error
