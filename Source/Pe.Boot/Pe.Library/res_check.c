@@ -202,17 +202,16 @@ void library_rc_file_check(void* p, const TCHAR* path, bool allocate, RES_CHECK_
 
 static void library_rc_print_core(bool leak, RES_CHECK_TYPE type)
 {
-    RES_CHECK_ITEM rc_item = rc_get_item(type);
+    const RES_CHECK_ITEM rc_item = rc_get_item(type);
 
     output_core(rc_item.formats->stock_count, *rc_item.stock_item_count && leak ? _T("ERROR") : _T("INFORMATION"), *rc_item.stock_item_count);
 
     for (size_t i = 0; i < rc_item.stock_items_length; i++) {
-        RES_CHECK_STOCK_ITEM* item = rc_item.stock_items + i;
+        const RES_CHECK_STOCK_ITEM* item = rc_item.stock_items + i;
         if (item->p) {
-            // これなんだ、わからん
             const TCHAR* format = leak
-                ? library_res_check_formats->stock_list
-                : library_res_check_formats->stock_leak
+                ? rc_item.formats->stock_list
+                : rc_item.formats->stock_leak
                 ;
             output_core(format, item->p, item->file, item->line);
         }
