@@ -5,7 +5,7 @@
 	"//main": "Source/Help/index.pug",
 	"scripts": {
 		"lint:type": "tsc --noEmit",
-		"lint:markup": "markuplint \"**/*.html\"",
+		"lint:markup": "markuplint \"./Source/**/*.{html,jsx,tsx}\"",
 		"lint:script": "biome ci",
 		"lint": "npm-run-all --parallel lint:*",
 		"fix-lint-script": "biome check --write",
@@ -56,6 +56,8 @@
 		"@biomejs/biome": "2.1.2",
 		"@emotion/react": "^11.14.0",
 		"@emotion/styled": "^11.14.1",
+		"@markuplint/jsx-parser": "^4.7.19",
+		"@markuplint/react-spec": "^4.5.19",
 		"@mui/icons-material": "^7.2.0",
 		"@mui/material": "^7.2.0",
 		"@parcel/transformer-inline-string": "^2.15.4",
