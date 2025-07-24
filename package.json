@@ -4,10 +4,10 @@
 	"description": "Pe documents",
 	"//main": "Source/Help/index.pug",
 	"scripts": {
-		"typescript": "tsc --noEmit",
+		"lint:type": "tsc --noEmit",
 		"lint:markup": "markuplint \"**/*.html\"",
 		"lint:script": "biome ci",
-		"lint": "npm-run-all --sequential lint:markup lint:script",
+		"lint": "npm-run-all --parallel lint:*",
 		"fix-lint-script": "biome check --write",
 		"fix-lint-script-unsafe": "biome check --write --unsafe",
 		"test": "jest",
