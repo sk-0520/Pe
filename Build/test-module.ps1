@@ -41,7 +41,7 @@ if ($Module -eq 'boot') {
 	foreach ($projectDirItem in $projectDirItems) {
 		Push-Location -Path $projectDirItem
 		try {
-			dotnet test /p:Platform=$Platform --runtime win-$Platform --configuration Debug --collect:"XPlat Code Coverage" --test-adapter-path:. $loggerArg
+			dotnet test /p:Platform=$Platform --configuration Debug --collect:"XPlat Code Coverage" --test-adapter-path:. $loggerArg
 			if (-not $?) {
 				throw "test error: $Module - $projectDirItem"
 			}

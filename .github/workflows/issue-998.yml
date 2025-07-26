@@ -111,22 +111,16 @@ jobs:
           .\FullBuild.ps1 -Verbose -InformationAction Continue -Platforms ${{ matrix.PLATFORM }}
 
       - name: <Test> Plugin Template
-        # x86 が動かない問題, 確認中
-        # if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: |
           Set-Location ${{ env.PROJECT_DIR }}
           .\FullTest.ps1 -Verbose -InformationAction Continue -Platforms ${{ matrix.PLATFORM }}
 
       - name: <Archive> Plugin Template
-        # x86 が動かない問題, 確認中
-        # if: matrix.PLATFORM == 'x64'
         shell: bash
         run: ./Build/archive-compress.sh "plugin-template.tar" "${{ env.PROJECT_DIR }}"
 
       - name: <Artifact> Plugin Template
-        # x86 が動かない問題, 確認中
-        # if: matrix.PLATFORM == 'x64'
         uses: actions/upload-artifact@v4
         with:
           name: template-plugin-${{ matrix.PLATFORM }}
@@ -275,14 +269,10 @@ jobs:
         run: .\Build\setup-test-module.ps1 -InformationAction Continue -Service github -Module ${{ env.MODULE }}
 
       - name: <Test> Module
-        # x86 が動かない問題, 確認中
-        # if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
       - name: <Make> CodeCoverage
-        # x86 が動かない問題, 確認中
-        # if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: |
           dotnet tool install -g dotnet-reportgenerator-globaltool
@@ -301,8 +291,6 @@ jobs:
           Get-Location
 
       - name: <Artifact> CodeCoverage
-        # x86 が動かない問題, 確認中
-        # if: matrix.PLATFORM == 'x64'
         uses: actions/upload-artifact@v4
         with:
           name: Test_Pe.Main_${{ matrix.PLATFORM }}
@@ -413,8 +401,6 @@ jobs:
         run: .\Build\setup-test-module.ps1 -InformationAction Continue -Service github -Module ${{ env.MODULE }}
 
       - name: <Test> Module
-        # x86 が動かない問題, 確認中
-        # if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
