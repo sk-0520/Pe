@@ -30,23 +30,38 @@ if ($Module -eq 'boot') {
 		}
 	}
 } elseif ($Module -eq 'main' -or $Module -eq 'plugins') {
-	$loggerArg = ''
-	if (![string]::IsNullOrEmpty($Logger)) {
-		$loggerArg = "--logger:$Logger"
-	}
-
 	$projectDirItems = Get-TestProjectDirectory -Kind $Module
 
+	if ($Platform -eq 'x86') {
+		# For x86 testing, use VSTest.Console to avoid architecture mismatch issues
+		foreach ($projectDirItem in $projectDirItems) {
+			$testDirPath = Join-Path -Path $projectDirItem.FullName -ChildPath 'bin' | Join-Path -ChildPath $Configuration | Join-Path -ChildPath $Platform
+			$testFileName = $projectDirItem.BaseName + '.dll'
+			$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
-	foreach ($projectDirItem in $projectDirItems) {
-		Push-Location -Path $projectDirItem
-		try {
-			dotnet test /p:Platform=$Platform --runtime win-$Platform --configuration Debug --collect:"XPlat Code Coverage" --test-adapter-path:. $loggerArg
+			Write-Verbose "VSTest.Console $testFilePath /InIsolation /Platform:$Platform"
+			VSTest.Console $testFilePath /InIsolation /Platform:$Platform
 			if (-not $?) {
 				throw "test error: $Module - $projectDirItem"
 			}
-		} finally {
-			Pop-Location
+		}
+	} else {
+		# For x64 testing, use dotnet test as before
+		$loggerArg = ''
+		if (![string]::IsNullOrEmpty($Logger)) {
+			$loggerArg = "--logger:$Logger"
+		}
+
+		foreach ($projectDirItem in $projectDirItems) {
+			Push-Location -Path $projectDirItem
+			try {
+				dotnet test /p:Platform=$Platform --runtime win-$Platform --configuration $Configuration --collect:"XPlat Code Coverage" --test-adapter-path:. $loggerArg
+				if (-not $?) {
+					throw "test error: $Module - $projectDirItem"
+				}
+			} finally {
+				Pop-Location
+			}
 		}
 	}
 } else {
