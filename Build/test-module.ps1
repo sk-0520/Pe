@@ -39,8 +39,13 @@ if ($Module -eq 'boot') {
 			$testFileName = $projectDirItem.BaseName + '.dll'
 			$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
-			Write-Verbose "VSTest.Console $testFilePath /InIsolation /Platform:$Platform"
-			VSTest.Console $testFilePath /InIsolation /Platform:$Platform
+			$vstestArgs = @($testFilePath, '/InIsolation', "/Platform:$Platform")
+			if (![string]::IsNullOrEmpty($Logger)) {
+				$vstestArgs += "/Logger:$Logger"
+			}
+
+			Write-Verbose "VSTest.Console $($vstestArgs -join ' ')"
+			VSTest.Console @vstestArgs
 			if (-not $?) {
 				throw "test error: $Module - $projectDirItem"
 			}
