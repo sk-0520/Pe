@@ -187,6 +187,12 @@ namespace ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite
             return items;
         }
 
+        public override bool IsTransaction()
+        {
+            var state = Context.QueryFirstOrDefault<string>("PRAGMA transaction_state");
+            return state != null && state != "none";
+        }
+
         #endregion
     }
 }

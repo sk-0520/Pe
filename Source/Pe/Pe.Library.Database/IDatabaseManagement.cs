@@ -243,6 +243,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <returns></returns>
         IList<DatabaseColumnItem> GetColumns(DatabaseResourceItem tableResource);
 
+        /// <summary>
+        /// トランザクション中か。
+        /// </summary>
+        /// <returns></returns>
+        bool IsTransaction();
+
         #endregion
     }
 }

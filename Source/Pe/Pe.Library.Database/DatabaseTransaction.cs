@@ -54,7 +54,23 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #region property
 
         private IDatabaseAccessor DatabaseAccessor { get; [Unused(UnusedKinds.Dispose)] set; }
-        public bool Committed { get; private set; }
+
+        #endregion
+
+        #region function
+
+        /// <inheritdoc cref="IDatabaseManagement.IsTransaction"/>
+        protected bool IsTransaction()
+        {
+            ThrowIfDisposed();
+
+            if(Transaction is null || Transaction.Connection is null) {
+                return false;
+            }
+
+            var management = Implementation.CreateManagement(this);
+            return management.IsTransaction();
+        }
 
         #endregion
 
@@ -74,7 +90,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
             ThrowIfDisposed();
 
             Transaction.Commit();
-            Committed = true;
         }
 
         public virtual void Rollback()
@@ -236,7 +251,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             if(!IsDisposed) {
                 if(disposing) {
-                    if(!Committed) {
+                    if(IsTransaction()) {
                         Rollback();
                     }
                     if(Transaction is not null) {

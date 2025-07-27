@@ -28,6 +28,11 @@ namespace ContentTypeTextNet.Pe.Library.Database
             throw new NotImplementedException();
         }
 
+        public virtual bool IsTransaction()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 
