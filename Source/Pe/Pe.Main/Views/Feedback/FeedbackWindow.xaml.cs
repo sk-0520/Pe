@@ -17,6 +17,8 @@ namespace ContentTypeTextNet.Pe.Main.Views.Feedback
 
         #region property
 
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
+
         #endregion
 
         #region command

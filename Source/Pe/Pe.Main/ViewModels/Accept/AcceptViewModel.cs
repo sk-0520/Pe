@@ -25,6 +25,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Accept
         { }
 
         #region property
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
 
         //public InteractionRequest<Notification> CloseRequest { get; } = new InteractionRequest<Notification>();
         public RequestSender CloseRequest { get; } = new RequestSender();
