@@ -355,6 +355,20 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Database.Vender.Public.SQLite
             }
         }
 
+        [Fact]
+        public void IsTransactionTest()
+        {
+            var accessor = new SqliteAccessor(new InMemorySqliteFactory(), NullLoggerFactory.Instance);
+            var test1 = accessor.DatabaseFactory.CreateImplementation().CreateManagement(accessor);
+            Assert.False(test1.IsTransaction());
+            using(var transaction = accessor.BeginTransaction()) {
+                var transactionManagement = accessor.DatabaseFactory.CreateImplementation().CreateManagement(transaction);
+                Assert.True(transactionManagement.IsTransaction());
+            }
+            var test2 = accessor.DatabaseFactory.CreateImplementation().CreateManagement(accessor);
+            Assert.False(test2.IsTransaction());
+        }
+
         #endregion
     }
 }
