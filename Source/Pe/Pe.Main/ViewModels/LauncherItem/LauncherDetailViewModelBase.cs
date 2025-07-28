@@ -76,6 +76,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 
         #region property
 
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
         protected IScreen Screen { get; }
         protected IKeyGestureGuide KeyGestureGuide { get; }
         protected IDispatcherWrapper DispatcherWrapper { get; }

@@ -35,6 +35,8 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
 
         #region property
 
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
+
         private TimeSpan AutoSendWaitTime { get; } = TimeSpan.FromSeconds(10);
         private DateTime AutoSendStartTime { get; set; }
         private DateTime AutoSendEndTime { get; set; }

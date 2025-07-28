@@ -21,6 +21,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         { }
 
         #region property
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
         private LauncherAddonDetailData? Detail { get; set; }
         private PropertyChangedObserver? ExtensionPropertyChangedObserver { get; set; }
 

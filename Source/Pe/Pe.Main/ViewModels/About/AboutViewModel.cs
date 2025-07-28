@@ -49,6 +49,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
         }
 
         #region property
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
 
         private IWebViewInitializer WebViewInitializer { get; }
 

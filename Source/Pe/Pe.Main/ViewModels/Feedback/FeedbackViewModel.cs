@@ -35,6 +35,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Feedback
 
         #region property
 
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
+
         public RequestSender CloseRequest { get; } = new RequestSender();
         public RunningStatusViewModel SendStatus { get; }
         public string ErrorMessage => Model.ErrorMessage;
