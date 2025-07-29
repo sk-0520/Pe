@@ -113,6 +113,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 
         #region property
 
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
+
         public RequestSender CloseRequest { get; } = new RequestSender();
         public RequestSender FileSelectRequest { get; } = new RequestSender();
 

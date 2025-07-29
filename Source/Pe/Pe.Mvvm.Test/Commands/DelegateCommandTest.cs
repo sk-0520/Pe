@@ -12,14 +12,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
         [Fact]
         public void Constructor_throw_Test()
         {
-            var actual1 = Assert.Throws<ArgumentNullException>(() => new DelegateCommand((Action<object>)null!, null!));
-            Assert.Equal("executeAction", actual1.ParamName);
-
-            var actual2 = Assert.Throws<ArgumentNullException>(() => new DelegateCommand((Action<object>)null!));
-            Assert.Equal("executeAction", actual2.ParamName);
-
-            var actual3 = Assert.Throws<ArgumentNullException>(() => new DelegateCommand(o => { }, null!));
-            Assert.Equal("canExecuteFunc", actual3.ParamName);
+            var actual = Assert.Throws<ArgumentNullException>(() => new DelegateCommand((Action<object>)null!, null!));
+            Assert.Equal("executeAction", actual.ParamName);
         }
 
         [Fact]
@@ -29,7 +23,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
             command = new DelegateCommand(
                 o => {
                     Assert.True(command!.CanExecute(null));
-                }
+                },
+                o => true
             );
             command.Execute(null);
         }
@@ -59,7 +54,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
             command = new DelegateCommand<int>(
                 o => {
                     Assert.Equal(100, o);
-                }
+                },
+                o => true
             );
             command.Execute(100);
         }
@@ -72,7 +68,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
                 o => {
                     Assert.Equal(100, o);
                     Assert.True(command!.CanExecute(o));
-                }
+                },
+                o => true
             );
             command.Execute(100);
         }

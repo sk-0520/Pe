@@ -41,6 +41,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 
         #region property
 
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
         private LauncherFileDetailData? Detail { get; set; }
         private bool DelayWaiting { get; set; }
 

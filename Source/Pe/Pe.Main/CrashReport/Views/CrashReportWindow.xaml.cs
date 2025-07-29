@@ -21,6 +21,8 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Views
 
         #region property
 
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
+
         #endregion
 
         #region command

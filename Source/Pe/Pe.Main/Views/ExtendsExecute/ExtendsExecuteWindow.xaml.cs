@@ -23,6 +23,7 @@ namespace ContentTypeTextNet.Pe.Main.Views.ExtendsExecute
 
 
         #region property
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
         private DialogRequestReceiver DialogRequestReceiver { get; }
 
         [DiInjection]

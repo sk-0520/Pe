@@ -49,19 +49,9 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
 
     public class DelegateCommand: DelegateCommandBase<object>
     {
-        public DelegateCommand(Action<object> executeAction)
-            : base(executeAction)
-        { }
-
         public DelegateCommand(Action<object> executeAction, Func<object, bool> canExecuteFunc)
             : base(executeAction, canExecuteFunc)
         { }
-
-        public DelegateCommand(Action executeAction)
-            : this(_ => executeAction())
-        {
-            ArgumentNullException.ThrowIfNull(executeAction);
-        }
 
         public DelegateCommand(Action executeAction, Func<bool> canExecuteFunc)
             : this(_ => executeAction(), _ => canExecuteFunc())
@@ -73,10 +63,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
 
     public class DelegateCommand<TParameter>: DelegateCommandBase<TParameter>
     {
-        public DelegateCommand(Action<TParameter> executeAction)
-            : base(executeAction)
-        { }
-
         public DelegateCommand(Action<TParameter> executeAction, Func<TParameter, bool> canExecuteFunc)
             : base(executeAction, canExecuteFunc)
         { }

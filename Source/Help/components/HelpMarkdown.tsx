@@ -74,6 +74,7 @@ export const HelpMarkdown: FC<HelpMarkdownProps> = (
 						component: Typography,
 						props: {
 							variant: "body1",
+							component: "code",
 							sx: {
 								display: "inline-block",
 								background: "#efefef",

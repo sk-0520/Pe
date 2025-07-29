@@ -30,6 +30,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         #region property
 
+        private ICommandFactory CommandFactory { get; } = new CommandFactory();
         private ILauncherToolbarTheme LauncherToolbarTheme { get; }
         private IWindowManager WindowManager { get; }
         private IDispatcherWrapper DispatcherWrapper { get; }

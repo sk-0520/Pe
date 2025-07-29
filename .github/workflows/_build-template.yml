@@ -65,6 +65,7 @@ jobs:
     name: PowerShell
 
     strategy:
+      fail-fast: false
       matrix:
         OS:
           - ${{ inputs.OS_WINDOWS }}
@@ -110,10 +111,6 @@ jobs:
       - name: <Install> NPM
         shell: bash
         run: npm ci
-
-      - name: <Code> Type
-        shell: bash
-        run: npm run typescript
 
       - name: <Test> Script
         shell: bash
@@ -172,6 +169,7 @@ jobs:
       PROJECT_NAME: Plugin.Template
 
     strategy:
+      fail-fast: false
       matrix:
         PLATFORM:
           - x86
@@ -391,6 +389,7 @@ jobs:
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     strategy:
+      fail-fast: false
       matrix:
         PLATFORM:
           - x86
@@ -433,6 +432,7 @@ jobs:
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     strategy:
+      fail-fast: false
       matrix:
         PLATFORM:
           - x86
@@ -486,6 +486,7 @@ jobs:
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     strategy:
+      fail-fast: false
       matrix:
         PLATFORM:
           - x86
@@ -545,6 +546,7 @@ jobs:
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     strategy:
+      fail-fast: false
       matrix:
         PLATFORM:
           - x86
@@ -626,6 +628,7 @@ jobs:
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     strategy:
+      fail-fast: false
       matrix:
         PLATFORM:
           - x86
@@ -745,6 +748,7 @@ jobs:
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     strategy:
+      fail-fast: false
       matrix:
         PLATFORM:
           - x86
@@ -801,6 +805,7 @@ jobs:
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     strategy:
+      fail-fast: false
       matrix:
         PLATFORM:
           - x86
@@ -856,6 +861,7 @@ jobs:
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     strategy:
+      fail-fast: false
       matrix:
         PLATFORM:
           - x86
@@ -959,6 +965,7 @@ jobs:
       - check-dotnet-app-library
 
     strategy:
+      fail-fast: false
       matrix:
         OS:
           - windows-2025

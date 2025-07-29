@@ -6,96 +6,75 @@ using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.Pe.Mvvm.Commands
 {
-    /// <summary>
-    /// 見た目おんなじインターフェイスコマンド生成処理。
-    /// </summary>
-    public static class CommandFactory
+    public class CommandFactory: ICommandFactory
     {
         #region function
+        private bool EmptyCanExecuteFunc() => true;
+        private bool EmptyCanExecuteFunc<TParameter>(TParameter parameter) => true;
 
-        #region DelegateCommand@void
+        #endregion
 
-        public static DelegateCommand Create(Action executeAction)
+        #region ICommandFactory
+
+        public DelegateCommand Create(Action executeAction)
         {
-            return new DelegateCommand(executeAction);
+            return new DelegateCommand(executeAction, EmptyCanExecuteFunc);
         }
 
-        public static DelegateCommand Create(Action executeAction, Func<bool> canExecuteFunc)
+        public DelegateCommand Create(Action executeAction, Func<bool> canExecuteFunc)
         {
             return new DelegateCommand(executeAction, canExecuteFunc);
         }
 
-        #endregion
-
-        #region DelegateCommand@object
-
-        public static DelegateCommand Create(Action<object> executeAction)
+        public DelegateCommand Create(Action<object> executeAction)
         {
-            return new DelegateCommand(executeAction);
+            return new DelegateCommand(executeAction, EmptyCanExecuteFunc<object>);
         }
 
-        public static DelegateCommand Create(Action<object> executeAction, Func<object, bool> canExecuteFunc)
+        public DelegateCommand Create(Action<object> executeAction, Func<object, bool> canExecuteFunc)
         {
             return new DelegateCommand(executeAction, canExecuteFunc);
         }
 
-        #endregion
-
-        #region DelegateCommand@T
-
-        public static DelegateCommand<T> Create<T>(Action<T> executeAction)
+        public DelegateCommand<T> Create<T>(Action<T> executeAction)
         {
-            return new DelegateCommand<T>(executeAction);
+            return new DelegateCommand<T>(executeAction, EmptyCanExecuteFunc<T>);
         }
 
-        public static DelegateCommand<T> Create<T>(Action<T> executeAction, Func<T, bool> canExecuteFunc)
+        public DelegateCommand<T> Create<T>(Action<T> executeAction, Func<T, bool> canExecuteFunc)
         {
             return new DelegateCommand<T>(executeAction, canExecuteFunc);
         }
 
-        #endregion
-
-        #region DelegateCommand@void
-
-        public static AsyncDelegateCommand Create(Func<Task> executeAction)
+        public AsyncDelegateCommand Create(Func<Task> executeAction)
         {
-            return new AsyncDelegateCommand(executeAction);
+            return new AsyncDelegateCommand(executeAction, EmptyCanExecuteFunc);
         }
 
-        public static AsyncDelegateCommand Create(Func<Task> executeAction, Func<bool> canExecuteFunc)
+        public AsyncDelegateCommand Create(Func<Task> executeAction, Func<bool> canExecuteFunc)
         {
             return new AsyncDelegateCommand(executeAction, canExecuteFunc);
         }
 
-        #endregion
-
-        #region DelegateCommand@object
-
-        public static AsyncDelegateCommand Create(Func<object, Task> executeAction)
+        public AsyncDelegateCommand Create(Func<object, Task> executeAction)
         {
-            return new AsyncDelegateCommand(executeAction);
+            return new AsyncDelegateCommand(executeAction, EmptyCanExecuteFunc);
         }
 
-        public static AsyncDelegateCommand Create(Func<object, Task> executeAction, Func<object, bool> canExecuteFunc)
+        public AsyncDelegateCommand Create(Func<object, Task> executeAction, Func<object, bool> canExecuteFunc)
         {
             return new AsyncDelegateCommand(executeAction, canExecuteFunc);
         }
 
-        #endregion
-
-        #region DelegateCommand@T
-
-        public static AsyncDelegateCommand<T> Create<T>(Func<T, Task> executeAction)
+        public AsyncDelegateCommand<T> Create<T>(Func<T, Task> executeAction)
         {
-            return new AsyncDelegateCommand<T>(executeAction);
+            return new AsyncDelegateCommand<T>(executeAction, EmptyCanExecuteFunc<T>);
         }
 
-        public static AsyncDelegateCommand<T> Create<T>(Func<T, Task> executeAction, Func<T, bool> canExecuteFunc)
+        public AsyncDelegateCommand<T> Create<T>(Func<T, Task> executeAction, Func<T, bool> canExecuteFunc)
         {
             return new AsyncDelegateCommand<T>(executeAction, canExecuteFunc);
         }
-
-        #endregion
 
         #endregion
     }

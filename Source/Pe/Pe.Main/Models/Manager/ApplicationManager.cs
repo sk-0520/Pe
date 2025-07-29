@@ -1854,8 +1854,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             });
 
             var args = new List<string> {
-                "--run-mode", "crash-report",
-                "--language", System.Globalization.CultureInfo.CurrentCulture.Name,
+                "--run-mode", CommandLineHelper.Escape("crash-report"),
+                "--language", CommandLineHelper.Escape(System.Globalization.CultureInfo.CurrentCulture.Name),
                 "--post-uri", CommandLineHelper.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportUri.OriginalString),
                 "--src-uri", CommandLineHelper.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportSourceUri.OriginalString),
                 "--report-raw-file", CommandLineHelper.Escape(rawReport.FullName),

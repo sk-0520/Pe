@@ -89,7 +89,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Element
             var content = new StringContent(jsonValue, Encoding.UTF8, "application/json");
 
             foreach(var counter in new Counter(5)) {
-                Logger.LogInformation("post {0}/{1}", counter.CurrentCount, counter.MaxCount);
+                Logger.LogInformation("post {PostUri}: {CurrentCount}/{MaxCount}", Options.PostUri, counter.CurrentCount, counter.MaxCount);
                 // 失敗時にリフレッシュしたいので毎回生成する
                 try {
                     using(var httpClient = new HttpClient()) {

@@ -1,5 +1,30 @@
 [
 	{
+		"date": "2025/07/29",
+		"version": "0.99.258",
+		"contents": [
+			{
+				"type": "fixes",
+				"logs": [
+					{
+						"revision": "203aa48648de95210018d1707ed49e6a79d12d1f",
+						"subject": "#1001: クラッシュレポート動いてない気がする"
+					}
+				]
+			},
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "85387f814ae5663302467513c9709e9d7076cd9d",
+						"class": "nuget",
+						"subject": "NLog.Extensions.Logging 6.0.1 -> 6.0.2"
+					}
+				]
+			}
+		]
+	},
+	{
 		"date": "2025/07/22",
 		"version": "0.99.257",
 		"contents": [
