@@ -27,11 +27,7 @@ bool is_upper_character(TCHAR c)
 
 bool is_alphabet_character(TCHAR c)
 {
-    return
-        ('A' <= c && c <= 'Z')
-        ||
-        ('a' <= c && c <= 'z')
-        ;
+    return is_lower_character(c) || is_upper_character(c);
 }
 
 TCHAR to_lower_character(TCHAR c)
