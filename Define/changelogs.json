@@ -1,69 +1,14 @@
 [
 	{
-		"date": "YYYY/MM/DD",
-		"version": "0.99.257+",
+		"date": "2025/07/29",
+		"version": "0.99.258",
 		"contents": [
-			{
-				"type": "note",
-				"logs": [
-					{
-						"revision": "",
-						"class": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
-			{
-				"type": "features",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
 			{
 				"type": "fixes",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "203aa48648de95210018d1707ed49e6a79d12d1f",
 						"subject": "#1001: クラッシュレポート動いてない気がする"
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -71,21 +16,9 @@
 				"type": "developer",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "85387f814ae5663302467513c9709e9d7076cd9d",
 						"class": "nuget",
 						"subject": "NLog.Extensions.Logging 6.0.1 -> 6.0.2"
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			}
