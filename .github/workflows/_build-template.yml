@@ -140,11 +140,38 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: <Cache> Nuget
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/.nuget/packages
+          key: nuget-${{ github.job }}-${{ runner.os }}-${{ hashFiles('Source/Pe/**/*.csproj') }}
+          restore-keys: |
+            nuget-${{ github.job }}-${{ runner.os }}-${{ hashFiles('Source/Pe/**/*.csproj') }}
+
+      - name: <Cache> dotnet tools
+        uses: actions/cache@v4
+        with:
+          path: _tools
+          key: dotnet-tools-${{ runner.os }}-docfx
+          restore-keys: |
+            dotnet-tools-${{ runner.os }}-docfx
+
+      - name: <Cache> docfx build output
+        id: cache-docfx-output
+        uses: actions/cache@v4
+        with:
+          path: _doc-comment
+          key: docfx-output-${{ hashFiles('docfx.json', 'Source/Pe/**/*.cs', 'Source/Pe/**/*.csproj', 'Define/doxfx/**/*') }}
+          restore-keys: |
+            docfx-output-${{ hashFiles('docfx.json', 'Source/Pe/**/*.csproj') }}
+
       - name: <Prepare> docfx
+        if: steps.cache-docfx-output.outputs.cache-hit != 'true'
         run: |
           dotnet tool install docfx --tool-path _tools
 
       - name: <Build> Main
+        if: steps.cache-docfx-output.outputs.cache-hit != 'true'
         run: |
           .\_tools\docfx docfx.json
 
