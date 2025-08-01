@@ -63,6 +63,7 @@
       <app_main_views_converter:TitleConverter x:Key="TitleConverter" />
       <app_main_views_converter:EnumToCultureConverter x:Key="EnumToCultureConverter" />
       <app_main_views_converter:FontFamilyToNameConverter x:Key="FontFamilyToNameConverter" />
+      <app_main_views_converter:TabWidthToTabStopsConverter x:Key="TabWidthToTabStopsConverter" />
 
       <WindowChrome x:Key="NormalWindowChrome"
         ResizeBorderThickness="{Binding BorderThickness}"
@@ -530,6 +531,7 @@
                 <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
                 <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
                 <Setter Property="CaretBrush" Value="{Binding DataContext.ContentForeground, RelativeSource={RelativeSource AncestorType=Window}}" />
+                <Setter Property="TabStops" Value="{Binding DataContext.TabWidth, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource TabWidthToTabStopsConverter}}" />
 
                 <Setter Property="SelectionBrush" Value="{Binding DataContext.ContentForeground, RelativeSource={RelativeSource AncestorType=Window}}" />
                 <Setter Property="SelectionTextBrush" Value="{Binding DataContext.ContentBackground, RelativeSource={RelativeSource AncestorType=Window}}" />

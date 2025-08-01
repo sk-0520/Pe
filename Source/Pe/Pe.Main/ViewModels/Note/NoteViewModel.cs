@@ -406,6 +406,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         public double WindowMovingOpacity => NoteConfiguration.MovingOpacity;
 
+        public double TabWidth => NoteConfiguration.TabWidth.Default;
+
         public IReadOnlyList<NoteHiddenMode> HiddenModeItems { get; } = Enum.GetValues<NoteHiddenMode>().OrderBy(i => i).ToList();
 
         public NoteHiddenMode SelectedHiddenMode
@@ -424,7 +426,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         #region theme
 
         [ThemeProperty]
-        public double CaptionSize => NoteTheme.GetCaptionHeight(NoteConfiguration.CaptionHeight.Default);
+        public double CaptionSize => NoteTheme.GetCaptionHeight();
         [ThemeProperty]
         public Brush BorderBrush => NoteTheme.GetBorderBrush(CaptionPosition, GetColorPair());
         [ThemeProperty]

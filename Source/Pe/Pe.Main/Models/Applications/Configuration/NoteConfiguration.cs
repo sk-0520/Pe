@@ -40,12 +40,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
         public MinMaxDefault<double> FontSize { get; }
 
         /// <summary>
-        /// キャプション高さの最小最大サイズ。0の場合はシステムのデフォルト値を使用。
-        /// </summary>
-        [Configuration(rootConvertMethodName: nameof(ConvertMinMaxDefault))]
-        public MinMaxDefault<double> CaptionHeight { get; }
-
-        /// <summary>
         /// 自動的に最小化するまでの時間。
         /// </summary>
         [Configuration(rootConvertMethodName: nameof(ConvertMinMax))]
@@ -55,6 +49,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
         /// </summary>
         [Configuration(rootConvertMethodName: nameof(ConvertMinMax))]
         public MinMax<TimeSpan> HiddenBlindWaitTime { get; }
+
+        /// <summary>
+        /// タブ幅。
+        /// </summary>
+        [Configuration(rootConvertMethodName: nameof(ConvertMinMaxDefault))]
+        public MinMaxDefault<double> TabWidth { get; }
 
         #endregion
     }
