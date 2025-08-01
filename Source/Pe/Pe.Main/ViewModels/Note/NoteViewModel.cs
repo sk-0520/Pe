@@ -424,7 +424,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         #region theme
 
         [ThemeProperty]
-        public double CaptionSize => NoteTheme.GetCaptionHeight();
+        public double CaptionSize => NoteTheme.GetCaptionHeight(NoteConfiguration.CaptionHeight.Default);
         [ThemeProperty]
         public Brush BorderBrush => NoteTheme.GetBorderBrush(CaptionPosition, GetColorPair());
         [ThemeProperty]

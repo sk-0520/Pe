@@ -58,7 +58,8 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         {
             var viewBox = new Viewbox();
             using(viewBox.BeginInitialize()) {
-                viewBox.Width = GetCaptionHeight() * 0.8;
+                // ボタンサイズはシステムのデフォルト値を使用（キャプション高さに依存しない固定サイズ）
+                viewBox.Width = SystemParameters.CaptionHeight * 0.8;
                 viewBox.Height = viewBox.Width;
 
                 var canvas = new Canvas();
@@ -89,9 +90,9 @@ namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
         #region INoteTheme
 
         [return: PixelKind(Px.Logical)]
-        public double GetCaptionHeight()
+        public double GetCaptionHeight(double configuredHeight = 0)
         {
-            return SystemParameters.CaptionHeight;
+            return configuredHeight > 0 ? configuredHeight : SystemParameters.CaptionHeight;
         }
 
         [return: PixelKind(Px.Logical)]
