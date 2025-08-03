@@ -1,0 +1,105 @@
+{
+	"resource": [
+		{
+			"comment": "",
+			"license": {
+				"uri": "http://msdn.microsoft.com/ja-jp/library/ms246582.aspx",
+				"name": "MICROSOFT SOFTWARE LICENSE TERMS"
+			},
+			"name": "Visual Studio 2017/2019/2022 Image Library",
+			"uri": "https://docs.microsoft.com/ja-jp/visualstudio/designers/the-visual-studio-image-library"
+		},
+		{
+			"comment": "",
+			"license": {
+				"uri": "",
+				"name": ""
+			},
+			"name": "Material Design Icons",
+			"uri": "https://materialdesignicons.com"
+		}
+	],
+	"library": [
+		{
+			"comment": "Microsoft.Extension.*, (MS)System.*, Microsoft.Web.WebView2.* を含む",
+			"license": {
+				"uri": "https://github.com/microsoft/dotnet/blob/master/LICENSE",
+				"name": "MIT License"
+			},
+			"name": ".NET 9",
+			"uri": "https://dotnet.microsoft.com/download/dotnet/9.0"
+		},
+		{
+			"comment": "",
+			"license": {
+				"name": "MIT License",
+				"uri": ""
+			},
+			"name": "AvalonEdit",
+			"uri": "http://www.avalonedit.net/"
+		},
+		{
+			"comment": "",
+			"license": {
+				"name": "BSD-2-Clause",
+				"uri": ""
+			},
+			"name": "NLog.Extensions.Logging",
+			"uri": "https://github.com/NLog/NLog.Extensions.Logging"
+		},
+		{
+			"comment": "",
+			"license": {
+				"uri": "",
+				"name": ""
+			},
+			"name": "SevenZipExtractor",
+			"uri": "https://github.com/adoconnection/SevenZipExtractor"
+		},
+		{
+			"comment": "",
+			"license": {
+				"name": "MIT License",
+				"uri": ""
+			},
+			"name": "Hardcodet.NotifyIcon.Wpf",
+			"uri": "https://github.com/hardcodet/wpf-notifyicon"
+		},
+		{
+			"comment": "",
+			"license": {
+				"name": "See package",
+				"uri": ""
+			},
+			"name": "Prism.Wpf",
+			"uri": "https://github.com/PrismLibrary/Prism"
+		},
+		{
+			"comment": "",
+			"license": {
+				"name": "WTFPL",
+				"uri": ""
+			},
+			"name": "Emoji.Wpf",
+			"uri": "https://github.com/samhocevar/emoji.wpf"
+		},
+		{
+			"comment": "",
+			"license": {
+				"name": "Apache License 2.0",
+				"uri": ""
+			},
+			"name": "Dapper",
+			"uri": "https://github.com/DapperLib/Dapper"
+		},
+		{
+			"comment": "xunit, xunit.runner.visualstudio",
+			"license": {
+				"uri": "https://github.com/xunit/xunit",
+				"name": "Apache License 2.0"
+			},
+			"name": "xUnit.net",
+			"uri": "https://xunit.net/"
+		}
+	]
+}

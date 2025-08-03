@@ -1,0 +1,115 @@
+{
+	"library": [
+		{
+			"name": ".NET 9",
+			"uri": "https://dotnet.microsoft.com/download/dotnet/9.0",
+			"license": {
+				"name": "MIT License",
+				"uri": "https://github.com/microsoft/dotnet/blob/master/LICENSE"
+			},
+			"comment": "Microsoft.Extension.*, (MS)System.*, Microsoft.Web.WebView2.* を含む"
+		},
+		{
+			"name": "xUnit.net",
+			"uri": "https://xunit.net/",
+			"license": {
+				"name": "Apache License 2.0",
+				"uri": "https://github.com/xunit/xunit"
+			},
+			"comment": "xunit, xunit.runner.visualstudio"
+		},
+		{
+			"name": "AvalonEdit",
+			"uri": "http://avalonedit.net/",
+			"license": {
+				"name": "MIT License",
+				"uri": "https://github.com/icsharpcode/AvalonEdit/blob/master/LICENSE"
+			},
+			"comment": ""
+		},
+		{
+			"name": "Dapper",
+			"uri": "https://github.com/StackExchange/Dapper",
+			"license": {
+				"name": "Apache-2.0",
+				"uri": "http://www.apache.org/licenses/LICENSE-2.0"
+			},
+			"comment": ""
+		},
+		{
+			"name": "NLog",
+			"uri": "https://nlog-project.org/",
+			"license": {
+				"name": "BSD 2-Clause \"Simplified\" License",
+				"uri": "https://github.com/NLog/NLog.Extensions.Logging/blob/master/LICENSE"
+			},
+			"comment": "NLog.Extensions.Logging"
+		},
+		{
+			"name": "Prism",
+			"uri": "https://github.com/PrismLibrary/Prism",
+			"license": {
+				"name": "MIT License",
+				"uri": "https://github.com/PrismLibrary/Prism/blob/v7.2.0.1422/LICENSE"
+			},
+			"comment": "Prism.Wpf"
+		},
+		{
+			"name": "System.Data.SQLite",
+			"uri": "https://system.data.sqlite.org/index.html/doc/trunk/www/index.wiki",
+			"license": {
+				"name": "Public Domain",
+				"uri": "https://www.sqlite.org/copyright.html"
+			},
+			"comment": "System.Data.SQLite.Core"
+		},
+		{
+			"name": "Hardcodet NotifyIcon for WPF",
+			"uri": "https://github.com/hardcodet/wpf-notifyicon",
+			"license": {
+				"name": "CPOL",
+				"uri": "https://github.com/hardcodet/wpf-notifyicon/blob/master/LICENSE"
+			},
+			"comment": ""
+		},
+		{
+			"name": "SevenZipExtractor",
+			"uri": "https://github.com/adoconnection/SevenZipExtractor",
+			"license": {
+				"name": "MIT",
+				"uri": "https://github.com/adoconnection/SevenZipExtractor/blob/master/LICENSE"
+			},
+			"comment": "7z"
+		},
+		{
+			"name": "Emoji.Wpf",
+			"uri": "https://github.com/samhocevar/emoji.wpf",
+			"license": {
+				"name": "WTFPLv2",
+				"uri": "https://github.com/samhocevar/emoji.wpf/blob/main/COPYING"
+			},
+			"comment": "絵文字"
+		}
+	],
+	"resource": [
+		{
+			"name": "Visual Studio 2017/2019/2022 Image Library",
+			"uri": "https://docs.microsoft.com/ja-jp/visualstudio/designers/the-visual-studio-image-library",
+			"license": {
+				"name": "MICROSOFT SOFTWARE LICENSE TERMS",
+				"uri": "http://msdn.microsoft.com/ja-jp/library/ms246582.aspx"
+			},
+			"comment": ""
+		},
+		{
+			"name": "Material Design Icons",
+			"uri": "https://materialdesignicons.com",
+			"license": {
+				"name": "",
+				"uri": ""
+			},
+			"comment": ""
+		}
+	]
+
+}
