@@ -636,4 +636,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
         #endregion
     }
+
+    public enum LauncherExecuteSource
+    {
+        LauncherToolbarButton,
+        LauncherToolbarMenu,
+        LauncherToolbarExtends,
+        CommandLineNormal,
+        CommandLineExtends,
+        KeyGesture,
+    }
 }
