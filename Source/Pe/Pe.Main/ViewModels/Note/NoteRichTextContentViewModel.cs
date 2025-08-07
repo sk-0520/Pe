@@ -326,7 +326,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 ControlElement.SelectionChanged += RichTextBox_SelectionChanged;
 
                 return true;
-            }, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(t => {
+            }).ContinueWith(t => {
                 bool success = false;
                 string content;
                 if(t.IsCompletedSuccessfully) {
