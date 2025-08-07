@@ -353,6 +353,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
                     var range = new TextRange(Document.ContentStart, Document.ContentEnd);
                     range.Load(stream, DataFormats.Rtf);
+
+                    Logger.LogWarning("TODO: スクロール処理");
+
                 }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
 
                 return success;

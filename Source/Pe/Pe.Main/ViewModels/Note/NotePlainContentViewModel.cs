@@ -59,6 +59,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     Content = ex.Message;
                 }
                 return false;
+            }).ContinueWith(t => {
+                if(t.IsCompletedSuccessfully) {
+                    Logger.LogWarning("TODO: スクロール処理");
+                }
+                return t.Result;
             });
         }
 

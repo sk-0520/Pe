@@ -135,6 +135,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         public abstract void SearchContent(string searchValue, bool searchNext);
 
+        protected virtual void ReceiveScrollOffset(double verticalOffset, double horizontalOffset)
+        {
+            Logger.LogInformation("verticalOffset: {VerticalOffset}, horizontalOffset: {HorizontalOffset}",
+                verticalOffset,
+                horizontalOffset
+            );
+        }
+
         #endregion
 
         #region SingleModelViewModelBase
@@ -229,18 +237,6 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #endregion
 
-        #region function
-
-        public void GetOffset()
-        {
-            Logger.LogDebug("VerticalOffset: {VerticalOffset}, HorizontalOffset: {HorizontalOffset}",
-            ControlElement.VerticalOffset,
-            ControlElement.HorizontalOffset
-            );
-        }
-
-        #endregion
-
         #region NoteContentViewModelBase
 
         protected override Task<bool> LoadContentAsync(CancellationToken cancellationToken)
@@ -250,10 +246,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
                 if(scrollViewer is not null) {
                     if(ScrollViewer is not null) {
-
+                        ScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
                     }
 
                     ScrollViewer = scrollViewer;
+                    ScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
                 }
 
                 return true;
@@ -261,6 +258,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         }
 
         #endregion
+
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if(sender is ScrollViewer scrollViewer) {
+                ReceiveScrollOffset(scrollViewer.VerticalOffset, scrollViewer.HorizontalOffset);
+            }
+        }
     }
 
     public static class NoteContentViewModelFactory
