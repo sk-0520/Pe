@@ -1,7 +1,10 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
@@ -186,7 +189,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
     }
 
     public abstract class NoteContentViewModelBase<TControlElement>: NoteContentViewModelBase
-        where TControlElement: FrameworkElement
+        where TControlElement : FrameworkElement
     {
         protected NoteContentViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
             : base(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory)
@@ -208,6 +211,53 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
                 return (TControlElement)BaseElement;
             }
+        }
+
+        #endregion
+    }
+
+    public abstract class NoteContentTextBoxViewModelBase<TControlElement>: NoteContentViewModelBase<TControlElement>
+        where TControlElement : TextBoxBase
+    {
+        protected NoteContentTextBoxViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+            : base(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory)
+        { }
+
+        #region property
+
+        ScrollViewer? ScrollViewer { get; set; }
+
+        #endregion
+
+        #region function
+
+        public void GetOffset()
+        {
+            Logger.LogDebug("VerticalOffset: {VerticalOffset}, HorizontalOffset: {HorizontalOffset}",
+            ControlElement.VerticalOffset,
+            ControlElement.HorizontalOffset
+            );
+        }
+
+        #endregion
+
+        #region NoteContentViewModelBase
+
+        protected override Task<bool> LoadContentAsync(CancellationToken cancellationToken)
+        {
+            return DispatcherWrapper.InvokeAsync(() => {
+                var scrollViewer = UIUtility.FindChildren<ScrollViewer>(ControlElement).FirstOrDefault();
+
+                if(scrollViewer is not null) {
+                    if(ScrollViewer is not null) {
+
+                    }
+
+                    ScrollViewer = scrollViewer;
+                }
+
+                return true;
+            });
         }
 
         #endregion

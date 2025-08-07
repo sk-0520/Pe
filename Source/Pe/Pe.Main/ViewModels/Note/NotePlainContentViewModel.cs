@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 {
-    public class NotePlainContentViewModel: NoteContentViewModelBase<TextBox>
+    public class NotePlainContentViewModel: NoteContentTextBoxViewModelBase<TextBox>
     {
         #region variable
 
@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         protected override Task<bool> LoadContentAsync(CancellationToken cancellationToken)
         {
-            return Task.Run(() => {
+            return base.LoadContentAsync(cancellationToken).ContinueWith(t => {
                 try {
                     var content = Model.LoadPlainContent();
                     Content = content;

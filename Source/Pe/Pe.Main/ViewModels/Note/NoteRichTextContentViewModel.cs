@@ -23,7 +23,7 @@ using Prism.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 {
-    public class NoteRichTextContentViewModel: NoteContentViewModelBase<RichTextBox>, IFlushable
+    public class NoteRichTextContentViewModel: NoteContentTextBoxViewModelBase<RichTextBox>, IFlushable
     {
         #region variable
 
@@ -318,8 +318,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         protected override Task<bool> LoadContentAsync(CancellationToken cancellationToken)
         {
-            return DispatcherWrapper.InvokeAsync(() => {
-
+            return base.LoadContentAsync(cancellationToken).ContinueWith(t => {
                 ControlElement.TextChanged -= Control_TextChanged;
                 ControlElement.SelectionChanged -= RichTextBox_SelectionChanged;
 
@@ -327,7 +326,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 ControlElement.SelectionChanged += RichTextBox_SelectionChanged;
 
                 return true;
-            }).ContinueWith(t => {
+            }, TaskScheduler.FromCurrentSynchronizationContext()).ContinueWith(t => {
                 bool success = false;
                 string content;
                 if(t.IsCompletedSuccessfully) {
