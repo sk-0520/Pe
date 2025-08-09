@@ -159,6 +159,19 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             return LoadRawContent();
         }
 
+        private NoteViewOffsetData? GetViewOffsetCore(IDatabaseContexts contexts)
+        {
+            var dao = new NoteViewOffsetsEntityDao(contexts.Context, DatabaseStatementLoader, contexts.Implementation, LoggerFactory);
+            return dao.SelectNoteViewOffset(NoteId);
+        }
+
+        public NoteViewOffsetData? GetViewOffset()
+        {
+            using(var context = MainDatabaseBarrier.WaitRead()) {
+                return GetViewOffsetCore(context);
+            }
+        }
+
         private NoteLinkWatchParameter? GetLinkParameter() => (NoteLinkWatchParameter?)LinkWatcher?.WatchParameter;
 
         private static string ReadFileContent(FileInfo file, Encoding encoding)

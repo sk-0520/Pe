@@ -7,10 +7,12 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
+using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
+using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using Microsoft.Extensions.Logging;
@@ -242,6 +244,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         protected override Task<bool> LoadContentAsync(CancellationToken cancellationToken)
         {
             return DispatcherWrapper.InvokeAsync(() => {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 var scrollViewer = UIUtility.FindChildren<ScrollViewer>(ControlElement).FirstOrDefault();
 
                 if(scrollViewer is not null) {
@@ -252,9 +256,20 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     ScrollViewer = scrollViewer;
                     ScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
                 }
+            }).ContinueWith(t => {
+                if(t.Exception is not null) {
+                    throw t.Exception;
+                }
+
+                var offset = Model.GetViewOffset();
+                Logger.LogDebug("offset: {Offset}", offset);
+            }, cancellationToken).ContinueWith(t => {
+                if(t.Exception is not null) {
+                    throw t.Exception;
+                }
 
                 return true;
-            });
+            }, cancellationToken);
         }
 
         #endregion
