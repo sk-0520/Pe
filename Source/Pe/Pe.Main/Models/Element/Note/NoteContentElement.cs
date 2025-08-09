@@ -172,6 +172,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
         }
 
+        public void DelaySaveViewOffset(NoteViewOffsetData offset)
+        {
+            MainDatabaseDelayWriter.Stock(c => {
+                var noteViewOffsetsEntityDao = new NoteViewOffsetsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                noteViewOffsetsEntityDao.DeleteNoteViewOffset(NoteId);
+                noteViewOffsetsEntityDao.InsertNoteViewOffset(NoteId, offset, DatabaseCommonStatus.CreateCurrentAccount());
+            }, UniqueKeyPool.Get());
+
+        }
+
         private NoteLinkWatchParameter? GetLinkParameter() => (NoteLinkWatchParameter?)LinkWatcher?.WatchParameter;
 
         private static string ReadFileContent(FileInfo file, Encoding encoding)

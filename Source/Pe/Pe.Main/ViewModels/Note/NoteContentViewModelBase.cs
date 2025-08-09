@@ -140,7 +140,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         protected virtual void ReceiveScrollOffset(double verticalOffset, double horizontalOffset)
         {
-            Logger.LogInformation("verticalOffset: {VerticalOffset}, horizontalOffset: {HorizontalOffset}",
+            Logger.LogInformation("[not impl] verticalOffset: {VerticalOffset}, horizontalOffset: {HorizontalOffset}",
                 verticalOffset,
                 horizontalOffset
             );
@@ -236,7 +236,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #region property
 
-        ScrollViewer? ScrollViewer { get; set; }
+        private ScrollViewer? ScrollViewer { get; set; }
 
         #endregion
 
@@ -259,20 +259,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 }
             }).ContinueWith(t => {
                 t.ThrowIfHasException();
-
-                var offset = Model.GetViewOffset();
-                if(ScrollViewer is not null && offset is not null) {
-                    Logger.LogInformation("[NOTE:SCROLL] <APPLY> NoteId: {NoteId}, Offset: {Offset}", Model.NoteId, offset);
-                    ScrollViewer.ScrollToVerticalOffset(offset.X);
-                    ScrollViewer.ScrollToHorizontalOffset(offset.Y);
-                } else {
-                    Logger.LogInformation("[NOTE:SCROLL] <IGNORE> NoteId: {NoteId}, Offset: {Offset}", Model.NoteId, offset);
-                }
-
-            }, cancellationToken).ContinueWith(t => {
-                t.ThrowIfHasException();
                 return true;
             }, cancellationToken);
+        }
+
+        protected override void ReceiveScrollOffset(double verticalOffset, double horizontalOffset)
+        {
+            Model.DelaySaveViewOffset(new NoteViewOffsetData() {
+                X = verticalOffset,
+                Y = horizontalOffset,
+            });
         }
 
         #endregion
