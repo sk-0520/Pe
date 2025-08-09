@@ -355,6 +355,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     range.Load(stream, DataFormats.Rtf);
 
                     Logger.LogWarning("TODO: スクロール処理");
+                    BeforeLoadContent(cancellationToken);
 
                 }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
 

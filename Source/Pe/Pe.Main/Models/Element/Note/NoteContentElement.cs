@@ -178,7 +178,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                 var noteViewOffsetsEntityDao = new NoteViewOffsetsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
                 noteViewOffsetsEntityDao.DeleteNoteViewOffset(NoteId);
                 noteViewOffsetsEntityDao.InsertNoteViewOffset(NoteId, offset, DatabaseCommonStatus.CreateCurrentAccount());
-            }, UniqueKeyPool.Get());
+            }, UniqueKeyPool.Get(NoteId.ToString()));
 
         }
 

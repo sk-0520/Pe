@@ -138,11 +138,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         public abstract void SearchContent(string searchValue, bool searchNext);
 
-        protected virtual void ReceiveScrollOffset(double verticalOffset, double horizontalOffset)
+        protected virtual void ReceiveScrollOffset(NoteViewOffsetData offset)
         {
-            Logger.LogInformation("[not impl] verticalOffset: {VerticalOffset}, horizontalOffset: {HorizontalOffset}",
-                verticalOffset,
-                horizontalOffset
+            Logger.LogInformation("[not impl] offset: {Offset}",
+                offset
             );
         }
 
@@ -237,6 +236,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         #region property
 
         private ScrollViewer? ScrollViewer { get; set; }
+        protected bool Loaded { get; set; }
 
         #endregion
 
@@ -263,12 +263,25 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             }, cancellationToken);
         }
 
-        protected override void ReceiveScrollOffset(double verticalOffset, double horizontalOffset)
+        protected void BeforeLoadContent(CancellationToken cancellationToken)
         {
-            Model.DelaySaveViewOffset(new NoteViewOffsetData() {
-                X = verticalOffset,
-                Y = horizontalOffset,
-            });
+            DispatcherWrapper.InvokeAsync(() => {
+                var offset = Model.GetViewOffset();
+                if(ScrollViewer is not null && offset is not null) {
+                    ScrollViewer.ScrollToHorizontalOffset(offset.X);
+                    ScrollViewer.ScrollToVerticalOffset(offset.Y);
+                }
+            }, System.Windows.Threading.DispatcherPriority.ApplicationIdle, cancellationToken);
+        }
+
+        protected override void ReceiveScrollOffset(NoteViewOffsetData offset)
+        {
+            if(!Loaded) {
+                Logger.LogTrace("これは無視: {Offset}", offset);
+                return;
+            }
+
+            Model.DelaySaveViewOffset(offset);
         }
 
         #endregion
@@ -276,7 +289,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if(sender is ScrollViewer scrollViewer) {
-                ReceiveScrollOffset(scrollViewer.VerticalOffset, scrollViewer.HorizontalOffset);
+                ReceiveScrollOffset(new NoteViewOffsetData() {
+                    X = scrollViewer.VerticalOffset,
+                    Y = scrollViewer.HorizontalOffset
+                });
             }
         }
     }

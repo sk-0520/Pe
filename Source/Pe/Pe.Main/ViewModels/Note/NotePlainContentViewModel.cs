@@ -62,6 +62,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             }).ContinueWith(t => {
                 if(t.IsCompletedSuccessfully) {
                     Logger.LogWarning("TODO: スクロール処理");
+                    BeforeLoadContent(cancellationToken);
                 }
                 return t.Result;
             });
