@@ -10,6 +10,7 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
@@ -257,17 +258,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     ScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
                 }
             }).ContinueWith(t => {
-                if(t.Exception is not null) {
-                    throw t.Exception;
-                }
+                t.ThrowIfHasException();
 
                 var offset = Model.GetViewOffset();
-                Logger.LogDebug("offset: {Offset}", offset);
-            }, cancellationToken).ContinueWith(t => {
-                if(t.Exception is not null) {
-                    throw t.Exception;
+                if(ScrollViewer is not null && offset is not null) {
+                    Logger.LogInformation("[NOTE:SCROLL] <APPLY> NoteId: {NoteId}, Offset: {Offset}", Model.NoteId, offset);
+                    ScrollViewer.ScrollToVerticalOffset(offset.X);
+                    ScrollViewer.ScrollToHorizontalOffset(offset.Y);
+                } else {
+                    Logger.LogInformation("[NOTE:SCROLL] <IGNORE> NoteId: {NoteId}, Offset: {Offset}", Model.NoteId, offset);
                 }
 
+            }, cancellationToken).ContinueWith(t => {
+                t.ThrowIfHasException();
                 return true;
             }, cancellationToken);
         }
