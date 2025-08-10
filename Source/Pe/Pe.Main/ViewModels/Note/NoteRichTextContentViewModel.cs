@@ -319,6 +319,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         protected override Task<bool> LoadContentAsync(CancellationToken cancellationToken)
         {
             return base.LoadContentAsync(cancellationToken).ContinueWith(t => {
+                t.ThrowIfHasException();
+
                 ControlElement.TextChanged -= Control_TextChanged;
                 ControlElement.SelectionChanged -= RichTextBox_SelectionChanged;
 
@@ -326,7 +328,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 ControlElement.SelectionChanged += RichTextBox_SelectionChanged;
 
                 return true;
-            }).ContinueWith(t => {
+            }, cancellationToken).ContinueWith(t => {
                 bool success = false;
                 string content;
                 if(t.IsCompletedSuccessfully) {
@@ -355,7 +357,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     range.Load(stream, DataFormats.Rtf);
 
                     Logger.LogWarning("TODO: スクロール処理");
-                    BeforeLoadContent(cancellationToken);
+                    BeforeLoadContent();
 
                 }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
 

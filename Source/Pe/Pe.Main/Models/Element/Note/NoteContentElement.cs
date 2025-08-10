@@ -172,14 +172,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
         }
 
-        public void DelaySaveViewOffset(NoteViewOffsetData offset)
+        public void ChangeViewOffsetDelaySave(NoteViewOffsetData offset, object key)
         {
             MainDatabaseDelayWriter.Stock(c => {
                 var noteViewOffsetsEntityDao = new NoteViewOffsetsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
                 noteViewOffsetsEntityDao.DeleteNoteViewOffset(NoteId);
                 noteViewOffsetsEntityDao.InsertNoteViewOffset(NoteId, offset, DatabaseCommonStatus.CreateCurrentAccount());
-            }, UniqueKeyPool.Get(NoteId.ToString()));
-
+            }, key);
         }
 
         private NoteLinkWatchParameter? GetLinkParameter() => (NoteLinkWatchParameter?)LinkWatcher?.WatchParameter;

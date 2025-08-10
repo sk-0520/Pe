@@ -46,6 +46,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         protected NoteConfiguration NoteConfiguration { get; }
         protected IClipboardManager ClipboardManager { get; }
         protected IDispatcherWrapper DispatcherWrapper { get; }
+
         public bool CanVisible
         {
             get => this._canVisible;
@@ -237,6 +238,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         private ScrollViewer? ScrollViewer { get; set; }
         protected bool Loaded { get; set; }
+        private UniqueKeyPool UniqueKeyPool { get; } = new UniqueKeyPool();
 
         #endregion
 
@@ -244,34 +246,29 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         protected override Task<bool> LoadContentAsync(CancellationToken cancellationToken)
         {
-            return DispatcherWrapper.InvokeAsync(() => {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var scrollViewer = UIUtility.FindChildren<ScrollViewer>(ControlElement).FirstOrDefault();
-
-                if(scrollViewer is not null) {
-                    if(ScrollViewer is not null) {
-                        ScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
-                    }
-
-                    ScrollViewer = scrollViewer;
-                    ScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
-                }
-            }).ContinueWith(t => {
-                t.ThrowIfHasException();
-                return true;
-            }, cancellationToken);
+            Loaded = false;
+            return Task.FromResult(true);
         }
 
-        protected void BeforeLoadContent(CancellationToken cancellationToken)
+        protected void BeforeLoadContent()
         {
-            DispatcherWrapper.InvokeAsync(() => {
+            var scrollViewer = UIUtility.FindChildren<ScrollViewer>(ControlElement).FirstOrDefault();
+
+            if(scrollViewer is not null) {
+                if(ScrollViewer is not null) {
+                    ScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
+                }
+
+                ScrollViewer = scrollViewer;
+                ScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+
                 var offset = Model.GetViewOffset();
                 if(ScrollViewer is not null && offset is not null) {
                     ScrollViewer.ScrollToHorizontalOffset(offset.X);
                     ScrollViewer.ScrollToVerticalOffset(offset.Y);
                 }
-            }, System.Windows.Threading.DispatcherPriority.ApplicationIdle, cancellationToken);
+                Loaded = true;
+            }
         }
 
         protected override void ReceiveScrollOffset(NoteViewOffsetData offset)
@@ -280,8 +277,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 Logger.LogTrace("これは無視: {Offset}", offset);
                 return;
             }
-
-            Model.DelaySaveViewOffset(offset);
+            Model.ChangeViewOffsetDelaySave(offset, UniqueKeyPool.Get());
         }
 
         #endregion
@@ -290,8 +286,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         {
             if(sender is ScrollViewer scrollViewer) {
                 ReceiveScrollOffset(new NoteViewOffsetData() {
-                    X = scrollViewer.VerticalOffset,
-                    Y = scrollViewer.HorizontalOffset
+                    X = scrollViewer.HorizontalOffset,
+                    Y = scrollViewer.VerticalOffset
                 });
             }
         }

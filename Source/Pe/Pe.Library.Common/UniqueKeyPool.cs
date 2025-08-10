@@ -31,10 +31,9 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <param name="callerMemberName"><see cref="CallerMemberNameAttribute"/></param>
         /// <param name="callerLineNumber"><see cref="CallerLineNumberAttribute"/></param>
         /// <returns></returns>
-        public object Get(string key = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        public object Get([CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
-            var sb = new StringBuilder(key.Length + 1 + callerMemberName.Length + 1 + "2147483647".Length);
-            sb.Append(key);
+            var sb = new StringBuilder(callerMemberName.Length + 1 + "2147483647".Length);
             sb.Append(callerMemberName);
             sb.Append('.');
             sb.Append(callerLineNumber);

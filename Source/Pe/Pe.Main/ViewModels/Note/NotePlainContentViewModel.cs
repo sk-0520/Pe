@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using ContentTypeTextNet.Pe.Bridge.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
@@ -51,6 +52,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         protected override Task<bool> LoadContentAsync(CancellationToken cancellationToken)
         {
             return base.LoadContentAsync(cancellationToken).ContinueWith(t => {
+                t.ThrowIfHasException();
+
                 try {
                     var content = Model.LoadPlainContent();
                     Content = content;
@@ -59,13 +62,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     Content = ex.Message;
                 }
                 return false;
-            }).ContinueWith(t => {
+            }, cancellationToken).ContinueWith(t => {
                 if(t.IsCompletedSuccessfully) {
                     Logger.LogWarning("TODO: スクロール処理");
-                    BeforeLoadContent(cancellationToken);
+                    DispatcherWrapper.BeginAsync(() => {
+                        BeforeLoadContent();
+                    }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
                 }
                 return t.Result;
-            });
+            }, cancellationToken);
         }
 
         protected override void UnloadContent()
