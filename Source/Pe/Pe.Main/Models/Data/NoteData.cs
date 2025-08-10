@@ -253,6 +253,23 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         #endregion
     }
 
+    public record class NoteViewOffsetData
+    {
+        #region property
+
+        /// <summary>
+        /// X位置。
+        /// </summary>
+        public double X { get; init; }
+
+        /// <summary>
+        /// Y位置。
+        /// </summary>
+        public double Y { get; init; }
+
+        #endregion
+    }
+
     public class NoteFileData
     {
         #region property
