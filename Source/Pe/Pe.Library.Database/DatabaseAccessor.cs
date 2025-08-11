@@ -37,10 +37,19 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LazyImplementation = new Lazy<IDatabaseImplementation>(DatabaseFactory.CreateImplementation);
         }
 
+        protected DatabaseAccessor(IDatabaseTransaction transaction, IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
+        {
+            Logger = loggerFactory.CreateLogger(GetType());
+            Transaction = transaction;
+            DatabaseFactory = databaseFactory;
+            LazyConnection = new Lazy<IDbConnection>(OpenConnection);
+            LazyImplementation = new Lazy<IDatabaseImplementation>(DatabaseFactory.CreateImplementation);
+        }
+
         #region property
 
         private Lazy<IDbConnection> LazyConnection { get; set; }
-
+        private IDatabaseTransaction? Transaction { get; set; }
         private Lazy<IDatabaseImplementation> LazyImplementation { get; }
         protected IDatabaseImplementation Implementation => LazyImplementation.Value;
 
@@ -61,6 +70,17 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #region function
 
         /// <summary>
+        /// トランザクション中だったら例外を投げる。
+        /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
+        protected void ThrowIfInTransaction()
+        {
+            if(Transaction is not null) {
+                throw new InvalidOperationException("In transaction.");
+            }
+        }
+
+        /// <summary>
         /// DB接続を開く。
         /// </summary>
         /// <returns></returns>
@@ -73,6 +93,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 throw new InvalidOperationException(nameof(IsOpened));
             }
             ThrowIfDisposed();
+            ThrowIfInTransaction();
 
             var con = DatabaseFactory.CreateConnection();
             con.Open();
@@ -156,6 +177,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         public virtual IDisposable PauseConnection()
         {
             ThrowIfDisposed();
+            ThrowIfInTransaction();
 
             if(!IsOpened || ConnectionPausing) {
                 return ActionDisposerHelper.CreateEmpty();
