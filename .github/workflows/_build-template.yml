@@ -140,6 +140,14 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: <Cache> DocFX Tool
+        uses: actions/cache@v4
+        with:
+          path: .\_tools\docfx
+          key: docfx-${{ github.job }}-${{ runner.os }}-${{ hashFiles('docfx.json') }}
+          restore-keys: |
+            docfx-${{ github.job }}-${{ runner.os }}-
+
       - name: <Prepare> docfx
         run: |
           dotnet tool install docfx --tool-path _tools
