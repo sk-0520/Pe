@@ -99,20 +99,20 @@ namespace ContentTypeTextNet.Pe.Core.Models
     public class PropertyChangedObserver: DisposerBase
     {
         HashSet<string> RaisePropertyNames { get; } = new HashSet<string>();
-        public PropertyChangedObserver(IDispatcherWrapper dispatcherWrapper, ILogger logger)
+        public PropertyChangedObserver(IContextDispatcher contextDispatcher, ILogger logger)
         {
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             Logger = logger;
         }
-        public PropertyChangedObserver(IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public PropertyChangedObserver(IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             Logger = loggerFactory.CreateLogger(GetType());
         }
 
         #region property
 
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
         protected ILogger Logger { get; }
 
         protected IDictionary<string, List<ObserveItem>> Items { get; } = new Dictionary<string, List<ObserveItem>>();
@@ -290,7 +290,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 return false;
             }
 
-            DispatcherWrapper.BeginAsync(arg => {
+            ContextDispatcher.BeginAsync(arg => {
                 if(arg.@this.IsDisposed) {
                     return;
                 }
@@ -310,7 +310,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 return false;
             }
 
-            DispatcherWrapper.BeginAsync(arg => {
+            ContextDispatcher.BeginAsync(arg => {
                 if(arg.@this.IsDisposed) {
                     return;
                 }
@@ -322,7 +322,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
             if(raiseCommands.Count != 0) {
                 // 個別にやる方法はわからん
-                DispatcherWrapper.BeginAsync(() => {
+                ContextDispatcher.BeginAsync(() => {
                     CommandManager.InvalidateRequerySuggested();
                 });
             }
@@ -337,7 +337,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 return false;
             }
 
-            DispatcherWrapper.BeginAsync(arg => {
+            ContextDispatcher.BeginAsync(arg => {
                 if(arg.@this.IsDisposed) {
                     return;
                 }

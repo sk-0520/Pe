@@ -38,8 +38,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 
         #endregion
 
-        public AboutViewModel(AboutElement model, IWebViewInitializer webViewInitializer, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public AboutViewModel(AboutElement model, IWebViewInitializer webViewInitializer, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             WebViewInitializer = webViewInitializer;
             ComponentCollection = new ObservableCollection<AboutComponentItemViewModel>(model.Components.Select(i => new AboutComponentItemViewModel(i, LoggerFactory)));

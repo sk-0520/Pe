@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Preferences
                 clockWidgetSetting = new ClockWidgetSetting();
             }
 
-            SettingViewModel = new ClockSettingViewModel(clockWidgetSetting, preferencesParameter.SkeletonImplements, preferencesParameter.DispatcherWrapper, preferencesParameter.LoggerFactory);
+            SettingViewModel = new ClockSettingViewModel(clockWidgetSetting, preferencesParameter.SkeletonImplements, preferencesParameter.ContextDispatcher, preferencesParameter.LoggerFactory);
 
             var control = new ClockSettingControl() {
                 DataContext = SettingViewModel,

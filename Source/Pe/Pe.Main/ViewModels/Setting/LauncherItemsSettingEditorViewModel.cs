@@ -33,8 +33,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #endregion
 
-        public LauncherItemsSettingEditorViewModel(LauncherItemsSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel> allLauncherItems, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherItemsSettingEditorViewModel(LauncherItemsSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel> allLauncherItems, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
 
             AllLauncherItemCollection = allLauncherItems;
@@ -166,25 +166,25 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         private IResultSuccess<DragParameter> GetDragParameter(UIElement sender, MouseEventArgs e)
         {
-            var dd = new LauncherFileItemDragAndDrop(DispatcherWrapper, LoggerFactory);
+            var dd = new LauncherFileItemDragAndDrop(ContextDispatcher, LoggerFactory);
             return dd.GetDragParameter(sender, e);
         }
 
         private bool CanDragStart(UIElement sender, MouseEventArgs e)
         {
-            var dd = new LauncherFileItemDragAndDrop(DispatcherWrapper, LoggerFactory);
+            var dd = new LauncherFileItemDragAndDrop(ContextDispatcher, LoggerFactory);
             return dd.CanDragStart(sender, e);
         }
 
         private void DragOverOrEnter(UIElement sender, DragEventArgs e)
         {
-            var dd = new LauncherFileItemDragAndDrop(DispatcherWrapper, LoggerFactory);
+            var dd = new LauncherFileItemDragAndDrop(ContextDispatcher, LoggerFactory);
             dd.DragOverOrEnter(sender, e);
         }
 
         private async Task DropAsync(UIElement sender, DragEventArgs e, CancellationToken cancellationToken)
         {
-            var dd = new LauncherFileItemDragAndDrop(DispatcherWrapper, LoggerFactory);
+            var dd = new LauncherFileItemDragAndDrop(ContextDispatcher, LoggerFactory);
             await dd.DropAsync(sender, e, s => dd.RegisterDropFile(ExpandShortcutFileRequest, s, async (path, expand) => {
                 var launcherItemId = await Model.RegisterFileAsync(path, expand, cancellationToken);
                 var newItem = AllLauncherItemCollection.ViewModels.First(i => i.LauncherItemId == launcherItemId);
@@ -195,7 +195,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         private void DragLeave(UIElement sender, DragEventArgs e)
         {
-            var dd = new LauncherFileItemDragAndDrop(DispatcherWrapper, LoggerFactory);
+            var dd = new LauncherFileItemDragAndDrop(ContextDispatcher, LoggerFactory);
             dd.DragLeave(sender, e);
         }
 

@@ -16,8 +16,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 {
     public class LauncherFileItemDragAndDrop: DragAndDropGuidelineBase
     {
-        public LauncherFileItemDragAndDrop(IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(dispatcherWrapper, loggerFactory)
+        public LauncherFileItemDragAndDrop(IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -55,7 +55,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
                 var filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
                 if(filePaths.Length == 1) {
-                    await DispatcherWrapper.BeginAsync(() => action(filePaths[0]));
+                    await ContextDispatcher.BeginAsync(() => action(filePaths[0]));
                     e.Handled = true;
                 }
             }

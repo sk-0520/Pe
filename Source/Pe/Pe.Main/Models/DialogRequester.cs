@@ -153,7 +153,7 @@ namespace ContentTypeTextNet.Pe.Main.Models
         public PluginWebInstallElement Element { get; init; } = default!;
         public IWindowManager WindowManager { get; init; } = default!;
         public IUserTracker UserTracker { get; init; } = default!;
-        public IDispatcherWrapper DispatcherWrapper { get; init; } = default!;
+        public IContextDispatcher ContextDispatcher { get; init; } = default!;
         public ILoggerFactory LoggerFactory { get; init; } = default!;
 
         #endregion

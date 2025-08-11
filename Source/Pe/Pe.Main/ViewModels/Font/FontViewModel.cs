@@ -13,14 +13,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Font
 {
     public class FontViewModel: SingleModelViewModelBase<FontElement>, IFlushable
     {
-        public FontViewModel(FontElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public FontViewModel(FontElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
             if(!Model.IsInitialized) {
                 throw new ArgumentException(nameof(Model) + "." + nameof(Model.InitializeAsync), nameof(model));
             }
 
-            PropertyChangedObserver = new PropertyChangedObserver(dispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(contextDispatcher, LoggerFactory);
             PropertyChangedObserver.AddObserver(nameof(Model.FamilyName), nameof(FontFamily));
             PropertyChangedObserver.AddObserver(nameof(Model.Size), new[] { nameof(Size), nameof(FontSize) });
             PropertyChangedObserver.AddObserver(nameof(Model.IsItalic), new[] { nameof(IsItalic), nameof(FontStyle) });

@@ -65,12 +65,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 
         #endregion
 
-        protected LauncherDetailViewModelBase(LauncherItemElement model, IScreen screen, IKeyGestureGuide keyGestureGuide, IDispatcherWrapper dispatcherWrapper, ILauncherToolbarTheme launcherToolbarTheme, ILoggerFactory loggerFactory)
+        protected LauncherDetailViewModelBase(LauncherItemElement model, IScreen screen, IKeyGestureGuide keyGestureGuide, IContextDispatcher contextDispatcher, ILauncherToolbarTheme launcherToolbarTheme, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
             Screen = screen;
             KeyGestureGuide = keyGestureGuide;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             LauncherToolbarTheme = launcherToolbarTheme;
         }
 
@@ -79,7 +79,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         private ICommandFactory CommandFactory { get; } = new CommandFactory();
         protected IScreen Screen { get; }
         protected IKeyGestureGuide KeyGestureGuide { get; }
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
         protected ILauncherToolbarTheme LauncherToolbarTheme { get; }
         public object MainIcon => this._mainIcon ??= GetIcon(IconKind.Main, true);
         public object TooltipIcon => this._tooltipIcon ??= GetIcon(IconKind.Tooltip, false);

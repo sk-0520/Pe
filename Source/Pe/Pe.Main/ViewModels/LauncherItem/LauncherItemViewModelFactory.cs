@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
@@ -13,20 +13,20 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
     {
         #region function
 
-        public static LauncherDetailViewModelBase Create(LauncherItemElement model, IScreen screen, IKeyGestureGuide keyGestureGuide, IDispatcherWrapper dispatcherWrapper, ILauncherToolbarTheme launcherToolbarTheme, ILoggerFactory loggerFactory)
+        public static LauncherDetailViewModelBase Create(LauncherItemElement model, IScreen screen, IKeyGestureGuide keyGestureGuide, IContextDispatcher contextDispatcher, ILauncherToolbarTheme launcherToolbarTheme, ILoggerFactory loggerFactory)
         {
             switch(model.Kind) {
                 case LauncherItemKind.File:
-                    return new LauncherFileViewModel(model, screen, keyGestureGuide, dispatcherWrapper, launcherToolbarTheme, loggerFactory);
+                    return new LauncherFileViewModel(model, screen, keyGestureGuide, contextDispatcher, launcherToolbarTheme, loggerFactory);
 
                 //case LauncherItemKind.StoreApp:
-                //    return new LauncherStoreAppViewModel(model, screen, keyGestureGuide, dispatcherWrapper, launcherToolbarTheme, loggerFactory);
+                //    return new LauncherStoreAppViewModel(model, screen, keyGestureGuide, contextDispatcher, launcherToolbarTheme, loggerFactory);
 
                 case LauncherItemKind.Addon:
-                    return new LauncherAddonViewModel(model, screen, keyGestureGuide, dispatcherWrapper, launcherToolbarTheme, loggerFactory);
+                    return new LauncherAddonViewModel(model, screen, keyGestureGuide, contextDispatcher, launcherToolbarTheme, loggerFactory);
 
                 case LauncherItemKind.Separator:
-                    return new LauncherSeparatorViewModel(model, screen, keyGestureGuide, dispatcherWrapper, launcherToolbarTheme, loggerFactory);
+                    return new LauncherSeparatorViewModel(model, screen, keyGestureGuide, contextDispatcher, launcherToolbarTheme, loggerFactory);
 
                 default:
                     throw new NotImplementedException();

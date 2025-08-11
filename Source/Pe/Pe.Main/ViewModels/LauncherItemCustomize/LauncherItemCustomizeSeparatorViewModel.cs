@@ -15,8 +15,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 {
     public class LauncherItemCustomizeSeparatorViewModel: LauncherItemCustomizeDetailViewModelBase
     {
-        public LauncherItemCustomizeSeparatorViewModel(LauncherItemCustomizeEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherItemCustomizeSeparatorViewModel(LauncherItemCustomizeEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             KindItems = new ObservableCollection<LauncherSeparatorKind>(
                 Enum.GetValues<LauncherSeparatorKind>()

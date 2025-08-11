@@ -21,9 +21,9 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
         public void Send(RequestParameter requestParameter);
         public void Send(RequestParameter requestParameter, Action<RequestResponse> callback);
 
-        public Task<RequestResponse> SendAsync(IDispatcherWrapper dispatcherWrapper);
-        public Task<RequestResponse> SendAsync(RequestParameter requestParameter, IDispatcherWrapper dispatcherWrapper);
-        public Task<RequestResponse> SendAsync(RequestParameter requestParameter, IDispatcherWrapper dispatcherWrapper, CancellationToken token);
+        public Task<RequestResponse> SendAsync(IContextDispatcher contextDispatcher);
+        public Task<RequestResponse> SendAsync(RequestParameter requestParameter, IContextDispatcher contextDispatcher);
+        public Task<RequestResponse> SendAsync(RequestParameter requestParameter, IContextDispatcher contextDispatcher, CancellationToken token);
 
         #endregion
     }
@@ -63,9 +63,9 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
             OnRaised(requestParameter, callback);
         }
 
-        public Task<RequestResponse> SendAsync(IDispatcherWrapper dispatcherWrapper) => SendAsync(EmptyParameter, dispatcherWrapper, CancellationToken.None);
-        public Task<RequestResponse> SendAsync(RequestParameter requestParameter, IDispatcherWrapper dispatcherWrapper) => SendAsync(requestParameter, dispatcherWrapper, CancellationToken.None);
-        public Task<RequestResponse> SendAsync(RequestParameter requestParameter, IDispatcherWrapper dispatcherWrapper, CancellationToken token)
+        public Task<RequestResponse> SendAsync(IContextDispatcher contextDispatcher) => SendAsync(EmptyParameter, contextDispatcher, CancellationToken.None);
+        public Task<RequestResponse> SendAsync(RequestParameter requestParameter, IContextDispatcher contextDispatcher) => SendAsync(requestParameter, contextDispatcher, CancellationToken.None);
+        public Task<RequestResponse> SendAsync(RequestParameter requestParameter, IContextDispatcher contextDispatcher, CancellationToken token)
         {
             var waitEvent = new ManualResetEventSlim(false);
 
@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
 
             return Task.Run(() => {
                 using(waitEvent) {
-                    dispatcherWrapper.BeginAsync(() => OnRaised(requestParameter, CustomCallback));
+                    contextDispatcher.BeginAsync(() => OnRaised(requestParameter, CustomCallback));
                     waitEvent.Wait(token);
                 }
                 return result ?? new RequestSilentResponse();

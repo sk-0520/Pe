@@ -74,8 +74,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #endregion
 
-        public NoteViewModel(NoteElement model, NoteConfiguration noteConfiguration, INoteTheme noteTheme, IGeneralTheme generalTheme, IPlatformTheme platformTheme, ApplicationConfiguration applicationConfiguration, IOrderManager orderManager, ICultureService cultureService, IClipboardManager clipboardManager, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public NoteViewModel(NoteElement model, NoteConfiguration noteConfiguration, INoteTheme noteTheme, IGeneralTheme generalTheme, IPlatformTheme platformTheme, ApplicationConfiguration applicationConfiguration, IOrderManager orderManager, ICultureService cultureService, IClipboardManager clipboardManager, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             NoteConfiguration = noteConfiguration;
             NoteTheme = noteTheme;
@@ -89,7 +89,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             PlatformTheme.Changed += PlatformTheme_Changed;
 
             Debug.Assert(Model.FontElement != null);
-            Font = new NoteFontViewModel(Model.FontElement, DispatcherWrapper, LoggerFactory);
+            Font = new NoteFontViewModel(Model.FontElement, ContextDispatcher, LoggerFactory);
 
             FileDragAndDrop = new DelegateDragAndDrop(true, LoggerFactory) {
                 CanDragStart = FileCanDragStart,
@@ -101,11 +101,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             };
 
             FileCollection = new ModelViewModelObservableCollectionManager<NoteFileElement, NoteFileViewModel>(Model.Files, new ModelViewModelObservableCollectionOptions<NoteFileElement, NoteFileViewModel>() {
-                ToViewModel = m => new NoteFileViewModel(m, UserTracker, DispatcherWrapper, LoggerFactory)
+                ToViewModel = m => new NoteFileViewModel(m, UserTracker, ContextDispatcher, LoggerFactory)
             });
             FileItems = FileCollection.GetDefaultView();
 
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             PropertyChangedObserver.AddObserver(nameof(Model.IsVisible), nameof(IsVisible));
             PropertyChangedObserver.AddObserver(nameof(Model.IsTopmost), nameof(IsTopmost));
             PropertyChangedObserver.AddObserver(nameof(Model.IsCompact), nameof(IsCompact));
@@ -207,7 +207,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                         this._content.Dispose();
                     }
                     Debug.Assert(Model.ContentElement != null);
-                    this._content = NoteContentViewModelFactory.Create(Model.ContentElement, NoteConfiguration, ClipboardManager, DispatcherWrapper, LoggerFactory);
+                    this._content = NoteContentViewModelFactory.Create(Model.ContentElement, NoteConfiguration, ClipboardManager, ContextDispatcher, LoggerFactory);
                 }
 
                 return this._content;
@@ -1059,7 +1059,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         private void ApplyCaption()
         {
-            DispatcherWrapper.VerifyAccess();
+            ContextDispatcher.VerifyAccess();
 
             var captionPair = NoteTheme.GetCaptionBrush(CaptionPosition, GetColorPair());
             CaptionForeground = captionPair.Foreground;
@@ -1087,7 +1087,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         private void ApplyBorder()
         {
-            DispatcherWrapper.VerifyAccess();
+            ContextDispatcher.VerifyAccess();
 
             var propertyNames = new[] {
                 nameof(BorderBrush),
@@ -1101,7 +1101,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         private void ApplyContent()
         {
-            DispatcherWrapper.VerifyAccess();
+            ContextDispatcher.VerifyAccess();
 
             var propertyNames = new[] {
                 nameof(ContentBackground),
@@ -1113,7 +1113,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         private void ApplyBlind()
         {
-            DispatcherWrapper.VerifyAccess();
+            ContextDispatcher.VerifyAccess();
 
             var propertyNames = new[] {
                 nameof(BlindEffect),
@@ -1128,7 +1128,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         {
             ThrowIfDisposed();
 
-            DispatcherWrapper.BeginAsync(vm => {
+            ContextDispatcher.BeginAsync(vm => {
                 if(vm.IsDisposed) {
                     return;
                 }
@@ -1237,7 +1237,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                             case SC.SC_MINIMIZE:
                                 /*
                                 if(!IsCompact) {
-                                    DispatcherWrapper.BeginAsync(() => {
+                                    ContextDispatcher.BeginAsync(() => {
                                         Model.ToggleCompactDelaySave();
                                     });
                                 }
@@ -1304,7 +1304,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 if(filePaths.Length == 1) {
                     e.Handled = true;
                     Logger.LogDebug("A");
-                    await DispatcherWrapper.BeginAsync(async () => {
+                    await ContextDispatcher.BeginAsync(async () => {
                         var result = await Model.AddFileAsync(filePaths[0], NoteFileKind.Reference, cancellationToken);
                         Logger.LogDebug("C: {Result}", result);
                     }, DispatcherPriority.ApplicationIdle);

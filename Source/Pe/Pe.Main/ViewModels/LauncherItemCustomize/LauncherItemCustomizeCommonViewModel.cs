@@ -27,8 +27,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #endregion
 
-        public LauncherItemCustomizeCommonViewModel(LauncherItemCustomizeEditorElement model, IRequestSender iconSelectRequest, IRequestSender imageSelectRequest, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherItemCustomizeCommonViewModel(LauncherItemCustomizeEditorElement model, IRequestSender iconSelectRequest, IRequestSender imageSelectRequest, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             IconSelectRequest = iconSelectRequest;
             ImageSelectRequest = imageSelectRequest;

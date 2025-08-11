@@ -17,15 +17,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
         private object? _icon;
 
         #endregion
-        protected CommandItemElementBase(IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected CommandItemElementBase(IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
 
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
 
         public List<HitValue> EditableHeaderValues { get; } = new List<HitValue>();
         public List<HitValue> EditableDescriptionValues { get; } = new List<HitValue>();
@@ -89,7 +89,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
         public object GetIcon(in IconScale iconScale)
         {
-            DispatcherWrapper.VerifyAccess();
+            ContextDispatcher.VerifyAccess();
 
             return this._icon ??= GetIconImpl(iconScale);
         }
@@ -117,8 +117,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
     public sealed class LauncherCommandItemElement: CommandItemElementBase
     {
-        public LauncherCommandItemElement(LauncherItemElement launcherItemElement, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(dispatcherWrapper, loggerFactory)
+        public LauncherCommandItemElement(LauncherItemElement launcherItemElement, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(contextDispatcher, loggerFactory)
         {
             LauncherItemElement = launcherItemElement;
             EditableHeaderValues.AddRange(new[] { new HitValue(LauncherItemElement.Name, false) });
@@ -138,8 +138,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
         protected override object GetIconImpl(in IconScale iconScale)
         {
             var factory = LauncherItemElement.CreateLauncherIconFactory();
-            var iconSource = factory.CreateIconSource(DispatcherWrapper);
-            return factory.CreateView(iconSource, true, true, DispatcherWrapper);
+            var iconSource = factory.CreateIconSource(ContextDispatcher);
+            return factory.CreateView(iconSource, true, true, ContextDispatcher);
         }
 
         protected override void ExecuteImpl(ICommandExecuteParameter parameter)
@@ -170,8 +170,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
     public sealed class ApplicationCommandItemElement: CommandItemElementBase
     {
-        public ApplicationCommandItemElement(ApplicationCommandParameter parameter, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(dispatcherWrapper, loggerFactory)
+        public ApplicationCommandItemElement(ApplicationCommandParameter parameter, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(contextDispatcher, loggerFactory)
         {
             Parameter = parameter;
             EditableHeaderValues.AddRange(new[] { new HitValue(Parameter.Header, false) });

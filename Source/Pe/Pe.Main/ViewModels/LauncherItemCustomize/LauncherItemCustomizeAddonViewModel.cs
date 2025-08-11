@@ -9,8 +9,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 {
     public class LauncherItemCustomizeAddonViewModel: LauncherItemCustomizeDetailViewModelBase
     {
-        public LauncherItemCustomizeAddonViewModel(LauncherItemCustomizeEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherItemCustomizeAddonViewModel(LauncherItemCustomizeEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         { }
 
         #region property

@@ -9,8 +9,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 {
     public sealed class LauncherItemSettingEditorViewModel: LauncherItemCustomizeEditorViewModel
     {
-        public LauncherItemSettingEditorViewModel(LauncherItemSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherItemSettingEditorViewModel(LauncherItemSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             Editor = model;
         }
@@ -34,8 +34,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
             get
             {
                 var factory = Editor.CreateLauncherIconFactory();
-                var iconSource = factory.CreateIconSource(DispatcherWrapper);
-                return factory.CreateView(iconSource, false, false, DispatcherWrapper);
+                var iconSource = factory.CreateIconSource(ContextDispatcher);
+                return factory.CreateView(iconSource, false, false, ContextDispatcher);
             }
         }
 

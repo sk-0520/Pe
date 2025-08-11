@@ -27,8 +27,8 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
 
         #endregion
 
-        internal ClockLauncherItemWindowViewModel(ClockLauncherItem item, ISkeletonImplements skeletonImplements, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-        : base(skeletonImplements, dispatcherWrapper, loggerFactory)
+        internal ClockLauncherItemWindowViewModel(ClockLauncherItem item, ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+        : base(skeletonImplements, contextDispatcher, loggerFactory)
         {
             Item = item;
 

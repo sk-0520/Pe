@@ -44,14 +44,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
 
         #endregion
 
-        public StandardInputOutputViewModel(StandardInputOutputElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public StandardInputOutputViewModel(StandardInputOutputElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
-            Font = new FontViewModel(model.Font!, DispatcherWrapper, LoggerFactory);
+            Font = new FontViewModel(model.Font!, ContextDispatcher, LoggerFactory);
 
             this._isTopmost = model.IsTopmost;
 
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             PropertyChangedObserver.AddObserver(nameof(StandardInputOutputElement.PreparedReceive), AttachReceiver);
             PropertyChangedObserver.AddObserver(nameof(StandardInputOutputElement.ProcessExited), nameof(ProcessExited));
             PropertyChangedObserver.AddObserver(nameof(StandardInputOutputElement.ProcessExited), ClearOutputCommand);
@@ -124,7 +124,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
         public ICommand ClearOutputCommand => this._ClearOutputCommand ??= new DelegateCommand(
             () => {
                 try {
-                    DispatcherWrapper.BeginAsync(() => {
+                    ContextDispatcher.BeginAsync(() => {
                         Terminal!.Clear();
                     });
                 } catch(Exception ex) {
@@ -246,7 +246,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
                 return;
             }
 
-            DispatcherWrapper.BeginAsync(() => {
+            ContextDispatcher.BeginAsync(() => {
                 var prevLine = TextDocument.Lines.Last<DocumentLine>();
                 var prevEndOffset = prevLine.EndOffset;
 

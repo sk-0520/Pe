@@ -17,8 +17,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Startup
 
         #endregion
 
-        public StartupViewModel(StartupElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public StartupViewModel(StartupElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         { }
 
         #region property

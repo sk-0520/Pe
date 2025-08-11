@@ -19,10 +19,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 {
     public class LauncherItemCustomizeContainerViewModel: ElementViewModelBase<LauncherItemCustomizeContainerElement>, IViewLifecycleReceiver, ILauncherItemId
     {
-        public LauncherItemCustomizeContainerViewModel(LauncherItemCustomizeContainerElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public LauncherItemCustomizeContainerViewModel(LauncherItemCustomizeContainerElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
-            Editor = new LauncherItemCustomizeEditorViewModel(Model.Editor, DispatcherWrapper, loggerFactory);
+            Editor = new LauncherItemCustomizeEditorViewModel(Model.Editor, ContextDispatcher, loggerFactory);
         }
 
         #region property

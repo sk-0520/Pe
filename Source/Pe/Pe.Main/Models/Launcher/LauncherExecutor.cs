@@ -133,13 +133,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
     public class LauncherExecutor
     {
-        public LauncherExecutor(EnvironmentPathExecuteFileCache environmentPathExecuteFileCache, IOrderManager orderManager, INotifyManager notifyManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public LauncherExecutor(EnvironmentPathExecuteFileCache environmentPathExecuteFileCache, IOrderManager orderManager, INotifyManager notifyManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
             OrderManager = orderManager;
             NotifyManager = notifyManager;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             EnvironmentPathExecuteFileCache = environmentPathExecuteFileCache;
         }
 
@@ -147,7 +147,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         private IOrderManager OrderManager { get; }
         private INotifyManager NotifyManager { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         /// <inheritdoc cref="ILoggerFactory"/>
         private ILoggerFactory LoggerFactory { get; }
         /// <inheritdoc cref="ILogger"/>
@@ -230,7 +230,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             RedoExecutor? redoExecutor = null;
             if(redoData.RedoMode != RedoMode.None) {
                 redoExecutor = new RedoExecutor(
-                    new LauncherExecutor(EnvironmentPathExecuteFileCache, OrderManager, NotifyManager, DispatcherWrapper, LoggerFactory),
+                    new LauncherExecutor(EnvironmentPathExecuteFileCache, OrderManager, NotifyManager, ContextDispatcher, LoggerFactory),
                     result,
                     new RedoParameter(
                         pathParameter,
@@ -248,7 +248,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             if(streamWatch) {
                 process.EnableRaisingEvents = true;
                 stdIoElement = await OrderManager.CreateStandardInputOutputElementAsync(customParameter.Caption, process, screen, cancellationToken);
-                //DispatcherWrapper.BeginAsync(element => {
+                //ContextDispatcher.BeginAsync(element => {
                 //    element.StartView();
                 //    element!.PreparateReceiver();
                 //}, stdioElement, DispatcherPriority.Send);
@@ -263,7 +263,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             if(streamWatch) {
                 Debug.Assert(stdIoElement != null);
                 // 受信前に他の処理を終わらせるため少し待つ
-                await DispatcherWrapper.BeginAsync(element => {
+                await ContextDispatcher.BeginAsync(element => {
                     element.StartView();
                     element.PreparateReceiver();
                     if(element.PreparedReceive) {

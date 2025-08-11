@@ -7,8 +7,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 {
     public class WorkDirectoryDragAndDropGuideline: DragAndDropGuidelineBase
     {
-        public WorkDirectoryDragAndDropGuideline(IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(dispatcherWrapper, loggerFactory)
+        public WorkDirectoryDragAndDropGuideline(IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(contextDispatcher, loggerFactory)
         { }
 
         #region function

@@ -17,8 +17,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Widget
     public abstract class WidgetViewModelBase<TWidgetElement>: ElementViewModelBase<TWidgetElement>, IViewLifecycleReceiver, IPluginId
         where TWidgetElement : WidgetElement
     {
-        protected WidgetViewModelBase(TWidgetElement model, IUserTracker userTracker, IWindowManager windowManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        protected WidgetViewModelBase(TWidgetElement model, IUserTracker userTracker, IWindowManager windowManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             WindowManager = windowManager;
         }

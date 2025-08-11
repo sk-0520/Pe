@@ -44,8 +44,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
         #endregion
 
-        public CommandViewModel(CommandElement model, IGeneralTheme generalTheme, ICommandTheme commandTheme, IPlatformTheme platformTheme, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public CommandViewModel(CommandElement model, IGeneralTheme generalTheme, ICommandTheme commandTheme, IPlatformTheme platformTheme, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             GeneralTheme = generalTheme;
             CommandTheme = commandTheme;
@@ -54,11 +54,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
             ThemeProperties = new ThemeProperties(this);
 
             //CommandItemCollection = new ModelViewModelObservableCollectionManager<WrapModel<ICommandItem>, CommandItemViewModel>(Model.CommandItems) {
-            //    ToViewModel = m => new CommandItemViewModel(m.Data, IconBox, DispatcherWrapper, LoggerFactory),
+            //    ToViewModel = m => new CommandItemViewModel(m.Data, IconBox, ContextDispatcher, LoggerFactory),
             //};
             //CommandItems = CommandItemCollection.GetDefaultView();
 
-            Font = new FontViewModel(Model.Font!, DispatcherWrapper, LoggerFactory);
+            Font = new FontViewModel(Model.Font!, ContextDispatcher, LoggerFactory);
 
             HideWaitTimer = new DispatcherTimer(DispatcherPriority.Normal) {
                 Interval = Model.HideWaitTime,
@@ -67,7 +67,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
             PlatformTheme.Changed += PlatformTheme_Changed;
 
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             //PropertyChangedHooker.AddHook(nameof(Model.CommandItems), BuildCommandItems);
         }
 
@@ -146,7 +146,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         private async Task ChangeInputValueAsync(string value)
         {
 #if DEBUG
-            DispatcherWrapper.VerifyAccess();
+            ContextDispatcher.VerifyAccess();
 #endif
             var prevSelectedItem = CurrentSelectedItem = SelectedItem;
 
@@ -170,14 +170,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
             try {
 #if DEBUG
-                DispatcherWrapper.VerifyAccess();
+                ContextDispatcher.VerifyAccess();
 #endif
 
                 var commandItems = await Model.EnumerateCommandItemsAsync(this._inputValue, InputCancellationTokenSource.Token);
                 InputCancellationTokenSource?.Dispose();
                 InputCancellationTokenSource = null;
 #if DEBUG
-                DispatcherWrapper.VerifyAccess();
+                ContextDispatcher.VerifyAccess();
 #endif
 
                 SetCommandItems(commandItems);
@@ -418,7 +418,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         {
             var prevItems = CommandItems;
             CommandItems = commandItems
-                .Select(i => new CommandItemViewModel(i, new IconScale(IconBox, DpiScaleOutpour.GetDpiScale()), DispatcherWrapper, LoggerFactory))
+                .Select(i => new CommandItemViewModel(i, new IconScale(IconBox, DpiScaleOutpour.GetDpiScale()), ContextDispatcher, LoggerFactory))
                 .ToList()
             ;
             foreach(var item in prevItems) {
@@ -525,7 +525,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
         private void PlatformTheme_Changed(object? sender, EventArgs e)
         {
-            DispatcherWrapper.BeginAsync(vm => {
+            ContextDispatcher.BeginAsync(vm => {
                 if(vm.IsDisposed) {
                     return;
                 }

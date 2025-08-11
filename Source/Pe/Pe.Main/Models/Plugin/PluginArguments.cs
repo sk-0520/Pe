@@ -15,8 +15,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         IImageLoader ImageLoader { get; }
         /// <inheritdoc cref="IMediaConverter"/>
         IMediaConverter MediaConverter { get; }
-        /// <inheritdoc cref="IDispatcherWrapper"/>
-        IDispatcherWrapper DispatcherWrapper { get; }
+        /// <inheritdoc cref="IContextDispatcher"/>
+        IContextDispatcher ContextDispatcher { get; }
         /// <inheritdoc cref="ILoggerFactory"/>
         ILoggerFactory LoggerFactory { get; }
 
@@ -24,13 +24,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
     }
     public class PluginArguments: IPluginArguments
     {
-        public PluginArguments(IHttpUserAgentFactory httpUserAgentFactory, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public PluginArguments(IHttpUserAgentFactory httpUserAgentFactory, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             HttpUserAgentFactory = httpUserAgentFactory;
             PlatformTheme = platformTheme;
             ImageLoader = imageLoader;
             MediaConverter = mediaConverter;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             LoggerFactory = loggerFactory;
         }
 
@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         public IPlatformTheme PlatformTheme { get; }
         public IImageLoader ImageLoader { get; }
         public IMediaConverter MediaConverter { get; }
-        public IDispatcherWrapper DispatcherWrapper { get; }
+        public IContextDispatcher ContextDispatcher { get; }
         public ILoggerFactory LoggerFactory { get; }
 
         #endregion

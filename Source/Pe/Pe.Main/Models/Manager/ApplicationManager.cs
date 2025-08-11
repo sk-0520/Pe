@@ -604,7 +604,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var windowItem = WindowManager.GetWindowItems(WindowKind.Release);
             if(windowItem.Any()) {
                 // 再表示
-                await ApplicationDiContainer.Build<IDispatcherWrapper>().BeginAsync(async () => {
+                await ApplicationDiContainer.Build<IContextDispatcher>().BeginAsync(async () => {
                     var window = windowItem.FirstOrDefault();
                     if(window != null) {
                         window.Window.Activate();
@@ -615,7 +615,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 return;
             }
 
-            await ApplicationDiContainer.Build<IDispatcherWrapper>().BeginAsync(async () => {
+            await ApplicationDiContainer.Build<IContextDispatcher>().BeginAsync(async () => {
                 await ShowNewVersionReleaseNoteCoreAsync(updateItem, isCheckOnly, cancellationToken);
             }, DispatcherPriority.ApplicationIdle);
         }
@@ -961,7 +961,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         private void SetDynamicPlatformTheme()
         {
-            ApplicationDiContainer.Get<IDispatcherWrapper>().VerifyAccess();
+            ApplicationDiContainer.Get<IContextDispatcher>().VerifyAccess();
 
             var colors = PlatformThemeLoader.ApplicationThemeKind switch {
                 PlatformThemeKind.Dark => (active: "Dark", inactive: "Light"),
@@ -1247,8 +1247,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     .Where(i => !i.IsTopmost)
                     .ToList()
                 ;
-                var dispatcherWrapper = ApplicationDiContainer.Get<IDispatcherWrapper>();
-                dispatcherWrapper.BeginAsync(() => {
+                var contextDispatcher = ApplicationDiContainer.Get<IContextDispatcher>();
+                contextDispatcher.BeginAsync(() => {
                     foreach(var noteElement in noteElements) {
                         noteElement.SetTopmost(true);
                     }
@@ -1307,7 +1307,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 return;
             }
 #endif
-            await ApplicationDiContainer.Get<IDispatcherWrapper>().BeginAsync(() => {
+            await ApplicationDiContainer.Get<IContextDispatcher>().BeginAsync(() => {
                 // ノート生成で最後のノートがアクティブになる対応。設定でも発生するけど起動時に何とかしていって思い
                 if(currentActiveWindowHandle != IntPtr.Zero && currentActiveWindowHandle != MessageWindowHandleSource?.Handle) {
                     WindowsUtility.ShowActive(currentActiveWindowHandle);
@@ -1327,10 +1327,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 var databaseStatementLoader = ApplicationDiContainer.Build<IDatabaseStatementLoader>();
                 var cultureService = ApplicationDiContainer.Build<ICultureService>();
                 var environmentParameters = ApplicationDiContainer.Build<EnvironmentParameters>();
-                var dispatcherWrapper = ApplicationDiContainer.Build<IDispatcherWrapper>();
+                var contextDispatcher = ApplicationDiContainer.Build<IContextDispatcher>();
 
                 foreach(var widget in PluginContainer.Addon.GetWidgets()) {
-                    var element = new WidgetElement(widget, widget.Addon, widgetAddonContextFactory, mainDatabaseBarrier, mainDatabaseDelayWriter, databaseStatementLoader, cultureService, WindowManager, NotifyManager, environmentParameters, dispatcherWrapper, LoggerFactory);
+                    var element = new WidgetElement(widget, widget.Addon, widgetAddonContextFactory, mainDatabaseBarrier, mainDatabaseDelayWriter, databaseStatementLoader, cultureService, WindowManager, NotifyManager, environmentParameters, contextDispatcher, LoggerFactory);
                     await element.InitializeAsync(cancellationToken);
                     Widgets.Add(element);
                 }
@@ -1719,8 +1719,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         private async Task ResetScreenViewElementsAsync(CancellationToken cancellationToken)
         {
-            var dispatcherWrapper = ApplicationDiContainer.Get<IDispatcherWrapper>();
-            await dispatcherWrapper.BeginAsync(() => {
+            var contextDispatcher = ApplicationDiContainer.Get<IContextDispatcher>();
+            await contextDispatcher.BeginAsync(() => {
                 ClearScreenViewElements();
                 ResetNotifyArea();
             }, DispatcherPriority.SystemIdle);
@@ -1734,7 +1734,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var viewModel = notifyIcon.DataContext;
             Logger.LogDebug("通知領域再設定開始");
             notifyIcon.DataContext = null;
-            ApplicationDiContainer.Get<IDispatcherWrapper>().BeginAsync(() => {
+            ApplicationDiContainer.Get<IContextDispatcher>().BeginAsync(() => {
                 notifyIcon.DataContext = viewModel;
                 Logger.LogDebug("通知領域再設定終了");
             }, DispatcherPriority.SystemIdle);
@@ -1751,7 +1751,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             Logger.LogInformation("表示要素リセット開始");
             ResetWaiting = true;
             DelayScreenElementReset.Callback(() => {
-                ApplicationDiContainer.Get<IDispatcherWrapper>().BeginAsync(async () => {
+                ApplicationDiContainer.Get<IContextDispatcher>().BeginAsync(async () => {
                     try {
                         ClearScreenViewElements();
                         await ResetScreenViewElementsAsync(CancellationToken.None);
@@ -2189,7 +2189,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         private void PlatformThemeLoader_Changed(object? sender, EventArgs e)
         {
-            ApplicationDiContainer.Get<IDispatcherWrapper>().BeginAsync(() => {
+            ApplicationDiContainer.Get<IContextDispatcher>().BeginAsync(() => {
                 SetDynamicPlatformTheme();
             }, DispatcherPriority.ApplicationIdle);
         }

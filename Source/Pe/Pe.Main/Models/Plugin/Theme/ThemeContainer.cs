@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Theme
         private DefaultTheme? _defaultTheme;
 
         #endregion
-        public ThemeContainer(IDatabaseBarrierPack databaseBarrierPack, IDatabaseDelayWriterPack databaseDelayWriterPack, IDatabaseStatementLoader databaseStatementLoader, EnvironmentParameters environmentParameters, IUserAgentManager userAgentManager, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public ThemeContainer(IDatabaseBarrierPack databaseBarrierPack, IDatabaseDelayWriterPack databaseDelayWriterPack, IDatabaseStatementLoader databaseStatementLoader, EnvironmentParameters environmentParameters, IUserAgentManager userAgentManager, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
@@ -44,7 +44,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Theme
             ImageLoader = imageLoader;
             MediaConverter = mediaConverter;
             Policy = policy;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
@@ -64,7 +64,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Theme
         private IImageLoader ImageLoader { get; }
         private IMediaConverter MediaConverter { get; }
         private IPolicy Policy { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
 
         /// <summary>
         /// テーマ一覧。
@@ -84,7 +84,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Theme
 
         #region function
 
-        private ThemeParameter CreateParameter(IPlugin addon) => new ThemeParameter(addon.PluginInformation, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, DispatcherWrapper, LoggerFactory);
+        private ThemeParameter CreateParameter(IPlugin addon) => new ThemeParameter(addon.PluginInformation, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
 
         public void Add(ITheme theme)
         {
@@ -131,7 +131,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Theme
 
             if(build != null) {
                 try {
-                    return DispatcherWrapper.Get(() => build(parameter));
+                    return ContextDispatcher.Get(() => build(parameter));
                 } catch(Exception ex) {
                     Logger.LogWarning(ex, "テーマ使用時にエラー発生のため標準テーマを使用");
                 }
@@ -148,7 +148,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Theme
                 }
             }
 
-            return DispatcherWrapper.Get(() => buildDefaultTheme(parameter));
+            return ContextDispatcher.Get(() => buildDefaultTheme(parameter));
         }
 
         public IGeneralTheme GetGeneralTheme()

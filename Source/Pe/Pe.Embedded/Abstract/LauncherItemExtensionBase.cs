@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
             LauncherItemId = parameter.LauncherItemId;
             AddonExecutor = parameter.AddonExecutor;
             PlatformTheme = parameter.PlatformTheme;
-            DispatcherWrapper = parameter.DispatcherWrapper;
+            ContextDispatcher = parameter.ContextDispatcher;
             SkeletonImplements = parameter.SkeletonImplements;
             ImageLoader = parameter.ImageLoader;
             MediaConverter = parameter.MediaConverter;
@@ -48,8 +48,8 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
         protected IPlatformTheme PlatformTheme { get; }
         /// <inheritdoc cref="IAddonExecutor"/>
         protected IAddonExecutor AddonExecutor { get; }
-        /// <inheritdoc cref="IDispatcherWrapper"/>
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        /// <inheritdoc cref="IContextDispatcher"/>
+        protected IContextDispatcher ContextDispatcher { get; }
         /// <inheritdoc cref="ISkeletonImplements"/>
         protected ISkeletonImplements SkeletonImplements { get; }
         /// <inheritdoc cref="ILogger"/>

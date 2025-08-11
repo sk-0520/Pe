@@ -41,8 +41,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
     public abstract class GeneralSettingEditorViewModelBase<TModel>: SettingItemViewModelBase<TModel>, IGeneralSettingEditor
         where TModel : GeneralSettingEditorElementBase
     {
-        protected GeneralSettingEditorViewModelBase(TModel model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        protected GeneralSettingEditorViewModelBase(TModel model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -68,8 +68,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class AppExecuteSettingEditorViewModel: GeneralSettingEditorViewModelBase<AppExecuteSettingEditorElement>
     {
-        public AppExecuteSettingEditorViewModel(AppExecuteSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public AppExecuteSettingEditorViewModel(AppExecuteSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -130,19 +130,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         public class ThemePluginItemViewModel: ViewModelBase
         {
-            public ThemePluginItemViewModel(IPlugin plugin, IImageLoader imageLoader, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+            public ThemePluginItemViewModel(IPlugin plugin, IImageLoader imageLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
                 : base(loggerFactory)
             {
                 Plugin = plugin;
                 ImageLoader = imageLoader;
-                DispatcherWrapper = dispatcherWrapper;
+                ContextDispatcher = contextDispatcher;
             }
 
             #region property
 
             IPlugin Plugin { get; }
             IImageLoader ImageLoader { get; }
-            IDispatcherWrapper DispatcherWrapper { get; }
+            IContextDispatcher ContextDispatcher { get; }
 
             public string Name => Plugin.PluginInformation.PluginIdentifiers.PluginName;
             public PluginId Id => Plugin.PluginInformation.PluginIdentifiers.PluginId;
@@ -151,7 +151,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
             {
                 get
                 {
-                    return DispatcherWrapper.Get(() => {
+                    return ContextDispatcher.Get(() => {
                         try {
                             var scale = ImageLoader.GetPrimaryDpiScale();
                             return Plugin.GetIcon(ImageLoader, new IconScale(IconBox.Small, scale));
@@ -168,15 +168,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #endregion
 
-        public AppGeneralSettingEditorViewModel(AppGeneralSettingEditorElement model, IReadOnlyCollection<string> cultureNames, IImageLoader imageLoader, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public AppGeneralSettingEditorViewModel(AppGeneralSettingEditorElement model, IReadOnlyCollection<string> cultureNames, IImageLoader imageLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             CultureInfoItems = new ObservableCollection<CultureInfo>();
             var cultures = cultureNames.Select(i => CultureInfo.GetCultureInfo(i));
             CultureInfoItems.Add(CultureInfo.InvariantCulture);
             CultureInfoItems.AddRange(cultures);
 
-            ThemePluginItems = Model.ThemePlugins.Select(i => new ThemePluginItemViewModel(i, imageLoader, DispatcherWrapper, LoggerFactory)).ToList();
+            ThemePluginItems = Model.ThemePlugins.Select(i => new ThemePluginItemViewModel(i, imageLoader, ContextDispatcher, LoggerFactory)).ToList();
         }
 
         #region property
@@ -261,8 +261,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class AppUpdateSettingEditorViewModel: GeneralSettingEditorViewModelBase<AppUpdateSettingEditorElement>
     {
-        public AppUpdateSettingEditorViewModel(AppUpdateSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public AppUpdateSettingEditorViewModel(AppUpdateSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -291,8 +291,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class AppNotifyLogSettingEditorViewModel: GeneralSettingEditorViewModelBase<AppNotifyLogSettingEditorElement>
     {
-        public AppNotifyLogSettingEditorViewModel(AppNotifyLogSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public AppNotifyLogSettingEditorViewModel(AppNotifyLogSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -326,8 +326,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class AppLauncherToolbarSettingEditorViewModel: GeneralSettingEditorViewModelBase<AppLauncherToolbarSettingEditorElement>
     {
-        public AppLauncherToolbarSettingEditorViewModel(AppLauncherToolbarSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public AppLauncherToolbarSettingEditorViewModel(AppLauncherToolbarSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -373,8 +373,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class AppCommandSettingEditorViewModel: GeneralSettingEditorViewModelBase<AppCommandSettingEditorElement>
     {
-        public AppCommandSettingEditorViewModel(AppCommandSettingEditorElement model, IGeneralTheme generalTheme, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public AppCommandSettingEditorViewModel(AppCommandSettingEditorElement model, IGeneralTheme generalTheme, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             GeneralTheme = generalTheme;
         }
@@ -428,7 +428,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
         {
             base.BuildChildren();
 
-            Font = new FontViewModel(Model.Font!, DispatcherWrapper, LoggerFactory);
+            Font = new FontViewModel(Model.Font!, ContextDispatcher, LoggerFactory);
         }
 
         protected override void Dispose(bool disposing)
@@ -448,8 +448,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class AppNoteSettingEditorViewModel: GeneralSettingEditorViewModelBase<AppNoteSettingEditorElement>
     {
-        public AppNoteSettingEditorViewModel(AppNoteSettingEditorElement model, NoteConfiguration noteConfiguration, IGeneralTheme generalTheme, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public AppNoteSettingEditorViewModel(AppNoteSettingEditorElement model, NoteConfiguration noteConfiguration, IGeneralTheme generalTheme, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             NoteConfiguration = noteConfiguration;
             GeneralTheme = generalTheme;
@@ -527,7 +527,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
         {
             base.BuildChildren();
 
-            Font = new FontViewModel(Model.Font!, DispatcherWrapper, LoggerFactory);
+            Font = new FontViewModel(Model.Font!, ContextDispatcher, LoggerFactory);
         }
 
         protected override void Dispose(bool disposing)
@@ -547,8 +547,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class AppStandardInputOutputSettingEditorViewModel: GeneralSettingEditorViewModelBase<AppStandardInputOutputSettingEditorElement>
     {
-        public AppStandardInputOutputSettingEditorViewModel(AppStandardInputOutputSettingEditorElement model, IGeneralTheme generalTheme, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public AppStandardInputOutputSettingEditorViewModel(AppStandardInputOutputSettingEditorElement model, IGeneralTheme generalTheme, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             GeneralTheme = generalTheme;
         }
@@ -599,7 +599,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
         {
             base.BuildChildren();
 
-            Font = new FontViewModel(Model.Font!, DispatcherWrapper, LoggerFactory);
+            Font = new FontViewModel(Model.Font!, ContextDispatcher, LoggerFactory);
         }
 
         protected override void Dispose(bool disposing)
@@ -619,8 +619,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class AppProxySettingEditorViewModel: GeneralSettingEditorViewModelBase<AppProxySettingEditorElement>
     {
-        public AppProxySettingEditorViewModel(AppProxySettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public AppProxySettingEditorViewModel(AppProxySettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         { }
 
         #region property

@@ -20,8 +20,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #endregion
 
-        public NotePlainContentViewModel(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory)
+        public NotePlainContentViewModel(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -65,7 +65,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             }, cancellationToken).ContinueWith(t => {
                 if(t.IsCompletedSuccessfully) {
                     Logger.LogWarning("TODO: スクロール処理");
-                    DispatcherWrapper.BeginAsync(() => {
+                    ContextDispatcher.BeginAsync(() => {
                         BeforeLoadContent();
                     }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
                 }

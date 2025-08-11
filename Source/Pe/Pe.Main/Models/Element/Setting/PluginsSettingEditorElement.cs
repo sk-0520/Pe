@@ -28,8 +28,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 {
     public class PluginsSettingEditorElement: SettingEditorElementBase
     {
-        internal PluginsSettingEditorElement(PluginContainer pluginContainer, NewVersionChecker newVersionChecker, NewVersionDownloader newVersionDownloader, IPluginConstructorContext pluginConstructorContext, PauseReceiveLogDelegate pauseReceiveLog, PreferencesContextFactory preferencesContextFactory, IWindowManager windowManager, IUserTracker userTracker, ISettingNotifyManager settingNotifyManager, IClipboardManager clipboardManager, IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseStatementLoader statementLoader, IIdFactory idFactory, EnvironmentParameters environmentParameters, GeneralConfiguration generalConfiguration, ApiConfiguration apiConfiguration, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(settingNotifyManager, clipboardManager, mainDatabaseBarrier, largeDatabaseBarrier, temporaryDatabaseBarrier, statementLoader, idFactory, imageLoader, mediaConverter, policy, dispatcherWrapper, loggerFactory)
+        internal PluginsSettingEditorElement(PluginContainer pluginContainer, NewVersionChecker newVersionChecker, NewVersionDownloader newVersionDownloader, IPluginConstructorContext pluginConstructorContext, PauseReceiveLogDelegate pauseReceiveLog, PreferencesContextFactory preferencesContextFactory, IWindowManager windowManager, IUserTracker userTracker, ISettingNotifyManager settingNotifyManager, IClipboardManager clipboardManager, IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseStatementLoader statementLoader, IIdFactory idFactory, EnvironmentParameters environmentParameters, GeneralConfiguration generalConfiguration, ApiConfiguration apiConfiguration, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(settingNotifyManager, clipboardManager, mainDatabaseBarrier, largeDatabaseBarrier, temporaryDatabaseBarrier, statementLoader, idFactory, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
         {
             PluginContainer = pluginContainer;
             NewVersionChecker = newVersionChecker;
@@ -124,7 +124,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 Element = element,
                 WindowManager = WindowManager,
                 UserTracker = UserTracker,
-                DispatcherWrapper = DispatcherWrapper,
+                ContextDispatcher = ContextDispatcher,
                 LoggerFactory = LoggerFactory,
             };
         }
@@ -164,7 +164,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             foreach(var pluginState in pluginStates) {
                 var plugin = PluginContainer.Plugins.FirstOrDefault(i => pluginState.PluginId == i.PluginInformation.PluginIdentifiers.PluginId);
-                var element = new PluginSettingEditorElement(pluginState, plugin, PreferencesContextFactory, MainDatabaseBarrier, DatabaseStatementLoader, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, DispatcherWrapper, LoggerFactory);
+                var element = new PluginSettingEditorElement(pluginState, plugin, PreferencesContextFactory, MainDatabaseBarrier, DatabaseStatementLoader, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
                 await element.InitializeAsync(cancellationToken);
                 PluginItemsImpl.Add(element);
             }

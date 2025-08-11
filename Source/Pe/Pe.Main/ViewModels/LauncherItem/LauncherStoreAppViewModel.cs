@@ -11,8 +11,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 {
     public abstract class LauncherStoreAppViewModel: LauncherDetailViewModelBase
     {
-        protected LauncherStoreAppViewModel(LauncherItemElement model, IScreen screen, IKeyGestureGuide keyGestureGuide, IDispatcherWrapper dispatcherWrapper, ILauncherToolbarTheme launcherToolbarTheme, ILoggerFactory loggerFactory)
-            : base(model, screen, keyGestureGuide, dispatcherWrapper, launcherToolbarTheme, loggerFactory)
+        protected LauncherStoreAppViewModel(LauncherItemElement model, IScreen screen, IKeyGestureGuide keyGestureGuide, IContextDispatcher contextDispatcher, ILauncherToolbarTheme launcherToolbarTheme, ILoggerFactory loggerFactory)
+            : base(model, screen, keyGestureGuide, contextDispatcher, launcherToolbarTheme, loggerFactory)
         { }
 
         #region property

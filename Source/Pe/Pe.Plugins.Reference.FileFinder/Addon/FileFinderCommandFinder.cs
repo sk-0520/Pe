@@ -52,7 +52,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.FileFinder.Addon
             Logger = parameter.LoggerFactory.CreateLogger(GetType());
             AddonExecutor = parameter.AddonExecutor;
             ImageLoader = parameter.ImageLoader;
-            DispatcherWrapper = parameter.DispatcherWrapper;
+            ContextDispatcher = parameter.ContextDispatcher;
         }
 
         #region property
@@ -60,7 +60,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.FileFinder.Addon
         private ILogger Logger { get; }
         private IAddonExecutor AddonExecutor { get; }
         private IImageLoader ImageLoader { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         private List<PathItem> PathItems { get; } = new List<PathItem>(512);
 
         /// <summary>

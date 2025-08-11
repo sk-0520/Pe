@@ -288,7 +288,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 }
 
                 diContainer
-                    .Register<IDispatcherWrapper, ApplicationDispatcherWrapper>(DiLifecycle.Transient, () => new ApplicationDispatcherWrapper(TimeSpan.FromSeconds(10)))
+                    .Register<IContextDispatcher, ApplicationContextDispatcher>(DiLifecycle.Transient, () => new ApplicationContextDispatcher(TimeSpan.FromSeconds(10)))
                     .Register<EnvironmentParameters, EnvironmentParameters>(environmentParameters)
                     .Register<ApplicationConfiguration, ApplicationConfiguration>(environmentParameters.ApplicationConfiguration)
                     .RegisterMvvm<Element.Accept.AcceptElement, ViewModels.Accept.AcceptViewModel, Views.Accept.AcceptWindow>()
@@ -455,7 +455,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 .Register<WidgetAddonContextFactory>(DiLifecycle.Transient)
                 .Register<BackgroundAddonContextFactory>(DiLifecycle.Transient)
 
-                .Register<IDispatcherWrapper, IDispatcherWrapper>(DiLifecycle.Transient, () => new ApplicationDispatcherWrapper(environmentParameters.ApplicationConfiguration.General.DispatcherWait))
+                .Register<IContextDispatcher, IContextDispatcher>(DiLifecycle.Transient, () => new ApplicationContextDispatcher(environmentParameters.ApplicationConfiguration.General.DispatcherWait))
                 .Register(cultureService)
                 .Register<ICultureService>(cultureService)
                 .Register<IViewManager, ViewManager>(DiLifecycle.Transient)

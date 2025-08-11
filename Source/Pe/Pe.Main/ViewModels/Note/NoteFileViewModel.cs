@@ -21,10 +21,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 {
     public class NoteFileViewModel: ElementViewModelBase<NoteFileElement>
     {
-        public NoteFileViewModel(NoteFileElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public NoteFileViewModel(NoteFileElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
-            IconViewer = new IconViewerViewModel(Model.IconImageLoader, BadgeData.CreateEmpty(), DispatcherWrapper, LoggerFactory);
+            IconViewer = new IconViewerViewModel(Model.IconImageLoader, BadgeData.CreateEmpty(), ContextDispatcher, LoggerFactory);
         }
 
         #region property

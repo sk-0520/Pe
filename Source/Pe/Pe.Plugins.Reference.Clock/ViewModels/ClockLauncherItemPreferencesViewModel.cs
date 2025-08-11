@@ -17,8 +17,8 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
 
         #endregion
 
-        public ClockLauncherItemPreferencesViewModel(ClockLauncherItemSetting setting, ISkeletonImplements skeletonImplements, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(skeletonImplements, dispatcherWrapper, loggerFactory)
+        public ClockLauncherItemPreferencesViewModel(ClockLauncherItemSetting setting, ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(skeletonImplements, contextDispatcher, loggerFactory)
         {
             Setting = setting;
 

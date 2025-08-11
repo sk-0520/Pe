@@ -14,7 +14,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 {
     public class LauncherItemAddonContextFactory: PluginContextFactoryBase
     {
-        public LauncherItemAddonContextFactory(IDatabaseBarrierPack databaseBarrierPack, IDatabaseDelayWriterPack databaseDelayWriterPack, IDatabaseStatementLoader databaseStatementLoader, EnvironmentParameters environmentParameters, IUserAgentManager userAgentManager, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public LauncherItemAddonContextFactory(IDatabaseBarrierPack databaseBarrierPack, IDatabaseDelayWriterPack databaseDelayWriterPack, IDatabaseStatementLoader databaseStatementLoader, EnvironmentParameters environmentParameters, IUserAgentManager userAgentManager, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(databaseBarrierPack, databaseDelayWriterPack, databaseStatementLoader, environmentParameters, userAgentManager, loggerFactory)
         {
             ViewManager = viewManager;
@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
             ImageLoader = imageLoader;
             MediaConverter = mediaConverter;
             Policy = policy;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         private IImageLoader ImageLoader { get; }
         private IMediaConverter MediaConverter { get; }
         private IPolicy Policy { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
 
         #endregion
 
@@ -125,7 +125,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
                 ImageLoader,
                 MediaConverter,
                 Policy,
-                DispatcherWrapper,
+                ContextDispatcher,
                 LoggerFactory
             );
             return launcherItemExtensionExecuteParameter;

@@ -20,7 +20,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Accept
 {
     public class AcceptViewModel: SingleModelViewModelBase<AcceptElement>, IDialogCommand, /*IDialogService,*/ IViewLifecycleReceiver, IBuildStatus
     {
-        public AcceptViewModel(AcceptElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public AcceptViewModel(AcceptElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         { }
 

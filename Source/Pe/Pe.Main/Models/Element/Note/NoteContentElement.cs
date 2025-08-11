@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         #endregion
 
-        public NoteContentElement(NoteId noteId, NoteContentKind contentKind, IMainDatabaseBarrier mainDatabaseBarrier, IMainDatabaseDelayWriter mainDatabaseDelayWriter, IDatabaseStatementLoader databaseStatementLoader, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public NoteContentElement(NoteId noteId, NoteContentKind contentKind, IMainDatabaseBarrier mainDatabaseBarrier, IMainDatabaseDelayWriter mainDatabaseDelayWriter, IDatabaseStatementLoader databaseStatementLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             NoteId = noteId;
@@ -42,7 +42,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             MainDatabaseBarrier = mainDatabaseBarrier;
             DatabaseStatementLoader = databaseStatementLoader;
 
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
 
             MainDatabaseDelayWriter = mainDatabaseDelayWriter;
 
@@ -63,7 +63,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         private IMainDatabaseBarrier MainDatabaseBarrier { get; }
         private IDatabaseStatementLoader DatabaseStatementLoader { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         private IMainDatabaseDelayWriter MainDatabaseDelayWriter { get; }
         private UniqueKeyPool UniqueKeyPool { get; } = new UniqueKeyPool();
 

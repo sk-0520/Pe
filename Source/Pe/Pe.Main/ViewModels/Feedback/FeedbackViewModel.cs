@@ -26,8 +26,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Feedback
         private FeedbackKind _selectedFeedbackKind;
 
         #endregion
-        public FeedbackViewModel(FeedbackElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public FeedbackViewModel(FeedbackElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             SendStatus = new RunningStatusViewModel(Model.SendStatus, LoggerFactory);
             SendStatus.PropertyChanged += SendStatus_PropertyChanged;

@@ -29,14 +29,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #endregion
 
-        protected NoteContentViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected NoteContentViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
             ClipboardManager = clipboardManager;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             NoteConfiguration = noteConfiguration;
 
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             PropertyChangedObserver.AddObserver(nameof(IsLink), nameof(IsLink));
         }
 
@@ -45,7 +45,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         public NoteContentKind Kind => Model.ContentKind;
         protected NoteConfiguration NoteConfiguration { get; }
         protected IClipboardManager ClipboardManager { get; }
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
 
         public bool CanVisible
         {
@@ -202,8 +202,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
     public abstract class NoteContentViewModelBase<TControlElement>: NoteContentViewModelBase
         where TControlElement : FrameworkElement
     {
-        protected NoteContentViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory)
+        protected NoteContentViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -230,8 +230,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
     public abstract class NoteContentTextBoxViewModelBase<TControlElement>: NoteContentViewModelBase<TControlElement>
         where TControlElement : TextBoxBase
     {
-        protected NoteContentTextBoxViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory)
+        protected NoteContentTextBoxViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -297,14 +297,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
     {
         #region function
 
-        public static NoteContentViewModelBase Create(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public static NoteContentViewModelBase Create(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             switch(model.ContentKind) {
                 case NoteContentKind.Plain:
-                    return new NotePlainContentViewModel(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory);
+                    return new NotePlainContentViewModel(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory);
 
                 case NoteContentKind.RichText:
-                    return new NoteRichTextContentViewModel(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory);
+                    return new NoteRichTextContentViewModel(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory);
 
                 //case NoteContentKind.Link:
                 //    return new NoteLinkContentViewModel(model, clipboardManager, dispatcherWapper, loggerFactory);

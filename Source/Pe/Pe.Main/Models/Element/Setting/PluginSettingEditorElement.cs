@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 {
     public class PluginSettingEditorElement: ElementBase, IPluginId
     {
-        internal PluginSettingEditorElement(PluginStateData pluginState, IPlugin? plugin, PreferencesContextFactory preferencesContextFactory, IMainDatabaseBarrier mainDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        internal PluginSettingEditorElement(PluginStateData pluginState, IPlugin? plugin, PreferencesContextFactory preferencesContextFactory, IMainDatabaseBarrier mainDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             PluginState = pluginState;
@@ -37,7 +37,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             ImageLoader = imageLoader;
             MediaConverter = mediaConverter;
             Policy = policy;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
 
             if(Plugin is IPreferences preferences) {
                 SupportedPreferences = true;
@@ -76,7 +76,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         private IImageLoader ImageLoader { get; }
         private IMediaConverter MediaConverter { get; }
         private IPolicy Policy { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
 
         public bool SupportedPreferences { get; }
         private IPreferences? Preferences { get; }
@@ -115,7 +115,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             using(var reader = PreferencesContextFactory.BarrierRead()) {
                 using var context = PreferencesContextFactory.CreatePreferencesLoadContext(Plugin.PluginInformation, reader);
                 var skeleton = new SkeletonImplements();
-                var parameter = new PreferencesParameter(skeleton, Plugin.PluginInformation, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, DispatcherWrapper, LoggerFactory);
+                var parameter = new PreferencesParameter(skeleton, Plugin.PluginInformation, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
                 result = Preferences.BeginPreferences(context, parameter);
             }
             StartedPreferences = true;

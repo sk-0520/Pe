@@ -12,8 +12,8 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
 {
     public class ClockSettingViewModel: ViewModelSkeleton
     {
-        public ClockSettingViewModel(ClockWidgetSetting widgetSetting, ISkeletonImplements skeletonImplements, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(skeletonImplements, dispatcherWrapper, loggerFactory)
+        public ClockSettingViewModel(ClockWidgetSetting widgetSetting, ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(skeletonImplements, contextDispatcher, loggerFactory)
         {
             WidgetSetting = widgetSetting;
         }

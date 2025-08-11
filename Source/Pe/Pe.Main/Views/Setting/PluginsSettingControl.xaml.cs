@@ -59,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Main.Views.Setting
                 var viewModel = new PluginWebInstallViewModel(
                     parameter.Element,
                     parameter.UserTracker,
-                    parameter.DispatcherWrapper,
+                    parameter.ContextDispatcher,
                     parameter.LoggerFactory
                 );
                 var dialog = new PluginWebInstallWindow() {

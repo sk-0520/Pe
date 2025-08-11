@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
         protected ThemeDetailBase(IThemeParameter parameter)
         {
             PlatformTheme = parameter.PlatformTheme;
-            DispatcherWrapper = parameter.DispatcherWrapper;
+            ContextDispatcher = parameter.ContextDispatcher;
             Logger = parameter.LoggerFactory.CreateLogger(GetType());
         }
 
@@ -65,7 +65,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
 
         protected ILogger Logger { get; }
         protected IPlatformTheme PlatformTheme { get; }
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
 
         #endregion
 

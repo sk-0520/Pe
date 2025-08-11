@@ -23,16 +23,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #endregion
 
-        public KeyboardSettingEditorViewModel(KeyboardSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel> allLauncherItemCollection, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public KeyboardSettingEditorViewModel(KeyboardSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel> allLauncherItemCollection, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             ReplaceJobEditorCollection = new ModelViewModelObservableCollectionManager<KeyboardReplaceJobSettingEditorElement, KeyboardReplaceJobSettingEditorViewMode>(model.ReplaceJobEditors, new ModelViewModelObservableCollectionOptions<KeyboardReplaceJobSettingEditorElement, KeyboardReplaceJobSettingEditorViewMode>() {
-                ToViewModel = m => new KeyboardReplaceJobSettingEditorViewMode(m, DispatcherWrapper, LoggerFactory),
+                ToViewModel = m => new KeyboardReplaceJobSettingEditorViewMode(m, ContextDispatcher, LoggerFactory),
             });
             ReplaceJobEditors = ReplaceJobEditorCollection.GetDefaultView();
 
             DisableJobEditorCollection = new ModelViewModelObservableCollectionManager<KeyboardDisableJobSettingEditorElement, KeyboardDisableJobSettingEditorViewModel>(Model.DisableJobEditors, new ModelViewModelObservableCollectionOptions<KeyboardDisableJobSettingEditorElement, KeyboardDisableJobSettingEditorViewModel>() {
-                ToViewModel = m => new KeyboardDisableJobSettingEditorViewModel(m, DispatcherWrapper, LoggerFactory),
+                ToViewModel = m => new KeyboardDisableJobSettingEditorViewModel(m, ContextDispatcher, LoggerFactory),
             });
             DisableJobEditors = DisableJobEditorCollection.GetDefaultView();
 
@@ -40,10 +40,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
             PressedJobEditorCollection = new ModelViewModelObservableCollectionManager<KeyboardPressedJobSettingEditorElement, KeyboardPressedJobSettingEditorViewModelBase>(Model.PressedJobEditors, new ModelViewModelObservableCollectionOptions<KeyboardPressedJobSettingEditorElement, KeyboardPressedJobSettingEditorViewModelBase>() {
                 ToViewModel = m => m.Kind switch {
-                    KeyActionKind.Command => new KeyboardCommandJobSettingEditorViewModel(m, DispatcherWrapper, loggerFactory),
-                    KeyActionKind.LauncherItem => new KeyboardLauncherItemJobSettingEditorViewModel(m, AllLauncherItemCollection, DispatcherWrapper, loggerFactory),
-                    KeyActionKind.LauncherToolbar => new KeyboardLauncherToolbarJobSettingEditorViewModel(m, DispatcherWrapper, LoggerFactory),
-                    KeyActionKind.Note => new KeyboardNoteJobSettingEditorViewModel(m, DispatcherWrapper, LoggerFactory),
+                    KeyActionKind.Command => new KeyboardCommandJobSettingEditorViewModel(m, ContextDispatcher, loggerFactory),
+                    KeyActionKind.LauncherItem => new KeyboardLauncherItemJobSettingEditorViewModel(m, AllLauncherItemCollection, ContextDispatcher, loggerFactory),
+                    KeyActionKind.LauncherToolbar => new KeyboardLauncherToolbarJobSettingEditorViewModel(m, ContextDispatcher, LoggerFactory),
+                    KeyActionKind.Note => new KeyboardNoteJobSettingEditorViewModel(m, ContextDispatcher, LoggerFactory),
                     _ => throw new NotImplementedException(),
                 }
             });

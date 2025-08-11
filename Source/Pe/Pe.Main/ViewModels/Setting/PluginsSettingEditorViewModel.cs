@@ -24,12 +24,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #endregion
 
-        public PluginsSettingEditorViewModel(PluginsSettingEditorElement model, IImageLoader imageLoader, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public PluginsSettingEditorViewModel(PluginsSettingEditorElement model, IImageLoader imageLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             ImageLoader = imageLoader;
             PluginCollection = new ModelViewModelObservableCollectionManager<PluginSettingEditorElement, PluginSettingEditorViewModel>(Model.PluginItems, new ModelViewModelObservableCollectionOptions<PluginSettingEditorElement, PluginSettingEditorViewModel>() {
-                ToViewModel = m => new PluginSettingEditorViewModel(m, ImageLoader, DispatcherWrapper, LoggerFactory),
+                ToViewModel = m => new PluginSettingEditorViewModel(m, ImageLoader, ContextDispatcher, LoggerFactory),
             });
             PluginItems = PluginCollection.GetDefaultView();
 

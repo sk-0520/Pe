@@ -20,8 +20,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #endregion
 
-        public LauncherItemCustomizeEnvironmentVariableViewModel(LauncherItemCustomizeEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherItemCustomizeEnvironmentVariableViewModel(LauncherItemCustomizeEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             EnvironmentVariableDelayChanger = new DelayAction("環境変数編集:" + Model.LauncherItemId.ToString(), TimeSpan.FromSeconds(5), LoggerFactory);
         }
@@ -46,8 +46,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
         {
             var envConf = new EnvironmentVariableConfiguration(LoggerFactory);
 
-            var envMergeItems = DispatcherWrapper.Get(() => envConf.GetMergeItems(MergeTextDocument!));
-            var envRemoveItems = DispatcherWrapper.Get(() => envConf.GetRemoveItems(RemoveTextDocument!));
+            var envMergeItems = ContextDispatcher.Get(() => envConf.GetMergeItems(MergeTextDocument!));
+            var envRemoveItems = ContextDispatcher.Get(() => envConf.GetRemoveItems(RemoveTextDocument!));
             var envVarItems = envConf.Join(envMergeItems, envRemoveItems);
 
             Model.EnvironmentVariableItems!.SetRange(envVarItems);

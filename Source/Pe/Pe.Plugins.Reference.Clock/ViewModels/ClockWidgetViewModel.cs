@@ -16,15 +16,15 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
 
         #endregion
 
-        public ClockWidgetViewModel(ClockWidgetSetting setting, ISkeletonImplements skeletonImplements, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(skeletonImplements, dispatcherWrapper, loggerFactory)
+        public ClockWidgetViewModel(ClockWidgetSetting setting, ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(skeletonImplements, contextDispatcher, loggerFactory)
         {
             Setting = setting;
 
             Content = Setting.ClockWidgetKind switch
             {
-                ClockWidgetKind.SimpleAnalog => new ClockWidgetSimpleAnalogClockContentViewModel(skeletonImplements.Clone(), DispatcherWrapper, loggerFactory),
-                ClockWidgetKind.JaggyAnalog => new ClockWidgetJaggyAnalogClockContentViewModel(skeletonImplements.Clone(), DispatcherWrapper, loggerFactory),
+                ClockWidgetKind.SimpleAnalog => new ClockWidgetSimpleAnalogClockContentViewModel(skeletonImplements.Clone(), ContextDispatcher, loggerFactory),
+                ClockWidgetKind.JaggyAnalog => new ClockWidgetJaggyAnalogClockContentViewModel(skeletonImplements.Clone(), ContextDispatcher, loggerFactory),
                 _ => throw new NotImplementedException(),
             };
         }

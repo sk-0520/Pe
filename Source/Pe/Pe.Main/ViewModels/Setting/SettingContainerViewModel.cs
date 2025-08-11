@@ -24,24 +24,24 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #endregion
 
-        public SettingContainerViewModel(SettingContainerElement model, ApplicationConfiguration applicationConfiguration, IGeneralTheme generalTheme, IUserTracker userTracker, IImageLoader imageLoader, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public SettingContainerViewModel(SettingContainerElement model, ApplicationConfiguration applicationConfiguration, IGeneralTheme generalTheme, IUserTracker userTracker, IImageLoader imageLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             GeneralTheme = generalTheme;
 
             AllLauncherItemCollection = new ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel>(Model.AllLauncherItems, new ModelViewModelObservableCollectionOptions<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel>() {
-                ToViewModel = m => new LauncherItemSettingEditorViewModel(m, DispatcherWrapper, LoggerFactory),
+                ToViewModel = m => new LauncherItemSettingEditorViewModel(m, ContextDispatcher, LoggerFactory),
             });
             AllLauncherGroupCollection = new ModelViewModelObservableCollectionManager<LauncherGroupSettingEditorElement, LauncherGroupSettingEditorViewModel>(Model.AllLauncherGroups, new ModelViewModelObservableCollectionOptions<LauncherGroupSettingEditorElement, LauncherGroupSettingEditorViewModel>() {
-                ToViewModel = m => new LauncherGroupSettingEditorViewModel(m, AllLauncherItemCollection, DispatcherWrapper, LoggerFactory),
+                ToViewModel = m => new LauncherGroupSettingEditorViewModel(m, AllLauncherItemCollection, ContextDispatcher, LoggerFactory),
             });
 
-            GeneralSettingEditor = new GeneralsSettingEditorViewModel(Model.GeneralsSettingEditor, applicationConfiguration, generalTheme, imageLoader, DispatcherWrapper, LoggerFactory);
-            LauncherItemsSettingEditor = new LauncherItemsSettingEditorViewModel(Model.LauncherItemsSettingEditor, AllLauncherItemCollection, DispatcherWrapper, LoggerFactory);
-            LauncherGroupsSettingEditor = new LauncherGroupsSettingEditorViewModel(Model.LauncherGroupsSettingEditor, AllLauncherItemCollection, AllLauncherGroupCollection, DispatcherWrapper, LoggerFactory);
-            LauncherToolbarsSettingEditor = new LauncherToolbarsSettingEditorViewModel(Model.LauncherToolbarsSettingEditor, AllLauncherGroupCollection, generalTheme, DispatcherWrapper, LoggerFactory);
-            KeyboardSettingEditor = new KeyboardSettingEditorViewModel(Model.KeyboardSettingEditor, AllLauncherItemCollection, DispatcherWrapper, LoggerFactory);
-            PluginsSettingEditor = new PluginsSettingEditorViewModel(Model.PluginsSettingEditor, imageLoader, DispatcherWrapper, LoggerFactory);
+            GeneralSettingEditor = new GeneralsSettingEditorViewModel(Model.GeneralsSettingEditor, applicationConfiguration, generalTheme, imageLoader, ContextDispatcher, LoggerFactory);
+            LauncherItemsSettingEditor = new LauncherItemsSettingEditorViewModel(Model.LauncherItemsSettingEditor, AllLauncherItemCollection, ContextDispatcher, LoggerFactory);
+            LauncherGroupsSettingEditor = new LauncherGroupsSettingEditorViewModel(Model.LauncherGroupsSettingEditor, AllLauncherItemCollection, AllLauncherGroupCollection, ContextDispatcher, LoggerFactory);
+            LauncherToolbarsSettingEditor = new LauncherToolbarsSettingEditorViewModel(Model.LauncherToolbarsSettingEditor, AllLauncherGroupCollection, generalTheme, ContextDispatcher, LoggerFactory);
+            KeyboardSettingEditor = new KeyboardSettingEditorViewModel(Model.KeyboardSettingEditor, AllLauncherItemCollection, ContextDispatcher, LoggerFactory);
+            PluginsSettingEditor = new PluginsSettingEditorViewModel(Model.PluginsSettingEditor, imageLoader, ContextDispatcher, LoggerFactory);
 
             EditorItems = new List<ISettingEditorViewModel>() {
                 GeneralSettingEditor,

@@ -42,19 +42,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #endregion
 
-        protected SettingEditorViewModelBase(TSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected SettingEditorViewModelBase(TSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
             if(!Model.IsInitialized) {
                 throw new ArgumentException(nameof(Model.IsInitialized), nameof(model));
             }
 
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
 
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
 
         #endregion
 

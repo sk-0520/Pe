@@ -62,7 +62,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         #endregion
 
-        public NoteElement(NoteId noteId, IScreen? dockScreen, NoteStartupPosition startupPosition, IOrderManager orderManager, INotifyManager notifyManager, IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, IMainDatabaseDelayWriter mainDatabaseDelayWriter, IDatabaseStatementLoader databaseStatementLoader, NoteConfiguration noteConfiguration, IDispatcherWrapper dispatcherWrapper, INoteTheme noteTheme, IIdFactory idFactory, ILoggerFactory loggerFactory)
+        public NoteElement(NoteId noteId, IScreen? dockScreen, NoteStartupPosition startupPosition, IOrderManager orderManager, INotifyManager notifyManager, IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, IMainDatabaseDelayWriter mainDatabaseDelayWriter, IDatabaseStatementLoader databaseStatementLoader, NoteConfiguration noteConfiguration, IContextDispatcher contextDispatcher, INoteTheme noteTheme, IIdFactory idFactory, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             NoteId = noteId;
@@ -74,7 +74,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             LargeDatabaseBarrier = largeDatabaseBarrier;
             DatabaseStatementLoader = databaseStatementLoader;
             NoteConfiguration = noteConfiguration;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             NoteTheme = noteTheme;
             IdFactory = idFactory;
 
@@ -103,7 +103,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
         private IMainDatabaseBarrier MainDatabaseBarrier { get; }
         private ILargeDatabaseBarrier LargeDatabaseBarrier { get; }
         private IDatabaseStatementLoader DatabaseStatementLoader { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         private INoteTheme NoteTheme { get; }
         public SavingFontElement? FontElement { get; private set; }
 
@@ -336,7 +336,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                     var noteFilesEntityDao = new NoteFilesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
                     files = noteFilesEntityDao.SelectNoteFiles(NoteId);
                 }
-                var fileElements = files.Select(a => new NoteFileElement(a, MainDatabaseBarrier, LargeDatabaseBarrier, DatabaseStatementLoader, DispatcherWrapper, LoggerFactory));
+                var fileElements = files.Select(a => new NoteFileElement(a, MainDatabaseBarrier, LargeDatabaseBarrier, DatabaseStatementLoader, ContextDispatcher, LoggerFactory));
                 foreach(var fileElement in fileElements) {
                     await fileElement.InitializeAsync(cancellationToken);
                     Files.Add(fileElement);
@@ -601,7 +601,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                 case NoteContentKind.Plain:
                     switch(toKind) {
                         case NoteContentKind.RichText:
-                            Debug.Assert(DispatcherWrapper.CheckAccess());
+                            Debug.Assert(ContextDispatcher.CheckAccess());
                             return noteContentConverter.ToRichText(fromRawContent, FontElement.FontData, ForegroundColor);
 
                         case NoteContentKind.Plain:
@@ -872,7 +872,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                     mainContext.Commit();
                 }
 
-                var noteFileElement = new NoteFileElement(noteFileData, MainDatabaseBarrier, LargeDatabaseBarrier, DatabaseStatementLoader, DispatcherWrapper, LoggerFactory);
+                var noteFileElement = new NoteFileElement(noteFileData, MainDatabaseBarrier, LargeDatabaseBarrier, DatabaseStatementLoader, ContextDispatcher, LoggerFactory);
                 await noteFileElement.InitializeAsync(cancellationToken);
                 Files.Add(noteFileElement);
 

@@ -23,8 +23,8 @@ namespace ContentTypeTextNet.Pe.Bridge.Plugin
         IMediaConverter MediaConverter { get; }
         /// <inheritdoc cref="IPolicy"/>
         IPolicy Policy { get; }
-        /// <inheritdoc cref="IDispatcherWrapper"/>
-        IDispatcherWrapper DispatcherWrapper { get; }
+        /// <inheritdoc cref="IContextDispatcher"/>
+        IContextDispatcher ContextDispatcher { get; }
         /// <inheritdoc cref="ILoggerFactory"/>
         ILoggerFactory LoggerFactory { get; }
 

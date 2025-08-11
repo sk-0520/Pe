@@ -26,8 +26,8 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
 
         #endregion
 
-        protected ClockWidgetContentBaseViewModel(ISkeletonImplements skeletonImplements, IDispatcherWrapper dispatcherWrapper,ILoggerFactory loggerFactory)
-            : base(skeletonImplements, dispatcherWrapper, loggerFactory)
+        protected ClockWidgetContentBaseViewModel(ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher,ILoggerFactory loggerFactory)
+            : base(skeletonImplements, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -99,8 +99,8 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
 
     public class ClockWidgetSimpleAnalogClockContentViewModel: ClockWidgetContentBaseViewModel
     {
-        public ClockWidgetSimpleAnalogClockContentViewModel(ISkeletonImplements skeletonImplements, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(skeletonImplements, dispatcherWrapper, loggerFactory)
+        public ClockWidgetSimpleAnalogClockContentViewModel(ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(skeletonImplements, contextDispatcher, loggerFactory)
         {
             HourAngels = Enumerable.Range(0, 12).Select(i => i * 30.0).ToList();
             SecondsAngels = Enumerable.Range(0, 60).Select(i => i * 6.0).Except(HourAngels).ToList();
@@ -116,8 +116,8 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
 
     public class ClockWidgetJaggyAnalogClockContentViewModel: ClockWidgetContentBaseViewModel
     {
-        public ClockWidgetJaggyAnalogClockContentViewModel(ISkeletonImplements skeletonImplements, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(skeletonImplements, dispatcherWrapper, loggerFactory)
+        public ClockWidgetJaggyAnalogClockContentViewModel(ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(skeletonImplements, contextDispatcher, loggerFactory)
         { }
     }
 }

@@ -12,10 +12,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherGroup
 {
     public class LauncherGroupViewModel: SingleModelViewModelBase<LauncherGroupElement>
     {
-        public LauncherGroupViewModel(LauncherGroupElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public LauncherGroupViewModel(LauncherGroupElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
@@ -23,7 +23,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherGroup
         public LauncherGroupId LauncherGroupId => Model.LauncherGroupId;
 
         public int RowIndex { get; set; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         public string? Name => Model.Name;
         public LauncherGroupImageName ImageName => Model.ImageName;
         public Color ImageColor => Model.ImageColor;

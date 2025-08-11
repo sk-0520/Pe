@@ -18,7 +18,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
     /// </summary>
     public abstract class SettingEditorElementBase: ElementBase
     {
-        protected SettingEditorElementBase(ISettingNotifyManager settingNotifyManager, IClipboardManager clipboardManager, IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IIdFactory idFactory, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected SettingEditorElementBase(ISettingNotifyManager settingNotifyManager, IClipboardManager clipboardManager, IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IIdFactory idFactory, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             SettingNotifyManager = settingNotifyManager;
@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             ImageLoader = imageLoader;
             MediaConverter = mediaConverter;
             Policy = policy;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
 
             SettingNotifyManager.LauncherItemRemoved += SettingNotifyManager_LauncherItemRemoved;
         }
@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         protected IImageLoader ImageLoader { get; }
         protected IMediaConverter MediaConverter { get; }
         protected IPolicy Policy { get; }
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
 
         public bool IsLoaded { get; private set; }
 

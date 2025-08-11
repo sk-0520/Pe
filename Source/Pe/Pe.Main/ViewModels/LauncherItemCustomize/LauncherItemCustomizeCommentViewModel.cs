@@ -16,8 +16,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #endregion
 
-        public LauncherItemCustomizeCommentViewModel(LauncherItemCustomizeEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherItemCustomizeCommentViewModel(LauncherItemCustomizeEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             CommentDelayChanger = new DelayAction("コメント編集: " + Model.LauncherItemId.ToString(), TimeSpan.FromSeconds(3), LoggerFactory);
 
@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         private void ChangedComment()
         {
-            Model.Comment = DispatcherWrapper.Get(() => CommentDocument.Text);
+            Model.Comment = ContextDispatcher.Get(() => CommentDocument.Text);
         }
 
         #endregion

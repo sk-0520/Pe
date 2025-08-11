@@ -34,8 +34,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #endregion
 
-        public LauncherItemCustomizeFileViewModel(LauncherItemCustomizeEditorElement model, IRequestSender fileSelectRequest, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherItemCustomizeFileViewModel(LauncherItemCustomizeEditorElement model, IRequestSender fileSelectRequest, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             if(Model.Kind != Models.Data.LauncherItemKind.File) {
                 throw new ArgumentException(null, nameof(model) + "." + nameof(Model.Kind));

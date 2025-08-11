@@ -14,8 +14,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 {
     public class LauncherItemInLauncherGroupDragAndDrop: DragAndDropGuidelineBase
     {
-        public LauncherItemInLauncherGroupDragAndDrop(IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(dispatcherWrapper, loggerFactory)
+        public LauncherItemInLauncherGroupDragAndDrop(IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(contextDispatcher, loggerFactory)
         { }
 
         #region function

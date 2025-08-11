@@ -24,17 +24,17 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #endregion
 
-        public PluginSettingEditorViewModel(PluginSettingEditorElement model, IImageLoader imageLoader, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public PluginSettingEditorViewModel(PluginSettingEditorElement model, IImageLoader imageLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
             ImageLoader = imageLoader;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
 
         private IImageLoader ImageLoader { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
 
         public string PluginName => Model.PluginState.PluginName;
         public string PluginVersion
@@ -59,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
                     return null!;
                 }
 
-                return DispatcherWrapper.Get(() => {
+                return ContextDispatcher.Get(() => {
                     try {
                         var scale = ImageLoader.GetPrimaryDpiScale();
                         return Model.Plugin.GetIcon(ImageLoader, new IconScale(IconBox.Small, scale));

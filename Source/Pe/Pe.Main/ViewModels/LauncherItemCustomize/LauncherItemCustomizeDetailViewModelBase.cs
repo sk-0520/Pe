@@ -10,20 +10,20 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 {
     public abstract class LauncherItemCustomizeDetailViewModelBase: SingleModelViewModelBase<LauncherItemCustomizeEditorElement>, ILauncherItemId
     {
-        protected LauncherItemCustomizeDetailViewModelBase(LauncherItemCustomizeEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected LauncherItemCustomizeDetailViewModelBase(LauncherItemCustomizeEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
             if(!Model.IsInitialized) {
                 throw new ArgumentException(null, nameof(model) + "." + nameof(Model.IsInitialized));
             }
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
 
             Kind = Model.Kind;
         }
 
         #region property
 
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
 
         public LauncherItemKind Kind { get; }
 

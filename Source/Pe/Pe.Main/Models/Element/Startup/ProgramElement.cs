@@ -16,17 +16,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
 {
     public class ProgramElement: ElementBase
     {
-        public ProgramElement(FileInfo fileInfo, IReadOnlyList<Regex> autoImportExcludeRegexItems, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public ProgramElement(FileInfo fileInfo, IReadOnlyList<Regex> autoImportExcludeRegexItems, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             FileInfo = fileInfo;
             AutoImportExcludeRegexItems = autoImportExcludeRegexItems;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             IconImageLoader = new IconImageLoader(
                 new Data.IconData() {
                     Path = FileInfo.FullName
                 },
-                DispatcherWrapper,
+                ContextDispatcher,
                 LoggerFactory
             );
         }
@@ -37,7 +37,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
 
         public FileInfo FileInfo { get; }
 
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         public bool IsShortcut => PathUtility.IsShortcut(FileInfo.Name);
         private IReadOnlyList<Regex> AutoImportExcludeRegexItems { get; }
         public bool IsImport { get; set; }
@@ -70,7 +70,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
                             Path = expandedIconPath,
                             Index = iconIndex,
                         },
-                        DispatcherWrapper,
+                        ContextDispatcher,
                         LoggerFactory
                     );
                     return;
@@ -84,7 +84,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
                     Path = targetPath,
                     Index = 0,
                 },
-                DispatcherWrapper,
+                ContextDispatcher,
                 LoggerFactory
             );
 

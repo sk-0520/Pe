@@ -22,8 +22,8 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
 
         #endregion
 
-        public CrashReportViewModel(CrashReportElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public CrashReportViewModel(CrashReportElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             RawProperties = Model.RawProperties
                 .Select(i => new CrashReportItemViewModel(i, LoggerFactory))
@@ -88,7 +88,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
                 if(AutoSend) {
                     AutoSendWaitTimer = new DispatcherTimer();
                     AutoSendWaitTimer.Interval = TimeSpan.FromMilliseconds(16);
-                    DispatcherWrapper.BeginAsync(() => {
+                    ContextDispatcher.BeginAsync(() => {
                         AutoSendStartTime = DateTime.UtcNow;
                         AutoSendEndTime = AutoSendStartTime + AutoSendWaitTime;
                         if(AutoSend) {

@@ -34,8 +34,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #endregion
 
-        public NoteRichTextContentViewModel(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory)
+        public NoteRichTextContentViewModel(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory)
         {
             TextChangeDelayAction = new DelayAction("RTF変更抑制", TimeSpan.FromSeconds(2), LoggerFactory);
             SelectionForegroundColor = Colors.Black;
@@ -342,7 +342,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     content = t.Exception?.Message ?? "";
                 }
 
-                DispatcherWrapper.BeginAsync(() => {
+                ContextDispatcher.BeginAsync(() => {
                     var noteContentConverter = new NoteContentConverter(LoggerFactory);
                     using var stream = noteContentConverter.ToRtfStream(content);
 
@@ -394,7 +394,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         private void ChangedText()
         {
             if(CanVisible && EnabledUpdate) {
-                DispatcherWrapper.BeginAsync(vm => {
+                ContextDispatcher.BeginAsync(vm => {
                     if(vm.IsDisposed) {
                         return;
                     }

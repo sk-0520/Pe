@@ -10,10 +10,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Startup
 {
     public class ProgramViewModel: ElementViewModelBase<ProgramElement>
     {
-        public ProgramViewModel(ProgramElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public ProgramViewModel(ProgramElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
-            IconViewer = new IconViewerViewModel(Model.IconImageLoader, BadgeData.CreateEmpty(), DispatcherWrapper, LoggerFactory) {
+            IconViewer = new IconViewerViewModel(Model.IconImageLoader, BadgeData.CreateEmpty(), ContextDispatcher, LoggerFactory) {
                 UseCache = true,
             };
         }

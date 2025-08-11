@@ -285,10 +285,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         #region event
         #endregion
 
-        public NotifyManager(IDiContainer diContainer, NotifyLogConfiguration notifyLogConfiguration, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public NotifyManager(IDiContainer diContainer, NotifyLogConfiguration notifyLogConfiguration, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(diContainer, loggerFactory)
         {
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             TopmostNotifyLogsImpl = new ObservableCollection<NotifyLogItemElement>();
             StreamNotifyLogsImpl = new ObservableCollection<NotifyLogItemElement>();
             TopmostNotifyLogs = new ReadOnlyObservableCollection<NotifyLogItemElement>(TopmostNotifyLogsImpl);
@@ -315,7 +315,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         System.Timers.Timer StreamTimer { get; }
         IReadOnlyDictionary<NotifyLogKind, TimeSpan> NotifyLogLifeTimes { get; }
 
-        IDispatcherWrapper DispatcherWrapper { get; }
+        IContextDispatcher ContextDispatcher { get; }
         private ObservableCollection<NotifyLogItemElement> TopmostNotifyLogsImpl { get; }
         private ObservableCollection<NotifyLogItemElement> StreamNotifyLogsImpl { get; }
         private KeyedCollection<NotifyLogId, NotifyLogItemElement> NotifyLogs { get; } = new SimpleKeyedCollection<NotifyLogId, NotifyLogItemElement>(v => v.NotifyLogId);
@@ -535,7 +535,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
             Logger.LogDebug("[{0}] {1}: {2}, {3}", notifyMessage.Header, notifyMessage.Kind, notifyMessage.Content.Message, element.NotifyLogId);
 
-            await DispatcherWrapper.BeginAsync(() => {
+            await ContextDispatcher.BeginAsync(() => {
                 NotifyLogs.Add(element);
                 if(element.Kind == NotifyLogKind.Topmost) {
                     TopmostNotifyLogsImpl.Add(element);
@@ -557,7 +557,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
             Logger.LogDebug("[{0}] 変更: {1}, {2}", element.Header, contentMessage, element.NotifyLogId);
 
-            DispatcherWrapper.BeginAsync(() => {
+            ContextDispatcher.BeginAsync(() => {
                 element.ChangeContent(new NotifyLogContent(contentMessage, DateTime.UtcNow));
                 OnNotifyEventChanged(NotifyEventKind.Change, element);
             });
@@ -571,7 +571,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
             lock(this._sync) {
                 if(0 < NotifyLogs.Count && NotifyLogs.Remove(notifyLogId)) {
-                    DispatcherWrapper.BeginAsync(() => {
+                    ContextDispatcher.BeginAsync(() => {
                         if(element.Kind == NotifyLogKind.Topmost) {
                             TopmostNotifyLogsImpl.Remove(element);
                         } else {

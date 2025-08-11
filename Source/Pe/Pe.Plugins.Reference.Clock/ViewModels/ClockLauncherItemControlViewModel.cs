@@ -26,8 +26,8 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
 
         #endregion
 
-        internal ClockLauncherItemControlViewModel(ClockLauncherItem item, ISkeletonImplements skeletonImplements, IPlatformTheme platformTheme, IMediaConverter mediaConverter, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(skeletonImplements, dispatcherWrapper, loggerFactory)
+        internal ClockLauncherItemControlViewModel(ClockLauncherItem item, ISkeletonImplements skeletonImplements, IPlatformTheme platformTheme, IMediaConverter mediaConverter, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(skeletonImplements, contextDispatcher, loggerFactory)
         {
             Item = item;
             PlatformTheme = platformTheme;
@@ -96,7 +96,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
 
         private void ApplyTheme()
         {
-            DispatcherWrapper.BeginAsync(() => {
+            ContextDispatcher.BeginAsync(() => {
                 var color = PlatformTheme.GetTaskbarColor();
                 HourForeground = new SolidColorBrush(MediaConverter.GetAutoColor(color));
                 MinutesForeground = new SolidColorBrush(MediaConverter.GetAutoColor(color));

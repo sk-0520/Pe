@@ -17,14 +17,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 {
     public class LauncherToolbarNotifyAreaViewModel: SingleModelViewModelBase<LauncherToolbarElement>
     {
-        public LauncherToolbarNotifyAreaViewModel(LauncherToolbarElement model, IDispatcherWrapper dispatcherWrapper, ILauncherToolbarTheme launcherToolbarTheme, IWindowManager windowManager, ILoggerFactory loggerFactory)
+        public LauncherToolbarNotifyAreaViewModel(LauncherToolbarElement model, IContextDispatcher contextDispatcher, ILauncherToolbarTheme launcherToolbarTheme, IWindowManager windowManager, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
             LauncherToolbarTheme = launcherToolbarTheme;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             WindowManager = windowManager;
 
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             PropertyChangedObserver.AddObserver(nameof(LauncherToolbarElement.IsVisible), new[] { nameof(MenuIsChecked), nameof(MenuIcon) });
         }
 
@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         private ICommandFactory CommandFactory { get; } = new CommandFactory();
         private ILauncherToolbarTheme LauncherToolbarTheme { get; }
         private IWindowManager WindowManager { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         private PropertyChangedObserver PropertyChangedObserver { get; }
 
         #endregion

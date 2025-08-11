@@ -20,7 +20,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Eyes.Addon
             LoggerFactory = parameter.LoggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
             AddonExecutor = parameter.AddonExecutor;
-            DispatcherWrapper = parameter.DispatcherWrapper;
+            ContextDispatcher = parameter.ContextDispatcher;
             SkeletonImplements = parameter.SkeletonImplements;
             PluginInformation = pluginInformation;
         }
@@ -30,7 +30,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Eyes.Addon
         private ILoggerFactory LoggerFactory { get; }
         private ILogger Logger { get; }
         private IAddonExecutor AddonExecutor { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         private ISkeletonImplements SkeletonImplements { get; }
         private IPluginInformation PluginInformation { get; }
 
@@ -74,7 +74,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Eyes.Addon
             }
 
             WidgetView = new EyesWidgetWindow();
-            ViewModel = new EyesWidgetViewModel(WidgetView, SkeletonImplements, DispatcherWrapper, LoggerFactory);
+            ViewModel = new EyesWidgetViewModel(WidgetView, SkeletonImplements, ContextDispatcher, LoggerFactory);
             if(EyesBackground != null) {
                 Attach(EyesBackground);
             }

@@ -8,8 +8,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 {
     public class LauncherItemCustomizeStoreAppViewModel: LauncherItemCustomizeDetailViewModelBase
     {
-        public LauncherItemCustomizeStoreAppViewModel(LauncherItemCustomizeEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherItemCustomizeStoreAppViewModel(LauncherItemCustomizeEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             if(Model.Kind != Models.Data.LauncherItemKind.StoreApp) {
                 throw new ArgumentException(null, nameof(model) + "." + nameof(Model.Kind));

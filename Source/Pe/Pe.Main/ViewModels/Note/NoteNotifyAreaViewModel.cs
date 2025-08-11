@@ -18,21 +18,21 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 {
     public class NoteNotifyAreaViewModel: SingleModelViewModelBase<NoteElement>, INotifyArea
     {
-        public NoteNotifyAreaViewModel(NoteElement model, IWindowManager windowManager, IDispatcherWrapper dispatcherWrapper, INoteTheme noteTheme, ILoggerFactory loggerFactory)
+        public NoteNotifyAreaViewModel(NoteElement model, IWindowManager windowManager, IContextDispatcher contextDispatcher, INoteTheme noteTheme, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
             WindowManager = windowManager;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             NoteTheme = noteTheme;
 
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             PropertyChangedObserver.AddObserver(nameof(Model.IsVisible), nameof(IsVisible));
         }
 
         #region property
 
         private IWindowManager WindowManager { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         private INoteTheme NoteTheme { get; }
 
         private PropertyChangedObserver PropertyChangedObserver { get; }
