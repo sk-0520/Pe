@@ -21,7 +21,7 @@ size_t calc_hash_fnv1(const uint8_t* value, size_t length)
 
 size_t calc_hash_fnv1_from_text(const TEXT* text)
 {
-    if (!text || !is_enabled_text(text)) {
+    if (!is_enabled_text(text)) {
         return 0;
     }
     

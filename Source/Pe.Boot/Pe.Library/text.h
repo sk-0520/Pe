@@ -99,7 +99,7 @@ TEXT create_invalid_text(void);
 
 /// <summary>
 /// テキストが使用可能か。
-/// <para><c>create_invalid_text</c>で作られたやつなんかは使用不可になる。</para>
+/// <para><c>create_invalid_text</c>で作られたやつなんかや null は使用不可になる。</para>
 /// </summary>
 /// <param name="text"></param>
 /// <returns>使用可能か。</returns>
