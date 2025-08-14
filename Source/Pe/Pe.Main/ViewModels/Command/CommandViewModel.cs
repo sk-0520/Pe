@@ -434,7 +434,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
                         var podRect = WindowsUtility.ConvertRECTFromLParam(lParam);
 
                         // 高さは変えない
-                        if(podRect.Height != deviceWindowHeight) {
+                        if(Math.Abs(podRect.Height - deviceWindowHeight) > double.Epsilon) {
                             podRect.Height = (int)deviceWindowHeight;
 
                             Marshal.StructureToPtr(podRect, lParam, true);
