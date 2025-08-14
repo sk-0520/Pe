@@ -59,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
         private INotifyLogTheme NotifyLogTheme { get; }
         private IPlatformTheme PlatformTheme { get; }
 
-        private IDpiScaleOutpour? DpiScaleOutpour { get; set; }
+        private IDpiScaleContext? DpiScaleOutpour { get; set; }
 
         private ThemeProperties ThemeProperties { get; }
         private PropertyChangedObserver PropertyChangedObserver { get; }
@@ -157,7 +157,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
 
         public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
-            DpiScaleOutpour = (IDpiScaleOutpour)window;
+            DpiScaleOutpour = (IDpiScaleContext)window;
             return Task.CompletedTask;
         }
 

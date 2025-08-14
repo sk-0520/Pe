@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
     /// <remarks>
     /// <para>ウィンドウのいるディスプレイのDPIを出力する感じ。</para>
     /// </remarks>
-    public interface IDpiScaleOutpour
+    public interface IDpiScaleContext
     {
         #region function
 
@@ -36,29 +36,29 @@ namespace ContentTypeTextNet.Pe.Core.Models
     }
 
     /// <summary>
-    /// 空の <see cref="IDpiScaleOutpour"/>。
+    /// 空の <see cref="IDpiScaleContext"/>。
     /// </summary>
     /// <remarks>
     /// <para>固定値を取得する。</para>
     /// </remarks>
-    public sealed class EmptyDpiScaleOutpour : IDpiScaleOutpour
+    public sealed class EmptyDpiScaleContext : IDpiScaleContext
     {
-        static EmptyDpiScaleOutpour()
+        static EmptyDpiScaleContext()
         {
-            Default = new EmptyDpiScaleOutpour();
+            Default = new EmptyDpiScaleContext();
         }
 
         #region property
 
-        public static EmptyDpiScaleOutpour Default { get; }
+        public static EmptyDpiScaleContext Default { get; }
 
         #endregion
 
-        #region IDpiScaleOutputor
+        #region IDpiScaleContext
 
-        /// <inheritdoc cref="IDpiScaleOutpour.GetDpiScale"/>
+        /// <inheritdoc cref="IDpiScaleContext.GetDpiScale"/>
         public Point GetDpiScale() => new Point(1, 1);
-        /// <inheritdoc cref="IDpiScaleOutpour.GetOwnerScreen"/>
+        /// <inheritdoc cref="IDpiScaleContext.GetOwnerScreen"/>
         public IScreen GetOwnerScreen() => Screen.PrimaryScreen ?? throw new InvalidOperationException("Screen.PrimaryScreen is null");
 
         #endregion

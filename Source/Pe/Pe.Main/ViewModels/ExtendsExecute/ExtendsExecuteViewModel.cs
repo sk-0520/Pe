@@ -118,7 +118,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
         public RequestSender CloseRequest { get; } = new RequestSender();
         public RequestSender FileSelectRequest { get; } = new RequestSender();
 
-        private IDpiScaleOutpour DpiScaleOutpour { get; set; } = EmptyDpiScaleOutpour.Default;
+        private IDpiScaleContext DpiScaleOutpour { get; set; } = EmptyDpiScaleContext.Default;
 
         public IDragAndDrop OptionDragAndDrop { get; }
         public IDragAndDrop WorkDirectoryDragAndDrop { get; }
@@ -474,7 +474,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 
         public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
-            DpiScaleOutpour = (IDpiScaleOutpour)window;
+            DpiScaleOutpour = (IDpiScaleContext)window;
 
             WindowsUtility.ShowActiveForeground(HandleUtility.GetWindowHandle(window));
 

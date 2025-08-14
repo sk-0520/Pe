@@ -144,7 +144,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         private IClipboardManager ClipboardManager { get; }
         private PropertyChangedObserver PropertyChangedObserver { get; }
 
-        private IDpiScaleOutpour DpiScaleOutpour { get; set; } = EmptyDpiScaleOutpour.Default;
+        private IDpiScaleContext DpiScaleOutpour { get; set; } = EmptyDpiScaleContext.Default;
         private FrameworkElement? CaptionElement { get; set; }
         private TextBoxBase? InputSearchElement { get; set; }
         private IDisposable? WindowHandleSource { get; set; }
@@ -1335,7 +1335,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             CaptionElement = ((NoteWindow)window).inputTitle;
             InputSearchElement = ((NoteWindow)window).inputSearch;
 
-            DpiScaleOutpour = (IDpiScaleOutpour)window;
+            DpiScaleOutpour = (IDpiScaleContext)window;
 
             var layoutValue = GetOrCreateLayout(Model.StartupPosition);
             if(layoutValue.isCreated) {

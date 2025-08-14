@@ -109,7 +109,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         private ThemeProperties ThemeProperties { get; }
         private PropertyChangedObserver PropertyChangedObserver { get; }
 
-        private IDpiScaleOutpour DpiScaleOutpour { get; set; } = EmptyDpiScaleOutpour.Default;
+        private IDpiScaleContext DpiScaleOutpour { get; set; } = EmptyDpiScaleContext.Default;
 
         public double WindowWidth
         {
@@ -456,7 +456,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
         public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
-            DpiScaleOutpour = (IDpiScaleOutpour)window;
+            DpiScaleOutpour = (IDpiScaleContext)window;
 
             var hWnd = HandleUtility.GetWindowHandle(window);
             var hWndSource = HwndSource.FromHwnd(hWnd);

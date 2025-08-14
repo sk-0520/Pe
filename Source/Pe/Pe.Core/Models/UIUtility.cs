@@ -306,7 +306,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         }
         /// <inheritdoc cref="ToLogicalPixel(double, double)"/>
         [return: PixelKind(Px.Logical)]
-        public static Point ToLogicalPixel([PixelKind(Px.Device)] Point point, IDpiScaleOutpour dpiScaleOutpour) => ToLogicalPixel(point, dpiScaleOutpour.GetDpiScale());
+        public static Point ToLogicalPixel([PixelKind(Px.Device)] Point point, IDpiScaleContext dpiScaleContext) => ToLogicalPixel(point, dpiScaleContext.GetDpiScale());
         /// <inheritdoc cref="ToLogicalPixel(double, double)"/>
         [return: PixelKind(Px.Logical)]
         public static Point ToLogicalPixel([PixelKind(Px.Device)] Point point, Visual visual) => ToLogicalPixel(point, GetDpiScale(visual));
@@ -322,7 +322,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         }
         /// <inheritdoc cref="ToDevicePixel(double, double)"/>
         [return: PixelKind(Px.Device)]
-        public static Size ToDevicePixel([PixelKind(Px.Logical)] Size size, IDpiScaleOutpour dpiScaleOutpour) => ToDevicePixel(size, dpiScaleOutpour.GetDpiScale());
+        public static Size ToDevicePixel([PixelKind(Px.Logical)] Size size, IDpiScaleContext dpiScaleContext) => ToDevicePixel(size, dpiScaleContext.GetDpiScale());
         /// <inheritdoc cref="ToDevicePixel(double, double)"/>
         [return: PixelKind(Px.Device)]
         public static Size ToDevicePixel([PixelKind(Px.Logical)] Size size, Visual visual) => ToDevicePixel(size, GetDpiScale(visual));
@@ -338,7 +338,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         }
         /// <inheritdoc cref="ToLogicalPixel(double, double)"/>
         [return: PixelKind(Px.Logical)]
-        public static Size ToLogicalPixel([PixelKind(Px.Device)] Size size, IDpiScaleOutpour dpiScaleOutpour) => ToLogicalPixel(size, dpiScaleOutpour.GetDpiScale());
+        public static Size ToLogicalPixel([PixelKind(Px.Device)] Size size, IDpiScaleContext dpiScaleContext) => ToLogicalPixel(size, dpiScaleContext.GetDpiScale());
         /// <inheritdoc cref="ToLogicalPixel(double, double)"/>
         [return: PixelKind(Px.Logical)]
         public static Size ToLogicalPixel([PixelKind(Px.Device)] Size size, Visual visual) => ToLogicalPixel(size, GetDpiScale(visual));
@@ -356,7 +356,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         }
         /// <inheritdoc cref="ToDevicePixel(double, double)"/>
         [return: PixelKind(Px.Device)]
-        public static Rect ToDevicePixel([PixelKind(Px.Logical)] Rect rect, IDpiScaleOutpour dpiScaleOutpour) => ToDevicePixel(rect, dpiScaleOutpour.GetDpiScale());
+        public static Rect ToDevicePixel([PixelKind(Px.Logical)] Rect rect, IDpiScaleContext dpiScaleContext) => ToDevicePixel(rect, dpiScaleContext.GetDpiScale());
         /// <inheritdoc cref="ToDevicePixel(double, double)"/>
         [return: PixelKind(Px.Device)]
         public static Rect ToDevicePixel([PixelKind(Px.Logical)] Rect rect, Visual visual) => ToDevicePixel(rect, GetDpiScale(visual));
@@ -374,7 +374,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         }
         /// <inheritdoc cref="ToLogicalPixel(double, double)"/>
         [return: PixelKind(Px.Logical)]
-        public static Rect ToLogicalPixel([PixelKind(Px.Device)] Rect rect, IDpiScaleOutpour dpiScaleOutpour) => ToLogicalPixel(rect, dpiScaleOutpour.GetDpiScale());
+        public static Rect ToLogicalPixel([PixelKind(Px.Device)] Rect rect, IDpiScaleContext dpiScaleContext) => ToLogicalPixel(rect, dpiScaleContext.GetDpiScale());
         /// <inheritdoc cref="ToLogicalPixel(double, double)"/>
         [return: PixelKind(Px.Logical)]
         public static Rect ToLogicalPixel([PixelKind(Px.Device)] Rect rect, Visual visual) => ToLogicalPixel(rect, GetDpiScale(visual));
