@@ -18,12 +18,13 @@ using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Main.Models.Element.Command;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Theme;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using ContentTypeTextNet.Pe.Main.ViewModels.Font;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 
@@ -434,7 +435,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
                         var podRect = WindowsUtility.ConvertRECTFromLParam(lParam);
 
                         // 高さは変えない
-                        if(Math.Abs(podRect.Height - deviceWindowHeight) > double.Epsilon) {
+                        if(!MathUtility.AlmostEquals(podRect.Height, deviceWindowHeight)) {
                             podRect.Height = (int)deviceWindowHeight;
 
                             Marshal.StructureToPtr(podRect, lParam, true);

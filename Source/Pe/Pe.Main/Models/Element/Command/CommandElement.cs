@@ -182,7 +182,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
             }
         }
 
-        private async IAsyncEnumerable<ICommandItem> EnumerateCommandItemsAsync(string inputValue, IHitValuesCreator hitValuesCreator, [EnumeratorCancellation]  CancellationToken cancellationToken)
+        private async IAsyncEnumerable<ICommandItem> EnumerateCommandItemsAsync(string inputValue, IHitValuesCreator hitValuesCreator, [EnumeratorCancellation] CancellationToken cancellationToken)
         {
             var simpleRegexFactory = new SimpleRegexFactory(LoggerFactory);
             var regex = simpleRegexFactory.CreateFilterRegex(inputValue);
@@ -223,9 +223,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
         public void ChangeViewWidthDelaySave(double width)
         {
-            var diff = Math.Abs(Width - width);
-            if(diff < double.Epsilon) {
-                Logger.LogTrace("{ElementWidth} - {Width}: {Diff} < {Epsilon}", Width, width, diff, double.Epsilon);
+            if(MathUtility.AlmostEquals(Width, width)) {
                 return;
             }
             Width = width;
