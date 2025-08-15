@@ -7,6 +7,7 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using Microsoft.Extensions.Logging;
 
@@ -42,9 +43,9 @@ namespace ContentTypeTextNet.Pe.Main.Models
         public BitmapSource GetImageFromFrames(IReadOnlyCollection<BitmapSource> frames, in IconScale iconScale)
         {
             var size = iconScale.ToIconSize().Width;
-            var result = frames.FirstOrDefault(f => f.Width == size);
+            var result = frames.FirstOrDefault(f => MathUtility.AlmostEquals(f.Width,size));
 
-            if(result == null) {
+            if(result is null) {
                 // ダメっぽいときは一番近くっぽいのをとる。
                 int diff = frames.Min(i => Math.Abs(i.PixelWidth - size));
                 result = frames.First(i => Math.Abs(i.PixelWidth - size) == diff);
