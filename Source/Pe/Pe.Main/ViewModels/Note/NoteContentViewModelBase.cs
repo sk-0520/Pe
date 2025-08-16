@@ -263,7 +263,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 ScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
 
                 var offset = Model.GetViewOffset();
-                if(ScrollViewer is not null && offset is not null) {
+                if(offset is not null) {
                     ScrollViewer.ScrollToHorizontalOffset(offset.X);
                     ScrollViewer.ScrollToVerticalOffset(offset.Y);
                 }
