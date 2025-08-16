@@ -22,11 +22,13 @@ namespace mstest = Microsoft::VisualStudio::CppUnitTestFramework;
 #   define text(s) new_text(_T(s), DEFAULT_MEMORY_ARENA)
 #endif
 
+using tstring =
 #ifdef _UNICODE
-typedef std::wstring tstring;
+    std::wstring
 #else
-typedef std::string tstring;
+    std::string
 #endif
+;
 
 #define wrap(s) wrap_text(_T(s))
 
@@ -68,7 +70,7 @@ struct DATA
     /// <param name="func">テストする関数。</param>
     /// <returns>実行結果。</returns>
     template <class _Callable>
-    constexpr decltype(auto) run(_Callable&& func)
+    constexpr decltype(auto) run(_Callable&& func) const
     {
         return std::apply(func, this->inputs);
     }
@@ -98,9 +100,10 @@ class TestImpl
 {
 private:
     tstring test_root_directory_path;
-    tstring test_namespace_name;
+    const tstring test_namespace_name;
+    tstring work_dir_name = tstring(_T("work"));
 
-    void get_path_from_test_dir_core(tstring& result, std::initializer_list<tstring> path_items)
+    void get_path_from_test_dir_core(tstring& result, std::initializer_list<tstring> path_items) const noexcept
     {
         std::filesystem::path path = test_root_directory_path;
         for (auto& path_item : path_items) {
@@ -110,13 +113,13 @@ private:
     }
 
     template<typename... more_sub_item_path>
-    void get_path_from_test_dir(tstring& result, tstring sub_item_path, more_sub_item_path... sub_item_paths)
+    void get_path_from_test_dir(tstring& result, tstring sub_item_path, more_sub_item_path... sub_item_paths) const
     {
         auto list = std::initializer_list<tstring>{ sub_item_path, sub_item_paths... };
         get_path_from_test_dir_core(result, list);
     }
 
-    void initialize_directory_core(tstring path)
+    void initialize_directory_core(const std::filesystem::path& path) const
     {
         if (std::filesystem::exists(path)) {
             std::filesystem::remove_all(path);
@@ -124,7 +127,7 @@ private:
         std::filesystem::create_directories(path);
     }
 
-    void make_test_pattern_work_directory_path(tstring& result, const TCHAR* msvc_function, const TCHAR* sub_path = nullptr)
+    void make_test_pattern_work_directory_path(tstring& result, const TCHAR* msvc_function, const TCHAR* sub_path = nullptr) const
     {
         tstring  name_space = test_namespace_name + _T("::");
         const TCHAR* class_method_pair = msvc_function + name_space.length();
@@ -193,17 +196,14 @@ private:
         _this->logging(log_item);
     }
 
-
 public:
-    tstring work_dir_name = tstring(_T("work"));
 
     /// <summary>
     /// テスト用ヘルパの初期化。
     /// </summary>
-    TestImpl(tstring namespace_name)
+    explicit TestImpl(const tstring& namespace_name)
+        : test_namespace_name(namespace_name)
     {
-        test_namespace_name = namespace_name;
-
 #ifdef RES_CHECK
         library_rc_initialize(output, RES_CHECK_INIT_PATH_LENGTH, RES_CHECK_INIT_BUFFER_LENGTH, RES_CHECK_INIT_HEAP_COUNT, RES_CHECK_INIT_FILE_COUNT);
 #endif
@@ -245,9 +245,7 @@ public:
         auto  exists_resource_leak = library_rc_exists_resource_leak();
         library_rc_finalize();
 
-        //#ifdef DEBUG
         Microsoft::VisualStudio::CppUnitTestFramework::Assert::IsFalse(exists_resource_leak);
-        //#endif
 #endif
     }
 
@@ -256,7 +254,7 @@ public:
     /// テストパターン内で使用するディレクトリ初期化処理。
     /// <para>原則、明示的な使用はせず<c>TEST_INIT_DIR</c>を用いること。</para>
     /// </summary>
-    void initialize_test_pattern_work_directory(const TCHAR* msvc_function)
+    void initialize_test_pattern_work_directory(const TCHAR* msvc_function) const
     {
         tstring work_dir;
         make_test_pattern_work_directory_path(work_dir, msvc_function);
@@ -271,7 +269,7 @@ public:
     /// <param name="result"></param>
     /// <param name="path"></param>
     /// <returns></returns>
-    void get_test_pattern_work_path(tstring& result, const TCHAR* msvc_function, TCHAR* path)
+    void get_test_pattern_work_path(tstring& result, const TCHAR* msvc_function, const TCHAR* path) const
     {
         make_test_pattern_work_directory_path(result, msvc_function, path);
     }
@@ -280,7 +278,7 @@ public:
     /// テスト用ディレクトリ作成ヘルパ。
     /// </summary>
     /// <param name="path"></param>
-    void create_directory(tstring path)
+    void create_directory(const std::filesystem::path& path) const
     {
         std::filesystem::create_directories(path);
     }
@@ -289,7 +287,7 @@ public:
     /// テスト用ファイル作成ヘルパ。
     /// </summary>
     /// <param name="path"></param>
-    void create_empty_file(tstring path)
+    void create_empty_file(const std::filesystem::path& path) const
     {
         std::wofstream f(path);
         f.close();
