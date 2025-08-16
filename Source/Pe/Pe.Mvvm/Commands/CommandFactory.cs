@@ -9,8 +9,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
     public class CommandFactory: ICommandFactory
     {
         #region function
-        private bool EmptyCanExecuteFunc() => true;
-        private bool EmptyCanExecuteFunc<TParameter>(TParameter parameter) => true;
+        private static bool EmptyCanExecuteFunc() => true;
+        private static bool EmptyCanExecuteFunc<TParameter>(TParameter parameter) => true;
 
         #endregion
 
