@@ -50,7 +50,7 @@ static void setup_logging_file(const COMMAND_LINE_OPTION* command_line_option)
 {
     TEXT log_file_key = wrap_text(OPTION_LOG_FILE_KEY);
     const COMMAND_LINE_ITEM* log_file_item = get_command_line_item(command_line_option, &log_file_key);
-    
+
     if (is_inputted_command_line_item(log_file_item)) {
         TEXT default_log_path = log_file_item->value;
 
@@ -108,7 +108,7 @@ static void start_logging(const COMMAND_LINE_OPTION* command_line_option)
 
 #ifdef _DEBUG
     LOGGER logger = {
-        .function = logging,
+        .function = &logging,
         .data = NULL,
     };
     log_id = attach_logger(&logger);
