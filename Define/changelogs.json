@@ -64,7 +64,12 @@
 					},
 					{
 						"revision": "",
-						"subject": ""
+						"subject": "System.* 9.0.7 -> 9.0.8",
+						"comments": [
+							"System.DirectoryServices.AccountManagement",
+							"System.Management",
+							"System.Text.Encoding.CodePages"
+						]
 					},
 					{
 						"revision": "",
