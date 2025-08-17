@@ -14,20 +14,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
             CanExecuteFunc = canExecuteFunc ?? throw new ArgumentNullException(nameof(canExecuteFunc));
         }
 
-        protected DelegateCommandBase(Action<TParameter> executeAction)
-            : this(executeAction, EmptyCanExecuteFunc)
-        { }
-
         #region property
 
         private Action<TParameter> ExecuteAction { get; }
         private Func<TParameter, bool> CanExecuteFunc { get; }
-
-        #endregion
-
-        #region function
-
-        private static bool EmptyCanExecuteFunc(TParameter parameter) => true;
 
         #endregion
 
@@ -45,7 +35,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
 
         #endregion
     }
-
 
     public class DelegateCommand: DelegateCommandBase<object>
     {
