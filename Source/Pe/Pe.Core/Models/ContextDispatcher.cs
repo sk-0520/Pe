@@ -8,12 +8,12 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 namespace ContentTypeTextNet.Pe.Core.Models
 {
     /// <summary>
-    /// <see cref="Dispatcher"/>の使用をラップ。
+    /// <see cref="Raw"/>の使用をラップ。
     /// </summary>
     /// <remarks>
-    /// <para><see cref="Dispatcher"/>自体は大公開しているがなんかそれっぽく楽に使いたい。</para>
+    /// <para><see cref="Raw"/>自体は大公開しているがなんかそれっぽく楽に使いたい。</para>
     /// </remarks>
-    public class DispatcherWrapper: IDispatcherWrapper
+    public class ContextDispatcher: IContextDispatcher
     {
         #region define
 
@@ -94,16 +94,16 @@ namespace ContentTypeTextNet.Pe.Core.Models
         #endregion
 
         /// <summary>
-        /// <paramref name="dispatcher"/>をラップする。
+        /// <paramref name="rawDispatcher"/>をラップする。
         /// </summary>
-        /// <param name="dispatcher">ラップする対象。</param>
-        public DispatcherWrapper(Dispatcher dispatcher)
-            : this(dispatcher, TimeSpan.FromMinutes(1))
+        /// <param name="rawDispatcher">ラップする対象。</param>
+        public ContextDispatcher(Dispatcher rawDispatcher)
+            : this(rawDispatcher, TimeSpan.FromMinutes(1))
         { }
 
-        public DispatcherWrapper(Dispatcher dispatcher, TimeSpan waitTime)
+        public ContextDispatcher(Dispatcher rawDispatcher, TimeSpan waitTime)
         {
-            Dispatcher = dispatcher;
+            Raw = rawDispatcher;
             WaitTime = waitTime;
         }
 
@@ -115,11 +115,11 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
         #region IDispatcherWapper
 
-        public Dispatcher Dispatcher { get; }
+        public Dispatcher Raw { get; }
 
-        public bool CheckAccess() => Dispatcher.CheckAccess();
+        public bool CheckAccess() => Raw.CheckAccess();
 
-        public void VerifyAccess() => Dispatcher.VerifyAccess();
+        public void VerifyAccess() => Raw.VerifyAccess();
 
         public Task InvokeAsync(Action action, DispatcherPriority dispatcherPriority, CancellationToken cancellationToken)
         {
@@ -128,7 +128,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 return Task.CompletedTask;
             }
 
-            return Dispatcher.InvokeAsync(action, dispatcherPriority, cancellationToken).Task;
+            return Raw.InvokeAsync(action, dispatcherPriority, cancellationToken).Task;
         }
         public Task InvokeAsync(Action action, DispatcherPriority dispatcherPriority)
         {
@@ -144,7 +144,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 return Task.FromResult(func());
             }
 
-            return Dispatcher.InvokeAsync(func, dispatcherPriority, cancellationToken).Task;
+            return Raw.InvokeAsync(func, dispatcherPriority, cancellationToken).Task;
         }
         public Task<TResult> InvokeAsync<TResult>(Func<TResult> func, DispatcherPriority dispatcherPriority)
         {
@@ -161,7 +161,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 return func(argument);
             } else {
                 using var waitParameter = new WaitParameter<TArgument, TResult>(func, argument, cancellationToken);
-                Dispatcher.BeginInvoke(dispatcherPriority, new Action<WaitParameter<TArgument, TResult>>(static waitParameter => {
+                Raw.BeginInvoke(dispatcherPriority, new Action<WaitParameter<TArgument, TResult>>(static waitParameter => {
                     waitParameter.CancellationToken.ThrowIfCancellationRequested();
                     waitParameter.Result = waitParameter.Function(waitParameter.Argument);
                     waitParameter.Event.Set();
@@ -183,7 +183,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 return func();
             } else {
                 using var waitParameter = new WaitParameter<T>(func, cancellationToken);
-                Dispatcher.BeginInvoke(dispatcherPriority, new Action<WaitParameter<T>>(static waitParameter => {
+                Raw.BeginInvoke(dispatcherPriority, new Action<WaitParameter<T>>(static waitParameter => {
                     waitParameter.CancellationToken.ThrowIfCancellationRequested();
                     waitParameter.Result = waitParameter.Function();
                     waitParameter.Event.Set();
@@ -210,7 +210,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 action(argument);
                 return Task.CompletedTask;
             } else {
-                return Dispatcher.BeginInvoke(dispatcherPriority, action, argument).Task;
+                return Raw.BeginInvoke(dispatcherPriority, action, argument).Task;
             }
         }
         public Task BeginAsync<TArgument>(Action<TArgument> action, TArgument argument)
@@ -224,7 +224,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 action();
                 return Task.CompletedTask;
             } else {
-                return Dispatcher.BeginInvoke(dispatcherPriority, action).Task;
+                return Raw.BeginInvoke(dispatcherPriority, action).Task;
             }
         }
         public Task BeginAsync(Action action)
@@ -237,15 +237,15 @@ namespace ContentTypeTextNet.Pe.Core.Models
     }
 
     /// <summary>
-    /// 生成元の<see cref="Dispatcher"/>を用いて<see cref="DispatcherWrapper"/>を生成する。
+    /// 生成元の<see cref="Dispatcher"/>を用いて<see cref="ContextDispatcher"/>を生成する。
     /// </summary>
-    public sealed class CurrentDispatcherWrapper: DispatcherWrapper
+    public sealed class CurrentContextDispatcher: ContextDispatcher
     {
-        public CurrentDispatcherWrapper()
+        public CurrentContextDispatcher()
             : base(Dispatcher.CurrentDispatcher)
         { }
 
-        public CurrentDispatcherWrapper(TimeSpan waitTime)
+        public CurrentContextDispatcher(TimeSpan waitTime)
             : base(Dispatcher.CurrentDispatcher, waitTime)
         { }
     }

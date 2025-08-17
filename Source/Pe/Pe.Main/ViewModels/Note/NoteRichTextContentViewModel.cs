@@ -23,7 +23,7 @@ using Prism.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 {
-    public class NoteRichTextContentViewModel: NoteContentViewModelBase<RichTextBox>, IFlushable
+    public class NoteRichTextContentViewModel: NoteContentTextBoxViewModelBase<RichTextBox>, IFlushable
     {
         #region variable
 
@@ -34,8 +34,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #endregion
 
-        public NoteRichTextContentViewModel(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory)
+        public NoteRichTextContentViewModel(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory)
         {
             TextChangeDelayAction = new DelayAction("RTF変更抑制", TimeSpan.FromSeconds(2), LoggerFactory);
             SelectionForegroundColor = Colors.Black;
@@ -318,7 +318,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         protected override Task<bool> LoadContentAsync(CancellationToken cancellationToken)
         {
-            return DispatcherWrapper.InvokeAsync(() => {
+            return base.LoadContentAsync(cancellationToken).ContinueWith(t => {
+                t.ThrowIfHasException();
 
                 ControlElement.TextChanged -= Control_TextChanged;
                 ControlElement.SelectionChanged -= RichTextBox_SelectionChanged;
@@ -327,7 +328,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 ControlElement.SelectionChanged += RichTextBox_SelectionChanged;
 
                 return true;
-            }).ContinueWith(t => {
+            }, cancellationToken).ContinueWith(t => {
                 bool success = false;
                 string content;
                 if(t.IsCompletedSuccessfully) {
@@ -341,7 +342,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     content = t.Exception?.Message ?? "";
                 }
 
-                DispatcherWrapper.BeginAsync(() => {
+                ContextDispatcher.BeginAsync(() => {
                     var noteContentConverter = new NoteContentConverter(LoggerFactory);
                     using var stream = noteContentConverter.ToRtfStream(content);
 
@@ -354,6 +355,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
                     var range = new TextRange(Document.ContentStart, Document.ContentEnd);
                     range.Load(stream, DataFormats.Rtf);
+
+                    Logger.LogWarning("TODO: スクロール処理");
+                    BeforeLoadContent();
+
                 }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
 
                 return success;
@@ -389,7 +394,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         private void ChangedText()
         {
             if(CanVisible && EnabledUpdate) {
-                DispatcherWrapper.BeginAsync(vm => {
+                ContextDispatcher.BeginAsync(vm => {
                     if(vm.IsDisposed) {
                         return;
                     }

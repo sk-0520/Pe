@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
     public abstract class CommonAddonProxyBase<TFunctionUnit>: DisposerBase
         where TFunctionUnit : notnull
     {
-        protected CommonAddonProxyBase(PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected CommonAddonProxyBase(PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
             ImageLoader = imageLoader;
             MediaConverter = mediaConverter;
             Policy = policy;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
@@ -50,8 +50,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         protected IMediaConverter MediaConverter { get; }
         /// <inheritdoc cref="inheritdoc"/>
         protected IPolicy Policy { get; }
-        /// <inheritdoc cref="IDispatcherWrapper"/>
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        /// <inheritdoc cref="IContextDispatcher"/>
+        protected IContextDispatcher ContextDispatcher { get; }
 
         /// <summary>
         /// 担当する処理単位。
@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         /// <see cref="AddonParameter"/> を普通に作成する。
         /// </summary>
         /// <returns></returns>
-        protected virtual AddonParameter CreateParameter(IPlugin plugin) => new AddonParameter(new SkeletonImplements(), plugin.PluginInformation, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, DispatcherWrapper, LoggerFactory);
+        protected virtual AddonParameter CreateParameter(IPlugin plugin) => new AddonParameter(new SkeletonImplements(), plugin.PluginInformation, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
 
         protected abstract TFunctionUnit BuildFunctionUnit(IAddon loadedAddon);
 
@@ -87,8 +87,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
         #endregion
 
-        protected AddonProxyBase(IAddon addon, PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(pluginContextFactory, userAgentFactory, viewManager, platformTheme, imageLoader, mediaConverter, policy, dispatcherWrapper, loggerFactory)
+        protected AddonProxyBase(IAddon addon, PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(pluginContextFactory, userAgentFactory, viewManager, platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
         {
             Addon = addon;
         }
@@ -141,8 +141,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
         #endregion
 
-        protected AddonsProxyBase(IReadOnlyList<IAddon> addons, PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(pluginContextFactory, userAgentFactory, viewManager, platformTheme, imageLoader, mediaConverter, policy, dispatcherWrapper, loggerFactory)
+        protected AddonsProxyBase(IReadOnlyList<IAddon> addons, PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(pluginContextFactory, userAgentFactory, viewManager, platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
         {
             Addons = addons;
         }

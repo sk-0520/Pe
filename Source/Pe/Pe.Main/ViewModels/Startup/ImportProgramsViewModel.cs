@@ -23,11 +23,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Startup
         private bool _nowImporting;
 
         #endregion
-        public ImportProgramsViewModel(ImportProgramsElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public ImportProgramsViewModel(ImportProgramsElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             ProgramCollection = new ModelViewModelObservableCollectionManager<ProgramElement, ProgramViewModel>(Model.ProgramItems, new ModelViewModelObservableCollectionOptions<ProgramElement, ProgramViewModel>() {
-                ToViewModel = m => new ProgramViewModel(m, UserTracker, DispatcherWrapper, LoggerFactory),
+                ToViewModel = m => new ProgramViewModel(m, UserTracker, ContextDispatcher, LoggerFactory),
             });
         }
 

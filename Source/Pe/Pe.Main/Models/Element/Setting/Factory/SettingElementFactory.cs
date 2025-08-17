@@ -95,7 +95,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory
                 DiContainer.Build<IImageLoader>(),
                 DiContainer.Build<IMediaConverter>(),
                 DiContainer.Build<IPolicy>(),
-                DiContainer.Build<IDispatcherWrapper>(),
+                DiContainer.Build<IContextDispatcher>(),
                 DiContainer.Build<ILoggerFactory>()
             );
         }

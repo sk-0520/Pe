@@ -20,7 +20,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 {
     public class NoteFileElement: ElementBase
     {
-        public NoteFileElement(NoteFileData data, IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public NoteFileElement(NoteFileData data, IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             NoteId = data.NoteId;
@@ -32,13 +32,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             MainDatabaseBarrier = mainDatabaseBarrier;
             LargeDatabaseBarrier = largeDatabaseBarrier;
             DatabaseStatementLoader = databaseStatementLoader;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
 
             IconImageLoader = new IconImageLoader(
                 new Data.IconData() {
                     Path = NoteFilePath
                 },
-                DispatcherWrapper,
+                ContextDispatcher,
                 LoggerFactory
             );
         }
@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
         private IMainDatabaseBarrier MainDatabaseBarrier { get; }
         private ILargeDatabaseBarrier LargeDatabaseBarrier { get; }
         private IDatabaseStatementLoader DatabaseStatementLoader { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
 
         public NoteFileKind NoteFileKind { get; private set; }
         public string NoteFilePath { get; private set; } = string.Empty;

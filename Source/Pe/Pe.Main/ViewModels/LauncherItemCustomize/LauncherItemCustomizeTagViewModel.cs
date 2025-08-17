@@ -19,8 +19,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #endregion
 
-        public LauncherItemCustomizeTagViewModel(LauncherItemCustomizeEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherItemCustomizeTagViewModel(LauncherItemCustomizeEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             TagDelayChanger = new DelayAction("タグ編集編集:" + Model.LauncherItemId.ToString(), TimeSpan.FromSeconds(3), LoggerFactory);
             TagDocument = new TextDocument(string.Join(Environment.NewLine, Model.TagItems));
@@ -52,7 +52,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         void ChangedTag()
         {
-            var tagItems = TextUtility.ReadLines(DispatcherWrapper.Get(() => TagDocument.Text))
+            var tagItems = TextUtility.ReadLines(ContextDispatcher.Get(() => TagDocument.Text))
                 .Where(i => !string.IsNullOrWhiteSpace(i))
                 .Select(i => i.Trim())
                 .ToList()

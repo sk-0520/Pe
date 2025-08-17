@@ -11,14 +11,14 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
     /// <remarks>
     /// <para>Pe から提供される。</para>
     /// </remarks>
-    public interface IDispatcherWrapper
+    public interface IContextDispatcher
     {
         #region property
 
         /// <summary>
         /// ラップ中の<see cref="System.Windows.Threading.Dispatcher"/>
         /// </summary>
-        Dispatcher Dispatcher { get; }
+        Dispatcher Raw { get; }
 
 
         #endregion
@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
         TResult Get<TArgument, TResult>(Func<TArgument, TResult> func, TArgument argument);
 
         /// <summary>
-        /// 対象 <see cref="Dispatcher"/> でなんかした結果を取得する。
+        /// 対象 <see cref="Raw"/> でなんかした結果を取得する。
         /// </summary>
         /// <remarks>
         /// <para>内部的には停止状態。</para>

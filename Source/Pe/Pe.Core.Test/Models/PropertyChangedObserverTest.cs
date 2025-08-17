@@ -121,7 +121,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_HookItem_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentDispatcherWrapper(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(ObserveItem)!));
             Assert.Throws<ArgumentException>(() => test.AddObserver(new ObserveItem(null!, null, null, null)));
             Assert.Throws<ArgumentException>(() => test.AddObserver(new ObserveItem("", null, null, null)));
@@ -130,7 +130,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentDispatcherWrapper(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!));
             Assert.Throws<ArgumentException>(() => test.AddObserver(""));
             var result = test.AddObserver("A");
@@ -143,7 +143,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_string_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentDispatcherWrapper(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, default(string)!));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver("A", default(string)!));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, "B"));
@@ -157,7 +157,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_IEnumerableXstringX_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentDispatcherWrapper(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, Array.Empty<string>()));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver("A", (IEnumerable<string>)null!));
             Assert.Throws<ArgumentEmptyCollectionException>(() => test.AddObserver("A", Array.Empty<string>()));
@@ -173,7 +173,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_ICommand_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentDispatcherWrapper(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, default(ICommand)!));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, new Command(true)));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver("A", default(ICommand)!));
@@ -190,7 +190,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_IEnumerableXICommandX_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentDispatcherWrapper(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, default(ICommand[])!));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, new [] { new Command(true)}));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver("A", default(ICommand[])!));
@@ -210,7 +210,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_Action_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentDispatcherWrapper(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, default(Action)!));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, () => { }));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver("A", default(Action)!));

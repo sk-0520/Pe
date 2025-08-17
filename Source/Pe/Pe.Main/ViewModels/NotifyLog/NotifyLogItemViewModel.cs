@@ -11,10 +11,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
 {
     public class NotifyLogItemViewModel: ElementViewModelBase<NotifyLogItemElement>, INotifyLogId
     {
-        public NotifyLogItemViewModel(NotifyLogItemElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public NotifyLogItemViewModel(NotifyLogItemElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             PropertyChangedObserver.AddObserver(nameof(Model.Content), nameof(Content));
         }
 

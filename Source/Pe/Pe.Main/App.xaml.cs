@@ -106,7 +106,7 @@ namespace ContentTypeTextNet.Pe.Main
                         }
                         var model = new CrashReport.Models.Element.CrashReportElement(options, initializer.Logging.Factory);
                         await model.InitializeAsync(CancellationToken.None);
-                        var viewModel = new CrashReport.ViewModels.CrashReportViewModel(model, new Models.Telemetry.UserTracker(initializer.Logging.Factory), new ApplicationDispatcherWrapper(Timeout.InfiniteTimeSpan), initializer.Logging.Factory);
+                        var viewModel = new CrashReport.ViewModels.CrashReportViewModel(model, new Models.Telemetry.UserTracker(initializer.Logging.Factory), new ApplicationContextDispatcher(Timeout.InfiniteTimeSpan), initializer.Logging.Factory);
                         MainWindow = new CrashReport.Views.CrashReportWindow() {
                             DataContext = viewModel,
                         };

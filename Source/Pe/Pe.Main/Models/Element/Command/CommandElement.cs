@@ -31,7 +31,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 {
     public class CommandElement: ElementBase, IViewShowStarter, IViewCloseReceiver, IFlushable
     {
-        public CommandElement(IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IMainDatabaseDelayWriter mainDatabaseDelayWriter, ApplicationConfiguration applicationConfiguration, IOrderManager orderManager, IWindowManager windowManager, INotifyManager notifyManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public CommandElement(IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IMainDatabaseDelayWriter mainDatabaseDelayWriter, ApplicationConfiguration applicationConfiguration, IOrderManager orderManager, IWindowManager windowManager, INotifyManager notifyManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             MainDatabaseBarrier = mainDatabaseBarrier;
@@ -41,7 +41,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
             OrderManager = orderManager;
             WindowManager = windowManager;
             NotifyManager = notifyManager;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
 
             IconClearTimer = new Timer() {
                 Interval = applicationConfiguration.Command.IconClearWaitTime.TotalMilliseconds,
@@ -63,7 +63,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
         private IOrderManager OrderManager { get; }
         private IWindowManager WindowManager { get; }
         private INotifyManager NotifyManager { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         public bool ViewCreated { get; private set; }
         private UniqueKeyPool UniqueKeyPool { get; } = new UniqueKeyPool();
         public FontElement? Font { get; private set; }
@@ -182,7 +182,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
             }
         }
 
-        private async IAsyncEnumerable<ICommandItem> EnumerateCommandItemsAsync(string inputValue, IHitValuesCreator hitValuesCreator, [EnumeratorCancellation]  CancellationToken cancellationToken)
+        private async IAsyncEnumerable<ICommandItem> EnumerateCommandItemsAsync(string inputValue, IHitValuesCreator hitValuesCreator, [EnumeratorCancellation] CancellationToken cancellationToken)
         {
             var simpleRegexFactory = new SimpleRegexFactory(LoggerFactory);
             var regex = simpleRegexFactory.CreateFilterRegex(inputValue);
@@ -223,9 +223,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
         public void ChangeViewWidthDelaySave(double width)
         {
-            var diff = Math.Abs(Width - width);
-            if(diff < double.Epsilon) {
-                Logger.LogTrace("{ElementWidth} - {Width}: {Diff} < {Epsilon}", Width, width, diff, double.Epsilon);
+            if(MathUtility.AlmostEquals(Width, width)) {
                 return;
             }
             Width = width;

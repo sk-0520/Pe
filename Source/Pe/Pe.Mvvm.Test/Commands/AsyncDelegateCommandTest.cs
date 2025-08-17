@@ -55,7 +55,9 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
             var command = new AsyncDelegateCommand(
                 (o, c) => Task.Run(() => {
                     ev1.Wait(c);
-                }, c)
+                },
+                c),
+                o => true
             );
 
             command.Execute(null);
@@ -78,7 +80,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
             var command = new AsyncDelegateCommand(
                 (o, c) => Task.Run(() => {
                     ev.Wait(c);
-                }, c)
+                }, c),
+                o => true
             );
 
             var task = command.ExecuteAsync(null);
@@ -97,7 +100,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
             var command = new AsyncDelegateCommand(
                 (o, c) => Task.Run(() => {
                     ev.Wait(c);
-                }, c)
+                }, c),
+                o => true
             );
 
             Assert.False(command.CancelExecution());
@@ -121,7 +125,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
             var command = new AsyncDelegateCommand(
                 (o, c) => Task.Run(() => {
                     ev.Wait(c);
-                }, c)
+                }, c),
+                o => true
             ) {
                 RethrowOperationCanceledException = true
             };
@@ -156,7 +161,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
                     Assert.Equal(100, o);
                     Assert.False(command.CanExecute(o));
                     return Task.CompletedTask;
-                }
+                },
+                o => true
             );
             command.Execute(100);
         }

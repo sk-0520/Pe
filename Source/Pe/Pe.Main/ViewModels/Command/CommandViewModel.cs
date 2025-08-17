@@ -18,12 +18,13 @@ using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Main.Models.Element.Command;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Theme;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using ContentTypeTextNet.Pe.Main.ViewModels.Font;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 
@@ -44,8 +45,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
         #endregion
 
-        public CommandViewModel(CommandElement model, IGeneralTheme generalTheme, ICommandTheme commandTheme, IPlatformTheme platformTheme, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public CommandViewModel(CommandElement model, IGeneralTheme generalTheme, ICommandTheme commandTheme, IPlatformTheme platformTheme, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             GeneralTheme = generalTheme;
             CommandTheme = commandTheme;
@@ -54,11 +55,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
             ThemeProperties = new ThemeProperties(this);
 
             //CommandItemCollection = new ModelViewModelObservableCollectionManager<WrapModel<ICommandItem>, CommandItemViewModel>(Model.CommandItems) {
-            //    ToViewModel = m => new CommandItemViewModel(m.Data, IconBox, DispatcherWrapper, LoggerFactory),
+            //    ToViewModel = m => new CommandItemViewModel(m.Data, IconBox, ContextDispatcher, LoggerFactory),
             //};
             //CommandItems = CommandItemCollection.GetDefaultView();
 
-            Font = new FontViewModel(Model.Font!, DispatcherWrapper, LoggerFactory);
+            Font = new FontViewModel(Model.Font!, ContextDispatcher, LoggerFactory);
 
             HideWaitTimer = new DispatcherTimer(DispatcherPriority.Normal) {
                 Interval = Model.HideWaitTime,
@@ -67,7 +68,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
             PlatformTheme.Changed += PlatformTheme_Changed;
 
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             //PropertyChangedHooker.AddHook(nameof(Model.CommandItems), BuildCommandItems);
         }
 
@@ -109,7 +110,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         private ThemeProperties ThemeProperties { get; }
         private PropertyChangedObserver PropertyChangedObserver { get; }
 
-        private IDpiScaleOutpour DpiScaleOutpour { get; set; } = EmptyDpiScaleOutpour.Default;
+        private IDpiScaleContext DpiScaleOutpour { get; set; } = EmptyDpiScaleContext.Default;
 
         public double WindowWidth
         {
@@ -146,7 +147,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         private async Task ChangeInputValueAsync(string value)
         {
 #if DEBUG
-            DispatcherWrapper.VerifyAccess();
+            ContextDispatcher.VerifyAccess();
 #endif
             var prevSelectedItem = CurrentSelectedItem = SelectedItem;
 
@@ -170,14 +171,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
             try {
 #if DEBUG
-                DispatcherWrapper.VerifyAccess();
+                ContextDispatcher.VerifyAccess();
 #endif
 
                 var commandItems = await Model.EnumerateCommandItemsAsync(this._inputValue, InputCancellationTokenSource.Token);
                 InputCancellationTokenSource?.Dispose();
                 InputCancellationTokenSource = null;
 #if DEBUG
-                DispatcherWrapper.VerifyAccess();
+                ContextDispatcher.VerifyAccess();
 #endif
 
                 SetCommandItems(commandItems);
@@ -418,7 +419,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         {
             var prevItems = CommandItems;
             CommandItems = commandItems
-                .Select(i => new CommandItemViewModel(i, new IconScale(IconBox, DpiScaleOutpour.GetDpiScale()), DispatcherWrapper, LoggerFactory))
+                .Select(i => new CommandItemViewModel(i, new IconScale(IconBox, DpiScaleOutpour.GetDpiScale()), ContextDispatcher, LoggerFactory))
                 .ToList()
             ;
             foreach(var item in prevItems) {
@@ -434,7 +435,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
                         var podRect = WindowsUtility.ConvertRECTFromLParam(lParam);
 
                         // 高さは変えない
-                        if(podRect.Height != deviceWindowHeight) {
+                        if(!MathUtility.AlmostEquals(podRect.Height, deviceWindowHeight)) {
                             podRect.Height = (int)deviceWindowHeight;
 
                             Marshal.StructureToPtr(podRect, lParam, true);
@@ -456,7 +457,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
         public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
-            DpiScaleOutpour = (IDpiScaleOutpour)window;
+            DpiScaleOutpour = (IDpiScaleContext)window;
 
             var hWnd = HandleUtility.GetWindowHandle(window);
             var hWndSource = HwndSource.FromHwnd(hWnd);
@@ -525,7 +526,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
         private void PlatformTheme_Changed(object? sender, EventArgs e)
         {
-            DispatcherWrapper.BeginAsync(vm => {
+            ContextDispatcher.BeginAsync(vm => {
                 if(vm.IsDisposed) {
                     return;
                 }

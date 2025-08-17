@@ -20,8 +20,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 {
     public class LauncherSeparatorViewModel: LauncherDetailViewModelBase
     {
-        public LauncherSeparatorViewModel(LauncherItemElement model, IScreen screen, IKeyGestureGuide keyGestureGuide, IDispatcherWrapper dispatcherWrapper, ILauncherToolbarTheme launcherToolbarTheme, ILoggerFactory loggerFactory)
-            : base(model, screen, keyGestureGuide, dispatcherWrapper, launcherToolbarTheme, loggerFactory)
+        public LauncherSeparatorViewModel(LauncherItemElement model, IScreen screen, IKeyGestureGuide keyGestureGuide, IContextDispatcher contextDispatcher, ILauncherToolbarTheme launcherToolbarTheme, ILoggerFactory loggerFactory)
+            : base(model, screen, keyGestureGuide, contextDispatcher, launcherToolbarTheme, loggerFactory)
         { }
 
         #region property
@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         {
             get
             {
-                return DispatcherWrapper.Get(() => {
+                return ContextDispatcher.Get(() => {
                     return LauncherToolbarTheme.GetLauncherSeparator(true, Separator?.Kind ?? LauncherSeparatorKind.None, Separator?.Width ?? 0);
                 });
             }
@@ -41,7 +41,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         {
             get
             {
-                return DispatcherWrapper.Get(() => {
+                return ContextDispatcher.Get(() => {
                     return LauncherToolbarTheme.GetLauncherSeparator(false, Separator?.Kind ?? LauncherSeparatorKind.None, Separator?.Width ?? 0);
                 });
             }

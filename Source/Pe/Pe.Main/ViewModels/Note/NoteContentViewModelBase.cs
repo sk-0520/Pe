@@ -1,13 +1,19 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
+using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
+using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using Microsoft.Extensions.Logging;
@@ -23,14 +29,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #endregion
 
-        protected NoteContentViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected NoteContentViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
             ClipboardManager = clipboardManager;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             NoteConfiguration = noteConfiguration;
 
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             PropertyChangedObserver.AddObserver(nameof(IsLink), nameof(IsLink));
         }
 
@@ -39,7 +45,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         public NoteContentKind Kind => Model.ContentKind;
         protected NoteConfiguration NoteConfiguration { get; }
         protected IClipboardManager ClipboardManager { get; }
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
+
         public bool CanVisible
         {
             get => this._canVisible;
@@ -132,6 +139,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         public abstract void SearchContent(string searchValue, bool searchNext);
 
+        protected virtual void ReceiveScrollOffset(NoteViewOffsetData offset)
+        {
+            Logger.LogInformation("[not impl] offset: {Offset}",
+                offset
+            );
+        }
+
         #endregion
 
         #region SingleModelViewModelBase
@@ -186,10 +200,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
     }
 
     public abstract class NoteContentViewModelBase<TControlElement>: NoteContentViewModelBase
-        where TControlElement: FrameworkElement
+        where TControlElement : FrameworkElement
     {
-        protected NoteContentViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory)
+        protected NoteContentViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -213,18 +227,84 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         #endregion
     }
 
+    public abstract class NoteContentTextBoxViewModelBase<TControlElement>: NoteContentViewModelBase<TControlElement>
+        where TControlElement : TextBoxBase
+    {
+        protected NoteContentTextBoxViewModelBase(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory)
+        { }
+
+        #region property
+
+        private ScrollViewer? ScrollViewer { get; set; }
+        protected bool Loaded { get; set; }
+        private UniqueKeyPool UniqueKeyPool { get; } = new UniqueKeyPool();
+
+        #endregion
+
+        #region NoteContentViewModelBase
+
+        protected override Task<bool> LoadContentAsync(CancellationToken cancellationToken)
+        {
+            Loaded = false;
+            return Task.FromResult(true);
+        }
+
+        protected void BeforeLoadContent()
+        {
+            var scrollViewer = UIUtility.FindChildren<ScrollViewer>(ControlElement).FirstOrDefault();
+
+            if(scrollViewer is not null) {
+                if(ScrollViewer is not null) {
+                    ScrollViewer.ScrollChanged -= ScrollViewer_ScrollChanged;
+                }
+
+                ScrollViewer = scrollViewer;
+                ScrollViewer.ScrollChanged += ScrollViewer_ScrollChanged;
+
+                var offset = Model.GetViewOffset();
+                if(offset is not null) {
+                    ScrollViewer.ScrollToHorizontalOffset(offset.X);
+                    ScrollViewer.ScrollToVerticalOffset(offset.Y);
+                }
+                Loaded = true;
+            }
+        }
+
+        protected override void ReceiveScrollOffset(NoteViewOffsetData offset)
+        {
+            if(!Loaded) {
+                Logger.LogTrace("これは無視: {Offset}", offset);
+                return;
+            }
+            Model.ChangeViewOffsetDelaySave(offset, UniqueKeyPool.Get());
+        }
+
+        #endregion
+
+        private void ScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            if(sender is ScrollViewer scrollViewer) {
+                ReceiveScrollOffset(new NoteViewOffsetData() {
+                    X = scrollViewer.HorizontalOffset,
+                    Y = scrollViewer.VerticalOffset
+                });
+            }
+        }
+    }
+
     public static class NoteContentViewModelFactory
     {
         #region function
 
-        public static NoteContentViewModelBase Create(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public static NoteContentViewModelBase Create(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             switch(model.ContentKind) {
                 case NoteContentKind.Plain:
-                    return new NotePlainContentViewModel(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory);
+                    return new NotePlainContentViewModel(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory);
 
                 case NoteContentKind.RichText:
-                    return new NoteRichTextContentViewModel(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory);
+                    return new NoteRichTextContentViewModel(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory);
 
                 //case NoteContentKind.Link:
                 //    return new NoteLinkContentViewModel(model, clipboardManager, dispatcherWapper, loggerFactory);

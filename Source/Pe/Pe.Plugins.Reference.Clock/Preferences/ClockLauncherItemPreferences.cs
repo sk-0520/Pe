@@ -18,8 +18,8 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Preferences
 {
     internal class ClockLauncherItemPreferences: LauncherItemPreferencesBase
     {
-        public ClockLauncherItemPreferences(PluginBase plugin, LauncherItemId launcherItemId, IAddonExecutor addonExecutor, IDispatcherWrapper dispatcherWrapper, ISkeletonImplements skeletonImplements, IImageLoader imageLoader, IHttpUserAgentFactory httpUserAgentFactory, ILoggerFactory loggerFactory)
-            : base(plugin, launcherItemId, addonExecutor, dispatcherWrapper, skeletonImplements, imageLoader, httpUserAgentFactory, loggerFactory)
+        public ClockLauncherItemPreferences(PluginBase plugin, LauncherItemId launcherItemId, IAddonExecutor addonExecutor, IContextDispatcher contextDispatcher, ISkeletonImplements skeletonImplements, IImageLoader imageLoader, IHttpUserAgentFactory httpUserAgentFactory, ILoggerFactory loggerFactory)
+            : base(plugin, launcherItemId, addonExecutor, contextDispatcher, skeletonImplements, imageLoader, httpUserAgentFactory, loggerFactory)
         { }
 
         #region property
@@ -42,7 +42,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Preferences
 
             Setting = value;
 
-            ViewModel = new ClockLauncherItemPreferencesViewModel(Setting, SkeletonImplements, DispatcherWrapper, LoggerFactory);
+            ViewModel = new ClockLauncherItemPreferencesViewModel(Setting, SkeletonImplements, ContextDispatcher, LoggerFactory);
 
             View = new ClockLauncherItemPreferencesControl() {
                 DataContext = ViewModel,

@@ -25,7 +25,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
 {
     public class ImportProgramsElement: ServiceLocatorElementBase
     {
-        public ImportProgramsElement(LauncherItemConfiguration launcherItemConfiguration, IMainDatabaseBarrier databaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IWindowManager windowManager, IIdFactory idFactory, IDiContainer diContainer, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public ImportProgramsElement(LauncherItemConfiguration launcherItemConfiguration, IMainDatabaseBarrier databaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IWindowManager windowManager, IIdFactory idFactory, IDiContainer diContainer, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(diContainer, loggerFactory)
         {
             LauncherItemConfiguration = launcherItemConfiguration;
@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
             DatabaseStatementLoader = databaseStatementLoader;
             WindowManager = windowManager;
             IdFactory = idFactory;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
@@ -44,7 +44,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
         private IDatabaseStatementLoader DatabaseStatementLoader { get; }
         private IWindowManager WindowManager { get; }
         private IIdFactory IdFactory { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
 
         public ObservableCollection<ProgramElement> ProgramItems { get; } = new ObservableCollection<ProgramElement>();
 
@@ -102,7 +102,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
                 .GroupBy(f => f.Name)
                 .OrderBy(g => g.Key)
                 .Select(g => g.First())
-                .Select(f => new ProgramElement(f, autoImportExcludeRegexItems, DispatcherWrapper, LoggerFactory))
+                .Select(f => new ProgramElement(f, autoImportExcludeRegexItems, ContextDispatcher, LoggerFactory))
             ;
 
             foreach(var element in elements) {

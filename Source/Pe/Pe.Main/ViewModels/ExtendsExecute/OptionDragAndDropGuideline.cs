@@ -7,8 +7,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 {
     public class OptionDragAndDropGuideline: DragAndDropGuidelineBase
     {
-        public OptionDragAndDropGuideline(IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(dispatcherWrapper, loggerFactory)
+        public OptionDragAndDropGuideline(IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(contextDispatcher, loggerFactory)
         { }
 
         #region function

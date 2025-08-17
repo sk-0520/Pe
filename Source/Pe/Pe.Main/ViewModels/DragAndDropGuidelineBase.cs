@@ -8,15 +8,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels
     /// </summary>
     public abstract class DragAndDropGuidelineBase
     {
-        protected DragAndDropGuidelineBase(IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected DragAndDropGuidelineBase(IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             Logger = loggerFactory.CreateLogger(GetType());
         }
 
         #region property
 
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
         protected ILogger Logger { get; }
 
         #endregion

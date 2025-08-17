@@ -33,10 +33,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Note
 
         protected override void ExecuteMainImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
+            var noteViewOffsetsEntityDao = new NoteViewOffsetsEntityDao(context, statementLoader, implementation, LoggerFactory);
             var noteContentsEntityDao = new NoteContentsEntityDao(context, statementLoader, implementation, LoggerFactory);
             var noteLayoutsEntityDao = new NoteLayoutsEntityDao(context, statementLoader, implementation, LoggerFactory);
             var notesEntityDao = new NotesEntityDao(context, statementLoader, implementation, LoggerFactory);
 
+            noteViewOffsetsEntityDao.DeleteNoteViewOffset(NoteId);
             noteContentsEntityDao.DeleteContents(NoteId);
             noteLayoutsEntityDao.DeleteLayouts(NoteId);
             notesEntityDao.DeleteNote(NoteId);

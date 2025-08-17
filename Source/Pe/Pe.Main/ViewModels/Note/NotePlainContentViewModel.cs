@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using ContentTypeTextNet.Pe.Bridge.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
@@ -11,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 {
-    public class NotePlainContentViewModel: NoteContentViewModelBase<TextBox>
+    public class NotePlainContentViewModel: NoteContentTextBoxViewModelBase<TextBox>
     {
         #region variable
 
@@ -19,8 +20,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #endregion
 
-        public NotePlainContentViewModel(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, noteConfiguration, clipboardManager, dispatcherWrapper, loggerFactory)
+        public NotePlainContentViewModel(NoteContentElement model, NoteConfiguration noteConfiguration, IClipboardManager clipboardManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, noteConfiguration, clipboardManager, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -50,7 +51,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         protected override Task<bool> LoadContentAsync(CancellationToken cancellationToken)
         {
-            return Task.Run(() => {
+            return base.LoadContentAsync(cancellationToken).ContinueWith(t => {
+                t.ThrowIfHasException();
+
                 try {
                     var content = Model.LoadPlainContent();
                     Content = content;
@@ -59,7 +62,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     Content = ex.Message;
                 }
                 return false;
-            });
+            }, cancellationToken).ContinueWith(t => {
+                if(t.IsCompletedSuccessfully) {
+                    Logger.LogWarning("TODO: スクロール処理");
+                    ContextDispatcher.BeginAsync(() => {
+                        BeforeLoadContent();
+                    }, System.Windows.Threading.DispatcherPriority.ApplicationIdle);
+                }
+                return t.Result;
+            }, cancellationToken);
         }
 
         protected override void UnloadContent()

@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Widget
 {
     public class WidgetElement: ElementBase, IViewCloseReceiver, IPluginId
     {
-        internal WidgetElement(IWidget widget, IPlugin plugin, WidgetAddonContextFactory widgetAddonContextFactory, IMainDatabaseBarrier mainDatabaseBarrier, IMainDatabaseDelayWriter mainDatabaseDelayWriter, IDatabaseStatementLoader databaseStatementLoader, ICultureService cultureService, IWindowManager windowManager, INotifyManager notifyManager, EnvironmentParameters environmentParameters, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        internal WidgetElement(IWidget widget, IPlugin plugin, WidgetAddonContextFactory widgetAddonContextFactory, IMainDatabaseBarrier mainDatabaseBarrier, IMainDatabaseDelayWriter mainDatabaseDelayWriter, IDatabaseStatementLoader databaseStatementLoader, ICultureService cultureService, IWindowManager windowManager, INotifyManager notifyManager, EnvironmentParameters environmentParameters, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             Widget = widget;
@@ -40,12 +40,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Widget
             WindowManager = windowManager;
             NotifyManager = notifyManager;
             EnvironmentParameters = environmentParameters;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
 
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         private IWidget Widget { get; }
         private IPlugin Plugin { get; }
         private IPluginInformation PluginInformation => Plugin.PluginInformation;

@@ -21,23 +21,23 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #endregion
 
-        public LauncherItemCustomizeEditorViewModel(LauncherItemCustomizeEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public LauncherItemCustomizeEditorViewModel(LauncherItemCustomizeEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
             IsCloned = false;
 
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
 
-            Common = new LauncherItemCustomizeCommonViewModel(Model, IconSelectRequest, ImageSelectRequest, DispatcherWrapper, LoggerFactory);
+            Common = new LauncherItemCustomizeCommonViewModel(Model, IconSelectRequest, ImageSelectRequest, ContextDispatcher, LoggerFactory);
 
             var items = new List<LauncherItemCustomizeDetailViewModelBase>();
             items.Add(Common);
 
             switch(Model.Kind) {
                 case LauncherItemKind.File: {
-                        var file = new LauncherItemCustomizeFileViewModel(Model, FileSelectRequest, DispatcherWrapper, LoggerFactory);
-                        var env = new LauncherItemCustomizeEnvironmentVariableViewModel(Model, DispatcherWrapper, LoggerFactory);
-                        var redo = new LauncherItemCustomizeRedoViewModel(Model, DispatcherWrapper, LoggerFactory);
+                        var file = new LauncherItemCustomizeFileViewModel(Model, FileSelectRequest, ContextDispatcher, LoggerFactory);
+                        var env = new LauncherItemCustomizeEnvironmentVariableViewModel(Model, ContextDispatcher, LoggerFactory);
+                        var redo = new LauncherItemCustomizeRedoViewModel(Model, ContextDispatcher, LoggerFactory);
 
                         items.Add(file);
                         items.Add(env);
@@ -46,19 +46,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
                     break;
 
                 case LauncherItemKind.StoreApp: {
-                        var storeApp = new LauncherItemCustomizeStoreAppViewModel(Model, DispatcherWrapper, LoggerFactory);
+                        var storeApp = new LauncherItemCustomizeStoreAppViewModel(Model, ContextDispatcher, LoggerFactory);
                         items.Add(storeApp);
                     }
                     break;
 
                 case LauncherItemKind.Addon: {
-                        var addon = new LauncherItemCustomizeAddonViewModel(Model, DispatcherWrapper, LoggerFactory);
+                        var addon = new LauncherItemCustomizeAddonViewModel(Model, ContextDispatcher, LoggerFactory);
                         items.Add(addon);
                     }
                     break;
 
                 case LauncherItemKind.Separator: {
-                        var separator= new LauncherItemCustomizeSeparatorViewModel(Model, DispatcherWrapper, LoggerFactory);
+                        var separator= new LauncherItemCustomizeSeparatorViewModel(Model, ContextDispatcher, LoggerFactory);
                         items.Add(separator);
                     }
                     break;
@@ -68,11 +68,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
             }
 
             if(Model.Kind != LauncherItemKind.Separator) {
-                Tag = new LauncherItemCustomizeTagViewModel(Model, DispatcherWrapper, LoggerFactory);
+                Tag = new LauncherItemCustomizeTagViewModel(Model, ContextDispatcher, LoggerFactory);
                 items.Add(Tag);
             }
 
-            Comment = new LauncherItemCustomizeCommentViewModel(Model, DispatcherWrapper, LoggerFactory);
+            Comment = new LauncherItemCustomizeCommentViewModel(Model, ContextDispatcher, LoggerFactory);
             items.Add(Comment);
 
             CustomizeItems = items;
@@ -90,7 +90,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
         {
             IsCloned = true;
 
-            DispatcherWrapper = source.DispatcherWrapper;
+            ContextDispatcher = source.ContextDispatcher;
             Common = source.Common;
             Tag = source.Tag;
             Comment = source.Comment;
@@ -99,7 +99,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #region property
 
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
 
         public bool IsCloned { get; }
 

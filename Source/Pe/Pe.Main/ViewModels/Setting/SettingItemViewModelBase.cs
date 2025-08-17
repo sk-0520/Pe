@@ -16,11 +16,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #endregion
 
-        protected SettingItemViewModelBase(TModel model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected SettingItemViewModelBase(TModel model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
-            DispatcherWrapper = dispatcherWrapper;
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            ContextDispatcher = contextDispatcher;
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             PropertyChangedObserver.AddObserver(nameof(Model.IsInitialized), OnInitialized);
             if(Model.IsInitialized) {
                 OnInitialized();
@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #region property
 
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
         protected PropertyChangedObserver PropertyChangedObserver { get; }
 
         public bool IsInitialized

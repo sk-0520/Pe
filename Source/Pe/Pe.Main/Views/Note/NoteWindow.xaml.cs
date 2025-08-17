@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Main.Views.Note
     /// <summary>
     /// NoteWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class NoteWindow: Window, IDpiScaleOutpour
+    public partial class NoteWindow: Window, IDpiScaleContext
     {
         public NoteWindow()
         {

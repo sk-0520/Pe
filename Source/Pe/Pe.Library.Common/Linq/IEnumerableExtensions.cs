@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
@@ -11,6 +11,26 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
     public static class IEnumerableExtensions
     {
         #region function
+
+        /// <summary>
+        /// シーケンスの内容を固定化し、以降変更不可な読み取り専用リストとして返す。
+        /// </summary>
+        /// <typeparam name="T">要素の型。</typeparam>
+        /// <param name="source">元となるシーケンス。</param>
+        /// <returns>
+        /// シーケンスの内容を固定化した <see cref="IReadOnlyList{T}"/>。
+        /// 返却されるリストは要素の追加・削除ができませんが、要素自体が参照型の場合はその内容が変更される可能性があります。
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// LINQ の遅延評価を明示的に切り、列挙時の副作用やパフォーマンス問題を回避したい場合に有効です。
+        /// コレクションの構造（要素数・順序）は不変となりますが、要素自体のイミュータビリティは保証しません。
+        /// </para>
+        /// </remarks>
+        public static IReadOnlyList<T> FrozenSequence<T>(this IEnumerable<T> source)
+        {
+            return Array.AsReadOnly(source.ToArray());
+        }
 
         /// <summary>
         /// 0基点のインデックスと値ペア列挙。

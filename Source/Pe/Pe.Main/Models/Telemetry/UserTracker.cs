@@ -1,5 +1,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Bridge.Models.Data;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -75,6 +77,25 @@ namespace ContentTypeTextNet.Pe.Main.Models.Telemetry
         public static void Track(this IUserTracker tracker, string eventName, TrackProperties properties, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
             tracker.TrackAsync(eventName, properties, callerMemberName, callerFilePath, callerLineNumber);
+        }
+
+        #endregion
+    }
+
+    public class UserTrackProperties: TrackProperties
+    {
+        public UserTrackProperties() { }
+
+        #region function
+
+        public static UserTrackProperties CreateExecuteLauncherItem(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, LauncherExecuteSource launcherExecuteSource)
+        {
+            var result = new UserTrackProperties() {
+                [nameof(launcherItemId)] = launcherItemId.ToString(),
+                [nameof(launcherItemKind)] = launcherItemKind.ToString(),
+                [nameof(launcherExecuteSource)] = launcherExecuteSource.ToString()
+            };
+            return result;
         }
 
         #endregion

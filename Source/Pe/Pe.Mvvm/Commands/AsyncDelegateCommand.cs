@@ -51,10 +51,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
             CanExecuteFunc = canExecuteFunc ?? throw new ArgumentNullException(nameof(canExecuteFunc));
         }
 
-        protected AsyncDelegateCommandBase(Func<TParameter, CancellationToken, Task> executeAction)
-            : this(executeAction, EmptyCanExecuteFunc)
-        { }
-
         protected AsyncDelegateCommandBase(Func<TParameter, Task> executeAction, Func<TParameter, bool> canExecuteFunc)
         {
             ArgumentNullException.ThrowIfNull(executeAction);
@@ -66,7 +62,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
         protected AsyncDelegateCommandBase(Func<TParameter, Task> executeAction)
             : this(executeAction, EmptyCanExecuteFunc)
         { }
-
 
         #region property
 
@@ -140,10 +135,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
 
     public class AsyncDelegateCommand: AsyncDelegateCommandBase<object>
     {
-        public AsyncDelegateCommand(Func<object, CancellationToken, Task> executeAction)
-            : base(executeAction)
-        { }
-
         public AsyncDelegateCommand(Func<object, CancellationToken, Task> executeAction, Func<object, bool> canExecuteFunc)
             : base(executeAction, canExecuteFunc)
         { }
@@ -172,16 +163,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
 
     public class AsyncDelegateCommand<TParameter>: AsyncDelegateCommandBase<TParameter>
     {
-        public AsyncDelegateCommand(Func<TParameter, CancellationToken, Task> executeAction)
-            : base(executeAction)
-        { }
-
         public AsyncDelegateCommand(Func<TParameter, CancellationToken, Task> executeAction, Func<TParameter, bool> canExecuteFunc)
             : base(executeAction, canExecuteFunc)
-        { }
-
-        public AsyncDelegateCommand(Func<TParameter, Task> executeAction)
-            : base(executeAction)
         { }
 
         public AsyncDelegateCommand(Func<TParameter, Task> executeAction, Func<TParameter, bool> canExecuteFunc)

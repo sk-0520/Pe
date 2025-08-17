@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
 
         #endregion
 
-        public LauncherItemElement(LauncherItemId launcherItemId, LauncherItemAddonContextFactory launcherItemAddonContextFactory, ILauncherItemAddonFinder launcherItemAddonFinder, LauncherItemAddonViewSupporterCollection launcherItemAddonViewSupporterCollection, IWindowManager windowManager, IOrderManager orderManager, IClipboardManager clipboardManager, INotifyManager notifyManager, IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public LauncherItemElement(LauncherItemId launcherItemId, LauncherItemAddonContextFactory launcherItemAddonContextFactory, ILauncherItemAddonFinder launcherItemAddonFinder, LauncherItemAddonViewSupporterCollection launcherItemAddonViewSupporterCollection, IWindowManager windowManager, IOrderManager orderManager, IClipboardManager clipboardManager, INotifyManager notifyManager, IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             LauncherItemId = launcherItemId;
@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             LargeDatabaseBarrier = largeDatabaseBarrier;
             TemporaryDatabaseBarrier = temporaryDatabaseBarrier;
             DatabaseStatementLoader = databaseStatementLoader;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
         private ILargeDatabaseBarrier LargeDatabaseBarrier { get; }
         private ITemporaryDatabaseBarrier TemporaryDatabaseBarrier { get; }
         private IDatabaseStatementLoader DatabaseStatementLoader { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         private EnvironmentPathExecuteFileCache EnvironmentPathExecuteFileCache { get; } = EnvironmentPathExecuteFileCache.Instance;
         public string Name { get; private set; } = string.Empty;
         public LauncherItemKind Kind { get; private set; }
@@ -194,7 +194,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             }
             fileData.Caption = Name;
 
-            var launcherExecutor = new LauncherExecutor(EnvironmentPathExecuteFileCache, OrderManager, NotifyManager, DispatcherWrapper, LoggerFactory);
+            var launcherExecutor = new LauncherExecutor(EnvironmentPathExecuteFileCache, OrderManager, NotifyManager, ContextDispatcher, LoggerFactory);
             var result = await launcherExecutor.ExecuteAsync(Kind, fileData, fileData, envItems, redoData, screen, cancellationToken);
 
             return result;
@@ -223,7 +223,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             var commandExecuteParameter = new CommandExecuteParameter(screen, false);
             var launcherItemAddonViewSupporter = LauncherItemAddonViewSupporterCollection.Create(plugin.PluginInformation, LauncherItemId);
             var launcherItemExtensionExecuteParameter = LauncherItemAddonContextFactory.CreateExtensionExecuteParameter(plugin.PluginInformation, LauncherItemId, launcherItemAddonViewSupporter);
-            DispatcherWrapper.BeginAsync(() => {
+            ContextDispatcher.BeginAsync(() => {
                 using var databaseContextsPack = PersistenceHelper.WaitWritePack(MainDatabaseBarrier, LargeDatabaseBarrier, TemporaryDatabaseBarrier, DatabaseCommonStatus.CreatePluginAccount(plugin.PluginInformation));
                 using(var context = LauncherItemAddonContextFactory.CreateContext(plugin.PluginInformation, LauncherItemId, databaseContextsPack, false)) {
                     addon.Execute(customArgument, commandExecuteParameter, launcherItemExtensionExecuteParameter, context);
@@ -299,7 +299,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
         {
             ThrowIfDisposed();
 
-            return DispatcherWrapper.BeginAsync(async () => {
+            return ContextDispatcher.BeginAsync(async () => {
                 var element = await OrderManager.CreateLauncherExtendsExecuteElementAsync(LauncherItemId, screen, cancellationToken);
                 element.StartView();
             });
@@ -336,7 +336,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
 
             var pathData = GetExecutePath();
 
-            var launcherExecutor = new LauncherExecutor(EnvironmentPathExecuteFileCache, OrderManager, NotifyManager, DispatcherWrapper, LoggerFactory);
+            var launcherExecutor = new LauncherExecutor(EnvironmentPathExecuteFileCache, OrderManager, NotifyManager, ContextDispatcher, LoggerFactory);
             var result = launcherExecutor.OpenParentDirectory(Kind, pathData);
 
             return result;
@@ -354,7 +354,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
 
             var pathData = GetExecutePath();
 
-            var launcherExecutor = new LauncherExecutor(EnvironmentPathExecuteFileCache, OrderManager, NotifyManager, DispatcherWrapper, LoggerFactory);
+            var launcherExecutor = new LauncherExecutor(EnvironmentPathExecuteFileCache, OrderManager, NotifyManager, ContextDispatcher, LoggerFactory);
             var result = launcherExecutor.OpenWorkingDirectory(Kind, pathData);
 
             return result;
@@ -451,7 +451,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
 
             var pathData = GetExecutePath();
 
-            var launcherExecutor = new LauncherExecutor(EnvironmentPathExecuteFileCache, OrderManager, NotifyManager, DispatcherWrapper, LoggerFactory);
+            var launcherExecutor = new LauncherExecutor(EnvironmentPathExecuteFileCache, OrderManager, NotifyManager, ContextDispatcher, LoggerFactory);
             launcherExecutor.ShowProperty(pathData);
         }
 

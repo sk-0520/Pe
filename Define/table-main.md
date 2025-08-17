@@ -814,6 +814,26 @@ ___
 
 ___
 
+# NoteViewOffsets
+
+## layout
+
+| PK | NN |      FK      |       論理カラム名       |     物理カラム名      | 論理データ型 |  マッピング型   |                    コメント                    |
+|:--:|:--:|:-------------|:-------------------------|:----------------------|:-------------|:----------------|:-----------------------------------------------|
+| x  | x  | Notes.NoteId | ノートID                 | NoteId                | text         | System.Guid     |                                                |
+|    | x  |              | 作成タイムスタンプ       | CreatedTimestamp      | datetime     | System.DateTime | UTC                                            |
+|    | x  |              | 作成ユーザー名           | CreatedAccount        | text         | System.String   |                                                |
+|    | x  |              | 作成プログラム名         | CreatedProgramName    | text         | System.String   |                                                |
+|    | x  |              | 作成プログラムバージョン | CreatedProgramVersion | text         | System.Version  |                                                |
+|    | x  |              | X位置                    | X                     | real         | System.Double   |                                                |
+|    | x  |              | Y位置                    | Y                     | real         | System.Double   |                                                |
+
+## index
+
+*NONE*
+
+___
+
 # NoteFiles
 
 ## layout

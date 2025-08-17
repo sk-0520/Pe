@@ -35,8 +35,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 
         #endregion
 
-        public LauncherFileViewModel(LauncherItemElement model, IScreen screen, IKeyGestureGuide keyGestureGuide, IDispatcherWrapper dispatcherWrapper, ILauncherToolbarTheme launcherToolbarTheme, ILoggerFactory loggerFactory)
-            : base(model, screen, keyGestureGuide, dispatcherWrapper, launcherToolbarTheme, loggerFactory)
+        public LauncherFileViewModel(LauncherItemElement model, IScreen screen, IKeyGestureGuide keyGestureGuide, IContextDispatcher contextDispatcher, ILauncherToolbarTheme launcherToolbarTheme, ILoggerFactory loggerFactory)
+            : base(model, screen, keyGestureGuide, contextDispatcher, launcherToolbarTheme, loggerFactory)
         { }
 
         #region property
@@ -283,8 +283,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         protected override object GetIcon(IconKind iconKind, bool isEnabledBadge)
         {
             var factory = Model.CreateLauncherIconFactory();
-            var iconSource = factory.CreateIconSource(DispatcherWrapper);
-            return factory.CreateView(iconSource, false, isEnabledBadge, DispatcherWrapper);
+            var iconSource = factory.CreateIconSource(ContextDispatcher);
+            return factory.CreateView(iconSource, false, isEnabledBadge, ContextDispatcher);
         }
 
         #endregion

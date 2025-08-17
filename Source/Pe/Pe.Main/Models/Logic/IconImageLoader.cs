@@ -17,11 +17,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
     public abstract class IconImageLoaderBase: BindModelBase
     {
-        protected IconImageLoaderBase(IDispatcherWrapper? dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected IconImageLoaderBase(IContextDispatcher? contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             //IconBox = iconBox;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             RunningStatusImpl = new RunningStatus(LoggerFactory);
         }
 
@@ -30,9 +30,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         //public IconBox IconBox { get; }
 
         /// <summary>
-        /// 非 <see langword="null" /> の場合に、<see cref="DependencyObject"/>操作時に指定の<see cref="IDispatcherWrapper"/>で処理する。
+        /// 非 <see langword="null" /> の場合に、<see cref="DependencyObject"/>操作時に指定の<see cref="IContextDispatcher"/>で処理する。
         /// </summary>
-        protected IDispatcherWrapper? DispatcherWrapper { get; }
+        protected IContextDispatcher? ContextDispatcher { get; }
 
         private RunningStatus RunningStatusImpl { get; }
         public IRunningStatus RunningStatus => RunningStatusImpl;
@@ -80,7 +80,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                     image.SafeFreeze();
                     return image;
                 }
-                var iconImage = DispatcherWrapper?.Get(static s => LoadImage(s), stream) ?? LoadImage(stream);
+                var iconImage = ContextDispatcher?.Get(static s => LoadImage(s), stream) ?? LoadImage(stream);
                 return iconImage;
             }
         }
@@ -108,7 +108,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                     return new WriteableBitmap(transformedBitmap).GetFreezed();
                 }
 
-                return DispatcherWrapper?.Get(args => ResizeCore(args.bitmapSource, args.scaleX, args.scaleY), (bitmapSource, scaleX, scaleY)) ?? ResizeCore(bitmapSource, scaleX, scaleY);
+                return ContextDispatcher?.Get(args => ResizeCore(args.bitmapSource, args.scaleX, args.scaleY), (bitmapSource, scaleX, scaleY)) ?? ResizeCore(bitmapSource, scaleX, scaleY);
             }
 
             return bitmapSource;
@@ -140,7 +140,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                             var image = LoadFromStream(stream);
                             return image.GetFreezed();
                         }
-                        iconImage = DispatcherWrapper?.Get(static (s) => LoadCore(s), stream) ?? LoadCore(stream);
+                        iconImage = ContextDispatcher?.Get(static (s) => LoadCore(s), stream) ?? LoadCore(stream);
                     }
                 } else {
                     Logger.LogDebug("アイコンファイルとして読み込み {0}", path);
@@ -152,7 +152,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                         image.SafeFreeze();
                         return image;
                     }
-                    iconImage = DispatcherWrapper?.Get(static (args) => LoadCore(args.path, args.iconData.Index, args.iconScale, args.iconLoader), (path, iconData, iconScale, iconLoader)) ?? LoadCore(path, iconData.Index, iconScale, iconLoader);
+                    iconImage = ContextDispatcher?.Get(static (args) => LoadCore(args.path, args.iconData.Index, args.iconScale, args.iconLoader), (path, iconData, iconScale, iconLoader)) ?? LoadCore(path, iconData.Index, iconScale, iconLoader);
                 }
 
                 return iconImage;
@@ -216,8 +216,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
     public sealed class IconImageLoader: IconImageLoaderBase
     {
-        public IconImageLoader(IReadOnlyIconData iconData, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(dispatcherWrapper, loggerFactory)
+        public IconImageLoader(IReadOnlyIconData iconData, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(contextDispatcher, loggerFactory)
         {
             IconData = iconData;
         }

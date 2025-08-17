@@ -9,8 +9,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
     /// <inheritdoc cref="IAddonParameter"/>
     public class AddonParameter: PluginParameterBase, IAddonParameter
     {
-        public AddonParameter(ISkeletonImplements skeletonImplements, IPluginInformation pluginInformation, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(pluginInformation, viewManager, platformTheme, imageLoader, mediaConverter, policy, dispatcherWrapper, loggerFactory)
+        public AddonParameter(ISkeletonImplements skeletonImplements, IPluginInformation pluginInformation, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(pluginInformation, viewManager, platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
         {
             HttpUserAgentFactory = userAgentFactory;
             AddonExecutor = new AddonExecutor(PluginInformation, LoggerFactory);

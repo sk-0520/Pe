@@ -23,14 +23,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #endregion
 
-        public LauncherGroupSettingEditorViewModel(LauncherGroupSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel> allLauncherItemCollection, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public LauncherGroupSettingEditorViewModel(LauncherGroupSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel> allLauncherItemCollection, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, loggerFactory)
         {
             if(!Model.IsInitialized) {
                 throw new ArgumentException(nameof(Model.IsInitialized), nameof(model));
             }
 
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             AllLauncherItemCollection = allLauncherItemCollection;
 
             LauncherCollection = new ModelViewModelObservableCollectionManager<LauncherItemId, LauncherItemSettingEditorViewModel>(Model.LauncherItems, new ModelViewModelObservableCollectionOptions<LauncherItemId, LauncherItemSettingEditorViewModel>() {
@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
         [IgnoreValidation]
         public ReadOnlyObservableCollection<LauncherItemSettingEditorViewModel> LauncherItems { get; }
 
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
 
 
         [Required]

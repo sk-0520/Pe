@@ -91,16 +91,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
 
     internal class ApplicationCommandParameterFactory
     {
-        public ApplicationCommandParameterFactory(CommandConfiguration commandConfiguration, IDispatcherWrapper dispatcherWrapper)
+        public ApplicationCommandParameterFactory(CommandConfiguration commandConfiguration, IContextDispatcher contextDispatcher)
         {
             CommandConfiguration = commandConfiguration;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
 
         private CommandConfiguration CommandConfiguration { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
 
         #endregion
 
@@ -133,7 +133,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
 
         public ApplicationCommandParameter CreateParameter(ApplicationCommand applicationCommand, Action<ICommandExecuteParameter> executor)
         {
-            DispatcherWrapper.VerifyAccess();
+            ContextDispatcher.VerifyAccess();
 
             var descriptions = ToDescriptions(applicationCommand);
             return new ApplicationCommandParameter(ToHeader(applicationCommand), descriptions.narmal, descriptions.extend, (in IconScale iconScale) => {
@@ -188,11 +188,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
 
         #endregion
 
-        public ApplicationCommandFinder(IReadOnlyList<ApplicationCommandParameter> parameters, CommandConfiguration commandConfiguration, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public ApplicationCommandFinder(IReadOnlyList<ApplicationCommandParameter> parameters, CommandConfiguration commandConfiguration, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
 
             Parameters = parameters;
             CommandConfiguration = commandConfiguration;
@@ -204,8 +204,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
         private ILoggerFactory LoggerFactory { get; }
         /// <inheritdoc cref="ILogger"/>
         private ILogger Logger { get; }
-        /// <inheritdoc cref="IDispatcherWrapper"/>
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        /// <inheritdoc cref="IContextDispatcher"/>
+        private IContextDispatcher ContextDispatcher { get; }
         /// <inheritdoc cref="CommandConfiguration"/>
         private CommandConfiguration CommandConfiguration { get; }
         private IReadOnlyList<ApplicationCommandParameter> Parameters { get; }
@@ -263,7 +263,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
 
             if(string.IsNullOrWhiteSpace(inputValue)) {
                 foreach(var parameter in Parameters) {
-                    var element = new ApplicationCommandItemElement(parameter, DispatcherWrapper, LoggerFactory);
+                    var element = new ApplicationCommandItemElement(parameter, ContextDispatcher, LoggerFactory);
                     await element.InitializeAsync(cancellationToken);
                     element.EditableScore = hitValuesCreator.GetScore(ScoreKind.Initial, hitValuesCreator.NoBonus) - 1;
                     yield return element;
@@ -282,7 +282,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
                     var ranges = hitValuesCreator.ConvertRanges(parameterMatches);
                     var hitValue = hitValuesCreator.ConvertHitValues(parameter.Header, ranges);
 
-                    var element = new ApplicationCommandItemElement(parameter, DispatcherWrapper, LoggerFactory);
+                    var element = new ApplicationCommandItemElement(parameter, ContextDispatcher, LoggerFactory);
                     await element.InitializeAsync(cancellationToken);
 
                     element.EditableHeaderValues.SetRange(hitValue);

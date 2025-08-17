@@ -135,7 +135,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Addon
         {
             switch(iconMode) {
                 case LauncherItemIconMode.Toolbar: {
-                        var viewModel = new ClockLauncherItemControlViewModel(this, SkeletonImplements, PlatformTheme, MediaConverter, DispatcherWrapper, LoggerFactory);
+                        var viewModel = new ClockLauncherItemControlViewModel(this, SkeletonImplements, PlatformTheme, MediaConverter, ContextDispatcher, LoggerFactory);
                         return new ClockLauncherItemControl() {
                             DataContext = viewModel,
                         };
@@ -162,7 +162,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Addon
 
         public override void Execute(string? argument, ICommandExecuteParameter commandExecuteParameter, ILauncherItemExtensionExecuteParameter launcherItemExtensionExecuteParameter, ILauncherItemAddonContext launcherItemAddonContext)
         {
-            var viewModel = new ClockLauncherItemWindowViewModel(this, SkeletonImplements, DispatcherWrapper, LoggerFactory);
+            var viewModel = new ClockLauncherItemWindowViewModel(this, SkeletonImplements, ContextDispatcher, LoggerFactory);
             var view = new ClockLauncherItemWindow() {
                 DataContext = viewModel,
             };
@@ -180,7 +180,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Addon
 
         public override ILauncherItemPreferences CreatePreferences(ILauncherItemAddonContext launcherItemAddonContext)
         {
-            return new ClockLauncherItemPreferences(Plugin, LauncherItemId, AddonExecutor, DispatcherWrapper, SkeletonImplements, ImageLoader, HttpUserAgentFactory, LoggerFactory);
+            return new ClockLauncherItemPreferences(Plugin, LauncherItemId, AddonExecutor, ContextDispatcher, SkeletonImplements, ImageLoader, HttpUserAgentFactory, LoggerFactory);
         }
 
         #endregion

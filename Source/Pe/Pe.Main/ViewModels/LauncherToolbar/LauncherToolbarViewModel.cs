@@ -54,8 +54,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         #endregion
 
-        public LauncherToolbarViewModel(LauncherToolbarElement model, IKeyGestureGuide keyGestureGuide, LauncherToolbarConfiguration launcherToolbarConfiguration, IMainDatabaseBarrier mainDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IPlatformTheme platformThemeLoader, ILauncherToolbarTheme launcherToolbarTheme, IGeneralTheme generalTheme, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public LauncherToolbarViewModel(LauncherToolbarElement model, IKeyGestureGuide keyGestureGuide, LauncherToolbarConfiguration launcherToolbarConfiguration, IMainDatabaseBarrier mainDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IPlatformTheme platformThemeLoader, ILauncherToolbarTheme launcherToolbarTheme, IGeneralTheme generalTheme, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             KeyGestureGuide = keyGestureGuide;
             LauncherToolbarConfiguration = launcherToolbarConfiguration;
@@ -66,12 +66,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
             GeneralTheme = generalTheme;
 
             LauncherGroupCollection = new ModelViewModelObservableCollectionManager<LauncherGroupElement, LauncherGroupViewModel>(Model.LauncherGroups, new ModelViewModelObservableCollectionOptions<LauncherGroupElement, LauncherGroupViewModel>() {
-                ToViewModel = (m) => new LauncherGroupViewModel(m, DispatcherWrapper, LoggerFactory),
+                ToViewModel = (m) => new LauncherGroupViewModel(m, ContextDispatcher, LoggerFactory),
             });
             LauncherGroupItems = LauncherGroupCollection.ViewModels;
 
             LauncherItemCollection = new ModelViewModelObservableCollectionManager<LauncherItemElement, LauncherDetailViewModelBase>(Model.LauncherItems, new ModelViewModelObservableCollectionOptions<LauncherItemElement, LauncherDetailViewModelBase>() {
-                ToViewModel = (m) => LauncherItemViewModelFactory.Create(m, DockScreen, KeyGestureGuide, DispatcherWrapper, LauncherToolbarTheme, LoggerFactory),
+                ToViewModel = (m) => LauncherItemViewModelFactory.Create(m, DockScreen, KeyGestureGuide, ContextDispatcher, LauncherToolbarTheme, LoggerFactory),
             });
             LauncherItems = LauncherItemCollection.GetDefaultView();
 
@@ -92,9 +92,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 GetDragParameter = ItemGetDragParameter,
             };
 
-            Font = new FontViewModel(Model.Font!, DispatcherWrapper, LoggerFactory);
+            Font = new FontViewModel(Model.Font!, ContextDispatcher, LoggerFactory);
 
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             PropertyChangedObserver.AddProperties<IReadOnlyAppDesktopToolbarExtendData>();
             PropertyChangedObserver.AddObserver(nameof(IAppDesktopToolbarExtendData.ToolbarPosition), nameof(IsVerticalLayout));
             PropertyChangedObserver.AddObserver(nameof(IAppDesktopToolbarExtendData.ToolbarPosition), ChangeToolbarPositionCommand);
@@ -450,7 +450,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 return;
             }
 
-            this.DispatcherWrapper.BeginAsync(() => {
+            this.ContextDispatcher.BeginAsync(() => {
                 if(IsDisposed || LauncherGroupCollection.IsDisposed) {
                     return;
                 }
@@ -516,19 +516,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private IResultSuccess<DragParameter> ViewGetDragParameter(UIElement sender, MouseEventArgs e)
         {
-            var dd = new LauncherFileItemDragAndDrop(DispatcherWrapper, LoggerFactory);
+            var dd = new LauncherFileItemDragAndDrop(ContextDispatcher, LoggerFactory);
             return dd.GetDragParameter(sender, e);
         }
 
         private bool ViewCanDragStart(UIElement sender, MouseEventArgs e)
         {
-            var dd = new LauncherFileItemDragAndDrop(DispatcherWrapper, LoggerFactory);
+            var dd = new LauncherFileItemDragAndDrop(ContextDispatcher, LoggerFactory);
             return dd.CanDragStart(sender, e);
         }
 
         private void ViewDragOverOrEnter(UIElement sender, DragEventArgs e)
         {
-            var dd = new LauncherFileItemDragAndDrop(DispatcherWrapper, LoggerFactory);
+            var dd = new LauncherFileItemDragAndDrop(ContextDispatcher, LoggerFactory);
             dd.DragOverOrEnter(sender, e);
         }
 
@@ -540,7 +540,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 var setting = dao.SelectSettingLauncherToolbarSetting();
                 shortcutDropMode = setting.ShortcutDropMode;
             }
-            var dd = new LauncherFileItemDragAndDrop(DispatcherWrapper, LoggerFactory) {
+            var dd = new LauncherFileItemDragAndDrop(ContextDispatcher, LoggerFactory) {
                 ShortcutDropMode = shortcutDropMode,
             };
             return dd.DropAsync(sender, e, s => dd.RegisterDropFile(ExpandShortcutFileRequest, s, Model.RegisterFile), cancellationToken);
@@ -548,7 +548,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private void ViewDragLeave(UIElement sender, DragEventArgs e)
         {
-            var dd = new LauncherFileItemDragAndDrop(DispatcherWrapper, LoggerFactory);
+            var dd = new LauncherFileItemDragAndDrop(ContextDispatcher, LoggerFactory);
             dd.DragLeave(sender, e);
         }
 
@@ -635,10 +635,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
                     var filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
                     var argument = string.Join(' ', filePaths.Select(i => CommandLineHelper.Escape(i)));
-                    await DispatcherWrapper.BeginAsync(async () => await ExecuteExtendDropDataAsync(launcherItemId, argument, cancellationToken));
+                    await ContextDispatcher.BeginAsync(async () => await ExecuteExtendDropDataAsync(launcherItemId, argument, cancellationToken));
                 } else if(e.Data.IsTextPresent()) {
                     var argument = TextUtility.JoinLines(e.Data.RequireText());
-                    await DispatcherWrapper.BeginAsync(async () => await ExecuteExtendDropDataAsync(launcherItemId, argument, cancellationToken));
+                    await ContextDispatcher.BeginAsync(async () => await ExecuteExtendDropDataAsync(launcherItemId, argument, cancellationToken));
                 }
             }
 
@@ -678,7 +678,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 return;
             }
 
-            DispatcherWrapper.VerifyAccess();
+            ContextDispatcher.VerifyAccess();
 
             if(TimeSpan.Zero < LauncherToolbarConfiguration.AutoHideShowWaitTime) {
                 if(AutoHideShowWaitTimer != null) {
@@ -857,7 +857,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private void PlatformThemeLoader_Changed(object? sender, EventArgs e)
         {
-            DispatcherWrapper.BeginAsync(vm => {
+            ContextDispatcher.BeginAsync(vm => {
                 if(vm.IsDisposed) {
                     return;
                 }

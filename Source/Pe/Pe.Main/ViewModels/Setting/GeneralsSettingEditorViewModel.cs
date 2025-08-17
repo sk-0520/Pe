@@ -10,18 +10,18 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 {
     public class GeneralsSettingEditorViewModel: SettingEditorViewModelBase<GeneralsSettingEditorElement>
     {
-        public GeneralsSettingEditorViewModel(GeneralsSettingEditorElement model, ApplicationConfiguration applicationConfiguration, IGeneralTheme generalTheme, IImageLoader imageLoader, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public GeneralsSettingEditorViewModel(GeneralsSettingEditorElement model, ApplicationConfiguration applicationConfiguration, IGeneralTheme generalTheme, IImageLoader imageLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
-            AppExecuteSettingEditor = new AppExecuteSettingEditorViewModel(Model.AppExecuteSettingEditor, DispatcherWrapper, LoggerFactory);
-            AppGeneralSettingEditor = new AppGeneralSettingEditorViewModel(Model.AppGeneralSettingEditor, applicationConfiguration.General.SupportCultures, imageLoader, DispatcherWrapper, LoggerFactory);
-            AppUpdateSettingEditor = new AppUpdateSettingEditorViewModel(Model.AppUpdateSettingEditor, DispatcherWrapper, LoggerFactory);
-            AppNotifyLogSettingEditor = new AppNotifyLogSettingEditorViewModel(Model.AppNotifyLogSettingEditor, DispatcherWrapper, LoggerFactory);
-            AppLauncherToolbarSettingEditor = new AppLauncherToolbarSettingEditorViewModel(Model.AppLauncherToolbarSettingEditor, DispatcherWrapper, LoggerFactory);
-            AppCommandSettingEditor = new AppCommandSettingEditorViewModel(Model.AppCommandSettingEditor, generalTheme, DispatcherWrapper, LoggerFactory);
-            AppNoteSettingEditor = new AppNoteSettingEditorViewModel(Model.AppNoteSettingEditor, applicationConfiguration.Note, generalTheme, DispatcherWrapper, LoggerFactory);
-            AppStandardInputOutputSettingEditor = new AppStandardInputOutputSettingEditorViewModel(Model.AppStandardInputOutputSettingEditor, generalTheme, DispatcherWrapper, LoggerFactory);
-            AppProxySettingEditor = new AppProxySettingEditorViewModel(Model.AppProxySettingEditor, DispatcherWrapper, LoggerFactory);
+            AppExecuteSettingEditor = new AppExecuteSettingEditorViewModel(Model.AppExecuteSettingEditor, ContextDispatcher, LoggerFactory);
+            AppGeneralSettingEditor = new AppGeneralSettingEditorViewModel(Model.AppGeneralSettingEditor, applicationConfiguration.General.SupportCultures, imageLoader, ContextDispatcher, LoggerFactory);
+            AppUpdateSettingEditor = new AppUpdateSettingEditorViewModel(Model.AppUpdateSettingEditor, ContextDispatcher, LoggerFactory);
+            AppNotifyLogSettingEditor = new AppNotifyLogSettingEditorViewModel(Model.AppNotifyLogSettingEditor, ContextDispatcher, LoggerFactory);
+            AppLauncherToolbarSettingEditor = new AppLauncherToolbarSettingEditorViewModel(Model.AppLauncherToolbarSettingEditor, ContextDispatcher, LoggerFactory);
+            AppCommandSettingEditor = new AppCommandSettingEditorViewModel(Model.AppCommandSettingEditor, generalTheme, ContextDispatcher, LoggerFactory);
+            AppNoteSettingEditor = new AppNoteSettingEditorViewModel(Model.AppNoteSettingEditor, applicationConfiguration.Note, generalTheme, ContextDispatcher, LoggerFactory);
+            AppStandardInputOutputSettingEditor = new AppStandardInputOutputSettingEditorViewModel(Model.AppStandardInputOutputSettingEditor, generalTheme, ContextDispatcher, LoggerFactory);
+            AppProxySettingEditor = new AppProxySettingEditorViewModel(Model.AppProxySettingEditor, ContextDispatcher, LoggerFactory);
 
             EditorItems = new ObservableCollection<IGeneralSettingEditor>() {
                 AppExecuteSettingEditor,

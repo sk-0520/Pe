@@ -23,7 +23,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Addon
             LoggerFactory = parameter.LoggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
             AddonExecutor = parameter.AddonExecutor;
-            DispatcherWrapper = parameter.DispatcherWrapper;
+            ContextDispatcher = parameter.ContextDispatcher;
             SkeletonImplements = parameter.SkeletonImplements;
             PluginInformation = pluginInformation;
         }
@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Addon
         private ILoggerFactory LoggerFactory { get; }
         private ILogger Logger { get; }
         private IAddonExecutor AddonExecutor { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         private ISkeletonImplements SkeletonImplements { get; }
         private IPluginInformation PluginInformation { get; }
         private ClockWidgetWindow? WidgetView { get; set; }
@@ -70,7 +70,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Addon
             if(!widgetAddonCreateContext.Storage.Persistence.Normal.TryGet<ClockWidgetSetting>(ClockConstants.WidgetSettingKey, out clockWidgetSetting)) {
                 clockWidgetSetting = new ClockWidgetSetting();
             }
-            ViewModel = new ClockWidgetViewModel(clockWidgetSetting, SkeletonImplements, DispatcherWrapper, LoggerFactory);
+            ViewModel = new ClockWidgetViewModel(clockWidgetSetting, SkeletonImplements, ContextDispatcher, LoggerFactory);
             WidgetView = new ClockWidgetWindow() {
                 DataContext = ViewModel,
             };

@@ -14,8 +14,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Widget
     /// </remarks>
     internal class TemporaryWidgetViewModel: WidgetViewModelBase<WidgetElement>
     {
-        public TemporaryWidgetViewModel(WidgetElement model, IUserTracker userTracker, IWindowManager windowManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, windowManager, dispatcherWrapper, loggerFactory)
+        public TemporaryWidgetViewModel(WidgetElement model, IUserTracker userTracker, IWindowManager windowManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, windowManager, contextDispatcher, loggerFactory)
         { }
     }
 }

@@ -41,6 +41,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// 初期化用処理を簡略化。
         /// </summary>
         /// <example>
+        /// <code>
         /// // 基本こちら
         /// using(target.BeginInitialize()) {
         ///     target.Property = xxx;
@@ -49,6 +50,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// using(var obj = target.BeginInitialize()) {
         ///     obj.Target.Property = xxx;
         /// }
+        /// </code>
         /// </example>
         /// <param name="target"></param>
         /// <returns></returns>

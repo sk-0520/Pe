@@ -27,8 +27,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Plugin
 
         #endregion
 
-        public PluginWebInstallViewModel(PluginWebInstallElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public PluginWebInstallViewModel(PluginWebInstallElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         { }
 
         #region property

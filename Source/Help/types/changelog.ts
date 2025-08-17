@@ -1,40 +1,45 @@
-export const ChangelogContentKinds = [
+import z from "zod";
+
+export const ChangelogContentKindsSchema = z.enum([
 	"features",
 	"fixes",
 	"developer",
 	"note",
-] as const;
+]);
+export type ChangelogContentKinds = z.infer<typeof ChangelogContentKindsSchema>;
 
-export type ChangelogContentKind = (typeof ChangelogContentKinds)[number];
-
-export const ChangelogContentItemTypes = [
+export const ChangelogContentItemTypesSchema = z.enum([
 	"compatibility",
 	"notice",
 	"nuget",
 	"myget",
 	"plugin-compatibility",
-] as const;
+]);
+export type ChangelogContentItemTypes = z.infer<
+	typeof ChangelogContentItemTypesSchema
+>;
 
-export type ChangelogContentItemType =
-	(typeof ChangelogContentItemTypes)[number];
+export const ChangelogContentItemSchema = z.object({
+	revision: z.string(),
+	class: ChangelogContentItemTypesSchema.optional(),
+	subject: z.string(),
+	comments: z.array(z.string()).optional(),
+});
+export type ChangelogContentItem = z.infer<typeof ChangelogContentItemSchema>;
 
-export interface ChangelogContentItem {
-	revision: string;
-	class?: ChangelogContentItemType;
-	subject: string;
-	comments?: string[];
-}
+export const ChangelogContentSchema = z.object({
+	type: ChangelogContentKindsSchema,
+	logs: z.array(ChangelogContentItemSchema),
+});
+export type ChangelogContent = z.infer<typeof ChangelogContentSchema>;
 
-export interface ChangelogContent {
-	type: ChangelogContentKind;
-	logs: ChangelogContentItem[];
-}
+export const ChangelogVersionSchema = z.object({
+	date: z.string(),
+	version: z.string(),
+	group: z.string().optional(),
+	contents: z.array(ChangelogContentSchema),
+});
+export type ChangelogVersion = z.infer<typeof ChangelogVersionSchema>;
 
-export interface ChangelogVersion {
-	date: string;
-	version: string;
-	group?: string;
-	contents: ChangelogContent[];
-}
-
-export type Changelogs = ChangelogVersion[];
+export const ChangelogsSchema = z.array(ChangelogVersionSchema);
+export type Changelogs = z.infer<typeof ChangelogsSchema>;

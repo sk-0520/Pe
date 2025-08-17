@@ -11,8 +11,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 {
     public class LauncherItemAddonProxy: AddonProxyBase<ILauncherItemExtension>, ILauncherItemExtension, ILauncherItemId
     {
-        public LauncherItemAddonProxy(LauncherItemId launcherItemId, IAddon addon, PluginContextFactory pluginContextFactory, LauncherItemAddonContextFactory launcherItemAddonContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(addon, pluginContextFactory, userAgentFactory, viewManager, platformTheme, imageLoader, mediaConverter, policy, dispatcherWrapper, loggerFactory)
+        public LauncherItemAddonProxy(LauncherItemId launcherItemId, IAddon addon, PluginContextFactory pluginContextFactory, LauncherItemAddonContextFactory launcherItemAddonContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(addon, pluginContextFactory, userAgentFactory, viewManager, platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
         {
             LauncherItemId = launcherItemId;
             LauncherItemAddonContextFactory = launcherItemAddonContextFactory;
@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         protected override AddonParameter CreateParameter(IPlugin plugin)
         {
             var worker = LauncherItemAddonContextFactory.CreateWorker(plugin.PluginInformation, LauncherItemId);
-            return new LauncherItemExtensionCreateParameter(LauncherItemId, worker, new SkeletonImplements(), plugin.PluginInformation, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, DispatcherWrapper, LoggerFactory);
+            return new LauncherItemExtensionCreateParameter(LauncherItemId, worker, new SkeletonImplements(), plugin.PluginInformation, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
         }
 
         protected override ILauncherItemExtension BuildFunctionUnit(IAddon loadedAddon)

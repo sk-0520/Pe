@@ -54,8 +54,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 
         #endregion
 
-        public ExtendsExecuteViewModel(ExtendsExecuteElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public ExtendsExecuteViewModel(ExtendsExecuteElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             this._option = Model.LauncherFileData.Option;
             this._workDirectoryPath = Model.LauncherFileData.WorkDirectoryPath;
@@ -118,7 +118,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
         public RequestSender CloseRequest { get; } = new RequestSender();
         public RequestSender FileSelectRequest { get; } = new RequestSender();
 
-        private IDpiScaleOutpour DpiScaleOutpour { get; set; } = EmptyDpiScaleOutpour.Default;
+        private IDpiScaleContext DpiScaleOutpour { get; set; } = EmptyDpiScaleContext.Default;
 
         public IDragAndDrop OptionDragAndDrop { get; }
         public IDragAndDrop WorkDirectoryDragAndDrop { get; }
@@ -352,7 +352,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 
         private bool OptionCanDragStart(UIElement sender, MouseEventArgs e)
         {
-            var dd = new OptionDragAndDropGuideline(DispatcherWrapper, LoggerFactory);
+            var dd = new OptionDragAndDropGuideline(ContextDispatcher, LoggerFactory);
             return dd.CanDragStart(sender, e);
         }
 
@@ -395,7 +395,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 
         private bool WorkDirectoryCanDragStart(UIElement sender, MouseEventArgs e)
         {
-            var dd = new WorkDirectoryDragAndDropGuideline(DispatcherWrapper, LoggerFactory);
+            var dd = new WorkDirectoryDragAndDropGuideline(ContextDispatcher, LoggerFactory);
             return dd.CanDragStart(sender, e);
         }
 
@@ -474,7 +474,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 
         public Task ReceiveViewLoadedAsync(Window window, CancellationToken cancellationToken)
         {
-            DpiScaleOutpour = (IDpiScaleOutpour)window;
+            DpiScaleOutpour = (IDpiScaleContext)window;
 
             WindowsUtility.ShowActiveForeground(HandleUtility.GetWindowHandle(window));
 

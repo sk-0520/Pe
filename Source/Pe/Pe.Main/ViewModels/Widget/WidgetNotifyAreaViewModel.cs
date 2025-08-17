@@ -11,13 +11,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Widget
 {
     public class WidgetNotifyAreaViewModel: WidgetViewModelBase<WidgetElement>
     {
-        public WidgetNotifyAreaViewModel(WidgetElement model, IUserTracker userTracker, IWindowManager windowManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, windowManager, dispatcherWrapper, loggerFactory)
+        public WidgetNotifyAreaViewModel(WidgetElement model, IUserTracker userTracker, IWindowManager windowManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, windowManager, contextDispatcher, loggerFactory)
         { }
 
         #region property
 
-        public DependencyObject? MenuIcon => DispatcherWrapper.Get(() => Model.GetMenuIcon());
+        public DependencyObject? MenuIcon => ContextDispatcher.Get(() => Model.GetMenuIcon());
         public string MenuHeader => Model.GetMenuHeader();
         public bool IsVisible => Model.ViewCreated;
         public bool IsTopmost => Model.IsTopmost;

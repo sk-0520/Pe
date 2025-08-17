@@ -44,7 +44,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Command
             var testIO = TestIO.InitializeMethod(this);
             var applicationConfiguration = Test.GetApplicationConfiguration(testIO);
 
-            var test = new ApplicationCommandParameterFactory(applicationConfiguration.Command, new CurrentDispatcherWrapper());
+            var test = new ApplicationCommandParameterFactory(applicationConfiguration.Command, new CurrentContextDispatcher());
             var actual = test.CreateParameter(ApplicationCommand.Help, a => {
                 Assert.Fail();
             });

@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         #endregion
 
-        public NoteContentElement(NoteId noteId, NoteContentKind contentKind, IMainDatabaseBarrier mainDatabaseBarrier, IMainDatabaseDelayWriter mainDatabaseDelayWriter, IDatabaseStatementLoader databaseStatementLoader, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public NoteContentElement(NoteId noteId, NoteContentKind contentKind, IMainDatabaseBarrier mainDatabaseBarrier, IMainDatabaseDelayWriter mainDatabaseDelayWriter, IDatabaseStatementLoader databaseStatementLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             NoteId = noteId;
@@ -42,7 +42,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             MainDatabaseBarrier = mainDatabaseBarrier;
             DatabaseStatementLoader = databaseStatementLoader;
 
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
 
             MainDatabaseDelayWriter = mainDatabaseDelayWriter;
 
@@ -63,7 +63,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         private IMainDatabaseBarrier MainDatabaseBarrier { get; }
         private IDatabaseStatementLoader DatabaseStatementLoader { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         private IMainDatabaseDelayWriter MainDatabaseDelayWriter { get; }
         private UniqueKeyPool UniqueKeyPool { get; } = new UniqueKeyPool();
 
@@ -157,6 +157,28 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
 
             return LoadRawContent();
+        }
+
+        private NoteViewOffsetData? GetViewOffsetCore(IDatabaseContexts contexts)
+        {
+            var dao = new NoteViewOffsetsEntityDao(contexts.Context, DatabaseStatementLoader, contexts.Implementation, LoggerFactory);
+            return dao.SelectNoteViewOffset(NoteId);
+        }
+
+        public NoteViewOffsetData? GetViewOffset()
+        {
+            using(var context = MainDatabaseBarrier.WaitRead()) {
+                return GetViewOffsetCore(context);
+            }
+        }
+
+        public void ChangeViewOffsetDelaySave(NoteViewOffsetData offset, object key)
+        {
+            MainDatabaseDelayWriter.Stock(c => {
+                var noteViewOffsetsEntityDao = new NoteViewOffsetsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                noteViewOffsetsEntityDao.DeleteNoteViewOffset(NoteId);
+                noteViewOffsetsEntityDao.InsertNoteViewOffset(NoteId, offset, DatabaseCommonStatus.CreateCurrentAccount());
+            }, key);
         }
 
         private NoteLinkWatchParameter? GetLinkParameter() => (NoteLinkWatchParameter?)LinkWatcher?.WatchParameter;

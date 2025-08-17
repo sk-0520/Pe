@@ -13,12 +13,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4035:Classes implementing \"IEquatable<T>\" should be sealed", Justification = "<保留中>")]
     public class CommandItemViewModel: ViewModelBase
     {
-        public CommandItemViewModel(ICommandItem item, IconScale iconScale, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public CommandItemViewModel(ICommandItem item, IconScale iconScale, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             Item = item;
             IconScale = iconScale;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
 
             HeaderValues = Item.HeaderValues.Select(i => new HitValueItemViewModel(i, LoggerFactory)).ToList();
             DescriptionValues = Item.DescriptionValues.Select(i => new HitValueItemViewModel(i, LoggerFactory)).ToList();
@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
         private ICommandItem Item { get; }
         private IconScale IconScale { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
         public CommandItemKind Kind => Item.Kind;
         public double Score => Item.Score;
 
@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         {
             get
             {
-                return DispatcherWrapper.Get(i => i.item.GetIcon(i.iconScale), (item: Item, iconScale: IconScale));
+                return ContextDispatcher.Get(i => i.item.GetIcon(i.iconScale), (item: Item, iconScale: IconScale));
             }
         }
 

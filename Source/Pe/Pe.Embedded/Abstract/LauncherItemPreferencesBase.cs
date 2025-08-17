@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
     /// </summary>
     internal abstract class LauncherItemPreferencesBase: ILauncherItemPreferences
     {
-        protected LauncherItemPreferencesBase(PluginBase plugin, LauncherItemId launcherItemId, IAddonExecutor addonExecutor, IDispatcherWrapper dispatcherWrapper, ISkeletonImplements skeletonImplements, IImageLoader imageLoader, IHttpUserAgentFactory httpUserAgentFactory, ILoggerFactory loggerFactory)
+        protected LauncherItemPreferencesBase(PluginBase plugin, LauncherItemId launcherItemId, IAddonExecutor addonExecutor, IContextDispatcher contextDispatcher, ISkeletonImplements skeletonImplements, IImageLoader imageLoader, IHttpUserAgentFactory httpUserAgentFactory, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
             Plugin = plugin;
             LauncherItemId = launcherItemId;
             AddonExecutor = addonExecutor;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
             SkeletonImplements = skeletonImplements;
             ImageLoader = imageLoader;
             HttpUserAgentFactory = httpUserAgentFactory;
@@ -37,7 +37,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
         protected PluginBase Plugin { get; }
         protected LauncherItemId LauncherItemId { get; }
         protected IAddonExecutor AddonExecutor { get; }
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
         protected ISkeletonImplements SkeletonImplements { get; }
         protected IImageLoader ImageLoader { get; }
         protected IHttpUserAgentFactory HttpUserAgentFactory { get; }

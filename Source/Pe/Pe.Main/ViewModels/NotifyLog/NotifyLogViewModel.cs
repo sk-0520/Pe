@@ -22,13 +22,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
 {
     public class NotifyLogViewModel: ElementViewModelBase<NotifyLogElement>, IViewLifecycleReceiver
     {
-        public NotifyLogViewModel(NotifyLogElement model, INotifyLogTheme notifyLogTheme, IPlatformTheme platformTheme, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public NotifyLogViewModel(NotifyLogElement model, INotifyLogTheme notifyLogTheme, IPlatformTheme platformTheme, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
             NotifyLogTheme = notifyLogTheme;
             PlatformTheme = platformTheme;
 
-            PropertyChangedObserver = new PropertyChangedObserver(DispatcherWrapper, LoggerFactory);
+            PropertyChangedObserver = new PropertyChangedObserver(ContextDispatcher, LoggerFactory);
             PropertyChangedObserver.AddObserver(nameof(Model.Position), nameof(Position));
             PropertyChangedObserver.AddObserver(nameof(Model.CursorHorizontalAlignment), nameof(CursorHorizontalAlignment));
             PropertyChangedObserver.AddObserver(nameof(Model.CursorVerticalAlignment), nameof(CursorVerticalAlignment));
@@ -38,12 +38,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
             PlatformTheme.Changed += PlatformTheme_Changed;
 
             TopmostNotifyLogCollection = new ModelViewModelObservableCollectionManager<NotifyLogItemElement, NotifyLogItemViewModel>(Model.TopmostNotifyLogs, new ModelViewModelObservableCollectionOptions<NotifyLogItemElement, NotifyLogItemViewModel>() {
-                ToViewModel = m => new NotifyLogItemViewModel(m, UserTracker, DispatcherWrapper, LoggerFactory)
+                ToViewModel = m => new NotifyLogItemViewModel(m, UserTracker, ContextDispatcher, LoggerFactory)
             });
             TopmostNotifyLogItems = TopmostNotifyLogCollection.GetDefaultView();
 
             StreamNotifyLogCollection = new ModelViewModelObservableCollectionManager<NotifyLogItemElement, NotifyLogItemViewModel>(Model.StreamNotifyLogs, new ModelViewModelObservableCollectionOptions<NotifyLogItemElement, NotifyLogItemViewModel>() {
-                ToViewModel = m => new NotifyLogItemViewModel(m, UserTracker, DispatcherWrapper, LoggerFactory)
+                ToViewModel = m => new NotifyLogItemViewModel(m, UserTracker, ContextDispatcher, LoggerFactory)
             });
             StreamNotifyLogItems = StreamNotifyLogCollection.GetDefaultView();
 
@@ -59,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
         private INotifyLogTheme NotifyLogTheme { get; }
         private IPlatformTheme PlatformTheme { get; }
 
-        private IDpiScaleOutpour? DpiScaleOutpour { get; set; }
+        private IDpiScaleContext? DpiScaleOutpour { get; set; }
 
         private ThemeProperties ThemeProperties { get; }
         private PropertyChangedObserver PropertyChangedObserver { get; }
@@ -157,7 +157,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
 
         public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
-            DpiScaleOutpour = (IDpiScaleOutpour)window;
+            DpiScaleOutpour = (IDpiScaleContext)window;
             return Task.CompletedTask;
         }
 
@@ -186,7 +186,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
 
         private void PlatformTheme_Changed(object? sender, EventArgs e)
         {
-            DispatcherWrapper.BeginAsync(vm => {
+            ContextDispatcher.BeginAsync(vm => {
                 if(vm.IsDisposed) {
                     return;
                 }

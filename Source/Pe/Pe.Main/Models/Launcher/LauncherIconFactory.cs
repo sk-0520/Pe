@@ -46,11 +46,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         #region function
 
-        public object CreateIconSource(IDispatcherWrapper dispatcherWrapper)
+        public object CreateIconSource(IContextDispatcher contextDispatcher)
         {
             switch(LauncherItemKind) {
                 case LauncherItemKind.File: {
-                        return new LauncherIconLoader(LauncherItemId, MainDatabaseBarrier, LargeDatabaseBarrier, DatabaseStatementLoader, dispatcherWrapper, LoggerFactory);
+                        return new LauncherIconLoader(LauncherItemId, MainDatabaseBarrier, LargeDatabaseBarrier, DatabaseStatementLoader, contextDispatcher, LoggerFactory);
                     }
 
                 case LauncherItemKind.Addon: {
@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             }
         }
 
-        public object CreateView(object? iconSource, bool useCache, bool isEnabledBadge, IDispatcherWrapper dispatcherWrapper)
+        public object CreateView(object? iconSource, bool useCache, bool isEnabledBadge, IContextDispatcher contextDispatcher)
         {
             if(iconSource == null) {
                 // アイコンがないパターン
@@ -99,17 +99,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
                 switch(iconSource) {
                     case IconImageLoaderBase iconImageLoader:
-                        return new IconViewerViewModel(iconImageLoader, badge, dispatcherWrapper, LoggerFactory) {
+                        return new IconViewerViewModel(iconImageLoader, badge, contextDispatcher, LoggerFactory) {
                             UseCache = useCache,
                         };
 
                     case ILauncherItemExtension launcherItemExtension:
-                        return new IconViewerViewModel(LauncherItemId, launcherItemExtension, badge, dispatcherWrapper, LoggerFactory) {
+                        return new IconViewerViewModel(LauncherItemId, launcherItemExtension, badge, contextDispatcher, LoggerFactory) {
                             UseCache = useCache,
                         };
 
                     case DependencyObject dependencyObject:
-                        return new IconViewerViewModel(dependencyObject, badge, dispatcherWrapper, LoggerFactory) {
+                        return new IconViewerViewModel(dependencyObject, badge, contextDispatcher, LoggerFactory) {
                             UseCache = useCache,
                         };
 

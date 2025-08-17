@@ -11,8 +11,8 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.FileFinder.ViewModels
 {
     public class FileFinderSettingViewModel: ViewModelSkeleton
     {
-        public FileFinderSettingViewModel(FileFinderSetting setting, ISkeletonImplements skeletonImplements, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(skeletonImplements, dispatcherWrapper, loggerFactory)
+        public FileFinderSettingViewModel(FileFinderSetting setting, ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(skeletonImplements, contextDispatcher, loggerFactory)
         {
             Setting = setting;
         }

@@ -17,10 +17,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ReleaseNote
 {
     public class ReleaseNoteViewModel: ElementViewModelBase<ReleaseNoteElement>, IViewLifecycleReceiver
     {
-        public ReleaseNoteViewModel(ReleaseNoteElement model, IWebViewInitializer webViewInitializer, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public ReleaseNoteViewModel(ReleaseNoteElement model, IWebViewInitializer webViewInitializer, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         {
-            //PropertyChangedHooker = new PropertyChangedHooker(DispatcherWrapper, LoggerFactory);
+            //PropertyChangedHooker = new PropertyChangedHooker(ContextDispatcher, LoggerFactory);
             //PropertyChangedHooker.AddHook(nameof(), nameof());
             WebViewInitializer = webViewInitializer;
         }

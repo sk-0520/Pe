@@ -86,8 +86,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var commandConfiguration = ApplicationDiContainer.Build<CommandConfiguration>();
             if(commandConfiguration.Application.IsEnabledException) {
                 result.Add(factory.CreateParameter(ApplicationCommand.Exception, p => {
-                    var dispatcherWrapper = ApplicationDiContainer.Build<IDispatcherWrapper>();
-                    dispatcherWrapper.BeginAsync(() => {
+                    var contextDispatcher = ApplicationDiContainer.Build<IContextDispatcher>();
+                    contextDispatcher.BeginAsync(() => {
 #if DEBUG
                         // デバッグ時に例外ぶん投げるとVSが死ぬけどブレークポイント設定しとくと死なないのでこれで濁している
                         if(Debugger.IsAttached) {

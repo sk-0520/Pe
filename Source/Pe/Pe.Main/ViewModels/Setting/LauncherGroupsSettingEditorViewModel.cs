@@ -37,11 +37,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #endregion
 
-        public LauncherGroupsSettingEditorViewModel(LauncherGroupsSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel> allLauncherItemCollection, ModelViewModelObservableCollectionManager<LauncherGroupSettingEditorElement, LauncherGroupSettingEditorViewModel> allLauncherGroupCollection, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherGroupsSettingEditorViewModel(LauncherGroupsSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel> allLauncherItemCollection, ModelViewModelObservableCollectionManager<LauncherGroupSettingEditorElement, LauncherGroupSettingEditorViewModel> allLauncherGroupCollection, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             //LauncherCollection = new ModelViewModelObservableCollectionManager<LauncherElementWithIconElement<CommonLauncherItemElement>, LauncherItemWithIconViewModel<CommonLauncherItemViewModel>>(Model.LauncherItems) {
-            //    ToViewModel = m => LauncherItemWithIconViewModel.Create(new CommonLauncherItemViewModel(m.Element, LoggerFactory), new LauncherIcon.LauncherIconViewModel(m.Icon, DispatcherWrapper, loggerFactory), LoggerFactory),
+            //    ToViewModel = m => LauncherItemWithIconViewModel.Create(new CommonLauncherItemViewModel(m.Element, LoggerFactory), new LauncherIcon.LauncherIconViewModel(m.Icon, ContextDispatcher, loggerFactory), LoggerFactory),
             //};
             //LauncherItems = LauncherCollection.GetDefaultView();
             AllLauncherItemCollection = allLauncherItemCollection;
@@ -399,7 +399,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         private IResultSuccess<DragParameter> LauncherItemGetDragParameter(UIElement sender, MouseEventArgs e)
         {
-            var dd = new LauncherItemInLauncherGroupDragAndDrop(DispatcherWrapper, LoggerFactory);
+            var dd = new LauncherItemInLauncherGroupDragAndDrop(ContextDispatcher, LoggerFactory);
             var parameter = dd.GetDragParameter(false, sender, e, d => {
                 SelectedLauncherItem = d;
             });
@@ -515,7 +515,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         private IResultSuccess<DragParameter> LauncherItemsGetDragParameter(UIElement sender, MouseEventArgs e)
         {
-            var dd = new LauncherItemInLauncherGroupDragAndDrop(DispatcherWrapper, LoggerFactory);
+            var dd = new LauncherItemInLauncherGroupDragAndDrop(ContextDispatcher, LoggerFactory);
             var parameter = dd.GetDragParameter(true, sender, e, d => {
                 SelectedLauncherItem = d;
             });

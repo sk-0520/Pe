@@ -12,7 +12,7 @@ import { ChangelogReplaceLink } from "./ChangelogReplaceLink";
 import { ChangelogRevision } from "./ChangelogRevision";
 
 const TypeMap: {
-	[key in changelog.ChangelogContentItemType]: {
+	[key in changelog.ChangelogContentItemTypes]: {
 		title: string;
 		styles: { root: SxProps<Theme>; header: SxProps<Theme> };
 	};

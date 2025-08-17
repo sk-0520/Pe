@@ -20,14 +20,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 {
     public class LauncherItemAddonViewSupporterCollection
     {
-        public LauncherItemAddonViewSupporterCollection(IOrderManager orderManager, IWindowManager windowManager, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public LauncherItemAddonViewSupporterCollection(IOrderManager orderManager, IWindowManager windowManager, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
             OrderManager = orderManager;
             WindowManager = windowManager;
             UserTracker = userTracker;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
@@ -42,8 +42,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         private IWindowManager WindowManager { get; }
         /// <inheritdoc cref="IUserTracker"/>
         private IUserTracker UserTracker { get; }
-        /// <inheritdoc cref="IDispatcherWrapper"/>
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        /// <inheritdoc cref="IContextDispatcher"/>
+        private IContextDispatcher ContextDispatcher { get; }
 
         private ISet<LauncherItemAddonViewSupporter> LauncherItemAddonViewSupporters { get; } = new HashSet<LauncherItemAddonViewSupporter>();
 
@@ -83,7 +83,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
                 Logger.LogDebug("[{LauncherItemId}] ウィンドウアイテム未登録", launcherItemId);
                 return;
             }
-            DispatcherWrapper.BeginAsync(() => {
+            ContextDispatcher.BeginAsync(() => {
                 Logger.LogDebug("[{LauncherItemId}] 最前面化", launcherItemId);
                 var hWnd = HandleUtility.GetWindowHandle(windowItem.Window);
                 WindowsUtility.ShowActiveForeground(hWnd);
@@ -101,7 +101,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
                 throw new InvalidOperationException($"{nameof(launcherItemId)}: {launcherItemId}");
             }
 
-            var result = new LauncherItemAddonViewSupporter(pluginInformation, launcherItemId, OrderManager, WindowManager, UserTracker, DispatcherWrapper, LoggerFactory);
+            var result = new LauncherItemAddonViewSupporter(pluginInformation, launcherItemId, OrderManager, WindowManager, UserTracker, ContextDispatcher, LoggerFactory);
             LauncherItemAddonViewSupporters.Add(result);
             return result;
         }
@@ -137,7 +137,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
     public class LauncherItemAddonViewSupporter: ILauncherItemAddonViewSupporter, ILauncherItemId
     {
-        public LauncherItemAddonViewSupporter(IPluginInformation pluginInformation, LauncherItemId launcherItemId, IOrderManager orderManager, IWindowManager windowManager, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public LauncherItemAddonViewSupporter(IPluginInformation pluginInformation, LauncherItemId launcherItemId, IOrderManager orderManager, IWindowManager windowManager, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
@@ -146,7 +146,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
             OrderManager = orderManager;
             WindowManager = windowManager;
             UserTracker = userTracker;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
@@ -163,8 +163,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         private IOrderManager OrderManager { get; }
         /// <inheritdoc cref="IUserTracker"/>
         private IUserTracker UserTracker { get; }
-        /// <inheritdoc cref="IDispatcherWrapper"/>
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        /// <inheritdoc cref="IContextDispatcher"/>
+        private IContextDispatcher ContextDispatcher { get; }
 
         public LauncherItemExtensionElement? Element { get; private set; }
 
@@ -198,7 +198,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
                 Element = await OrderManager.CreateLauncherItemExtensionElementAsync(PluginInformation, LauncherItemId, cancellationToken);
             }
             //NOTE: 引数がどんどこ増えるようなら IOrderManager に移す
-            var windowItem = new WindowItem(Manager.WindowKind.LauncherItemExtension, Element, new LauncherItemExtensionViewModel(Element, UserTracker, DispatcherWrapper, LoggerFactory), window);
+            var windowItem = new WindowItem(Manager.WindowKind.LauncherItemExtension, Element, new LauncherItemExtensionViewModel(Element, UserTracker, ContextDispatcher, LoggerFactory), window);
             if(WindowManager.Register(windowItem)) {
                 var info = new LauncherItemAddonViewInformation(windowItem, userClosing, closedWindow);
                 Element.Add(info);

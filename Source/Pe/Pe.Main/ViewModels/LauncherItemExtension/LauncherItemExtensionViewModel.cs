@@ -11,8 +11,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemExtension
 {
     public class LauncherItemExtensionViewModel: ElementViewModelBase<LauncherItemExtensionElement>, IViewLifecycleReceiver
     {
-        public LauncherItemExtensionViewModel(LauncherItemExtensionElement model, IUserTracker userTracker, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, userTracker, dispatcherWrapper, loggerFactory)
+        public LauncherItemExtensionViewModel(LauncherItemExtensionElement model, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, userTracker, contextDispatcher, loggerFactory)
         { }
 
         #region IViewLifecycleReceiver

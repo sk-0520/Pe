@@ -25,8 +25,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #endregion
 
-        public LauncherToolbarSettingEditorViewModel(LauncherToolbarSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherGroupSettingEditorElement, LauncherGroupSettingEditorViewModel> allLauncherGroups, Func<bool> isSelectedGetter, IGeneralTheme generalTheme, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public LauncherToolbarSettingEditorViewModel(LauncherToolbarSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherGroupSettingEditorElement, LauncherGroupSettingEditorViewModel> allLauncherGroups, Func<bool> isSelectedGetter, IGeneralTheme generalTheme, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             AllLauncherGroups = allLauncherGroups;
             GeneralTheme = generalTheme;
@@ -213,7 +213,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
         {
             base.BuildChildren();
 
-            Font = new FontViewModel(Model.Font!, DispatcherWrapper, LoggerFactory);
+            Font = new FontViewModel(Model.Font!, ContextDispatcher, LoggerFactory);
         }
 
         protected override void Dispose(bool disposing)

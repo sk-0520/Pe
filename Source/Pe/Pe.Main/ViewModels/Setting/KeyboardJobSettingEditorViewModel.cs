@@ -20,8 +20,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
     public abstract class KeyboardJobSettingEditorViewModelBase<TJobEditor>: SettingItemViewModelBase<TJobEditor>, IKeyActionId
         where TJobEditor : KeyboardJobSettingEditorElementBase
     {
-        protected KeyboardJobSettingEditorViewModelBase(TJobEditor model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        protected KeyboardJobSettingEditorViewModelBase(TJobEditor model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
         }
 
@@ -50,8 +50,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class KeyboardReplaceJobSettingEditorViewMode: KeyboardJobSettingEditorViewModelBase<KeyboardReplaceJobSettingEditorElement>
     {
-        public KeyboardReplaceJobSettingEditorViewMode(KeyboardReplaceJobSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public KeyboardReplaceJobSettingEditorViewMode(KeyboardReplaceJobSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -100,8 +100,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class KeyboardDisableJobSettingEditorViewModel: KeyboardJobSettingEditorViewModelBase<KeyboardDisableJobSettingEditorElement>
     {
-        public KeyboardDisableJobSettingEditorViewModel(KeyboardDisableJobSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public KeyboardDisableJobSettingEditorViewModel(KeyboardDisableJobSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
         }
 
@@ -195,8 +195,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public abstract class KeyboardPressedJobSettingEditorViewModelBase: KeyboardJobSettingEditorViewModelBase<KeyboardPressedJobSettingEditorElement>
     {
-        protected KeyboardPressedJobSettingEditorViewModelBase(KeyboardPressedJobSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        protected KeyboardPressedJobSettingEditorViewModelBase(KeyboardPressedJobSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             MappingCollection = new ModelViewModelObservableCollectionManager<KeyMappingData, KeyMappingEditorViewModel>(Model.Mappings, new ModelViewModelObservableCollectionOptions<KeyMappingData, KeyMappingEditorViewModel>() {
                 ToViewModel = m => new KeyMappingEditorViewModel(m, LoggerFactory),
@@ -278,8 +278,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public abstract class KeyboardPressedJobSettingEditorViewModelBase<TContent>: KeyboardPressedJobSettingEditorViewModelBase
     {
-        protected KeyboardPressedJobSettingEditorViewModelBase(KeyboardPressedJobSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        protected KeyboardPressedJobSettingEditorViewModelBase(KeyboardPressedJobSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         { }
 
         #region property
@@ -291,15 +291,15 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class KeyboardCommandJobSettingEditorViewModel: KeyboardPressedJobSettingEditorViewModelBase
     {
-        public KeyboardCommandJobSettingEditorViewModel(KeyboardPressedJobSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public KeyboardCommandJobSettingEditorViewModel(KeyboardPressedJobSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         { }
     }
 
     public sealed class KeyboardLauncherItemJobSettingEditorViewModel: KeyboardPressedJobSettingEditorViewModelBase<KeyActionContentLauncherItem>
     {
-        public KeyboardLauncherItemJobSettingEditorViewModel(KeyboardPressedJobSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel> allLauncherItemCollection, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public KeyboardLauncherItemJobSettingEditorViewModel(KeyboardPressedJobSettingEditorElement model, ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel> allLauncherItemCollection, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             AllLauncherItemCollection = allLauncherItemCollection;
             AllLauncherItems = AllLauncherItemCollection.CreateView();
@@ -382,8 +382,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class KeyboardLauncherToolbarJobSettingEditorViewModel: KeyboardPressedJobSettingEditorViewModelBase<KeyActionContentLauncherToolbar>
     {
-        public KeyboardLauncherToolbarJobSettingEditorViewModel(KeyboardPressedJobSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public KeyboardLauncherToolbarJobSettingEditorViewModel(KeyboardPressedJobSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             // 将来的に何か増えてもOKにしたい思いとこのタイミング以外で何もできないのでしゃあなし
             Content = KeyActionContentLauncherToolbar.AutoHiddenToHide;
@@ -416,8 +416,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
     public sealed class KeyboardNoteJobSettingEditorViewModel: KeyboardPressedJobSettingEditorViewModelBase<KeyActionContentNote>
     {
-        public KeyboardNoteJobSettingEditorViewModel(KeyboardPressedJobSettingEditorElement model, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(model, dispatcherWrapper, loggerFactory)
+        public KeyboardNoteJobSettingEditorViewModel(KeyboardPressedJobSettingEditorElement model, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(model, contextDispatcher, loggerFactory)
         {
             var items = Enum.GetValues<KeyActionContentNote>();
             ContentItems = new List<KeyActionContentNote>(items);

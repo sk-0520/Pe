@@ -32,12 +32,12 @@ namespace ContentTypeTextNet.Pe.Bridge.ViewModels
     /// </remarks>
     public abstract class ViewModelSkeleton: INotifyPropertyChanged, IDisposable
     {
-        protected ViewModelSkeleton(ISkeletonImplements skeletonImplements, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        protected ViewModelSkeleton(ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
             Implements = skeletonImplements;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
@@ -46,7 +46,7 @@ namespace ContentTypeTextNet.Pe.Bridge.ViewModels
         /// こいつ経由でViewModel処理を行う。
         /// </summary>
         protected ISkeletonImplements Implements { get; }
-        protected IDispatcherWrapper DispatcherWrapper { get; }
+        protected IContextDispatcher ContextDispatcher { get; }
         protected ILoggerFactory LoggerFactory { get; }
         protected ILogger Logger { get; }
         #endregion

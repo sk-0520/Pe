@@ -160,12 +160,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <example>
         /// <code language="sql">
         /// select *
-        /// from /*{{*//*KEY[改行]
-        /// KEY-A:CODE[改行] (<paramref name="blocks"/>["KEY"] -> KEY-A)
+        /// from /*{{*//*KEY
+        /// KEY-A:CODE[改行] *注釈* <paramref name="blocks"/>["KEY"] -> KEY-A
         ///     TABLE_A
-        /// KEY-B:CODE[改行] (<paramref name="blocks"/>["KEY"] -> KEY-B)
+        /// KEY-B:CODE[改行] *注釈* <paramref name="blocks"/>["KEY"] -> KEY-B
         ///     TABLE_B
-        /// KEY-C:LOAD[改行] (<paramref name="blocks"/>["KEY"] -> KEY-C, <see cref="LoadStatement"/>(callerMemberName<see cref="JoinSeparator"/>NAME))
+        /// KEY-C:LOAD[改行] *注釈* <paramref name="blocks"/>["KEY"] -> KEY-C, <see cref="LoadStatement"/>(callerMemberName<see cref="JoinSeparator"/>NAME)
         ///     NAME
         /// */TABLE_ELSE/*}}*/ -- <paramref name="blocks"/>["KEY"] が KEY-A,KEY-B,KEY-C に当てはまらない
         /// </code>

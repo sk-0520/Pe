@@ -39,8 +39,8 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Eyes.ViewModels
 
         #endregion
 
-        public EyesWidgetViewModel(EyesWidgetWindow eyesWidgetWindow, ISkeletonImplements skeletonImplements, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
-            : base(skeletonImplements, dispatcherWrapper, loggerFactory)
+        public EyesWidgetViewModel(EyesWidgetWindow eyesWidgetWindow, ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(skeletonImplements, contextDispatcher, loggerFactory)
         {
             LeftEye = eyesWidgetWindow.leftEye;
             RightEye = eyesWidgetWindow.rightEye;
@@ -206,7 +206,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Eyes.ViewModels
             MouseX = e.Location.X;
             MouseY = e.Location.Y;
 
-            DispatcherWrapper.BeginAsync(() => {
+            ContextDispatcher.BeginAsync(() => {
                 var deviceCursorLocation = new Point(MouseX, MouseY);
 
                 var cx = EyeWidth / 2;

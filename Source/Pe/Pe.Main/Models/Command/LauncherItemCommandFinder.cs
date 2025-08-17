@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
 {
     public class LauncherItemCommandFinder: DisposerBase, ICommandFinder
     {
-        public LauncherItemCommandFinder(IMainDatabaseBarrier mainDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IOrderManager orderManager, INotifyManager notifyManager, IDispatcherWrapper dispatcherWrapper, ILoggerFactory loggerFactory)
+        public LauncherItemCommandFinder(IMainDatabaseBarrier mainDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, IOrderManager orderManager, INotifyManager notifyManager, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
@@ -37,7 +37,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
             DatabaseStatementLoader = databaseStatementLoader;
             OrderManager = orderManager;
             NotifyManager = notifyManager;
-            DispatcherWrapper = dispatcherWrapper;
+            ContextDispatcher = contextDispatcher;
         }
 
         #region property
@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
         private IDatabaseStatementLoader DatabaseStatementLoader { get; }
         private IOrderManager OrderManager { get; }
         private INotifyManager NotifyManager { get; }
-        private IDispatcherWrapper DispatcherWrapper { get; }
+        private IContextDispatcher ContextDispatcher { get; }
 
         internal IconBox IconBox { get; set; }
 
@@ -76,7 +76,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
             var nameMatches = hitValuesCreator.GetMatches(targetValue, inputRegex);
             if(nameMatches.Any()) {
                 Logger.LogTrace("ランチャー: {0}, {1}, {2}", targetLogName, targetValue, element.LauncherItemId);
-                var result = new LauncherCommandItemElement(element, DispatcherWrapper, LoggerFactory) {
+                var result = new LauncherCommandItemElement(element, ContextDispatcher, LoggerFactory) {
                     EditableKind = kind,
                 };
                 await result.InitializeAsync(cancellationToken);
@@ -184,7 +184,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
 
             if(string.IsNullOrWhiteSpace(inputValue)) {
                 var items = LauncherItemElements
-                    .Select(i => new LauncherCommandItemElement(i, DispatcherWrapper, LoggerFactory))
+                    .Select(i => new LauncherCommandItemElement(i, ContextDispatcher, LoggerFactory))
                 ;
                 foreach(var item in items) {
                     yield return item;

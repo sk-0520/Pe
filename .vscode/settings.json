@@ -92,5 +92,8 @@
 			"source.organizeImports.biome": "explicit"
 		},
 		"editor.defaultFormatter": "biomejs.biome"
+	},
+	"[markdown]": {
+		"editor.wordWrap": "off"
 	}
 }
