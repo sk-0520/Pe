@@ -30,7 +30,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Test.Models
                     };
                 })
             ;
-            var actual = await mock.Object.GetAsync(default!);
+            var actual = await mock.Object.GetAsync(default!, cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
         }
 
@@ -47,7 +47,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Test.Models
                     };
                 })
             ;
-            var actual = await mock.Object.PostAsync(default!, default!);
+            var actual = await mock.Object.PostAsync(default!, default!, cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
         }
 
@@ -64,7 +64,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Test.Models
                     };
                 })
             ;
-            var actual = await mock.Object.PutAsync(default!, default!);
+            var actual = await mock.Object.PutAsync(default!, default!, cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(HttpStatusCode.OK, actual.StatusCode);
         }
 
@@ -98,7 +98,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Test.Models
                     };
                 })
             ;
-            var actual = await mock.Object.GetStringAsync(default!);
+            var actual = await mock.Object.GetStringAsync(default!, cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal("abc", actual);
         }
 
@@ -115,9 +115,9 @@ namespace ContentTypeTextNet.Pe.Bridge.Test.Models
                     };
                 })
             ;
-            using var stream = await mock.Object.GetStreamAsync(default!);
+            using var stream = await mock.Object.GetStreamAsync(default!, cancellationToken: TestContext.Current.CancellationToken);
             var actual = new byte[stream.Length];
-            await stream.ReadExactlyAsync(actual);
+            await stream.ReadExactlyAsync(actual, cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, actual);
         }
 
@@ -134,7 +134,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Test.Models
                     };
                 })
             ;
-            var actual = await mock.Object.GetByteArrayAsync(default!);
+            var actual = await mock.Object.GetByteArrayAsync(default!, cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, actual);
         }
 

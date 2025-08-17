@@ -125,7 +125,7 @@ values
         [Fact]
         public async Task GetDataReaderAsyncTest()
         {
-            using var reader = await DatabaseAccessor.GetDataReaderAsync("select * from TestTable1 order by ColKey");
+            using var reader = await DatabaseAccessor.GetDataReaderAsync("select * from TestTable1 order by ColKey", cancellationToken: TestContext.Current.CancellationToken);
 
             int rowNumber = 0;
             while(reader.Read()) {
@@ -155,7 +155,7 @@ values
         [Fact]
         public async Task GetDataTableAsyncTest()
         {
-            using var actual = await DatabaseAccessor.GetDataTableAsync("select * from TestTable1 order by ColKey");
+            using var actual = await DatabaseAccessor.GetDataTableAsync("select * from TestTable1 order by ColKey", cancellationToken: TestContext.Current.CancellationToken);
 
             Assert.Equal(1L, actual.Rows[0]["ColKey"]);
             Assert.Equal("A", actual.Rows[0]["ColVal"]);
@@ -181,13 +181,13 @@ values
         [Fact]
         public async Task GetScalarAsyncTest()
         {
-            var actual1 = await DatabaseAccessor.GetScalarAsync<string>("select ColVal from TestTable1 order by ColKey");
+            var actual1 = await DatabaseAccessor.GetScalarAsync<string>("select ColVal from TestTable1 order by ColKey", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal("A", actual1);
 
-            var actual2 = await DatabaseAccessor.GetScalarAsync<string>("select ColVal from TestTable1 order by ColKey desc");
+            var actual2 = await DatabaseAccessor.GetScalarAsync<string>("select ColVal from TestTable1 order by ColKey desc", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal("D", actual2);
 
-            var actual3 = await DatabaseAccessor.GetScalarAsync<string>("select ColVal from TestTable1 where ColKey = -1");
+            var actual3 = await DatabaseAccessor.GetScalarAsync<string>("select ColVal from TestTable1 where ColKey = -1", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Null(actual3);
         }
 
@@ -219,11 +219,11 @@ values
         public async Task QueryAsyncTest()
         {
             var expectedAsc = new[] { "A", "B", "C", "D", };
-            var actualAsc = await DatabaseAccessor.QueryAsync<string>("select ColVal from TestTable1 order by ColKey");
+            var actualAsc = await DatabaseAccessor.QueryAsync<string>("select ColVal from TestTable1 order by ColKey", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(expectedAsc, actualAsc.ToList());
 
             var expectedDesc = new[] { "D", "C", "B", "A", };
-            var actualDesc = await DatabaseAccessor.QueryAsync<string>("select ColVal from TestTable1 order by ColKey desc");
+            var actualDesc = await DatabaseAccessor.QueryAsync<string>("select ColVal from TestTable1 order by ColKey desc", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(expectedDesc, actualDesc.ToList());
         }
 
@@ -231,11 +231,11 @@ values
         public async Task QueryAsync_Dynamic_Test()
         {
             var expectedAsc = new[] { "A", "B", "C", "D", };
-            var actualAsc = await DatabaseAccessor.QueryAsync("select * from TestTable1 order by ColKey");
+            var actualAsc = await DatabaseAccessor.QueryAsync("select * from TestTable1 order by ColKey", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(expectedAsc, actualAsc.Select(i => i.ColVal).ToList());
 
             var expectedDesc = new[] { "D", "C", "B", "A", };
-            var actualDesc = await DatabaseAccessor.QueryAsync("select * from TestTable1 order by ColKey desc");
+            var actualDesc = await DatabaseAccessor.QueryAsync("select * from TestTable1 order by ColKey desc", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(expectedDesc, actualDesc.Select(i => i.ColVal).ToList());
         }
 
@@ -251,11 +251,11 @@ values
         [Fact]
         public async Task QueryFirstAsyncTest()
         {
-            var actual = await DatabaseAccessor.QueryFirstAsync<string>("select ColVal from TestTable1 where ColKey = 4");
+            var actual = await DatabaseAccessor.QueryFirstAsync<string>("select ColVal from TestTable1 where ColKey = 4", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal("D", actual);
 
             try {
-                await DatabaseAccessor.QueryFirstAsync<string>("select ColVal from TestTable1 where ColKey = -1");
+                await DatabaseAccessor.QueryFirstAsync<string>("select ColVal from TestTable1 where ColKey = -1", cancellationToken: TestContext.Current.CancellationToken);
                 Assert.Fail();
             } catch(InvalidOperationException) {
             }
@@ -274,10 +274,10 @@ values
         [Fact]
         public async Task QueryFirstOrDefaultAsyncTest()
         {
-            var actual = await DatabaseAccessor.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 4");
+            var actual = await DatabaseAccessor.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 4", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal("D", actual);
 
-            var actualDefault = await DatabaseAccessor.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = -1");
+            var actualDefault = await DatabaseAccessor.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = -1", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(default, actualDefault);
         }
 
@@ -294,18 +294,18 @@ values
         [Fact]
         public async Task QuerySingleAsyncTest()
         {
-            var actual = await DatabaseAccessor.QuerySingleAsync<string>("select ColVal from TestTable1 where ColKey = 4");
+            var actual = await DatabaseAccessor.QuerySingleAsync<string>("select ColVal from TestTable1 where ColKey = 4", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal("D", actual);
 
             try {
-                await DatabaseAccessor.QuerySingleAsync<string>("select ColVal from TestTable1 where ColKey = -1");
+                await DatabaseAccessor.QuerySingleAsync<string>("select ColVal from TestTable1 where ColKey = -1", cancellationToken: TestContext.Current.CancellationToken);
                 Assert.Fail();
             } catch(InvalidOperationException) {
                 Assert.True(true);
             }
 
             try {
-                await DatabaseAccessor.QuerySingleAsync<string>("select ColVal from TestTable1 where ColKey in (1, 2)");
+                await DatabaseAccessor.QuerySingleAsync<string>("select ColVal from TestTable1 where ColKey in (1, 2)", cancellationToken: TestContext.Current.CancellationToken);
                 Assert.Fail();
             } catch(InvalidOperationException) {
                 Assert.True(true);
@@ -325,10 +325,10 @@ values
         [Fact]
         public async Task QuerySingleOrDefaultAsyncTest()
         {
-            var actual = await DatabaseAccessor.QuerySingleOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 4");
+            var actual = await DatabaseAccessor.QuerySingleOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 4", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal("D", actual);
 
-            var actualNull = await DatabaseAccessor.QuerySingleOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = -1");
+            var actualNull = await DatabaseAccessor.QuerySingleOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = -1", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Null(actualNull);
         }
 
@@ -342,7 +342,7 @@ values
         [Fact]
         public async Task ExecuteAsyncTest()
         {
-            var actual = await DatabaseAccessor.ExecuteAsync("create table TestTable2 as select * from TestTable1");
+            var actual = await DatabaseAccessor.ExecuteAsync("create table TestTable2 as select * from TestTable1", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(4, actual);
         }
 
@@ -369,16 +369,16 @@ values
             using(var transaction = DatabaseAccessor.BeginReadOnlyTransaction()) {
                 Assert.Null(transaction.Transaction);
 
-                var actualNone = await transaction.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 0");
+                var actualNone = await transaction.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 0", cancellationToken: TestContext.Current.CancellationToken);
                 Assert.Null(actualNone);
 
                 Assert.Throws<NotSupportedException>(() => transaction.Execute("insert into TestTable1(ColKey, ColVal) values (0, 'Z')"));
-                await Assert.ThrowsAsync<NotSupportedException>(() => transaction.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (0, 'Z')"));
+                await Assert.ThrowsAsync<NotSupportedException>(() => transaction.ExecuteAsync("insert into TestTable1(ColKey, ColVal) values (0, 'Z')", cancellationToken: TestContext.Current.CancellationToken));
 
                 Assert.Throws<NotSupportedException>(() => transaction.Commit());
             }
 
-            var actualNone2 = await DatabaseAccessor.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 0");
+            var actualNone2 = await DatabaseAccessor.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 0", cancellationToken: TestContext.Current.CancellationToken);
             Assert.Null(actualNone2);
         }
 

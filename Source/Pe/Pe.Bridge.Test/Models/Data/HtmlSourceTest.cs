@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace ContentTypeTextNet.Pe.Bridge.Test.Models.Data
 {
