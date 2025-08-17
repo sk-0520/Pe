@@ -73,6 +73,10 @@
 					},
 					{
 						"revision": "",
+						"subject": "NLog.Extensions.Logging 6.0.2 -> 6.0.3"
+					},
+					{
+						"revision": "",
 						"subject": ""
 					},
 					{
