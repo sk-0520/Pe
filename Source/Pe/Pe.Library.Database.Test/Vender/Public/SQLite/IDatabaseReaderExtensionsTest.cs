@@ -103,10 +103,10 @@ values
         ")]
         public async Task SelectOrderedAsyncTest(string sql)
         {
-            var exception1 = await Record.ExceptionAsync(() => DatabaseAccessor.SelectOrderedAsync<string>(sql));
+            var exception1 = await Record.ExceptionAsync(() => DatabaseAccessor.SelectOrderedAsync<string>(sql, cancellationToken: TestContext.Current.CancellationToken));
             Assert.Null(exception1);
 
-            var exception2 = await Record.ExceptionAsync(() => DatabaseAccessor.SelectOrderedAsync(sql));
+            var exception2 = await Record.ExceptionAsync(() => DatabaseAccessor.SelectOrderedAsync(sql, cancellationToken: TestContext.Current.CancellationToken));
             Assert.Null(exception2);
         }
 
@@ -118,8 +118,8 @@ values
         [InlineData("select ColVal from TestTable1 order /**/ by ColKey")]
         public async Task SelectOrderedAsync_throw_Test(string sql)
         {
-            await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.SelectOrderedAsync<string>(sql));
-            await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.SelectOrderedAsync(sql));
+            await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.SelectOrderedAsync<string>(sql, cancellationToken: TestContext.Current.CancellationToken));
+            await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.SelectOrderedAsync(sql, cancellationToken: TestContext.Current.CancellationToken));
         }
 #endif
 
@@ -168,7 +168,7 @@ values
         ")]
         public async Task SelectSingleCountAsyncTest(string sql)
         {
-            var exception = await Record.ExceptionAsync(() => DatabaseAccessor.SelectSingleCountAsync(sql));
+            var exception = await Record.ExceptionAsync(() => DatabaseAccessor.SelectSingleCountAsync(sql, cancellationToken: TestContext.Current.CancellationToken));
             Assert.Null(exception);
         }
 
@@ -179,7 +179,7 @@ values
         [InlineData("select count from TestTable1")]
         public async Task SelectSingleCountAsync_throw_Test(string sql)
         {
-            await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.SelectSingleCountAsync(sql));
+            await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.SelectSingleCountAsync(sql, cancellationToken: TestContext.Current.CancellationToken));
         }
 #endif
 

@@ -62,7 +62,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
                 var task = Task.Run(() => {
                     ev.WaitOne();
                     command.IsEnabled = false;
-                });
+                }, cancellationToken: TestContext.Current.CancellationToken);
 
                 Assert.True(command.CanExecute(null));
 

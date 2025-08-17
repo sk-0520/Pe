@@ -68,7 +68,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Commands
                 ev2.Set();
             };
             ev1.Set();
-            ev2.Wait();
+            ev2.Wait(cancellationToken: TestContext.Current.CancellationToken);
             Assert.True(command.CanExecute(null));
             Assert.False(command.IsExecuting);
         }

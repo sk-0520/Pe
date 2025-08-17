@@ -95,7 +95,7 @@ values
         ")]
         public async Task UpdateAsyncTest(int expected, string sql)
         {
-            var actual = await DatabaseAccessor.UpdateAsync(sql);
+            var actual = await DatabaseAccessor.UpdateAsync(sql, cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(expected, actual);
         }
 
@@ -106,7 +106,7 @@ values
         [InlineData("updatee TestTable1 set ColVal = ColVal + ColVal")]
         public async Task UpdateAsync_throw_Test(string sql)
         {
-            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.UpdateAsync(sql));
+            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.UpdateAsync(sql, cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("update", exception.Message);
         }
 #endif
@@ -144,7 +144,7 @@ values
         [Fact]
         public async Task UpdateByKeyAsyncTest()
         {
-            var exception = await Record.ExceptionAsync(() => DatabaseAccessor.UpdateByKeyAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey = 1"));
+            var exception = await Record.ExceptionAsync(() => DatabaseAccessor.UpdateByKeyAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey = 1", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Null(exception);
         }
 
@@ -152,7 +152,7 @@ values
         [Fact]
         public async Task UpdateByKeyAsync_throw_Test()
         {
-            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.UpdateByKeyAsync("updatee TestTable1 set ColVal = ColVal + ColVal"));
+            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.UpdateByKeyAsync("updatee TestTable1 set ColVal = ColVal + ColVal", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("update", exception.Message);
         }
 #endif
@@ -160,14 +160,14 @@ values
         [Fact]
         public async Task UpdateByKeyAsync_throw_0_Test()
         {
-            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.UpdateByKeyAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey = 0"));
+            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.UpdateByKeyAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey = 0", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("update -> 0", exception.Message);
         }
 
         [Fact]
         public async Task UpdateByKeyAsync_throw_2_Test()
         {
-            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.UpdateByKeyAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey < 3"));
+            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.UpdateByKeyAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey < 3", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("update -> 2", exception.Message);
         }
 
@@ -207,7 +207,7 @@ values
         public async Task UpdateByKeyOrNothingAsync_update_Test()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                var actual = await DatabaseAccessor.UpdateByKeyOrNothingAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey = 1");
+                var actual = await DatabaseAccessor.UpdateByKeyOrNothingAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey = 1", cancellationToken: TestContext.Current.CancellationToken);
                 Assert.True(actual);
             }
         }
@@ -216,7 +216,7 @@ values
         public async Task UpdateByKeyOrNothingAsync_nothing_Test()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                var actual = await DatabaseAccessor.UpdateByKeyOrNothingAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey = 0");
+                var actual = await DatabaseAccessor.UpdateByKeyOrNothingAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey = 0", cancellationToken: TestContext.Current.CancellationToken);
                 Assert.False(actual);
             }
         }
@@ -225,7 +225,7 @@ values
         [Fact]
         public async Task UpdateByKeyOrNothingAsync_throw_Test()
         {
-            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.UpdateByKeyOrNothingAsync("updatee TestTable1 set ColVal = ColVal + ColVal"));
+            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.UpdateByKeyOrNothingAsync("updatee TestTable1 set ColVal = ColVal + ColVal", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("update", exception.Message);
         }
 #endif
@@ -234,7 +234,7 @@ values
         public async Task UpdateByKeyOrNothingAsync_throw_2_Test()
         {
             using(var context = DatabaseAccessor.BeginTransaction()) {
-                var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.UpdateByKeyOrNothingAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey < 3"));
+                var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.UpdateByKeyOrNothingAsync("update TestTable1 set ColVal = ColVal + ColVal where ColKey < 3", cancellationToken: TestContext.Current.CancellationToken));
                 Assert.Equal("update -> 2", exception.Message);
             }
         }
@@ -295,7 +295,7 @@ values
         ")]
         public async Task InsertAsyncTest(int expected, string sql)
         {
-            var actual = await DatabaseAccessor.InsertAsync(sql);
+            var actual = await DatabaseAccessor.InsertAsync(sql, cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(expected, actual);
         }
 
@@ -306,7 +306,7 @@ values
         [InlineData("insertt into TestTable1(ColKey, ColVal) values (5, 'E')")]
         public async Task InsertAsync_throw_Test(string sql)
         {
-            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.InsertAsync(sql));
+            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.InsertAsync(sql, cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("insert", exception.Message);
         }
 #endif
@@ -344,7 +344,7 @@ values
         [Fact]
         public async Task InsertSingleAsyncTest()
         {
-            var exception = await Record.ExceptionAsync(() => DatabaseAccessor.InsertSingleAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')"));
+            var exception = await Record.ExceptionAsync(() => DatabaseAccessor.InsertSingleAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E')", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Null(exception);
         }
 
@@ -352,21 +352,21 @@ values
         [Fact]
         public async Task InsertSingleAsync_throw_Test()
         {
-            await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.InsertSingleAsync("iinsert into TestTable1(ColKey, ColVal) values (5, 'E')"));
+            await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.InsertSingleAsync("iinsert into TestTable1(ColKey, ColVal) values (5, 'E')", cancellationToken: TestContext.Current.CancellationToken));
         }
 #endif
 
         [Fact]
         public async Task InsertSingleAsync_throw_0_Test()
         {
-            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.InsertSingleAsync("insert into TestTable1(ColKey, ColVal) select * from TestTable1 where ColKey < 0"));
+            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.InsertSingleAsync("insert into TestTable1(ColKey, ColVal) select * from TestTable1 where ColKey < 0", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("insert -> 0", exception.Message);
         }
 
         [Fact]
         public async Task InsertSingleAsync_throw_2_Test()
         {
-            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.InsertSingleAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E'),(6, 'F')"));
+            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.InsertSingleAsync("insert into TestTable1(ColKey, ColVal) values (5, 'E'),(6, 'F')", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("insert -> 2", exception.Message);
         }
 
@@ -409,7 +409,7 @@ values
         ")]
         public async Task DeleteAsyncTest(int expected, string sql)
         {
-            var actual = await DatabaseAccessor.DeleteAsync(sql);
+            var actual = await DatabaseAccessor.DeleteAsync(sql, cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(expected, actual);
         }
 
@@ -420,7 +420,7 @@ values
         [InlineData("deletee from TestTable1 where ColKey = 1")]
         public async Task DeleteAsync_throw_Test(string sql)
         {
-            await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.DeleteAsync(sql));
+            await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.DeleteAsync(sql, cancellationToken: TestContext.Current.CancellationToken));
         }
 #endif
 
@@ -457,7 +457,7 @@ values
         [Fact]
         public async Task DeleteByKeyAsyncTest()
         {
-            var exception = await Record.ExceptionAsync(() => DatabaseAccessor.DeleteByKeyAsync("delete from TestTable1 where ColKey = 1"));
+            var exception = await Record.ExceptionAsync(() => DatabaseAccessor.DeleteByKeyAsync("delete from TestTable1 where ColKey = 1", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Null(exception);
         }
 
@@ -465,7 +465,7 @@ values
         [Fact]
         public async Task DeleteByKeyAsync_throw_Test()
         {
-            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.DeleteByKeyAsync("deletee from TestTable1 where ColKey = 1"));
+            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.DeleteByKeyAsync("deletee from TestTable1 where ColKey = 1", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("delete", exception.Message);
         }
 #endif
@@ -473,14 +473,14 @@ values
         [Fact]
         public async Task DeleteByKeyAsync_throw_0_Test()
         {
-            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.DeleteByKeyAsync("delete from TestTable1 where ColKey = 0"));
+            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.DeleteByKeyAsync("delete from TestTable1 where ColKey = 0", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("delete -> 0", exception.Message);
         }
 
         [Fact]
         public async Task DeleteByKeyAsync_throw_2_Test()
         {
-            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.DeleteByKeyAsync("delete from TestTable1 where ColKey < 3"));
+            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.DeleteByKeyAsync("delete from TestTable1 where ColKey < 3", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("delete -> 2", exception.Message);
         }
 
@@ -517,14 +517,14 @@ values
         [Fact]
         public async Task DeleteByKeyOrNothingAsync_update_Test()
         {
-            var actual = await DatabaseAccessor.DeleteByKeyOrNothingAsync("delete from TestTable1 where ColKey = 1");
+            var actual = await DatabaseAccessor.DeleteByKeyOrNothingAsync("delete from TestTable1 where ColKey = 1", cancellationToken: TestContext.Current.CancellationToken);
             Assert.True(actual);
         }
 
         [Fact]
         public async Task DeleteByKeyOrNothingAsync_nothing_Test()
         {
-            var actual = await DatabaseAccessor.DeleteByKeyOrNothingAsync("delete from TestTable1 where ColKey = 0");
+            var actual = await DatabaseAccessor.DeleteByKeyOrNothingAsync("delete from TestTable1 where ColKey = 0", cancellationToken: TestContext.Current.CancellationToken);
             Assert.False(actual);
         }
 
@@ -532,14 +532,14 @@ values
         [Fact]
         public async Task DeleteByKeyOrNothingAsync_throw_Test()
         {
-            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.DeleteByKeyOrNothingAsync("deletee from TestTable1 where ColKey = 1"));
+            var exception = await Assert.ThrowsAsync<DatabaseStatementException>(() => DatabaseAccessor.DeleteByKeyOrNothingAsync("deletee from TestTable1 where ColKey = 1", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("delete", exception.Message);
         }
 #endif
         [Fact]
         public async Task DeleteByKeyOrNothingAsync_2_Test()
         {
-            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.DeleteByKeyOrNothingAsync("delete from TestTable1 where ColKey < 3"));
+            var exception = await Assert.ThrowsAsync<DatabaseManipulationException>(() => DatabaseAccessor.DeleteByKeyOrNothingAsync("delete from TestTable1 where ColKey < 3", cancellationToken: TestContext.Current.CancellationToken));
             Assert.Equal("delete -> 2", exception.Message);
         }
         #endregion
