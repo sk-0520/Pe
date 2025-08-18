@@ -97,7 +97,7 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 	}
 
 	function handleRemoveColumn(event: MouseEvent, columnId: string): void {
-		const index = columnIds.findIndex((a) => a === columnId);
+		const index = columnIds.indexOf(columnId);
 		if (index === -1) {
 			throw new Error(JSON.stringify({ columnId }));
 		}
