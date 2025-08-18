@@ -1,4 +1,4 @@
-import type { PageElement, PageKey } from "../pages";
+import type { PageElement, PageKey } from "@/Help/pages";
 
 export interface PageProps {
 	selectedPageKey: PageKey;

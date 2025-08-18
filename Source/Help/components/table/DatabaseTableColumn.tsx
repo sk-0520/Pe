@@ -12,15 +12,15 @@ import {
 	useWorkColumn,
 	useWorkColumns,
 	WorkTablesAtom,
-} from "../../stores/TableStore";
-import type { TableBaseProps } from "../../types/table";
-import { getElement } from "../../utils/access";
+} from "@/Help/stores/TableStore";
+import type { TableBaseProps } from "@/Help/types/table";
+import { getElement } from "@/Help/utils/access";
 import {
 	Sqlite3AffinityTypes,
 	Sqlite3BasicTypes,
 	type Sqlite3Type,
 	SqliteTypeMap,
-} from "../../utils/sqlite";
+} from "@/Help/utils/sqlite";
 import {
 	ClrMap,
 	type ClrTypeFullName,

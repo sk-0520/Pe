@@ -7,7 +7,7 @@ import {
 	useTheme,
 } from "@mui/material";
 import type { FC } from "react";
-import type * as changelog from "../../types/changelog";
+import type * as changelog from "@/Help/types/changelog";
 import { ChangelogReplaceLink } from "./ChangelogReplaceLink";
 import { ChangelogRevision } from "./ChangelogRevision";
 

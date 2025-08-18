@@ -36,6 +36,9 @@
 		"url": "git@github.com:sk-0520/Pe.git"
 	},
 	"jest": {
+		"moduleNameMapper": {
+			"@/Help/(.*)$": "<rootDir>/Source/Help/$1"
+		},
 		"moduleFileExtensions": [
 			"ts",
 			"js"

@@ -4,7 +4,7 @@ import {
 	trim,
 	trimEnd,
 	trimStart,
-} from "../../utils/string";
+} from "@/Help/utils/string";
 
 describe("trimStart", () => {
 	test.each([

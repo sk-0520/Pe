@@ -1,5 +1,5 @@
 import type { ThemeOptions } from "@mui/material/styles";
-import { toCssFontFamily } from "../utils/style";
+import { toCssFontFamily } from "@/Help/utils/style";
 
 export const AppTheme: ThemeOptions = {
 	palette: {

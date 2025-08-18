@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import type { TableBaseProps } from "../../types/table";
+import type { TableBaseProps } from "@/Help/types/table";
 import { DatabaseTableColumns } from "./DatabaseTableColumns";
 import { DatabaseTableDefine } from "./DatabaseTableDefine";
 import { DatabaseTableIndexes } from "./DatabaseTableIndexes";

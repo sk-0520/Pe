@@ -1,6 +1,6 @@
 import { List, ListItemButton, Typography, useTheme } from "@mui/material";
 import type { FC, MouseEvent } from "react";
-import type { PageElement, PageKey } from "../../pages";
+import type { PageElement, PageKey } from "@/Help/pages";
 
 interface SideMenuItemProps {
 	selectedPageKey: PageKey;

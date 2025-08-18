@@ -1,6 +1,6 @@
 import { Box, List } from "@mui/material";
 import type { FC } from "react";
-import { type PageKey, Pages } from "../../pages";
+import { type PageKey, Pages } from "@/Help/pages";
 import { SideMenuItem } from "./SideMenuItem";
 
 interface SideMenuProps {

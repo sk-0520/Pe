@@ -1,8 +1,8 @@
 import { Box, TableBody, TableHead, TableRow } from "@mui/material";
 import type { FC, MouseEvent } from "react";
-import { useWorkIndexes, useWorkTable } from "../../stores/TableStore";
-import type { TableBaseProps } from "../../types/table";
-import { generateIndexesId } from "../../utils/table";
+import { useWorkIndexes, useWorkTable } from "@/Help/stores/TableStore";
+import type { TableBaseProps } from "@/Help/types/table";
+import { generateIndexesId } from "@/Help/utils/table";
 import { DatabaseTableIndex } from "./DatabaseTableIndex";
 import { DatabaseTableSection } from "./DatabaseTableSection";
 import { EditorButton, EditorCell, EditorTable } from "./editor";

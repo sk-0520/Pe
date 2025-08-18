@@ -11,10 +11,10 @@ import {
 	useWorkColumns,
 	useWorkIndex,
 	useWorkIndexes,
-} from "../../stores/TableStore";
-import type { TableBaseProps } from "../../types/table";
-import { getElement } from "../../utils/access";
-import { isCommonColumnName } from "../../utils/table";
+} from "@/Help/stores/TableStore";
+import type { TableBaseProps } from "@/Help/types/table";
+import { getElement } from "@/Help/utils/access";
+import { isCommonColumnName } from "@/Help/utils/table";
 import {
 	EditorButton,
 	EditorCell,

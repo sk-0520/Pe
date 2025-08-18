@@ -8,7 +8,7 @@ import {
 	type WorkIndex,
 	type WorkIndexes,
 	type WorkTable,
-} from "../utils/table";
+} from "@/Help/utils/table";
 
 export const WorkTablesAtom = atom<WorkTable[]>([]);
 

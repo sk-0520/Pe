@@ -1,15 +1,15 @@
 import { Box, TableBody, TableHead, TableRow } from "@mui/material";
 import type { FC, MouseEvent } from "react";
-import { useWorkColumns } from "../../stores/TableStore";
-import type { TableBaseProps } from "../../types/table";
-import { getElement } from "../../utils/access";
-import type { Sqlite3Type } from "../../utils/sqlite";
+import { useWorkColumns } from "@/Help/stores/TableStore";
+import type { TableBaseProps } from "@/Help/types/table";
+import { getElement } from "@/Help/utils/access";
+import type { Sqlite3Type } from "@/Help/utils/sqlite";
 import {
 	ClrMap,
 	type ClrTypeFullName,
 	generateColumnId,
 	generateTimestamp,
-} from "../../utils/table";
+} from "@/Help/utils/table";
 
 import { DatabaseTableColumn } from "./DatabaseTableColumn";
 import { DatabaseTableSection } from "./DatabaseTableSection";

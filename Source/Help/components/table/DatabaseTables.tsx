@@ -15,9 +15,9 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { WorkTablesAtom } from "../../stores/TableStore";
-import { getElement } from "../../utils/access";
-import { copy } from "../../utils/clipboard";
+import { WorkTablesAtom } from "@/Help/stores/TableStore";
+import { getElement } from "@/Help/utils/access";
+import { copy } from "@/Help/utils/clipboard";
 import {
 	convertDefineTable,
 	convertTable,
@@ -27,7 +27,7 @@ import {
 	toMarkdown,
 	toSql,
 	updateRelations,
-} from "../../utils/table";
+} from "@/Help/utils/table";
 import { DatabaseTable } from "./DatabaseTable";
 import { EditorButton } from "./editor";
 
