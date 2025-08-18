@@ -1,10 +1,10 @@
 import changelogs from "../../../Define/changelogs.json";
 import changelogsArchives from "../../../Define/changelogs-archive.json";
-import type { Changelogs } from "../types/changelog";
+import { type Changelogs, ChangelogsSchema } from "../types/changelog";
 
 export function getChangelogs(): Changelogs {
 	const result = [...changelogs];
 	Array.prototype.push.apply(result, changelogsArchives);
 
-	return result as unknown as Changelogs;
+	return ChangelogsSchema.parse(result);
 }

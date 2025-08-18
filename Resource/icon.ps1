@@ -1,4 +1,5 @@
-﻿Param(
+﻿# cSpell:ignore Incspace, INKSCAPE, IMAGEMAGIC, Icons, --export-overwrite
+Param(
 	[string] $FirstInput = '',
 	[switch] $BatchMode
 )

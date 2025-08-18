@@ -1,3 +1,4 @@
+// cSpell:ignore Lengths
 import { countSingleChar, NewLine } from "./string";
 
 export class MarkdownError extends Error {

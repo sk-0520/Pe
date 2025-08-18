@@ -30,8 +30,8 @@ export function getPage(
 	return page;
 }
 
-export function getPageKey(quey: URLSearchParams): PageKey {
-	const pageValue = quey.get("page");
+export function getPageKey(query: URLSearchParams): PageKey {
+	const pageValue = query.get("page");
 	if (pageValue) {
 		const rawPageKey = pageValue as PageKey;
 		if (PageKeys.includes(rawPageKey)) {

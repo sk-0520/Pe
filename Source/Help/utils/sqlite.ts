@@ -1,3 +1,5 @@
+// cSpell:ignore Affinity, physical, primaries
+
 import { getElement } from "./access";
 import { NewLine } from "./string";
 import type { ForeignKey, TableColumn, TableDefine } from "./table";

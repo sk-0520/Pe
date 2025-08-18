@@ -9,9 +9,9 @@ function Get-ApplicationVersion {
 
 	$projectXml = [XML](Get-Content -Path $projectFile -Encoding UTF8)
 	$projectNav = $projectXml.CreateNavigator()
-	$vesion = $projectNav.Select('/Project/PropertyGroup/Version').Value
+	$version = $projectNav.Select('/Project/PropertyGroup/Version').Value
 
-	return [version]$vesion
+	return [version]$version
 }
 
 function Convert-Version {

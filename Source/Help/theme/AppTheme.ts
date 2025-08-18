@@ -1,4 +1,5 @@
 import type { ThemeOptions } from "@mui/material/styles";
+import { toCssFontFamily } from "../utils/style";
 
 export const AppTheme: ThemeOptions = {
 	palette: {
@@ -14,7 +15,8 @@ export const AppTheme: ThemeOptions = {
 		button: {
 			textTransform: "none",
 		},
-		fontFamily: [
+		fontFamily: toCssFontFamily([
+			// cSpell:disable
 			"Verdana",
 			"Skia-Regular_Condensed",
 			"Tahoma",
@@ -25,8 +27,7 @@ export const AppTheme: ThemeOptions = {
 			"YuGothic",
 			"Yu Gothic",
 			"sans-serif",
-		]
-			.map((a) => (a.includes(" ") ? `"${a}"` : a))
-			.join(","),
+			// cSpell:enable
+		]),
 	},
 };
