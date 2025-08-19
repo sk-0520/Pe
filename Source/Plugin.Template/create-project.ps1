@@ -115,11 +115,14 @@ if ($reservedNames.Contains($PluginName)) {
 
 #===================================================
 # 各種諸々の生成
+$gitExecutable = if ($IsWindows) { 'git.exe' } else { 'git' }
+$dotnetExecutable = if ($IsWindows) { 'dotnet.exe' } else { 'dotnet' }
+
 $parameters = @{
 	pluginName = $PluginName
 	directory = [System.IO.DirectoryInfo][Environment]::ExpandEnvironmentVariables($ProjectDirectory)
-	git = [Environment]::ExpandEnvironmentVariables((Join-Path -Path $GitPath -ChildPath 'git.exe'))
-	dotnet = [Environment]::ExpandEnvironmentVariables((Join-Path -Path $DotNetPath -ChildPath 'dotnet.exe'))
+	git = [Environment]::ExpandEnvironmentVariables((Join-Path -Path $GitPath -ChildPath $gitExecutable))
+	dotnet = [Environment]::ExpandEnvironmentVariables((Join-Path -Path $DotNetPath -ChildPath $dotnetExecutable))
 	pluginId = $customPluginId
 	source = [System.IO.DirectoryInfo][Environment]::ExpandEnvironmentVariables((Join-Path -Path $ProjectDirectory -ChildPath 'Source'))
 	repository = @{

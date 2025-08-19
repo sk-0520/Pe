@@ -27,11 +27,11 @@ function Get-OutputDirectoryPath {
 	return Join-Path -Path $outputRootDirPath -ChildPath "Release/$platform/$pluginName"
 }
 
-$cliVesion = [version]([XML](Get-Content -Path $propsFilePath -Encoding UTF8)).CreateNavigator().Select('/Project/PropertyGroup/Version').Value
-$vesion = @(
-	'{0}' -f $cliVesion.Major
-	'{0:00}' -f $cliVesion.Minor
-	'{0:000}' -f $cliVesion.Build
+$cliVersion = [version]([XML](Get-Content -Path $propsFilePath -Encoding UTF8)).CreateNavigator().Select('/Project/PropertyGroup/Version').Value
+$version = @(
+	'{0}' -f $cliVersion.Major
+	'{0:00}' -f $cliVersion.Minor
+	'{0:000}' -f $cliVersion.Build
 ) -join '-'
 
 $scripts = @{
@@ -46,12 +46,12 @@ Write-Verbose "$($scripts.buildProject) -ProjectName $pluginName -Platforms $Pla
 
 Write-Information 'アーカイブ'
 foreach ($platform in $Platforms) {
-	$outputBaseName = "${pluginName}_${vesion}_${platform}"
+	$outputBaseName = "${pluginName}_${version}_${platform}"
 	Write-Verbose "$($scripts.archivePlugin) -InputDirectory $(Get-OutputDirectoryPath $platform) -DestinationDirectory $outputRootDirPath -OutputBaseName $outputBaseName -Archive $archive -Filter '*.pdb'"
 	& $scripts.archivePlugin -InputDirectory (Get-OutputDirectoryPath $platform) -DestinationDirectory $outputRootDirPath -OutputBaseName $outputBaseName -Archive $archive -Filter '*.pdb'
 }
 
 Write-Information 'リリース情報生成'
-$archiveBaseName = "${pluginName}_${vesion}"
-Write-Verbose "$($scripts.createInfo) -ProjectName $pluginName -Version $cliVesion -ReleaseNoteUrl $releaseNoteUrl -ArchiveBaseUrl $archiveBaseUrl -ArchiveBaseName $archiveBaseName -Archive $archive -InputDirectory $outputRootDirPath -Destination $(Join-Path -Path $outputRootDirPath -ChildPath "update-$pluginName.json") -MinimumVersion $minimumVersion -Platforms $platforms"
-& $scripts.createInfo -ProjectName $pluginName -Version $cliVesion -ReleaseNoteUrl $releaseNoteUrl -ArchiveBaseUrl $archiveBaseUrl -ArchiveBaseName $archiveBaseName -Archive $archive -InputDirectory $outputRootDirPath -Destination (Join-Path -Path $outputRootDirPath -ChildPath "update-$pluginName.json") -MinimumVersion $minimumVersion -Platforms $platforms
+$archiveBaseName = "${pluginName}_${version}"
+Write-Verbose "$($scripts.createInfo) -ProjectName $pluginName -Version $cliVersion -ReleaseNoteUrl $releaseNoteUrl -ArchiveBaseUrl $archiveBaseUrl -ArchiveBaseName $archiveBaseName -Archive $archive -InputDirectory $outputRootDirPath -Destination $(Join-Path -Path $outputRootDirPath -ChildPath "update-$pluginName.json") -MinimumVersion $minimumVersion -Platforms $platforms"
+& $scripts.createInfo -ProjectName $pluginName -Version $cliVersion -ReleaseNoteUrl $releaseNoteUrl -ArchiveBaseUrl $archiveBaseUrl -ArchiveBaseName $archiveBaseName -Archive $archive -InputDirectory $outputRootDirPath -Destination (Join-Path -Path $outputRootDirPath -ChildPath "update-$pluginName.json") -MinimumVersion $minimumVersion -Platforms $platforms
