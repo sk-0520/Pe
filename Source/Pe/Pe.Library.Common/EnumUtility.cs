@@ -23,7 +23,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             where TEnum : struct, Enum
         {
             if(Enum.IsDefined(typeof(TEnum), value)) {
-                return (TEnum)Enum.Parse(typeof(TEnum), value);
+                return Enum.Parse<TEnum>(value);
             } else {
                 return defaultValue;
             }

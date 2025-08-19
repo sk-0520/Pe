@@ -35,7 +35,6 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         #endregion
 
-
         #region function
 
         /// <summary>
