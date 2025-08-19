@@ -1,8 +1,3 @@
-<MdAlert kind="NOTE">
-  うまくいってないんじゃわ  
-  [#980: プラグインテンプレートのデプロイ処理が死んでる](https://github.com/sk-0520/Pe/issues/980)
-</MdAlert>
-
 プラグイン生成テンプレートを用いることでプラグインのひな形を簡単に生成する。
 
 [💾テンプレートを取得する](./archives/plugin-template.zip)
