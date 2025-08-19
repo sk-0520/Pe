@@ -173,10 +173,10 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 		}
 	}, [selectableClrTypes, clrType, setValue]);
 
-	function handleInput(
+	const handleInput = (
 		data: InputValues,
 		event?: BaseSyntheticEvent<object>,
-	): void {
+	) => {
 		let foreignKey: ForeignKey | undefined;
 		let foreignKeyId: WorkForeignKey | undefined;
 		if (data.foreignKey) {
@@ -221,9 +221,9 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 			clrType: data.clrType,
 			comment: data.comment,
 		});
-	}
+	};
 
-	function handleRemove(event: MouseEvent): void {
+	const handleRemove = (event: MouseEvent) => {
 		const index = workColumns.items.findIndex((a) => a.id === columnId);
 		if (index === -1) {
 			throw new Error();
@@ -234,7 +234,7 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 			...workColumns,
 			items: newItems,
 		});
-	}
+	};
 
 	return (
 		<TableRow

@@ -28,15 +28,15 @@ export const DatabaseTableDefine: FC<DatabaseTableDefineProps> = (
 
 	console.debug(`title: ${workDefine.tableName}`);
 
-	function handleInput(
+	const handleInput = (
 		data: InputValues,
 		event?: BaseSyntheticEvent<object>,
-	): void {
+	) => {
 		updateWorkDefine({
 			...workDefine,
 			tableName: data.name,
 		});
-	}
+	};
 
 	return (
 		<Controller

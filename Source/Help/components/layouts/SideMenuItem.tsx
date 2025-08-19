@@ -17,9 +17,9 @@ export const SideMenuItem: FC<SideMenuItemProps> = (
 
 	const isSelected = selectedPageKey === page.key;
 
-	function handleSelectMenu(event: MouseEvent): void {
+	const handleSelectMenu = (event: MouseEvent) => {
 		callbackSelectPageKey(page.key);
-	}
+	};
 
 	return (
 		<>

@@ -52,17 +52,17 @@ export const ChangelogVersionSelector: FC<ChangelogVersionSelectorProps> = (
 	const theme = useTheme();
 	const items = useMemo(() => getChangelogGroup(changelogs), [changelogs]);
 
-	function handleVersionChange(
+	const handleVersionChange = (
 		event: SelectChangeEvent,
 		child: ReactNode,
-	): void {
+	) => {
 		setSelectedValue(event.target.value);
 
 		const targetElement = document.getElementById(event.target.value);
 		if (targetElement) {
 			window.scrollTo({ top: targetElement.offsetTop - 64 });
 		}
-	}
+	};
 
 	return (
 		<Select

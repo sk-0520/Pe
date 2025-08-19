@@ -87,12 +87,12 @@ export const DatabaseTables: FC<DatabaseTablesProps> = (
 		return "...loading...";
 	}
 
-	function handleChange(
+	const handleChange = (
 		event: SelectChangeEvent<string>,
 		child: ReactNode,
-	): void {
+	) => {
 		setSelectedTableId(event.target.value);
-	}
+	};
 
 	async function handleCopyMarkdownClick(event: MouseEvent): Promise<void> {
 		const defineTables = workTables.map((a) => convertDefineTable(a));

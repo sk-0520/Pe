@@ -17,7 +17,7 @@ export const DatabaseTableIndexes: FC<DatabaseTableIndexesProps> = (
 	const { workTable } = useWorkTable(tableId);
 	const { workIndexes, updateWorkIndexes } = useWorkIndexes(tableId);
 
-	function handleAddIndex(event: MouseEvent): void {
+	const handleAddIndex = (event: MouseEvent) => {
 		workIndexes.items.push({
 			id: generateIndexesId(),
 			isUnique: false,
@@ -28,7 +28,7 @@ export const DatabaseTableIndexes: FC<DatabaseTableIndexesProps> = (
 		updateWorkIndexes({
 			...workIndexes,
 		});
-	}
+	};
 
 	return (
 		<DatabaseTableSection title="インデックス">

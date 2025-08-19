@@ -35,10 +35,10 @@ export const DevPluginTemplatePage: FC<PageProps> = (props: PageProps) => {
 		}
 	}, [projectDirectory, pluginId, pluginName, projectNamespace]);
 
-	async function handleGeneratePluginIdClick(event: MouseEvent) {
+	const handleGeneratePluginIdClick = async (event: MouseEvent) => {
 		const id = await generatePluginId();
 		setPluginId(id);
-	}
+	};
 
 	return (
 		<>

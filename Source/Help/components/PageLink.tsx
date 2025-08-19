@@ -14,11 +14,11 @@ export const PageLink: FC<PageLinkProps> = (props: PageLinkProps) => {
 
 	const [_, setSelectedPageKey] = useAtom(SelectedPageKeyAtom);
 
-	function handleLinkClick(ev: MouseEvent, pageKey: PageKey, url: URL): void {
+	const handleLinkClick = (ev: MouseEvent, pageKey: PageKey, url: URL) => {
 		ev.preventDefault();
 		setSelectedPageKey(pageKey);
 		history.pushState({}, "", url);
-	}
+	};
 
 	try {
 		const url = makeUrl(page);
