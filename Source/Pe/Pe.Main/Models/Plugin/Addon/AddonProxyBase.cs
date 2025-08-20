@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
     public abstract class CommonAddonProxyBase<TFunctionUnit>: DisposerBase
         where TFunctionUnit : notnull
     {
-        protected CommonAddonProxyBase(PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+        protected CommonAddonProxyBase(PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IHashAlgorithmGenerator hashAlgorithmGenerator, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
@@ -23,6 +23,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
             UserAgentFactory = userAgentFactory;
 
             ViewManager = viewManager;
+            HashAlgorithmGenerator = hashAlgorithmGenerator;
             PlatformTheme = platformTheme;
             ImageLoader = imageLoader;
             MediaConverter = mediaConverter;
@@ -42,6 +43,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         protected IHttpUserAgentFactory UserAgentFactory { get; }
 
         protected IViewManager ViewManager { get; }
+        protected IHashAlgorithmGenerator HashAlgorithmGenerator { get; }
         /// <inheritdoc cref="IPlatformTheme"/>
         protected IPlatformTheme PlatformTheme { get; }
         /// <inheritdoc cref="IImageLoader"/>
@@ -66,7 +68,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         /// <see cref="AddonParameter"/> を普通に作成する。
         /// </summary>
         /// <returns></returns>
-        protected virtual AddonParameter CreateParameter(IPlugin plugin) => new AddonParameter(new SkeletonImplements(), plugin.PluginInformation, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
+        protected virtual AddonParameter CreateParameter(IPlugin plugin) => new AddonParameter(new SkeletonImplements(), plugin.PluginInformation, UserAgentFactory, ViewManager, HashAlgorithmGenerator, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
 
         protected abstract TFunctionUnit BuildFunctionUnit(IAddon loadedAddon);
 
@@ -87,8 +89,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
         #endregion
 
-        protected AddonProxyBase(IAddon addon, PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
-            : base(pluginContextFactory, userAgentFactory, viewManager, platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
+        protected AddonProxyBase(IAddon addon, PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IHashAlgorithmGenerator hashAlgorithmGenerator, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(pluginContextFactory, userAgentFactory, viewManager, hashAlgorithmGenerator, platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
         {
             Addon = addon;
         }
@@ -141,8 +143,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
         #endregion
 
-        protected AddonsProxyBase(IReadOnlyList<IAddon> addons, PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
-            : base(pluginContextFactory, userAgentFactory, viewManager, platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
+        protected AddonsProxyBase(IReadOnlyList<IAddon> addons, PluginContextFactory pluginContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IHashAlgorithmGenerator hashAlgorithmGenerator, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(pluginContextFactory, userAgentFactory, viewManager, hashAlgorithmGenerator, platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
         {
             Addons = addons;
         }

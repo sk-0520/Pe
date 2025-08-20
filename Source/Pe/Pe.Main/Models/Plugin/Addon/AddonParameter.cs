@@ -9,18 +9,21 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
     /// <inheritdoc cref="IAddonParameter"/>
     public class AddonParameter: PluginParameterBase, IAddonParameter
     {
-        public AddonParameter(ISkeletonImplements skeletonImplements, IPluginInformation pluginInformation, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+        public AddonParameter(ISkeletonImplements skeletonImplements, IPluginInformation pluginInformation, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IHashAlgorithmGenerator hashAlgorithmGenerator, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(pluginInformation, viewManager, platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
         {
             HttpUserAgentFactory = userAgentFactory;
             AddonExecutor = new AddonExecutor(PluginInformation, LoggerFactory);
             SkeletonImplements = skeletonImplements;
+            HashAlgorithmGenerator = hashAlgorithmGenerator;
         }
 
         #region IAddonParameter
 
         /// <inheritdoc cref="IAddonParameter.HttpUserAgentFactory"/>
         public IHttpUserAgentFactory HttpUserAgentFactory { get; }
+        /// <inheritdoc cref="IAddonParameter.HashAlgorithmGenerator"/>
+        public IHashAlgorithmGenerator HashAlgorithmGenerator { get; }
         /// <inheritdoc cref="IAddonParameter.AddonExecutor"/>
         public IAddonExecutor AddonExecutor { get; }
         /// <inheritdoc cref="IAddonParameter.SkeletonImplements"/>
