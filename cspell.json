@@ -25,5 +25,8 @@
 			"name": "vs_exclusion",
 			"path": "./exclusion.dic"
 		}
+	],
+	"ignoreRegExpList": [
+		"//\\s*biome-ignore\\s+lint/.*"
 	]
 }

@@ -35,6 +35,7 @@ Launcher
 Typography
 palette
 theme
-suspicious
 Others
-sqlite
+doxfx
+statictoc
+haystack
