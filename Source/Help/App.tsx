@@ -13,7 +13,7 @@ import { useAtom } from "jotai";
 import { type FC, useEffect, useState } from "react";
 import { PageContent } from "./components/layouts/PageContent";
 import { SideMenu } from "./components/layouts/SideMenu";
-import { type PageKey, Pages } from "./pages";
+import { type PageKey, Pages } from "./page";
 import { SelectedPageKeyAtom } from "./stores/SideMenuStore";
 import { getPage, getPageKey, makeUrl } from "./utils/page";
 
@@ -123,7 +123,7 @@ export const App: FC = () => {
 				<Divider />
 				<SideMenu
 					selectedPageKey={selectedPageKey}
-					handleSelectPageKey={handleSelectPageKey}
+					onSelectPageKey={handleSelectPageKey}
 				/>
 			</Drawer>
 
@@ -138,7 +138,7 @@ export const App: FC = () => {
 				<Toolbar />
 				<PageContent
 					selectedPageKey={selectedPageKey}
-					callbackSelectPageKey={handleSelectPageKey}
+					onSelectPageKey={handleSelectPageKey}
 					currentPage={currentPage}
 				/>
 			</Box>

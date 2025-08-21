@@ -3,7 +3,7 @@ import type { FC } from "react";
 import type {
 	ChangelogContentKinds,
 	ChangelogContent as ChangelogContentType,
-} from "@/Help/types/changelog";
+} from "../../types/changelog";
 import { ChangelogContentItem } from "./ChangelogContentItem";
 
 const KindMap: {

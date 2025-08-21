@@ -26,16 +26,7 @@
 			"ES2023",
 			"dom",
 			"dom.iterable"
-		],
-		"baseUrl": ".",
-		"paths": {
-			"@/Help/*": [
-				"Source/Help/*"
-			],
-			"@/Define/*": [
-				"Define/*"
-			]
-		}
+		]
 	},
 	"include": [
 		"**/*.ts"

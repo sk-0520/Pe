@@ -1,4 +1,4 @@
-import { type PageElement, type PageKey, PageKeys } from "@/Help/pages";
+import { type PageElement, type PageKey, PageKeys } from "../page";
 
 function getPageCore(
 	pageKey: PageKey,

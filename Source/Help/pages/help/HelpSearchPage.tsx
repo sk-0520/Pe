@@ -14,17 +14,17 @@ import { convert } from "html-to-text";
 import { type FC, useState } from "react";
 import ReactDOMServer from "react-dom/server";
 import { Controller, useForm } from "react-hook-form";
-import { PageContent } from "@/Help/components/layouts/PageContent";
-import { PageLink } from "@/Help/components/PageLink";
 import {
 	DevPageKeys,
 	HelpPageKeys,
 	type PageElement,
 	type PageKey,
 	Pages,
-} from "@/Help/pages";
-import type { PageProps } from "@/Help/types/page";
-import { getPage } from "@/Help/utils/page";
+} from "../../page";
+import type { PageProps } from "../../types/page";
+import { getPage } from "../../utils/page";
+import { PageContent } from "../../components/layouts/PageContent";
+import { PageLink } from "../../components/PageLink";
 
 type SearchPosition = {
 	index: number;
@@ -144,7 +144,7 @@ export const HelpSearchPage: FC<PageProps> = (props: PageProps) => {
 					<PageContent
 						selectedPageKey={targetKey}
 						currentPage={currentPage}
-						callbackSelectPageKey={handleSelectPageKey}
+						onSelectPageKey={handleSelectPageKey}
 					/>,
 				);
 			} finally {

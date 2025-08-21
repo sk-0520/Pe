@@ -1,15 +1,15 @@
 import { Box, List } from "@mui/material";
 import type { FC } from "react";
-import { type PageKey, Pages } from "@/Help/pages";
+import { type PageKey, Pages } from "../../page";
 import { SideMenuItem } from "./SideMenuItem";
 
 interface SideMenuProps {
 	selectedPageKey: PageKey;
-	handleSelectPageKey: (pageKey: PageKey) => void;
+	onSelectPageKey: (pageKey: PageKey) => void;
 }
 
 export const SideMenu: FC<SideMenuProps> = (props: SideMenuProps) => {
-	const { selectedPageKey, handleSelectPageKey } = props;
+	const { selectedPageKey, onSelectPageKey } = props;
 
 	return (
 		<Box sx={{ overflow: "auto" }}>
@@ -18,7 +18,7 @@ export const SideMenu: FC<SideMenuProps> = (props: SideMenuProps) => {
 					<SideMenuItem
 						key={a.key}
 						selectedPageKey={selectedPageKey}
-						callbackSelectPageKey={handleSelectPageKey}
+						onSelectPageKey={onSelectPageKey}
 						page={a}
 						nestLevel={0}
 					/>

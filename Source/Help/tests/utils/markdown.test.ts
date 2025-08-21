@@ -4,7 +4,7 @@ import {
 	MarkdownTableError,
 	type TableColumn,
 	type TableColumnAlign,
-} from "@/Help/utils/markdown";
+} from "../../utils/markdown";
 
 describe("buildCell", () => {
 	test("equal", () => {

@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import type { FC, ReactNode } from "react";
-import type { PageKey } from "@/Help/pages";
+import type { PageKey } from "../../page";
 import {
 	DevBranchPage,
 	DevBuildPage,
@@ -12,7 +12,7 @@ import {
 	DevTableLargePage,
 	DevTableMainPage,
 	DevTableTemporaryPage,
-} from "@/Help/pages/dev";
+} from "../../pages/dev";
 import {
 	HelpChangelogPage,
 	HelpCpuPage,
@@ -31,8 +31,8 @@ import {
 	HelpOthersProxyPage,
 	HelpPrivacyPage,
 	HelpSearchPage,
-} from "@/Help/pages/help";
-import type { PageProps } from "@/Help/types/page";
+} from "../../pages/help";
+import type { PageProps } from "../../types/page";
 
 interface PageContentProps extends PageProps {}
 

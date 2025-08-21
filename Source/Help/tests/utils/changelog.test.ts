@@ -4,7 +4,7 @@ import {
 	splitVersionInfos,
 	type Token,
 	type VersionInfo,
-} from "@/Help/utils/changelog";
+} from "../../utils/changelog";
 
 describe("splitTokens", () => {
 	test("empty", () => {

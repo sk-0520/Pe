@@ -1,9 +1,9 @@
 import { Box, Toolbar } from "@mui/material";
 import type { FC } from "react";
-import { ChangelogVersion } from "@/Help/components/changelog/ChangelogVersion";
-import { ChangelogVersionSelector } from "@/Help/components/changelog/ChangelogVersionSelector";
-import type { PageProps } from "@/Help/types/page";
-import { getChangelogs } from "@/Help/utils/changelog-loader";
+import { ChangelogVersion } from "../../components/changelog/ChangelogVersion";
+import { ChangelogVersionSelector } from "../../components/changelog/ChangelogVersionSelector";
+import type { PageProps } from "../../types/page";
+import { getChangelogs } from "../../utils/changelog-loader";
 
 const changelogs = getChangelogs();
 

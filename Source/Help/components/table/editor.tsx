@@ -11,7 +11,7 @@ import {
 	TextField,
 	type TextFieldProps,
 } from "@mui/material";
-import { StickyTable } from "@/Help/components/StickyTable";
+import { StickyTable } from "../../components/StickyTable";
 
 export function EditorTable(props: TableProps) {
 	return <StickyTable stickyHeader size="small" {...props} />;

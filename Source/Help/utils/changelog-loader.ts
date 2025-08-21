@@ -1,6 +1,6 @@
-import changelogs from "@/Define/changelogs.json";
-import changelogsArchives from "@/Define/changelogs-archive.json";
-import { type Changelogs, ChangelogsSchema } from "@/Help/types/changelog";
+import changelogs from "../../../Define/changelogs.json";
+import changelogsArchives from "../../../Define/changelogs-archive.json";
+import { type Changelogs, ChangelogsSchema } from "../types/changelog";
 
 export function getChangelogs(): Changelogs {
 	const result = [...changelogs];

@@ -1,9 +1,9 @@
 import { Link, Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import type { FC, MouseEvent } from "react";
-import { type PageKey, Pages } from "@/Help/pages";
-import { SelectedPageKeyAtom } from "@/Help/stores/SideMenuStore";
-import { getPage, makeUrl } from "@/Help/utils/page";
+import { type PageKey, Pages } from "../page";
+import { SelectedPageKeyAtom } from "../stores/SideMenuStore";
+import { getPage, makeUrl } from "../utils/page";
 
 interface PageLinkProps {
 	page: PageKey;

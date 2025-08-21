@@ -1,6 +1,6 @@
 import { Link } from "@mui/material";
 import { type FC, Fragment, type ReactNode } from "react";
-import { convertTagFromVersion, splitTokens } from "@/Help/utils/changelog";
+import { convertTagFromVersion, splitTokens } from "../../utils/changelog";
 
 const IssueLink = "https://github.com/sk-0520/Pe/issues/";
 const DiffLink = "https://github.com/sk-0520/Pe/compare/";

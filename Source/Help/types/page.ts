@@ -1,7 +1,7 @@
-import type { PageElement, PageKey } from "@/Help/pages";
+import type { PageElement, PageKey } from "../page";
 
 export interface PageProps {
 	selectedPageKey: PageKey;
-	callbackSelectPageKey: (pageKey: PageKey) => void;
 	currentPage: PageElement;
+	onSelectPageKey: (pageKey: PageKey) => void;
 }

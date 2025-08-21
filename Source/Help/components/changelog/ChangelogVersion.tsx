@@ -11,8 +11,8 @@ import {
 	useTheme,
 } from "@mui/material";
 import type { FC } from "react";
-import type * as changelog from "@/Help/types/changelog";
-import { selectDateTime, splitVersionInfos } from "@/Help/utils/changelog";
+import type * as changelog from "../../types/changelog";
+import { selectDateTime, splitVersionInfos } from "../../utils/changelog";
 import { ChangelogContent } from "./ChangelogContent";
 import { ChangelogReplaceLink } from "./ChangelogReplaceLink";
 

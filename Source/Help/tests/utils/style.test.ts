@@ -1,4 +1,4 @@
-import { toCssFontFamily } from "@/Help/utils/style";
+import { toCssFontFamily } from "../../utils/style";
 
 describe("toCssFontFamily", () => {
 	test.each([

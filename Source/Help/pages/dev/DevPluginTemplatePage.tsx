@@ -10,9 +10,9 @@ import {
 	Typography,
 } from "@mui/material";
 import { type FC, type MouseEvent, useEffect, useState } from "react";
-import { HelpMarkdown } from "@/Help/components/HelpMarkdown";
-import type { PageProps } from "@/Help/types/page";
-import { generatePluginId, makeParameter } from "@/Help/utils/plugin";
+import { HelpMarkdown } from "../../components/HelpMarkdown";
+import type { PageProps } from "../../types/page";
+import { generatePluginId, makeParameter } from "../../utils/plugin";
 
 export const DevPluginTemplatePage: FC<PageProps> = (props: PageProps) => {
 	const [projectDirectory, setProjectDirectory] = useState("");
