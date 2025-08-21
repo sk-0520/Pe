@@ -61,7 +61,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         private bool _showLinkChangeConfirm;
         private bool _isPopupRemoveNote;
 
-        private bool _windowMoving = false;
+        private bool _windowMovingOrResizing = false;
 
         /// <summary>
         /// 検索中か。
@@ -398,13 +398,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             set => SetProperty(ref this._isPopupRemoveNote, value);
         }
 
-        public bool WindowMoving
+        public bool WindowMovingOrResizing
         {
-            get => this._windowMoving;
-            private set => SetProperty(ref this._windowMoving, value);
+            get => this._windowMovingOrResizing;
+            private set => SetProperty(ref this._windowMovingOrResizing, value);
         }
 
-        public double WindowMovingOpacity => NoteConfiguration.MovingOpacity;
+        public double WindowMovingOrResizingOpacity => NoteConfiguration.MovingOrResizingOpacity;
 
         public IReadOnlyList<NoteHiddenMode> HiddenModeItems { get; } = Enum.GetValues<NoteHiddenMode>().OrderBy(i => i).ToList();
 
@@ -1216,19 +1216,20 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     break;
 
                 case (int)WM.WM_MOVING:
-                    Logger.LogDebug("WM_MOVING");
-                    if(!WindowMoving) {
-                        WindowMoving = true;
+                case (int)WM.WM_ENTERSIZEMOVE:
+                    Logger.LogDebug("{Msg}", (WM)msg);
+                    if(!WindowMovingOrResizing) {
+                        WindowMovingOrResizing = true;
                     }
                     break;
 
                 case (int)WM.WM_EXITSIZEMOVE:
                     Logger.LogDebug("WM_EXITSIZEMOVE");
-                    if(WindowMoving) {
+                    if(WindowMovingOrResizing) {
                         var screen = DpiScaleOutpour.GetOwnerScreen();
                         Model.SaveDisplayDelaySave(screen);
                     }
-                    WindowMoving = false;
+                    WindowMovingOrResizing = false;
                     break;
 
                 case (int)WM.WM_SYSCOMMAND: {

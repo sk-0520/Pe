@@ -740,11 +740,11 @@
               <DataTrigger Value="True">
                 <DataTrigger.Binding>
                   <MultiBinding Converter="{StaticResource LogicalMultiAndConverter}">
-                    <Binding Path="WindowMoving" />
+                    <Binding Path="WindowMovingOrResizing" />
                     <Binding Path="IsActive" RelativeSource="{RelativeSource AncestorType=Window}" />
                   </MultiBinding>
                 </DataTrigger.Binding>
-                <Setter Property="Opacity" Value="{Binding WindowMovingOpacity, Mode=OneTime}" />
+                <Setter Property="Opacity" Value="{Binding WindowMovingOrResizingOpacity, Mode=OneTime}" />
               </DataTrigger>
             </Style.Triggers>
           </Style>

@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
         /// 移動時の透明度。
         /// </summary>
         [Configuration]
-        public double MovingOpacity { get; }
+        public double MovingOrResizingOpacity { get; }
 
         /// <summary>
         /// 絶対座標での標準サイズ。
