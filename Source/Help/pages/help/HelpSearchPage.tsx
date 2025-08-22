@@ -14,6 +14,8 @@ import { convert } from "html-to-text";
 import { type FC, useState } from "react";
 import ReactDOMServer from "react-dom/server";
 import { Controller, useForm } from "react-hook-form";
+import { PageContent } from "../../components/layouts/PageContent";
+import { PageLink } from "../../components/PageLink";
 import {
 	DevPageKeys,
 	HelpPageKeys,
@@ -23,8 +25,6 @@ import {
 } from "../../page";
 import type { PageProps } from "../../types/page";
 import { getPage } from "../../utils/page";
-import { PageContent } from "../../components/layouts/PageContent";
-import { PageLink } from "../../components/PageLink";
 
 type SearchPosition = {
 	index: number;
