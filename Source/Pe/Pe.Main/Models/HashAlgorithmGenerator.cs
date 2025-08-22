@@ -1,25 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Bridge.Models;
 
-namespace ContentTypeTextNet.Pe.Library.Common
+namespace ContentTypeTextNet.Pe.Main.Models
 {
-    public enum HashAlgorithmKind
+    internal class HashAlgorithmGenerator: IHashAlgorithmGenerator
     {
-        Unknown,
-        SHA1,
-        SHA256,
-        SHA384,
-        SHA512,
-        MD5,
-    }
+        #region IHashGenerator
 
-    public static class HashUtility
-    {
-        #region function
-
-        public static HashAlgorithm Create(HashAlgorithmKind hashAlgorithmKind)
+        public HashAlgorithm Create(HashAlgorithmKind hashAlgorithmKind)
         {
             return hashAlgorithmKind switch {
                 HashAlgorithmKind.SHA1 => SHA1.Create(),
@@ -38,7 +31,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns></returns>
         /// <exception cref="NotSupportedException"><c>System.Security.*</c>系を指定。</exception>
         /// <exception cref="NotImplementedException"></exception>
-        public static HashAlgorithm Create(string algorithmName)
+        public HashAlgorithm Create(string algorithmName)
         {
             switch(algorithmName.ToUpperInvariant()) {
                 case "SHA":

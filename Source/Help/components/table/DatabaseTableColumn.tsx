@@ -173,10 +173,10 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 		}
 	}, [selectableClrTypes, clrType, setValue]);
 
-	function handleInput(
+	const handleInput = (
 		data: InputValues,
 		event?: BaseSyntheticEvent<object>,
-	): void {
+	) => {
 		let foreignKey: ForeignKey | undefined;
 		let foreignKeyId: WorkForeignKey | undefined;
 		if (data.foreignKey) {
@@ -221,9 +221,9 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 			clrType: data.clrType,
 			comment: data.comment,
 		});
-	}
+	};
 
-	function handleRemove(event: MouseEvent): void {
+	const handleRemove = (event: MouseEvent) => {
 		const index = workColumns.items.findIndex((a) => a.id === columnId);
 		if (index === -1) {
 			throw new Error();
@@ -234,7 +234,7 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 			...workColumns,
 			items: newItems,
 		});
-	}
+	};
 
 	return (
 		<TableRow
@@ -286,28 +286,34 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 							>
 								<MenuItem value="">{"未設定"}</MenuItem>
 
-								{foreignTableColumns.map((a) => {
-									switch (a.type) {
-										case "Table":
-											return (
-												<ListGroupHeader
-													key={a.data.id}
-												>
-													{a.data.define.tableName}
-												</ListGroupHeader>
-											);
+								{
+									// biome-ignore lint/suspicious/useIterableCallbackReturn:💩
+									foreignTableColumns.map((a) => {
+										switch (a.type) {
+											case "Table":
+												return (
+													<ListGroupHeader
+														key={a.data.id}
+													>
+														{
+															a.data.define
+																.tableName
+														}
+													</ListGroupHeader>
+												);
 
-										case "Column":
-											return (
-												<MenuItem
-													key={`${a.table.id}.${a.data.id}`}
-													value={`${a.table.id}.${a.data.id}`}
-												>
-													{a.data.physicalName}
-												</MenuItem>
-											);
-									}
-								})}
+											case "Column":
+												return (
+													<MenuItem
+														key={`${a.table.id}.${a.data.id}`}
+														value={`${a.table.id}.${a.data.id}`}
+													>
+														{a.data.physicalName}
+													</MenuItem>
+												);
+										}
+									})
+								}
 							</EditorSelect>
 						)}
 					/>
@@ -346,28 +352,31 @@ export const DatabaseTableColumn: FC<DatabaseTableColumnProps> = (
 							{...field}
 							onBlur={handleSubmit(handleInput)}
 						>
-							{Sqlite3Items.map((a) => {
-								switch (a.type) {
-									case "Title":
-										return (
-											<ListGroupHeader
-												key={`${a.type}.${a.display}`}
-											>
-												{a.display}
-											</ListGroupHeader>
-										);
+							{
+								// biome-ignore lint/suspicious/useIterableCallbackReturn: 💩
+								Sqlite3Items.map((a) => {
+									switch (a.type) {
+										case "Title":
+											return (
+												<ListGroupHeader
+													key={`${a.type}.${a.display}`}
+												>
+													{a.display}
+												</ListGroupHeader>
+											);
 
-									case "Type":
-										return (
-											<MenuItem
-												key={a.data}
-												value={a.data}
-											>
-												{a.display}
-											</MenuItem>
-										);
-								}
-							})}
+										case "Type":
+											return (
+												<MenuItem
+													key={a.data}
+													value={a.data}
+												>
+													{a.display}
+												</MenuItem>
+											);
+									}
+								})
+							}
 						</EditorSelect>
 					)}
 				/>

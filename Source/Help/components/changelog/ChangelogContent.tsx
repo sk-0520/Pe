@@ -1,13 +1,13 @@
 import { Box, List, type SxProps, type Theme, Typography } from "@mui/material";
 import type { FC } from "react";
 import type {
-	ChangelogContentKinds,
+	ChangelogContentKind,
 	ChangelogContent as ChangelogContentType,
 } from "../../types/changelog";
 import { ChangelogContentItem } from "./ChangelogContentItem";
 
 const KindMap: {
-	[key in ChangelogContentKinds]: {
+	[key in ChangelogContentKind]: {
 		title: string;
 		styles: { header: SxProps<Theme> };
 	};

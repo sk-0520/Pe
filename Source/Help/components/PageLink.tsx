@@ -1,7 +1,7 @@
 import { Link, Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import type { FC, MouseEvent } from "react";
-import { type PageKey, Pages } from "../pages";
+import { type PageKey, Pages } from "../page";
 import { SelectedPageKeyAtom } from "../stores/SideMenuStore";
 import { getPage, makeUrl } from "../utils/page";
 
@@ -14,11 +14,11 @@ export const PageLink: FC<PageLinkProps> = (props: PageLinkProps) => {
 
 	const [_, setSelectedPageKey] = useAtom(SelectedPageKeyAtom);
 
-	function handleLinkClick(ev: MouseEvent, pageKey: PageKey, url: URL): void {
+	const handleLinkClick = (ev: MouseEvent, pageKey: PageKey, url: URL) => {
 		ev.preventDefault();
 		setSelectedPageKey(pageKey);
 		history.pushState({}, "", url);
-	}
+	};
 
 	try {
 		const url = makeUrl(page);

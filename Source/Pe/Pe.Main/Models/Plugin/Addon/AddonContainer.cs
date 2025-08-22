@@ -24,7 +24,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
         #endregion
 
-        public AddonContainer(PluginContextFactory pluginContextFactory, LauncherItemAddonContextFactory launcherItemAddonContextFactory, BackgroundAddonContextFactory backgroundAddonContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+        public AddonContainer(PluginContextFactory pluginContextFactory, LauncherItemAddonContextFactory launcherItemAddonContextFactory, BackgroundAddonContextFactory backgroundAddonContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IHashAlgorithmGenerator hashAlgorithmGenerator, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
@@ -36,6 +36,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
             UserAgentFactory = userAgentFactory;
 
             ViewManager = viewManager;
+            HashAlgorithmGenerator = hashAlgorithmGenerator;
             PlatformTheme = platformTheme;
             ImageLoader = imageLoader;
             MediaConverter = mediaConverter;
@@ -57,6 +58,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         private IHttpUserAgentFactory UserAgentFactory { get; }
 
         private IViewManager ViewManager {get;}
+        private IHashAlgorithmGenerator HashAlgorithmGenerator { get; }
         private IPlatformTheme PlatformTheme { get; }
         private IImageLoader ImageLoader { get; }
         private IMediaConverter MediaConverter { get; }
@@ -106,18 +108,18 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
         public CommandFinderAddonProxy GetCommandFinder()
         {
-            return new CommandFinderAddonProxy(CommandFinderSupportAddons, PluginContextFactory, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
+            return new CommandFinderAddonProxy(CommandFinderSupportAddons, PluginContextFactory, UserAgentFactory, ViewManager, HashAlgorithmGenerator, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
         }
 
         public BackgroundAddonProxy GetBackground()
         {
-            return new BackgroundAddonProxy(BackgroundSupportAddons, PluginContextFactory, BackgroundAddonContextFactory, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
+            return new BackgroundAddonProxy(BackgroundSupportAddons, PluginContextFactory, BackgroundAddonContextFactory, UserAgentFactory, ViewManager, HashAlgorithmGenerator, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
         }
 
         public IReadOnlyList<WidgetAddonProxy> GetWidgets()
         {
             return WidgetSupportAddons
-                .Select(i => new WidgetAddonProxy(i, PluginContextFactory, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory))
+                .Select(i => new WidgetAddonProxy(i, PluginContextFactory, UserAgentFactory, ViewManager, HashAlgorithmGenerator, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory))
                 .ToList()
             ;
         }
@@ -137,7 +139,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
                 if(addon == null) {
                     throw new PluginNotFoundException($"{nameof(pluginId)}: {pluginId}");
                 }
-                var proxy = new LauncherItemAddonProxy(launcherItemId, addon, PluginContextFactory, LauncherItemAddonContextFactory, UserAgentFactory, ViewManager, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
+                var proxy = new LauncherItemAddonProxy(launcherItemId, addon, PluginContextFactory, LauncherItemAddonContextFactory, UserAgentFactory, ViewManager, HashAlgorithmGenerator, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory);
                 return proxy;
             }, pluginId);
         }

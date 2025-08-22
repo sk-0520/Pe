@@ -6,5 +6,5 @@ export function getChangelogs(): Changelogs {
 	const result = [...changelogs];
 	Array.prototype.push.apply(result, changelogsArchives);
 
-	return result as unknown as Changelogs;
+	return result as Changelogs;
 }

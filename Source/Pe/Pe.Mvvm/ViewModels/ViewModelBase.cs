@@ -28,10 +28,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             var type = GetType();
             var properties = type.GetProperties();
 
-            ObserveProperties = properties
-                .Select(a => (property: a, attributes: a.GetCustomAttributes<ObservePropertyAttribute>().ToArray()))
-                .Where(a => a.attributes.Any())
-                .Select(a => new ObserveProperties(a.property, a.attributes))
+            ObserveProperties = AttributeUtility.GetPropertiesWithAttribute<ObservePropertyAttribute>(properties)
                 .ToHashSet()
             ;
             if(ObserveProperties.Any()) {
@@ -47,7 +44,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         protected Dictionary<string, IList<ValidateMessage>> Errors { get; } = new Dictionary<string, IList<ValidateMessage>>();
 
-        private IReadOnlyCollection<ObserveProperties> ObserveProperties { get; }
+        private IReadOnlyCollection<AttributeProperty<ObservePropertyAttribute>> ObserveProperties { get; }
 
         #endregion
 

@@ -14,7 +14,7 @@ export class ItemsTypeError extends AccessError {}
  *
  * @param array 配列。
  * @param index 添え字。
- * @throws {@link OutOfRangeError} 取得できないか値が `undefine`
+ * @throws {@link OutOfRangeError} 取得できないか値が `undefined`
  */
 export function getElement<TValue>(
 	array: ReadonlyArray<TValue>,
@@ -25,7 +25,7 @@ export function getElement<TValue>(
  *
  * @param map マップ。
  * @param key キー。
- * @throws {@link OutOfRangeError} 取得できないか値が `undefine`
+ * @throws {@link OutOfRangeError} 取得できないか値が `undefined`
  */
 export function getElement<TKey extends PropertyKey, TValue>(
 	map: Map<TKey, TValue> | ReadonlyMap<TKey, TValue>,
@@ -36,7 +36,7 @@ export function getElement<TKey extends PropertyKey, TValue>(
  *
  * @param record レコード。
  * @param key キー。
- * @throws {@link OutOfRangeError} 取得できないか値が `undefine`
+ * @throws {@link OutOfRangeError} 取得できないか値が `undefined`
  */
 export function getElement<TKey extends PropertyKey, TValue>(
 	record: Record<TKey, TValue>,
@@ -47,7 +47,7 @@ export function getElement<TKey extends PropertyKey, TValue>(
  *
  * @param obj オブジェクト。
  * @param key キー。
- * @throws {@link OutOfRangeError} 取得できないか値が `undefine`
+ * @throws {@link OutOfRangeError} 取得できないか値が `undefined`
  */
 export function getElement<TValue>(
 	record: { [key: PropertyKey]: TValue },

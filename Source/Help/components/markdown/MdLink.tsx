@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import type { PageKey } from "../../pages";
-import { PageLink } from "../PageLink";
+import { PageLink } from "../../components/PageLink";
+import type { PageKey } from "../../page";
 
 interface MdLinkProps {
 	page: PageKey;

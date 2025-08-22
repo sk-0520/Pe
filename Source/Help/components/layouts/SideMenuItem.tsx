@@ -1,10 +1,10 @@
 import { List, ListItemButton, Typography, useTheme } from "@mui/material";
 import type { FC, MouseEvent } from "react";
-import type { PageElement, PageKey } from "../../pages";
+import type { PageElement, PageKey } from "../../page";
 
 interface SideMenuItemProps {
 	selectedPageKey: PageKey;
-	callbackSelectPageKey: (pageKey: PageKey) => void;
+	onSelectPageKey: (pageKey: PageKey) => void;
 	page: PageElement;
 	nestLevel: number;
 }
@@ -12,14 +12,14 @@ interface SideMenuItemProps {
 export const SideMenuItem: FC<SideMenuItemProps> = (
 	props: SideMenuItemProps,
 ) => {
-	const { callbackSelectPageKey, page, nestLevel, selectedPageKey } = props;
+	const { onSelectPageKey, page, nestLevel, selectedPageKey } = props;
 	const theme = useTheme();
 
 	const isSelected = selectedPageKey === page.key;
 
-	function handleSelectMenu(event: MouseEvent): void {
-		callbackSelectPageKey(page.key);
-	}
+	const handleSelectMenu = (event: MouseEvent) => {
+		onSelectPageKey(page.key);
+	};
 
 	return (
 		<>
@@ -53,8 +53,8 @@ export const SideMenuItem: FC<SideMenuItemProps> = (
 					{page.nodes.map((a) => (
 						<SideMenuItem
 							key={a.key}
-							selectedPageKey={props.selectedPageKey}
-							callbackSelectPageKey={props.callbackSelectPageKey}
+							selectedPageKey={selectedPageKey}
+							onSelectPageKey={onSelectPageKey}
 							page={a}
 							nestLevel={nestLevel + 1}
 						/>

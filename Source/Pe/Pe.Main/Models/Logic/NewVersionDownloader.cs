@@ -2,15 +2,15 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Policy;
+using System.Threading;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Bridge.Models;
-using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
@@ -19,10 +19,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     /// </summary>
     public class NewVersionDownloader
     {
-        public NewVersionDownloader(ApplicationConfiguration applicationConfiguration, IUserAgentManager userAgentManager, ILoggerFactory loggerFactory)
+        public NewVersionDownloader(ApplicationConfiguration applicationConfiguration, IHashAlgorithmGenerator hashAlgorithmGenerator,IUserAgentManager userAgentManager, ILoggerFactory loggerFactory)
         {
             Logger = loggerFactory.CreateLogger(GetType());
             ApplicationConfiguration = applicationConfiguration;
+            HashAlgorithmGenerator = hashAlgorithmGenerator;
             UserAgentManager = userAgentManager;
         }
 
@@ -31,6 +32,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         private ILogger Logger { get; }
 
         private ApplicationConfiguration ApplicationConfiguration { get; }
+        private IHashAlgorithmGenerator HashAlgorithmGenerator { get; }
         private IUserAgentManager UserAgentManager { get; }
         internal int ChecksumSize { get; init; } = 1024 * 2;
         internal int DownloadChunkSize { get; init; } = 1024 * 4;
@@ -72,7 +74,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             }
 
             Logger.LogInformation("ハッシュ: {0}, {1}", updateItem.ArchiveHashKind, updateItem.ArchiveHashValue);
-            using(var hashAlgorithm = HashUtility.Create(updateItem.ArchiveHashKind)) {
+            using(var hashAlgorithm = HashAlgorithmGenerator.Create(updateItem.ArchiveHashKind)) {
                 using var stream = targetFile.OpenRead();
                 using var checkSumBuffer = new DisposableArrayPool<byte>(ChecksumSize);
                 long totalReadSize = 0;

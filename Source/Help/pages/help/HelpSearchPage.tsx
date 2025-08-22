@@ -22,7 +22,7 @@ import {
 	type PageElement,
 	type PageKey,
 	Pages,
-} from "../../pages";
+} from "../../page";
 import type { PageProps } from "../../types/page";
 import { getPage } from "../../utils/page";
 
@@ -144,7 +144,7 @@ export const HelpSearchPage: FC<PageProps> = (props: PageProps) => {
 					<PageContent
 						selectedPageKey={targetKey}
 						currentPage={currentPage}
-						callbackSelectPageKey={handleSelectPageKey}
+						onSelectPageKey={handleSelectPageKey}
 					/>,
 				);
 			} finally {

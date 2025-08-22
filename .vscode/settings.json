@@ -29,14 +29,6 @@
 		"MD024": false,
 		"MD036": false
 	},
-	"cSpell.words": [
-		"endregion",
-		"msbuild",
-		"pwsh",
-		"THTML",
-		"biomejs",
-		"noqa"
-	],
 	"powershell.scriptAnalysis.enable": true,
 	"powershell.scriptAnalysis.settingsPath": "./PSScriptAnalyzerSettings.psd1",
 	"powershell.codeFormatting.newLineAfterCloseBrace": false,
@@ -95,5 +87,8 @@
 	},
 	"[markdown]": {
 		"editor.wordWrap": "off"
+	},
+	"[bat]": {
+		"files.encoding": "shiftjis"
 	}
 }

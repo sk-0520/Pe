@@ -102,16 +102,16 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             var testIO = TestIO.InitializeMethod(this);
 
             var f = testIO.Work.CreateEmptyFile("f");
-            Assert.True(await IOUtility.ExistsAsync(f.FullName));
+            Assert.True(await IOUtility.ExistsAsync(f.FullName, cancellationToken: TestContext.Current.CancellationToken));
 
             var d = testIO.Work.CreateDirectory("d");
-            Assert.True(await IOUtility.ExistsAsync(d.Directory.FullName));
+            Assert.True(await IOUtility.ExistsAsync(d.Directory.FullName, cancellationToken: TestContext.Current.CancellationToken));
 
             f.Delete();
             d.Directory.Delete(true);
 
-            Assert.False(await IOUtility.ExistsAsync(f.FullName));
-            Assert.False(await IOUtility.ExistsAsync(d.Directory.FullName));
+            Assert.False(await IOUtility.ExistsAsync(f.FullName, cancellationToken: TestContext.Current.CancellationToken));
+            Assert.False(await IOUtility.ExistsAsync(d.Directory.FullName, cancellationToken: TestContext.Current.CancellationToken));
         }
 
         [Fact]
@@ -120,16 +120,16 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             var testIO = TestIO.InitializeMethod(this);
 
             var f = testIO.Work.CreateEmptyFile("f");
-            Assert.True(await IOUtility.ExistsFileAsync(f.FullName));
+            Assert.True(await IOUtility.ExistsFileAsync(f.FullName, cancellationToken: TestContext.Current.CancellationToken));
 
             var d = testIO.Work.CreateDirectory("d");
-            Assert.False(await IOUtility.ExistsFileAsync(d.Directory.FullName));
+            Assert.False(await IOUtility.ExistsFileAsync(d.Directory.FullName, cancellationToken: TestContext.Current.CancellationToken));
 
             f.Delete();
             d.Directory.Delete(true);
 
-            Assert.False(await IOUtility.ExistsAsync(f.FullName));
-            Assert.False(await IOUtility.ExistsAsync(d.Directory.FullName));
+            Assert.False(await IOUtility.ExistsAsync(f.FullName, cancellationToken: TestContext.Current.CancellationToken));
+            Assert.False(await IOUtility.ExistsAsync(d.Directory.FullName, cancellationToken: TestContext.Current.CancellationToken ));
         }
 
         [Fact]
@@ -138,16 +138,16 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             var testIO = TestIO.InitializeMethod(this);
 
             var f = testIO.Work.CreateEmptyFile("f");
-            Assert.False(await IOUtility.ExistsDirectoryAsync(f.FullName));
+            Assert.False(await IOUtility.ExistsDirectoryAsync(f.FullName, cancellationToken: TestContext.Current.CancellationToken));
 
             var d = testIO.Work.CreateDirectory("d");
-            Assert.True(await IOUtility.ExistsDirectoryAsync(d.Directory.FullName));
+            Assert.True(await IOUtility.ExistsDirectoryAsync(d.Directory.FullName, cancellationToken: TestContext.Current.CancellationToken));
 
             f.Delete();
             d.Directory.Delete(true);
 
-            Assert.False(await IOUtility.ExistsDirectoryAsync(f.FullName));
-            Assert.False(await IOUtility.ExistsDirectoryAsync(d.Directory.FullName));
+            Assert.False(await IOUtility.ExistsDirectoryAsync(f.FullName, cancellationToken: TestContext.Current.CancellationToken));
+            Assert.False(await IOUtility.ExistsDirectoryAsync(d.Directory.FullName, cancellationToken: TestContext.Current.CancellationToken));
         }
 
         [Fact]
@@ -183,17 +183,17 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
 
             var child = d.CreateEmptyFile("child");
 
-            Assert.True(IOUtility.Exists(f.FullName));
-            Assert.True(IOUtility.Exists(d.Directory.FullName));
-            Assert.True(IOUtility.Exists(child.FullName));
+            Assert.True(await IOUtility.ExistsAsync(f.FullName, cancellationToken: TestContext.Current.CancellationToken));
+            Assert.True(await IOUtility.ExistsAsync(d.Directory.FullName, cancellationToken: TestContext.Current.CancellationToken));
+            Assert.True(await IOUtility.ExistsAsync(child.FullName, cancellationToken: TestContext.Current.CancellationToken));
 
-            await IOUtility.DeleteAsync(f.FullName);
-            Assert.False(IOUtility.Exists(f.FullName));
+            await IOUtility.DeleteAsync(f.FullName, cancellationToken: TestContext.Current.CancellationToken);
+            Assert.False(await IOUtility.ExistsAsync(f.FullName, cancellationToken: TestContext.Current.CancellationToken));
 
-            await IOUtility.DeleteAsync(testIO.Work.Directory.FullName);
-            Assert.False(IOUtility.Exists(d.Directory.FullName));
-            Assert.False(IOUtility.Exists(child.FullName));
-            Assert.False(IOUtility.Exists(testIO.Work.Directory.FullName));
+            await IOUtility.DeleteAsync(testIO.Work.Directory.FullName, cancellationToken: TestContext.Current.CancellationToken);
+            Assert.False(await IOUtility.ExistsAsync(d.Directory.FullName, cancellationToken: TestContext.Current.CancellationToken));
+            Assert.False(await IOUtility.ExistsAsync(child.FullName, cancellationToken: TestContext.Current.CancellationToken));
+            Assert.False(await IOUtility.ExistsAsync(testIO.Work.Directory.FullName, cancellationToken: TestContext.Current.CancellationToken));
         }
 
         [Fact]

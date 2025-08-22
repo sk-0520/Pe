@@ -150,46 +150,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return StatementLoader.LoadStatementByCurrent(type, callerMemberName);
         }
 
-        /// <summary>
-        /// 指定条件に合わせて文を加工する。
-        /// </summary>
-        /// <remarks>
-        /// <para>必須条件として<see cref="IDatabaseImplementation.SupportedBlockComment"/>が真、<see cref="IDatabaseImplementation.BlockComments"/>が1要素以上。</para>
-        /// <para><see cref="IDatabaseImplementation.BlockComments"/>最初の要素が使用される。</para>
-        /// </remarks>
-        /// <example>
-        /// <code language="sql">
-        /// select *
-        /// from /*{{*//*KEY
-        /// KEY-A:CODE[改行] *注釈* <paramref name="blocks"/>["KEY"] -> KEY-A
-        ///     TABLE_A
-        /// KEY-B:CODE[改行] *注釈* <paramref name="blocks"/>["KEY"] -> KEY-B
-        ///     TABLE_B
-        /// KEY-C:LOAD[改行] *注釈* <paramref name="blocks"/>["KEY"] -> KEY-C, <see cref="LoadStatement"/>(callerMemberName<see cref="JoinSeparator"/>NAME)
-        ///     NAME
-        /// */TABLE_ELSE/*}}*/ -- <paramref name="blocks"/>["KEY"] が KEY-A,KEY-B,KEY-C に当てはまらない
-        /// </code>
-        /// </example>
-        /// <param name="statement"></param>
-        /// <param name="blocks"></param>
-        /// <param name="callerMemberName"><see cref="CallerMemberNameAttribute"/></param>
-        /// <returns></returns>
-        protected string ProcessStatement(string statement, IReadOnlyDictionary<string, string> blocks, [CallerMemberName] string callerMemberName = "")
-        {
-            if(!Implementation.SupportedBlockComment) {
-                throw new InvalidOperationException(nameof(Implementation.SupportedBlockComment));
-            }
-
-            if(string.IsNullOrEmpty(statement)) {
-                return statement;
-            }
-            if(blocks.Count == 0) {
-                return statement;
-            }
-
-            return ProcessBodyRegex.Replace(statement, m => ReplaceStatement(m, blocks, callerMemberName));
-        }
-
         private string ReplaceStatement(Match match, IReadOnlyDictionary<string, string> blocks, string callerMemberName)
         {
             var blockComment = Implementation.BlockComments.First();
@@ -243,6 +203,46 @@ namespace ContentTypeTextNet.Pe.Library.Database
             }
 
             return defaultContent;
+        }
+
+        /// <summary>
+        /// 指定条件に合わせて文を加工する。
+        /// </summary>
+        /// <remarks>
+        /// <para>必須条件として<see cref="IDatabaseImplementation.SupportedBlockComment"/>が真、<see cref="IDatabaseImplementation.BlockComments"/>が1要素以上。</para>
+        /// <para><see cref="IDatabaseImplementation.BlockComments"/>最初の要素が使用される。</para>
+        /// </remarks>
+        /// <example>
+        /// <code language="sql">
+        /// select *
+        /// from /*{{*//*KEY
+        /// KEY-A:CODE[改行] *注釈* <paramref name="blocks"/>["KEY"] -> KEY-A
+        ///     TABLE_A
+        /// KEY-B:CODE[改行] *注釈* <paramref name="blocks"/>["KEY"] -> KEY-B
+        ///     TABLE_B
+        /// KEY-C:LOAD[改行] *注釈* <paramref name="blocks"/>["KEY"] -> KEY-C, <see cref="LoadStatement"/>(callerMemberName<see cref="JoinSeparator"/>NAME)
+        ///     NAME
+        /// */TABLE_ELSE/*}}*/ -- <paramref name="blocks"/>["KEY"] が KEY-A,KEY-B,KEY-C に当てはまらない
+        /// </code>
+        /// </example>
+        /// <param name="statement"></param>
+        /// <param name="blocks"></param>
+        /// <param name="callerMemberName"><see cref="CallerMemberNameAttribute"/></param>
+        /// <returns></returns>
+        protected string ProcessStatement(string statement, IReadOnlyDictionary<string, string> blocks, [CallerMemberName] string callerMemberName = "")
+        {
+            if(!Implementation.SupportedBlockComment) {
+                throw new InvalidOperationException(nameof(Implementation.SupportedBlockComment));
+            }
+
+            if(string.IsNullOrEmpty(statement)) {
+                return statement;
+            }
+            if(blocks.Count == 0) {
+                return statement;
+            }
+
+            return ProcessBodyRegex.Replace(statement, m => ReplaceStatement(m, blocks, callerMemberName));
         }
 
         #endregion

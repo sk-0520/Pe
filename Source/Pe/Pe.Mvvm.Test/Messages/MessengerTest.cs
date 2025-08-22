@@ -86,26 +86,26 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Messages
 #pragma warning restore S6966 // Awaitable method should be used
             Assert.Equal(0, callCount1);
 
-            await messenger.SendAsync(new ActionMessage());
+            await messenger.SendAsync(new ActionMessage(), cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(1, callCount1);
 
-            await messenger.SendAsync(new ActionMessage("no-hit"));
+            await messenger.SendAsync(new ActionMessage("no-hit"), cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(1, callCount1);
 
-            await messenger.SendAsync(new ActionMessage("ID"));
+            await messenger.SendAsync(new ActionMessage("ID"), cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(1, callCount2);
 
-            await messenger.SendAsync(new OtherMessage());
+            await messenger.SendAsync(new OtherMessage(), cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(1, callCount1);
 
-            await messenger.SendAsync(new ActionMessage());
+            await messenger.SendAsync(new ActionMessage(), cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(2, callCount1);
 
             messenger.Unregister(messageItem1);
             // 登録解除したメッセージは死ぬ
             Assert.True(messageItem1.IsDisposed);
 
-            await messenger.SendAsync(new ActionMessage());
+            await messenger.SendAsync(new ActionMessage(), cancellationToken: TestContext.Current.CancellationToken);
             Assert.Equal(2, callCount1);
 
             // 登録解除は二重に実施しても問題なし

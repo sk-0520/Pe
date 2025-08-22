@@ -3,6 +3,7 @@
 
 using System;
 using System.Data;
+using System.Globalization;
 using ContentTypeTextNet.Pe.Library.Database;
 using Dapper;
 
@@ -88,7 +89,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite
         {
             var s = (string)value;
             if(s != null) {
-                if(TimeSpan.TryParse(s, out var ret)) {
+                if(TimeSpan.TryParse(s, CultureInfo.InvariantCulture, out var ret)) {
                     return ret;
                 }
             }

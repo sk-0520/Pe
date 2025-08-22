@@ -10,14 +10,14 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
     /// <summary>
     /// 監視プロパティ設定。
     /// </summary>
-    public class ObserveProperties
+    public class ObserveProperty
     {
         /// <summary>
         /// 生成。
         /// </summary>
         /// <param name="property">対象プロパティ。</param>
         /// <param name="attributes">監視対象プロパティ。</param>
-        public ObserveProperties(PropertyInfo property, IReadOnlyCollection<ObservePropertyAttribute> attributes)
+        public ObserveProperty(PropertyInfo property, IReadOnlyCollection<ObservePropertyAttribute> attributes)
         {
             Property = property;
             Attributes = attributes;

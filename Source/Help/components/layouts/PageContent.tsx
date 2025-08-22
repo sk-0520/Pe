@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import type { FC, ReactNode } from "react";
-import type { PageKey } from "../../pages";
+import type { PageKey } from "../../page";
 import {
 	DevBranchPage,
 	DevBuildPage,

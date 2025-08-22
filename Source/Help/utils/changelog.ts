@@ -126,15 +126,15 @@ export function splitVersionInfos(rawVersion: string): VersionInfo[] {
 	return result;
 }
 
-const TagVesion = {
+const TagVersion = {
 	minimum: "0.84.000",
 	maximum: "0.99.095",
 	regex: /^(?<MAJOR>\d+)\.(?<MINOR>\d+)\.(?<BUILD>\d+)$/,
 } as const;
 
 export function convertTagFromVersion(version: string): string {
-	if (TagVesion.minimum <= version && version <= TagVesion.maximum) {
-		const result = TagVesion.regex.exec(version);
+	if (TagVersion.minimum <= version && version <= TagVersion.maximum) {
+		const result = TagVersion.regex.exec(version);
 		if (result?.groups) {
 			const major = result.groups.MAJOR;
 			const minor = result.groups.MINOR;

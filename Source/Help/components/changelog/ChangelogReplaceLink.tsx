@@ -39,6 +39,7 @@ export const ChangelogReplaceLink: FC<ChangelogReplaceLinkProps> = (
 		return children;
 	}
 
+	// biome-ignore lint/suspicious/useIterableCallbackReturn: 💩
 	return tokens.map((a, i) => {
 		switch (a.kind) {
 			case "text":

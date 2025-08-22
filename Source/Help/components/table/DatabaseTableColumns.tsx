@@ -24,7 +24,7 @@ export const DatabaseTableColumns: FC<DatabaseTableColumnsProps> = (
 
 	const { workColumns, updateWorkColumns } = useWorkColumns(tableId);
 
-	function handleAddColumn(event: MouseEvent): void {
+	const handleAddColumn = (event: MouseEvent) => {
 		const newColumnNumber = workColumns.items.length + 1;
 
 		const newItems = [...workColumns.items];
@@ -50,7 +50,7 @@ export const DatabaseTableColumns: FC<DatabaseTableColumnsProps> = (
 			...workColumns,
 			items: newItems,
 		});
-	}
+	};
 
 	return (
 		<DatabaseTableSection title="レイアウト">

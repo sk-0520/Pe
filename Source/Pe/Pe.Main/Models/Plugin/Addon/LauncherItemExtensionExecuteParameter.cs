@@ -10,8 +10,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 {
     public class LauncherItemExtensionExecuteParameter: AddonParameter, ILauncherItemExtensionExecuteParameter
     {
-        public LauncherItemExtensionExecuteParameter(LauncherItemId launcherItemId, ILauncherItemAddonViewSupporter viewSupporter, ISkeletonImplements skeletonImplements, IPluginInformation pluginInformation, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy , IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
-            : base(skeletonImplements, pluginInformation, userAgentFactory, viewManager, platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
+        public LauncherItemExtensionExecuteParameter(LauncherItemId launcherItemId, ILauncherItemAddonViewSupporter viewSupporter, ISkeletonImplements skeletonImplements, IPluginInformation pluginInformation, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IHashAlgorithmGenerator hashAlgorithmGenerator, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy , IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(skeletonImplements, pluginInformation, userAgentFactory, viewManager, hashAlgorithmGenerator,  platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
         {
             LauncherItemId = launcherItemId;
             ViewSupporter = viewSupporter;

@@ -64,7 +64,8 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         ///   &lt;!doctype html&gt;
         ///&lt;html lang=&quot;ja&quot;&gt;
         ///&lt;head&gt;
-        ///	&lt;meta charSet=&quot;utf-8&quot; /&gt;
+        ///	&lt;meta charset=&quot;utf-8&quot; /&gt;
+        ///	&lt;title&gt;web-view browser engine&lt;/title&gt;
         ///	&lt;style&gt;
         ///		* {
         ///			font-family: monospace;
@@ -81,7 +82,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         ///	&lt;/style&gt;
         ///&lt;/head&gt;
         ///&lt;body&gt;
-        ///	&lt;table&gt;
+        ///	&lt;table aria-label=&quot;web-view browser engine&quot;&gt;
         ///		&lt;thead&gt;
         ///			&lt;tr&gt;
         ///				&lt;th&gt;KEY&lt;/th&gt;
@@ -90,10 +91,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         ///		&lt;/thead&gt;
         ///		&lt;tbody&gt;
         ///			&lt;tr&gt;
-        ///				&lt;td&gt;Assembly Name&lt;/td&gt;
-        ///				&lt;td&gt;&lt;code&gt;${ASSEMBLY_NAME}&lt;/code&gt;&lt;/td&gt;
-        ///			&lt;/tr&gt;
-        ///			&lt; [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
+        ///				&lt;td&gt; [残りの文字列は切り詰められました]&quot;; に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string File_About_WebView {
             get {
@@ -134,7 +132,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         ///
         ///	&lt;RuleSet ignoreCase=&quot;false&quot;&gt;
         ///		&lt;Rule color=&quot;Key&quot;&gt;
-        ///			^\s*[A-Za-z0-9_]+\s*(?==\s*.*)
+        ///			^[A-Za-z0-9_]+(?==)
         ///		&lt;/Rule&gt;
         ///		&lt;Rule color=&quot;Value&quot;&gt;
         ///			(?&amp;lt;=^\s*[A-Za-z0-9_]+\s*=\s*).+
@@ -194,6 +192,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         ///   &lt;!doctype html&gt;
         ///&lt;html lang=&quot;ja&quot;&gt;
         ///&lt;head&gt;
+        ///	&lt;meta charset=&quot;utf-8&quot; /&gt;
         ///	&lt;title&gt;&lt;/title&gt;
         ///&lt;/head&gt;
         ///&lt;body&gt;

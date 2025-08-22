@@ -20,5 +20,4 @@ namespace ContentTypeTextNet.Pe.Library.Args
 
         #endregion
     }
-
 }

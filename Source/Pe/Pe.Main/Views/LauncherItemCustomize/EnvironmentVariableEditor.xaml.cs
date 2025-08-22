@@ -1,9 +1,17 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using ContentTypeTextNet.Pe.Main.Models;
+using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize;
+using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
 
 namespace ContentTypeTextNet.Pe.Main.Views.LauncherItemCustomize
 {
@@ -15,7 +23,20 @@ namespace ContentTypeTextNet.Pe.Main.Views.LauncherItemCustomize
         public EnvironmentVariableEditor()
         {
             InitializeComponent();
+            var dic = Environment.GetEnvironmentVariables(EnvironmentVariableTarget.Process);
+            var envVariables = new Dictionary<string, string>(dic.Count);
+            foreach(var kv in dic.Cast<DictionaryEntry>()) {
+                envVariables[(string)kv.Key] = (string)kv.Value!;
+            }
+            EnvironmentVariables = envVariables;
         }
+
+        #region property
+
+        private IReadOnlyDictionary<string, string> EnvironmentVariables { get; }
+        private CompletionWindow? EnvRemoveEditorCompletionWindow { get; set; }
+
+        #endregion
 
         #region MergeTextDocumentProperty
 
@@ -131,6 +152,7 @@ namespace ContentTypeTextNet.Pe.Main.Views.LauncherItemCustomize
             set { SetValue(RemoveErrorItemsSourceProperty, value); }
         }
 
+
         private static void OnRemoveErrorItemsSourcePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             if(sender is EnvironmentVariableEditor control) {
@@ -168,6 +190,42 @@ namespace ContentTypeTextNet.Pe.Main.Views.LauncherItemCustomize
         {
             using(var stream = ResourceUtility.OpenSyntaxStream(Properties.Resources.File_Highlighting_EnvironmentVariable_Remove)) {
                 AvalonEditHelper.SetSyntaxHighlightingDefault((ICSharpCode.AvalonEdit.TextEditor)sender, stream);
+            }
+        }
+
+        private void envRemoveEditor_Initialized(object sender, System.EventArgs e)
+        {
+            this.envRemoveEditor.TextArea.TextEntering += envRemoveEditor_TextArea_TextEntering;
+        }
+
+        private void envRemoveEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Space && (e.KeyboardDevice.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) {
+                e.Handled = true;
+                EnvRemoveEditorCompletionWindow = new CompletionWindow(this.envRemoveEditor.TextArea);
+                var data = EnvRemoveEditorCompletionWindow.CompletionList.CompletionData;
+                foreach(var kv in EnvironmentVariables.OrderBy(a => a.Key)) {
+                    data.Add(new EnvRemoveCompletionData(kv.Key, kv.Value));
+                }
+                EnvRemoveEditorCompletionWindow.Show();
+            }
+        }
+
+        private void envRemoveEditor_TextArea_TextEntering(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+            if(e.Text.Length > 0 && EnvRemoveEditorCompletionWindow != null) {
+                if(!char.IsLetterOrDigit(e.Text[0])) {
+                    EnvRemoveEditorCompletionWindow.CompletionList.RequestInsertion(e);
+                }
+            }
+        }
+
+        private void root_Unloaded(object sender, RoutedEventArgs e)
+        {
+            this.envRemoveEditor.TextArea.TextEntering -= envRemoveEditor_TextArea_TextEntering;
+            if(EnvRemoveEditorCompletionWindow is not null) {
+                EnvRemoveEditorCompletionWindow.Close();
+                EnvRemoveEditorCompletionWindow = null;
             }
         }
     }

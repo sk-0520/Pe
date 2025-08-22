@@ -57,10 +57,10 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 			.map((a) => a.physicalName);
 	};
 
-	function handleInput(
+	const handleInput = (
 		data: InputValues,
 		event?: BaseSyntheticEvent<object, unknown, unknown> | undefined,
-	): void {
+	) => {
 		console.debug(data);
 
 		updateWorkIndex({
@@ -70,9 +70,9 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 			columns: getRawColumns(columnIds),
 			columnIds: columnIds,
 		});
-	}
+	};
 
-	function handleAddColum(event: MouseEvent): void {
+	const handleAddColumn = (event: MouseEvent) => {
 		console.debug({ columnIds, workIndex, workColumns });
 		const columns = workColumns.items.filter(
 			(a) => !isCommonColumnName(a.physicalName),
@@ -86,18 +86,18 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 				columnIds: columnIds,
 			});
 		}
-	}
+	};
 
-	function handleRemoveIndex(event: MouseEvent): void {
+	const handleRemoveIndex = (event: MouseEvent): void => {
 		const newItems = workIndexes.items.filter((a) => a.id !== indexId);
 		updateWorkIndexes({
 			...workIndexes,
 			items: newItems,
 		});
-	}
+	};
 
-	function handleRemoveColumn(event: MouseEvent, columnId: string): void {
-		const index = columnIds.findIndex((a) => a === columnId);
+	const handleRemoveColumn = (event: MouseEvent, columnId: string): void => {
+		const index = columnIds.indexOf(columnId);
 		if (index === -1) {
 			throw new Error(JSON.stringify({ columnId }));
 		}
@@ -108,9 +108,9 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 			columns: getRawColumns(columnIds),
 			columnIds: columnIds,
 		});
-	}
+	};
 
-	function handleChangeColumn(index: number, columnId: string): void {
+	const handleChangeColumn = (index: number, columnId: string): void => {
 		console.debug({ index, columnId });
 		columnIds[index] = columnId;
 		setColumnIds([...columnIds]);
@@ -120,7 +120,7 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 			columns: getRawColumns(columnIds),
 			columnIds: columnIds,
 		});
-	}
+	};
 
 	return (
 		<TableRow>
@@ -209,7 +209,7 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 									(a) => !isCommonColumnName(a.physicalName),
 								).length <= columnIds.length
 							}
-							onClick={handleAddColum}
+							onClick={handleAddColumn}
 						>
 							カラム追加
 						</EditorButton>

@@ -1,3 +1,4 @@
+// cSpell:ignore Lengths
 import { countSingleChar, NewLine } from "./string";
 
 export class MarkdownError extends Error {
@@ -94,6 +95,7 @@ export function buildTable(
 	);
 	//TODO: 幅調整はあとでやる
 	tableRows.push(
+		// biome-ignore lint/suspicious/useIterableCallbackReturn: 💩
 		columns.map((a, i) => {
 			switch (a.align) {
 				case "left":
