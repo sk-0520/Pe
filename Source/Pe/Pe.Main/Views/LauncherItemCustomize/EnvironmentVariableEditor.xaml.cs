@@ -1,9 +1,16 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using ContentTypeTextNet.Pe.Main.Models;
+using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize;
+using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
 
 namespace ContentTypeTextNet.Pe.Main.Views.LauncherItemCustomize
 {
@@ -170,5 +177,33 @@ namespace ContentTypeTextNet.Pe.Main.Views.LauncherItemCustomize
                 AvalonEditHelper.SetSyntaxHighlightingDefault((ICSharpCode.AvalonEdit.TextEditor)sender, stream);
             }
         }
+
+        private void envRemoveEditor_Initialized(object sender, System.EventArgs e)
+        {
+            this.envRemoveEditor.TextArea.TextEntering += envRemoveEditor_TextArea_TextEntering;
+            this.envRemoveEditor.TextArea.TextEntered += envRemoveEditor_TextArea_TextEntered;
+        }
+
+        private void envRemoveEditor_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Space && (e.KeyboardDevice.Modifiers & ModifierKeys.Control) == ModifierKeys.Control) {
+                e.Handled = true;
+                var envRemoveEditorCompletionWindow = new CompletionWindow(this.envRemoveEditor.TextArea);
+                IList<ICompletionData> data = envRemoveEditorCompletionWindow.CompletionList.CompletionData;
+                data.Add(new EnvRemoveCompletionData("Item1","*Item1*"));
+                data.Add(new EnvRemoveCompletionData("Item2","*Item2*"));
+                data.Add(new EnvRemoveCompletionData("Item3", "*Item3*"));
+                envRemoveEditorCompletionWindow.Show();
+            }
+        }
+
+        private void envRemoveEditor_TextArea_TextEntering(object sender, System.Windows.Input.TextCompositionEventArgs e)
+        {
+        }
+
+        private void envRemoveEditor_TextArea_TextEntered(object sender, TextCompositionEventArgs e)
+        {
+        }
+
     }
 }
