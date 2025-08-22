@@ -1,73 +1,23 @@
 [
 	{
-		"date": "YYYY/MM/DD",
-		"version": "0.99.259+",
+		"date": "2025/08/22",
+		"version": "0.99.260",
 		"contents": [
-			{
-				"type": "note",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
 			{
 				"type": "features",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "86d60014c1d90927f925e50bd46f3325f182e145",
 						"subject": "#1009: ノートの位置変更中もメニューを半透明にする"
 					},
 					{
-						"revision": "",
+						"revision": "78ae45fe7e19d2baa28a5491f4d2d0eb06eede0b",
 						"subject": "#682: 環境変数編集エディタの拡張",
 						"comments": [
 							"Windows が受け付けないような変数に対するシンタックスハイライトを破棄",
 							"削除用環境変数において Ctrl + Space で現在の環境変数一覧が表示されます",
 							"ヘルプは本コミットにおいて面倒なので未対応"
 						]
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					}
-				]
-			},
-			{
-				"type": "fixes",
-				"logs": [
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -75,20 +25,16 @@
 				"type": "developer",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "24af281a7b21d731ff52dc2b7024a530c5ab36f8",
 						"subject": "#1007: xunit v2 -> v3"
 					},
 					{
-						"revision": "",
+						"revision": "#1012",
 						"subject": "#1012: changelogs.json 影響で開発中のヘルプ作成がつらい"
 					},
 					{
-						"revision": "",
+						"revision": "fa9d43c04063d863577d54621dd1577987c261bf",
 						"subject": "update npm"
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			}
