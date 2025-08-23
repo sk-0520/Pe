@@ -37,4 +37,4 @@ export interface ChangelogVersion {
 	contents: ChangelogContent[];
 }
 
-export type Changelogs = ChangelogVersion[];
+export type ChangelogVersions = ChangelogVersion[];

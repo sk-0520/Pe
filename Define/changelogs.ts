@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/suspicious/noTemplateCurlyInString: ${...} は普通に使用する */
-import type { Changelogs as ChangelogsType } from "../Source/Help/types/changelog";
+import type { ChangelogVersions } from "../Source/Help/types/changelog";
 
-export const Changelogs: ChangelogsType = [
+export const Changelogs: ChangelogVersions = [
 	{
 		date: "YYYY/MM/DD",
 		version: "0.99.260+",

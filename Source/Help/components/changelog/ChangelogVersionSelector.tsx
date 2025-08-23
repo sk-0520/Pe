@@ -5,12 +5,15 @@ import {
 	useTheme,
 } from "@mui/material";
 import { type FC, type ReactNode, useMemo, useState } from "react";
-import type { Changelogs, ChangelogVersion } from "../../types/changelog";
+import type {
+	ChangelogVersion,
+	ChangelogVersions,
+} from "../../types/changelog";
 import { getElement } from "../../utils/access";
 import { ListGroupHeader } from "../ListGroupHeader";
 
 function getChangelogGroup(
-	changelogs: Changelogs,
+	changelogs: ChangelogVersions,
 ): Array<ChangelogVersion | string> {
 	const groupItems = new Map<object, string>();
 
@@ -39,7 +42,7 @@ function getChangelogGroup(
 }
 
 interface ChangelogVersionSelectorProps {
-	changelogs: Changelogs;
+	changelogs: ChangelogVersions;
 }
 
 export const ChangelogVersionSelector: FC<ChangelogVersionSelectorProps> = (
