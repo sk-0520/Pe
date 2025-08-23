@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { Changelogs } from "../../Define/changelogs";
+import Changelogs from "../../Define/changelogs";
 import type { ChangelogVersion } from "../Help/types/changelog";
 import { getElement } from "../Help/utils/access";
 import { splitVersionInfos } from "../Help/utils/changelog";
@@ -14,7 +14,6 @@ export interface Input {
 
 export function main(input: Input) {
 	console.debug({ input });
-	console.debug({ Changelogs });
 
 	const latestChangelog = getElement(Changelogs, 0);
 	const prevVersion = getElement(
