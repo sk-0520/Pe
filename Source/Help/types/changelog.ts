@@ -19,7 +19,7 @@ export type ChangelogContentItemType =
 	(typeof ChangelogContentItemTypes)[number];
 
 export interface ChangelogContentItem {
-	revision: string;
+	revision?: string;
 	class?: ChangelogContentItemType;
 	subject: string;
 	comments?: string[];
