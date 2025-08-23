@@ -10,6 +10,7 @@ import type {
 	ChangelogVersions,
 } from "../../types/changelog";
 import { getElement } from "../../utils/access";
+import { toDateLabel } from "../../utils/changelog";
 import { ListGroupHeader } from "../ListGroupHeader";
 
 function getChangelogGroup(
@@ -82,7 +83,7 @@ export const ChangelogVersionSelector: FC<ChangelogVersionSelectorProps> = (
 					<ListGroupHeader key={`group-${a}`}>{a}</ListGroupHeader>
 				) : (
 					<MenuItem key={`version-${a.version}`} value={a.version}>
-						{a.date}, {a.version}
+						{toDateLabel(a.date)}: {a.version}
 					</MenuItem>
 				),
 			)}

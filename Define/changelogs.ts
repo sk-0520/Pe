@@ -1675,7 +1675,7 @@ const Changelogs: ChangelogVersions = [
 		],
 	},
 	{
-		date: "2024/04/01, 2024/04/02",
+		date: ["2024/04/01", "2024/04/02"],
 		version: "0.99.223, 0.99.224, 0.99.225, 0.99.226",
 		contents: [
 			{

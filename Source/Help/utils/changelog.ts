@@ -1,3 +1,4 @@
+import type { ChangelogDate } from "../types/changelog";
 import { getElement } from "./access";
 
 export type Kind = "text" | "issue" | "url";
@@ -9,6 +10,14 @@ export interface Token {
 
 const IssueRegex = /(^#(?<ISSUE>\d+))/;
 const UrlRegex = /^(?<URL>(https?:\/\/[\w?=&./\-;#~%]+(?![\w?&./;#~%"=-]*>)))/;
+
+export function toDateLabel(date: ChangelogDate): string {
+	if (Array.isArray(date)) {
+		return date.join(", ");
+	}
+
+	return date;
+}
 
 export function splitTokens(s: string): Token[] {
 	const buffer: Token[] = [];
@@ -65,23 +74,6 @@ export function splitTokens(s: string): Token[] {
 	}
 
 	return result;
-}
-
-export function selectDateTime(rawDate: string): string {
-	const dateItems = rawDate
-		.split(",")
-		.map((a) => a.trim())
-		.filter((a) => a.length)
-		.filter((a) => /\d{4}\/\d{2}\/\d{2}/.test(a));
-
-	const dateItem = dateItems.pop();
-	if (dateItem) {
-		const y = dateItem.substring(0, 4);
-		const m = dateItem.substring(5, 7);
-		const d = dateItem.substring(8, 10);
-		return `${y}-${m}-${d}T00:00:00+09:00`;
-	}
-	return new Date().toISOString();
 }
 
 export interface VersionInfo {

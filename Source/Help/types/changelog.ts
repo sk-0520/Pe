@@ -8,6 +8,10 @@ type DateDay =
 	| `3${"0" | "1"}`;
 type VersionDate = `${DateYear}/${DateMonth}/${DateDay}`;
 export const DevelopmentVersionDate = "YYYY/MM/DD";
+export type ChangelogDate =
+	| typeof DevelopmentVersionDate
+	| VersionDate
+	| Array<VersionDate>;
 
 export const ChangelogContentKinds = [
 	"features",
@@ -42,7 +46,7 @@ export interface ChangelogContent {
 }
 
 export interface ChangelogVersion {
-	date: VersionDate | typeof DevelopmentVersionDate;
+	date: ChangelogDate;
 	version: string;
 	group?: string;
 	contents: ChangelogContent[];

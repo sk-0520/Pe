@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import type { FC } from "react";
 import type * as changelog from "../../types/changelog";
-import { selectDateTime, splitVersionInfos } from "../../utils/changelog";
+import { splitVersionInfos, toDateLabel } from "../../utils/changelog";
 import { ChangelogContent } from "./ChangelogContent";
 import { ChangelogReplaceLink } from "./ChangelogReplaceLink";
 
@@ -40,7 +40,6 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 	const { date, contents, version, prevVersion } = props;
 	const theme = useTheme();
 
-	const datetime = selectDateTime(date);
 	const versionInfos = splitVersionInfos(version);
 	const versionCommit = versionInfos.findLast((a) => a.isVersion)?.value;
 	const prevVersionCommit = prevVersion
@@ -62,12 +61,12 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 			>
 				<Typography
 					component="time"
-					dateTime={datetime}
+					dateTime={toDateLabel(date)}
 					sx={HeaderStyle}
 				>
-					{date}
+					{toDateLabel(date)}
 				</Typography>
-				,
+				:
 				<List
 					component={Stack}
 					direction="row"
