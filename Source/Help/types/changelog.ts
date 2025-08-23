@@ -1,3 +1,14 @@
+type Number = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9";
+type DateYear =
+	`20${Exclude<Number, "0" | "4" | "5" | "6" | "7" | "8" | "9">}${Number}`;
+type DateMonth = `0${Exclude<Number, "0">}` | `1${"0" | "1" | "2"}`;
+type DateDay =
+	| `0${Exclude<Number, "0">}`
+	| `${"1" | "2"}${Number}`
+	| `3${"0" | "1"}`;
+type VersionDate = `${DateYear}/${DateMonth}/${DateDay}`;
+export const DevelopmentVersionDate = "YYYY/MM/DD";
+
 export const ChangelogContentKinds = [
 	"features",
 	"fixes",
@@ -31,7 +42,7 @@ export interface ChangelogContent {
 }
 
 export interface ChangelogVersion {
-	date: string;
+	date: VersionDate | typeof DevelopmentVersionDate;
 	version: string;
 	group?: string;
 	contents: ChangelogContent[];

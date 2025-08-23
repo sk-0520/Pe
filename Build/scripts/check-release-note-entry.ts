@@ -5,7 +5,6 @@ const rootDirPath = path.resolve(__dirname, "..", "..");
 
 const input: Input = {
 	rootDirPath: rootDirPath,
-	changelogsJsonPath: path.resolve(rootDirPath, "Define", "changelogs.json"),
 };
 
 const options: Options = {

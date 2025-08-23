@@ -1,10 +1,9 @@
-import fs from "node:fs";
-import type { ChangelogVersion } from "../../Source/Help/types/changelog";
+import Changelogs from "../../Define/changelogs";
+import { DevelopmentVersionDate } from "../../Source/Help/types/changelog";
 import { getElement } from "../../Source/Help/utils/access";
 
 export interface Input {
 	rootDirPath: string;
-	changelogsJsonPath: string;
 }
 
 export interface Options {
@@ -12,12 +11,14 @@ export interface Options {
 }
 
 export function main(input: Input, options: Options) {
-	const changelogsJson = fs.readFileSync(input.changelogsJsonPath).toString();
-	const changelogs = JSON.parse(changelogsJson);
-	const changelog = getElement(changelogs, 0) as ChangelogVersion;
+	const changelog = getElement(Changelogs, 0);
 
 	if (!options.isRelease) {
 		return;
+	}
+
+	if (changelog.date === DevelopmentVersionDate) {
+		throw new Error(JSON.stringify({ date: changelog.date }));
 	}
 
 	for (const { type, logs } of changelog.contents) {
