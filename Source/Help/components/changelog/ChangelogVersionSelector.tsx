@@ -83,7 +83,7 @@ export const ChangelogVersionSelector: FC<ChangelogVersionSelectorProps> = (
 					<ListGroupHeader key={`group-${a}`}>{a}</ListGroupHeader>
 				) : (
 					<MenuItem
-						key={`version-${a.version}`}
+						key={`version-${toHtmlId(a.version)}`}
 						value={toHtmlId(a.version)}
 					>
 						{toDateLabel(a.date)}: {toVersionLabel(a.version)}
