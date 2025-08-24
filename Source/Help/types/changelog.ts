@@ -13,6 +13,12 @@ export type ChangelogDate =
 	| VersionDate
 	| Array<VersionDate>;
 
+export type DevelopmentVersionNumber = `${string}+`;
+export type ChangelogVersionNumber = DevelopmentVersionNumber | string;
+export type ChangelogVersionNumbers =
+	| ChangelogVersionNumber
+	| Array<ChangelogVersionNumber>;
+
 export const ChangelogContentKinds = [
 	"features",
 	"fixes",
