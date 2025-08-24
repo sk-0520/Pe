@@ -2,11 +2,14 @@ import { Divider, Link, Typography } from "@mui/material";
 import type { FC } from "react";
 import json from "../../Define/@changelog.json";
 import { ChangelogVersion } from "../Help/components/changelog/ChangelogVersion";
-import type { ChangelogVersion as ChangelogVersionType } from "../Help/types/changelog";
+import type {
+	ChangelogVersionNumbers,
+	ChangelogVersion as ChangelogVersionType,
+} from "../Help/types/changelog";
 
 export const ReleaseNote: FC = () => {
 	const changelog = json as unknown as ChangelogVersionType & {
-		prevVersion: string;
+		prevVersion: ChangelogVersionNumbers | undefined;
 	};
 	return (
 		<>

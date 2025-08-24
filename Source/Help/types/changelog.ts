@@ -27,10 +27,10 @@ export type ChangelogVersionNumbers =
 	| Array<ChangelogVersionNumber>;
 
 export const ChangelogContentKinds = [
+	"note",
 	"features",
 	"fixes",
 	"developer",
-	"note",
 ] as const;
 
 export type ChangelogContentKind = (typeof ChangelogContentKinds)[number];
@@ -64,5 +64,3 @@ export interface ChangelogVersion {
 	group?: string;
 	contents: ChangelogContent[];
 }
-
-export type ChangelogVersions = ChangelogVersion[];

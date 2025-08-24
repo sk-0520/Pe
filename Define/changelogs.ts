@@ -1,7 +1,8 @@
 /** biome-ignore-all lint/suspicious/noTemplateCurlyInString: ${...} は普通に使用する */
-import type { ChangelogVersions } from "../Source/Help/types/changelog";
+// cSpell:ignore xunit, Binder, Abstractions, Physical, TestAdapter, Dapper, Cryptography
+import type { ChangelogVersion } from "../Source/Help/types/changelog";
 
-const Changelogs: ChangelogVersions = [
+const Changelogs: ChangelogVersion[] = [
 	{
 		date: "YYYY/MM/DD",
 		version: "0.99.260+",

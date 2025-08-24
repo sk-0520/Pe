@@ -35,8 +35,8 @@ const HeaderStyle: SxProps<Theme> = {
 	lineHeight: "1.5em",
 };
 
-interface ChangelogVersionProps extends changelog.ChangelogVersion {
-	prevVersion?: changelog.ChangelogVersionNumbers;
+export interface ChangelogVersionProps extends changelog.ChangelogVersion {
+	prevVersion: changelog.ChangelogVersionNumbers | undefined;
 }
 
 export const ChangelogVersion: FC<ChangelogVersionProps> = (
