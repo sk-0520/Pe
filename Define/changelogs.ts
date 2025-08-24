@@ -1462,7 +1462,7 @@ const Changelogs: ChangelogVersions = [
 	},
 	{
 		date: "2024/05/26",
-		version: "0.99.232, 0.99.233",
+		version: ["0.99.232", "0.99.233"],
 		contents: [
 			{
 				type: "note",
@@ -1676,7 +1676,7 @@ const Changelogs: ChangelogVersions = [
 	},
 	{
 		date: ["2024/04/01", "2024/04/02"],
-		version: "0.99.223, 0.99.224, 0.99.225, 0.99.226",
+		version: ["0.99.223", "0.99.224", "0.99.225", "0.99.226"],
 		contents: [
 			{
 				type: "note",
@@ -1770,7 +1770,7 @@ const Changelogs: ChangelogVersions = [
 	},
 	{
 		date: "2024/02/07",
-		version: "0.99.220, 0.99.221",
+		version: ["0.99.220", "0.99.221"],
 		contents: [
 			{
 				type: "features",
@@ -1949,7 +1949,7 @@ const Changelogs: ChangelogVersions = [
 	},
 	{
 		date: "2023/11/16",
-		version: "0.99.215, 0.99.216",
+		version: ["0.99.215", "0.99.216"],
 		contents: [
 			{
 				type: "note",
@@ -2210,7 +2210,7 @@ const Changelogs: ChangelogVersions = [
 	},
 	{
 		date: "2023/08/13",
-		version: "0.99.206, 0.99.207, 0.99.208",
+		version: ["0.99.206", "0.99.207", "0.99.208"],
 		contents: [
 			{
 				type: "note",
@@ -3210,7 +3210,7 @@ const Changelogs: ChangelogVersions = [
 	},
 	{
 		date: "2022/12/16",
-		version: "0.99.181, 0.99.182",
+		version: ["0.99.181", "0.99.182"],
 		contents: [
 			{
 				type: "note",

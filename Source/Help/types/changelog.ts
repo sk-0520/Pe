@@ -53,7 +53,7 @@ export interface ChangelogContent {
 
 export interface ChangelogVersion {
 	date: ChangelogDate;
-	version: string;
+	version: ChangelogVersionNumbers;
 	group?: string;
 	contents: ChangelogContent[];
 }

@@ -1,4 +1,8 @@
-import type { ChangelogDate } from "../types/changelog";
+import type {
+	ChangelogDate,
+	ChangelogVersionNumber,
+	ChangelogVersionNumbers,
+} from "../types/changelog";
 import { getElement } from "./access";
 
 export type Kind = "text" | "issue" | "url";
@@ -17,6 +21,14 @@ export function toDateLabel(date: ChangelogDate): string {
 	}
 
 	return date;
+}
+
+export function toVersionLabel(version: ChangelogVersionNumbers): string {
+	if (Array.isArray(version)) {
+		return version.join("-");
+	}
+
+	return version;
 }
 
 export function splitTokens(s: string): Token[] {
@@ -76,46 +88,66 @@ export function splitTokens(s: string): Token[] {
 	return result;
 }
 
-export interface VersionInfo {
-	value: string;
-	isVersion: boolean;
+// export interface VersionInfo {
+// 	value: string;
+// 	isVersion: boolean;
+// }
+
+// /**
+//  * バージョン正規表現。
+//  *
+//  * 末尾 + はどうにも正しいタグなんよ。かなしみ。
+//  */
+// const VersionRegex = /^(?<VERSION>\d+\.\d+\.\d+(\+?))$/;
+
+// export function splitVersionInfos(rawVersion: string): VersionInfo[] {
+// 	if (!rawVersion.length) {
+// 		return [];
+// 	}
+
+// 	const result: VersionInfo[] = [];
+
+// 	const rawVersions = rawVersion
+// 		.split(",")
+// 		.map((a) => a.trim())
+// 		.filter((a) => a.length);
+
+// 	for (const s of rawVersions) {
+// 		const execResult = VersionRegex.exec(s);
+// 		if (execResult?.groups && "VERSION" in execResult.groups) {
+// 			result.push({
+// 				value: execResult.groups.VERSION,
+// 				isVersion: true,
+// 			});
+// 		} else {
+// 			result.push({
+// 				value: s,
+// 				isVersion: false,
+// 			});
+// 		}
+// 	}
+
+// 	return result;
+// }
+
+export function getFirstVersion(
+	version: ChangelogVersionNumbers,
+): ChangelogVersionNumber {
+	if (Array.isArray(version)) {
+		return getElement(version, 0);
+	}
+
+	return version;
 }
 
-/**
- * バージョン正規表現。
- *
- * 末尾 + はどうにも正しいタグなんよ。かなしみ。
- */
-const VersionRegex = /^(?<VERSION>\d+\.\d+\.\d+(\+?))$/;
-
-export function splitVersionInfos(rawVersion: string): VersionInfo[] {
-	if (!rawVersion.length) {
-		return [];
+export function getLastVersion(
+	version: ChangelogVersionNumbers,
+): ChangelogVersionNumber {
+	if (Array.isArray(version)) {
+		return getElement(version, version.length - 1);
 	}
 
-	const result: VersionInfo[] = [];
-
-	const rawVersions = rawVersion
-		.split(",")
-		.map((a) => a.trim())
-		.filter((a) => a.length);
-
-	for (const s of rawVersions) {
-		const execResult = VersionRegex.exec(s);
-		if (execResult?.groups && "VERSION" in execResult.groups) {
-			result.push({
-				value: execResult.groups.VERSION,
-				isVersion: true,
-			});
-		} else {
-			result.push({
-				value: s,
-				isVersion: false,
-			});
-		}
-	}
-
-	return result;
+	return version;
 }
 
 const TagVersion = {
@@ -136,4 +168,22 @@ export function convertTagFromVersion(version: string): string {
 	}
 
 	return version;
+}
+
+export function toHtmlId(version: ChangelogVersionNumbers): string {
+	if (Array.isArray(version)) {
+		return version.join("-");
+	}
+
+	return version;
+}
+
+export function splitVersion(
+	version: ChangelogVersionNumbers,
+): ChangelogVersionNumber[] {
+	if (Array.isArray(version)) {
+		return version;
+	}
+
+	return [version];
 }

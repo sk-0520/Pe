@@ -4,6 +4,7 @@ import Changelogs from "../../../../Define/changelogs";
 import { ChangelogVersion } from "../../components/changelog/ChangelogVersion";
 import { ChangelogVersionSelector } from "../../components/changelog/ChangelogVersionSelector";
 import type { PageProps } from "../../types/page";
+import { toHtmlId } from "../../utils/changelog";
 
 export const HelpChangelogPage: FC<PageProps> = (props: PageProps) => {
 	return (
@@ -22,7 +23,7 @@ export const HelpChangelogPage: FC<PageProps> = (props: PageProps) => {
 				{Changelogs.map((a, i) => {
 					return (
 						<ChangelogVersion
-							key={a.version}
+							key={toHtmlId(a.version)}
 							{...a}
 							prevVersion={Changelogs[i + 1]?.version}
 						/>

@@ -12,7 +12,12 @@ import {
 } from "@mui/material";
 import type { FC } from "react";
 import type * as changelog from "../../types/changelog";
-import { splitVersionInfos, toDateLabel } from "../../utils/changelog";
+import {
+	getLastVersion,
+	splitVersion,
+	toDateLabel,
+	toHtmlId,
+} from "../../utils/changelog";
 import { ChangelogContent } from "./ChangelogContent";
 import { ChangelogReplaceLink } from "./ChangelogReplaceLink";
 
@@ -31,7 +36,7 @@ const HeaderStyle: SxProps<Theme> = {
 };
 
 interface ChangelogVersionProps extends changelog.ChangelogVersion {
-	prevVersion?: string;
+	prevVersion?: changelog.ChangelogVersionNumbers;
 }
 
 export const ChangelogVersion: FC<ChangelogVersionProps> = (
@@ -40,15 +45,14 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 	const { date, contents, version, prevVersion } = props;
 	const theme = useTheme();
 
-	const versionInfos = splitVersionInfos(version);
-	const versionCommit = versionInfos.findLast((a) => a.isVersion)?.value;
+	//const versionInfos = splitVersionInfos(version);
+	const versionCommit = getLastVersion(version); //versionInfos.findLast((a) => a.isVersion)?.value;
 	const prevVersionCommit = prevVersion
-		? (splitVersionInfos(prevVersion).findLast((a) => a.isVersion)?.value ??
-			FirstCommit)
+		? getLastVersion(prevVersion)
 		: FirstCommit;
 
 	return (
-		<Box id={version}>
+		<Box id={toHtmlId(version)}>
 			<Typography
 				variant="h1"
 				sx={{
@@ -72,9 +76,9 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 					direction="row"
 					sx={{ display: "inline", marginLeft: "0.5ch" }}
 				>
-					{versionInfos.map((a, i) => (
+					{splitVersion(version).map((a, i) => (
 						<StyledVersionListItem
-							key={a.value}
+							key={a}
 							sx={
 								i
 									? {
@@ -85,7 +89,7 @@ export const ChangelogVersion: FC<ChangelogVersionProps> = (
 									: undefined
 							}
 						>
-							{a.value}
+							{a}
 						</StyledVersionListItem>
 					))}
 					{versionCommit !== undefined && (

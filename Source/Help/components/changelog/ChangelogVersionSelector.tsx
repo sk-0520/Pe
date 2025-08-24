@@ -10,7 +10,7 @@ import type {
 	ChangelogVersions,
 } from "../../types/changelog";
 import { getElement } from "../../utils/access";
-import { toDateLabel } from "../../utils/changelog";
+import { toDateLabel, toHtmlId, toVersionLabel } from "../../utils/changelog";
 import { ListGroupHeader } from "../ListGroupHeader";
 
 function getChangelogGroup(
@@ -51,7 +51,7 @@ export const ChangelogVersionSelector: FC<ChangelogVersionSelectorProps> = (
 ) => {
 	const { changelogs } = props;
 	const [selectedValue, setSelectedValue] = useState(
-		getElement(changelogs, 0).version,
+		toHtmlId(getElement(changelogs, 0).version),
 	);
 	const theme = useTheme();
 	const items = useMemo(() => getChangelogGroup(changelogs), [changelogs]);
@@ -82,8 +82,11 @@ export const ChangelogVersionSelector: FC<ChangelogVersionSelectorProps> = (
 				typeof a === "string" ? (
 					<ListGroupHeader key={`group-${a}`}>{a}</ListGroupHeader>
 				) : (
-					<MenuItem key={`version-${a.version}`} value={a.version}>
-						{toDateLabel(a.date)}: {a.version}
+					<MenuItem
+						key={`version-${a.version}`}
+						value={toHtmlId(a.version)}
+					>
+						{toDateLabel(a.date)}: {toVersionLabel(a.version)}
 					</MenuItem>
 				),
 			)}
