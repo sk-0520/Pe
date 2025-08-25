@@ -75,7 +75,7 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "#1013: changelogs.json を TS にしたい",
 					},
 					{
 						revision: "",
