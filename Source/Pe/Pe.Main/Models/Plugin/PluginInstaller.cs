@@ -162,7 +162,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             }
 
             var endWords = new[] {
-                "_x86",
                 "_x64",
                 "_AnyCPU",
             };

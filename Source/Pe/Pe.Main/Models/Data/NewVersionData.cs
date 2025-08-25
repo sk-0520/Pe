@@ -47,7 +47,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         /// モジュールの対象プラットフォーム。
         /// </summary>
         /// <remarks>
-        /// <para>使用可能文字列: x64, x86</para>
+        /// <para>使用可能文字列: x64</para>
         /// </remarks>
         public string Platform { get; }
 

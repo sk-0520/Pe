@@ -1,5 +1,5 @@
 ﻿Param(
-	[string[]] $Platforms = @('x64', 'x86')
+	[string[]] $Platforms = @('x64')
 )
 
 $ErrorActionPreference = 'Stop'
@@ -22,7 +22,7 @@ $outputRootDirPath = Join-Path -Path $PSScriptRoot -ChildPath 'Output'
 
 function Get-OutputDirectoryPath {
 	param (
-		[Parameter(mandatory = $true)][ValidateSet('x86', 'x64')][string] $Platform
+		[Parameter(mandatory = $true)][ValidateSet('x64')][string] $Platform
 	)
 	return Join-Path -Path $outputRootDirPath -ChildPath "Release/$platform/$pluginName"
 }

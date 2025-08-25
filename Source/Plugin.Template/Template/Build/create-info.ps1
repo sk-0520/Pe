@@ -35,7 +35,7 @@ function Get-VersionText {
 
 function Get-UpdateItem {
 	param (
-		[Parameter(mandatory = $true)][ValidateSet('x86', 'x64')][string] $Platform,
+		[Parameter(mandatory = $true)][ValidateSet('x64')][string] $Platform,
 		[Parameter(mandatory = $true)][string] $ArchiveFilePath
 	)
 

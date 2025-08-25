@@ -8,7 +8,7 @@ Param(
 	[Parameter(mandatory = $true)][System.IO.DirectoryInfo] $SourceDirectory,
 	[Parameter(mandatory = $true)][System.IO.DirectoryInfo] $DestinationDirectory,
 	[Parameter(mandatory = $true)][version] $CurrentVersion,
-	[Parameter(mandatory = $true)][ValidateSet('x86', 'x64')][string] $Platform,
+	[Parameter(mandatory = $true)][ValidateSet('x64')][string] $Platform,
 	[Parameter(mandatory = $true)][string] $UpdateBeforeScript,
 	[Parameter(mandatory = $true)][string] $UpdateAfterScript,
 	[Parameter(mandatory = $true)][string] $ExecuteCommand,

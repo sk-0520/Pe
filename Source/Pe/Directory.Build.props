@@ -3,7 +3,7 @@
     <Version>0.99.260</Version>
 
     <TargetFramework>net9.0-windows</TargetFramework>
-    <Platforms>x64;x86</Platforms>
+    <Platforms>x64</Platforms>
     <WarningLevel>9999</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <LangVersion>latest</LangVersion>

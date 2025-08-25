@@ -1,5 +1,5 @@
 ﻿Param(
-	[string[]] $Platforms = @('x64', 'x86')
+	[string[]] $Platforms = @('x64')
 )
 
 $ErrorActionPreference = 'Stop'

@@ -2,7 +2,7 @@
 	[Parameter(mandatory = $true)][ValidateSet('boot', 'main', 'plugins')][string] $Module,
 	[switch] $ProductMode,
 	[string] $BuildType,
-	[Parameter(mandatory = $true)][ValidateSet('x86', 'x64')][string] $Platform,
+	[Parameter(mandatory = $true)][ValidateSet('x64')][string] $Platform,
 	[switch] $Test
 )
 $ErrorActionPreference = 'Stop'

@@ -6,8 +6,7 @@
 
 * [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0) の動作要件を満たしたハードウェアスペック(環境自体は同梱)
 * Windows 10, 11
-	* x86 版は 32/64 bit で動作可能
-	* x64 版は 64 bit のみで動作可能
+	* x64 版のみ対応（64 bit 環境で動作）
 	* Arm は知らん
 
 # 連絡先

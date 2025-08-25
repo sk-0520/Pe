@@ -1,5 +1,5 @@
 ﻿Param(
-	[ValidateSet('x86', 'x64')][string] $Platform = 'x64',
+	[ValidateSet('x64')][string] $Platform = 'x64',
 	[ValidateSet('Debug', 'Release')][string] $Configuration = 'Debug',
 	[string[]] $Project,
 	[switch] $SuppressOpen

@@ -56,7 +56,7 @@ function Convert-Template {
 
 function Get-UpdateItem {
 	Param(
-		[Parameter(mandatory = $true)][ValidateSet('x86', 'x64')][string] $Platform,
+		[Parameter(mandatory = $true)][ValidateSet('x64')][string] $Platform,
 		[Parameter(mandatory = $true)][string] $ArchiveFilePath,
 		[Parameter(mandatory = $true)][uri] $NoteUri
 	)
