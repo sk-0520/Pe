@@ -1,25 +1,30 @@
 import fs from "node:fs";
-import type { ChangelogVersion } from "../Help/types/changelog";
+import Changelogs from "../../Define/changelogs";
+import type {
+	ChangelogVersion,
+	ChangelogVersionNumber,
+} from "../Help/types/changelog";
 import { getElement } from "../Help/utils/access";
-import { splitVersionInfos } from "../Help/utils/changelog";
+import { getLastVersion } from "../Help/utils/changelog";
+
+interface ChangelogVersionWithPrevVersion extends ChangelogVersion {
+	prevVersion: ChangelogVersionNumber;
+}
 
 export interface Input {
-	changelogsPath: string;
 	outputChangelogPath: string;
 }
 
 export function main(input: Input) {
 	console.debug({ input });
 
-	const changelogsJson = fs.readFileSync(input.changelogsPath).toString();
-	const changelogs = JSON.parse(changelogsJson);
-	const changelog = getElement(changelogs, 0) as object & {
-		prevVersion: string | undefined;
-	};
+	const latestChangelog = getElement(Changelogs, 0);
+	const prevVersion = getElement(Changelogs, 1);
 
-	changelog.prevVersion = splitVersionInfos(
-		(getElement(changelogs, 1) as ChangelogVersion).version,
-	)[0]?.value;
+	const changelog: ChangelogVersionWithPrevVersion = {
+		...latestChangelog,
+		prevVersion: getLastVersion(prevVersion.version),
+	};
 
 	fs.writeFileSync(input.outputChangelogPath, JSON.stringify(changelog));
 }

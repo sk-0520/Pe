@@ -1,23 +1,26 @@
-import fs from "node:fs";
-import type { ChangelogVersion } from "../../Source/Help/types/changelog";
+import Changelogs from "../../Define/changelogs";
+import { DevelopmentVersionDate } from "../../Source/Help/types/changelog";
 import { getElement } from "../../Source/Help/utils/access";
 
 export interface Input {
 	rootDirPath: string;
-	changelogsJsonPath: string;
 }
 
 export interface Options {
 	isRelease: boolean;
 }
 
+const Revision = /([0-f][0-f]){,40}/;
+
 export function main(input: Input, options: Options) {
-	const changelogsJson = fs.readFileSync(input.changelogsJsonPath).toString();
-	const changelogs = JSON.parse(changelogsJson);
-	const changelog = getElement(changelogs, 0) as ChangelogVersion;
+	const changelog = getElement(Changelogs, 0);
 
 	if (!options.isRelease) {
 		return;
+	}
+
+	if (changelog.date === DevelopmentVersionDate) {
+		//throw new Error(JSON.stringify({ date: changelog.date }));
 	}
 
 	for (const { type, logs } of changelog.contents) {
@@ -25,6 +28,14 @@ export function main(input: Input, options: Options) {
 		for (const log of logs) {
 			if (!log.subject.trim()) {
 				throw new Error("subject");
+			}
+
+			if (log.revision) {
+				if (!Revision.test(log.revision)) {
+					throw new Error(
+						`${log.subject}: revision: ${log.revision}`,
+					);
+				}
 			}
 
 			if (log.comments) {

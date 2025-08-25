@@ -27,6 +27,11 @@
 		"useEditorconfig": true
 	},
 	"files": {
-		"includes": ["Source/Help/**/*", "Build/scripts/**/*"]
+		"includes": [
+			"Define/**/*.ts",
+			"Source/ReleaseNote/**/*",
+			"Source/Help/**/*",
+			"Build/scripts/**/*"
+		]
 	}
 }
