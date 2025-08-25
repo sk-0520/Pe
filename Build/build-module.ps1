@@ -53,7 +53,7 @@ if ($Module -eq 'boot') {
 	foreach ($pluginProjectFile in $pluginProjectFiles) {
 		$name = $pluginProjectFile.BaseName
 
-		dotnet publish $pluginProjectFile /m --verbosity normal --configuration Release /p:Platform=$Platform /p:DefineConstants=$define --runtime win-$Platform --output Output/Release/$Platform/Plugins/$name --self-contained false
+		dotnet publish $pluginProjectFile /m --verbosity normal --configuration Release /p:DefineConstants=$define --output Output/Release/Plugins/$name --self-contained false
 		if (-not $?) {
 			throw "build error: $Module - $name"
 		}

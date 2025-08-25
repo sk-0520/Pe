@@ -4,6 +4,7 @@
     <AssemblyName>Pe.Plugins.Reference.Eyes</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Plugins.Reference.Eyes</RootNamespace>
     <UseWPF>true</UseWPF>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

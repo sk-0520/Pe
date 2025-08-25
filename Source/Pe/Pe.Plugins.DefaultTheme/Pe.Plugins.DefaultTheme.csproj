@@ -4,6 +4,7 @@
     <AssemblyName>Pe.Plugins.DefaultTheme</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Plugins.DefaultTheme</RootNamespace>
     <UseWPF>true</UseWPF>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
