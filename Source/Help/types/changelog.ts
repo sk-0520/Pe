@@ -14,14 +14,15 @@ export type ChangelogDate =
 	| Array<VersionDate>;
 
 type ChangelogVersionNumberOld =
-	`0.${Number}${Number}.${Extract<Number, "0" | "1" | "2" | "3">}`;
+	| `0.${Exclude<Number, "8" | "9">}${Number}.${Number}`
+	| `0.8${Extract<Number, "0" | "1" | "2" | "3">}.${Number}`;
 type ChangelogVersionNumber84 =
-	| `0.8${"4" | "5" | "6" | "7" | "8" | "9"}.${Number}${Number}${Number}`
+	| `0.8${Extract<Number, "4" | "5" | "6" | "7" | "8" | "9">}.${Number}${Number}${Number}`
 	| `0.9${Number}.${Number}${Number}${Number}`;
 export type ChangelogVersionNumber =
 	| ChangelogVersionNumberOld
 	| ChangelogVersionNumber84
-	| `${ChangelogVersionNumberOld | ChangelogVersionNumber84}+`;
+	| `${ChangelogVersionNumber84}+`;
 export type ChangelogVersionNumbers =
 	| ChangelogVersionNumber
 	| Array<ChangelogVersionNumber>;
