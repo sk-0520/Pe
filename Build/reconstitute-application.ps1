@@ -71,9 +71,6 @@ $unsupportPlatform = switch ($Platform) {
 	'x64' {
 		'x86'
 	}
-	'x86' {
-		'x64'
-	}
 	Default {
 		throw "error: $Platform"
 	}
