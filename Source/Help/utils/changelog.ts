@@ -88,48 +88,6 @@ export function splitTokens(s: string): Token[] {
 	return result;
 }
 
-// export interface VersionInfo {
-// 	value: string;
-// 	isVersion: boolean;
-// }
-
-// /**
-//  * バージョン正規表現。
-//  *
-//  * 末尾 + はどうにも正しいタグなんよ。かなしみ。
-//  */
-// const VersionRegex = /^(?<VERSION>\d+\.\d+\.\d+(\+?))$/;
-
-// export function splitVersionInfos(rawVersion: string): VersionInfo[] {
-// 	if (!rawVersion.length) {
-// 		return [];
-// 	}
-
-// 	const result: VersionInfo[] = [];
-
-// 	const rawVersions = rawVersion
-// 		.split(",")
-// 		.map((a) => a.trim())
-// 		.filter((a) => a.length);
-
-// 	for (const s of rawVersions) {
-// 		const execResult = VersionRegex.exec(s);
-// 		if (execResult?.groups && "VERSION" in execResult.groups) {
-// 			result.push({
-// 				value: execResult.groups.VERSION,
-// 				isVersion: true,
-// 			});
-// 		} else {
-// 			result.push({
-// 				value: s,
-// 				isVersion: false,
-// 			});
-// 		}
-// 	}
-
-// 	return result;
-// }
-
 export function getFirstVersion(
 	version: ChangelogVersionNumbers,
 ): ChangelogVersionNumber {
