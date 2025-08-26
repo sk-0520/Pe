@@ -28,6 +28,7 @@
 	},
 	"files": {
 		"includes": [
+			"*.ts",
 			"Define/**/*.ts",
 			"Source/ReleaseNote/**/*",
 			"Source/Help/**/*",
