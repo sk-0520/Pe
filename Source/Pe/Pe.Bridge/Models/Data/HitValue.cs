@@ -9,7 +9,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models.Data
         ///
         /// </summary>
         /// <param name="value">対象文字列。</param>
-        /// <param name="isHit"><param name="value" /> は該当しているか。</param>
+        /// <param name="isHit"><paramref name="value"/> は該当しているか。</param>
         public HitValue(string value, bool isHit)
         {
             Value = value;
