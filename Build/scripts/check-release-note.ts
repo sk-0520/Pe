@@ -1,26 +1,26 @@
-import Changelogs from "../../Define/changelogs";
-import { DevelopmentVersionDate } from "../../Source/Help/types/changelog";
-import { getElement } from "../../Source/Help/utils/access";
+import {
+	type ChangelogVersion,
+	DevelopmentVersionDate,
+} from "../../Source/Help/types/changelog";
 
 export interface Input {
-	rootDirPath: string;
+	changelog: ChangelogVersion;
 }
-
 export interface Options {
 	isRelease: boolean;
 }
 
-const Revision = /([0-f][0-f]){,40}/;
+const Revision = /^([0-f]){40}$/;
 
 export function main(input: Input, options: Options) {
-	const changelog = getElement(Changelogs, 0);
-
 	if (!options.isRelease) {
 		return;
 	}
 
+	const changelog = input.changelog;
+
 	if (changelog.date === DevelopmentVersionDate) {
-		//throw new Error(JSON.stringify({ date: changelog.date }));
+		throw new Error(JSON.stringify({ date: changelog.date }));
 	}
 
 	for (const { type, logs } of changelog.contents) {
@@ -47,5 +47,21 @@ export function main(input: Input, options: Options) {
 				}
 			}
 		}
+	}
+
+	const changelogTypes = changelog.contents.map((a) => a.type);
+	const sortedChangelogTypes = changelogTypes.toSorted((a, b) => {
+		const order = {
+			note: 0,
+			features: 1,
+			fixes: 2,
+			developer: 3,
+		};
+		return order[a] - order[b];
+	});
+	if (changelogTypes.toString() !== sortedChangelogTypes.toString()) {
+		throw new Error(
+			`${changelogTypes.toString()} !== ${sortedChangelogTypes.toString()}`,
+		);
 	}
 }

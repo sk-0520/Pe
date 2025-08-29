@@ -36,9 +36,6 @@
 		"url": "git@github.com:sk-0520/Pe.git"
 	},
 	"jest": {
-		"moduleNameMapper": {
-			"@/Help/(.*)$": "<rootDir>/Source/Help/$1"
-		},
 		"moduleFileExtensions": [
 			"ts",
 			"js"
@@ -50,7 +47,7 @@
 			]
 		},
 		"testMatch": [
-			"**/tests/**/*"
+			"**/tests/**/*.test.ts"
 		],
 		"collectCoverage": true,
 		"coverageDirectory": "@coverage/script"
