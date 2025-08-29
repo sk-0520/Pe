@@ -124,7 +124,7 @@ const Changelogs: ChangelogVersion[] = [
 						subject: "#1007: xunit v2 -> v3",
 					},
 					{
-						revision: "#1012",
+						revision: "d55b8b4a167c4e150bb45735a5a146ce1c96e55f",
 						subject:
 							"#1012: changelogs.json 影響で開発中のヘルプ作成がつらい",
 					},
