@@ -53,3 +53,4 @@ node_modules/
 coverage.opencover.xml
 desktop.ini
 /.parcel-cache
+*.code-workspace
