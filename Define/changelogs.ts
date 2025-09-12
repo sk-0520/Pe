@@ -97,7 +97,7 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "System.DirectoryServices.AccountManagement 9.0.8 -> 9.0.9",
 					},
 					{
 						revision: "",
