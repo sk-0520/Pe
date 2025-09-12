@@ -87,6 +87,24 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "Microsoft.Extensions.* 9.0.8 -> 9.0.9",
+						comments: [
+							"Microsoft.Extensions.Logging.Abstractions",
+							"Microsoft.Extensions.Logging",
+							"Microsoft.Extensions.Configuration.Binder",
+							"Microsoft.Extensions.Configuration.Json"
+						]
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
