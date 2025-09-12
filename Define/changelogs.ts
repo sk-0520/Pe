@@ -101,6 +101,14 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "System.Management 9.0.8 -> 9.0.9",
+					},
+					{
+						revision: "",
+						subject: "System.Text.Encoding.CodePages 9.0.8 -> 9.0.9",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 					{
