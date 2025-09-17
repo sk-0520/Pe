@@ -1,11 +1,41 @@
 import { Link } from "@mui/material";
 import { type FC, Fragment, type ReactNode } from "react";
-import { convertTagFromVersion, splitTokens } from "../../utils/changelog";
+import {
+	convertTagFromVersion,
+	splitTokens,
+	type Token,
+} from "../../utils/changelog";
 
 const IssueLink = "https://github.com/sk-0520/Pe/issues/";
 const DiffLink = "https://github.com/sk-0520/Pe/compare/";
 
-interface ChangelogReplaceLinkProps {
+interface ChangelogReplaceLinkCoreProps {
+	token: Token;
+}
+const ChangelogReplaceLinkCore: FC<ChangelogReplaceLinkCoreProps> = (
+	props: ChangelogReplaceLinkCoreProps,
+) => {
+	const { token } = props;
+
+	switch (token.kind) {
+		case "text":
+			return <Fragment>{token.value}</Fragment>;
+		case "issue":
+			return (
+				<Link href={IssueLink + token.value} target="_blank">
+					#{token.value}
+				</Link>
+			);
+		case "url":
+			return (
+				<Link href={token.value} target="_blank">
+					{token.value}
+				</Link>
+			);
+	}
+};
+
+export interface ChangelogReplaceLinkProps {
 	children: ReactNode | string;
 	diff?: {
 		prev: string;
@@ -39,26 +69,8 @@ export const ChangelogReplaceLink: FC<ChangelogReplaceLinkProps> = (
 		return children;
 	}
 
-	// biome-ignore lint/suspicious/useIterableCallbackReturn: 💩
 	return tokens.map((a, i) => {
-		switch (a.kind) {
-			case "text":
-				// biome-ignore lint/suspicious/noArrayIndexKey: key がねぇ
-				return <Fragment key={i}>{a.value}</Fragment>;
-			case "issue":
-				return (
-					// biome-ignore lint/suspicious/noArrayIndexKey: key がねぇ
-					<Link key={i} href={IssueLink + a.value} target="_blank">
-						#{a.value}
-					</Link>
-				);
-			case "url":
-				return (
-					// biome-ignore lint/suspicious/noArrayIndexKey: key がねぇ
-					<Link key={i} href={a.value} target="_blank">
-						{a.value}
-					</Link>
-				);
-		}
+		// biome-ignore lint/suspicious/noArrayIndexKey: key がねぇ
+		return <ChangelogReplaceLinkCore key={i} token={a} />;
 	});
 };

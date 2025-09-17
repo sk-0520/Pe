@@ -5,12 +5,13 @@ import {
 	useTheme,
 } from "@mui/material";
 import { type FC, type ReactNode, useMemo, useState } from "react";
-import type { Changelogs, ChangelogVersion } from "../../types/changelog";
+import type { ChangelogVersion } from "../../types/changelog";
 import { getElement } from "../../utils/access";
+import { toDateLabel, toHtmlId, toVersionLabel } from "../../utils/changelog";
 import { ListGroupHeader } from "../ListGroupHeader";
 
 function getChangelogGroup(
-	changelogs: Changelogs,
+	changelogs: ChangelogVersion[],
 ): Array<ChangelogVersion | string> {
 	const groupItems = new Map<object, string>();
 
@@ -39,7 +40,7 @@ function getChangelogGroup(
 }
 
 interface ChangelogVersionSelectorProps {
-	changelogs: Changelogs;
+	changelogs: ChangelogVersion[];
 }
 
 export const ChangelogVersionSelector: FC<ChangelogVersionSelectorProps> = (
@@ -47,7 +48,7 @@ export const ChangelogVersionSelector: FC<ChangelogVersionSelectorProps> = (
 ) => {
 	const { changelogs } = props;
 	const [selectedValue, setSelectedValue] = useState(
-		getElement(changelogs, 0).version,
+		toHtmlId(getElement(changelogs, 0).version),
 	);
 	const theme = useTheme();
 	const items = useMemo(() => getChangelogGroup(changelogs), [changelogs]);
@@ -78,8 +79,11 @@ export const ChangelogVersionSelector: FC<ChangelogVersionSelectorProps> = (
 				typeof a === "string" ? (
 					<ListGroupHeader key={`group-${a}`}>{a}</ListGroupHeader>
 				) : (
-					<MenuItem key={`version-${a.version}`} value={a.version}>
-						{a.date}, {a.version}
+					<MenuItem
+						key={`version-${toHtmlId(a.version)}`}
+						value={toHtmlId(a.version)}
+					>
+						{toDateLabel(a.date)}: {toVersionLabel(a.version)}
 					</MenuItem>
 				),
 			)}

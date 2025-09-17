@@ -1,11 +1,10 @@
 import { Box, Toolbar } from "@mui/material";
 import type { FC } from "react";
+import Changelogs from "../../../../Define/changelogs";
 import { ChangelogVersion } from "../../components/changelog/ChangelogVersion";
 import { ChangelogVersionSelector } from "../../components/changelog/ChangelogVersionSelector";
 import type { PageProps } from "../../types/page";
-import { getChangelogs } from "../../utils/changelog-loader";
-
-const changelogs = getChangelogs();
+import { toHtmlId } from "../../utils/changelog";
 
 export const HelpChangelogPage: FC<PageProps> = (props: PageProps) => {
 	return (
@@ -18,15 +17,15 @@ export const HelpChangelogPage: FC<PageProps> = (props: PageProps) => {
 					zIndex: (theme) => theme.zIndex.drawer + 2,
 				}}
 			>
-				<ChangelogVersionSelector changelogs={changelogs} />
+				<ChangelogVersionSelector changelogs={Changelogs} />
 			</Toolbar>
 			<Box>
-				{changelogs.map((a, i) => {
+				{Changelogs.map((a, i) => {
 					return (
 						<ChangelogVersion
-							key={a.version}
+							key={toHtmlId(a.version)}
 							{...a}
-							prevVersion={changelogs[i + 1]?.version}
+							prevVersion={Changelogs[i + 1]?.version}
 						/>
 					);
 				})}

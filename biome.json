@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
 	"assist": {
 		"enabled": true,
 		"actions": {
@@ -27,6 +27,12 @@
 		"useEditorconfig": true
 	},
 	"files": {
-		"includes": ["Source/Help/**/*", "Build/scripts/**/*"]
+		"includes": [
+			"*.ts",
+			"Define/**/*.ts",
+			"Source/ReleaseNote/**/*",
+			"Source/Help/**/*",
+			"Build/scripts/**/*"
+		]
 	}
 }

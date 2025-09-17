@@ -13,7 +13,7 @@ applyTo: '**'
 Build/
   ビルド処理ツール・スクリプト
 Define/
-  更新履歴(changelog*)やテーブル構成(table-*.md), プログラム本体にはあまり関係ないが無いとそれはそれでこまる
+  更新履歴(changelogs.ts)やテーブル構成(table-*.md), プログラム本体にはあまり関係ないが無いとそれはそれでこまる
 Resource/
   リソースの生データ
 Source/Benchmark

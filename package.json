@@ -36,9 +36,6 @@
 		"url": "git@github.com:sk-0520/Pe.git"
 	},
 	"jest": {
-		"moduleNameMapper": {
-			"@/Help/(.*)$": "<rootDir>/Source/Help/$1"
-		},
 		"moduleFileExtensions": [
 			"ts",
 			"js"
@@ -50,35 +47,35 @@
 			]
 		},
 		"testMatch": [
-			"**/tests/**/*"
+			"**/tests/**/*.test.ts"
 		],
 		"collectCoverage": true,
 		"coverageDirectory": "@coverage/script"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.2.0",
+		"@biomejs/biome": "2.2.4",
 		"@emotion/react": "^11.14.0",
 		"@emotion/styled": "^11.14.1",
-		"@markuplint/jsx-parser": "^4.7.20",
-		"@markuplint/react-spec": "^4.5.20",
-		"@mui/icons-material": "^7.3.1",
-		"@mui/material": "^7.3.1",
+		"@markuplint/jsx-parser": "^4.7.21",
+		"@markuplint/react-spec": "^4.5.21",
+		"@mui/icons-material": "^7.3.2",
+		"@mui/material": "^7.3.2",
 		"@parcel/transformer-inline-string": "^2.15.4",
 		"@types/html-to-text": "^9.0.4",
 		"@types/jest": "^30.0.0",
-		"@types/react": "^19.1.10",
-		"@types/react-dom": "^19.1.7",
+		"@types/react": "^19.1.12",
+		"@types/react-dom": "^19.1.9",
 		"cpx": "^1.2.1",
 		"html-to-text": "^9.0.5",
-		"jest": "^30.0.5",
-		"jest-environment-jsdom": "^30.0.5",
-		"jotai": "^2.13.1",
-		"markuplint": "^4.13.0",
+		"jest": "^30.1.3",
+		"jest-environment-jsdom": "^30.1.2",
+		"jotai": "^2.14.0",
+		"markuplint": "^4.13.1",
 		"mui-markdown": "^2.0.3",
 		"node-html-parser": "^7.0.1",
 		"normalize.css": "^8.0.1",
 		"npm-build-zip": "^1.0.4",
-		"npm-check-updates": "^18.0.2",
+		"npm-check-updates": "^18.1.1",
 		"npm-run-all": "^4.1.5",
 		"parcel": "^2.15.4",
 		"prism-react-renderer": "^2.4.1",

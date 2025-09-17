@@ -1,11 +1,9 @@
-import path from "node:path";
+import Changelogs from "../../Define/changelogs";
+import { getElement } from "../../Source/Help/utils/access";
 import { type Input, main, type Options } from "./check-release-note";
 
-const rootDirPath = path.resolve(__dirname, "..", "..");
-
 const input: Input = {
-	rootDirPath: rootDirPath,
-	changelogsJsonPath: path.resolve(rootDirPath, "Define", "changelogs.json"),
+	changelog: getElement(Changelogs, 0),
 };
 
 const options: Options = {

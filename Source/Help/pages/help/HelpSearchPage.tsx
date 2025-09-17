@@ -106,7 +106,7 @@ export const HelpSearchPage: FC<PageProps> = (props: PageProps) => {
 	});
 	const [searchItems, setSearchItems] = useState<SearchResult[]>();
 
-	function onSubmit(data: SearchInput) {
+	const onSubmit = (data: SearchInput) => {
 		let targetKeys = [...TargetHelpPageKeys];
 		if (data.includeDevelopment) {
 			targetKeys = [...targetKeys, ...TargetDevPageKeys];
@@ -209,7 +209,7 @@ export const HelpSearchPage: FC<PageProps> = (props: PageProps) => {
 		}
 
 		setSearchItems(result);
-	}
+	};
 
 	return (
 		<Box>
