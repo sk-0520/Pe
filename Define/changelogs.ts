@@ -4,69 +4,14 @@ import type { ChangelogVersion } from "../Source/Help/types/changelog";
 
 const Changelogs: ChangelogVersion[] = [
 	{
-		date: "YYYY/MM/DD",
-		version: "0.99.260+",
+		date: "2025/09/17",
+		version: "0.99.261",
 		contents: [
 			{
 				type: "note",
 				logs: [
 					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "features",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "fixes",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
+						subject: "主にライブラリ更新",
 					},
 				],
 			},
@@ -74,50 +19,55 @@ const Changelogs: ChangelogVersion[] = [
 				type: "developer",
 				logs: [
 					{
-						revision: "",
+						revision: "1cb03350bf37034234d656552d9c9e4722d32a2f",
 						subject: "#1013: changelogs.json を TS にしたい",
 					},
 					{
-						revision: "",
+						revision: "b09655a5685b5043024932b4e803580482011511",
 						subject: "sqlfluff/sqlfluff 3.4.0 -> 3.4.2",
 					},
 					{
-						revision: "",
+						revision: "e96da1fefe714720c700b9d45b09096db8c48fce",
 						subject: "update npm",
 					},
 					{
-						revision: "",
+						revision: "4497f47c67bcc6adf735aa9ed79338596e89d680",
+						class: "nuget",
 						subject: "Microsoft.Extensions.* 9.0.8 -> 9.0.9",
 						comments: [
 							"Microsoft.Extensions.Logging.Abstractions",
 							"Microsoft.Extensions.Logging",
 							"Microsoft.Extensions.Configuration.Binder",
-							"Microsoft.Extensions.Configuration.Json"
-						]
+							"Microsoft.Extensions.Configuration.Json",
+						],
 					},
 					{
-						revision: "",
-						subject: "System.DirectoryServices.AccountManagement 9.0.8 -> 9.0.9",
+						revision: "cf01c36151a98e95b73e79b5ef38ffa7715ba7a2",
+						class: "nuget",
+						subject:
+							"System.DirectoryServices.AccountManagement 9.0.8 -> 9.0.9",
 					},
 					{
-						revision: "",
 						subject: "System.Management 9.0.8 -> 9.0.9",
+						class: "nuget",
+						comments: ["どこかのコミットに埋もれた"],
 					},
 					{
-						revision: "",
-						subject: "System.Text.Encoding.CodePages 9.0.8 -> 9.0.9",
+						revision: "9f8221bf06f5908efa57a993e707129561446a1b",
+						class: "nuget",
+						subject:
+							"System.Text.Encoding.CodePages 9.0.8 -> 9.0.9",
 					},
 					{
-						revision: "",
+						revision: "a53cd221c19589ea9bbc2d1edf5f8d5130bf6f5f",
+						class: "nuget",
 						subject: "NLog.Extensions.Logging 6.0.3 -> 6.0.4",
 					},
 					{
-						revision: "",
-						subject: "Microsoft.Web.WebView2 1.0.3405.78 -> 1.0.3485.44",
-					},
-					{
-						revision: "",
-						subject: "",
+						revision: "60c6e4a947c01b6dd9fd7e447901d77c19b36efa",
+						class: "nuget",
+						subject:
+							"Microsoft.Web.WebView2 1.0.3405.78 -> 1.0.3485.44",
 					},
 				],
 			},
