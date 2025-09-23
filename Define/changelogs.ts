@@ -74,8 +74,8 @@ const Changelogs: ChangelogVersion[] = [
 				type: "developer",
 				logs: [
 					{
-						revision: "",
-						subject: "",
+						revision: "f8d699343a52ad074be3b330b85877277077095c",
+						subject: "#1019: textlint の導入",
 					},
 					{
 						revision: "",
