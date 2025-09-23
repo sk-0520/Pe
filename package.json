@@ -7,6 +7,7 @@
 		"lint:type": "tsc --noEmit",
 		"lint:markup": "markuplint \"./Source/**/*.{html,jsx,tsx}\"",
 		"lint:script": "biome ci",
+		"lint:text": "textlint Source/Help",
 		"lint": "npm-run-all --parallel lint:*",
 		"fix-lint-script": "biome check --write",
 		"fix-lint-script-unsafe": "biome check --write --unsafe",
@@ -83,6 +84,10 @@
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1",
 		"react-hook-form": "^7.62.0",
+		"textlint": "^15.2.2",
+		"textlint-rule-preset-ja-spacing": "^2.4.3",
+		"textlint-rule-preset-ja-technical-writing": "^12.0.2",
+		"textlint-rule-preset-jtf-style": "^3.0.2",
 		"ts-jest": "^29.4.1",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.9.2"
