@@ -19,13 +19,10 @@
 
 # インストール方法
 
-## ローカルインストール
-
-<MdInline kind="ui">設定</MdInline> → <MdInline kind="ui">プラグイン</MdInline> から <MdInline kind="ui">ローカル</MdInline> を選択してアーカイブを選択することで次回起動時に有効になります。
-
-## Webインストール
-
-<MdInline kind="ui">設定</MdInline> → <MdInline kind="ui">プラグイン</MdInline> から <MdInline kind="ui">Web</MdInline> を選択してプラグイン ID か更新チェック URL を指定することで次回起動時に有効になります。
+* ローカルインストール
+  * <MdBreadcrumbs kind="ui" items="設定 / プラグイン / ローカル" /> を選択してアーカイブを選択することで次回起動時に有効になります。
+* Web インストール
+  * <MdBreadcrumbs kind="ui" items="設定 / プラグイン / Web" /> を選択してプラグイン ID か更新チェック URL を指定することで次回起動時に有効になります。
 
 ## 手動インストール
 
