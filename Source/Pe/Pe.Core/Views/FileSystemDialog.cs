@@ -121,7 +121,8 @@ namespace ContentTypeTextNet.Pe.Core.Views
 
         public DialogFilterList Filters { get; } = new DialogFilterList();
 
-        public CustomizeDialog Customize { get; } = new CustomizeDialog();
+        public CustomizeDialogManager CustomizeDialogManager { get; } = new CustomizeDialogManager();
+
         #endregion
 
         #region function
@@ -145,7 +146,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
             return options;
         }
 
-        protected Com<IShellItem>? CreateFileItem(string path)
+        private static Com<IShellItem>? CreateFileItem(string path)
         {
             IShellItem item;
             IntPtr idl;
@@ -179,42 +180,72 @@ namespace ContentTypeTextNet.Pe.Core.Views
             return PathUtility.AddExtension(path, filter.DefaultExtension);
         }
 
-        public bool? ShowDialog(Window parent) => ShowDialog(HandleUtility.GetWindowHandle(parent));
-        public bool? ShowDialog(IntPtr hWnd)
+        private static void ApplyFos(Com<IFileDialog> result, FOS options)
         {
-            var cleaner = new DisposableStocker();
+            result.Instance.SetOptions(options);
+        }
 
-            var options = GetFos();
-            FileDialog.Instance.SetOptions(options);
-
-            if(!string.IsNullOrEmpty(Title)) {
-                FileDialog.Instance.SetTitle(Title);
+        private static void ApplyTitle(Com<IFileDialog> result, string title)
+        {
+            if(!string.IsNullOrEmpty(title)) {
+                result.Instance.SetTitle(title);
             }
+        }
 
-            if(!string.IsNullOrEmpty(InitialDirectory)) {
-                var item = CreateFileItem(InitialDirectory);
+        private static IDisposable? ApplyInitialDirectory(Com<IFileDialog> result, string initialDirectory)
+        {
+            if(!string.IsNullOrEmpty(initialDirectory)) {
+                var item = CreateFileItem(initialDirectory);
                 if(item != null) {
-                    FileDialog.Instance.SetDefaultFolder(item.Instance);
-                    cleaner.Add(item);
+                    result.Instance.SetDefaultFolder(item.Instance);
+                    return item;
                 }
             }
 
-            if(!string.IsNullOrEmpty(FileName)) {
-                var parentDirPath = Path.GetDirectoryName(FileName);
+            return null;
+        }
+
+        private static IDisposable? ApplyPath(Com<IFileDialog> result, string path)
+        {
+            IDisposable? disposer = null;
+
+            if(!string.IsNullOrEmpty(path)) {
+                var parentDirPath = Path.GetDirectoryName(path);
                 if(parentDirPath != null) {
                     var item = CreateFileItem(parentDirPath);
                     if(item != null) {
-                        FileDialog.Instance.SetFolder(item.Instance);
-                        cleaner.Add(item);
+                        result.Instance.SetFolder(item.Instance);
+                        disposer = item;
 
-                        var fileName = Path.GetFileName(FileName);
-                        FileDialog.Instance.SetFileName(fileName);
+                        var fileName = Path.GetFileName(path);
+                        result.Instance.SetFileName(fileName);
                     } else {
-                        FileDialog.Instance.SetFileName(FileName);
+                        result.Instance.SetFileName(path);
                     }
                 } else {
-                    FileDialog.Instance.SetFileName(FileName);
+                    result.Instance.SetFileName(path);
                 }
+            }
+
+            return disposer;
+        }
+
+        public bool? ShowDialog(Window parent) => ShowDialog(HandleUtility.GetWindowHandle(parent));
+        public bool? ShowDialog(IntPtr hWnd)
+        {
+            using var cleaner = new DisposableCollection();
+
+            ApplyFos(FileDialog, GetFos());
+            ApplyTitle(FileDialog, Title);
+
+            var initialDirectoryDisposer = ApplyInitialDirectory(FileDialog, InitialDirectory);
+            if(initialDirectoryDisposer is not null) {
+                cleaner.Add(initialDirectoryDisposer);
+            }
+
+            var pathDisposer = ApplyPath(FileDialog, FileName);
+            if(pathDisposer is not null) {
+                cleaner.Add(pathDisposer);
             }
 
             var filters = Filters
@@ -225,18 +256,18 @@ namespace ContentTypeTextNet.Pe.Core.Views
                 FileDialog.Instance.SetFileTypes((uint)filters.Length, filters);
             }
 
-            Customize.Build(FileDialogCustomize);
+            CustomizeDialogManager.Build(FileDialogCustomize);
 
             var result = FileDialog.Instance.Show(hWnd);
             if(result == (uint)ERROR.ERROR_CANCELLED) {
+                //TODO: バグってる
                 return false;
             }
             if(result != 0) {
                 return null;
             }
 
-            IShellItem resultItem;
-            FileDialog.Instance.GetResult(out resultItem);
+            FileDialog.Instance.GetResult(out IShellItem resultItem);
             cleaner.Add(ComWrapper.Create(resultItem));
             resultItem.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out var pszPath);
             if(pszPath != IntPtr.Zero) {
@@ -249,7 +280,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
                         FileName = AdjustExtension(path);
                     }
 
-                    Customize.ChangeStatus();
+                    CustomizeDialogManager.ChangeStatus();
                     return true;
                 }
             }
