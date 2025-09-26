@@ -3,6 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Pe.Embedded</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Embedded</RootNamespace>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
