@@ -1034,3 +1034,73 @@ jobs:
           name: ${{ github.job }}-Update.log
           path: ${{ env.UPDATE_DESTINATION }}.log
           if-no-files-found: error
+
+  build-icon:
+    name: Icon
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        TYPE:
+          - release
+          - debug
+          - beta
+          - plugin
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: Delete *.ico
+        shell: bash
+        run: rm Resource/Icon/*.ico
+
+      - name: Retouch
+        shell: bash
+        run: |
+          cd Resource
+          docker compose run retouch pwsh work/EntryRetouch.ps1 -mode ${{ matrix.TYPE }}
+
+      - name: SVG -> PNG
+        shell: bash
+        run: |
+          cd Resource
+          docker compose run drawing /bin/bash -ue /work/export-png.sh --svg /data/@data/${{ matrix.TYPE }}/App.svg --output /data/@data/${{ matrix.TYPE }}
+
+      - name: PNG -> ICO
+        shell: bash
+        run: |
+          cd Resource
+          docker compose run --entrypoint "python /work/create-ico.py --dir /data/@data/${{ matrix.TYPE }} --output /data/@data/${{ matrix.TYPE }}/App.ico" python
+
+      - name: <Artifact> Icon
+        uses: actions/upload-artifact@v4
+        with:
+          name: Icon-${{ matrix.TYPE }}
+          path: Resource/Icon
+          if-no-files-found: error
+
+  package-icon:
+    name: Package Icons
+    runs-on: ubuntu-latest
+    needs: build-icon
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: Download Icon Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: icons
+
+      - name: Collect and Rename Icons
+        shell: pwsh
+        run: ./Build/package-icon.ps1 -ArtifactDirectoryPath "$(pwd)/icons" -OutputDirectoryPath "$(pwd)/package-icons"
+
+      - name: <Artifact> Packed Icons
+        uses: actions/upload-artifact@v4
+        with:
+          name: Package-Icons
+          path: package-icons
+          if-no-files-found: error
