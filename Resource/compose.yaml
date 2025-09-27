@@ -6,12 +6,12 @@ services:
       - ./Icon:/data
       - ./images/retouch/work:/work
 
-  inkscape:
+  drawing:
     build:
-      context: images/inkscape
+      context: images/drawing
     volumes:
       - ./Icon:/data
-      - ./images/inkscape/work:/work
+      - ./images/drawing/work:/work
 
   python:
     build:
