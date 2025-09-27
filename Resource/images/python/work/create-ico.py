@@ -3,9 +3,21 @@ import struct
 import sys
 import glob
 import argparse
-from natsort import natsorted
+from dataclasses import dataclass
 
-def get_png_size(data):
+@dataclass(frozen=True)
+class FileInfo:
+    path: str
+    data: bytes
+    width: int
+    height: int
+
+
+def read_binary(path: str) -> bytes:
+    with open(path, 'rb') as f:
+        return f.read()
+
+def get_png_size(data: bytes) -> tuple[int, int]:
     # PNGヘッダは8バイト、その後IHDRチャンクが続く
     if data[:8] != b'\x89PNG\r\n\x1a\n':
         raise ValueError("PNGファイルではありません")
@@ -14,30 +26,31 @@ def get_png_size(data):
     height = struct.unpack(">I", data[20:24])[0]
     return width, height
 
-def create_ico(png_files, out_path):
-    # ICOヘッダ
-    header = struct.pack('<HHH', 0, 1, len(png_files))
+def create_ico(png_files: list[str], out_path: str) ->  None:
+    # ファイルを一度だけ読み込み、FileInfoで管理
+    file_infos: list[FileInfo] = []
+    for png in png_files:
+        data = read_binary(png)
+        width, height = get_png_size(data)
+        file_infos.append(FileInfo(path=png, data=data, width=width, height=height))
+    # 横幅で昇順ソート
+    file_infos.sort(key=lambda x: x.width)
+
+    header = struct.pack('<HHH', 0, 1, len(file_infos))
     dir_entries = b''
     images = []
-    offset = 6 + 16 * len(png_files)
-    for png in png_files:
-        with open(png, 'rb') as f:
-            data = f.read()
-        try:
-            width, height = get_png_size(data)
-        except Exception as e:
-            print(f"{png} のサイズ取得に失敗: {e}")
-            continue
-        width = width if width < 256 else 0
-        height = height if height < 256 else 0
+    offset = 6 + 16 * len(file_infos)
+    for fi in file_infos:
+        width = fi.width if fi.width < 256 else 0
+        height = fi.height if fi.height < 256 else 0
         entry = struct.pack(
             '<BBBBHHII',
             width, height, 0, 0, 0, 0,
-            len(data), offset
+            len(fi.data), offset
         )
         dir_entries += entry
-        images.append(data)
-        offset += len(data)
+        images.append(fi.data)
+        offset += len(fi.data)
     with open(out_path, 'wb') as f:
         f.write(header)
         f.write(dir_entries)
@@ -56,5 +69,5 @@ if __name__ == "__main__":
     print(f"ディレクトリパス: {in_dir}")
     print(f"出力アイコンパス: {out_file}")
 
-    png_files = natsorted(glob.glob(f"{in_dir}/*.png"))
+    png_files = glob.glob(f"{in_dir}/*.png")
     create_ico(png_files, out_file)
