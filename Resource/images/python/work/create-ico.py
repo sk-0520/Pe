@@ -3,7 +3,7 @@ import sys
 import glob
 import argparse
 
-def compress_ico(png_files, out_path):
+def create_ico(png_files, out_path):
     # ICOヘッダ
     header = struct.pack('<HHH', 0, 1, len(png_files))
     dir_entries = b''
@@ -46,4 +46,4 @@ if __name__ == "__main__":
     print(f"出力アイコンパス: {out_file}")
 
     png_files = sorted(glob.glob(f"{in_dir}/*.png"))
-    compress_ico(png_files, out_file)
+    create_ico(png_files, out_file)
