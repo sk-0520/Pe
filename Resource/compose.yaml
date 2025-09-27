@@ -26,3 +26,10 @@ services:
     volumes:
       - ./Icon:/data
       - ./images/python/work:/work
+
+  ico:
+    build:
+      context: images/ico
+    volumes:
+      - ./Icon:/data
+      - ./images/ico/work:/work
