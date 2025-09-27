@@ -1,6 +1,7 @@
 import struct
 import sys
 import glob
+import argparse
 
 def make_ico(png_files, out_path):
     # ICOヘッダ
@@ -33,8 +34,17 @@ def make_ico(png_files, out_path):
             f.write(img)
 
 if __name__ == "__main__":
-    in_dir = sys.argv[1]  # xxx/dir
-    out_file = sys.argv[2]  # xxx/output.ico
+    parser = argparse.ArgumentParser(description="Generate ICO file from PNGs.")
+    parser.add_argument("--dir", required=True, help="Input directory containing PNG files.")
+    parser.add_argument("--output", required=True, help="Output ICO file path.")
+    args = parser.parse_args()
+
+    in_dir = args.dir
+    out_file = args.output
+
+    print(f"Input directory: {in_dir}")
+    print(f"Output file: {out_file}")
+
     png_files = sorted(glob.glob(f"{in_dir}/*.png"))
     make_ico(png_files, out_file)
     print(f"ICO generated: {out_file}")

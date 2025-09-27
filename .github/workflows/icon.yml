@@ -50,7 +50,7 @@ jobs:
         shell: bash
         run: |
           cd Resource
-          docker compose run --entrypoint "/bin/bash -ue /work/convert-ico.sh --input /data/@data/${{ matrix.TYPE }} --output /data/@data/${{ matrix.TYPE }}/App.ico" imagemagick
+          docker compose run --entrypoint "/bin/bash -ue /work/compress-ico.sh --dir /data/@data/${{ matrix.TYPE }} --output /data/@data/${{ matrix.TYPE }}/App.ico" python
 
       - name: <Artifact> Icon
         uses: actions/upload-artifact@v4
