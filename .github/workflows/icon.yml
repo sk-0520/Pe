@@ -58,3 +58,34 @@ jobs:
           name: Icon-${{ matrix.TYPE }}
           path: Resource/Icon
           if-no-files-found: error
+
+  pack:
+    name: Pack Icons
+    runs-on: ubuntu-latest
+    needs: icon
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: Download Icon Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: icons
+
+      - name: Collect and Rename Icons
+        shell: pwsh
+        run: ./Build/pack-icon.ps1
+
+      - name: Archive Icons
+        shell: bash
+        run: |
+          cd packed
+          zip ../Icons.zip App-*.ico
+
+      - name: <Artifact> Packed Icons
+        uses: actions/upload-artifact@v4
+        with:
+          name: Packed-Icons
+          path: Icons.zip
+          if-no-files-found: error
