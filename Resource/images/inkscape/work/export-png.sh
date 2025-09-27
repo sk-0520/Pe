@@ -28,4 +28,19 @@ for ICON_SIZE in "${ICON_SIZE_LIST[@]}"; do
 		--export-type=png \
 		--export-filename="${OUTPUT_DIR_PATH}/${ICON_SIZE}.png" \
 		"${SOURCE_SVG_PATH}"
+
+	if [ "${ICON_SIZE}" -ge 60 ]; then
+		echo "Optimizing ${OUTPUT_DIR_PATH}/${ICON_SIZE}.png"
+		echo -n "SRC: "
+		ls -l "${OUTPUT_DIR_PATH}/${ICON_SIZE}.png"
+		convert "${OUTPUT_DIR_PATH}/${ICON_SIZE}.png" \
+			-strip \
+			-define png:compression-level=9 \
+			-define png:compression-filter=5 \
+			-define png:compression-strategy=1 \
+			-define png:exclude-chunk=all \
+			"${OUTPUT_DIR_PATH}/${ICON_SIZE}.png"
+		echo -n "DST: "
+		ls -l "${OUTPUT_DIR_PATH}/${ICON_SIZE}.png"
+	fi
 done

@@ -1,3 +1,5 @@
 FROM linuxserver/inkscape
 
-RUN apk upgrade --no-cache
+RUN apk upgrade --no-cache \
+    && apk add imagemagick
+
