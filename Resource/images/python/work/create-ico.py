@@ -1,7 +1,17 @@
+
 import struct
 import sys
 import glob
 import argparse
+
+def get_png_size(data):
+    # PNGヘッダは8バイト、その後IHDRチャンクが続く
+    if data[:8] != b'\x89PNG\r\n\x1a\n':
+        raise ValueError("PNGファイルではありません")
+    # IHDRチャンクは最初の8+4+4=16バイト以降
+    width = struct.unpack(">I", data[16:20])[0]
+    height = struct.unpack(">I", data[20:24])[0]
+    return width, height
 
 def create_ico(png_files, out_path):
     # ICOヘッダ
@@ -12,13 +22,13 @@ def create_ico(png_files, out_path):
     for png in png_files:
         with open(png, 'rb') as f:
             data = f.read()
-        # PNGサイズ抽出
-        # ここではファイル名等からサイズ推定（厳密にはPNGヘッダ解析も可）
-        # 例: icon_16.png → 16x16
-        fname = png.split('/')[-1]
-        sz = int(''.join([c for c in fname if c.isdigit()]))
-        width = sz if sz < 256 else 0
-        height = sz if sz < 256 else 0
+        try:
+            width, height = get_png_size(data)
+        except Exception as e:
+            print(f"{png} のサイズ取得に失敗: {e}")
+            continue
+        width = width if width < 256 else 0
+        height = height if height < 256 else 0
         entry = struct.pack(
             '<BBBBHHII',
             width, height, 0, 0, 0, 0,
