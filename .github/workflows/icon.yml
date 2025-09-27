@@ -75,17 +75,11 @@ jobs:
 
       - name: Collect and Rename Icons
         shell: pwsh
-        run: ./Build/pack-icon.ps1
-
-      - name: Archive Icons
-        shell: bash
-        run: |
-          cd packed
-          zip ../Icons.zip App-*.ico
+        run: ./Build/pack-icon.ps1 -ArtifactDirectoryPath "$(pwd)/icons" -OutputDirectoryPath "$(pwd)/packed"
 
       - name: <Artifact> Packed Icons
         uses: actions/upload-artifact@v4
         with:
           name: Packed-Icons
-          path: Icons.zip
+          path: packed
           if-no-files-found: error
