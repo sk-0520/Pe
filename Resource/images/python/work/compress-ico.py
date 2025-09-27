@@ -34,17 +34,16 @@ def make_ico(png_files, out_path):
             f.write(img)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate ICO file from PNGs.")
-    parser.add_argument("--dir", required=True, help="Input directory containing PNG files.")
-    parser.add_argument("--output", required=True, help="Output ICO file path.")
+    parser = argparse.ArgumentParser(description="複数の PNG 画像から ICO ファイルを生成")
+    parser.add_argument("--dir", required=True, help="PNG 画像を含む入力ディレクトリ")
+    parser.add_argument("--output", required=True, help="出力 ICO ファイルのパス")
     args = parser.parse_args()
 
     in_dir = args.dir
     out_file = args.output
 
-    print(f"Input directory: {in_dir}")
-    print(f"Output file: {out_file}")
+    print(f"ディレクトリパス: {in_dir}")
+    print(f"出力アイコンパス: {out_file}")
 
     png_files = sorted(glob.glob(f"{in_dir}/*.png"))
     make_ico(png_files, out_file)
-    print(f"ICO generated: {out_file}")
