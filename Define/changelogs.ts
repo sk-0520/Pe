@@ -79,7 +79,8 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"#987: EXE用アイコン作成系の諸々を GHA で処理できるようにする",
 					},
 					{
 						revision: "",
