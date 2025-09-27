@@ -1,28 +1,40 @@
-import argparse
-from PIL import Image
+import struct
+import sys
+import glob
 
-def convert(input_path: str, output_path: str) -> None:
-    print(f"{input_path=}, {output_path=}")
-    source_icon = Image.open(input_path).convert('RGBA')
+def make_ico(png_files, out_path):
+    # ICOヘッダ
+    header = struct.pack('<HHH', 0, 1, len(png_files))
+    dir_entries = b''
+    images = []
+    offset = 6 + 16 * len(png_files)
+    for png in png_files:
+        with open(png, 'rb') as f:
+            data = f.read()
+        # PNGサイズ抽出
+        # ここではファイル名等からサイズ推定（厳密にはPNGヘッダ解析も可）
+        # 例: icon_16.png → 16x16
+        fname = png.split('/')[-1]
+        sz = int(''.join([c for c in fname if c.isdigit()]))
+        width = sz if sz < 256 else 0
+        height = sz if sz < 256 else 0
+        entry = struct.pack(
+            '<BBBBHHII',
+            width, height, 0, 0, 0, 0,
+            len(data), offset
+        )
+        dir_entries += entry
+        images.append(data)
+        offset += len(data)
+    with open(out_path, 'wb') as f:
+        f.write(header)
+        f.write(dir_entries)
+        for img in images:
+            f.write(img)
 
-    #output_image = Image.new(mode="RGBA")
-
-    print(f"{source_icon=}")
-    image_sizes = source_icon.info['sizes']
-    #source_icon.
-    for image_size in image_sizes:
-        print(f"{image_size=}")
-        print(f"{image_size[0]}")
-
-    source_icon.save(output_path)
-
-    pass
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--input')
-    parser.add_argument('--output')
-    args = parser.parse_args()
-
-    convert(args.input, args.output)
+if __name__ == "__main__":
+    in_dir = sys.argv[1]  # xxx/dir
+    out_file = sys.argv[2]  # xxx/output.ico
+    png_files = sorted(glob.glob(f"{in_dir}/*.png"))
+    make_ico(png_files, out_file)
+    print(f"ICO generated: {out_file}")

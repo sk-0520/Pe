@@ -16,6 +16,4 @@ ls "${INPUT_DIR_PATH}"
 echo OUTPUT_ICON_PATH
 echo "${OUTPUT_ICON_PATH}"
 
-pushd "${INPUT_DIR_PATH}"
-	icotool -c -o "${OUTPUT_ICON_PATH}" *.png
-popd
+png-to-ico "${INPUT_DIR_PATH}"/*.png > "${OUTPUT_ICON_PATH}"
