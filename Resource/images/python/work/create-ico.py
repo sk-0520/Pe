@@ -3,6 +3,7 @@ import struct
 import sys
 import glob
 import argparse
+from natsort import natsorted
 
 def get_png_size(data):
     # PNGヘッダは8バイト、その後IHDRチャンクが続く
@@ -55,5 +56,5 @@ if __name__ == "__main__":
     print(f"ディレクトリパス: {in_dir}")
     print(f"出力アイコンパス: {out_file}")
 
-    png_files = sorted(glob.glob(f"{in_dir}/*.png"))
+    png_files = natsorted(glob.glob(f"{in_dir}/*.png"))
     create_ico(png_files, out_file)
