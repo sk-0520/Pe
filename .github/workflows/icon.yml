@@ -27,9 +27,6 @@ jobs:
       - name: <Checkout> Repository
         uses: actions/checkout@v4
 
-      # - name: Set up docker buildx
-      #   uses: docker/setup-buildx-action@v3
-
       - name: Delete *.ico
         shell: bash
         run: rm Resource/Icon/*.ico
@@ -75,11 +72,11 @@ jobs:
 
       - name: Collect and Rename Icons
         shell: pwsh
-        run: ./Build/pack-icon.ps1 -ArtifactDirectoryPath "$(pwd)/icons" -OutputDirectoryPath "$(pwd)/packed"
+        run: ./Build/package-icon.ps1 -ArtifactDirectoryPath "$(pwd)/icons" -OutputDirectoryPath "$(pwd)/package-icons"
 
       - name: <Artifact> Packed Icons
         uses: actions/upload-artifact@v4
         with:
-          name: Packed-Icons
-          path: packed
+          name: Package-Icons
+          path: package-icons
           if-no-files-found: error
