@@ -55,6 +55,6 @@ jobs:
       - name: <Artifact> Icon
         uses: actions/upload-artifact@v4
         with:
-          name: Retouch-${{ matrix.TYPE }}
+          name: Icon-${{ matrix.TYPE }}
           path: Resource/Icon
           if-no-files-found: error

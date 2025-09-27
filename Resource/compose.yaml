@@ -13,13 +13,6 @@ services:
       - ./Icon:/data
       - ./images/inkscape/work:/work
 
-  imagemagick:
-    build:
-      context: images/imagemagick
-    volumes:
-      - ./Icon:/data
-      - ./images/imagemagick/work:/work
-
   python:
     build:
       context: images/python
@@ -27,9 +20,3 @@ services:
       - ./Icon:/data
       - ./images/python/work:/work
 
-  ico:
-    build:
-      context: images/ico
-    volumes:
-      - ./Icon:/data
-      - ./images/ico/work:/work
