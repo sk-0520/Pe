@@ -56,8 +56,8 @@ jobs:
           path: Resource/Icon
           if-no-files-found: error
 
-  pack:
-    name: Pack Icons
+  package:
+    name: Package Icons
     runs-on: ubuntu-latest
     needs: icon
 
