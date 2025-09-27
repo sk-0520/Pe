@@ -16,6 +16,6 @@ if (!(Test-Path $OutputDirectoryPath)) {
 	New-Item -ItemType Directory -Path $OutputDirectoryPath | Out-Null
 }
 foreach ($type in $types) {
-	$iconPath = Join-Path -Path $ArtifactDirectoryPath -ChildPath "Icon-$type" | Join-Path -ChildPath "App.ico"
+	$iconPath = Join-Path -Path $ArtifactDirectoryPath -ChildPath "Icon-${type}" | Join-Path -ChildPath "@data" | Join-Path -ChildPath $type | Join-Path -ChildPath "App.ico"
 	Copy-Item -Path $iconPath -Destination (Join-Path -Path $OutputDirectoryPath -ChildPath "App-${type}.ico")
 }
