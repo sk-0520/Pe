@@ -12,6 +12,7 @@
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <DevelopmentDependency>true</DevelopmentDependency>
     <IsRoslynComponent>true</IsRoslynComponent>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>

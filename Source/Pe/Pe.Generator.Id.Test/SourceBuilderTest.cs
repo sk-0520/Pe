@@ -1,5 +1,3 @@
-#if true
-#else
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,8 +47,8 @@ namespace ContentTypeTextNet.Pe.Generator.Id.Test
 
         [Theory]
         [InlineData("global::EmptyNamespaceEnum.A", EmptyNamespaceEnum.A)]
-        [InlineData("global::ContentTypeTextNet.Pe.Generator.Test.TestEnum.A", TestEnum.A)]
-        [InlineData("global::ContentTypeTextNet.Pe.Generator.Test.SourceBuilderTest+InnerEnum.A", InnerEnum.A)]
+        [InlineData("global::ContentTypeTextNet.Pe.Generator.Id.Test.TestEnum.A", TestEnum.A)]
+        [InlineData("global::ContentTypeTextNet.Pe.Generator.Id.Test.SourceBuilderTest+InnerEnum.A", InnerEnum.A)]
         public void ToCode_enum_Test(string expected, Enum input)
         {
             var sourceBuilder = new SourceBuilder();
@@ -72,7 +70,7 @@ namespace ContentTypeTextNet.Pe.Generator.Id.Test
         {
             var sourceBuilder = new SourceBuilder();
             var actual = sourceBuilder.ToCode<TestClass>();
-            var expected = "global::ContentTypeTextNet.Pe.Generator.Test.TestClass";
+            var expected = "global::ContentTypeTextNet.Pe.Generator.Id.Test.TestClass";
             Assert.Equal(expected, actual);
         }
 
@@ -81,11 +79,10 @@ namespace ContentTypeTextNet.Pe.Generator.Id.Test
         {
             var sourceBuilder = new SourceBuilder();
             var actual = sourceBuilder.ToCode<InnerClass>();
-            var expected = "global::ContentTypeTextNet.Pe.Generator.Test.SourceBuilderTest+InnerClass";
+            var expected = "global::ContentTypeTextNet.Pe.Generator.Id.Test.SourceBuilderTest+InnerClass";
             Assert.Equal(expected, actual);
         }
 
         #endregion
     }
 }
-#endif

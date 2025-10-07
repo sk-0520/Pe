@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
@@ -12,29 +13,49 @@ namespace ContentTypeTextNet.Pe.Generator.Id
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            context.RegisterPostInitializationOutput(static initContext =>
-            {
-                var sourceBuilder = new SourceBuilder();
+            var sourceBuilder = new SourceBuilder();
 
-                var attributeNamespace = "ContentTypeTextNet.Pe.Generator.Id";
-                var attributeTarget = AttributeTargets.Struct;
-                var attributeName = "GenerateIdAttribute";
+            var attributeNamespace = "ContentTypeTextNet.Pe.Generator.Id";
+            var attributeTarget = AttributeTargets.Struct;
+            var attributeName = "GenerateIdAttribute";
 
-                var source = $$"""
-{{sourceBuilder.ToHeader()}}
+            context.RegisterPostInitializationOutput(initContext => {
+                var attributeSource = $$"""
+{{sourceBuilder.Header}}
 
 namespace {{attributeNamespace}}
 {
     [{{sourceBuilder.ToCode<System.AttributeUsageAttribute>()}}({{sourceBuilder.ToCode(attributeTarget)}}, AllowMultiple = false)]
-    public sealed class {{attributeName}}: {{sourceBuilder.ToCode<System.Attribute>()}}
+    internal sealed record class {{attributeName}}<TId>: {{sourceBuilder.ToCode<System.Attribute>()}}
     {
-
+        public {{attributeName}}(
+            public TId DefaultValue = default,
+            public bool JsonConstructor = true,
+            public global::System.Func<string, TId> CustomParse = null,
+            public global::System.Func<TId> CustomNewId = null,
+            public global::System.Func<string> CustomToString = null
+        )
+        {
+            //NOP
+        }
     }
 }
 """;
 
-                initContext.AddSource($"{attributeName}.g.cs", source);
+                initContext.AddSource($"{attributeName}.g.cs", attributeSource);
             });
+
+            var provider = context.SyntaxProvider.ForAttributeWithMetadataName(
+                $"{attributeNamespace}.{attributeName}",
+                (node, cancellationToken) => true,
+                (context, cancellationToken) => context
+            ).Collect();
+
+            context.RegisterSourceOutput(provider, Emit);
+        }
+
+        private void Emit(SourceProductionContext context, ImmutableArray<GeneratorAttributeSyntaxContext> array)
+        {
         }
 
         #endregion

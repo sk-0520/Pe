@@ -11,7 +11,7 @@ namespace ContentTypeTextNet.Pe.Generator.Id.Test
     {
         #region define
 
-        [ContentTypeTextNet.Pe.Generator.Id.GenerateId()]
+        [ContentTypeTextNet.Pe.Generator.Id.GenerateId<int>()]
         public partial struct Data;
 
         #endregion
