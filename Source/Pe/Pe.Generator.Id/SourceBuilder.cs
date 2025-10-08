@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.CodeAnalysis;
 
 namespace ContentTypeTextNet.Pe.Generator.Id
 {
@@ -25,6 +26,21 @@ namespace ContentTypeTextNet.Pe.Generator.Id
         {
             var type = typeof(T);
             return "global::" + type.FullName;
+        }
+
+        public string ToNamespaceCode(INamedTypeSymbol targetSymbol)
+        {
+            return targetSymbol.ContainingNamespace.IsGlobalNamespace ?
+                "" :
+                "namespace " + targetSymbol.ContainingNamespace + ";"
+            ;
+        }
+
+        public string ToSourceFilePath(INamedTypeSymbol targetSymbol)
+        {
+            var targetName = targetSymbol.Name;
+            var fullName = (targetSymbol.ContainingNamespace.IsGlobalNamespace ? "" : targetSymbol.ContainingNamespace + ".") + targetName;
+            return $"{fullName}.g.cs";
         }
 
         #endregion
