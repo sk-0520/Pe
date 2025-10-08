@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Generator.Id;
 using Xunit;
 
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Bug", "S3903:Types should be defined in named namespaces", Justification = "<保留中>")]
@@ -17,7 +16,7 @@ public class EmptyNamespaceClass
 {
 }
 
-namespace ContentTypeTextNet.Pe.Generator.Id.Test
+namespace ContentTypeTextNet.Pe.Generator.Test
 {
     public enum TestEnum
     {
@@ -47,8 +46,8 @@ namespace ContentTypeTextNet.Pe.Generator.Id.Test
 
         [Theory]
         [InlineData("global::EmptyNamespaceEnum.A", EmptyNamespaceEnum.A)]
-        [InlineData("global::ContentTypeTextNet.Pe.Generator.Id.Test.TestEnum.A", TestEnum.A)]
-        [InlineData("global::ContentTypeTextNet.Pe.Generator.Id.Test.SourceBuilderTest+InnerEnum.A", InnerEnum.A)]
+        [InlineData("global::ContentTypeTextNet.Pe.Generator.Test.TestEnum.A", TestEnum.A)]
+        [InlineData("global::ContentTypeTextNet.Pe.Generator.Test.SourceBuilderTest+InnerEnum.A", InnerEnum.A)]
         public void ToCode_enum_Test(string expected, Enum input)
         {
             var sourceBuilder = new SourceBuilder();
@@ -70,7 +69,7 @@ namespace ContentTypeTextNet.Pe.Generator.Id.Test
         {
             var sourceBuilder = new SourceBuilder();
             var actual = sourceBuilder.ToCode<TestClass>();
-            var expected = "global::ContentTypeTextNet.Pe.Generator.Id.Test.TestClass";
+            var expected = "global::ContentTypeTextNet.Pe.Generator.Test.TestClass";
             Assert.Equal(expected, actual);
         }
 
@@ -79,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Generator.Id.Test
         {
             var sourceBuilder = new SourceBuilder();
             var actual = sourceBuilder.ToCode<InnerClass>();
-            var expected = "global::ContentTypeTextNet.Pe.Generator.Id.Test.SourceBuilderTest+InnerClass";
+            var expected = "global::ContentTypeTextNet.Pe.Generator.Test.SourceBuilderTest+InnerClass";
             Assert.Equal(expected, actual);
         }
 

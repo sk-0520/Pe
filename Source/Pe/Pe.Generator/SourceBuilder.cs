@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
-namespace ContentTypeTextNet.Pe.Generator.Id
+namespace ContentTypeTextNet.Pe.Generator
 {
     public class SourceBuilder
     {
