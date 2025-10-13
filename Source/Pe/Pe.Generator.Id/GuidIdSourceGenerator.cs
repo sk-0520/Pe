@@ -9,6 +9,19 @@ namespace ContentTypeTextNet.Pe.Generator.Id
     [Generator(LanguageNames.CSharp)]
     public class GuidIdSourceGenerator: IIncrementalGenerator
     {
+        #region define
+
+        private static readonly DiagnosticDescriptor NestedTypeNotSupported = new DiagnosticDescriptor(
+            id: "PEIG001",
+            title: "Nested type not supported",
+            messageFormat: "The type '{0}' is nested inside another type. Apply the attribute only to top-level types.",
+            category: "Usage",
+            defaultSeverity: DiagnosticSeverity.Error,
+            isEnabledByDefault: true
+        );
+
+        #endregion
+
         #region IIncrementalGenerator
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
@@ -54,6 +67,14 @@ namespace {{attributeNamespace}}
 
             foreach(var attribute in array) {
                 var targetSymbol = (INamedTypeSymbol)attribute.TargetSymbol;
+
+                // ネストはむり
+                if(targetSymbol.ContainingType != null) {
+                    var location = targetSymbol.Locations.Length > 0 ? targetSymbol.Locations[0] : Location.None;
+                    context.ReportDiagnostic(Diagnostic.Create(NestedTypeNotSupported, location, targetSymbol.ToDisplayString()));
+                    continue;
+                }
+
                 var namespaceName = targetSymbol.ContainingNamespace.IsGlobalNamespace
                     ? ""
                     : targetSymbol.ContainingNamespace.ToString();
