@@ -89,7 +89,7 @@ using System.Text.Json.Serialization;
 
 {{(sourceBuilder.ToNamespaceCode(targetSymbol))}}
 
-partial record struct {{targetName}}
+readonly partial record struct {{targetName}}
 {
     /// <summary>
     /// 生成。
