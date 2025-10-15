@@ -15,6 +15,9 @@ namespace ContentTypeTextNet.Pe.Generator.Id.Test
     [GenerateGuidId()]
     public partial record struct TestData;
 
+    //[GenerateGuidIdTypeHandler(typeof(TestData))]
+    //public partial class TestDataHandler;
+
     public class GenerateGuidIdAttributeTest
     {
         #region function

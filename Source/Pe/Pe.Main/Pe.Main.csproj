@@ -155,6 +155,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Pe.Generator.Id\Pe.Generator.Id.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Update="CefSharp">
       <Private>true</Private>
     </Reference>

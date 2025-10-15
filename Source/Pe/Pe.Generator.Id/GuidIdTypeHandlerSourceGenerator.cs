@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
 namespace ContentTypeTextNet.Pe.Generator.Id
 {
     [Generator(LanguageNames.CSharp)]
-    public class GuidIdSourceGenerator: IIncrementalGenerator
+    public class GuidIdTypeHandlerSourceGenerator: IIncrementalGenerator
     {
         #region IIncrementalGenerator
 
@@ -16,8 +17,8 @@ namespace ContentTypeTextNet.Pe.Generator.Id
             var sourceBuilder = new SourceBuilder();
 
             var attributeNamespace = "ContentTypeTextNet.Pe.Generator.Id";
-            var attributeTarget = AttributeTargets.Struct;
-            var attributeName = "GenerateGuidIdAttribute";
+            var attributeTarget = AttributeTargets.Class;
+            var attributeName = "GenerateGuidIdTypeHandlerAttribute";
 
             context.RegisterPostInitializationOutput(initContext => {
                 var attributeSource = $$"""
@@ -28,10 +29,16 @@ namespace {{attributeNamespace}}
     [{{sourceBuilder.ToCode<System.AttributeUsageAttribute>()}}({{sourceBuilder.ToCode(attributeTarget)}}, AllowMultiple = false)]
     internal sealed class {{attributeName}}: {{sourceBuilder.ToCode<System.Attribute>()}}
     {
-        public {{attributeName}}()
+        public {{attributeName}}({{sourceBuilder.ToCode<System.Type>()}} type)
         {
             //NOP
         }
+
+        #region property
+
+        public {{sourceBuilder.ToCode<System.Type>()}} Type { get; }
+
+        #endregion
     }
 }
 """;
@@ -69,105 +76,44 @@ namespace {{attributeNamespace}}
                 var targetName = targetSymbol.Name;
                 var fullName = (targetSymbol.ContainingNamespace.IsGlobalNamespace ? "" : namespaceName + ".") + targetName;
 
+
+                var constructor0 = targetSymbol.GetAttributes()[0];
+                var idType = constructor0.ConstructorArguments[0].Value;
+
                 var source = $$"""
 {{sourceBuilder.Header}}
 using System;
-using System.Text.Json.Serialization;
+using System.Data;
 
 {{(sourceBuilder.ToNamespaceCode(targetSymbol))}}
 
-readonly partial record struct {{targetName}}
+partial class {{targetName}}: global::Dapper.SqlMapper.TypeHandler<{{idType}}>
 {
-    /// <summary>
-    /// 生成。
-    /// </summary>
-    [JsonConstructor]
-    public {{targetName}}({{sourceBuilder.ToCode<Guid>()}} id)
-    {
-        Id = id;
-    }
-        
-    #region property
+    #region TypeHandler
 
-    /// <summary>
-    /// 生ID。
-    /// </summary>
-    public {{sourceBuilder.ToCode<Guid>()}} Id { get; }
-
-    /// <summary>
-    /// 空ID。
-    /// </summary>
-    public static {{targetName}} Empty
+    public override void SetValue(IDbDataParameter parameter, {{idType}} value)
     {
-        get
-        {
-            return new {{targetName}}(default);
-        }
+        parameter.Value = value.ToString();
     }
 
-    #endregion
-
-
-    #region function
-
-    /// <summary>
-    /// <see cref="{{targetName}}"/>に変換。
-    /// </summary>
-    /// <param name="s">入力文字列。</param>
-    /// <param name="result">変更成功。</param>
-    /// <returns></returns>
-    public static bool TryParse(string s, out {{targetName}} result)
+    public override {{idType}} Parse(object value)
     {
-        if({{sourceBuilder.ToCode<Guid>()}}.TryParse(s, out var val)) {
-            result = new {{targetName}}(val);
-            return true;
+
+        var s = (string)value;
+        if(s != null) {
+            if({{idType}}.TryParse(s, out var ret)) {
+                return ret;
+            }
         }
 
-        result = default;
-        return false;
-    }
-
-    /// <summary>
-    /// <see cref="{{targetName}}"/>に変換。
-    /// </summary>
-    /// <param name="s">入力文字列。</param>
-    /// <returns></returns>
-    public static {{targetName}} Parse(string s)
-    {
-        var id = {{sourceBuilder.ToCode<Guid>()}}.Parse(s);
-        return new {{targetName}}(id);
-    }
-
-    /// <summary>
-    /// 新規IDの生成。
-    /// </summary>
-    /// <returns></returns>
-    public static {{targetName}} NewId()
-    {
-        return new {{targetName}}({{sourceBuilder.ToCode<Guid>()}}.NewGuid());
-    }
-
-    #endregion
-
-    #region object
-
-    /// <summary>
-    /// IDを文字列表現に変換。
-    /// </summary>
-    /// <remarks>
-    /// <para>ファイル名として使用可能な文字列表現にもなる。</para>
-    /// </remarks>
-    /// <returns></returns>
-    public override string ToString()
-    {
-        return Id.ToString("D");
+        return {{idType}}.Empty;
     }
 
     #endregion
 }
 
 """;
-                var sourceFileName =  sourceBuilder.ToSourceFilePath(targetSymbol);
+                var sourceFileName = sourceBuilder.ToSourceFilePath(targetSymbol);
                 context.AddSource(sourceFileName, source);
             }
         }
