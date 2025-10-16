@@ -78,7 +78,7 @@ namespace {{attributeNamespace}}
 
 
                 var constructor0 = targetSymbol.GetAttributes()[0];
-                var idType = constructor0.ConstructorArguments[0].Value;
+                var idType = "global::" + constructor0.ConstructorArguments[0].Value;
 
                 var source = $$"""
 {{sourceBuilder.Header}}
@@ -98,7 +98,6 @@ partial class {{targetName}}: global::Dapper.SqlMapper.TypeHandler<{{idType}}>
 
     public override {{idType}} Parse(object value)
     {
-
         var s = (string)value;
         if(s != null) {
             if({{idType}}.TryParse(s, out var ret)) {

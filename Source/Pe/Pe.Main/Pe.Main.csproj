@@ -74,11 +74,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="IdImpl.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>IdImpl.tt</DependentUpon>
-    </Compile>
     <Compile Update="Models\Logic\Hook.MouseHook.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -139,10 +134,6 @@
     </None>
     <None Update="etc\sql\.sqlfluffignore">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Update="IdImpl.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IdImpl.cs</LastGenOutput>
     </None>
     <None Update="Models\Logic\Hook.MouseHook.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
