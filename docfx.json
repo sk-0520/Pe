@@ -15,8 +15,9 @@
 						"Source/Pe/Pe.Library.Database/Pe.Library.Database.csproj",
 						"Source/Pe/Pe.Library.DependencyInjection/Pe.Library.DependencyInjection.csproj",
 						"Source/Pe/Pe.Core/Pe.Core.csproj",
-						"Source/Pe/Pe.Plugins.DefaultTheme/Pe.Plugins.DefaultTheme.csproj",
-						"Source/Pe/Pe.Main/Pe.Main.csproj"
+						"Source/Pe/Pe.Mvvm/Pe.Mvvm.csproj",
+						"Source/Pe/Pe.Main/Pe.Main.csproj",
+						"Source/Pe/Pe.Plugins.DefaultTheme/Pe.Plugins.DefaultTheme.csproj"
 					],
 					"exclude": [
 						"**/bin/**",

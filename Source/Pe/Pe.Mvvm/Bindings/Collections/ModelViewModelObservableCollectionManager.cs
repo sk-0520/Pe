@@ -162,7 +162,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         }
 
         /// <summary>
-        /// <see cref="Options.AutoDisposeViewModel"/> が真の場合に指定の ViewModel 一覧を解放する。
+        /// <see cref="ModelViewModelObservableCollectionOptions{TModel, TViewModel}.AutoDisposeViewModel"/> が真の場合に指定の ViewModel 一覧を解放する。
         /// </summary>
         /// <remarks>古いデータの解放を想定している。</remarks>
         /// <param name="viewModels"></param>
