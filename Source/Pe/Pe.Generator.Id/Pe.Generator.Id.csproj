@@ -3,6 +3,7 @@
   <PropertyGroup>
     <RootNamespace>ContentTypeTextNet.Pe.Generator.Id</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup>
