@@ -35,6 +35,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Library.Args", "..\Pe\Pe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Mvvm", "..\Pe\Pe.Mvvm\Pe.Mvvm.csproj", "{FAA08B37-BC44-216F-9CEA-33F949D76287}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "generator", "generator", "{DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Pe.Generator", "..\Pe\Pe.Generator\Pe.Generator.shproj", "{18B4F55E-580C-441B-84C5-2D12EAE1B870}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Generator.Id", "..\Pe\Pe.Generator.Id\Pe.Generator.Id.csproj", "{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -139,6 +145,14 @@ Global
 		{FAA08B37-BC44-216F-9CEA-33F949D76287}.Release|x64.Build.0 = Release|x64
 		{FAA08B37-BC44-216F-9CEA-33F949D76287}.Release|x86.ActiveCfg = Release|x86
 		{FAA08B37-BC44-216F-9CEA-33F949D76287}.Release|x86.Build.0 = Release|x86
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Debug|x64.ActiveCfg = Debug|x64
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Debug|x64.Build.0 = Debug|x64
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Debug|x86.ActiveCfg = Debug|x86
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Debug|x86.Build.0 = Debug|x86
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Release|x64.ActiveCfg = Release|x64
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Release|x64.Build.0 = Release|x64
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Release|x86.ActiveCfg = Release|x86
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -158,8 +172,15 @@ Global
 		{EA24A6DC-F338-43D6-B93E-E6D3D05C15E9} = {A99BC63C-7FEC-422F-9A76-AD1201D216B7}
 		{160A2977-13BE-6DEE-79FD-719662BD8C35} = {A99BC63C-7FEC-422F-9A76-AD1201D216B7}
 		{FAA08B37-BC44-216F-9CEA-33F949D76287} = {A99BC63C-7FEC-422F-9A76-AD1201D216B7}
+		{DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97} = {E19062EF-1472-482E-AA42-665522E9ED7B}
+		{18B4F55E-580C-441B-84C5-2D12EAE1B870} = {DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD} = {DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {78A52B18-BFFB-4349-8EA1-EFA11783A571}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Pe\Pe.Generator\Pe.Generator.projitems*{18b4f55e-580c-441b-84c5-2d12eae1b870}*SharedItemsImports = 13
+		..\Pe\Pe.Generator\Pe.Generator.projitems*{4aaef1e9-e15c-ce65-dd60-0cba55497edd}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal
