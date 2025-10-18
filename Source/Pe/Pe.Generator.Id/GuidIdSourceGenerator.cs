@@ -45,17 +45,17 @@ namespace {{attributeNamespace}}
                 (context, cancellationToken) => context
             ).Collect();
 
-            context.RegisterSourceOutput(provider, Emit);
+            context.RegisterSourceOutput(provider, GenerateSource);
         }
 
-        private void Emit(SourceProductionContext context, ImmutableArray<GeneratorAttributeSyntaxContext> array)
+        private void GenerateSource(SourceProductionContext context, ImmutableArray<GeneratorAttributeSyntaxContext> array)
         {
             var sourceBuilder = new SourceBuilder();
 
             foreach(var attribute in array) {
                 var targetSymbol = (INamedTypeSymbol)attribute.TargetSymbol;
 
-                // ネストはむり
+                // ネストは無理
                 if(targetSymbol.ContainingType != null) {
                     var location = targetSymbol.Locations.Length > 0 ? targetSymbol.Locations[0] : Location.None;
                     context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptors.NestedTypeNotSupported, location, targetSymbol.ToDisplayString()));

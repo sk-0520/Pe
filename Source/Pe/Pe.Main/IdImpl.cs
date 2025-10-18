@@ -10,7 +10,7 @@ using ContentTypeTextNet.Pe.Generator.Id;
 using Dapper;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Internal;
 
-// 自動化したいなぁ
+// 各 IdHandler の構築も自動化したいなぁ
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications.Internal
 {
