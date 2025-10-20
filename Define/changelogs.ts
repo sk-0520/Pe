@@ -84,7 +84,7 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "#1021: PR で走る CI が失敗する問題を修正",
 					},
 					{
 						revision: "",
