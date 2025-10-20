@@ -14,7 +14,7 @@ applyTo: '**'
 Build/
   ビルド処理ツール・スクリプト
 Define/
-  更新履歴(changelogs.ts)やテーブル構成(table-*.md), プログラム本体にはあまり関係ないが無いとそれはそれでこまる
+  更新履歴(changelogs.ts)やテーブル構成(table-*.md), プログラム本体にはあまり関係ないが無いとそれはそれで困る
 Resource/
   リソースの生データ
 Source/Benchmark
@@ -33,5 +33,14 @@ Source/PowerShell.Test/
   PowerShell のテスト, PowerShell は windows 10/11 で標準インストールされているバージョン 5 を使用する前提
 Source/ReleaseNote/
   リリースノート生成用プログラム
+```
 
+特定のファイルについては以下となる
+
+```
+Define/changelogs.ts
+  更新履歴を TypeScript で定義している
+  記述内容は Source/Help/types/changelog.ts を参照のこと
+  Issue から PR を作成する場合は元となった Issue が subject になる
+  revision はリリース前に整理するので、PR 時点では空欄でよい
 ```
