@@ -10,7 +10,7 @@ export interface Options {
 	isRelease: boolean;
 }
 
-const Revision = /^([0-f]){40}$/;
+const Revision = /^([0-9a-f]){40}$/;
 
 export function main(input: Input, options: Options) {
 	if (!options.isRelease) {

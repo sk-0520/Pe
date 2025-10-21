@@ -88,6 +88,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "#1023: Code scanning alerts 12",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
