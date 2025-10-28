@@ -339,6 +339,10 @@ try {
 			directory = 'Pe\lib\library'
 		},
 		@{
+			project = 'Pe.Library.Database.Sqlite'
+			directory = 'Pe\lib\library'
+		},
+		@{
 			project = 'Pe.Library.DependencyInjection'
 			directory = 'Pe\lib\library'
 		},
