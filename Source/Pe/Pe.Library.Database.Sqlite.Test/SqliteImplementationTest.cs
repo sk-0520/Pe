@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace ContentTypeTextNet.Pe.Core.Test.Models.Database.Vender.Public.SQLite
+namespace ContentTypeTextNet.Pe.Library.Database.Sqlite.Test
 {
     public class SqliteImplementationTest
     {

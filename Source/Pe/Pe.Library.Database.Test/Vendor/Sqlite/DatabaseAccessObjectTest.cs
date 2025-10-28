@@ -9,8 +9,9 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 using ContentTypeTextNet.Pe.CommonTest;
 using System.Runtime.CompilerServices;
+using ContentTypeTextNet.Pe.Library.Database.Sqlite;
 
-namespace ContentTypeTextNet.Pe.Library.Database.Test.Vender.Public.SQLite
+namespace ContentTypeTextNet.Pe.Library.Database.Test.Vendor.Sqlite
 {
     public class DatabaseAccessObjectTest
     {
@@ -45,7 +46,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Vender.Public.SQLite
         private class SqliteDatabaseAccessObject: DatabaseAccessObjectBase
         {
             public SqliteDatabaseAccessObject()
-                : base(default!, new TestStatementLoader(), new Pe.Core.Models.Database.Vender.Public.SQLite.SqliteImplementation(), NullLoggerFactory.Instance)
+                : base(default!, new TestStatementLoader(), new SqliteImplementation(), NullLoggerFactory.Instance)
             { }
 
             #region function

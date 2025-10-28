@@ -3,12 +3,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
-using ContentTypeTextNet.Pe.Core.Models.Database;
-using ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite;
+using ContentTypeTextNet.Pe.Library.Database.Sqlite;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace ContentTypeTextNet.Pe.Library.Database.Test.Vender.Public.SQLite
+namespace ContentTypeTextNet.Pe.Library.Database.Test.Vendor.Sqlite
 {
     public class DatabaseAccessorTest
     {

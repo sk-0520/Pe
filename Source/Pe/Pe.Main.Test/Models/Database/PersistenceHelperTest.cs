@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database;
@@ -16,6 +15,7 @@ using ContentTypeTextNet.Pe.CommonTest;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Xunit;
+using ContentTypeTextNet.Pe.Library.Database.Sqlite;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
 {

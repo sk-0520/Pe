@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.Database;
 
-namespace ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite
+namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
 {
     public class SqliteManagement: DatabaseManagementWithContext
     {

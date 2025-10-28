@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using ContentTypeTextNet.Pe.Core.Models.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Database.Adjust;
 using ContentTypeTextNet.Pe.Main.Models.Logic;

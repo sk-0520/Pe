@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database.Sqlite;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace ContentTypeTextNet.Pe.Library.Database.Test.Vender.Public.SQLite
+namespace ContentTypeTextNet.Pe.Library.Database.Test.Vendor.Sqlite
 {
     public class IDatabaseBarrierExtensionsTest
     {

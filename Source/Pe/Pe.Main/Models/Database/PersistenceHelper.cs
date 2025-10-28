@@ -1,9 +1,8 @@
 using System;
-using ContentTypeTextNet.Pe.Core.Models.Database;
-using ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.Database.Sqlite;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database
 {

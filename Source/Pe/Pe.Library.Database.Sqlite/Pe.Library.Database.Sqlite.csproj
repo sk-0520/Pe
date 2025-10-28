@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>Pe.Library.Database</AssemblyName>
+    <AssemblyName>Pe.Library.Database.Sqlite</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Library.Database.Sqlite</RootNamespace>
   </PropertyGroup>
 

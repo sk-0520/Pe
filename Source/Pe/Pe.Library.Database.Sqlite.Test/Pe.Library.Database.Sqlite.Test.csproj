@@ -1,17 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>Pe.Library.Database.Test</AssemblyName>
-    <RootNamespace>ContentTypeTextNet.Pe.Library.Database.Test</RootNamespace>
+    <AssemblyName>Pe.Library.Database.Sqlite.Test</AssemblyName>
+    <RootNamespace>ContentTypeTextNet.Pe.Library.Database.Sqlite.Test</RootNamespace>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\Pe.Library.Database.Sqlite\SqliteAccessor.cs" Link="TestImpl\Sqlite\SqliteAccessor.cs" />
-    <Compile Include="..\Pe.Library.Database.Sqlite\SqliteFactory.cs" Link="TestImpl\Sqlite\SqliteFactory.cs" />
-    <Compile Include="..\Pe.Library.Database.Sqlite\SqliteImplementation.cs" Link="TestImpl\Sqlite\SqliteImplementation.cs" />
-    <Compile Include="..\Pe.Library.Database.Sqlite\SqliteManagement.cs" Link="TestImpl\Sqlite\SqliteManagement.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="TestResults\**" />
@@ -36,7 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pe.CommonTest\Pe.CommonTest.csproj" />
-    <ProjectReference Include="..\Pe.Library.Database\Pe.Library.Database.csproj" />
+    <ProjectReference Include="..\Pe.Library.Database.Sqlite\Pe.Library.Database.Sqlite.csproj" />
   </ItemGroup>
 
 </Project>
