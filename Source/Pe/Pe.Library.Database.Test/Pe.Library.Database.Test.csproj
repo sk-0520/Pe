@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\Pe.Core\Models\Database\Vender\Public\SQLite\SqliteAccessor.cs" Link="TestImpl\Vender\Public\SQLite\SqliteAccessor.cs" />
-    <Compile Include="..\Pe.Core\Models\Database\Vender\Public\SQLite\SqliteFactory.cs" Link="TestImpl\Vender\Public\SQLite\SqliteFactory.cs" />
-    <Compile Include="..\Pe.Core\Models\Database\Vender\Public\SQLite\SqliteImplementation.cs" Link="TestImpl\Vender\Public\SQLite\SqliteImplementation.cs" />
-    <Compile Include="..\Pe.Core\Models\Database\Vender\Public\SQLite\SqliteManagement.cs" Link="TestImpl\Vender\Public\SQLite\SqliteManagement.cs" />
+    <Compile Include="..\Pe.Library.Database.Sqlite\SqliteAccessor.cs" Link="TestImpl\Sqlite\SqliteAccessor.cs" />
+    <Compile Include="..\Pe.Library.Database.Sqlite\SqliteFactory.cs" Link="TestImpl\Sqlite\SqliteFactory.cs" />
+    <Compile Include="..\Pe.Library.Database.Sqlite\SqliteImplementation.cs" Link="TestImpl\Sqlite\SqliteImplementation.cs" />
+    <Compile Include="..\Pe.Library.Database.Sqlite\SqliteManagement.cs" Link="TestImpl\Sqlite\SqliteManagement.cs" />
   </ItemGroup>
 
   <ItemGroup>

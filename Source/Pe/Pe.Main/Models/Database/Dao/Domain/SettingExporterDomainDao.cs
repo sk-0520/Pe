@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using System.Linq;
-using ContentTypeTextNet.Pe.Core.Models.Database;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;

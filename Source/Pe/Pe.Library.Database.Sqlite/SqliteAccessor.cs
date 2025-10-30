@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 
-namespace ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite
+namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
 {
     public class SqliteAccessor: DatabaseAccessor<SQLiteConnection>
     {

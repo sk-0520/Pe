@@ -92,6 +92,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "#1024: DB 接続用の Sqlite 処理を別プロジェクトに切り離す",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],

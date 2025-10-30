@@ -7,7 +7,7 @@ using System.Data.SQLite;
 using System.IO;
 using ContentTypeTextNet.Pe.Library.Database;
 
-namespace ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite
+namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
 {
     public abstract class SqliteFactoryBase: IDatabaseFactory
     {

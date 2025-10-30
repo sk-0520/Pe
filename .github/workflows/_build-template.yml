@@ -989,6 +989,7 @@ jobs:
           - Pe.Library.Property.Test
           - Pe.Library.Common.Test
           - Pe.Library.Database.Test
+          - Pe.Library.Database.Sqlite.Test
           - Pe.Library.DependencyInjection.Test
 
     runs-on: ${{ matrix.OS }}

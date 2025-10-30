@@ -3,8 +3,6 @@ using System.Globalization;
 using System.Text;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Core.Models.Database;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 

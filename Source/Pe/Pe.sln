@@ -88,6 +88,10 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Pe.Generator", "Pe.Generato
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Generator.Test", "Pe.Generator.Test\Pe.Generator.Test.csproj", "{CDA00C9C-1AE5-4938-88CD-ED3A0DA06CDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Library.Database.Sqlite", "Pe.Library.Database.Sqlite\Pe.Library.Database.Sqlite.csproj", "{9AD8F051-7321-45CC-B8C3-EAEE05999A09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Library.Database.Sqlite.Test", "Pe.Library.Database.Sqlite.Test\Pe.Library.Database.Sqlite.Test.csproj", "{AA0AF05E-2EE4-4CE0-9521-E3A61CD761BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -344,6 +348,22 @@ Global
 		{CDA00C9C-1AE5-4938-88CD-ED3A0DA06CDF}.Release|x64.Build.0 = Release|x64
 		{CDA00C9C-1AE5-4938-88CD-ED3A0DA06CDF}.Release|x86.ActiveCfg = Release|x86
 		{CDA00C9C-1AE5-4938-88CD-ED3A0DA06CDF}.Release|x86.Build.0 = Release|x86
+		{9AD8F051-7321-45CC-B8C3-EAEE05999A09}.Debug|x64.ActiveCfg = Debug|x64
+		{9AD8F051-7321-45CC-B8C3-EAEE05999A09}.Debug|x64.Build.0 = Debug|x64
+		{9AD8F051-7321-45CC-B8C3-EAEE05999A09}.Debug|x86.ActiveCfg = Debug|x86
+		{9AD8F051-7321-45CC-B8C3-EAEE05999A09}.Debug|x86.Build.0 = Debug|x86
+		{9AD8F051-7321-45CC-B8C3-EAEE05999A09}.Release|x64.ActiveCfg = Release|x64
+		{9AD8F051-7321-45CC-B8C3-EAEE05999A09}.Release|x64.Build.0 = Release|x64
+		{9AD8F051-7321-45CC-B8C3-EAEE05999A09}.Release|x86.ActiveCfg = Release|x86
+		{9AD8F051-7321-45CC-B8C3-EAEE05999A09}.Release|x86.Build.0 = Release|x86
+		{AA0AF05E-2EE4-4CE0-9521-E3A61CD761BA}.Debug|x64.ActiveCfg = Debug|x64
+		{AA0AF05E-2EE4-4CE0-9521-E3A61CD761BA}.Debug|x64.Build.0 = Debug|x64
+		{AA0AF05E-2EE4-4CE0-9521-E3A61CD761BA}.Debug|x86.ActiveCfg = Debug|x86
+		{AA0AF05E-2EE4-4CE0-9521-E3A61CD761BA}.Debug|x86.Build.0 = Debug|x86
+		{AA0AF05E-2EE4-4CE0-9521-E3A61CD761BA}.Release|x64.ActiveCfg = Release|x64
+		{AA0AF05E-2EE4-4CE0-9521-E3A61CD761BA}.Release|x64.Build.0 = Release|x64
+		{AA0AF05E-2EE4-4CE0-9521-E3A61CD761BA}.Release|x86.ActiveCfg = Release|x86
+		{AA0AF05E-2EE4-4CE0-9521-E3A61CD761BA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -382,6 +402,8 @@ Global
 		{BFC4CCAF-501A-4B96-984D-B93F4390629B} = {DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}
 		{18B4F55E-580C-441B-84C5-2D12EAE1B870} = {DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}
 		{CDA00C9C-1AE5-4938-88CD-ED3A0DA06CDF} = {DDB4EF12-CC4E-5E88-E6FC-71A802F4DE97}
+		{9AD8F051-7321-45CC-B8C3-EAEE05999A09} = {7D2653BF-3D84-44F4-8158-21179F8EE206}
+		{AA0AF05E-2EE4-4CE0-9521-E3A61CD761BA} = {7D2653BF-3D84-44F4-8158-21179F8EE206}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A7A6231-6BA0-4928-AF4D-59F81862C278}

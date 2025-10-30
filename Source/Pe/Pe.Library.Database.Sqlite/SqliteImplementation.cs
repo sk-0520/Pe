@@ -7,7 +7,7 @@ using System.Globalization;
 using ContentTypeTextNet.Pe.Library.Database;
 using Dapper;
 
-namespace ContentTypeTextNet.Pe.Core.Models.Database.Vender.Public.SQLite
+namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
 {
     /// <summary>
     /// booleanを制御
