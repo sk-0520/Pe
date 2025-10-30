@@ -194,7 +194,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
             return new FileInfo(filePath);
         }
-        /// <inheritdoc cref="CreateTextFile(string, string, Encoding)"/>/>
+        /// <inheritdoc cref="CreateTextFile(string, string, Encoding)"/>
         public FileInfo CreateTextFile(string name, string content) => CreateTextFile(name, content, Encoding.UTF8);
 
         #endregion
