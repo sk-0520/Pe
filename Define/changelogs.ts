@@ -111,6 +111,11 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject:
+							"Microsoft.Extensions.Logging.Abstractions 9.0.9 -> 9.0.10",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
