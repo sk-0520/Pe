@@ -120,6 +120,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "NLog.Extensions.Logging 6.0.4 -> 6.0.5",
+					},
+					{
+						revision: "",
 						subject:
 							"System.DirectoryServices.AccountManagement 9.0.9 -> 9.0.10",
 					},
