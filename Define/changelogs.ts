@@ -97,6 +97,11 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "#1025: update nodejs 24",
+						comments: ["24.11.0"],
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
