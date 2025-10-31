@@ -107,6 +107,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "System.Management 9.0.9 -> 9.0.10",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
