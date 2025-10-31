@@ -129,6 +129,11 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject:
+							"Microsoft.Extensions.Configuration.Json 9.0.9 -> 9.0.10",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
