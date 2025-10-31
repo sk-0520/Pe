@@ -107,6 +107,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "Microsoft.NET.Test.Sdk 17.14.1 -> 18.0.0",
+					},
+					{
+						revision: "",
 						subject: "System.Management 9.0.9 -> 9.0.10",
 					},
 					{
