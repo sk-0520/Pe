@@ -89,10 +89,9 @@ function Update-ResourceValue {
 
 $version = Get-ApplicationVersion
 
-$sourceMainDirectoryPath = Get-SourceDirectory -Kind 'main'
 $sourceBootDirectoryPath = Get-SourceDirectory -Kind 'boot'
 
-$projectCommonFilePath = Join-Path -Path $sourceMainDirectoryPath -ChildPath 'Directory.Build.props'
+$projectCommonFilePath = Join-Path -Path (Get-RootDirectory) -ChildPath 'Directory.Build.props'
 $projectCommonXml = [XML](Get-Content $projectCommonFilePath  -Encoding UTF8)
 
 Insert-Element -Value $version  -Xml $projectCommonXml -TargetXpath '/Project/PropertyGroup[1]/Version[1]'              -ParentXpath '/Project/PropertyGroup[1]' -ElementName 'Version'

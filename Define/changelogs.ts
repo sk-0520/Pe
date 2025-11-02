@@ -4,6 +4,96 @@ import type { ChangelogVersion } from "../Source/Help/types/changelog";
 
 const Changelogs: ChangelogVersion[] = [
 	{
+		date: "YYYY/MM/DD",
+		version: "0.99.262+",
+		contents: [
+			{
+				type: "note",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "features",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "fixes",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "developer",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+		],
+	},
+	{
 		date: "2025/11/02",
 		version: "0.99.262",
 		contents: [
@@ -48,46 +138,56 @@ const Changelogs: ChangelogVersion[] = [
 					{
 						revision: "36d37aef513a422bf578a2195cba48781a1bba6e",
 						subject: "xunit.v3 3.0.1 -> 3.1.0",
+						class: "nuget",
 						comments: ["xunit.runner.visualstudio 3.1.4 -> 3.1.5"],
 					},
 					{
 						revision: "5d8ddadaf4534c9c9093f8c5d9d51ce6fb236a75",
+						class: "nuget",
 						subject: "Microsoft.NET.Test.Sdk 17.14.1 -> 18.0.0",
 					},
 					{
 						revision: "02ff38e3f9d315001647f4200b524faa03b0f5b5",
+						class: "nuget",
 						subject: "System.Management 9.0.9 -> 9.0.10",
 					},
 					{
 						revision: "383b151bfedf0348d58dd5fa689785c2bfb9e108",
+						class: "nuget",
 						subject: "Microsoft.Extensions.Logging 9.0.9 -> 9.0.10",
 					},
 					{
 						revision: "544bd48838dc9e17e8606276e929bf465fbe5f5f",
+						class: "nuget",
 						subject:
 							"Microsoft.Extensions.Logging.Abstractions 9.0.9 -> 9.0.10",
 					},
 					{
 						revision: "d98b9dccfd27a83d10d4c7ef02ef61420a89add1",
+						class: "nuget",
 						subject: "NLog.Extensions.Logging 6.0.4 -> 6.0.5",
 					},
 					{
 						revision: "f482859749786ee1f9f5270af825c8a64391534c",
+						class: "nuget",
 						subject:
 							"System.DirectoryServices.AccountManagement 9.0.9 -> 9.0.10",
 					},
 					{
 						revision: "25f90ff0a04e7412097bff037af75f83ec4f6d93",
+						class: "nuget",
 						subject:
 							"Microsoft.Extensions.Configuration.Binder 9.0.9 -> 9.0.10",
 					},
 					{
 						revision: "7a25f97006eedf29cabe19c882761d5704e6afd5",
+						class: "nuget",
 						subject:
 							"Microsoft.Extensions.Configuration.Json 9.0.9 -> 9.0.10",
 					},
 					{
 						revision: "c0bddf320a6c15e3c731d1db97064ad4feb96c3f",
+						class: "nuget",
 						subject:
 							"Microsoft.Web.WebView2 1.0.3485.44 -> 1.0.3537.50",
 					},

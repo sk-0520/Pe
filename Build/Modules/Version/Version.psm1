@@ -1,7 +1,7 @@
 ﻿$ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
-$projectFile = Join-Path -Path (Split-Path -Parent $PSScriptRoot | Split-Path -Parent | Split-Path -Parent) -ChildPath 'Source/Pe/Directory.Build.props'
+$projectFile = Join-Path -Path (Split-Path -Parent $PSScriptRoot | Split-Path -Parent | Split-Path -Parent) -ChildPath 'Directory.Build.props'
 
 function Get-ApplicationVersion {
 	[OutputType([version])]

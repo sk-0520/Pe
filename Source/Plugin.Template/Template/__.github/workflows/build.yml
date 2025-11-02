@@ -23,7 +23,7 @@ jobs:
 
       - name: <Embedded> git revision
         shell: pwsh
-        run: .\Build\embedded-revision.ps1 -InformationAction Continue -Revision ${{ github.sha }} -ProjectFilePath .\Source\Directory.Build.props
+        run: .\Build\embedded-revision.ps1 -InformationAction Continue -Revision ${{ github.sha }} -ProjectFilePath .\Directory.Build.props
 
       - name: <Build> Plugin
         shell: pwsh
@@ -81,7 +81,7 @@ jobs:
         uses: kzrnm/get-net-sdk-project-versions-action@v2
         id: version
         with:
-          proj-path: Source/Directory.Build.props
+          proj-path: Directory.Build.props
 
       - name: <Delete> TEST Tag
         if: github.ref == 'refs/heads/ci-test'
