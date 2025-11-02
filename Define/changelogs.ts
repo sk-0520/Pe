@@ -4,69 +4,14 @@ import type { ChangelogVersion } from "../Source/Help/types/changelog";
 
 const Changelogs: ChangelogVersion[] = [
 	{
-		date: "YYYY/MM/DD",
-		version: "0.99.261+",
+		date: "2025/11/02",
+		version: "0.99.262",
 		contents: [
 			{
 				type: "note",
 				logs: [
 					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "features",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "fixes",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
+						subject: "ライブラリとか開発用のあれこれのみ",
 					},
 				],
 			},
@@ -78,76 +23,76 @@ const Changelogs: ChangelogVersion[] = [
 						subject: "#1019: textlint の導入",
 					},
 					{
-						revision: "",
+						revision: "9a5eca8ce756b16c4a55aea6dfe97ca98d378149",
 						subject:
 							"#987: EXE用アイコン作成系の諸々を GHA で処理できるようにする",
 					},
 					{
-						revision: "",
+						revision: "be82e724c987ab9ae434b3dc4abe03e7b14e478d",
 						subject: "#1021: PR で走る CI が失敗する問題を修正",
 					},
 					{
-						revision: "",
+						revision: "e2fa4bdbd5ecd0026569c4603576d505e7790bd8",
 						subject: "#1023: Code scanning alerts 12",
 					},
 					{
-						revision: "",
+						revision: "467e1612ec9023e7fa915fe042c8bf7937c2168c",
 						subject:
 							"#1024: DB 接続用の Sqlite 処理を別プロジェクトに切り離す",
 					},
 					{
-						revision: "",
+						revision: "49f7bc00702eeccbeae9d04812ffb1cc94e79017",
 						subject: "#1025: update nodejs 24",
 						comments: ["24.11.0"],
 					},
 					{
-						revision: "",
+						revision: "36d37aef513a422bf578a2195cba48781a1bba6e",
 						subject: "xunit.v3 3.0.1 -> 3.1.0",
 						comments: ["xunit.runner.visualstudio 3.1.4 -> 3.1.5"],
 					},
 					{
-						revision: "",
+						revision: "5d8ddadaf4534c9c9093f8c5d9d51ce6fb236a75",
 						subject: "Microsoft.NET.Test.Sdk 17.14.1 -> 18.0.0",
 					},
 					{
-						revision: "",
+						revision: "02ff38e3f9d315001647f4200b524faa03b0f5b5",
 						subject: "System.Management 9.0.9 -> 9.0.10",
 					},
 					{
-						revision: "",
+						revision: "383b151bfedf0348d58dd5fa689785c2bfb9e108",
 						subject: "Microsoft.Extensions.Logging 9.0.9 -> 9.0.10",
 					},
 					{
-						revision: "",
+						revision: "544bd48838dc9e17e8606276e929bf465fbe5f5f",
 						subject:
 							"Microsoft.Extensions.Logging.Abstractions 9.0.9 -> 9.0.10",
 					},
 					{
-						revision: "",
+						revision: "d98b9dccfd27a83d10d4c7ef02ef61420a89add1",
 						subject: "NLog.Extensions.Logging 6.0.4 -> 6.0.5",
 					},
 					{
-						revision: "",
+						revision: "f482859749786ee1f9f5270af825c8a64391534c",
 						subject:
 							"System.DirectoryServices.AccountManagement 9.0.9 -> 9.0.10",
 					},
 					{
-						revision: "",
+						revision: "25f90ff0a04e7412097bff037af75f83ec4f6d93",
 						subject:
 							"Microsoft.Extensions.Configuration.Binder 9.0.9 -> 9.0.10",
 					},
 					{
-						revision: "",
+						revision: "7a25f97006eedf29cabe19c882761d5704e6afd5",
 						subject:
 							"Microsoft.Extensions.Configuration.Json 9.0.9 -> 9.0.10",
 					},
 					{
-						revision: "",
+						revision: "c0bddf320a6c15e3c731d1db97064ad4feb96c3f",
 						subject:
 							"Microsoft.Web.WebView2 1.0.3485.44 -> 1.0.3537.50",
 					},
 					{
-						revision: "",
+						revision: "8697d666d5d3b4923cee3a30dd9cc8ad9d7664eb",
 						subject: "update npm",
 					},
 				],
