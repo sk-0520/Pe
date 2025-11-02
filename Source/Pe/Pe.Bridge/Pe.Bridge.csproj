@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AssemblyName>Pe.Bridge</AssemblyName>
@@ -7,14 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Models\Data\Id.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Id.cs</LastGenOutput>
-    </None>
     <None Update="Models\Data\Id.txt">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -27,11 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Models\Data\Id.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Id.tt</DependentUpon>
-    </Compile>
+    <ProjectReference Include="..\Pe.Generator.Id\Pe.Generator.Id.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
+
 
 </Project>

@@ -244,14 +244,16 @@ namespace ContentTypeTextNet.Pe.Core.Views
     /// <remarks>
     /// <para>基本的にはこれ使ってりゃOK。</para>
     /// </remarks>
-    public class CustomizeDialog
+    public class CustomizeDialogManager
     {
         #region property
 
         /// <summary>
         /// コントロール一覧。
         /// </summary>
-        public IList<CustomizeDialogControlBase> Controls { get; } = new List<CustomizeDialogControlBase>();
+        private List<CustomizeDialogControlBase> EditableControls { get; } = new List<CustomizeDialogControlBase>();
+        /// <inheritdoc cref="EditableControls" />
+        public IReadOnlyList<CustomizeDialogControlBase> Controls => EditableControls;
 
         /// <summary>
         /// 現在グルーピング中か。
@@ -276,7 +278,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
 
         private void AddControl(CustomizeDialogControlBase control)
         {
-            Controls.Add(control);
+            EditableControls.Add(control);
             CurrentGroup?.AddControl(control);
         }
 
@@ -327,7 +329,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
             return control;
         }
 
-        internal void Build(Com<IFileDialogCustomize> FileDialogCustomize)
+        public void Build(Com<IFileDialogCustomize> FileDialogCustomize)
         {
             if(IsBuilt) {
                 FileDialogCustomize.Instance.ClearClientData();
@@ -354,7 +356,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
             IsBuilt = true;
         }
 
-        internal void ChangeStatus()
+        public void ChangeStatus()
         {
             foreach(var control in Controls) {
                 control.ChangeStatus();

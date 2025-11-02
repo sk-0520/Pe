@@ -19,13 +19,10 @@
 
 # インストール方法
 
-## ローカルインストール
-
-設定 → プラグイン から <MdInline kind="ui">ローカル</MdInline> を選択してアーカイブを選択することで次回起動時に有効になります。
-
-## Webインストール
-
-設定 → プラグイン から <MdInline kind="ui">Web</MdInline> を選択してプラグインIDか更新チェックURLを指定することで次回起動時に有効になります。
+* ローカルインストール
+  * <MdBreadcrumbs kind="ui" items="設定 / プラグイン / ローカル" /> を選択してアーカイブを選択することで次回起動時に有効になります。
+* Web インストール
+  * <MdBreadcrumbs kind="ui" items="設定 / プラグイン / Web" /> を選択してプラグイン ID か更新チェック URL を指定することで次回起動時に有効になります。
 
 ## 手動インストール
 
@@ -36,12 +33,12 @@
 
 PLUGIN.dll というプラグインがあれば、
 
-1. <MdPath>%LOCALAPPDATA%\Pe\plugin\modules\プラグインID\PLUGIN.dll</MdPath>
+1. <MdPath>%LOCALAPPDATA%\Pe\plugin\modules\\プラグイン ID\PLUGIN.dll</MdPath>
 2. <MdPath>%LOCALAPPDATA%\Pe\plugin\modules\PLUGIN\PLUGIN.dll</MdPath>
 
 として配置します。
 
-プラグインディレクトリ名による配置は問題を起こす可能性があるのでプラグインIDによる配置を推奨します。
+プラグインディレクトリ名による配置は問題を起こす可能性があるのでプラグイン ID による配置を推奨します。
 
 # 参考実装
 

@@ -86,8 +86,8 @@ namespace ContentTypeTextNet.Pe.Main.Views.Note
 
                     CustomizeDialogComboBox<Encoding>? encodingComboBox = null;
                     if(0 < encodings.Length) {
-                        using(dialog.Customize.Grouping(Properties.Resources.String_Command_Encoding_AA)) {
-                            encodingComboBox = dialog.Customize.AddComboBox<Encoding>();
+                        using(dialog.CustomizeDialogManager.Grouping(Properties.Resources.String_Command_Encoding_AA)) {
+                            encodingComboBox = dialog.CustomizeDialogManager.AddComboBox<Encoding>();
                             foreach(var encoding in encodings) {
                                 encodingComboBox.AddItem(encoding);
                             }

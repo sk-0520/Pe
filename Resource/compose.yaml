@@ -1,0 +1,22 @@
+services:
+  retouch:
+    build:
+      context: images/retouch
+    volumes:
+      - ./Icon:/data
+      - ./images/retouch/work:/work
+
+  drawing:
+    build:
+      context: images/drawing
+    volumes:
+      - ./Icon:/data
+      - ./images/drawing/work:/work
+
+  python:
+    build:
+      context: images/python
+    volumes:
+      - ./Icon:/data
+      - ./images/python/work:/work
+

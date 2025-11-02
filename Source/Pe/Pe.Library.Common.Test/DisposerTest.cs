@@ -30,7 +30,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         }
     }
 
-    public class DisposableStockerTest
+    public class DisposableCollectionTest
     {
         #region function
 
@@ -39,7 +39,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         {
             var stocks = new List<int>();
 
-            var test = new DisposableStocker();
+            var test = new DisposableCollection();
             test.Add(ActionDisposerHelper.Create(a => stocks.Add(10)));
             test.AddRange(new[] {
                 ActionDisposerHelper.Create(a => stocks.Add(20)),
@@ -61,14 +61,14 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [Fact]
         public void Add_throw_Test()
         {
-            var test = new DisposableStocker();
+            var test = new DisposableCollection();
             Assert.Throws<ArgumentNullException>(() => test.Add(default(IDisposable)!));
         }
 
         [Fact]
         public void AddRange_throw_Test()
         {
-            var test = new DisposableStocker();
+            var test = new DisposableCollection();
             Assert.Throws<ArgumentNullException>(() => test.AddRange(default(IDisposable[])!));
         }
 

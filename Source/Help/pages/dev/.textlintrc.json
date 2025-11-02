@@ -1,0 +1,11 @@
+{
+	"filters": {},
+	"rules": {
+		"no-mix-dearu-desumasu": {
+			"preferInHeader": "",
+			"preferInBody": "である",
+			"preferInList": "である",
+			"strict": false
+		}
+	}
+}

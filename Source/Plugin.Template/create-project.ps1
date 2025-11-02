@@ -307,6 +307,14 @@ try {
 	$appDir = Join-Path -Path $parameters.source -ChildPath 'Pe' | Join-Path -ChildPath 'Source' | Join-Path -ChildPath 'Pe'
 	$items = @(
 		@{
+			project = 'Pe.Generator'
+			directory = 'Pe\generator'
+		},
+		@{
+			project = 'Pe.Generator.Id'
+			directory = 'Pe\generator'
+		},
+		@{
 			project = 'Pe.Bridge'
 			directory = 'Pe\bridge'
 		},
@@ -328,6 +336,10 @@ try {
 		},
 		@{
 			project = 'Pe.Library.Database'
+			directory = 'Pe\lib\library'
+		},
+		@{
+			project = 'Pe.Library.Database.Sqlite'
 			directory = 'Pe\lib\library'
 		},
 		@{

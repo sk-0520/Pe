@@ -31,6 +31,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pe.Library.Common", "..\Pe\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Mvvm", "..\Pe\Pe.Mvvm\Pe.Mvvm.csproj", "{FAA08B37-BC44-216F-9CEA-33F949D76287}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Generator.Id", "..\Pe\Pe.Generator.Id\Pe.Generator.Id.csproj", "{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Pe.Generator", "..\Pe\Pe.Generator\Pe.Generator.shproj", "{18B4F55E-580C-441B-84C5-2D12EAE1B870}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pe.Library.Database.Sqlite", "..\Pe\Pe.Library.Database.Sqlite\Pe.Library.Database.Sqlite.csproj", "{E256B0BB-DEAB-A341-15B4-70716C77A918}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -143,6 +149,22 @@ Global
 		{FAA08B37-BC44-216F-9CEA-33F949D76287}.Release|x64.Build.0 = Release|x64
 		{FAA08B37-BC44-216F-9CEA-33F949D76287}.Release|x86.ActiveCfg = Release|x86
 		{FAA08B37-BC44-216F-9CEA-33F949D76287}.Release|x86.Build.0 = Release|x86
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Debug|x64.ActiveCfg = Debug|x64
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Debug|x64.Build.0 = Debug|x64
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Debug|x86.ActiveCfg = Debug|x86
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Debug|x86.Build.0 = Debug|x86
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Release|x64.ActiveCfg = Release|x64
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Release|x64.Build.0 = Release|x64
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Release|x86.ActiveCfg = Release|x86
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD}.Release|x86.Build.0 = Release|x86
+		{E256B0BB-DEAB-A341-15B4-70716C77A918}.Debug|x64.ActiveCfg = Debug|x64
+		{E256B0BB-DEAB-A341-15B4-70716C77A918}.Debug|x64.Build.0 = Debug|x64
+		{E256B0BB-DEAB-A341-15B4-70716C77A918}.Debug|x86.ActiveCfg = Debug|x86
+		{E256B0BB-DEAB-A341-15B4-70716C77A918}.Debug|x86.Build.0 = Debug|x86
+		{E256B0BB-DEAB-A341-15B4-70716C77A918}.Release|x64.ActiveCfg = Release|x64
+		{E256B0BB-DEAB-A341-15B4-70716C77A918}.Release|x64.Build.0 = Release|x64
+		{E256B0BB-DEAB-A341-15B4-70716C77A918}.Release|x86.ActiveCfg = Release|x86
+		{E256B0BB-DEAB-A341-15B4-70716C77A918}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -159,8 +181,15 @@ Global
 		{67E74D54-6275-4E9E-82CE-31C115B79A47} = {C44D8F5B-8F4C-44B1-AD50-E1635FDAA67B}
 		{8E9090D0-A889-498A-A969-E364BB3DA224} = {C44D8F5B-8F4C-44B1-AD50-E1635FDAA67B}
 		{FAA08B37-BC44-216F-9CEA-33F949D76287} = {C44D8F5B-8F4C-44B1-AD50-E1635FDAA67B}
+		{4AAEF1E9-E15C-CE65-DD60-0CBA55497EDD} = {C44D8F5B-8F4C-44B1-AD50-E1635FDAA67B}
+		{18B4F55E-580C-441B-84C5-2D12EAE1B870} = {C44D8F5B-8F4C-44B1-AD50-E1635FDAA67B}
+		{E256B0BB-DEAB-A341-15B4-70716C77A918} = {C44D8F5B-8F4C-44B1-AD50-E1635FDAA67B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F52DE156-059A-48B8-9DF3-E3834C34FEA9}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Pe\Pe.Generator\Pe.Generator.projitems*{18b4f55e-580c-441b-84c5-2d12eae1b870}*SharedItemsImports = 13
+		..\Pe\Pe.Generator\Pe.Generator.projitems*{4aaef1e9-e15c-ce65-dd60-0cba55497edd}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

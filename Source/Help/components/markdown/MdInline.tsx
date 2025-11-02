@@ -1,5 +1,13 @@
-import { Typography } from "@mui/material";
+import { type SxProps, Typography } from "@mui/material";
 import type { FC } from "react";
+import { MonospaceFontFamily } from "../../utils/style";
+
+const CommonStyle: SxProps = {
+	fontFamily: MonospaceFontFamily,
+	padding: "2px 4px",
+	margin: "2px 4px",
+	display: "inline-block",
+};
 
 interface MdInlineProps {
 	kind: "key" | "ui" | "sample" | "variable";
@@ -15,7 +23,7 @@ export const MdInline: FC<MdInlineProps> = (props: MdInlineProps) => {
 				<Typography
 					component="kbd"
 					sx={{
-						fontFamily: "Consolas, monospace",
+						fontFamily: MonospaceFontFamily,
 						minWidth: "2ex",
 						padding: "0 0.5em",
 						margin: "0.3em 0.5ex",
@@ -39,10 +47,7 @@ export const MdInline: FC<MdInlineProps> = (props: MdInlineProps) => {
 				<Typography
 					component="dfn"
 					sx={{
-						fontFamily: "Consolas, monospace",
-						padding: "2px 4px",
-						margin: "2px 4px",
-						display: "inline-block",
+						...CommonStyle,
 						border: "1px solid #707030",
 						background: "#fffbcd",
 					}}
@@ -56,10 +61,7 @@ export const MdInline: FC<MdInlineProps> = (props: MdInlineProps) => {
 				<Typography
 					component="samp"
 					sx={{
-						fontFamily: "Consolas, monospace",
-						padding: "2px 4px",
-						margin: "2px 4px",
-						display: "inline-block",
+						...CommonStyle,
 						border: "1px solid #8bb581",
 						background: "#c8f7c4",
 					}}
@@ -73,10 +75,7 @@ export const MdInline: FC<MdInlineProps> = (props: MdInlineProps) => {
 				<Typography
 					component="var"
 					sx={{
-						fontFamily: "Consolas, monospace",
-						padding: "2px 4px",
-						margin: "2px 4px",
-						display: "inline-block",
+						...CommonStyle,
 						border: "1px solid #81b58b",
 						background: "#c4c8f7",
 					}}

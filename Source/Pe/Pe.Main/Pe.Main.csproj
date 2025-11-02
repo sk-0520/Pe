@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <RootNamespace>ContentTypeTextNet.Pe.Main</RootNamespace>
@@ -28,21 +28,22 @@
     <PackageReference Include="AvalonEdit" Version="6.3.1.120" />
     <PackageReference Include="Emoji.Wpf" Version="0.3.4" />
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="2.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.9" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.9" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.9" />
-    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3485.44" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="6.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3537.50" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="6.0.5" />
     <PackageReference Include="Prism.Wpf" Version="9.0.537" />
     <PackageReference Include="SevenZipExtractor" Version="1.0.19" />
-    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.9" />
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.9" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.10" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Pe.Core\Pe.Core.csproj" />
     <ProjectReference Include="..\Pe.Library.Args\Pe.Library.Args.csproj" />
     <ProjectReference Include="..\Pe.Library.Common\Pe.Library.Common.csproj" />
+    <ProjectReference Include="..\Pe.Library.Database.Sqlite\Pe.Library.Database.Sqlite.csproj" />
     <ProjectReference Include="..\Pe.Mvvm\Pe.Mvvm.csproj" />
     <ProjectReference Include="..\Pe.Plugins.DefaultTheme\Pe.Plugins.DefaultTheme.csproj" />
     <ProjectReference Include="..\Pe.Library.Database\Pe.Library.Database.csproj" />
@@ -74,11 +75,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="IdImpl.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>IdImpl.tt</DependentUpon>
-    </Compile>
     <Compile Update="Models\Logic\Hook.MouseHook.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -140,10 +136,6 @@
     <None Update="etc\sql\.sqlfluffignore">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Update="IdImpl.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IdImpl.cs</LastGenOutput>
-    </None>
     <None Update="Models\Logic\Hook.MouseHook.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Hook.MouseHook.cs</LastGenOutput>
@@ -152,6 +144,13 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PluginException.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pe.Generator.Id\Pe.Generator.Id.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>

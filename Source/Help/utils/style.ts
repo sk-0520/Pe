@@ -5,3 +5,5 @@ export function toCssFontFamily(
 ): CSSProperties["fontFamily"] {
 	return fontFamilies.map((a) => (a.includes(" ") ? `"${a}"` : a)).join(",");
 }
+
+export const MonospaceFontFamily = toCssFontFamily(["Consolas", "monospace"]);

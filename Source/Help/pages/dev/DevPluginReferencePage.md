@@ -2,7 +2,9 @@
   プラグインはバージョン [0.99.000](https://github.com/sk-0520/Pe/milestone/16?closed=1) の [#509](https://github.com/sk-0520/Pe/issues/509) にて実装されましたが試行錯誤しながらやってるのでinterfaceはころころ変わる。
 </MdAlert>
 
-ラグインの参考実装は <MdPath>&lt;Pe.git&gt;/Source/Pe/Pe.Plugins.Reference.*</MdPath> に配置されています。
+<MdAlert kind="TIP">
+  プラグインの参考実装は <MdPath>&lt;Pe.git&gt;/Source/Pe/Pe.Plugins.Reference.*</MdPath> に配置されています。
+</MdAlert>
 
 扱いとしてはその時点の Pe で少なくとも稼働可能なプラグインとなる。
 

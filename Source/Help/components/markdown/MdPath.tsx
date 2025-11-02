@@ -3,6 +3,7 @@ import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import { type SxProps, type Theme, Typography } from "@mui/material";
 import type { FC } from "react";
+import { MonospaceFontFamily } from "../../utils/style";
 
 const FileRegex = /.+\.\w+$/;
 
@@ -59,7 +60,7 @@ export const MdPath: FC<MdPathProps> = (props: MdPathProps) => {
 			<Typography
 				component="span"
 				sx={{
-					fontFamily: "Consolas, monospace",
+					fontFamily: MonospaceFontFamily,
 					marginLeft: "0.5ch",
 				}}
 			>

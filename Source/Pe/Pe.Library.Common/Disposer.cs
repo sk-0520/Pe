@@ -234,7 +234,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <remarks>
     /// <para>破棄順序は後入れ先出になる。</para>
     /// </remarks>
-    public sealed class DisposableStocker: DisposerBase
+    public sealed class DisposableCollection: DisposerBase
     {
         #region property
 
@@ -271,10 +271,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <param name="disposables"></param>
         public void AddRange(IEnumerable<IDisposable> disposables)
         {
-            if(disposables == null) {
-                throw new ArgumentNullException(nameof(disposables));
-            }
-
+            ArgumentNullException.ThrowIfNull(disposables);
             ThrowIfDisposed();
 
             StockItems.AddRange(disposables);
