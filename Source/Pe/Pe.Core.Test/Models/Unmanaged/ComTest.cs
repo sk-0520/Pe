@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.CommonTest;
 using ContentTypeTextNet.Pe.Core.Models.Unmanaged;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 using Xunit;
@@ -21,7 +22,13 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
         }
 
         [Fact]
-        public void Constructor_throw_Test()
+        public void Constructor_throw_null_Test()
+        {
+            Assert.Throws<ArgumentNullException>(() => new Com<object>(null!));
+        }
+
+        [Fact]
+        public void Constructor_throw_com_Test()
         {
             var exception = Assert.Throws<ArgumentException>(() => new Com<object>(new object()));
             Assert.Equal("comInstance", exception.ParamName);
@@ -48,25 +55,42 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
             Assert.Throws<InvalidCastException>(() => test.Cast<IImageList>());
         }
 
+        [Fact]
+        public void Dispose_throw_instance_Test()
+        {
+            using var test = new Com<IShellLink>((IShellLink)new ShellLinkObject());
+            var po = new PrivateObject(test);
+            var prevInstance = po.GetField("_instance");
+            po.SetField("_instance", null);
+            Assert.Throws<InvalidOperationException>(() => { _ = test.Instance; });
+
+            po.SetField("_instance", prevInstance);
+        }
+
         #endregion
     }
 
-    public class ComWrapperTest
+    public class Com_Wrapper_Test
     {
         #region function
 
         [Fact]
         public void CreateTest()
         {
-            using var actual = ComWrapper.Create((IShellLink)new ShellLinkObject());
+            using var actual = Com.Create((IShellLink)new ShellLinkObject());
             Assert.NotNull(actual);
         }
 
+        [Fact]
+        public void Create_throw_null_Test()
+        {
+            Assert.Throws<ArgumentNullException>(() => Com.Create<object>(null!));
+        }
 
         [Fact]
-        public void Create_throw_Test()
+        public void Create_throw_com_Test()
         {
-            var exception = Assert.Throws<ArgumentException>(() => ComWrapper.Create(new object()));
+            var exception = Assert.Throws<ArgumentException>(() => Com.Create(new object()));
             Assert.Equal("comInstance", exception.ParamName);
             Assert.StartsWith("Marshal.IsComObject", exception.Message);
         }

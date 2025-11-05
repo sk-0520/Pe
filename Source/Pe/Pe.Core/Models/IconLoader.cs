@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         {
             NativeMethods.SHCreateItemFromParsingName(iconPath, IntPtr.Zero, NativeMethods.IID_IShellItem, out var iShellItem);
 
-            using var shellItem = ComWrapper.Create(iShellItem);
+            using var shellItem = Com.Create(iShellItem);
             var size = iconSize.ToSize();
             var siigbf = SIIGBF.SIIGBF_RESIZETOFIT;
 

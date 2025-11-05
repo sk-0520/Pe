@@ -153,7 +153,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
             uint atts = 0;
             if(NativeMethods.SHILCreateFromPath(path, out idl, ref atts) == 0) {
                 if(NativeMethods.SHCreateShellItem(IntPtr.Zero, IntPtr.Zero, idl, out item) == 0) {
-                    return ComWrapper.Create(item);
+                    return Com.Create(item);
                 }
             }
 
@@ -268,7 +268,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
             }
 
             FileDialog.Instance.GetResult(out IShellItem resultItem);
-            cleaner.Add(ComWrapper.Create(resultItem));
+            cleaner.Add(Com.Create(resultItem));
             resultItem.GetDisplayName(SIGDN.SIGDN_FILESYSPATH, out var pszPath);
             if(pszPath != IntPtr.Zero) {
                 var path = Marshal.PtrToStringAuto(pszPath);
