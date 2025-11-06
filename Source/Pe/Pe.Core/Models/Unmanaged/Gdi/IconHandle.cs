@@ -5,23 +5,11 @@ using ContentTypeTextNet.Pe.PInvoke.Windows;
 
 namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi
 {
-    public class IconHandleWrapper: GdiBase
+    public class IconHandle: GdiBase
     {
-        public IconHandleWrapper(IntPtr hIcon)
+        public IconHandle(IntPtr hIcon)
             : base(hIcon)
         { }
-
-        #region UnmanagedHandle
-
-        protected override bool ReleaseHandle()
-        {
-            return NativeMethods.DestroyIcon(this.handle);
-            /* なんだったかなぁこれ
-            NativeMethods.SendMessage(Instance, WM.WM_CLOSE, IntPtr.Zero, IntPtr.Zero);
-            */
-        }
-
-        #endregion
 
         #region GdiBase
 
@@ -36,6 +24,11 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi
             );
 
             return result;
+        }
+
+        protected override bool ReleaseHandle()
+        {
+            return NativeMethods.DestroyIcon(this.handle);
         }
 
         #endregion

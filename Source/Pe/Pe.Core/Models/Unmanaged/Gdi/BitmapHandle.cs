@@ -7,9 +7,9 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi
     /// <summary>
     /// ビットマップハンドルを管理。
     /// </summary>
-    public class BitmapHandleWrapper: GdiBase
+    public class BitmapHandle: GdiBase
     {
-        public BitmapHandleWrapper(IntPtr hBitmap)
+        public BitmapHandle(IntPtr hBitmap)
             : base(hBitmap)
         { }
 

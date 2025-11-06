@@ -5,7 +5,7 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged.Gdi
 {
-    public class BitmapHandleWrapperTest
+    public class BitmapHandleTest
     {
         #region function
 
@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged.Gdi
         public void Test()
         {
             using var gdiBitmap = new Bitmap(32, 32);
-            var test = new BitmapHandleWrapper(gdiBitmap.GetHbitmap());
+            var test = new BitmapHandle(gdiBitmap.GetHbitmap());
             Assert.True(test.CanMakeImageSource);
             Assert.False(test.IsInvalid);
 
