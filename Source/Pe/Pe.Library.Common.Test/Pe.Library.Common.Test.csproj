@@ -32,4 +32,10 @@
     <ProjectReference Include="..\Pe.Library.Common\Pe.Library.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="DirectoryCleanerTest\Clear_default_Test\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
