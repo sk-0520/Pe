@@ -151,7 +151,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
-                if(Action != null) {
+                if(Action is not null) {
                     Action(disposing);
                     Action = null;
                 }
@@ -204,12 +204,24 @@ namespace ContentTypeTextNet.Pe.Library.Common
     {
         #region define
 
-        private sealed class EmptyDisposer: IDisposable
+        private sealed class EmptyDisposer: IDisposed
         {
+            #region property
+
+            public bool IsDisposed { get; private set; }
+
+            #endregion
+
+            #region IDisposed
+
             public void Dispose()
             {
+                IsDisposed = true;
                 GC.SuppressFinalize(this);
             }
+
+
+            #endregion
         }
 
         #endregion
@@ -223,7 +235,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <see cref="IDisposable"/>とのIFを合わせるための空処理。
         /// </summary>
         /// <returns></returns>
-        public static IDisposable CreateEmpty() => new EmptyDisposer();
+        public static IDisposed CreateEmpty() => new EmptyDisposer();
 
         #endregion
     }

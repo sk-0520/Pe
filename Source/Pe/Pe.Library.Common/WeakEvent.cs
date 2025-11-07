@@ -36,6 +36,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 if(target is TEventListener listener) {
                     Listener = new WeakReference<TEventListener>(listener);
                 } else {
+                    //TODO: 静的メソッド対応ができてない
                     throw new ArgumentException($"{nameof(handler)}.{nameof(handler.Target)}", nameof(handler));
                 }
 
