@@ -79,7 +79,8 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"nuget を中央管理 + テストで使う nuget は共通化",
 					},
 					{
 						revision: "",
