@@ -10,13 +10,13 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged.Gdi
 {
-    public class GdiTest
+    public class SafeGdiBaseTest
     {
         #region define
 
-        private class TestClass: GdiBase
+        private class TestSafeGdi: SafeGdiBase
         {
-            public TestClass()
+            public TestSafeGdi()
                 : base(new nint(1))
             { }
 
@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged.Gdi
         [Fact]
         public void Test()
         {
-            var test = new TestClass();
+            var test = new TestSafeGdi();
             Assert.False(test.CanMakeImageSource);
 
             Assert.Equal(new nint(1), test.ResourceHandle);

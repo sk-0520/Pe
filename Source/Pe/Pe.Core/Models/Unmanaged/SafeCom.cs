@@ -9,7 +9,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged
     /// <summary>
     /// 生のCOMを管理。
     /// </summary>
-    public class Com<T>: DisposerBase
+    public class SafeCom<T>: DisposerBase
         where T : class
     {
         #region variable
@@ -25,7 +25,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged
         /// <param name="comInstance">ラップする COM オブジェクト。</param>
         /// <exception cref="ArgumentNullException"><paramref name="comInstance"/> が <see langword="null"/>。</exception>
         /// <exception cref="ArgumentException"><paramref name="comInstance"/> が COM オブジェクトでない。</exception>
-        public Com(T comInstance)
+        public SafeCom(T comInstance)
         {
             ArgumentNullException.ThrowIfNull(comInstance);
 
@@ -61,12 +61,12 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged
         #region function
 
         /// <summary>
-        /// 内部の COM オブジェクトを指定した型にキャストして新しい <see cref="Com{TCastType}"/> を生成する。
+        /// 内部の COM オブジェクトを指定した型にキャストして新しい <see cref="SafeCom{TCastType}"/> を生成する。
         /// </summary>
         /// <typeparam name="TCastType">キャスト先の型。</typeparam>
         /// <returns>キャストに成功した場合は新しいラッパーを返す。</returns>
         /// <exception cref="InvalidCastException">キャストに失敗。</exception>
-        public Com<TCastType> Cast<TCastType>()
+        public SafeCom<TCastType> Cast<TCastType>()
             where TCastType : class
         {
             var castValue = Instance as TCastType;
@@ -74,7 +74,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged
                 throw new InvalidCastException($"{typeof(T).Name} -> {typeof(TCastType).Name}");
             }
 
-            return new Com<TCastType>(castValue);
+            return new SafeCom<TCastType>(castValue);
         }
 
         #endregion
@@ -97,20 +97,20 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged
     }
 
     /// <summary>
-    /// <see cref="Com{T}"/> の生成処理の簡略化。
+    /// <see cref="SafeCom{T}"/> の生成処理の簡略化。
     /// </summary>
     public static class Com
     {
         /// <summary>
-        /// 指定した COM オブジェクトをラップする <see cref="Com{T}"/> インスタンスを生成する。
+        /// 指定した COM オブジェクトをラップする <see cref="SafeCom{T}"/> インスタンスを生成する。
         /// </summary>
         /// <typeparam name="T">ラップする COM オブジェクトの型。</typeparam>
         /// <param name="comObject">ラップする COM オブジェクト。</param>
-        /// <returns>新しい <see cref="Com{T}"/> インスタンス。</returns>
-        public static Com<T> Create<T>(T comObject)
+        /// <returns>新しい <see cref="SafeCom{T}"/> インスタンス。</returns>
+        public static SafeCom<T> Create<T>(T comObject)
             where T : class
         {
-            return new Com<T>(comObject);
+            return new SafeCom<T>(comObject);
         }
     }
 }

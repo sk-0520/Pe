@@ -1,32 +1,34 @@
 using System;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using ContentTypeTextNet.Pe.PInvoke.Windows;
 
 namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi
 {
-    /// <summary>
-    /// ビットマップハンドルを管理。
-    /// </summary>
-    public class BitmapHandle: GdiBase
+    public class SafeIconHandle: SafeGdiBase
     {
-        public BitmapHandle(IntPtr hBitmap)
-            : base(hBitmap)
+        public SafeIconHandle(IntPtr hIcon)
+            : base(hIcon)
         { }
 
-        #region GdiBase
+        #region SafeGdiBase
 
         public override bool CanMakeImageSource => true;
 
         protected override BitmapSource MakeBitmapSourceCore()
         {
-            var result = Imaging.CreateBitmapSourceFromHBitmap(
+            var result = Imaging.CreateBitmapSourceFromHIcon(
                 this.handle,
-                IntPtr.Zero,
                 System.Windows.Int32Rect.Empty,
                 BitmapSizeOptions.FromEmptyOptions()
             );
 
             return result;
+        }
+
+        protected override bool ReleaseHandle()
+        {
+            return NativeMethods.DestroyIcon(this.handle);
         }
 
         #endregion

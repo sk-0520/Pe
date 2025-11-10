@@ -10,27 +10,27 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
 {
-    public class ComTest
+    public class SafeComTest
     {
         #region function
 
         [Fact]
         public void Constructor_IShellLink_Test()
         {
-            using var test = new Com<IShellLink>((IShellLink)new ShellLinkObject());
+            using var test = new SafeCom<IShellLink>((IShellLink)new ShellLinkObject());
             Assert.NotNull(test);
         }
 
         [Fact]
         public void Constructor_throw_null_Test()
         {
-            Assert.Throws<ArgumentNullException>(() => new Com<object>(null!));
+            Assert.Throws<ArgumentNullException>(() => new SafeCom<object>(null!));
         }
 
         [Fact]
         public void Constructor_throw_com_Test()
         {
-            var exception = Assert.Throws<ArgumentException>(() => new Com<object>(new object()));
+            var exception = Assert.Throws<ArgumentException>(() => new SafeCom<object>(new object()));
             Assert.Equal("comInstance", exception.ParamName);
             Assert.StartsWith("Marshal.IsComObject", exception.Message);
         }
@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
         [Fact]
         public void CastTest()
         {
-            using var test = new Com<IShellLink>((IShellLink)new ShellLinkObject());
+            using var test = new SafeCom<IShellLink>((IShellLink)new ShellLinkObject());
             using var actual1 = test.Cast<IPersistFile>();
             Assert.NotNull(actual1);
 
@@ -51,14 +51,14 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
         [Fact]
         public void Cast_throw_Test()
         {
-            using var test = new Com<IShellLink>((IShellLink)new ShellLinkObject());
+            using var test = new SafeCom<IShellLink>((IShellLink)new ShellLinkObject());
             Assert.Throws<InvalidCastException>(() => test.Cast<IImageList>());
         }
 
         [Fact]
         public void Dispose_throw_instance_Test()
         {
-            using var test = new Com<IShellLink>((IShellLink)new ShellLinkObject());
+            using var test = new SafeCom<IShellLink>((IShellLink)new ShellLinkObject());
             var po = new PrivateObject(test);
             var prevInstance = po.GetField("_instance");
             po.SetField("_instance", null);

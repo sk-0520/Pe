@@ -8,13 +8,13 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged
     /// <summary>
     /// <see cref="Marshal.AllocHGlobal(int)"/>のラッパー。
     /// </summary>
-    public class GlobalAlloc: SafeHandle
+    public class SafeGlobalAlloc: SafeHandle
     {
         /// <summary>
         /// メモリ確保。
         /// </summary>
         /// <param name="cb">確保するサイズ。</param>
-        public GlobalAlloc(int cb)
+        public SafeGlobalAlloc(int cb)
             : base(Marshal.AllocHGlobal(cb), true)
         {
             Size = cb;
@@ -33,15 +33,15 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged
 
         #region function
 
-        public static GlobalAlloc Create<T>()
+        public static SafeGlobalAlloc Create<T>()
         {
-            return new GlobalAlloc(Marshal.SizeOf<T>());
+            return new SafeGlobalAlloc(Marshal.SizeOf<T>());
         }
 
-        public static GlobalAlloc Create<T>(T structure)
+        public static SafeGlobalAlloc Create<T>(T structure)
             where T : struct
         {
-            var result = new GlobalAlloc(Marshal.SizeOf(structure));
+            var result = new SafeGlobalAlloc(Marshal.SizeOf(structure));
             Marshal.StructureToPtr(structure, result.handle, false);
 
             return result;

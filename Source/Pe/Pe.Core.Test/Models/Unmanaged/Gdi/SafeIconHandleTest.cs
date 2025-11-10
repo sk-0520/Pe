@@ -5,7 +5,7 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged.Gdi
 {
-    public class IconHandleTest
+    public class SafeIconHandleTest
     {
         #region function
 
@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged.Gdi
         public void Test()
         {
             using var gdiBitmap = new Bitmap(32, 32);
-            var test = new IconHandle(gdiBitmap.GetHicon());
+            var test = new SafeIconHandle(gdiBitmap.GetHicon());
             Assert.True(test.CanMakeImageSource);
             Assert.False(test.IsInvalid);
 

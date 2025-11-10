@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Media.Imaging;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 
 namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi
@@ -8,9 +9,9 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi
     /// <summary>
     /// Windows 万歳な GDI 系オブジェクトを扱う。
     /// </summary>
-    public abstract class GdiBase: SafeHandle, IMakeBitmapSource
+    public abstract class SafeGdiBase: SafeHandle, IMakeBitmapSource
     {
-        protected GdiBase(IntPtr hHandle)
+        protected SafeGdiBase(IntPtr hHandle)
             : base(hHandle, true)
         { }
 
@@ -25,6 +26,11 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi
         #region function
 
         protected abstract BitmapSource MakeBitmapSourceCore();
+
+        protected void ThrowIfDisposed()
+        {
+            ObjectDisposedException.ThrowIf(IsInvalid, this);
+        }
 
         #endregion
 
@@ -41,7 +47,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi
                 throw new NotSupportedException();
             }
 
-            ObjectDisposedException.ThrowIf(IsInvalid, this);
+            ThrowIfDisposed();
 
             return MakeBitmapSourceCore();
         }

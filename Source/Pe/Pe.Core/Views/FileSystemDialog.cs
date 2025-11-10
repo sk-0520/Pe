@@ -41,23 +41,23 @@ namespace ContentTypeTextNet.Pe.Core.Views
     {
         protected private FileSystemDialogBase(FileOpenDialogImpl openDialogImpl)
         {
-            FileDialogImpl = new Com<object>(openDialogImpl);
+            FileDialogImpl = new SafeCom<object>(openDialogImpl);
             FileDialog = FileDialogImpl.Cast<IFileDialog>();//(IFileDialog)openDialogImpl;
             FileDialogCustomize = FileDialogImpl.Cast<IFileDialogCustomize>();
         }
 
         protected private FileSystemDialogBase(FileSaveDialogImpl saveDialogImpl)
         {
-            FileDialogImpl = new Com<object>(saveDialogImpl);
+            FileDialogImpl = new SafeCom<object>(saveDialogImpl);
             FileDialog = FileDialogImpl.Cast<IFileDialog>();
             FileDialogCustomize = FileDialogImpl.Cast<IFileDialogCustomize>();
         }
 
         #region property
 
-        private Com<object> FileDialogImpl { get; }
-        private Com<IFileDialog> FileDialog { get; }
-        private Com<IFileDialogCustomize> FileDialogCustomize { get; }
+        private SafeCom<object> FileDialogImpl { get; }
+        private SafeCom<IFileDialog> FileDialog { get; }
+        private SafeCom<IFileDialogCustomize> FileDialogCustomize { get; }
 
         /// <summary>
         /// フォルダ選択を行うか。
@@ -146,7 +146,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
             return options;
         }
 
-        private static Com<IShellItem>? CreateFileItem(string path)
+        private static SafeCom<IShellItem>? CreateFileItem(string path)
         {
             IShellItem item;
             IntPtr idl;
@@ -180,19 +180,19 @@ namespace ContentTypeTextNet.Pe.Core.Views
             return PathUtility.AddExtension(path, filter.DefaultExtension);
         }
 
-        private static void ApplyFos(Com<IFileDialog> result, FOS options)
+        private static void ApplyFos(SafeCom<IFileDialog> result, FOS options)
         {
             result.Instance.SetOptions(options);
         }
 
-        private static void ApplyTitle(Com<IFileDialog> result, string title)
+        private static void ApplyTitle(SafeCom<IFileDialog> result, string title)
         {
             if(!string.IsNullOrEmpty(title)) {
                 result.Instance.SetTitle(title);
             }
         }
 
-        private static IDisposable? ApplyInitialDirectory(Com<IFileDialog> result, string initialDirectory)
+        private static IDisposable? ApplyInitialDirectory(SafeCom<IFileDialog> result, string initialDirectory)
         {
             if(!string.IsNullOrEmpty(initialDirectory)) {
                 var item = CreateFileItem(initialDirectory);
@@ -205,7 +205,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
             return null;
         }
 
-        private static IDisposable? ApplyPath(Com<IFileDialog> result, string path)
+        private static IDisposable? ApplyPath(SafeCom<IFileDialog> result, string path)
         {
             IDisposable? disposer = null;
 
