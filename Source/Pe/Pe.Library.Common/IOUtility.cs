@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
     [Serializable]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class IOUtilityException: Exception
+    public class IOUtilityException: IOException
     {
         public IOUtilityException() { }
         public IOUtilityException(string message) : base(message) { }
@@ -221,7 +221,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                     return options.Cleaner is null
                         ? new TemporaryDirectory(dir)
                         : new TemporaryDirectory(dir, options.Cleaner)
-                        ;
+                    ;
                 } catch(IOException) {
                     continue;
                 }
