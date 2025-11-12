@@ -131,7 +131,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// その場で破棄する処理。
     /// </summary>
     /// <remarks>
-    /// <para><c>using var xxx = new ActionDisposer(d => ...)</c>で実装する前提。</para>
+    /// <para><c><see langword="using" /> <see langword="var" /> xxx = <see langword="new" /> <see cref="ActionDisposer"/>(d => ...)</c>で実装する前提。</para>
     /// </remarks>
     public sealed class ActionDisposer: DisposerBase
     {
@@ -250,7 +250,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     {
         #region property
 
-        private IList<IDisposable> StockItems { get; } = new List<IDisposable>();
+        private List<IDisposable> StockItems { get; set; } = [];
 
         #endregion
 
@@ -266,10 +266,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         public TDisposable Add<TDisposable>(TDisposable disposable)
             where TDisposable : IDisposable
         {
-            if(disposable is null) {
-                throw new ArgumentNullException(nameof(disposable));
-            }
-
+            ArgumentNullException.ThrowIfNull(disposable);
             ThrowIfDisposed();
 
             StockItems.Add(disposable);
@@ -301,6 +298,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                         StockItems[i].Dispose();
                     }
                     StockItems.Clear();
+                    StockItems = null!;
                 }
             }
 
@@ -331,7 +329,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         private ArrayPool<T> Pool { get; }
         public T[] Items { get; }
-
         public int Length { get; }
 
         #endregion
@@ -373,7 +370,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         private ArrayPool<T> Pool { get; }
         public T[] Items { get; }
-
         public int Length { get; }
 
         #endregion

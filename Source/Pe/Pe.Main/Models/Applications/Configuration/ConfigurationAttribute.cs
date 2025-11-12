@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Configuration;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
 {
@@ -26,8 +27,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
         /// </summary>
         /// <remarks>
         /// <para><see cref="ConfigurationSetting"/>から呼び出せるメソッドであること。</para>
-        /// <para>通常の内部規約としてIFは<c>プロパティT</c>に対して<c>T MethodName(IConfigurationSection section, string key)</c>を実行する。</para>
-        /// <para>ジェネリック内部規約としてIFは<c>プロパティTResult&lt;T...&gt;</c>に対して<c>TResult&lt;T...&gt; MethodName&lt;T...&gt;(IConfigurationSection section, string key)</c>を実行する。</para>
+        /// <para>通常の内部規約としてIFは<c>プロパティT</c>に対して<c>T MethodName(<see cref="IConfigurationSection"/> section, <see langword="string"/> key)</c>を実行する。</para>
+        /// <para>ジェネリック内部規約としてIFは<c>プロパティTResult&lt;T...&gt;</c>に対して<c>TResult&lt;T...&gt; MethodName&lt;T...&gt;(<see cref="IConfigurationSection"/> section, <see langword="string"/> key)</c>を実行する。</para>
         /// </remarks>
         public string RootConvertMethodName { get; }
         /// <summary>

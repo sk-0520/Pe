@@ -122,7 +122,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         }
 
         /// <summary>
-        /// <c>event.add</c> で使用する想定。
+        /// <c><see langword="event" />.<see langword="add" /></c> で使用する想定。
         /// </summary>
         /// <param name="eventHandler"></param>
         /// <returns></returns>
@@ -145,7 +145,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         }
 
         /// <summary>
-        /// <c>event.remove</c> で使用する想定。
+        /// <c><see langword="event" />.<see langword="remove" /></c> で使用する想定。
         /// </summary>
         /// <param name="eventHandler"></param>
         /// <returns>削除成功状態: 真 成功</returns>

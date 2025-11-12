@@ -117,7 +117,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <typeparam name="T">問い合わせ型。</typeparam>
         /// <param name="statement">データベース問い合わせ文。</param>
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
-        /// <returns>一番最初に見つかったデータ。見つかんなかったら <c>default(T)</c></returns>
+        /// <returns>一番最初に見つかったデータ。見つかんなかったら <c><see langword="default"/>(<typeparamref name="T"/>)</c></returns>
         [return: MaybeNull]
         T QueryFirstOrDefault<T>(string statement, object? parameter);
 
@@ -127,7 +127,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <typeparam name="T">問い合わせ型。</typeparam>
         /// <param name="statement">データベース問い合わせ文。</param>
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
-        /// <returns>一番最初に見つかったデータ。見つかんなかったら <c>default(T)</c></returns>
+        /// <returns>一番最初に見つかったデータ。見つかんなかったら <c><see langword="default"/>(<typeparamref name="T"/>)</c></returns>
         Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken);
 
         /// <summary>
@@ -169,7 +169,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <param name="statement">データベース問い合わせ文。</param>
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
         /// <param name="cancellationToken"></param>
-        /// <returns>一意なデータ。一意じゃなかったら <c>default(T)</c></returns>
+        /// <returns>一意なデータ。一意じゃなかったら <c><see langword="default"/>(<typeparamref name="T"/>)</c></returns>
         Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken);
 
         #endregion

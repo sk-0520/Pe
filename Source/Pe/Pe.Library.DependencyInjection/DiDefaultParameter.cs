@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ContentTypeTextNet.Pe.Library.DependencyInjection
 {
     /// <summary>
-    /// パラメータに型判別できない(<c>default(T)</c>とか)を無理やり認識させるしゃあなし対応。
+    /// パラメータに型判別できない(<c><see langword="default"/>(type)</c>とか)を無理やり認識させるしゃあなし対応。
     /// </summary>
     public readonly struct DiDefaultParameter
     {
