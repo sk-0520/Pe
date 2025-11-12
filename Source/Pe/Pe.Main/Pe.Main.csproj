@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Pe.Main.Test" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="etc\script\UpdaterScript.cs" />
   </ItemGroup>
 

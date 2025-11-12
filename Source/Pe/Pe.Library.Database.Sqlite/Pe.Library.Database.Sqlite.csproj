@@ -4,6 +4,10 @@
     <AssemblyName>Pe.Library.Database.Sqlite</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Library.Database.Sqlite</RootNamespace>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <InternalsVisibleTo Include="Pe.Library.Database.Sqlite.Test" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" />
