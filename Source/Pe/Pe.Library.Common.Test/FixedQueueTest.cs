@@ -99,7 +99,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             Assert.True(test.TryPeek(out _));
 
             test.Clear();
-            Assert.Equal(0, test.Count);
+            Assert.Empty(test);
             Assert.False(test.TryPeek(out _));
         }
 
@@ -274,7 +274,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             Assert.True(test.TryPeek(out _));
 
             test.Clear();
-            Assert.Equal(0, test.Count);
+            Assert.Empty(test);
             Assert.False(test.TryPeek(out _));
         }
 

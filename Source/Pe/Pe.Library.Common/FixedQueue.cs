@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
-    public interface IReadOnlyFixedQueue<T>: IEnumerable<T>
+    public interface IReadOnlyFixedQueue<T>: IReadOnlyCollection<T>
     {
         #region property
 
@@ -15,9 +15,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// 上限。
         /// </summary>
         int Limit { get; }
-
-        /// <inheritdoc cref="Queue{T}.Count"/>
-        int Count { get; }
 
         /// <summary>
         /// 空か。
