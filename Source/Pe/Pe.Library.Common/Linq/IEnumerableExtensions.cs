@@ -108,27 +108,18 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
         /// <exception cref="ArgumentNullException"></exception>
         public static bool AllEquals<TSource>(this IEnumerable<TSource> source)
         {
-            if(source is null) {
-                throw new ArgumentNullException(nameof(source));
+            ArgumentNullException.ThrowIfNull(source);
+
+            using var enumerator = source.GetEnumerator();
+            if(!enumerator.MoveNext()) {
+                return true;
             }
 
-            var enumerator = source.GetEnumerator();
-            if(enumerator.MoveNext()) {
-                var baseElement = enumerator.Current;
-                if(baseElement is null) {
-                    while(enumerator.MoveNext()) {
-                        var currentElement = enumerator.Current;
-                        if(currentElement is not null) {
-                            return false;
-                        }
-                    }
-                } else {
-                    while(enumerator.MoveNext()) {
-                        var currentElement = enumerator.Current;
-                        if(!baseElement.Equals(currentElement)) {
-                            return false;
-                        }
-                    }
+            var firstElement = enumerator.Current;
+            while(enumerator.MoveNext()) {
+                var currentElement = enumerator.Current;
+                if(!EqualityComparer<TSource>.Default.Equals(firstElement, currentElement)) {
+                    return false;
                 }
             }
 
