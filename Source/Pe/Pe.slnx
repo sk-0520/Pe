@@ -32,6 +32,14 @@
     </Project>
   </Folder>
   <Folder Name="/generator/">
+    <Project Path="Pe.Generator.Exception.Test/Pe.Generator.Exception.Test.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe.Generator.Exception/Pe.Generator.Exception.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
     <Project Path="Pe.Generator.Id.Test/Pe.Generator.Id.Test.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
