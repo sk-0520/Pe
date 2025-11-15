@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Throw;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test
@@ -15,10 +16,27 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [Fact]
         public void ConstructorTest()
         {
-            Assert.Throws<ArgumentException>(() => new NumericRange(true, "", ""));
-            Assert.Throws<ArgumentException>(() => new NumericRange(true, "a", "a"));
-            Assert.Throws<ArgumentNullException>(() => new NumericRange(true, null!, ""));
-            Assert.Throws<ArgumentNullException>(() => new NumericRange(true, "", null!));
+            var exception1 = Assert.Throws<ArgumentException>(() => new NumericRange(true, "", "b"));
+            Assert.Equal("valueSeparator", exception1.ParamName);
+
+            var exception2 = Assert.Throws<ArgumentException>(() => new NumericRange(true, "a", ""));
+            Assert.Equal("rangeSeparator", exception2.ParamName);
+
+            var exception3 = Assert.Throws<ArgumentComplexException>(() => new NumericRange(true, "a", "a"));
+            Assert.Equal("valueSeparator == rangeSeparator (Parameter 'valueSeparator, rangeSeparator')", exception3.Message);
+            Assert.Equal("valueSeparator", exception3.ParamNames[0]);
+            Assert.Equal("rangeSeparator", exception3.ParamNames[1]);
+
+            Assert.Throws<ArgumentNullException>(() => new NumericRange(true, null!, "range"));
+            Assert.Throws<ArgumentNullException>(() => new NumericRange(true, "value", null!));
+        }
+
+        [Fact]
+        public void ToString_null_Test()
+        {
+            var nr = new NumericRange();
+            var actual = nr.ToString(null);
+            Assert.Equal("", actual);
         }
 
         [Theory]
@@ -91,6 +109,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [Theory]
         [InlineData(new int[0], "")]
         [InlineData(new int[0], " ")]
+        [InlineData(new[] { 1, }, "1")]
         [InlineData(new[] { 1, 2 }, "1, 2")]
         [InlineData(new[] { -1, 1, 2, 4 }, "1, 2, 4, -1")]
         [InlineData(new[] { -3, -2, -1 }, "-3--1")]

@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using ContentTypeTextNet.Pe.Library.Common;
 using System.Threading;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Throw;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
@@ -34,12 +35,15 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <param name="rangeSeparator">値の範囲。</param>
         public NumericRange(bool separatorSpace, string valueSeparator, string rangeSeparator)
         {
+            ArgumentException.ThrowIfNullOrEmpty(valueSeparator);
+            ArgumentException.ThrowIfNullOrEmpty(rangeSeparator);
             if(valueSeparator == rangeSeparator) {
-                throw new ArgumentException($"{nameof(valueSeparator)} == {nameof(rangeSeparator)}");
+                throw new ArgumentComplexException($"{nameof(valueSeparator)} == {nameof(rangeSeparator)}", nameof(valueSeparator), nameof(rangeSeparator));
             }
+
             SeparatorSpace = separatorSpace;
-            ValueSeparator = valueSeparator ?? throw new ArgumentNullException(nameof(valueSeparator));
-            RangeSeparator = rangeSeparator ?? throw new ArgumentNullException(nameof(rangeSeparator));
+            ValueSeparator = valueSeparator;
+            RangeSeparator = rangeSeparator;
         }
 
         #region property
@@ -68,7 +72,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns></returns>
         public string ToString(IEnumerable<int>? values)
         {
-            if(values == null) {
+            if(values is null || !values.Any()) {
                 return string.Empty;
             }
 
@@ -76,10 +80,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 .OrderBy(i => i)
                 .ToArray()
             ;
-
-            if(orderedValues.Length == 0) {
-                return string.Empty;
-            }
 
             var builder = new StringBuilder(64);
             var prevValue = orderedValues[0];
@@ -128,10 +128,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
             }
 
             var values = s.Split(ValueSeparator);
-            if(values.Length == 0) {
-                result = Array.Empty<int>();
-                return true;
-            }
 
             var reg = new Regex(@"\s*(?<HEAD>[+\-]?\d+)\s*((?<RANGE>.+?)(?<TAIL>[+\-]?\d+))?\s*", default, Timeout.InfiniteTimeSpan);
 
