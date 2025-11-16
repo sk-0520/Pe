@@ -28,6 +28,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: "c++: NuGet"
+      if: matrix.language == 'cpp'
+      shell: pwsh
+      run: Remove-Item -Path Directory.Build.props
+
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
