@@ -87,7 +87,7 @@ jobs:
 
       - name: <Setup> .NET (x86)
         if: matrix.PLATFORM == 'x86'
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
           architecture: x86
@@ -266,7 +266,7 @@ jobs:
 
       - name: <Setup> .NET (x86)
         if: matrix.PLATFORM == 'x86'
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
           architecture: x86
@@ -415,7 +415,7 @@ jobs:
 
       - name: <Setup> .NET (x86)
         if: matrix.PLATFORM == 'x86'
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
           architecture: x86
