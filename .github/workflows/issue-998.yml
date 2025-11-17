@@ -85,6 +85,18 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: <Setup> .NET (x86)
+        if: matrix.PLATFORM == 'x86'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          include-prerelease: true
+          architecture: x86
+
+      - name: <Verify> .NET (x86)
+        if: matrix.PLATFORM == 'x86'
+        run: dotnet --info
+
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
@@ -253,6 +265,18 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: <Setup> .NET (x86)
+        if: matrix.PLATFORM == 'x86'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          include-prerelease: true
+          architecture: x86
+
+      - name: <Verify> .NET (x86)
+        if: matrix.PLATFORM == 'x86'
+        run: dotnet --info
+
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
@@ -390,6 +414,18 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: <Setup> .NET (x86)
+        if: matrix.PLATFORM == 'x86'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          include-prerelease: true
+          architecture: x86
+
+      - name: <Verify> .NET (x86)
+        if: matrix.PLATFORM == 'x86'
+        run: dotnet --info
 
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v2
