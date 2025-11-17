@@ -85,6 +85,15 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: <Setup> .NET (x86)
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          architecture: x86
+
+      - name: <Verify> .NET
+        run: dotnet --info
+
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
@@ -253,6 +262,15 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: <Setup> .NET (x86)
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          architecture: x86
+
+      - name: <Verify> .NET
+        run: dotnet --info
+
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v2
         with:
@@ -390,6 +408,15 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: <Setup> .NET (x86)
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          architecture: x86
+
+      - name: <Verify> .NET
+        run: dotnet --info
 
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v2
