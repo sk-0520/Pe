@@ -75,7 +75,7 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "#1026: .NET 10 へ移行",
 					},
 					{
 						revision: "",

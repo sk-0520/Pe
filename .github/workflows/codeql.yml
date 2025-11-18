@@ -8,10 +8,13 @@ on:
     paths:
       - '.github/workflows/codeql.yml'
 
+env:
+  DOTNET_VERSION: 10.0.x
+
 jobs:
   analyze:
     name: CodeQL
-    runs-on: windows-2022
+    runs-on: windows-2025
     permissions:
       actions: read
       contents: read
@@ -27,6 +30,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+      if: matrix.language == 'csharp'
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: "c++: NuGet"
       if: matrix.language == 'cpp'

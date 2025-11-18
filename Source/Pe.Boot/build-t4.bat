@@ -5,12 +5,12 @@ rem 3. 定義変数を変更する場合は %CUSTOM_SETTING_FILE% を同一ディレクトリに配置し
 
 set CUSTOM_SETTING_FILE=@build-t4-setting.bat
 
-set DevEnvDir=C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\
+set DevEnvDir=C:\Program Files\Microsoft Visual Studio\18\Community\Common7\IDE
 
 if exist "%CUSTOM_SETTING_FILE%" call "%CUSTOM_SETTING_FILE%"
 
 for /d %%d in (*) do (
 	for %%f in (%%d\*.tt) do (
-		"%DevEnvDir%TextTransform.exe"  "%%f"
+		"%DevEnvDir%\TextTransform.exe"  "%%f"
 	)
 )

@@ -2,11 +2,11 @@
     <PropertyGroup>
         <Version>0.99.263</Version>
 
-        <TargetFramework>net9.0-windows</TargetFramework>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <LangVersion>14</LangVersion>
         <Platforms>x64;x86</Platforms>
         <WarningLevel>9999</WarningLevel>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <NoStandardLib>false</NoStandardLib>
         <Product>Pe</Product>
@@ -14,7 +14,6 @@
         <Configurations>Debug;Release</Configurations>
         <ImplicitUsings>disable</ImplicitUsings>
         <IsPackable>false</IsPackable>
-        <PathMap>$(MSBuildThisFileDirectory)=.</PathMap>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     </PropertyGroup>
 

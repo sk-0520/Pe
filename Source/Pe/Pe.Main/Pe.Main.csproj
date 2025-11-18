@@ -40,7 +40,6 @@
     <PackageReference Include="Prism.Wpf" />
     <PackageReference Include="SevenZipExtractor" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" />
-    <PackageReference Include="System.Text.Encoding.CodePages" />
   </ItemGroup>
 
   <ItemGroup>

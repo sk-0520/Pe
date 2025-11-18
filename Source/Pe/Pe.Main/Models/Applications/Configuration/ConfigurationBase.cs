@@ -147,7 +147,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
             var result = conf.GetValue(valueType, memberKey);
             if(result == null) {
                 var childSection = conf.GetSection(memberKey);
-                if(childSection.Value == null) {
+                if(string.IsNullOrEmpty(childSection.Value)) {
                     if(valueType.IsGenericType) {
                         // ReadOnlyList<T>, IReadOnlyDictionary<string|Enum,T> のみサポートする
                         var genArgs = valueType.GetGenericArguments();

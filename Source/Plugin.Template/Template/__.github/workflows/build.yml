@@ -23,7 +23,7 @@ jobs:
 
       - name: <Embedded> git revision
         shell: pwsh
-        run: .\Build\embedded-revision.ps1 -InformationAction Continue -Revision ${{ github.sha }} -ProjectFilePath .\Directory.Build.props
+        run: .\Build\embedded-revision.ps1 -InformationAction Continue -Revision ${{ github.sha }} -ProjectFilePath .\Source\Directory.Build.props
 
       - name: <Build> Plugin
         shell: pwsh
