@@ -26,7 +26,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
         /// <summary>
         /// <see cref="BuildImpl"/>で使用する生処理。
         /// </summary>
-        protected Com<IFileDialogCustomize>? FileDialogCustomize { get; private set; }
+        protected SafeCom<IFileDialogCustomize>? FileDialogCustomize { get; private set; }
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
         /// </summary>
         /// <param name="controlId"></param>
         /// <param name="fileDialogCustomize"></param>
-        internal void Build(int controlId, Com<IFileDialogCustomize> fileDialogCustomize)
+        internal void Build(int controlId, SafeCom<IFileDialogCustomize> fileDialogCustomize)
         {
             ControlId = controlId;
             FileDialogCustomize = fileDialogCustomize;
@@ -329,7 +329,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
             return control;
         }
 
-        public void Build(Com<IFileDialogCustomize> FileDialogCustomize)
+        public void Build(SafeCom<IFileDialogCustomize> FileDialogCustomize)
         {
             if(IsBuilt) {
                 FileDialogCustomize.Instance.ClearClientData();

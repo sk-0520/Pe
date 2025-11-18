@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         {
             NativeMethods.SHCreateItemFromParsingName(iconPath, IntPtr.Zero, NativeMethods.IID_IShellItem, out var iShellItem);
 
-            using var shellItem = ComWrapper.Create(iShellItem);
+            using var shellItem = Com.Create(iShellItem);
             var size = iconSize.ToSize();
             var siigbf = SIIGBF.SIIGBF_RESIZETOFIT;
 
@@ -60,7 +60,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 imageFactory.Instance.GetImage(PodStructUtility.Convert(size), siigbf, out hResultBitmap);
             }
 
-            using(var hBitmap = new BitmapHandleWrapper(hResultBitmap)) {
+            using(var hBitmap = new SafeBitmapHandle(hResultBitmap)) {
                 var result = hBitmap.MakeBitmapSource();
                 return result;
             }
@@ -223,7 +223,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                     _ = NativeMethods.ExtractIconEx(iconPath, iconIndex, iconHandle, null!, 1);
                 }
                 if(iconHandle[0] != IntPtr.Zero) {
-                    using(var hIcon = new IconHandleWrapper(iconHandle[0])) {
+                    using(var hIcon = new SafeIconHandle(iconHandle[0])) {
                         return hIcon.MakeBitmapSource();
                     }
                 }
@@ -250,7 +250,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
             }
             var fileInfoResult = NativeMethods.SHGetFileInfo(iconPath, 0, ref fileInfo, (uint)Marshal.SizeOf(fileInfo), flag);
             if(fileInfo.hIcon != IntPtr.Zero) {
-                using(var hIcon = new IconHandleWrapper(fileInfo.hIcon)) {
+                using(var hIcon = new SafeIconHandle(fileInfo.hIcon)) {
                     return hIcon.MakeBitmapSource();
                 }
             }
@@ -305,14 +305,14 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
                 if(getImageListResult == HRESULT.S_OK) {
                     Debug.Assert(resultImageList != null);
-                    using(var imageList = new Com<IImageList>(resultImageList)) {
+                    using(var imageList = new SafeCom<IImageList>(resultImageList)) {
                         int n = 0;
                         imageList.Instance.GetImageCount(ref n);
 
                         var hResultIcon = IntPtr.Zero;
                         var hResult = imageList.Instance.GetIcon(fileInfo.iIcon, (int)ImageListDrawItemConstants.ILD_TRANSPARENT, ref hResultIcon);
                         if(hResultIcon != IntPtr.Zero) {
-                            using(var hIcon = new IconHandleWrapper(hResultIcon)) {
+                            using(var hIcon = new SafeIconHandle(hResultIcon)) {
                                 return hIcon.MakeBitmapSource();
                             }
                         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
-    public struct AttributeProperty<TAttribute>
+    public readonly struct AttributeProperty<TAttribute>
         where TAttribute : Attribute
     {
         public AttributeProperty(PropertyInfo property, IReadOnlyList<TAttribute> attributes)

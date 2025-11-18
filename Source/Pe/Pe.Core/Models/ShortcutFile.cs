@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
         #region variable
 
-        private Com<IPersistFile>? _persistFile;
+        private SafeCom<IPersistFile>? _persistFile;
 
         #endregion
 
@@ -74,9 +74,9 @@ namespace ContentTypeTextNet.Pe.Core.Models
         /// </summary>
         public int DescriptionLength { get; set; } = 1024 * 4;
 
-        protected Com<IShellLink> ShellLink { get; }
+        protected SafeCom<IShellLink> ShellLink { get; }
 
-        protected Com<IPersistFile> PersistFile => this._persistFile ??= ShellLink.Cast<IPersistFile>();
+        protected SafeCom<IPersistFile> PersistFile => this._persistFile ??= ShellLink.Cast<IPersistFile>();
 
         /// <summary>
         /// ショートカット先パス。
@@ -210,9 +210,9 @@ namespace ContentTypeTextNet.Pe.Core.Models
             return new StringBuilder(max, max);
         }
 
-        private static Com<IShellLink> CreateShellLink()
+        private static SafeCom<IShellLink> CreateShellLink()
         {
-            return new Com<IShellLink>((IShellLink)new ShellLinkObject());
+            return new SafeCom<IShellLink>((IShellLink)new ShellLinkObject());
         }
 
         /// <summary>

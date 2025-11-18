@@ -34,7 +34,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable, DataContract]
-    public struct MinMax<T>: IReadOnlyMinMax<T>
+    public readonly struct MinMax<T>: IReadOnlyMinMax<T>
         where T : IComparable<T>
     {
         public MinMax(T minimum, T maximum)
@@ -46,9 +46,9 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #region IReadOnlyMinMax
 
         [DataMember]
-        public T Minimum { get; set; }
+        public T Minimum { get; }
         [DataMember]
-        public T Maximum { get; set; }
+        public T Maximum { get; }
 
         #endregion
     }
@@ -130,7 +130,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable, DataContract]
-    public struct MinMaxDefault<T>: IReadOnlyMinMaxDefault<T>
+    public readonly struct MinMaxDefault<T>: IReadOnlyMinMaxDefault<T>
         where T : IComparable<T>
     {
         public MinMaxDefault(T minimum, T maximum, T defaultValue)
@@ -143,18 +143,18 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #region IReadOnlyMinMaxDefault
 
         [DataMember]
-        public T Minimum { get; set; }
+        public T Minimum { get; }
         [DataMember]
-        public T Maximum { get; set; }
+        public T Maximum { get; }
 
         [DataMember]
-        public T Default { get; set; }
+        public T Default { get; }
 
         #endregion
     }
 
     /// <summary>
-    /// <see cref="MinMaxDefault{T}"/>/> ヘルパ。
+    /// <see cref="MinMaxDefault{T}"/> ヘルパ。
     /// </summary>
     public static class MinMaxDefault
     {

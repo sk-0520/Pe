@@ -9,15 +9,104 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test
 {
+    public class DisposerBaseTest
+    {
+        #region define
+
+        private sealed class TestDisposer: DisposerBase
+        {
+            #region property
+
+            public int Value { get; set; } = 0;
+
+            #endregion
+
+            #region function
+
+            public void PublicThrowIfDisposed()
+            {
+                ThrowIfDisposed();
+            }
+
+            #endregion
+        }
+
+        #endregion
+
+        #region function
+
+        void Test_Disposing1_1(object? sender, EventArgs e)
+        {
+            var test = (TestDisposer)sender!;
+            Assert.False(test.IsDisposed);
+            Assert.Equal(1, test.Value);
+            test.Value += 1;
+        }
+
+        [Fact]
+        public void Disposing_1_Test()
+        {
+            var test = new TestDisposer();
+            test.Disposing += Test_Disposing1_1;
+            using(test) {
+                var exception = Record.Exception(() => test.PublicThrowIfDisposed());
+                Assert.Null(exception);
+                test.Value = 1;
+            }
+            Assert.Equal(2, test.Value);
+            Assert.True(test.IsDisposed);
+            Assert.Throws<ObjectDisposedException>(() => test.PublicThrowIfDisposed());
+        }
+
+
+        void Test_Disposing2_1(object? sender, EventArgs e)
+        {
+            var test = (TestDisposer)sender!;
+            Assert.False(test.IsDisposed);
+            Assert.Equal(1, test.Value);
+            test.Value += 10;
+        }
+
+        void Test_Disposing2_2(object? sender, EventArgs e)
+        {
+            Assert.Fail();
+        }
+
+        [Fact]
+        public void Disposing_2_Test()
+        {
+            var test = new TestDisposer();
+            test.Disposing += Test_Disposing2_1;
+            test.Disposing += Test_Disposing2_2;
+            using(test) {
+                var exception = Record.Exception(() => test.PublicThrowIfDisposed());
+                Assert.Null(exception);
+                test.Value = 1;
+                test.Disposing -= Test_Disposing2_2;
+            }
+            Assert.Equal(11, test.Value);
+            Assert.True(test.IsDisposed);
+            Assert.Throws<ObjectDisposedException>(() => test.PublicThrowIfDisposed());
+        }
+
+        #endregion
+    }
+
     public class ActionDisposerTest
     {
+        [Fact]
+        public void Constructor_throw_Test()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ActionDisposer(null!));
+        }
+
         [Fact]
         public void UsingTest()
         {
             using(var disposer = new ActionDisposer(disposing => {
                 Assert.True(disposing);
             })) {
-                Assert.True(true);
+                //NOP
             }
         }
 
@@ -28,6 +117,41 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
                 Assert.False(disposing);
             });
         }
+    }
+
+    public class ActionDisposerHelperTest
+    {
+        #region function
+
+        [Fact]
+        public void CreateTest()
+        {
+            using(ActionDisposerHelper.Create(a => Assert.True(a))) {
+                //NOP
+            }
+        }
+
+        [Fact]
+        public void Create_T_Test()
+        {
+            using(ActionDisposerHelper.Create((a, num) => {
+                Assert.True(a);
+                Assert.Equal(100, num);
+            }, 100)) {
+                //NOP
+            }
+        }
+
+        [Fact]
+        public void CreateEmptyTest()
+        {
+            var empty = ActionDisposerHelper.CreateEmpty();
+            Assert.False(empty.IsDisposed);
+            empty.Dispose();
+            Assert.True(empty.IsDisposed);
+        }
+
+        #endregion
     }
 
     public class DisposableCollectionTest

@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Drawing;
 using ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged.Gdi
 {
-    public class IconHandleWrapperTest
+    public class SafeIconHandleTest
     {
         #region function
 
@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged.Gdi
         public void Test()
         {
             using var gdiBitmap = new Bitmap(32, 32);
-            var test = new IconHandleWrapper(gdiBitmap.GetHicon());
+            var test = new SafeIconHandle(gdiBitmap.GetHicon());
             Assert.True(test.CanMakeImageSource);
             Assert.False(test.IsInvalid);
 

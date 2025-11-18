@@ -9,7 +9,7 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
 {
-    public class GlobalAllocTest
+    public class SafeGlobalAllocTest
     {
         #region define
 
@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
         [Fact]
         public void Test()
         {
-            var test = new GlobalAlloc(16);
+            var test = new SafeGlobalAlloc(16);
             Assert.Equal(16, test.Size);
             Assert.False(test.IsInvalid);
 
@@ -47,7 +47,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
         [Fact]
         public void Test_empty_Create()
         {
-            using var test = GlobalAlloc.Create<TestStruct>();
+            using var test = SafeGlobalAlloc.Create<TestStruct>();
             Assert.Equal(test.Size, Marshal.SizeOf<TestStruct>());
         }
 
@@ -59,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
                 Int = 123456,
                 Double = 10.5
             };
-            using var test = GlobalAlloc.Create(input);
+            using var test = SafeGlobalAlloc.Create(input);
             Assert.Equal(test.Size, Marshal.SizeOf(input));
 
             var actual = Marshal.PtrToStructure<TestStruct>(test.Heap);
@@ -71,7 +71,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
         [Fact]
         public void ToArrayTest()
         {
-            using var test1 = new GlobalAlloc(4);
+            using var test1 = new SafeGlobalAlloc(4);
             var actual1 = test1.ToArray();
             Assert.Equal(4, actual1.Length);
         }
@@ -79,7 +79,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
         [Fact]
         public void Index_Test()
         {
-            using var test = GlobalAlloc.Create(4);
+            using var test = SafeGlobalAlloc.Create(4);
             test[0] = (byte)1;
             test[1] = (byte)2;
             test[2] = (byte)3;
@@ -94,7 +94,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Unmanaged
         [Fact]
         public void Index_OutOfRange_Test()
         {
-            using var test = GlobalAlloc.Create(4);
+            using var test = SafeGlobalAlloc.Create(4);
 
             Assert.Throws<ArgumentOutOfRangeException>(() => test[-1]);
             Assert.Throws<ArgumentOutOfRangeException>(() => test[4]);

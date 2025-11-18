@@ -10,7 +10,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 {
     [Serializable]
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class TemporaryException: Exception
+    public class TemporaryException: IOUtilityException
     {
         public TemporaryException()
         { }

@@ -131,7 +131,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// その場で破棄する処理。
     /// </summary>
     /// <remarks>
-    /// <para><c>using var xxx = new ActionDisposer(d => ...)</c>で実装する前提。</para>
+    /// <para><c><see langword="using" /> <see langword="var" /> xxx = <see langword="new" /> <see cref="ActionDisposer"/>(d => ...)</c>で実装する前提。</para>
     /// </remarks>
     public sealed class ActionDisposer: DisposerBase
     {
@@ -151,7 +151,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
-                if(Action != null) {
+                if(Action is not null) {
                     Action(disposing);
                     Action = null;
                 }
@@ -204,12 +204,24 @@ namespace ContentTypeTextNet.Pe.Library.Common
     {
         #region define
 
-        private sealed class EmptyDisposer: IDisposable
+        private sealed class EmptyDisposer: IDisposed
         {
+            #region property
+
+            public bool IsDisposed { get; private set; }
+
+            #endregion
+
+            #region IDisposed
+
             public void Dispose()
             {
+                IsDisposed = true;
                 GC.SuppressFinalize(this);
             }
+
+
+            #endregion
         }
 
         #endregion
@@ -223,7 +235,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <see cref="IDisposable"/>とのIFを合わせるための空処理。
         /// </summary>
         /// <returns></returns>
-        public static IDisposable CreateEmpty() => new EmptyDisposer();
+        public static IDisposed CreateEmpty() => new EmptyDisposer();
 
         #endregion
     }
@@ -238,7 +250,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     {
         #region property
 
-        private IList<IDisposable> StockItems { get; } = new List<IDisposable>();
+        private List<IDisposable> StockItems { get; set; } = [];
 
         #endregion
 
@@ -254,10 +266,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         public TDisposable Add<TDisposable>(TDisposable disposable)
             where TDisposable : IDisposable
         {
-            if(disposable is null) {
-                throw new ArgumentNullException(nameof(disposable));
-            }
-
+            ArgumentNullException.ThrowIfNull(disposable);
             ThrowIfDisposed();
 
             StockItems.Add(disposable);
@@ -289,6 +298,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                         StockItems[i].Dispose();
                     }
                     StockItems.Clear();
+                    StockItems = null!;
                 }
             }
 
@@ -319,7 +329,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         private ArrayPool<T> Pool { get; }
         public T[] Items { get; }
-
         public int Length { get; }
 
         #endregion
@@ -361,7 +370,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         private ArrayPool<T> Pool { get; }
         public T[] Items { get; }
-
         public int Length { get; }
 
         #endregion

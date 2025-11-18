@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <AssemblyName>Pe.Plugins.Reference.ClassicTheme</AssemblyName>
@@ -6,6 +6,15 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <!--
+  <ItemGroup>
+    <AssemblyAttribute Include="ContentTypeTextNet.Pe.Embedded.Attributes.PluginIdentifiersAttribute">
+      <_Parameter1>Pe.Plugins.Reference.ClassicTheme</_Parameter1>
+      <_Parameter2>67F0FA7D-52D3-4889-B595-BE3703B224EB</_Parameter2>
+    </AssemblyAttribute>
+  </ItemGroup>
+  -->
+  
   <ItemGroup>
     <Compile Include="..\..\Pe\Pe.Embedded\**\*.cs" Exclude="..\..\Pe\Pe.Embedded\obj\**\*.cs" />
     <None Remove="Plugin.ico" />

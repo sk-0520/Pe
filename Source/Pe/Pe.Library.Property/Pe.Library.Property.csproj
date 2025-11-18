@@ -4,5 +4,9 @@
     <AssemblyName>Pe.Library.Property</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Library.Property</RootNamespace>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <InternalsVisibleTo Include="Pe.Library.Property.Test" />
+  </ItemGroup>
 
 </Project>
