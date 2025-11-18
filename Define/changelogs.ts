@@ -89,6 +89,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "update npm",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],

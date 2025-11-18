@@ -81,13 +81,10 @@ describe("splitTokens", () => {
 			] satisfies Token[],
 			"#1 text1 http://localhost/1 #2 text2 http://localhost/2 #3 text3 http://localhost/3",
 		],
-	])(
-		"tokens: 期待値: [%o], 入力: [%s]",
-		(expected: Token[], input: string) => {
-			const actual = splitTokens(input);
-			expect(actual).toEqual(expected);
-		},
-	);
+	])("tokens: 期待値: [%o], 入力: [%s]", (expected: Token[], input: string) => {
+		const actual = splitTokens(input);
+		expect(actual).toEqual(expected);
+	});
 
 	test.each([
 		["", ""],
@@ -102,11 +99,8 @@ describe("splitTokens", () => {
 		["ABC", "ABC"],
 		["A.B.C", "A.B.C"],
 		["1.2.3.4", "1.2.3.4"],
-	])(
-		"convertTagFromVersion: 期待値: [%s], 入力: [%s]",
-		(expected: string, input: string) => {
-			const actual = convertTagFromVersion(input);
-			expect(actual).toEqual(expected);
-		},
-	);
+	])("convertTagFromVersion: 期待値: [%s], 入力: [%s]", (expected: string, input: string) => {
+		const actual = convertTagFromVersion(input);
+		expect(actual).toEqual(expected);
+	});
 });
