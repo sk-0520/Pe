@@ -252,6 +252,8 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+        env:
+          PROCESSOR_ARCHITECTURE: ${{ matrix.PLATFORM }}
 
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v2
@@ -390,6 +392,8 @@ jobs:
         uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
+        env:
+          PROCESSOR_ARCHITECTURE: ${{ matrix.PLATFORM }}
 
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v2
