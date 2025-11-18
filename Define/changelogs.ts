@@ -4,69 +4,18 @@ import type { ChangelogVersion } from "../Source/Help/types/changelog";
 
 const Changelogs: ChangelogVersion[] = [
 	{
-		date: "YYYY/MM/DD",
-		version: "0.99.262+",
+		date: "2025/11/18",
+		version: "0.99.263",
 		contents: [
 			{
 				type: "note",
 				logs: [
 					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "features",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "fixes",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
+						class: "compatibility",
+						subject: "次バージョンで .NET 10 に移行します",
+						comments: [
+							".NET 9 と同じくランタイムは同梱するので問題ないはず",
+						],
 					},
 				],
 			},
@@ -74,26 +23,22 @@ const Changelogs: ChangelogVersion[] = [
 				type: "developer",
 				logs: [
 					{
-						revision: "",
+						revision: "1e1c610dba6173d082ee83b0c65a95b04169e4c9",
 						subject: "sqlfluff 3.4.2 -> 3.5.0",
 					},
 					{
-						revision: "",
+						revision: "df42844012ee4cb7ee108359ae47aabd56eb1833",
 						subject:
 							"nuget を中央管理 + テストで使う nuget は共通化",
 					},
 					{
-						revision: "",
+						revision: "5a0858c3cda7947e81a9f3b4004f46e499a1b156",
 						subject:
 							"#1031: actions/setup-dotnet を 5 にバージョンアップ",
 					},
 					{
-						revision: "",
+						revision: "f9bae2ff5cee9bc80667c3294f16112b64ff9139",
 						subject: "update npm",
-					},
-					{
-						revision: "",
-						subject: "",
 					},
 				],
 			},
