@@ -84,7 +84,8 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"#1031: actions/setup-dotnet を 5 にバージョンアップ",
 					},
 					{
 						revision: "",
