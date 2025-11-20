@@ -372,11 +372,11 @@ try {
 		& $parameters.dotnet sln add $projectFilePath --solution-folder $item.directory
 	}
 
-	$solutionFileName = "${PluginName}.sln"
+	$solutionFileName = "${PluginName}.slnx"
 	$solutionPathName = Join-Path -Path $parameters.source -ChildPath $solutionFileName
 
 	# Write-Verbose "ソリューションからAnyCPUを破棄"
-	# $solutionFileName = Convert-TemplateValue 'TEMPLATE_PluginShortName.sln'
+	# $solutionFileName = Convert-TemplateValue 'TEMPLATE_PluginShortName.slnx'
 	# $solutionContent = Get-Content -Path $solutionFileName `
 	# 	| Out-String -Stream `
 	# 	| Where-Object { !$_.Contains('Any CPU') }

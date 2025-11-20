@@ -83,7 +83,7 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "#1033: sln -> slnx",
 					},
 					{
 						revision: "",

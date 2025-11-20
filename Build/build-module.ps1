@@ -32,7 +32,7 @@ if ($Module -eq 'boot') {
 	if ($Test) {
 		$configuration = 'CI_TEST'
 	}
-	msbuild (Join-Path -Path (Get-SourceDirectory -Kind 'boot') -ChildPath 'Pe.Boot.sln') /m /p:Configuration=$configuration /p:Platform=$Platform /p:DefineConstants=$define
+	msbuild (Join-Path -Path (Get-SourceDirectory -Kind 'boot') -ChildPath 'Pe.Boot.slnx') /m /p:Configuration=$configuration /p:Platform=$Platform /p:DefineConstants=$define
 	if (-not $?) {
 		throw "build error: $Module"
 	}
