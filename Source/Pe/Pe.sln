@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "[doc]", "[doc]", "{C963971D
 	ProjectSection(SolutionItems) = preProject
 		..\..\Define\changelog.txt = ..\..\Define\changelog.txt
 		..\..\Define\changelogs.ts = ..\..\Define\changelogs.ts
-		Directory.Build.props = Directory.Build.props
+		..\..\Directory.Build.props = ..\..\Directory.Build.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "reference", "reference", "{8253ACFA-E9A5-4F53-9D74-370093EAB2A4}"
