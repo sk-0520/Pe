@@ -31,6 +31,6 @@
     <!-- TEST: UI -->
     <PackageVersion Include="Xunit.StaFact" Version="3.0.13" />
     <!-- ベンチマーク -->
-    <PackageVersion Include="BenchmarkDotNet" Version="0.14.0" />
+    <PackageVersion Include="BenchmarkDotNet" Version="0.15.6" />
   </ItemGroup>
 </Project>
