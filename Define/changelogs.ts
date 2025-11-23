@@ -83,6 +83,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "xunit.v3 3.1.0 -> 3.2.0",
+					},
+					{
+						revision: "",
 						subject: "#1033: sln -> slnx",
 					},
 					{
