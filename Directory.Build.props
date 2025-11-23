@@ -41,7 +41,7 @@
         <DefineConstants>OS_MAC</DefineConstants>
     </PropertyGroup>
 
-    <ItemGroup Condition="$(MSBuildProjectName.EndsWith('Test'))">
+    <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
         <Compile Remove="TestResults\**" />
         <EmbeddedResource Remove="TestResults\**" />
         <None Remove="TestResults\**" />
