@@ -54,7 +54,12 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "#1034: クラッシュレポートの直近ログがない",
+						comments: [
+							"app-log-limit に対する仕様が変わりました",
+							"(旧) 0 以下はデフォルトログ数",
+							"(新) 0 未満はデフォルトログ数、0 は無効",
+						],
 					},
 					{
 						revision: "",
