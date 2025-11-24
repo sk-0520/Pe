@@ -227,7 +227,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// </summary>
         /// <param name="s">対象文字列。</param>
         /// <returns>A: 1, ｱ: 1, あ: 1, 🐙: 1。<para><see cref="GetCharacters"/>も参照のこと。</para></returns>
-        public static int TextWidth(string s)
+        public static int GetWidth(string s)
         {
             if(s == null) {
                 return 0;
@@ -241,7 +241,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// 文字列をなんちゃって一文字単位に分解。
         /// </summary>
         /// <param name="s">対象文字列。</param>
-        /// <returns>文字列としての一文字で分解された集合。<para><see cref="TextWidth"/>も参照のこと。</para></returns>
+        /// <returns>文字列としての一文字で分解された集合。<para><see cref="GetWidth"/>も参照のこと。</para></returns>
         public static IEnumerable<string> GetCharacters(string s)
         {
             var textElements = StringInfo.GetTextElementEnumerator(s);
