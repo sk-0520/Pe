@@ -269,8 +269,9 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// </summary>
         /// <param name="target">対象文字列。</param>
         /// <param name="characters">削除対象文字。</param>
+        /// <param name="arrayPool"></param>
         /// <returns>削除後文字列。</returns>
-        public static string RemoveCharacters(string target, IReadOnlySet<char> characters)
+        public static string RemoveCharacters(string target, IReadOnlySet<char> characters, ArrayPool<char> arrayPool)
         {
             if(characters.Count == 0) {
                 return target;
@@ -285,18 +286,24 @@ namespace ContentTypeTextNet.Pe.Library.Common
                     continue;
                 }
                 if(buffer is null) {
-                    buffer = ArrayPool<char>.Shared.Rent(target.Length);
+                    buffer = arrayPool.Rent(target.Length);
                 }
                 buffer[index++] = c;
             }
 
             if(buffer is not null) {
                 var result = new string(buffer, 0, index);
-                ArrayPool<char>.Shared.Return(buffer);
+                arrayPool.Return(buffer);
                 return result;
             }
 
             return isRemoved ? string.Empty : target;
+        }
+
+        /// <inheritdoc cref="RemoveCharacters(string, IReadOnlySet{char}, ArrayPool{char})"/>
+        public static string RemoveCharacters(string target, IReadOnlySet<char> characters)
+        {
+            return RemoveCharacters(target, characters, ArrayPool<char>.Shared);
         }
 
         /// <summary>
