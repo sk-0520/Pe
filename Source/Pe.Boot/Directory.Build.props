@@ -39,17 +39,14 @@
   <PropertyGroup Label="Configuration">
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
     <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)'=='Debug'" Label="Configuration">
         <UseDebugLibraries>true</UseDebugLibraries>
     </PropertyGroup>
-    <!--
-    <PropertyGroup Condition="'$(Configuration)'!='Debug'" Label="Configuration">
+    <PropertyGroup Condition="'$(Configuration)'!='Debug' and '$(ProjectName)'=='Pe.Boot'" Label="Configuration">
         <WholeProgramOptimization>true</WholeProgramOptimization>
     </PropertyGroup>
-    -->
 
     <!-- PropertySheets -->
   <ImportGroup Label="PropertySheets">
