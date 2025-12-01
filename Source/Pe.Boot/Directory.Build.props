@@ -53,5 +53,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
 
+  <!-- Output -->
+    <PropertyGroup Label="Output">
+        <LinkIncremental>true</LinkIncremental>
+        <OutDir>$(ProjectDir)bin\$(Configuration)\$(Platform)\</OutDir>
+        <IntDir>$(ProjectDir)obj\$(Configuration)\$(Platform)\</IntDir>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)'!='Debug'" Label="Output">
+        <LinkIncremental>false</LinkIncremental>
+    </PropertyGroup>
 
 </Project>

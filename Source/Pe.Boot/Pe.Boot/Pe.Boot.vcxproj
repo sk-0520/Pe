@@ -15,40 +15,8 @@
   <ImportGroup Label="Shared">
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
+  <PropertyGroup Label="Output">
     <OutDir>$(SolutionDir)..\..\Output\$(Configuration)\$(Platform)\Pe\</OutDir>
-    <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
-    <TargetName>Pe</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)..\..\Output\$(Configuration)\x86\Pe\</OutDir>
-    <IntDir>obj\$(Configuration)\x86\</IntDir>
-    <TargetName>Pe</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)..\..\Output\$(Configuration)\$(Platform)\Pe\</OutDir>
-    <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
-    <TargetName>Pe</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CI_TEST|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)..\..\Output\$(Configuration)\$(Platform)\Pe\</OutDir>
-    <IntDir>obj\$(Configuration)\$(Platform)\</IntDir>
-    <TargetName>Pe</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)..\..\Output\$(Configuration)\x86\Pe\</OutDir>
-    <IntDir>obj\$(Configuration)\x86\</IntDir>
-    <TargetName>Pe</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CI_TEST|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)..\..\Output\$(Configuration)\x86\Pe\</OutDir>
-    <IntDir>obj\$(Configuration)\x86\</IntDir>
     <TargetName>Pe</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
