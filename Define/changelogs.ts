@@ -88,7 +88,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "xunit.v3 3.1.0 -> 3.2.0",
+						subject: "xunit.v3 3.1.0 -> 3.2.1",
+						comments: [
+							"xunit.v3 3.1.0 -> 3.2.0 (c2e3a2939cfbdd505323627c1ef4869e18761841)",
+						],
 					},
 					{
 						revision: "",
