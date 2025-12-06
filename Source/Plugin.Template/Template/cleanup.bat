@@ -6,4 +6,6 @@ for /D /R . %%D in (bin,obj) do (
 	)
 )
 
-copy "Source\Pe\Source\Pe\Pe.Main\etc\@appsettings.debug.json" "Source\Pe\Source\Pe\Pe.Main\etc\appsettings.debug.json"
+if exist "Source\Pe\Source\Pe\Pe.Main\etc\@appsettings.debug.json" (
+	copy "Source\Pe\Source\Pe\Pe.Main\etc\@appsettings.debug.json" "Source\Pe\Source\Pe\Pe.Main\etc\appsettings.debug.json"
+)

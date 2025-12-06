@@ -394,7 +394,12 @@ try {
 
 	Write-Verbose 'アプリケーションデバッグ構成ファイル適用'
 	$appEtcDir = Join-Path -Path $appDir -ChildPath 'Pe.Main' | Join-Path -ChildPath 'etc'
-	Copy-Item -Path (Join-Path -Path $appEtcDir -ChildPath '@appsettings.debug.json') -Destination (Join-Path -Path $appEtcDir -ChildPath 'appsettings.debug.json')
+	$appSettingsDebugSource = Join-Path -Path $appEtcDir -ChildPath '@appsettings.debug.json'
+	if (Test-Path -Path $appSettingsDebugSource) {
+		Copy-Item -Path $appSettingsDebugSource -Destination (Join-Path -Path $appEtcDir -ChildPath 'appsettings.debug.json')
+	} else {
+		Write-Warning "アプリケーションデバッグ構成ファイルが見つかりません: $appSettingsDebugSource"
+	}
 
 	Write-Verbose 'ソリューションのショートカットをルートに作成'
 	$wsShell = New-Object -ComObject WScript.Shell
