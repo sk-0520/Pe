@@ -59,7 +59,7 @@ if ($Module -eq 'boot') {
 			}
 		}
 	}
-}elseif ($Module -eq 'main' -or $Module -eq 'plugins') {
+} elseif ($Module -eq 'main' -or $Module -eq 'plugins') {
 	$loggerArg = ''
 	if (![string]::IsNullOrEmpty($Logger)) {
 		$loggerArg = "--logger:$Logger"
