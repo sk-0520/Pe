@@ -462,6 +462,12 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
+      - name: <Install> OpenCppCoverage
+        shell: pwsh
+        run: |
+          choco install OpenCppCoverage -y
+          echo "C:\Program Files\OpenCppCoverage" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
       - name: <Rewrite> Module
         shell: pwsh
         run: |
@@ -488,7 +494,34 @@ jobs:
         run: |
           $env:Path += ';${{env.VS_TEST_CONSOLE_PATH}}'
           echo $env:Path
-          .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
+          .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }} -EnableCoverage
+
+      - name: <Make> CodeCoverage
+        if: matrix.CONFIGURATION == 'Release'
+        shell: pwsh
+        run: |
+          dotnet tool install -g dotnet-reportgenerator-globaltool
+          $files = @(Get-ChildItem -Path Source/Pe.Boot -Filter coverage.cobertura.xml -Recurse)
+          if ($files.Count -eq 0) {
+            Write-Warning "No coverage files found"
+            exit 0
+          }
+          $sources = @(Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe.Boot)
+          reportgenerator `
+            -reports:$($files -join ';') `
+            -sourcedirs:$($sources -join ';') `
+            -targetdir:"coveragereport-boot" `
+            -reporttypes:Html
+
+      - name: <Artifact> CodeCoverage
+        if: matrix.CONFIGURATION == 'Release'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test_Pe.Boot_${{ matrix.PLATFORM }}
+          path: |
+            Source/Pe.Boot/**/**/TestResults/**/coverage.cobertura.xml
+            coveragereport-boot
+          if-no-files-found: ignore
 
 
   build-main:
