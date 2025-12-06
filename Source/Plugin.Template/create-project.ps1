@@ -409,7 +409,7 @@ try {
 
 	if (!$suppressBuild) {
 		Write-Verbose 'とりあえずのデバッグ全ビルド'
-		& $parameters.dotnet build --configuration Debug /p:Platform=x64 -Rebuild
+		& $parameters.dotnet build --configuration Debug /p:Platform=x64 --no-incremental
 	}
 
 	if (!$suppressScm) {
