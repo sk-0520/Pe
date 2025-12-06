@@ -29,7 +29,7 @@ if ($Module -eq 'boot') {
 			# OpenCppCoverageを使用してカバレッジを取得
 			$coverageDir = Join-Path -Path $projectDirItem.FullName -ChildPath 'TestResults'
 			$coverageFile = Join-Path -Path $coverageDir -ChildPath 'coverage.cobertura.xml'
-			
+
 			if (-not (Test-Path $coverageDir)) {
 				New-Item -ItemType Directory -Path $coverageDir -Force | Out-Null
 			}
@@ -37,17 +37,18 @@ if ($Module -eq 'boot') {
 			# Pe.LibraryとPe.Bootのソースをカバレッジ対象として指定
 			$peLibraryPath = Join-Path -Path $sourceDir -ChildPath 'Pe.Library'
 			$peBootPath = Join-Path -Path $sourceDir -ChildPath 'Pe.Boot'
-			
+
 			Write-Verbose "OpenCppCoverage with VSTest.Console $testFilePath /InIsolation /Platform:$Platform"
 			Write-Verbose "Coverage output: $coverageFile"
-			
+
 			& OpenCppCoverage.exe `
 				--sources "$peLibraryPath" `
 				--sources "$peBootPath" `
+				--excluded_modules "*.arm.dll" `
 				--export_type cobertura:$coverageFile `
 				--cover_children `
 				-- VSTest.Console.exe $testFilePath /InIsolation /Platform:$Platform
-			
+
 			if (-not $?) {
 				throw "test error with coverage: $Module"
 			}
