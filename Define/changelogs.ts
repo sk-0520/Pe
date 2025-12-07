@@ -101,6 +101,10 @@ const Changelogs: ChangelogVersion[] = [
 						revision: "",
 						subject: "",
 					},
+					{
+						revision: "",
+						subject: "",
+					},
 				],
 			},
 		],
