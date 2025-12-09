@@ -331,13 +331,13 @@ namespace PeLibraryTest
 
         TEST_METHOD(write_format_plaintext_test)
         {
-            TCHAR* expected1 = _T("abc");
+            const TCHAR* expected1 = _T("abc");
             TEXT format1 = wrap("abc");
             BUF actual1;
             write_format(&BUF::write_s, &BUF::write_c, &actual1, DEFAULT_MEMORY_ARENA, &format1);
             Assert::AreEqual(expected1, actual1.values);
 
-            TCHAR* expected2 = _T("%a%b%c%");
+            const TCHAR* expected2 = _T("%a%b%c%");
             TEXT format2 = wrap("%%a%%b%%c%%");
             BUF actual2;
             write_format(&BUF::write_s, &BUF::write_c, &actual2, DEFAULT_MEMORY_ARENA, &format2);
@@ -346,7 +346,7 @@ namespace PeLibraryTest
 
         TEST_METHOD(write_format_d_test)
         {
-            TCHAR* expected1 = _T("123 [ 456] -123 +456");
+            const TCHAR* expected1 = _T("123 [ 456] -123 +456");
             TEXT format1 = wrap("%d [% 4d] %d %+d");
             BUF actual1;
             write_format(&BUF::write_s, &BUF::write_c, &actual1, DEFAULT_MEMORY_ARENA, &format1, 123, 456, -123, 456);
@@ -355,7 +355,7 @@ namespace PeLibraryTest
 
         TEST_METHOD(write_format_c_test)
         {
-            TCHAR* expected1 = _T("1 a A");
+            const TCHAR* expected1 = _T("1 a A");
             TEXT format1 = wrap("%c %c %c");
             BUF actual1;
             write_format(&BUF::write_s, &BUF::write_c, &actual1, DEFAULT_MEMORY_ARENA, &format1, _T('1'), _T('a'), _T('A'));
@@ -364,7 +364,7 @@ namespace PeLibraryTest
 
         TEST_METHOD(write_format_b_test)
         {
-            TCHAR* expected1 = _T("true false TRUE FALSE");
+            const TCHAR* expected1 = _T("true false TRUE FALSE");
             TEXT format1 = wrap("%b %b %B %B");
             BUF actual1;
             write_format(&BUF::write_s, &BUF::write_c, &actual1, DEFAULT_MEMORY_ARENA, &format1, true, false, true, false);
@@ -373,7 +373,7 @@ namespace PeLibraryTest
 
         TEST_METHOD(write_format_s_test)
         {
-            TCHAR* expected1 = _T("[🎍]");
+            const TCHAR* expected1 = _T("[🎍]");
             TEXT format1 = wrap("[%s]");
             BUF actual1;
             write_format(&BUF::write_s, &BUF::write_c, &actual1, DEFAULT_MEMORY_ARENA, &format1, _T("🎍"));
@@ -383,7 +383,7 @@ namespace PeLibraryTest
 
         TEST_METHOD(write_format_t_test)
         {
-            TCHAR* expected1 = _T("[🚬]");
+            const TCHAR* expected1 = _T("[🚬]");
             TEXT format1 = wrap("[%t]");
             BUF actual1;
             TEXT input = wrap("🚬");

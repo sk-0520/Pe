@@ -50,7 +50,7 @@ namespace PeLibraryTest
 
         TEST_METHOD(join_text_test)
         {
-            TCHAR* expected1 = _T("1,2,3");
+            const TCHAR* expected1 = _T("1,2,3");
             TEXT input1[] = {
                 wrap("1"),
                 wrap("2"),
@@ -61,7 +61,7 @@ namespace PeLibraryTest
             Assert::AreEqual(expected1, actual1.value);
             release_text(&actual1);
 
-            TCHAR* expected2 = _T("123");
+            const TCHAR* expected2 = _T("123");
             TEXT input2[] = {
                 wrap(""),
                 wrap("1"),
@@ -76,9 +76,9 @@ namespace PeLibraryTest
             Assert::AreEqual(expected2, actual2.value);
             release_text(&actual2);
 
-            TCHAR* expected3_1 = _T(",1,,2, ,,3,");
-            TCHAR* expected3_2 = _T("1,2, ,3");
-            TCHAR* expected3_3 = _T("1,2,3");
+            const TCHAR* expected3_1 = _T(",1,,2, ,,3,");
+            const TCHAR* expected3_2 = _T("1,2, ,3");
+            const TCHAR* expected3_3 = _T("1,2,3");
             TEXT input3[] = {
                 wrap(""),
                 wrap("1"),
@@ -237,7 +237,7 @@ namespace PeLibraryTest
 
         TEST_METHOD(split_text_EASY_CSV_test)
         {
-            TCHAR* expected[] = {
+            const TCHAR* expected[] = {
                 _T("a"),
                 _T("b"),
                 _T("c"),
@@ -253,7 +253,7 @@ namespace PeLibraryTest
             for (size_t i = 0; i < actual.length; i++) {
                 OBJECT_RESULT_VALUE result = get_object_list(&actual, i);
                 TEXT* t = (TEXT*)result.value;
-                TCHAR* s = expected[i];
+                const TCHAR* s = expected[i];
                 Assert::AreEqual(s, t->value);
             }
             release_object_list(&actual, true);
@@ -261,7 +261,7 @@ namespace PeLibraryTest
 
         TEST_METHOD(split_newline_text_test)
         {
-            TCHAR* expected[] = {
+            const TCHAR* expected[] = {
                 _T("abc"),
                 _T("def"),
                 _T("ghi"),
@@ -288,7 +288,7 @@ namespace PeLibraryTest
             for (size_t i = 0; i < actual.length; i++) {
                 OBJECT_RESULT_VALUE result = get_object_list(&actual, i);
                 TEXT* t = (TEXT*)result.value;
-                TCHAR* s = expected[i];
+                const TCHAR* s = expected[i];
                 Assert::AreEqual(s, t->value);
             }
             release_object_list(&actual, true);

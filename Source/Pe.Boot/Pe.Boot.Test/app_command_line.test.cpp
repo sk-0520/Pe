@@ -20,13 +20,10 @@ namespace PeBootTest
                 DATA(EXECUTE_MODE_BOOT, wrap("app")),
                 DATA(EXECUTE_MODE_BOOT, wrap("app /_mode=help")),
             };
-            for (auto test : tests) {
-                TEXT& arg1 = std::get<0>(test.inputs);
+            for (auto& test : tests) {
+                const TEXT& arg1 = std::get<0>(test.inputs);
                 COMMAND_LINE_OPTION command_line_optioin = parse_command_line(&arg1, true, DEFAULT_MEMORY_ARENA);
-#pragma warning(push)
-#pragma warning(disable:26812)
                 EXECUTE_MODE actual = get_execute_mode(&command_line_optioin);
-#pragma warning(pop)
                 Assert::AreEqual((int)test.expected, (int)actual);
 
                 release_command_line(&command_line_optioin);
@@ -46,8 +43,8 @@ namespace PeBootTest
                 DATA(-1, wrap("app --_boot-wait dummy")),
                 DATA(-1, wrap("app --_boot-wait --dummy")),
             };
-            for (auto test : tests) {
-                TEXT& arg1 = std::get<0>(test.inputs);
+            for (auto& test : tests) {
+                const TEXT& arg1 = std::get<0>(test.inputs);
                 COMMAND_LINE_OPTION command_line_optioin = parse_command_line(&arg1, true, DEFAULT_MEMORY_ARENA);
                 WAIT_TIME_ARG actual = get_wait_time(&command_line_optioin);
                 if (test.expected == -1) {

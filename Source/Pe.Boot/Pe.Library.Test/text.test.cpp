@@ -62,10 +62,10 @@ namespace PeLibraryTest
 
         TEST_METHOD(format_text_test)
         {
-            TCHAR* expected = _T("123 abc ABC");
+            const TCHAR* expected = _T("123 abc ABC");
             TEXT format = wrap("%d %s %t");
             int input1 = 123;
-            TCHAR* input2 = _T("abc");
+            const TCHAR* input2 = _T("abc");
             TEXT input3 = wrap("ABC");
 
             TEXT actual = format_text(DEFAULT_MEMORY_ARENA, &format, input1, input2, &input3);
