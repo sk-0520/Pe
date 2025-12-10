@@ -104,6 +104,11 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject:
+							"#1042: Powershell から外部コマンドを実行する際のエラーハンドリングを見直す",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 					{

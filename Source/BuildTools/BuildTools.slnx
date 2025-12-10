@@ -16,7 +16,6 @@
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="../Pe/Pe.Generator/Pe.Generator.shproj" />
     <Project Path="../Pe/Pe.Library.Args/Pe.Library.Args.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />

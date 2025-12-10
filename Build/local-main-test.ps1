@@ -9,6 +9,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 Import-Module "${PSScriptRoot}/Modules/Project"
+Import-Module "${PSScriptRoot}/Modules/Command"
 
 $maxCount = 30
 
@@ -56,10 +57,7 @@ foreach ($dir in $targetProjectDirs) {
 	$testResultFileName = 'coverage.cobertura.xml'
 	Push-Location -LiteralPath $dir.FullName
 	try {
-		dotnet test /p:Platform=$Platform --runtime win-$Platform --configuration Debug --collect:"XPlat Code Coverage"
-		if (-not $?) {
-			throw "build error: $dir"
-		}
+		Start-Command -Command dotnet -ArgumentList @('test', "/p:Platform=$Platform", "--runtime", "win-$Platform", "--configuration", "Debug", "--collect:XPlat Code Coverage")
 
 		# 恐らく最新の結果ファイルを取得
 		$testResultFile = Get-ChildItem -LiteralPath 'TestResults' -Filter $testResultFileName -Recurse -File |
@@ -89,13 +87,14 @@ foreach($dir in $targetProjectDirs) {
 }
 
 $reportgenerator = Join-Path -Path $rootDir -ChildPath '_tools' | Join-Path -ChildPath 'reportgenerator.exe'
-& $reportgenerator `
-	-reports:$($testResultFiles -join ';') `
-	-sourcedirs:$($sources -join ';') `
-	-targetdir:"$codeCoverageDir" `
-	-assemblyfilters:"$($assemblyfilters -join ';')" `
-	-classfilters:"-*.Properties.Resources" `
-	-reporttypes:Html
+Start-Command -Command $reportgenerator -ArgumentList @(
+	"-reports:$($testResultFiles -join ';')",
+	"-sourcedirs:$($sources -join ';')",
+	"-targetdir:$codeCoverageDir",
+	"-assemblyfilters:$($assemblyfilters -join ';')",
+	"-classfilters:-*.Properties.Resources",
+	"-reporttypes:Html"
+)
 
 if (! $SuppressOpen) {
 	$html = Join-Path -Path $codeCoverageDir -ChildPath 'index.html'
