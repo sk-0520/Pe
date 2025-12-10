@@ -323,7 +323,17 @@ function New-Submodule {
 
 			if (${Revision}) {
 				Push-Location -LiteralPath $Path
-				Start-Git -ArgumentList checkout, "${Revision}"
+				if (![string]::IsNullOrEmpty($Branch)) {
+					$currentBranch = Start-Git -ArgumentList @('-C', '.', 'rev-parse', '--abbrev-ref', 'HEAD')
+					if ($currentBranch -eq $Branch) {
+						Start-Git -ArgumentList reset, --hard, "${Revision}"
+					} else {
+						Start-Git -ArgumentList branch, --force, $Branch, "${Revision}"
+						Start-Git -ArgumentList checkout, $Branch
+					}
+				} else {
+					Start-Git -ArgumentList checkout, "${Revision}"
+				}
 				Pop-Location
 				Start-Git -ArgumentList add, .
 			}

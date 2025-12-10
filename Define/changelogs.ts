@@ -109,6 +109,14 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject:
+							"#980: プラグインテンプレートのデプロイ処理が死んでる",
+						comments: [
+							"細かいのは全然だめだけどとりあえず動くのOK",
+						],
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 					{
