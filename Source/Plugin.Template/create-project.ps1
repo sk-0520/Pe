@@ -42,6 +42,7 @@ Param(
 	[string] $DefaultNamespace,
 	[string] $AppTargetBranch = 'master',
 	[string] $AppRevision = '',
+	[string] $AppRepositoryUrl = '',
 	[string] $GitPath = '%PROGRAMFILES%\Git\bin',
 	[string] $DotNetPath = '%PROGRAMFILES%\dotnet\'
 )
