@@ -329,10 +329,6 @@ try {
 	$appDir = Join-Path -Path $parameters.source -ChildPath 'Pe' | Join-Path -ChildPath 'Source' | Join-Path -ChildPath 'Pe'
 	$items = @(
 		@{
-			project = 'Pe.Generator'
-			directory = 'Pe\generator'
-		},
-		@{
 			project = 'Pe.Generator.Id'
 			directory = 'Pe\generator'
 		},

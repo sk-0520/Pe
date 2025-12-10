@@ -32,6 +32,10 @@
     </Project>
   </Folder>
   <Folder Name="/generator/">
+    <Project Path="Pe.Generator/Pe.Generator.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
     <Project Path="Pe.Generator.Id.Test/Pe.Generator.Id.Test.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
@@ -44,7 +48,6 @@
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="Pe.Generator/Pe.Generator.shproj" />
   </Folder>
   <Folder Name="/lib/">
     <Project Path="Pe.Core.Test/Pe.Core.Test.csproj">

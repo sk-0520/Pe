@@ -10,6 +10,11 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
   </ItemGroup>
 
-  <Import Project="..\Pe.Generator\Pe.Generator.projitems" Label="Shared" />
+  <ItemGroup>
+    <ProjectReference Include="..\Pe.Generator\Pe.Generator.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <!--<ReferenceOutputAssembly>false</ReferenceOutputAssembly>-->
+    </ProjectReference>
+  </ItemGroup>
 
 </Project>
