@@ -38,7 +38,7 @@ Pe リポジトリからいい感じのあれこれを取ってきてあれこ�
 https://github.com/sk-0520/Pe
 #>
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-Param(
+param(
 	[Parameter(mandatory = $true)][string] $ProjectDirectory,
 	[Parameter(mandatory = $true)][string] $PluginName,
 	[Guid] $PluginId,
@@ -157,7 +157,7 @@ Write-Information ('dotnet: ' + (& $parameters.dotnet --version))
 #---------------------------------------------------
 function Convert-TemplateValue {
 	[OutputType([string])]
-	Param(
+	param(
 		[string] $Value
 	)
 
@@ -185,7 +185,7 @@ function Convert-TemplateValue {
 
 function Update-TemplateFileContent {
 	[CmdletBinding(SupportsShouldProcess)]
-	Param(
+	param(
 		[Parameter(Mandatory = $true)][System.IO.FileInfo] $File
 	)
 
@@ -209,7 +209,7 @@ function Update-TemplateFileContent {
 }
 
 function Rename-TemplateFileName {
-	Param(
+	param(
 		[Parameter(Mandatory = $true)][System.IO.DirectoryInfo] $ParentDirectory,
 		[Parameter(Mandatory = $true)][string] $Name
 	)
@@ -254,6 +254,9 @@ if ((Get-ChildItem -Path $parameters.directory -Recurse -Force | Measure-Object)
 Write-Information "プロジェクトディレクトリ生成: $($parameters.directory)"
 if (!$suppressScm) {
 	& $parameters.git init $parameters.directory
+	if (!$?) {
+		throw "git init: $LASTEXITCODE"
+	}
 }
 
 Copy-Item -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Template\*') -Destination ($parameters.directory.FullName + '\') -Force -Recurse
@@ -276,11 +279,21 @@ function New-Submodule {
 		Write-Information "サブモジュール親ディレクトリ生成: $targetPath"
 		if ($PSCmdlet.ShouldProcess('Path', "$Path のテンプレート文字列を置き換え")) {
 			& $parameters.git submodule add --branch $Branch $Uri $Path
-			if(${Revision}) {
+			if (!$?) {
+				throw "git submodule: $LASTEXITCODE"
+			}
+
+			if (${Revision}) {
 				Push-Location -LiteralPath $Path
 				& $parameters.git checkout "${Revision}"
+				if (!$?) {
+					throw "git checkout: $LASTEXITCODE"
+				}
 				Pop-Location
 				& $parameters.git add .
+				if (!$?) {
+					throw "git add: $LASTEXITCODE"
+				}
 			}
 		} else {
 			Write-Verbose "`[DRY`] $($parameters.git) submodule add --branch $Branch $Uri $Path"
@@ -307,6 +320,9 @@ try {
 	foreach ($pluginTarget in $pluginTargets) {
 		Write-Verbose "プロジェクトを追加: $pluginTarget"
 		& $parameters.dotnet sln add $pluginTarget
+		if (!$?) {
+			throw "dotnet sln add ${pluginTarget}: $LASTEXITCODE"
+		}
 	}
 
 	Write-Verbose 'Peを追加'
@@ -376,6 +392,9 @@ try {
 	foreach ($item in $items) {
 		$projectFilePath = Join-Path -Path $appDir -ChildPath $item.project | Join-Path -ChildPath ($item.project + '.csproj')
 		& $parameters.dotnet sln add $projectFilePath --solution-folder $item.directory
+		if (!$?) {
+			throw "dotnet sln add ${projectFilePath}: $LASTEXITCODE"
+		}
 	}
 
 	$solutionFileName = "${PluginName}.slnx"
@@ -392,6 +411,9 @@ try {
 	Write-Verbose 'NuGet 復元'
 	if (!$suppressBuild) {
 		& $parameters.dotnet restore
+		if (!$?) {
+			throw "dotnet restore: $LASTEXITCODE"
+		}
 	}
 
 	Write-Verbose 'プラグイン起動設定追加'
@@ -411,12 +433,21 @@ try {
 	if (!$suppressBuild) {
 		Write-Verbose 'とりあえずのデバッグ全ビルド'
 		& $parameters.dotnet build --configuration Debug /p:Platform=x64 -Rebuild
+		if (!$?) {
+			throw "dotnet build: $LASTEXITCODE"
+		}
 	}
 
 	if (!$suppressScm) {
 		Write-Verbose 'はいコミット'
 		& $parameters.git add --all
+		if (!$?) {
+			throw "git add: $LASTEXITCODE"
+		}
 		& $parameters.git commit --message "initialize $PluginName"
+		if (!$?) {
+			throw "git commit: $LASTEXITCODE"
+		}
 	}
 } finally {
 	Pop-Location
