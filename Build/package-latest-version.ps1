@@ -5,6 +5,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 Import-Module "${PSScriptRoot}/Modules/Version"
+Import-Module "${PSScriptRoot}/Modules/Command"
 
 
 $verionEndPoint = [uri]'https://pe.content-type-text.org/api/application/version/update'
@@ -65,8 +66,9 @@ $outputPath = [System.IO.Path]::Combine($_outputDirectoryPath, $sfxName)
 
 try {
 	Push-Location $parentDirPath
-	& "${_7zipPath}" x -y "-o$baseFileName" "$archiveFilePath"
-	& "${_7zipPath}" a $outputPath -sfx -m0=lzma2 -mx=9 -mfb=64 -md=64m -ms=on $baseFileName\* -r
+
+	Start-Command -Command "${_7zipPath}" -ArgumentList @('x', '-y', "-o$baseFileName", "$archiveFilePath")
+	Start-Command -Command "${_7zipPath}" -ArgumentList @('a', $outputPath, '-sfx', '-m0=lzma2', '-mx=9', '-mfb=64', '-md=64m', '-ms=on', "$baseFileName\*", '-r')
 } finally {
 	Pop-Location
 }

@@ -9,6 +9,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 Import-Module "${PSScriptRoot}/Modules/Project"
+Import-Module "${PSScriptRoot}/Modules/Command"
 
 
 #/*[FUNCTIONS]-------------------------------------
@@ -32,15 +33,9 @@ if ($Module -eq 'boot') {
 	if ($Test) {
 		$configuration = 'CI_TEST'
 	}
-	msbuild (Join-Path -Path (Get-SourceDirectory -Kind 'boot') -ChildPath 'Pe.Boot.slnx') /m /p:Configuration=$configuration /p:Platform=$Platform /p:DefineConstants=$define
-	if (-not $?) {
-		throw "build error: $Module"
-	}
+	Start-Command -Command msbuild -ArgumentList @((Join-Path -Path (Get-SourceDirectory -Kind 'boot') -ChildPath 'Pe.Boot.slnx'), '/m', "/p:Configuration=$configuration", "/p:Platform=$Platform", "/p:DefineConstants=$define")
 } elseif ($Module -eq 'main') {
-	dotnet publish (Join-Path -Path (Get-SourceDirectory -Kind $Module) -ChildPath 'Pe.Main/Pe.Main.csproj') /m --verbosity normal --configuration Release /p:Platform=$Platform /p:DefineConstants=$define --runtime win-$Platform --output Output/Release/$Platform/Pe/bin --self-contained true
-	if (-not $?) {
-		throw "build error: $Module"
-	}
+	Start-Command -Command dotnet -ArgumentList @('publish', (Join-Path -Path (Get-SourceDirectory -Kind $Module) -ChildPath 'Pe.Main/Pe.Main.csproj'), '/m', '--verbosity', 'normal', '--configuration', 'Release', "/p:Platform=$Platform", "/p:DefineConstants=$define", '--runtime', "win-$Platform", '--output', "Output/Release/$Platform/Pe/bin", '--self-contained', 'true')
 } elseif ($Module -eq 'plugins') {
 	# プラグイン参考実装
 	$pluginProjectFiles = Get-ApplicationProjectDirectory -Kind $Module |
@@ -53,10 +48,7 @@ if ($Module -eq 'boot') {
 	foreach ($pluginProjectFile in $pluginProjectFiles) {
 		$name = $pluginProjectFile.BaseName
 
-		dotnet publish $pluginProjectFile /m --verbosity normal --configuration Release /p:Platform=$Platform /p:DefineConstants=$define --runtime win-$Platform --output Output/Release/$Platform/Plugins/$name --self-contained false
-		if (-not $?) {
-			throw "build error: $Module - $name"
-		}
+		Start-Command -Command dotnet -ArgumentList @('publish', $pluginProjectFile, '/m', '--verbosity', 'normal', '--configuration', 'Release', "/p:Platform=$Platform", "/p:DefineConstants=$define", '--runtime', "win-$Platform", '--output', "Output/Release/$Platform/Plugins/$name", '--self-contained', 'false')
 	}
 } else {
 	throw "module error: $Module"
