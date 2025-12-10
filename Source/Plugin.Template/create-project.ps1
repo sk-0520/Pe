@@ -25,6 +25,9 @@ Pe リポジトリからいい感じのあれこれを取ってきてあれこ�
 .PARAMETER AppRevision
 対象 Pe のリビジョン(原則指定しない, 開発内部的な使用を目的としている)
 
+.PARAMETER AppRepositoryUrl
+対象 Pe のリポジトリURL(原則指定しない, PR で CI から渡されることを想定している)
+
 .PARAMETER GitPath
 環境変数PATH に割り当てる git がインストールされているパス
 
@@ -42,6 +45,7 @@ Param(
 	[string] $DefaultNamespace,
 	[string] $AppTargetBranch = 'master',
 	[string] $AppRevision = '',
+	[string] $AppRepositoryUrl = '',
 	[string] $GitPath = '%PROGRAMFILES%\Git\bin',
 	[string] $DotNetPath = '%PROGRAMFILES%\dotnet\'
 )
@@ -125,7 +129,9 @@ $parameters = @{
 	repository = @{
 		application = @{
 			path = 'Source/Pe'
-			url = if ($AppTargetBranch -eq 'ci-test') {
+			url = if (![string]::IsNullOrEmpty($AppRepositoryUrl)) {
+				[uri]$AppRepositoryUrl
+			} elseif ($AppTargetBranch -eq 'ci-test') {
 				# 通常フローでここに入ることはない
 				# ci-test 処理でリリース処理試験を行う場合のみ通る想定
 				[uri]'https://github.com/sk-0520/Pe_ci-test'
@@ -272,7 +278,7 @@ function New-Submodule {
 			& $parameters.git submodule add --branch $Branch $Uri $Path
 			if(${Revision}) {
 				Push-Location -LiteralPath $Path
-				&	$parameters.git checkout "${Revision}"
+				& $parameters.git checkout "${Revision}"
 				Pop-Location
 				& $parameters.git add .
 			}

@@ -220,9 +220,18 @@ jobs:
         shell: pwsh
         run: Expand-Archive -Verbose -Path artifacts/help/archives/plugin-template.zip -DestinationPath ${{ env.EXPAND_DIR }}
 
-      - name: <Create> Plugin Template
+      - name: <Create> Plugin Template [NORMAL]
+        if: ${{ github.event_name != 'pull_request' }}
         shell: pwsh
-        run: .\${{ env.EXPAND_DIR }}\create-project.ps1 -Verbose -InformationAction Continue -ProjectDirectory ${{ env.PROJECT_DIR }} -PluginName ${{ env.PROJECT_NAME }} -PluginId ([Guid]::Empty) -DefaultNamespace ${{ env.PROJECT_NAME }}  -AppTargetBranch '${{ github.ref_name }}'
+        run: .\${{ env.EXPAND_DIR }}\create-project.ps1 -Verbose -InformationAction Continue -ProjectDirectory ${{ env.PROJECT_DIR }} -PluginName ${{ env.PROJECT_NAME }} -PluginId ([Guid]::Empty) -DefaultNamespace ${{ env.PROJECT_NAME }} -AppTargetBranch '${{ github.ref_name }}'
+
+      - name: <Create> Plugin Template [PR]
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          AppTargetBranch: ${{ github.event.pull_request.head.ref }}
+        shell: pwsh
+        run: |
+          .\${{ env.EXPAND_DIR }}\create-project.ps1 -Verbose -InformationAction Continue -ProjectDirectory ${{ env.PROJECT_DIR }} -PluginName ${{ env.PROJECT_NAME }} -PluginId ([Guid]::Empty) -DefaultNamespace ${{ env.PROJECT_NAME }} -AppRepositoryUrl '${{ github.event.pull_request.head.repo.clone_url }}' -AppTargetBranch "$env:AppTargetBranch" -AppRevision '${{ github.event.pull_request.head.sha }}'
 
       - name: <Build> Plugin Template
         shell: pwsh

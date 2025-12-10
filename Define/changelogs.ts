@@ -99,6 +99,11 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject:
+							"#1039: PR でプラグインテンプレートの @appsettings.debug.json に起因したエラーが発生する",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 					{
