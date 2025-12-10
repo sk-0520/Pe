@@ -87,7 +87,7 @@ jobs:
         uses: kzrnm/get-net-sdk-project-versions-action@v2
         id: version
         with:
-          proj-path: Directory.Build.props
+          proj-path: Source/Directory.Build.props
 
       - name: <Delete> TEST Tag
         if: github.ref == 'refs/heads/ci-test'
