@@ -428,7 +428,7 @@ try {
 
 	if (!$suppressBuild) {
 		Write-Verbose 'とりあえずのデバッグ全ビルド'
-		& $parameters.dotnet build --configuration Debug /p:Platform=x64 -Rebuild
+		& $parameters.dotnet build --configuration Debug /p:Platform=x64
 		if (!$?) {
 			throw "dotnet build: $LASTEXITCODE"
 		}
