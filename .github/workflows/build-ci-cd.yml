@@ -182,3 +182,10 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           curl -H "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" -H "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" -X POST ${{ env.PE_UPDATE_API_ENDPOINT }} --data '{ "version": "${{ steps.version.outputs.dot }}" }'
+
+  deploy-after-package:
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/ci-test'
+    needs:
+      - deploy
+    name: Deploy After Package
+    uses: ./.github/workflows/package-latest-version.yml

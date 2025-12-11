@@ -142,6 +142,7 @@ jobs:
   document-comment:
     name: Document Comment
     runs-on: ${{ inputs.OS_WINDOWS }}
+    if: github.ref != 'refs/heads/ci-test'
 
     steps:
       - name: <Checkout> Repository
