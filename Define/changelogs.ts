@@ -117,6 +117,13 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "#1046: GHA の静的検証",
+						comments: [
+							"モジュール入れだすときりがないので一旦は actionlint のみ",
+						],
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 					{
