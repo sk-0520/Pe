@@ -47,7 +47,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
             Assert.Equal(badgeData1, actual1);
 
             var exception = Assert.Throws<SQLiteException>(() => testBadge.InsertLauncherBadge(data.LauncherItemId, badgeData1, Test.DiContainer.Build<IDatabaseCommonStatus>()));
-            exception.Message.Contains("UNIQUE constraint failed: LauncherBadges.LauncherItemId");
+            Assert.Contains("UNIQUE constraint failed: LauncherBadges.LauncherItemId", exception.Message);
 
             var badgeData2 = new BadgeData() {
                 IsVisible = false,
