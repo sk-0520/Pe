@@ -4,53 +4,19 @@ import type { ChangelogVersion } from "../Source/Help/types/changelog";
 
 const Changelogs: ChangelogVersion[] = [
 	{
-		date: "YYYY/MM/DD",
-		version: "0.99.263+",
+		date: "2025/12/12",
+		version: "0.99.264",
 		group: ".NET 10",
 		contents: [
 			{
 				type: "note",
 				logs: [
 					{
-						revision: "",
 						class: "compatibility",
 						subject: "本バージョンから .NET 10 で稼働します",
 						comments: [
 							"多分大丈夫だと思うけど一応互換性注意(.NET 9 移行時と同じ)",
 						],
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "features",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
 					},
 				],
 			},
@@ -58,7 +24,7 @@ const Changelogs: ChangelogVersion[] = [
 				type: "fixes",
 				logs: [
 					{
-						revision: "",
+						revision: "8409c6a03f07dab4ef894c9530c3b75ec08d31e8",
 						subject: "#1034: クラッシュレポートの直近ログがない",
 						comments: [
 							"app-log-limit に対する仕様が変わりました",
@@ -66,54 +32,42 @@ const Changelogs: ChangelogVersion[] = [
 							"(新) 0 未満はデフォルトログ数、0 は無効",
 						],
 					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
 				],
 			},
 			{
 				type: "developer",
 				logs: [
 					{
-						revision: "",
+						revision: "e8fc2f3ed9e84e11216222a049904f540ad33454",
 						subject: "#1026: .NET 10 へ移行",
 					},
 					{
-						revision: "",
+						revision: "f2c01708eab9b1356f144774aad58e46c5cc6e7a",
 						subject: "BenchmarkDotNet 0.14.0 -> 0.15.6",
 					},
 					{
-						revision: "",
+						revision: "c2e3a2939cfbdd505323627c1ef4869e18761841",
 						subject: "xunit.v3 3.1.0 -> 3.2.1",
 						comments: [
 							"xunit.v3 3.1.0 -> 3.2.0 (c2e3a2939cfbdd505323627c1ef4869e18761841)",
 						],
 					},
 					{
-						revision: "",
+						revision: "e96591c3845938741cab4407e3e8a27caacc1ac0",
 						subject: "#1033: sln -> slnx",
 					},
 					{
-						revision: "",
+						revision: "97fa0a059ab0ea4b4dacbfb5420de4db9fde479b",
 						subject:
 							"#1039: PR でプラグインテンプレートの @appsettings.debug.json に起因したエラーが発生する",
 					},
 					{
-						revision: "",
+						revision: "fdb232deec1d8ff56f30df79a4a2e2631fa1b5bf",
 						subject:
 							"#1042: Powershell から外部コマンドを実行する際のエラーハンドリングを見直す",
 					},
 					{
-						revision: "",
+						revision: "c3fd14cb1f847b1724d0e16acc7e9231ad47f878",
 						subject:
 							"#980: プラグインテンプレートのデプロイ処理が死んでる",
 						comments: [
@@ -121,19 +75,11 @@ const Changelogs: ChangelogVersion[] = [
 						],
 					},
 					{
-						revision: "",
+						revision: "654ff2294e6972f9117ce61f1f8b2ad435636253",
 						subject: "#1046: GHA の静的検証",
 						comments: [
 							"モジュール入れだすときりがないので一旦は actionlint のみ",
 						],
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
 					},
 				],
 			},
