@@ -18,7 +18,7 @@ on:
         type: string
       OS_WINDOWS:
         type: string
-        default: windows-2022
+        default: windows-2025
       INVOKE_PLUGIN_TEMPLATE:
         required: true
         type: boolean
@@ -28,15 +28,27 @@ env:
   MINIMUM_VERSION: 0.91.0
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
   PLATFORMS: x86,x64
-  DOTNET_VERSION: 9.0.x
+  DOTNET_VERSION: 10.0.x
   VS_TEST_CONSOLE_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow
   PLUGIN_TEMPLATE_REPOSITORY_OWNER: sk-0520
   PLUGIN_TEMPLATE_REPOSITORY_NAME: Pe.PluginTemplate
 
 
 jobs:
-  code-shell:
-    name: "<Code> Shell"
+  lint-gha:
+    name: "Lint Github Actions"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Lint> gha
+        shell: pwsh
+        run: ./Build/lint-gha.ps1
+
+  lint-shell:
+    name: "Lint Shell"
 
     runs-on: ubuntu-latest
 
@@ -44,7 +56,7 @@ jobs:
       - name: <Checkout> Repository
         uses: actions/checkout@v4
 
-      - name: <Test> shellcheck
+      - name: <Lint> shellcheck
         uses: ludeeus/action-shellcheck@master
 
   lint-front:
@@ -142,6 +154,7 @@ jobs:
   document-comment:
     name: Document Comment
     runs-on: ${{ inputs.OS_WINDOWS }}
+    if: github.ref != 'refs/heads/ci-test'
 
     steps:
       - name: <Checkout> Repository
@@ -153,14 +166,17 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: <Prepare> docfx
+        shell: pwsh
         run: |
           dotnet tool install docfx --tool-path _tools
 
       - name: <Build> Main
+        shell: pwsh
         run: |
           .\_tools\docfx docfx.json
 
       - name: <Archive> Document Comment
+        shell: pwsh
         run: |
           7z a doc-comment.7z _doc-comment\*
 
@@ -220,9 +236,18 @@ jobs:
         shell: pwsh
         run: Expand-Archive -Verbose -Path artifacts/help/archives/plugin-template.zip -DestinationPath ${{ env.EXPAND_DIR }}
 
-      - name: <Create> Plugin Template
+      - name: <Create> Plugin Template [NORMAL]
+        if: ${{ github.event_name != 'pull_request' }}
         shell: pwsh
-        run: .\${{ env.EXPAND_DIR }}\create-project.ps1 -Verbose -InformationAction Continue -ProjectDirectory ${{ env.PROJECT_DIR }} -PluginName ${{ env.PROJECT_NAME }} -PluginId ([Guid]::Empty) -DefaultNamespace ${{ env.PROJECT_NAME }}  -AppTargetBranch '${{ github.ref_name }}'
+        run: .\${{ env.EXPAND_DIR }}\create-project.ps1 -Verbose -InformationAction Continue -ProjectDirectory ${{ env.PROJECT_DIR }} -PluginName ${{ env.PROJECT_NAME }} -PluginId ([Guid]::Empty) -DefaultNamespace ${{ env.PROJECT_NAME }} -AppTargetBranch '${{ github.ref_name }}'
+
+      - name: <Create> Plugin Template [PR]
+        if: ${{ github.event_name == 'pull_request' }}
+        env:
+          AppTargetBranch: ${{ github.event.pull_request.head.ref }}
+        shell: pwsh
+        run: |
+          .\${{ env.EXPAND_DIR }}\create-project.ps1 -Verbose -InformationAction Continue -ProjectDirectory ${{ env.PROJECT_DIR }} -PluginName ${{ env.PROJECT_NAME }} -PluginId ([Guid]::Empty) -DefaultNamespace ${{ env.PROJECT_NAME }} -AppRepositoryUrl '${{ github.event.pull_request.head.repo.clone_url }}' -AppTargetBranch "$env:AppTargetBranch" -AppRevision '${{ github.event.pull_request.head.sha }}'
 
       - name: <Build> Plugin Template
         shell: pwsh
@@ -259,6 +284,7 @@ jobs:
     needs:
       - plugin-template
       - powershell-source
+      - test-main
     runs-on: ubuntu-latest
 
     steps:
@@ -1052,7 +1078,8 @@ jobs:
     name: Icon
     runs-on: ubuntu-latest
     needs:
-      - code-shell
+      - lint-gha
+      - lint-shell
       - powershell-source
 
     strategy:

@@ -1,0 +1,18 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="CI_TEST" />
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/build/">
+    <File Path="build-t4.bat" />
+  </Folder>
+  <Folder Name="/lib/">
+    <Project Path="Pe.Library.Test/Pe.Library.Test.vcxproj" Id="3b755030-5607-42ea-bf8d-9439a3b55a04" />
+    <Project Path="Pe.Library/Pe.Library.vcxproj" Id="778ce0a0-cb22-4b9c-ad32-490c1ed04f7a" />
+  </Folder>
+  <Project Path="Pe.Boot.Test/Pe.Boot.Test.vcxproj" Id="acb686fe-5b11-4d85-8655-7ef803f28794" />
+  <Project DefaultStartup="true" Path="Pe.Boot/Pe.Boot.vcxproj" Id="92130c2c-74bb-446a-9291-fd8c34e0453e" />
+</Solution>

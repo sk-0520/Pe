@@ -6,6 +6,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 Import-Module "${PSScriptRoot}/Modules/Project"
+Import-Module "${PSScriptRoot}/Modules/Command"
 
 
 #/*[FUNCTIONS]-------------------------------------
@@ -18,4 +19,4 @@ Write-Information 'Package SQL'
 if (Test-Path $OutputFile) {
 	Remove-Item -Path $OutputFile
 }
-& "$BuildToolsSqlPack" --sql-root-dir $sqlDirectory --output $OutputFile
+Start-Command -Command "$BuildToolsSqlPack" -ArgumentList @("--sql-root-dir", $sqlDirectory, "--output", $OutputFile)

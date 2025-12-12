@@ -25,6 +25,9 @@ Pe リポジトリからいい感じのあれこれを取ってきてあれこ�
 .PARAMETER AppRevision
 対象 Pe のリビジョン(原則指定しない, 開発内部的な使用を目的としている)
 
+.PARAMETER AppRepositoryUrl
+対象 Pe のリポジトリURL(原則指定しない, PR で CI から渡されることを想定している)
+
 .PARAMETER GitPath
 環境変数PATH に割り当てる git がインストールされているパス
 
@@ -35,13 +38,15 @@ Pe リポジトリからいい感じのあれこれを取ってきてあれこ�
 https://github.com/sk-0520/Pe
 #>
 # Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-Param(
+[CmdletBinding(SupportsShouldProcess)]
+param(
 	[Parameter(mandatory = $true)][string] $ProjectDirectory,
 	[Parameter(mandatory = $true)][string] $PluginName,
 	[Guid] $PluginId,
 	[string] $DefaultNamespace,
 	[string] $AppTargetBranch = 'master',
 	[string] $AppRevision = '',
+	[string] $AppRepositoryUrl = '',
 	[string] $GitPath = '%PROGRAMFILES%\Git\bin',
 	[string] $DotNetPath = '%PROGRAMFILES%\dotnet\'
 )
@@ -112,8 +117,49 @@ if ($reservedNames.Contains($PluginName)) {
 	throw ('予約済みプラグイン名: ' + $PluginName)
 }
 
+#===================================================
+
+function Start-Command {
+	[CmdletBinding(SupportsShouldProcess = $true)]
+	param (
+		[Parameter(Mandatory = $true)][string] $Command,
+		[Parameter(Mandatory = $false)][string[]] $ArgumentList
+	)
+
+	if ($PSCmdlet.ShouldProcess($Command, $ArgumentList)) {
+		# $?/$LASTEXITCODE はコマンドに左右されるので呼び出し側で判定する
+		& $Command $ArgumentList
+	} else {
+		Write-Verbose ('[DRY] 実行予定: {0} {1}' -f $Command, $ArgumentList)
+	}
+}
+
+function Start-Git {
+	[CmdletBinding(SupportsShouldProcess = $true)]
+	param (
+		[Parameter(Mandatory = $true)][string[]] $ArgumentList
+	)
+	Start-Command -Command $parameters.git -ArgumentList $ArgumentList
+	Write-Verbose "git: $LASTEXITCODE"
+	if ($LASTEXITCODE -ne 0) {
+		throw "git ${ArgumentList}: $LASTEXITCODE"
+	}
+}
+
+function Start-DotNet {
+	[CmdletBinding(SupportsShouldProcess = $true)]
+	param (
+		[Parameter(Mandatory = $true)][string[]] $ArgumentList
+	)
+	Start-Command -Command $parameters.dotnet -ArgumentList $ArgumentList
+	Write-Verbose "dotnet: $LASTEXITCODE"
+	if ($LASTEXITCODE -ne 0) {
+		throw "dotnet ${ArgumentList}: $LASTEXITCODE"
+	}
+}
 
 #===================================================
+
 # 各種諸々の生成
 $parameters = @{
 	pluginName = $PluginName
@@ -125,7 +171,9 @@ $parameters = @{
 	repository = @{
 		application = @{
 			path = 'Source/Pe'
-			url = if ($AppTargetBranch -eq 'ci-test') {
+			url = if (![string]::IsNullOrEmpty($AppRepositoryUrl)) {
+				[uri]$AppRepositoryUrl
+			} elseif ($AppTargetBranch -eq 'ci-test') {
 				# 通常フローでここに入ることはない
 				# ci-test 処理でリリース処理試験を行う場合のみ通る想定
 				[uri]'https://github.com/sk-0520/Pe_ci-test'
@@ -145,13 +193,15 @@ Write-Verbose "`tDotNetPath: ${DotNetPath}"
 
 Write-Information '情報:'
 $parameters | Format-Table -AutoSize
-Write-Information ('git: ' + (& $parameters.git --version))
-Write-Information ('dotnet: ' + (& $parameters.dotnet --version))
+Write-Information ('git: ' + (Start-Git -ArgumentList --version))
+Write-Information ('dotnet: ' + (Start-DotNet -ArgumentList --version))
 
 #---------------------------------------------------
+
+
 function Convert-TemplateValue {
 	[OutputType([string])]
-	Param(
+	param(
 		[string] $Value
 	)
 
@@ -179,7 +229,7 @@ function Convert-TemplateValue {
 
 function Update-TemplateFileContent {
 	[CmdletBinding(SupportsShouldProcess)]
-	Param(
+	param(
 		[Parameter(Mandatory = $true)][System.IO.FileInfo] $File
 	)
 
@@ -203,7 +253,7 @@ function Update-TemplateFileContent {
 }
 
 function Rename-TemplateFileName {
-	Param(
+	param(
 		[Parameter(Mandatory = $true)][System.IO.DirectoryInfo] $ParentDirectory,
 		[Parameter(Mandatory = $true)][string] $Name
 	)
@@ -247,7 +297,7 @@ if ((Get-ChildItem -Path $parameters.directory -Recurse -Force | Measure-Object)
 
 Write-Information "プロジェクトディレクトリ生成: $($parameters.directory)"
 if (!$suppressScm) {
-	& $parameters.git init $parameters.directory
+	Start-Git -ArgumentList init, $parameters.directory
 }
 
 Copy-Item -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Template\*') -Destination ($parameters.directory.FullName + '\') -Force -Recurse
@@ -269,12 +319,23 @@ function New-Submodule {
 		$targetPath = Join-Path -Path $parameters.directory -ChildPath $Path
 		Write-Information "サブモジュール親ディレクトリ生成: $targetPath"
 		if ($PSCmdlet.ShouldProcess('Path', "$Path のテンプレート文字列を置き換え")) {
-			& $parameters.git submodule add --branch $Branch $Uri $Path
-			if(${Revision}) {
+			Start-Git -ArgumentList submodule, add, --branch, $Branch, $Uri, $Path
+
+			if (${Revision}) {
 				Push-Location -LiteralPath $Path
-				&	$parameters.git checkout "${Revision}"
+				if (![string]::IsNullOrEmpty($Branch)) {
+					$currentBranch = Start-Git -ArgumentList @('-C', '.', 'rev-parse', '--abbrev-ref', 'HEAD')
+					if ($currentBranch -eq $Branch) {
+						Start-Git -ArgumentList reset, --hard, "${Revision}"
+					} else {
+						Start-Git -ArgumentList branch, --force, $Branch, "${Revision}"
+						Start-Git -ArgumentList checkout, $Branch
+					}
+				} else {
+					Start-Git -ArgumentList checkout, "${Revision}"
+				}
 				Pop-Location
-				& $parameters.git add .
+				Start-Git -ArgumentList add, .
 			}
 		} else {
 			Write-Verbose "`[DRY`] $($parameters.git) submodule add --branch $Branch $Uri $Path"
@@ -300,16 +361,12 @@ try {
 
 	foreach ($pluginTarget in $pluginTargets) {
 		Write-Verbose "プロジェクトを追加: $pluginTarget"
-		& $parameters.dotnet sln add $pluginTarget
+		Start-DotNet -ArgumentList sln, add, $pluginTarget
 	}
 
 	Write-Verbose 'Peを追加'
 	$appDir = Join-Path -Path $parameters.source -ChildPath 'Pe' | Join-Path -ChildPath 'Source' | Join-Path -ChildPath 'Pe'
 	$items = @(
-		@{
-			project = 'Pe.Generator'
-			directory = 'Pe\generator'
-		},
 		@{
 			project = 'Pe.Generator.Id'
 			directory = 'Pe\generator'
@@ -369,14 +426,14 @@ try {
 	)
 	foreach ($item in $items) {
 		$projectFilePath = Join-Path -Path $appDir -ChildPath $item.project | Join-Path -ChildPath ($item.project + '.csproj')
-		& $parameters.dotnet sln add $projectFilePath --solution-folder $item.directory
+		Start-DotNet -ArgumentList sln, add, $projectFilePath, --solution-folder, $item.directory
 	}
 
-	$solutionFileName = "${PluginName}.sln"
+	$solutionFileName = "${PluginName}.slnx"
 	$solutionPathName = Join-Path -Path $parameters.source -ChildPath $solutionFileName
 
 	# Write-Verbose "ソリューションからAnyCPUを破棄"
-	# $solutionFileName = Convert-TemplateValue 'TEMPLATE_PluginShortName.sln'
+	# $solutionFileName = Convert-TemplateValue 'TEMPLATE_PluginShortName.slnx'
 	# $solutionContent = Get-Content -Path $solutionFileName `
 	# 	| Out-String -Stream `
 	# 	| Where-Object { !$_.Contains('Any CPU') }
@@ -385,7 +442,7 @@ try {
 
 	Write-Verbose 'NuGet 復元'
 	if (!$suppressBuild) {
-		& $parameters.dotnet restore
+		Start-DotNet -ArgumentList restore
 	}
 
 	Write-Verbose 'プラグイン起動設定追加'
@@ -404,13 +461,13 @@ try {
 
 	if (!$suppressBuild) {
 		Write-Verbose 'とりあえずのデバッグ全ビルド'
-		& $parameters.dotnet build --configuration Debug /p:Platform=x64 -Rebuild
+		Start-DotNet -ArgumentList build, --configuration, Debug, /p:Platform=x64
 	}
 
 	if (!$suppressScm) {
 		Write-Verbose 'はいコミット'
-		& $parameters.git add --all
-		& $parameters.git commit --message "initialize $PluginName"
+		Start-Git -ArgumentList add, --all
+		Start-Git -ArgumentList commit, --message, "initialize $PluginName"
 	}
 } finally {
 	Pop-Location

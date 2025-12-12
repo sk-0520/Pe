@@ -10,6 +10,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 Import-Module "${PSScriptRoot}/Modules/Project"
+Import-Module "${PSScriptRoot}/Modules/Command"
 
 
 #/*[FUNCTIONS]-------------------------------------
@@ -24,10 +25,7 @@ if ($Module -eq 'boot') {
 		$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
 		Write-Verbose "VSTest.Console $testFilePath /InIsolation /Platform:$Platform"
-		VSTest.Console $testFilePath /InIsolation /Platform:$Platform
-		if (-not $?) {
-			throw "test error: $Module"
-		}
+		Start-Command -Command VSTest.Console -ArgumentList @($testFilePath, '/InIsolation', "/Platform:$Platform")
 	}
 } elseif ($Module -eq 'main' -or $Module -eq 'plugins') {
 	$loggerArg = ''
@@ -41,10 +39,7 @@ if ($Module -eq 'boot') {
 	foreach ($projectDirItem in $projectDirItems) {
 		Push-Location -Path $projectDirItem
 		try {
-			dotnet test /p:Platform=$Platform --runtime win-$Platform --configuration Debug --collect:"XPlat Code Coverage" --test-adapter-path:. $loggerArg
-			if (-not $?) {
-				throw "test error: $Module - $projectDirItem"
-			}
+			Start-Command -Command dotnet -ArgumentList @('test', "/p:Platform=$Platform", "--runtime", "win-$Platform", "--configuration", "Debug", "--collect:XPlat Code Coverage", "--test-adapter-path:.", $loggerArg)
 		} finally {
 			Pop-Location
 		}

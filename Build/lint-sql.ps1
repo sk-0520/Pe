@@ -11,6 +11,7 @@ $versionTag = '3.5.0'
 
 
 Import-Module "${PSScriptRoot}/Modules/Project"
+Import-Module "${PSScriptRoot}/Modules/Command"
 
 $sqlDir = Join-Path -Path (Get-RootDirectory) -ChildPath 'Source/Pe/Pe.Main/etc/sql'
 
@@ -42,4 +43,4 @@ if($File) {
 	$params += '/sql'
 }
 
-docker run ($params)
+Start-Command -Command docker -ArgumentList (@('run') + $params)

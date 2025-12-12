@@ -1809,7 +1809,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             ExceptionWrapper(() => rawData.InformationMap[TrimFunc(nameof(info.GetScreen))] = CreateInfoMap(info.GetScreen()));
 
             // この子はもうこの時点のログで確定
-            rawData.LogItems = Logging.GetLogItems().Select(i => LogItem.Create(i)).ToList();
+            rawData.LogItems = Logging.GetInternalLogItems().Select(i => LogItem.Create(i)).ToList();
 
             var file = new FileInfo(filePath);
             using(var stream = file.Create()) {

@@ -568,7 +568,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             if(!int.TryParse(commandLine.GetValue(CommandLineKeyAppLogLimit, string.Empty), out var appLogLimit)) {
                 appLogLimit = AppLogLimit;
             }
-            if(appLogLimit < 1) {
+            if(appLogLimit < 0) {
                 appLogLimit = AppLogLimit;
             }
 

@@ -1,8 +1,8 @@
 {
 	"library": [
 		{
-			"name": ".NET 9",
-			"uri": "https://dotnet.microsoft.com/download/dotnet/9.0",
+			"name": ".NET 10",
+			"uri": "https://dotnet.microsoft.com/download/dotnet/10.0",
 			"license": {
 				"name": "MIT License",
 				"uri": "https://github.com/microsoft/dotnet/blob/master/LICENSE"

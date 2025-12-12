@@ -1,12 +1,12 @@
 <Project>
     <PropertyGroup>
-        <Version>0.99.263</Version>
+        <Version>0.99.264</Version>
 
-        <TargetFramework>net9.0-windows</TargetFramework>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <LangVersion>14</LangVersion>
         <Platforms>x64;x86</Platforms>
         <WarningLevel>9999</WarningLevel>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <NoStandardLib>false</NoStandardLib>
         <Product>Pe</Product>
@@ -14,7 +14,6 @@
         <Configurations>Debug;Release</Configurations>
         <ImplicitUsings>disable</ImplicitUsings>
         <IsPackable>false</IsPackable>
-        <PathMap>$(MSBuildThisFileDirectory)=.</PathMap>
         <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     </PropertyGroup>
 
@@ -42,22 +41,26 @@
         <DefineConstants>OS_MAC</DefineConstants>
     </PropertyGroup>
 
-    <ItemGroup Condition="$(MSBuildProjectName.EndsWith('Test'))">
+    <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
         <Compile Remove="TestResults\**" />
         <EmbeddedResource Remove="TestResults\**" />
         <None Remove="TestResults\**" />
 
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
         <PackageReference Include="coverlet.collector">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.NET.Test.Sdk" />
-        <PackageReference Include="Moq" />
         <PackageReference Include="xunit.runner.visualstudio">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="xunit.v3" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+        <PackageReference Include="xunit.v3.runner.msbuild">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Moq" />
     </ItemGroup>
 </Project>

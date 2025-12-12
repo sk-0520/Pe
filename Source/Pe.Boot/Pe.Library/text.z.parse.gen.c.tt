@@ -50,19 +50,19 @@ static TEXT skip_base_header(const TEXT* text, size_t base)
         switch (base) {
             case 2:
                 if (text->value[0] == _T('0') && (text->value[1] == _T('b') || text->value[0] == _T('B'))) {
-                    return reference_text_width_length(text, 2, 0);
+                    return reference_text_with_length(text, 2, 0);
                 }
                 break;
 
             case 8:
                 if (text->value[0] == _T('0') && (text->value[1] == _T('o') || text->value[0] == _T('O'))) {
-                    return reference_text_width_length(text, 2, 0);
+                    return reference_text_with_length(text, 2, 0);
                 }
                 break;
 
             case 16:
                 if (text->value[0] == _T('0') && (text->value[1] == _T('x') || text->value[0] == _T('X'))) {
-                    return reference_text_width_length(text, 2, 0);
+                    return reference_text_with_length(text, 2, 0);
                 }
                 break;
 
@@ -99,7 +99,7 @@ static TEXT skip_base_header(const TEXT* text, size_t base)
 #>
     bool has_signed = <#= checkHasSignedFuncName #>(&trimmed_input);
 
-    TEXT sign_skip_text = has_signed ? reference_text_width_length(&trimmed_input, 1, 0) : trimmed_input;
+    TEXT sign_skip_text = has_signed ? reference_text_with_length(&trimmed_input, 1, 0) : trimmed_input;
     TEXT parse_target_text = skip_base_header(&sign_skip_text, base);
 
     <#= item.Type #> total = 0;

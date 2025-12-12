@@ -23,7 +23,7 @@ jobs:
 
       - name: <Embedded> git revision
         shell: pwsh
-        run: .\Build\embedded-revision.ps1 -InformationAction Continue -Revision ${{ github.sha }} -ProjectFilePath .\Directory.Build.props
+        run: .\Build\embedded-revision.ps1 -InformationAction Continue -Revision ${{ github.sha }} -ProjectFilePath .\Source\Directory.Build.props
 
       - name: <Build> Plugin
         shell: pwsh
@@ -39,6 +39,12 @@ jobs:
           if-no-files-found: error
 
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        PLATFORM:
+          # - x86
+          - x64
 
     runs-on: windows-latest
 
@@ -56,7 +62,7 @@ jobs:
 
       - name: <Test> Plugin
         shell: pwsh
-        run: .\FullTest.ps1 -InformationAction Continue
+        run: .\FullTest.ps1 -InformationAction Continue -Platforms ${{ matrix.PLATFORM }}
 
   deploy:
     needs:
@@ -81,7 +87,7 @@ jobs:
         uses: kzrnm/get-net-sdk-project-versions-action@v2
         id: version
         with:
-          proj-path: Directory.Build.props
+          proj-path: Source/Directory.Build.props
 
       - name: <Delete> TEST Tag
         if: github.ref == 'refs/heads/ci-test'

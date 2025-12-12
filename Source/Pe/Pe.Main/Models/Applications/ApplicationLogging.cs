@@ -15,9 +15,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
     internal class ApplicationLogging
     {
-        public ApplicationLogging(int logLimit, string loggingConfigFilePath, string outputPath, string withLog, bool createDirectory, bool isFullTrace)
+        #region define
+
+        private const string InternalLogName = "APPLOG";
+
+        #endregion
+
+        public ApplicationLogging(int internalLogSize, string loggingConfigFilePath, string outputPath, string withLog, bool createDirectory, bool isFullTrace)
         {
-            LogItems = new ConcurrentFixedQueue<LogEventInfo>(logLimit);
+            ArgumentOutOfRangeException.ThrowIfNegative(internalLogSize);
 
             Factory = new LoggerFactory();
             LogManager.Setup().LoadConfigurationFromFile(loggingConfigFilePath);
@@ -26,13 +32,22 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             var prov = new NLog.Extensions.Logging.NLogLoggerProvider(po, LogManager.LogFactory);
             Factory.AddProvider(prov);
 
-            var appTarget = new NLog.Targets.MethodCallTarget("APPLOG", ReceiveLog);
-            LogManager.Configuration?.AddTarget(appTarget);
+            var internalTarget = new NLog.Targets.MethodCallTarget(InternalLogName, ReceiveLog);
+            var isEnabledInternalLog = 0 < internalLogSize;
 
             var logger = Factory.CreateLogger(GetType());
-            logger.LogInformation("ログ出力開始");
-
-            var enabledLog = new HashSet<string>();
+            logger.LogInformation("ログ構築開始: LogLimit = {LogLimit}", internalLogSize);
+            
+            var enabledLogNames = new HashSet<string>();
+            if(isEnabledInternalLog) {
+                logger.LogInformation("内部ログあり");
+                LogManager.Configuration?.AddTarget(internalTarget);
+                InternalLogItems = new ConcurrentFixedQueue<LogEventInfo>(internalLogSize);
+                enabledLogNames.Add(InternalLogName);
+            } else {
+                logger.LogInformation("内部ログなし");
+                InternalLogItems = new FixedQueue<LogEventInfo>(1);
+            }
 
             // ログ出力(ファイル・ディレクトリが存在しなければ終了で構わない)
             if(!string.IsNullOrWhiteSpace(outputPath)) {
@@ -61,22 +76,22 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 switch(Path.GetExtension(filePath)?.ToLowerInvariant() ?? string.Empty) {
                     case ".log":
                         LogManager.LogFactory.Configuration?.Variables.Add("logPath", filePath);
-                        enabledLog.Add("log");
+                        enabledLogNames.Add("log");
                         switch(withLog) {
                             case "xml":
                                 LogManager.LogFactory.Configuration?.Variables.Add("xmlPath", Path.ChangeExtension(filePath, "xml"));
-                                enabledLog.Add("xml");
+                                enabledLogNames.Add("xml");
                                 break;
                         }
                         break;
 
                     case ".xml":
                         LogManager.LogFactory.Configuration?.Variables.Add("xmlPath", filePath);
-                        enabledLog.Add("xml");
+                        enabledLogNames.Add("xml");
                         switch(withLog) {
                             case "log":
                                 LogManager.LogFactory.Configuration?.Variables.Add("logPath", Path.ChangeExtension(filePath, "log"));
-                                enabledLog.Add("log");
+                                enabledLogNames.Add("log");
                                 break;
                         }
                         break;
@@ -84,41 +99,45 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 LogManager.LogFactory.Configuration?.Variables.Add("dirPath", Path.GetDirectoryName(filePath) ?? string.Empty);
             }
 
-            var traceTargets = enabledLog
-                .Select(i => LogManager.Configuration?.FindTargetByName(i))
-                .ToList()
-            ;
+            foreach(var enabledLogName in enabledLogNames) {
+                logger.LogInformation("有効ログ: {EnabledLogName}", enabledLogName);
+            }
 
+            var traceTargets = enabledLogNames
+                .Select(i => LogManager.Configuration?.FindTargetByName(i)!)
+                .ToArray()!
+            ;
 
             foreach(var loggingRule in LogManager.Configuration?.LoggingRules ?? []) {
                 if(isFullTrace) {
                     if(loggingRule.RuleName == "fulltrace") {
-                        foreach(var traceTarget in traceTargets.Where(a => a is not null)) {
-                            loggingRule.Targets.Add(traceTarget!);
+                        foreach(var traceTarget in traceTargets) {
+                            loggingRule.Targets.Add(traceTarget);
                         }
                     }
                 } else {
                     if(loggingRule.RuleName != "fulltrace") {
-                        foreach(var traceTarget in traceTargets.Where(a => a is not null)) {
-                            loggingRule.Targets.Add(traceTarget!);
+                        foreach(var traceTarget in traceTargets) {
+                            loggingRule.Targets.Add(traceTarget);
                         }
                     }
                 }
             }
-            foreach(var loggingRule in LogManager.Configuration?.LoggingRules.Where(i => i.RuleName == "fulltrace") ?? []) {
-                loggingRule.Targets.Insert(0, appTarget);
+            if(isEnabledInternalLog) {
+                foreach(var loggingRule in LogManager.Configuration?.LoggingRules.Where(i => i.RuleName == "fulltrace") ?? []) {
+                    loggingRule.Targets.Insert(0, internalTarget);
+                }
             }
 
-            if(traceTargets.Any()) {
+            if(traceTargets.Length != 0) {
                 var stopwatch = Stopwatch.StartNew();
                 LogManager.ReconfigExistingLoggers();
                 LogManager.Flush();
-                //LogManager.GetCurrentClassLogger();
                 logger = Factory.CreateLogger(GetType());
                 if(isFullTrace) {
-                    logger.LogInformation("全データ出力: {0}", stopwatch.Elapsed);
+                    logger.LogInformation("全データ出力: {Elapsed}", stopwatch.Elapsed);
                 } else {
-                    logger.LogInformation("データ出力: {0}", stopwatch.Elapsed);
+                    logger.LogInformation("データ出力: {Elapsed}", stopwatch.Elapsed);
                 }
                 foreach(var traceTarget in traceTargets) {
                     logger.LogInformation("{0}", traceTarget);
@@ -128,7 +147,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
         #region property
 
-        private IFixedQueue<LogEventInfo> LogItems { get; }
+        private IFixedQueue<LogEventInfo> InternalLogItems { get; }
 
         public LoggerFactory Factory { get; }
 
@@ -145,7 +164,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 return;
             }
 
-            LogItems.Enqueue(logEventInfo);
+            InternalLogItems.Enqueue(logEventInfo);
         }
 
         internal IDisposable PauseReceiveLog()
@@ -154,7 +173,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             return new ActionDisposer(d => ReceivePausing = false);
         }
 
-        public IReadOnlyList<LogEventInfo> GetLogItems() => LogItems.ToArray();
+        public IReadOnlyList<LogEventInfo> GetInternalLogItems() => InternalLogItems.ToArray();
 
         #endregion
     }

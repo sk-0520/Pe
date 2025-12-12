@@ -127,9 +127,9 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [InlineData(2, "22")]
         [InlineData(1, "あ")]
         [InlineData(1, "🐙")]
-        public void TextWidthTest(int expected, string? text)
+        public void GetWidthTest(int expected, string? text)
         {
-            var actual = TextUtility.TextWidth(text!);
+            var actual = TextUtility.GetWidth(text!);
             Assert.Equal(expected, actual);
         }
 
