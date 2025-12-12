@@ -4,6 +4,96 @@ import type { ChangelogVersion } from "../Source/Help/types/changelog";
 
 const Changelogs: ChangelogVersion[] = [
 	{
+		date: "YYYY/MM/DD",
+		version: "0.99.264+",
+		contents: [
+			{
+				type: "note",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "features",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "fixes",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "developer",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+		],
+	},
+	{
 		date: "2025/12/12",
 		version: "0.99.264",
 		group: ".NET 10",
