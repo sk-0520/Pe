@@ -6,13 +6,18 @@ const Changelogs: ChangelogVersion[] = [
 	{
 		date: "YYYY/MM/DD",
 		version: "0.99.263+",
+		group: ".NET 10",
 		contents: [
 			{
 				type: "note",
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						class: "compatibility",
+						subject: "本バージョンから .NET 10 で稼働します",
+						comments: [
+							"多分大丈夫だと思うけど一応互換性注意(.NET 9 移行時と同じ)",
+						],
 					},
 					{
 						revision: "",

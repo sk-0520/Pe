@@ -4,7 +4,7 @@
 
 # 必要環境
 
-* [.NET 9](https://dotnet.microsoft.com/download/dotnet/9.0) の動作要件を満たしたハードウェアスペック(環境自体は同梱)
+* [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0) の動作要件を満たしたハードウェアスペック(環境自体は同梱)
 * Windows 10, 11
   * x86 版は 32/64 bit で動作可能  
     <MdAlert kind="WARNING">
