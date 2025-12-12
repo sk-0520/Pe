@@ -190,15 +190,37 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.KeyAction
     {
         #region function
 
+        public static TheoryData<Type, Func<KeyActionReplaceJob>> Constructor_Throw_Data => new() {
+            {
+                typeof(ArgumentException),
+                () => new KeyActionReplaceJob(new KeyActionReplaceData(KeyActionId.NewId(), Key.None), new KeyMappingData())
+            },
+            {
+                typeof(ArgumentException),
+                () => new KeyActionReplaceJob(new KeyActionReplaceData(KeyActionId.NewId(), Key.A), new KeyMappingData() { Key = Key.A })
+            },
+            {
+                typeof(ArgumentException),
+                () => new KeyActionReplaceJob(new KeyActionReplaceData(KeyActionId.NewId(), Key.None), new KeyMappingData())
+            },
+            {
+                typeof(ArgumentException),
+                () => new KeyActionReplaceJob(new KeyActionReplaceData(KeyActionId.NewId(), Key.A), new KeyMappingData() { Key = Key.A })
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(Constructor_Throw_Data))]
+        public void Constructor_Throw_Test(Type exceptionType, Func<KeyActionReplaceJob> func)
+        {
+            Assert.Throws(exceptionType, func);
+        }
+
         [Fact]
         public void Constructor_Test()
         {
-            Assert.Throws<ArgumentException>(() => new KeyActionReplaceJob(new KeyActionReplaceData(KeyActionId.NewId(), Key.None), new KeyMappingData()));
-            Assert.Throws<ArgumentException>(() => new KeyActionReplaceJob(new KeyActionReplaceData(KeyActionId.NewId(), Key.A), new KeyMappingData() { Key = Key.A }));
-            Assert.Throws<ArgumentException>(() => new KeyActionReplaceJob(new KeyActionReplaceData(KeyActionId.NewId(), Key.None), new KeyMappingData()));
-            Assert.Throws<ArgumentException>(() => new KeyActionReplaceJob(new KeyActionReplaceData(KeyActionId.NewId(), Key.A), new KeyMappingData() { Key = Key.A }));
-            new KeyActionReplaceJob(new KeyActionReplaceData(KeyActionId.NewId(), Key.B), new KeyMappingData() { Key = Key.A });
-            Assert.True(true);
+            var exception = Record.Exception(() => new KeyActionReplaceJob(new KeyActionReplaceData(KeyActionId.NewId(), Key.B), new KeyMappingData() { Key = Key.A }));
+            Assert.Null(exception);
         }
 
         #endregion
@@ -208,31 +230,90 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.KeyAction
     {
         #region function
 
-        [Fact]
-        public void Constructor_Test()
+        public static TheoryData<Type, Func<KeyActionDisableJob>> Constructor_Throw_Data => new() {
+            {
+                typeof(ArgumentException),
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData())
+            },
+            {
+                typeof(ArgumentException),
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { })
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(Constructor_Throw_Data))]
+        public void Constructor_Throw_Test(Type exceptionType, Func<KeyActionDisableJob> func)
         {
-            Assert.Throws<ArgumentException>(() => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData()));
-            Assert.Throws<ArgumentException>(() => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { }));
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Shift = ModifierKey.Left });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Shift = ModifierKey.Right });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Shift = ModifierKey.Any });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Control = ModifierKey.All });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Control = ModifierKey.Left });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Control = ModifierKey.Right });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Control = ModifierKey.Any });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Control = ModifierKey.All });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Alt = ModifierKey.All });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Alt = ModifierKey.Left });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Alt = ModifierKey.Right });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Alt = ModifierKey.Any });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Alt = ModifierKey.All });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Super = ModifierKey.All });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Super = ModifierKey.Left });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Super = ModifierKey.Right });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Super = ModifierKey.Any });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Super = ModifierKey.All });
-            new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Key = Key.A });
-            Assert.True(true);
+            Assert.Throws(exceptionType, func);
+        }
+
+        public static TheoryData<Func<KeyActionDisableJob>> Constructor_Data => new() {
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Shift = ModifierKey.Left })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Shift = ModifierKey.Right })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Shift = ModifierKey.Any })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Control = ModifierKey.All })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Control = ModifierKey.Left })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Control = ModifierKey.Right })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Control = ModifierKey.Any })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Control = ModifierKey.All })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Alt = ModifierKey.All })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Alt = ModifierKey.Left })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Alt = ModifierKey.Right })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Alt = ModifierKey.Any })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Alt = ModifierKey.All })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Super = ModifierKey.All })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Super = ModifierKey.Left })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Super = ModifierKey.Right })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Super = ModifierKey.Any })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Super = ModifierKey.All })
+            },
+            {
+                () => new KeyActionDisableJob(new KeyActionDisableData(KeyActionId.NewId(), false), new KeyMappingData() { Key = Key.A })
+            },
+            };
+
+        [Theory]
+        [MemberData(nameof(Constructor_Data))]
+        public void Constructor_Test(Func<KeyActionDisableJob> func)
+        {
+            var exception = Record.Exception(func);
+            Assert.Null(exception);
         }
 
         #endregion
@@ -253,33 +334,62 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.KeyAction
 
         #region function
 
-        [Fact]
-        public void Constructor_Test()
-        {
-            Assert.Throws<ArgumentException>(() => new KeyActionPressJob(new KeyActionPressedData(), new[] {
-                new KeyMappingData(),
-            }));
-            Assert.Throws<ArgumentException>(() => new KeyActionPressJob(new KeyActionPressedData(), new[] {
-                new KeyMappingData(){ Shift = ModifierKey.Left },
-            }));
-            Assert.Throws<ArgumentException>(() => new KeyActionPressJob(new KeyActionPressedData(), new[] {
-                new KeyMappingData(){ Shift = ModifierKey.Left },
-                new KeyMappingData(){ Key = Key.A },
-                new KeyMappingData(){ Shift = ModifierKey.Right },
-            }));
+        public static TheoryData<Type, Func<KeyActionPressJob>> Constructor_Throw_Data => new() {
+            {
+                typeof(ArgumentException),
+                () => new KeyActionPressJob(new KeyActionPressedData(), new[] {
+                    new KeyMappingData(),
+                })
+            },
+            {
+                typeof(ArgumentException),
+                () => new KeyActionPressJob(new KeyActionPressedData(), new[] {
+                    new KeyMappingData(){ Shift = ModifierKey.Left },
+                })
+            },
+            {
+                typeof(ArgumentException),
+                () => new KeyActionPressJob(new KeyActionPressedData(), new[] {
+                    new KeyMappingData(){ Shift = ModifierKey.Left },
+                    new KeyMappingData(){ Key = Key.A },
+                    new KeyMappingData(){ Shift = ModifierKey.Right },
+                })
+            },
+        };
 
-            new KeyActionPressJob(new KeyActionPressedData(), new[] {
-                new KeyMappingData(){ Key = Key.A },
-            });
-            new KeyActionPressJob(new KeyActionPressedData(), new[] {
-                new KeyMappingData(){ Key = Key.A },
-                new KeyMappingData(){ Key = Key.A },
-            });
-            new KeyActionPressJob(new KeyActionPressedData(), new[] {
-                new KeyMappingData(){ Key = Key.A },
-                new KeyMappingData(){ Key = Key.B },
-                new KeyMappingData(){ Key = Key.C },
-            });
+        [Theory]
+        [MemberData(nameof(Constructor_Throw_Data))]
+        public void Constructor_Throw_Test(Type exceptionType, Func<KeyActionPressJob> func)
+        {
+            Assert.Throws(exceptionType, func);
+        }
+
+        public static TheoryData<Func<KeyActionPressJob>> Constructor_Data => new() {
+            {
+                () => new KeyActionPressJob(new KeyActionPressedData(), new[] {
+                    new KeyMappingData(){ Key = Key.A },
+                })
+            },
+            {
+                () => new KeyActionPressJob(new KeyActionPressedData(), new[] {
+                    new KeyMappingData(){ Key = Key.A },
+                    new KeyMappingData(){ Key = Key.A },
+                })
+            },
+            {
+                () => new KeyActionPressJob(new KeyActionPressedData(), new[] {
+                    new KeyMappingData(){ Key = Key.A },
+                    new KeyMappingData(){ Key = Key.B },
+                    new KeyMappingData(){ Key = Key.C },
+                })
+            },
+        };
+        [Theory]
+        [MemberData(nameof(Constructor_Data))]
+        public void Constructor_Test(Func<KeyActionPressJob> func)
+        {
+            var exception = Record.Exception(func);
+            Assert.Null(exception);
         }
 
         [Fact]
