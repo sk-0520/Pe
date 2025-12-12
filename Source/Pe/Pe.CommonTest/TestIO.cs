@@ -259,6 +259,8 @@ namespace ContentTypeTextNet.Pe.CommonTest
             }
         }
 
+        private static string DataFileSourceBasePath { get; } = Path.DirectorySeparatorChar + "Source" + Path.DirectorySeparatorChar + "Pe" + Path.DirectorySeparatorChar;
+
         private static string WorkRootDirectoryName { get; } = "_test_io_";
 
         private static TestInitializedStore InitializedMethod { get; } = new TestInitializedStore();
@@ -276,9 +278,9 @@ namespace ContentTypeTextNet.Pe.CommonTest
         private static string GetDataClassDirectoryName(object test, string callerFilePath)
         {
             var callerFilePathSpan = callerFilePath.AsSpan();
-            var firstSepIndex = callerFilePathSpan.IndexOf(Path.DirectorySeparatorChar);
-            var secondSepIndex = callerFilePathSpan.Slice(firstSepIndex + 1).IndexOf(Path.DirectorySeparatorChar);
-            var classPath = callerFilePathSpan.Slice(firstSepIndex + 1 + secondSepIndex + 1);
+            var firstSepIndex = callerFilePathSpan.IndexOf(DataFileSourceBasePath);
+            var secondSepIndex = callerFilePathSpan.Slice(firstSepIndex + DataFileSourceBasePath.Length).IndexOf(Path.DirectorySeparatorChar);
+            var classPath = callerFilePathSpan.Slice(firstSepIndex + DataFileSourceBasePath.Length + secondSepIndex + 1);
             var extIndex = classPath.LastIndexOf(".cs");
             var classTree = classPath.Slice(0, extIndex);
 

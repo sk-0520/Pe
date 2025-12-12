@@ -35,7 +35,7 @@ if ($Module -eq 'boot') {
 	}
 	Start-Command -Command msbuild -ArgumentList @((Join-Path -Path (Get-SourceDirectory -Kind 'boot') -ChildPath 'Pe.Boot.slnx'), '/m', "/p:Configuration=$configuration", "/p:Platform=$Platform", "/p:DefineConstants=$define")
 } elseif ($Module -eq 'main') {
-	Start-Command -Command dotnet -ArgumentList @('publish', (Join-Path -Path (Get-SourceDirectory -Kind $Module) -ChildPath 'Pe.Main/Pe.Main.csproj'), '/m', '--verbosity', 'normal', '--configuration', 'Release', "/p:Platform=$Platform", "/p:DefineConstants=$define", '--runtime', "win-$Platform", '--output', "Output/Release/$Platform/Pe/bin", '--self-contained', 'true')
+	Start-Command -Command dotnet -ArgumentList @('publish', (Join-Path -Path (Get-SourceDirectory -Kind $Module) -ChildPath 'Pe.Main/Pe.Main.csproj'), '/m', '--verbosity', 'normal', '--configuration', 'Release', "/p:Platform=$Platform", "/p:DefineConstants=$define", '--runtime', "win-$Platform", '--output', "Output/Release/$Platform/Pe/bin", '--self-contained', 'true', '/p:PathMap="$(MSBuildProjectDirectory)=."')
 } elseif ($Module -eq 'plugins') {
 	# プラグイン参考実装
 	$pluginProjectFiles = Get-ApplicationProjectDirectory -Kind $Module |

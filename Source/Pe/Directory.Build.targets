@@ -1,5 +1,0 @@
-<Project>
-  <PropertyGroup>
-    <PathMap>$(MSBuildThisFileDirectory)=.</PathMap>
-  </PropertyGroup>
-</Project>
