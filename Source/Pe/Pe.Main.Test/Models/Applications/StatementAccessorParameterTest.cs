@@ -8,16 +8,16 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
     {
         #region function
 
-        [Fact]
-        public void ConstructorIllegalTest()
+        [Theory]
+        [InlineData(typeof(ArgumentNullException), null)]
+        [InlineData(typeof(ArgumentException), "")]
+        [InlineData(typeof(ArgumentException), "a")]
+        [InlineData(typeof(ArgumentException), "a.")]
+        [InlineData(typeof(ArgumentException), ".a")]
+        [InlineData(typeof(ArgumentException), ".a.")]
+        public void Constructor_Throw_Test(Type exceptionType, string? fullName)
         {
-            Assert.Throws<ArgumentNullException>(() => new StatementAccessorParameter(null!));
-            Assert.Throws<ArgumentException>(() => new StatementAccessorParameter(""));
-            Assert.Throws<ArgumentException>(() => new StatementAccessorParameter("a"));
-            Assert.Throws<ArgumentException>(() => new StatementAccessorParameter("a."));
-            Assert.Throws<ArgumentException>(() => new StatementAccessorParameter(".a"));
-            Assert.Throws<ArgumentException>(() => new StatementAccessorParameter(".a."));
-            new StatementAccessorParameter("a.b");
+            Assert.Throws(exceptionType,() => new StatementAccessorParameter(fullName!));
         }
 
         [Theory]
