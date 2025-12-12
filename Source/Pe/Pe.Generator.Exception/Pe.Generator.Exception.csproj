@@ -23,6 +23,8 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
   </ItemGroup>
 
-  <Import Project="..\Pe.Generator\Pe.Generator.projitems" Label="Shared" />
+  <ItemGroup>
+    <Compile Include="..\Pe.Generator\**\*.cs" Link="Pe.Generator\%(RecursiveDir)%(FileName)%(Extension)" Exclude="..\Pe.Generator\obj\**\*" />
+  </ItemGroup>
 
 </Project>
