@@ -731,7 +731,9 @@ jobs:
 
       - name: <Compress> Application
         shell: pwsh
-        run: .\Build\compress-module.ps1 -InformationAction Continue -TargetDirectory 'Output' -OutputFileBaseName "Pe_${{ matrix.PLATFORM }}" -Archive ${{ inputs.APPLICATION_ARCHIVE }}
+        env:
+          Archive: ${{ inputs.APPLICATION_ARCHIVE }}
+        run: .\Build\compress-module.ps1 -InformationAction Continue -TargetDirectory 'Output' -OutputFileBaseName "Pe_${{ matrix.PLATFORM }}" -Archive "$env:Archive"
 
       - name: <Artifact> Application
         uses: actions/upload-artifact@v4
@@ -768,7 +770,11 @@ jobs:
 
       - name: <Generate> Update Information
         shell: pwsh
-        run: .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl ${{ inputs.PE_RELEASE_ARCHIVE_BASE_URL }} -NoteBaseUrl ${{ inputs.PE_RELEASE_NOTE_BASE_URL }} -OutputDirectory Output -Module 'application' -Archive ${{ inputs.APPLICATION_ARCHIVE }} -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe') -Platforms ${{ env.PLATFORMS }}
+        env:
+          ArchiveBaseUrl: ${{ inputs.PE_RELEASE_ARCHIVE_BASE_URL }}
+          NoteBaseUrl: ${{ inputs.PE_RELEASE_NOTE_BASE_URL }}
+          Archive: ${{ inputs.APPLICATION_ARCHIVE }}
+        run: .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl "$env.ArchiveBaseUrl" -NoteBaseUrl "$env:NoteBaseUrl" -OutputDirectory Output -Module 'application' -Archive "$env:Archive" -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe') -Platforms ${{ env.PLATFORMS }}
 
       - name: <Artifact> Update Information
         uses: actions/upload-artifact@v4
@@ -927,10 +933,12 @@ jobs:
 
       - name: <Compress> Plugins
         shell: pwsh
+        env:
+          Archive: ${{ inputs.PLUGINS_ARCHIVE }}
         run: |
           $dirs = Get-ChildItem -Path (Join-Path -Path 'artifacts' -ChildPath 'plugins')
           foreach($dir in $dirs) {
-            .\Build\compress-module.ps1 -InformationAction Continue -TargetDirectory $dir.FullName -OutputFileBaseName "$($dir.Name)_${{ matrix.PLATFORM }}" -Archive ${{ inputs.PLUGINS_ARCHIVE }}
+            .\Build\compress-module.ps1 -InformationAction Continue -TargetDirectory $dir.FullName -OutputFileBaseName "$($dir.Name)_${{ matrix.PLATFORM }}" -Archive "$env:Archive"
           }
 
       - name: <Artifact> Plugins
@@ -968,9 +976,13 @@ jobs:
 
       - name: <Generate> Update Information
         shell: pwsh
+        env:
+          ArchiveBaseUrl: ${{ inputs.PE_RELEASE_ARCHIVE_BASE_URL }}
+          PeReleaseNoteBaseUrl: ${{ inputs.PE_RELEASE_NOTE_BASE_URL }}
+          Archive: ${{ inputs.PLUGINS_ARCHIVE }}
         run: |
-          $pluginNoteBaseUrl = "${{ inputs.PE_RELEASE_NOTE_BASE_URL }}".Replace("github.com", "pe.invalid")
-          .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl ${{ inputs.PE_RELEASE_ARCHIVE_BASE_URL }} -NoteBaseUrl $pluginNoteBaseUrl -OutputDirectory Output -Module 'plugins' -Archive ${{ inputs.PLUGINS_ARCHIVE }} -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe.Plugins.Reference') -Platforms ${{ env.PLATFORMS }}
+          $pluginNoteBaseUrl = "$env:PeReleaseNoteBaseUrl".Replace("github.com", "pe.invalid")
+          .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl "$env:ArchiveBaseUrl" -NoteBaseUrl $pluginNoteBaseUrl -OutputDirectory Output -Module 'plugins' -Archive "$env:Archive" -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe.Plugins.Reference') -Platforms ${{ env.PLATFORMS }}
 
       - name: <🌳> 🌲
         shell: pwsh
