@@ -241,6 +241,7 @@ jobs:
         shell: pwsh
         run: .\${{ env.EXPAND_DIR }}\create-project.ps1 -Verbose -InformationAction Continue -ProjectDirectory ${{ env.PROJECT_DIR }} -PluginName ${{ env.PROJECT_NAME }} -PluginId ([Guid]::Empty) -DefaultNamespace ${{ env.PROJECT_NAME }} -AppTargetBranch '${{ github.ref_name }}'
 
+      # PR は現状トリガーにしないけど将来用にコードだけは残しておく
       - name: <Create> Plugin Template [PR]
         if: ${{ github.event_name == 'pull_request' }}
         env:
