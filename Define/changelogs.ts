@@ -75,7 +75,7 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "#929: CI上でコードカバレッジを取得する(C)",
 					},
 					{
 						revision: "",
