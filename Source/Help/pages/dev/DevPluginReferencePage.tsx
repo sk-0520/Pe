@@ -1,4 +1,4 @@
-import { default as markdown } from "bundle-text:./DevPluginReferencePage.md";
+import markdown from "bundle-text:./DevPluginReferencePage.md";
 import type { FC } from "react";
 import { HelpMarkdown } from "../../components/HelpMarkdown";
 import type { PageProps } from "../../types/page";
