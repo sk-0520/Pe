@@ -490,6 +490,7 @@ jobs:
 
       - name: Setup OpenCppCoverage and add to PATh
         id: setup_opencppcoverage
+        shell: cmd
         run: |
           choco install OpenCppCoverage -y
           echo "C:\Program Files\OpenCppCoverage" >> $env:GITHUB_PATH
