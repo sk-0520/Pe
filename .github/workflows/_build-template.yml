@@ -488,6 +488,10 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
+      - name: <Setup> dotnet tool
+        shell: cmd
+        run: install-dotnet-tool.bat
+
       - name: <Setup> add OpenCppCoverage + VSTest.Console to PATH
         id: setup_opencppcoverage
         shell: pwsh
