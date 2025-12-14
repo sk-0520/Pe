@@ -494,7 +494,7 @@ jobs:
         run: |
           choco install OpenCppCoverage -y
           echo "C:\Program Files\OpenCppCoverage" >> $env:GITHUB_PATH
-          echo ${{ env.VS_TEST_CONSOLE_PATH }} >> $env:GITHUB_PATH
+          echo "${{ env.VS_TEST_CONSOLE_PATH }}" >> $env:GITHUB_PATH
 
       - name: <Rewrite> Module
         shell: pwsh
