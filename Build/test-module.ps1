@@ -29,6 +29,8 @@ if ($Module -eq 'boot') {
 			Start-Command -Command OpenCppCoverage -ArgumentList @(
 				'--sources',
 				$projectDirItem.FullName.Replace('.Test', ''),
+				'--excluded_sources',
+				"*.Test",
 				'--modules',
 				$testFilePath,
 				'--export_type',
