@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using ContentTypeTextNet.Pe.CommonTest;
 using ContentTypeTextNet.Pe.Main.Models.Command;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using Xunit;
@@ -25,7 +26,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Command
         public void GetMatchesTest(int expected, string pattern, string input)
         {
             var hvc = new HitValuesCreator(Test.LoggerFactory);
-            var actual = hvc.GetMatches(input, new Regex(pattern));
+            var actual = hvc.GetMatches(input, new TestRegex(pattern));
             Assert.Equal(expected, actual.Count);
         }
 

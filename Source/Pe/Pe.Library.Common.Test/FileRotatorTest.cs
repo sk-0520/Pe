@@ -19,7 +19,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         {
             var dir = new DirectoryInfo("nul");
             var fileRotator = new FileRotator();
-            var actual = fileRotator.ExecuteRegex(dir, new Regex("."), 10, ex => true);
+            var actual = fileRotator.ExecuteRegex(dir, new TestRegex("."), 10, ex => true);
             Assert.Equal(-1, actual);
         }
 
@@ -34,7 +34,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             testIO.Work.CreateEmptyFile("target_5.dmy");
 
             var fileRotator = new FileRotator();
-            var actual = fileRotator.ExecuteRegex(testIO.Work.Directory, new Regex("^target"), 3, ex => true);
+            var actual = fileRotator.ExecuteRegex(testIO.Work.Directory, new TestRegex("^target"), 3, ex => true);
             Assert.Equal(2, actual);
         }
 

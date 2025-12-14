@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using ContentTypeTextNet.Pe.CommonTest;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao
@@ -83,7 +84,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao
                         if(isEntity) {
                             // テーブル直接は結合しない
                             var sql = File.ReadAllText(sqlFileName);
-                            if(Regex.IsMatch(sql, @"\bjoin\b")) {
+                            if(Regex.IsMatch(sql, @"\bjoin\b", RegexOptions.None, TestRegex.DefaultMatchTimeout)) {
                                 errorMessages.Add($"entity join: {classFullName}.{sqlMethodName}");
                             }
                         }
