@@ -488,7 +488,7 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
-      - name: Setup OpenCppCoverage and add to PATh
+      - name: <Setup> OpenCppCoverage and add to PATh
         id: setup_opencppcoverage
         shell: cmd
         run: |
@@ -523,6 +523,32 @@ jobs:
           echo $env:Path
           .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
 
+      - name: <Make> CodeCoverage
+        if: matrix.CONFIGURATION == 'CI_TEST'
+        shell: pwsh
+        run: |
+          $files = @(Get-ChildItem -Filter coverage.cobertura.xml -Recurse)
+          # # ソースファイルの位置を渡しておかないとソースが読めない問題対応(Pe.Bridge/Pe.CommonTestがはしゃいでるので補正)
+          # $sources = @(
+          #   Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe
+          #   Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.Bridge
+          #   Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.CommonTest
+          # )
+          & .\_tools\reportgenerator `
+            -reports:$($files -join ';') `
+            -targetdir:"coveragereport" `
+            -reporttypes:Html
+
+      - name: <Artifact> CodeCoverage
+        # x86 が動かない問題, あとで対処
+        if: matrix.PLATFORM == 'x64'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test_Pe.Boot_${{ matrix.PLATFORM }}
+          path: |
+            Source/Pe/*.Test/TestResults/**/coverage.cobertura.xml
+            coveragereport
+          if-no-files-found: error
 
   build-main:
     name: Build Main
