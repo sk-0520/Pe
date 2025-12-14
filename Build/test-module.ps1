@@ -36,7 +36,7 @@ if ($Module -eq 'boot') {
 				'--cover_children',
 				'-v',
 				'--',
-				'VSTest.Console',
+				'VSTest.Console.exe',
 				$testFilePath,
 				'/InIsolation',
 				"/Platform:$Platform"
