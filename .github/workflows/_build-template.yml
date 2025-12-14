@@ -165,10 +165,9 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: <Prepare> docfx
-        shell: pwsh
-        run: |
-          dotnet tool install docfx --tool-path _tools
+      - name: <Setup> dotnet tool
+        shell: cmd
+        run: install-dotnet-tool.bat
 
       - name: <Build> Main
         shell: pwsh
@@ -611,6 +610,10 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
+      - name: <Setup> dotnet tool
+        shell: cmd
+        run: install-dotnet-tool.bat
+
       - name: <Cache> Nuget
         uses: actions/cache@v4
         with:
@@ -637,7 +640,6 @@ jobs:
         if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool
           $files = @(Get-ChildItem -Filter coverage.cobertura.xml -Recurse)
           # ソースファイルの位置を渡しておかないとソースが読めない問題対応(Pe.Bridge/Pe.CommonTestがはしゃいでるので補正)
           $sources = @(
@@ -645,7 +647,7 @@ jobs:
             Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.Bridge
             Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.CommonTest
           )
-          reportgenerator `
+          & .\_tools\reportgenerator `
             -reports:$($files -join ';') `
             -sourcedirs:$($sources -join ';') `
             -targetdir:"coveragereport" `
