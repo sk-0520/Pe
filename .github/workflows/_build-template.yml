@@ -165,10 +165,9 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: <Prepare> docfx
-        shell: pwsh
-        run: |
-          dotnet tool install docfx --tool-path _tools
+      - name: <Setup> dotnet tool
+        shell: cmd
+        run: install-dotnet-tool.bat
 
       - name: <Build> Main
         shell: pwsh
@@ -489,6 +488,18 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
+      - name: <Setup> dotnet tool
+        shell: cmd
+        run: install-dotnet-tool.bat
+
+      - name: <Setup> add OpenCppCoverage + VSTest.Console to PATH
+        id: setup_opencppcoverage
+        shell: pwsh
+        run: |
+          choco install OpenCppCoverage -y
+          echo "C:\Program Files\OpenCppCoverage" >> $env:GITHUB_PATH
+          echo "${{ env.VS_TEST_CONSOLE_PATH }}" >> $env:GITHUB_PATH
+
       - name: <Rewrite> Module
         shell: pwsh
         run: |
@@ -512,11 +523,33 @@ jobs:
 
       - name: <Test> Module
         shell: pwsh
-        run: |
-          $env:Path += ';${{env.VS_TEST_CONSOLE_PATH}}'
-          echo $env:Path
-          .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
+        run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
 
+      - name: <Make> CodeCoverage
+        if: matrix.CONFIGURATION == 'CI_TEST'
+        shell: pwsh
+        run: |
+          $files = @(Get-ChildItem -Filter coverage.cobertura.xml -Recurse)
+          # # ソースファイルの位置を渡しておかないとソースが読めない問題対応(Pe.Bridge/Pe.CommonTestがはしゃいでるので補正)
+          # $sources = @(
+          #   Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe
+          #   Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.Bridge
+          #   Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.CommonTest
+          # )
+          & .\_tools\reportgenerator `
+            -reports:$($files -join ';') `
+            -targetdir:"coveragereport" `
+            -reporttypes:Html
+
+      - name: <Artifact> CodeCoverage
+        if: matrix.CONFIGURATION == 'CI_TEST'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test_Pe.Boot_${{ matrix.PLATFORM }}
+          path: |
+            Source/Pe.Boot/*.Test/**/coverage.cobertura.xml
+            coveragereport
+          if-no-files-found: error
 
   build-main:
     name: Build Main
@@ -605,6 +638,10 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
+      - name: <Setup> dotnet tool
+        shell: cmd
+        run: install-dotnet-tool.bat
+
       - name: <Cache> Nuget
         uses: actions/cache@v4
         with:
@@ -631,7 +668,6 @@ jobs:
         if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool
           $files = @(Get-ChildItem -Filter coverage.cobertura.xml -Recurse)
           # ソースファイルの位置を渡しておかないとソースが読めない問題対応(Pe.Bridge/Pe.CommonTestがはしゃいでるので補正)
           $sources = @(
@@ -639,7 +675,7 @@ jobs:
             Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.Bridge
             Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.CommonTest
           )
-          reportgenerator `
+          & .\_tools\reportgenerator `
             -reports:$($files -join ';') `
             -sourcedirs:$($sources -join ';') `
             -targetdir:"coveragereport" `
