@@ -63,6 +63,7 @@ static void convert_map_from_arguments(MAP* result, const TEXT arguments[], size
 
     for (size_t i = 0; i < count; i++) {
         const TEXT* current = &arguments[i];
+        assert(current);
 
         ssize_t mark_index = get_key_mark_index(current, mark_texts, SIZEOF_ARRAY(mark_texts));
         if (mark_index == -1) {
@@ -72,6 +73,7 @@ static void convert_map_from_arguments(MAP* result, const TEXT arguments[], size
 
         const TEXT* mark_text = mark_texts + mark_index;
         // 先頭のマークを外した引数取得
+        assert(current->value);
         TEXT arg = wrap_text_with_length(current->value + mark_text->length, (size_t)current->length - mark_text->length, false, NULL);
 
         COMMAND_LINE_ITEM item = {
