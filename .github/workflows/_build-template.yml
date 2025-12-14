@@ -540,11 +540,12 @@ jobs:
             -reporttypes:Html
 
       - name: <Artifact> CodeCoverage
+        if: matrix.CONFIGURATION == 'CI_TEST'
         uses: actions/upload-artifact@v4
         with:
           name: Test_Pe.Boot_${{ matrix.PLATFORM }}
           path: |
-            Source/Pe/*.Test/TestResults/**/coverage.cobertura.xml
+            Source/Pe.Boot/*.Test/**/coverage.cobertura.xml
             coveragereport
           if-no-files-found: error
 
