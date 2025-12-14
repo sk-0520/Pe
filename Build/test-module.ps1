@@ -43,7 +43,7 @@ if ($Module -eq 'boot') {
 			)
 
 		} else {
-			Start-Command -Command VSTest.Console -ArgumentList @($testFilePath, '/InIsolation', "/Platform:$Platform")
+			Start-Command -Command VSTest.Console.exe -ArgumentList @($testFilePath, '/InIsolation', "/Platform:$Platform")
 		}
 
 	}
