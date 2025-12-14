@@ -488,12 +488,13 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
-      - name: <Setup> OpenCppCoverage and add to PATh
+      - name: <Setup> add OpenCppCoverage + VSTest.Console to PATH
         id: setup_opencppcoverage
         shell: pwsh
         run: |
           choco install OpenCppCoverage -y
           echo "C:\Program Files\OpenCppCoverage" >> $env:GITHUB_PATH
+          echo $env:VS_TEST_CONSOLE_PATH >> $env:GITHUB_PATH
 
       - name: <Rewrite> Module
         shell: pwsh
@@ -518,10 +519,7 @@ jobs:
 
       - name: <Test> Module
         shell: pwsh
-        run: |
-          $env:Path += ';${{env.VS_TEST_CONSOLE_PATH}}'
-          echo $env:Path
-          .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}  -Verbose
+        run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
 
       - name: <Make> CodeCoverage
         if: matrix.CONFIGURATION == 'CI_TEST'
