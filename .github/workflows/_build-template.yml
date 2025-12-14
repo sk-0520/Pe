@@ -521,7 +521,7 @@ jobs:
         run: |
           $env:Path += ';${{env.VS_TEST_CONSOLE_PATH}}'
           echo $env:Path
-          .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
+          .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}  -Verbose
 
       - name: <Make> CodeCoverage
         if: matrix.CONFIGURATION == 'CI_TEST'

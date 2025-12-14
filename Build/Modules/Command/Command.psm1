@@ -7,6 +7,7 @@
 	)
 
 	if ($PSCmdlet.ShouldProcess($Command, $ArgumentList)) {
+		Write-Verbose ('{0} {1}' -f $Command, $ArgumentList)
 		& $Command $ArgumentList
 		$LastExitCode = $LASTEXITCODE
 		$hasError = $false

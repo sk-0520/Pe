@@ -32,7 +32,7 @@ if ($Module -eq 'boot') {
 				'--modules',
 				$testFilePath,
 				'--export_type',
-				"cobertura:" + (Join-Path -Path $testDirPath -ChildPath 'coverage.cobertura.xml'),
+				("cobertura:" + (Join-Path -Path $testDirPath -ChildPath 'coverage.cobertura.xml')),
 				'--cover_children',
 				'-v',
 				'--',
@@ -41,6 +41,7 @@ if ($Module -eq 'boot') {
 				'/InIsolation',
 				"/Platform:$Platform"
 			)
+
 		} else {
 			Start-Command -Command VSTest.Console -ArgumentList @($testFilePath, '/InIsolation', "/Platform:$Platform")
 		}
