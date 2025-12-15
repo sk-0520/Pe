@@ -424,9 +424,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 statementAccessor = new ApplicationDatabaseAccessor(new ApplicationDatabaseFactory(environmentParameters.SqlStatementAccessorFile, true, true), loggerFactory);
             }
 
-            // DIコンテナ登録(なんかいろいろ)
+            // DIコンテナ一次登録（システム関係）
             container
                 .Register<ILoggerFactory, ILoggerFactory>(loggerFactory)
+                .Register(TimeProvider.System)
                 .Register<IDiContainer, ApplicationDiContainer>(container)
 
                 .Register(environmentParameters)
@@ -579,7 +580,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 commandLine.GetValue(CommandLineKeyLog, string.Empty),
                 commandLine.GetValue(CommandLineKeyWithLog, string.Empty),
                 commandLine.ExistsSwitch(CommandLineSwitchForceLog),
-                commandLine.ExistsSwitch(CommandLineSwitchFullTraceLog)
+                commandLine.ExistsSwitch(CommandLineSwitchFullTraceLog),
+                TimeProvider.System // DI 構築はこの後なのでここではこれでOK
             );
             var loggerFactory = Logging.Factory;
             var logger = Logging.Factory.CreateLogger(GetType());

@@ -14,10 +14,10 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         private readonly struct DelayStockItem
         {
-            public DelayStockItem(Action<IDatabaseTransaction> action)
+            public DelayStockItem(Action<IDatabaseTransaction> action, DateTime utcTimestamp)
             {
                 Action = action;
-                StockUtcTimestamp = DateTime.UtcNow;
+                StockUtcTimestamp = utcTimestamp;
             }
 
             #region property
@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #endregion
 
-        public DatabaseDelayWriter(IDatabaseBarrier databaseBarrier, TimeSpan pauseRetryTime, ILoggerFactory loggerFactory)
+        public DatabaseDelayWriter(IDatabaseBarrier databaseBarrier, TimeSpan pauseRetryTime, TimeProvider timeProvider, ILoggerFactory loggerFactory)
         {
             if(databaseBarrier == null) {
                 throw new ArgumentNullException(nameof(databaseBarrier));
@@ -47,6 +47,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
             DatabaseBarrier = databaseBarrier;
             PauseRetryTime = pauseRetryTime;
+            TimeProvider = timeProvider;
             Logger = loggerFactory.CreateLogger(GetType());
 
             DelayTimer = new Timer(DelayCallback);
@@ -60,6 +61,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// リトライ間隔。
         /// </summary>
         private TimeSpan PauseRetryTime { get; }
+        private TimeProvider TimeProvider { get; }
         private ILogger Logger { get; }
 
         private Timer DelayTimer { get; [Unused(UnusedKinds.Dispose)] set; }
@@ -96,7 +98,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                     }
                 }
 
-                var item = new DelayStockItem(action);
+                var item = new DelayStockItem(action, TimeProvider.GetUtcNow().DateTime);
                 StockItems.Add(item);
                 if(uniqueKey != null) {
                     UniqueItems.Add(uniqueKey, item);

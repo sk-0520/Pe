@@ -80,11 +80,12 @@ namespace ContentTypeTextNet.Pe.Main.Test
 
         #region function
 
-        public static DiContainer CreateDiContainer(ILoggerFactory loggerFactory)
+        public static DiContainer CreateDiContainer(ILoggerFactory loggerFactory, TimeProvider? timeProvider = null)
         {
             var diContainer = new ApplicationDiContainer();
             diContainer
                 .Register<ILoggerFactory, ILoggerFactory>(loggerFactory)
+                .Register(timeProvider ?? TimeProvider.System)
                 .Register<IIdFactory, IdFactory>(DiLifecycle.Transient)
                 .Register<IHashAlgorithmGenerator, HashAlgorithmGenerator>(DiLifecycle.Transient)
             ;
