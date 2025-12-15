@@ -79,7 +79,7 @@ jobs:
 
       - name: <Install> NPM
         shell: bash
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: <Lint> Front
         shell: bash
@@ -134,7 +134,7 @@ jobs:
 
       - name: <Install> NPM
         shell: bash
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: <Test> Script
         shell: bash
@@ -319,7 +319,7 @@ jobs:
 
       - name: <Install> NPM
         shell: bash
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: <Check> Release Note
         shell: bash
