@@ -15,26 +15,26 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         public void CombinePath_Exception_Test()
         {
             Assert.Throws<ArgumentNullException>(() => UriUtility.CombinePath(null!, ""));
-            Assert.Throws<ArgumentNullException>(() => UriUtility.CombinePath(new Uri("http://aaa.bbb"), null!));
-            Assert.Throws<ArgumentNullException>(() => UriUtility.CombinePath(new Uri("http://aaa.bbb"), "", null!));
-            Assert.Throws<ArgumentNullException>(() => UriUtility.CombinePath(new Uri("http://aaa.bbb"), "", "", null!));
+            Assert.Throws<ArgumentNullException>(() => UriUtility.CombinePath(new Uri("http://example.com"), null!));
+            Assert.Throws<ArgumentNullException>(() => UriUtility.CombinePath(new Uri("http://example.com"), "", null!));
+            Assert.Throws<ArgumentNullException>(() => UriUtility.CombinePath(new Uri("http://example.com"), "", "", null!));
         }
 
         [Theory]
-        [InlineData("http://a.b/c", "http://a.b", "c")]
-        [InlineData("http://a.b:8080/c", "http://a.b:8080", "c")]
-        [InlineData("http://u:p@a.b/c", "http://u:p@a.b", "c")]
-        [InlineData("http://u:p@a.b:8080/c", "http://u:p@a.b:8080", "c")]
-        [InlineData("http://a.b/c", "http://a.b", "c/")]
-        [InlineData("http://a.b/c", "http://a.b", "/c/")]
-        [InlineData("http://a.b/c", "http://a.b", "//c//")]
-        [InlineData("http://a.b/c", "http://a.b/", "//c//")]
-        [InlineData("http://a.b/c/d", "http://a.b/c", "//d//")]
-        [InlineData("http://a.b/c/d", "http://a.b/c/", "//d//")]
-        [InlineData("http://a.b/c/d?q=v", "http://a.b/c?q=v", "//d//")]
-        [InlineData("http://a.b/c/d/e/f/g", "http://a.b/", "//c//", "d", "/e", "f/", "/g/")]
-        [InlineData("http://a.b/x/y/z/c/d/e/f/g", "http://a.b/x/y/z", "//c//", "d", "/e", "f/", "/g/")]
-        [InlineData("http://a.b/x/y/z/c/d/e/f/g", "http://a.b/x/y/z/", "//c//", "d", "/e", "f/", "/g/")]
+        [InlineData("http://example.com/c", "http://example.com", "c")]
+        [InlineData("http://example.com:8080/c", "http://example.com:8080", "c")]
+        [InlineData("http://u:p@example.com/c", "http://u:p@example.com", "c")]
+        [InlineData("http://u:p@example.com:8080/c", "http://u:p@example.com:8080", "c")]
+        [InlineData("http://example.com/c", "http://example.com", "c/")]
+        [InlineData("http://example.com/c", "http://example.com", "/c/")]
+        [InlineData("http://example.com/c", "http://example.com", "//c//")]
+        [InlineData("http://example.com/c", "http://example.com/", "//c//")]
+        [InlineData("http://example.com/c/d", "http://example.com/c", "//d//")]
+        [InlineData("http://example.com/c/d", "http://example.com/c/", "//d//")]
+        [InlineData("http://example.com/c/d?q=v", "http://example.com/c?q=v", "//d//")]
+        [InlineData("http://example.com/c/d/e/f/g", "http://example.com/", "//c//", "d", "/e", "f/", "/g/")]
+        [InlineData("http://example.com/x/y/z/c/d/e/f/g", "http://example.com/x/y/z", "//c//", "d", "/e", "f/", "/g/")]
+        [InlineData("http://example.com/x/y/z/c/d/e/f/g", "http://example.com/x/y/z/", "//c//", "d", "/e", "f/", "/g/")]
         public void CombinePathTest(string expected, string url, string path, params string[] paths)
         {
             var uri = UriUtility.CombinePath(new Uri(url), path, paths);
@@ -42,20 +42,20 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         }
 
         [Theory]
-        [InlineData("http://a.b/c/", "http://a.b", "c")]
-        [InlineData("http://a.b:8080/c/", "http://a.b:8080", "c")]
-        [InlineData("http://u:p@a.b/c/", "http://u:p@a.b", "c")]
-        [InlineData("http://u:p@a.b:8080/c/", "http://u:p@a.b:8080", "c")]
-        [InlineData("http://a.b/c/", "http://a.b", "c/")]
-        [InlineData("http://a.b/c/", "http://a.b", "/c/")]
-        [InlineData("http://a.b/c/", "http://a.b", "//c//")]
-        [InlineData("http://a.b/c/", "http://a.b/", "//c//")]
-        [InlineData("http://a.b/c/d/", "http://a.b/c", "//d//")]
-        [InlineData("http://a.b/c/d/", "http://a.b/c/", "//d//")]
-        [InlineData("http://a.b/c/d/?q=v", "http://a.b/c?q=v", "//d//")]
-        [InlineData("http://a.b/c/d/e/f/g/", "http://a.b/", "//c//", "d", "/e", "f/", "/g/")]
-        [InlineData("http://a.b/x/y/z/c/d/e/f/g/", "http://a.b/x/y/z", "//c//", "d", "/e", "f/", "/g/")]
-        [InlineData("http://a.b/x/y/z/c/d/e/f/g/", "http://a.b/x/y/z/", "//c//", "d", "/e", "f/", "/g/")]
+        [InlineData("http://example.com/c/", "http://example.com", "c")]
+        [InlineData("http://example.com:8080/c/", "http://example.com:8080", "c")]
+        [InlineData("http://u:p@example.com/c/", "http://u:p@example.com", "c")]
+        [InlineData("http://u:p@example.com:8080/c/", "http://u:p@example.com:8080", "c")]
+        [InlineData("http://example.com/c/", "http://example.com", "c/")]
+        [InlineData("http://example.com/c/", "http://example.com", "/c/")]
+        [InlineData("http://example.com/c/", "http://example.com", "//c//")]
+        [InlineData("http://example.com/c/", "http://example.com/", "//c//")]
+        [InlineData("http://example.com/c/d/", "http://example.com/c", "//d//")]
+        [InlineData("http://example.com/c/d/", "http://example.com/c/", "//d//")]
+        [InlineData("http://example.com/c/d/?q=v", "http://example.com/c?q=v", "//d//")]
+        [InlineData("http://example.com/c/d/e/f/g/", "http://example.com/", "//c//", "d", "/e", "f/", "/g/")]
+        [InlineData("http://example.com/x/y/z/c/d/e/f/g/", "http://example.com/x/y/z", "//c//", "d", "/e", "f/", "/g/")]
+        [InlineData("http://example.com/x/y/z/c/d/e/f/g/", "http://example.com/x/y/z/", "//c//", "d", "/e", "f/", "/g/")]
         public void CombinePath_appendLastSeparator_Test(string expected, string url, string path, params string[] paths)
         {
             var uri = UriUtility.CombinePath(new Uri(url), true, path, paths);
