@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Test.Attributes
         [InlineData("")]
         [InlineData(" ")]
         [InlineData("\n")]
-        [InlineData("　")]
+        [InlineData("\u3000")]
         public void Constructor_pluginName_Throw(string name)
         {
             var ex = Assert.Throws<ArgumentException>(() => new PluginIdentifiersAttribute(name, "pluginId"));
@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Test.Attributes
         [InlineData("")]
         [InlineData(" ")]
         [InlineData("\n")]
-        [InlineData("　")]
+        [InlineData("\u3000")]
         public void Constructor_pluginId_Throw(string pluginId)
         {
             var ex = Assert.Throws<ArgumentException>(() => new PluginIdentifiersAttribute("name", pluginId));
