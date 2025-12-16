@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.Common;
@@ -13,73 +12,28 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
-    /// <summary>
-    /// DBアクセスに対してラップする。
-    /// </summary>
-    /// <remarks>
-    /// <para>DBまで行く前にプログラム側で制御する目的。</para>
-    /// </remarks>
-    public class DatabaseAccessor: DatabaseContext, IDatabaseAccessor
+    public class DatabaseContext: DisposerBase, IDatabaseContext
     {
-        public DatabaseAccessor(IDatabaseFactory databaseFactory, ILogger logger)
+        public DatabaseContext(IDbConnection connection, IDbTransaction? transaction,  IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
-            Logger = logger;
-            DatabaseFactory = databaseFactory;
-            LazyConnection = new Lazy<IDbConnection>(OpenConnection);
-            LazyImplementation = new Lazy<IDatabaseImplementation>(DatabaseFactory.CreateImplementation);
-        }
-
-        public DatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
-        {
+            Connection = connection;
+            Transaction = transaction;
+            Implementation = implementation;
+            LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
-            DatabaseFactory = databaseFactory;
-            LazyConnection = new Lazy<IDbConnection>(OpenConnection);
-            LazyImplementation = new Lazy<IDatabaseImplementation>(DatabaseFactory.CreateImplementation);
         }
 
         #region property
 
-        private Lazy<IDbConnection> LazyConnection { get; set; }
+        protected IDbConnection Connection { get; }
+        protected IDbTransaction? Transaction { get; }
 
-        private Lazy<IDatabaseImplementation> LazyImplementation { get; }
-        protected IDatabaseImplementation Implementation => LazyImplementation.Value;
-
-        protected ILogger Logger { get; }
-
-        /// <summary>
-        /// データベース接続が開いているか。
-        /// </summary>
-        public bool IsOpened { get; private set; }
-
-        /// <summary>
-        /// データベース接続が一時的に閉じているか。
-        /// </summary>
-        public bool ConnectionPausing { get; private set; }
+        protected ILoggerFactory LoggerFactory { get; }
+        protected ILogger Logger { get;}
 
         #endregion
 
         #region function
-
-        /// <summary>
-        /// DB接続を開く。
-        /// </summary>
-        /// <returns></returns>
-        private IDbConnection OpenConnection()
-        {
-            if(ConnectionPausing) {
-                throw new InvalidOperationException(nameof(ConnectionPausing));
-            }
-            if(IsOpened) {
-                throw new InvalidOperationException(nameof(IsOpened));
-            }
-            ThrowIfDisposed();
-
-            var con = DatabaseFactory.CreateConnection();
-            con.Open();
-            IsOpened = true;
-            return con;
-        }
-
 
         /// <summary>
         /// 問い合わせ文をログ出力。
@@ -144,31 +98,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #endregion
 
-        #region IDatabaseAccessor
+        #region IDatabaseContext
 
-        /// <inheritdoc cref="IDatabaseAccessor.DatabaseFactory"/>
-        public IDatabaseFactory DatabaseFactory { get; }
-
-        /// <inheritdoc cref="IDatabaseAccessor.BaseConnection"/>
-        public virtual IDbConnection BaseConnection => LazyConnection.Value;
-
-        /// <inheritdoc cref="IDatabaseAccessor.PauseConnection"/>
-        public virtual IDisposable PauseConnection()
-        {
-            ThrowIfDisposed();
-
-            if(!IsOpened || ConnectionPausing) {
-                return ActionDisposerHelper.CreateEmpty();
-            }
-
-            BaseConnection.Close();
-            IsOpened = false;
-            ConnectionPausing = true;
-            return new ActionDisposer(d => {
-                ConnectionPausing = false;
-                LazyConnection = new Lazy<IDbConnection>(OpenConnection);
-            });
-        }
+        public IDatabaseImplementation Implementation { get; }
 
         public IDataReader GetDataReader(IDatabaseTransaction? transaction, string statement, object? parameter)
         {
@@ -177,7 +109,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var result = BaseConnection.ExecuteReader(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.ExecuteReader(formattedStatement, parameter, transaction?.Transaction);
             return result;
         }
 
@@ -202,7 +134,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 cancellationToken: cancellationToken
             );
 
-            var result = BaseConnection.ExecuteReaderAsync(command);
+            var result = Connection.ExecuteReaderAsync(command);
             return result;
         }
 
@@ -269,7 +201,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = BaseConnection.ExecuteScalar<TResult>(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.ExecuteScalar<TResult>(formattedStatement, parameter, transaction?.Transaction);
             LoggingExecuteScalarResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -296,7 +228,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 transaction: transaction?.Transaction,
                 cancellationToken: cancellationToken
             );
-            var result = await BaseConnection.ExecuteScalarAsync<TResult>(command);
+            var result = await Connection.ExecuteScalarAsync<TResult>(command);
             LoggingExecuteScalarResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -318,7 +250,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = BaseConnection.Query<T>(formattedStatement, parameter, transaction?.Transaction, buffered);
+            var result = Connection.Query<T>(formattedStatement, parameter, transaction?.Transaction, buffered);
             LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -349,7 +281,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 cancellationToken: cancellationToken
             );
 
-            var result = await BaseConnection.QueryAsync<T>(command);
+            var result = await Connection.QueryAsync<T>(command);
             LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
@@ -371,7 +303,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = BaseConnection.Query(formattedStatement, parameter, transaction?.Transaction, buffered);
+            var result = Connection.Query(formattedStatement, parameter, transaction?.Transaction, buffered);
             LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -402,7 +334,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 cancellationToken: cancellationToken
             );
 
-            var result = await BaseConnection.QueryAsync(command);
+            var result = await Connection.QueryAsync(command);
             LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
@@ -424,7 +356,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = BaseConnection.QueryFirst<T>(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.QueryFirst<T>(formattedStatement, parameter, transaction?.Transaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -453,7 +385,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 cancellationToken: cancellationToken
             );
 
-            var result = await BaseConnection.QueryFirstAsync<T>(command);
+            var result = await Connection.QueryFirstAsync<T>(command);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
@@ -475,7 +407,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = BaseConnection.QueryFirstOrDefault<T>(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.QueryFirstOrDefault<T>(formattedStatement, parameter, transaction?.Transaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -504,7 +436,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 cancellationToken: cancellationToken
             );
 
-            return BaseConnection.QueryFirstOrDefaultAsync<T?>(command).ContinueWith(t => {
+            return Connection.QueryFirstOrDefaultAsync<T?>(command).ContinueWith(t => {
                 LoggingQueryResult(t.Result, Stopwatch.GetElapsedTime(startTime));
                 return t.Result;
             }, TaskContinuationOptions.OnlyOnRanToCompletion);
@@ -525,7 +457,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = BaseConnection.QuerySingle<T>(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.QuerySingle<T>(formattedStatement, parameter, transaction?.Transaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -553,7 +485,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 cancellationToken: cancellationToken
             );
 
-            var result = await BaseConnection.QuerySingleAsync<T>(command);
+            var result = await Connection.QuerySingleAsync<T>(command);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
@@ -574,7 +506,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = BaseConnection.QuerySingleOrDefault<T>(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.QuerySingleOrDefault<T>(formattedStatement, parameter, transaction?.Transaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -602,7 +534,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 transaction: transaction?.Transaction,
                 cancellationToken: cancellationToken
             );
-            var result = await BaseConnection.QuerySingleOrDefaultAsync<T>(command);
+            var result = await Connection.QuerySingleOrDefaultAsync<T>(command);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -623,7 +555,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = BaseConnection.Execute(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.Execute(formattedStatement, parameter, transaction?.Transaction);
             LoggingExecuteResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -650,7 +582,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 transaction: transaction?.Transaction,
                 cancellationToken: cancellationToken
             );
-            var result = await BaseConnection.ExecuteAsync(command);
+            var result = await Connection.ExecuteAsync(command);
             LoggingExecuteResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -662,86 +594,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
             return ExecuteAsync(null, statement, parameter, cancellationToken);
         }
-
-        /// <summary>
-        /// トランザクション開始。
-        /// </summary>
-        /// <returns></returns>
-        public virtual IDatabaseTransaction BeginTransaction()
-        {
-            ThrowIfDisposed();
-
-            return new DatabaseTransaction(true, this);
-        }
-
-        /// <summary>
-        /// トランザクション開始。
-        /// </summary>
-        /// <param name="isolationLevel">トランザクションの分離レベル。</param>
-        /// <returns></returns>
-        public virtual IDatabaseTransaction BeginTransaction(IsolationLevel isolationLevel)
-        {
-            ThrowIfDisposed();
-
-            return new DatabaseTransaction(true, this, isolationLevel);
-        }
-
-        public virtual IDatabaseTransaction BeginReadOnlyTransaction()
-        {
-            ThrowIfDisposed();
-
-            return new ReadOnlyDatabaseTransaction(true, this);
-        }
-        public virtual IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
-        {
-            ThrowIfDisposed();
-
-            return new ReadOnlyDatabaseTransaction(true, this, isolationLevel);
-        }
-
-        #endregion
-
-        #region DisposerBase
-
-        protected override void Dispose(bool disposing)
-        {
-            if(!IsDisposed) {
-                if(disposing) {
-                    if(LazyConnection.IsValueCreated) {
-                        BaseConnection.Dispose();
-                    }
-                }
-                IsOpened = false;
-                ConnectionPausing = false;
-            }
-
-            base.Dispose(disposing);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// <see cref="DatabaseAccessor"/>の型付き<see cref="DatabaseAccessor.BaseConnection"/>実装。
-    /// </summary>
-    /// <typeparam name="TDbConnection">具象<see cref="DatabaseAccessor.BaseConnection"/>。</typeparam>
-    public class DatabaseAccessor<TDbConnection>: DatabaseAccessor
-        where TDbConnection : IDbConnection
-    {
-        public DatabaseAccessor(IDatabaseFactory connectionFactory, ILogger logger)
-            : base(connectionFactory, logger)
-        { }
-
-        public DatabaseAccessor(IDatabaseFactory connectionFactory, ILoggerFactory loggerFactory)
-            : base(connectionFactory, loggerFactory)
-        { }
-
-        #region property
-
-        /// <summary>
-        /// 接続元。
-        /// </summary>
-        public TDbConnection Connection => (TDbConnection)BaseConnection;
 
         #endregion
     }
