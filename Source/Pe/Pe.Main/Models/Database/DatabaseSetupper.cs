@@ -151,29 +151,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
         }
 
 
-        private void Vacuum(IDatabaseContext context)
+        public void Cleanup(IDatabaseContext context, IDatabaseImplementation implementation)
         {
-            var statement = StatementLoader.LoadStatementByCurrent(GetType());
-            context.Execute(statement);
-        }
-
-        private void Reindex(IDatabaseContext context)
-        {
-            var statement = StatementLoader.LoadStatementByCurrent(GetType());
-            context.Execute(statement);
-        }
-
-        private void Analyze(IDatabaseContext context)
-        {
-            var statement = StatementLoader.LoadStatementByCurrent(GetType());
-            context.Execute(statement);
-        }
-
-        public void Adjust(IDatabaseContext context)
-        {
-            Reindex(context);
-            Vacuum(context);
-            Analyze(context);
+            var management = implementation.CreateManagement(context);
+            management.Refresh();
         }
 
         public void CheckForeignKey(IDatabaseContext context)

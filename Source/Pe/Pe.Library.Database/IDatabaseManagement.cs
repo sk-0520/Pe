@@ -243,6 +243,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <returns></returns>
         IList<DatabaseColumnItem> GetColumns(DatabaseResourceItem tableResource);
 
+        /// <summary>
+        /// アナライズやらなんやら。
+        /// </summary>
+        /// <remarks>DB 依存すぎる。</remarks>
+        void Refresh();
+
         #endregion
     }
 }

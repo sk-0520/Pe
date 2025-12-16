@@ -316,7 +316,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 var accessorPack = container.Get<IDatabaseAccessorPack>();
                 var databaseSetupper = container.Build<DatabaseSetupper>();
                 foreach(var accessor in accessorPack.Items) {
-                    databaseSetupper.Adjust(accessor);
+                    databaseSetupper.Cleanup(accessor, accessor.DatabaseFactory.CreateImplementation());
                 }
 
                 settings.Main.CopyTo(environmentParameters.MainFile.FullName, true);

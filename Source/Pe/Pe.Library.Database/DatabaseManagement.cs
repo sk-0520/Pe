@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Database
@@ -24,6 +25,11 @@ namespace ContentTypeTextNet.Pe.Library.Database
         }
 
         public virtual IList<DatabaseColumnItem> GetColumns(DatabaseResourceItem tableResource)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Refresh()
         {
             throw new NotImplementedException();
         }

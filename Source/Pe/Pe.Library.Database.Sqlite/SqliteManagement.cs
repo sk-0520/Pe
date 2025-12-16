@@ -95,6 +95,33 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
             );
         }
 
+        private void Vacuum()
+        {
+            var statement = """
+                vacuum
+                ;
+            """;
+            Context.Execute(statement);
+        }
+
+        private void Reindex()
+        {
+            var statement = """
+                reindex
+                ;
+            """;
+            Context.Execute(statement);
+        }
+        
+        private void Analyze()
+        {
+            var statement = """
+                analyze
+                ;
+            """;
+            Context.Execute(statement);
+        }
+
         #endregion
 
         #region DatabaseManagementWithContext
@@ -186,6 +213,14 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
 
             return items;
         }
+
+        public override void Refresh()
+        {
+            Reindex();
+            Vacuum();
+            Analyze();
+        }
+
 
         #endregion
     }
