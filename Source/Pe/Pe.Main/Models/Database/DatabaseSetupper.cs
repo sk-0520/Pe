@@ -10,6 +10,7 @@ using ContentTypeTextNet.Pe.Main.Models.Database.Setupper;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database
 {
@@ -114,7 +115,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
                 if(lastVersion < version) {
                     Logger.LogInformation("マイグレーション対象: {0} < {1}", lastVersion, version);
                     var setupper = (SetupperBase?)Activator.CreateInstance(setupperType, new object[] { IdFactory, StatementLoader, LoggerFactory });
-                    Throws.ThrowIfNull(setupper);
+                    Debug.Assert(setupper is not null);
                     Execute(accessorPack, dto, setupper);
                 }
             }

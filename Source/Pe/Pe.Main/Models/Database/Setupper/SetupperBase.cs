@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Setupper
             get
             {
                 var databaseSetupVersion = GetType().GetCustomAttribute<DatabaseSetupVersionAttribute>();
-                Throws.ThrowIfNull(databaseSetupVersion);
+                Debug.Assert(databaseSetupVersion is not null);
                 return databaseSetupVersion.Version;
             }
         }
