@@ -15,7 +15,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         #region function
 
         [Fact]
-        public void ExecuteRegex_0()
+        public void ExecuteRegex_0_Test()
         {
             var dir = new DirectoryInfo("nul");
             var fileRotator = new FileRotator();
@@ -24,7 +24,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         }
 
         [Fact]
-        public void ExecuteRegex()
+        public void ExecuteRegexTest()
         {
             var testIO = TestIO.InitializeMethod(this);
             testIO.Work.CreateEmptyFile("target_1.dmy");
@@ -36,8 +36,214 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             var fileRotator = new FileRotator();
             var actual = fileRotator.ExecuteRegex(testIO.Work.Directory, new TestRegex("^target"), 3, ex => true);
             Assert.Equal(2, actual);
+            var actualFiles = testIO.Work.Directory.GetFiles();
+            Assert.Equal(3, actualFiles.Length);
+            Assert.Contains(actualFiles, a => a.Name == "target_3.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_4.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_5.dmy");
         }
 
+        [Fact]
+        public void ExecuteRegex_Asc_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            testIO.Work.CreateEmptyFile("target_1.dmy");
+            testIO.Work.CreateEmptyFile("target_2.dmy");
+            testIO.Work.CreateEmptyFile("target_3.dmy");
+            testIO.Work.CreateEmptyFile("target_4.dmy");
+            testIO.Work.CreateEmptyFile("target_5.dmy");
+
+            var fileRotator = new FileRotator();
+            var actual = fileRotator.ExecuteRegex(testIO.Work.Directory, new TestRegex("^target"), 3, Common.Linq.Order.Ascending, ex => true);
+            Assert.Equal(2, actual);
+            var actualFiles = testIO.Work.Directory.GetFiles();
+            Assert.Equal(3, actualFiles.Length);
+            Assert.Contains(actualFiles, a => a.Name == "target_1.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_2.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_3.dmy");
+        }
+
+        [Fact]
+        public void ExecuteWildcardTest()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            testIO.Work.CreateEmptyFile("target_1.dmy");
+            testIO.Work.CreateEmptyFile("target_2.dmy");
+            testIO.Work.CreateEmptyFile("target_3.dmy");
+            testIO.Work.CreateEmptyFile("target_4.dmy");
+            testIO.Work.CreateEmptyFile("target_5.dmy");
+
+            var fileRotator = new FileRotator();
+            var actual = fileRotator.ExecuteWildcard(testIO.Work.Directory, "*.dmy", 3, ex => true);
+            Assert.Equal(2, actual);
+            var actualFiles = testIO.Work.Directory.GetFiles();
+            Assert.Equal(3, actualFiles.Length);
+            Assert.Contains(actualFiles, a => a.Name == "target_3.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_4.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_5.dmy");
+        }
+
+        [Fact]
+        public void ExecuteWildcard_dm_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            testIO.Work.CreateEmptyFile("target_1.dmy");
+            testIO.Work.CreateEmptyFile("target_2.dmy");
+            testIO.Work.CreateEmptyFile("target_3.dmy");
+            testIO.Work.CreateEmptyFile("target_4.dmy");
+            testIO.Work.CreateEmptyFile("target_5.dmy");
+
+            var fileRotator = new FileRotator();
+            var actual = fileRotator.ExecuteWildcard(testIO.Work.Directory, "*.dm", 3, ex => true);
+            Assert.Equal(0, actual);
+            var actualFiles = testIO.Work.Directory.GetFiles();
+            Assert.Equal(5, actualFiles.Length);
+            Assert.Contains(actualFiles, a => a.Name == "target_1.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_2.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_3.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_4.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_5.dmy");
+        }
+
+        [Fact]
+        public void ExecuteWildcard_Asc_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            testIO.Work.CreateEmptyFile("target_1.dmy");
+            testIO.Work.CreateEmptyFile("target_2.dmy");
+            testIO.Work.CreateEmptyFile("target_3.dmy");
+            testIO.Work.CreateEmptyFile("target_4.dmy");
+            testIO.Work.CreateEmptyFile("target_5.dmy");
+
+            var fileRotator = new FileRotator();
+            var actual = fileRotator.ExecuteWildcard(testIO.Work.Directory, "*.dmy", 3, Common.Linq.Order.Ascending, ex => true);
+            Assert.Equal(2, actual);
+            var actualFiles = testIO.Work.Directory.GetFiles();
+            Assert.Equal(3, actualFiles.Length);
+            Assert.Contains(actualFiles, a => a.Name == "target_1.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_2.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_3.dmy");
+        }
+
+        [Fact]
+        public void ExecuteRegex_Single_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            testIO.Work.CreateEmptyFile("target_1.dmy");
+            testIO.Work.CreateEmptyFile("target_2.dmy");
+            testIO.Work.CreateEmptyFile("target_3.dmy");
+            testIO.Work.CreateEmptyFile("target_4.dmy");
+            testIO.Work.CreateEmptyFile("target_5.dmy");
+
+            testIO.Work.CreateEmptyFile("target_1.ymd");
+            testIO.Work.CreateEmptyFile("target_2.ymd");
+            testIO.Work.CreateEmptyFile("target_3.ymd");
+            testIO.Work.CreateEmptyFile("target_4.ymd");
+            testIO.Work.CreateEmptyFile("target_5.ymd");
+
+            var fileRotator = new FileRotator();
+            var actual = fileRotator.ExecuteExtensions(testIO.Work.Directory, ["dmy"], 3, ex => true);
+            Assert.Equal(2, actual);
+            var actualFiles = testIO.Work.Directory.GetFiles();
+            Assert.Equal(8, actualFiles.Length);
+            Assert.Contains(actualFiles, a => a.Name == "target_3.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_4.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_5.dmy");
+        }
+
+        [Fact]
+        public void ExecuteRegex_Double_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            testIO.Work.CreateEmptyFile("target_1.dmy");
+            testIO.Work.CreateEmptyFile("target_2.dmy");
+            testIO.Work.CreateEmptyFile("target_3.dmy");
+            testIO.Work.CreateEmptyFile("target_4.dmy");
+            testIO.Work.CreateEmptyFile("target_5.dmy");
+
+            testIO.Work.CreateEmptyFile("target_1.ymd");
+            testIO.Work.CreateEmptyFile("target_2.ymd");
+            testIO.Work.CreateEmptyFile("target_3.ymd");
+            testIO.Work.CreateEmptyFile("target_4.ymd");
+            testIO.Work.CreateEmptyFile("target_5.ymd");
+
+
+            var fileRotator = new FileRotator();
+            var actual = fileRotator.ExecuteExtensions(testIO.Work.Directory, ["dmy", "ymd"], 6, ex => true);
+            Assert.Equal(4, actual);
+            var actualFiles = testIO.Work.Directory.GetFiles();
+            Assert.Equal(6, actualFiles.Length);
+            Assert.Contains(actualFiles, a => a.Name == "target_3.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_4.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_5.dmy");
+
+            Assert.Contains(actualFiles, a => a.Name == "target_3.ymd");
+            Assert.Contains(actualFiles, a => a.Name == "target_4.ymd");
+            Assert.Contains(actualFiles, a => a.Name == "target_5.ymd");
+        }
+
+
+        [Fact]
+        public void ExecuteRegex_Single_Asc_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            testIO.Work.CreateEmptyFile("target_1.dmy");
+            testIO.Work.CreateEmptyFile("target_2.dmy");
+            testIO.Work.CreateEmptyFile("target_3.dmy");
+            testIO.Work.CreateEmptyFile("target_4.dmy");
+            testIO.Work.CreateEmptyFile("target_5.dmy");
+
+            testIO.Work.CreateEmptyFile("target_1.ymd");
+            testIO.Work.CreateEmptyFile("target_2.ymd");
+            testIO.Work.CreateEmptyFile("target_3.ymd");
+            testIO.Work.CreateEmptyFile("target_4.ymd");
+            testIO.Work.CreateEmptyFile("target_5.ymd");
+
+            var fileRotator = new FileRotator();
+            var actual = fileRotator.ExecuteExtensions(testIO.Work.Directory, ["dmy"], 3, Common.Linq.Order.Ascending, ex => true);
+            Assert.Equal(2, actual);
+            var actualFiles = testIO.Work.Directory.GetFiles();
+            Assert.Equal(8, actualFiles.Length);
+            Assert.Contains(actualFiles, a => a.Name == "target_1.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_2.dmy");
+
+            Assert.Contains(actualFiles, a => a.Name == "target_1.ymd");
+            Assert.Contains(actualFiles, a => a.Name == "target_2.ymd");
+            Assert.Contains(actualFiles, a => a.Name == "target_3.ymd");
+            Assert.Contains(actualFiles, a => a.Name == "target_4.ymd");
+            Assert.Contains(actualFiles, a => a.Name == "target_5.ymd");
+        }
+
+        [Fact]
+        public void ExecuteRegex_Double_Asc_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            testIO.Work.CreateEmptyFile("target_1.dmy");
+            testIO.Work.CreateEmptyFile("target_2.dmy");
+            testIO.Work.CreateEmptyFile("target_3.dmy");
+            testIO.Work.CreateEmptyFile("target_4.dmy");
+            testIO.Work.CreateEmptyFile("target_5.dmy");
+
+            testIO.Work.CreateEmptyFile("target_1.ymd");
+            testIO.Work.CreateEmptyFile("target_2.ymd");
+            testIO.Work.CreateEmptyFile("target_3.ymd");
+            testIO.Work.CreateEmptyFile("target_4.ymd");
+            testIO.Work.CreateEmptyFile("target_5.ymd");
+
+
+            var fileRotator = new FileRotator();
+            var actual = fileRotator.ExecuteExtensions(testIO.Work.Directory, ["dmy", "ymd"], 6, Common.Linq.Order.Ascending, ex => true);
+            Assert.Equal(4, actual);
+            var actualFiles = testIO.Work.Directory.GetFiles();
+            Assert.Equal(6, actualFiles.Length);
+            Assert.Contains(actualFiles, a => a.Name == "target_1.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_2.dmy");
+            Assert.Contains(actualFiles, a => a.Name == "target_3.dmy");
+
+            Assert.Contains(actualFiles, a => a.Name == "target_1.ymd");
+            Assert.Contains(actualFiles, a => a.Name == "target_2.ymd");
+            Assert.Contains(actualFiles, a => a.Name == "target_3.ymd");
+        }
         #endregion
     }
 }
