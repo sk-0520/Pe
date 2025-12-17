@@ -158,7 +158,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
             }
         }
 
-        private void LoadAddonCore(IDatabaseContextsPack databaseContextsPack)
+        private void LoadAddonCore(IDatabaseContextPack databaseContextsPack)
         {
             Debug.Assert(Kind == LauncherItemKind.Addon);
             Debug.Assert(LauncherItemPlugin == null);
@@ -231,7 +231,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
             }
         }
 
-        internal void SaveLauncherPreferences(IDatabaseContextsPack databaseContextsPack)
+        internal void SaveLauncherPreferences(IDatabaseContextPack databaseContextsPack)
         {
             Debug.Assert(LauncherItemPlugin != null);
             Debug.Assert(LauncherItemSupportedPreferences);
@@ -352,7 +352,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
         /// </summary>
         /// <param name="commandsPack"></param>
         /// <returns>アイコンの削除が必要か。</returns>
-        public bool SaveItem(IDatabaseContextsPack commandsPack)
+        public bool SaveItem(IDatabaseContextPack commandsPack)
         {
             ThrowIfDisposed();
 

@@ -23,7 +23,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
     {
         public DatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
         {
-            Logger = loggerFactory.CreateLogger(GetType());
+            LoggerFactory = loggerFactory;
+            Logger = LoggerFactory.CreateLogger(GetType());
             DatabaseFactory = databaseFactory;
             LazyConnection = new Lazy<IDbConnection>(OpenConnection);
             Implementation = DatabaseFactory.CreateImplementation();
@@ -34,6 +35,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         private Lazy<IDbConnection> LazyConnection { get; set; }
 
         protected ILogger Logger { get; }
+        protected ILoggerFactory LoggerFactory { get; }
 
         /// <summary>
         /// データベース接続が開いているか。

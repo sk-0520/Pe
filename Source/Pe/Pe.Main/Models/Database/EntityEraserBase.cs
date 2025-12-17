@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
     /// </remarks>
     public abstract class EntityEraserBase
     {
-        protected EntityEraserBase(IDatabaseContextsPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+        protected EntityEraserBase(IDatabaseContextPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
             : this(contextsPack.Main, contextsPack.Large, contextsPack.Temporary, statementLoader, loggerFactory)
         { }
 

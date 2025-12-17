@@ -66,8 +66,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         protected DirectoryInfo GetTemporaryDirectory(IPluginIdentifiers pluginIdentifiers) => GetDirectory(pluginIdentifiers, EnvironmentParameters.UserPluginDataDirectory, BaseDirectoryName);
 
 
-        public IDatabaseContextsPack BarrierRead() => DatabaseBarrierPack.WaitRead();
-        public IDatabaseContextsPack BarrierWrite() => DatabaseBarrierPack.WaitWrite();
+        public IDatabaseContextPack BarrierRead() => DatabaseBarrierPack.WaitRead();
+        public IDatabaseContextPack BarrierWrite() => DatabaseBarrierPack.WaitWrite();
 
         protected virtual PluginFiles CreatePluginFile(IPluginInformation pluginInformation)
         {
@@ -88,7 +88,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         /// <param name="databaseContextsPack"></param>
         /// <param name="isReadOnly"></param>
         /// <returns></returns>
-        protected virtual PluginPersistence CreatePluginPersistenceContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack, bool isReadOnly)
+        protected virtual PluginPersistence CreatePluginPersistenceContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack, bool isReadOnly)
         {
             var pluginPersistence = new PluginPersistence(
                 new PluginPersistenceStorage(pluginInformation.PluginIdentifiers, pluginInformation.PluginVersions, databaseContextsPack.Main, DatabaseStatementLoader, isReadOnly, LoggerFactory),
@@ -135,7 +135,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             return pluginPersistence;
         }
 
-        protected virtual PluginStorage CreatePluginStorage(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack, bool isReadOnly)
+        protected virtual PluginStorage CreatePluginStorage(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack, bool isReadOnly)
         {
             var pluginStorage = new PluginStorage(
                 CreatePluginFile(pluginInformation),
@@ -145,7 +145,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             return pluginStorage;
         }
 
-        public PluginContext CreateContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack, bool isReadOnly)
+        public PluginContext CreateContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack, bool isReadOnly)
         {
             var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, isReadOnly);
             return new PluginContext(pluginInformation.PluginIdentifiers, pluginStorage);

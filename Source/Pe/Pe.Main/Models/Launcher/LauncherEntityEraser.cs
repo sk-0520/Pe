@@ -15,7 +15,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 {
     internal class LauncherEntityEraser: EntityEraserBase
     {
-        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContextsPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContextPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
             : base(contextsPack, statementLoader, loggerFactory)
         {
             LauncherItemId = launcherItemId;

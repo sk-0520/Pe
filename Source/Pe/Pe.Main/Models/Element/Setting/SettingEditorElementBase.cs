@@ -71,9 +71,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             IsLoaded = true;
         }
 
-        protected abstract void SaveImpl(IDatabaseContextsPack contextsPack);
+        protected abstract void SaveImpl(IDatabaseContextPack contextsPack);
 
-        public void Save(IDatabaseContextsPack contextsPack)
+        public void Save(IDatabaseContextPack contextsPack)
         {
             if(!IsLoaded) {
                 throw new InvalidOperationException(nameof(IsLoaded));

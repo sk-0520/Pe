@@ -10,7 +10,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Note
 {
     public class NoteEntityEraser: EntityEraserBase
     {
-        public NoteEntityEraser(NoteId noteId, IDatabaseContextsPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+        public NoteEntityEraser(NoteId noteId, IDatabaseContextPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
             : base(contextsPack, statementLoader, loggerFactory)
         {
             NoteId = noteId;

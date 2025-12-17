@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using System.Threading;
-using ContentTypeTextNet.Pe.Library.Common;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Library.Common;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
@@ -14,46 +15,16 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// <remarks>
     /// <para>基本的にはユーザーコードで登場せず <see cref="IDatabaseContext"/>がすべて上位から良しなに対応する。</para>
     /// </remarks>
-    public class DatabaseTransaction: DisposerBase, IDatabaseTransaction
+    public class DatabaseTransaction: DatabaseContext, IDatabaseTransaction
     {
-        /// <summary>
-        /// 生成。
-        /// </summary>
-        /// <param name="beginTransaction">トランザクションを開始するか。</param>
-        /// <param name="databaseAccessor">アクセサ。</param>
-        public DatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor)
+        public DatabaseTransaction(IDbConnection connection, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(connection, connection.BeginTransaction(), implementation, loggerFactory)
         {
-            DatabaseAccessor = databaseAccessor;
-            Implementation = DatabaseAccessor.DatabaseFactory.CreateImplementation();
-
-            if(beginTransaction) {
-                Transaction = DatabaseAccessor.BaseConnection.BeginTransaction();
-            } else {
-                Transaction = null;
-            }
         }
 
-        /// <summary>
-        /// 生成。
-        /// </summary>
-        /// <param name="beginTransaction">トランザクションを開始するか。</param>
-        /// <param name="databaseAccessor">アクセサ。</param>
-        /// <param name="isolationLevel"><see cref="IsolationLevel"/></param>
-        public DatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor, IsolationLevel isolationLevel)
-        {
-            DatabaseAccessor = databaseAccessor;
-            Implementation = DatabaseAccessor.DatabaseFactory.CreateImplementation();
-
-            if(beginTransaction) {
-                Transaction = DatabaseAccessor.BaseConnection.BeginTransaction(isolationLevel);
-            } else {
-                Transaction = null;
-            }
-        }
 
         #region property
 
-        private IDatabaseAccessor DatabaseAccessor { get; [Unused(UnusedKinds.Dispose)] set; }
         public bool Committed { get; private set; }
 
         #endregion
@@ -64,8 +35,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <see cref="IDatabaseContext"/>としての自身を返す。
         /// </summary>
         public IDatabaseContext Context => this;
-        public IDbTransaction? Transaction { get; [Unused(UnusedKinds.Dispose)] private set; }
-        public IDatabaseImplementation Implementation { get; }
 
         public virtual void Commit()
         {

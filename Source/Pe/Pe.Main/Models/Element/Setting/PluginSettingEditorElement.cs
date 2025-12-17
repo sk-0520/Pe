@@ -143,7 +143,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         /// プラグイン側の保存処理。
         /// </summary>
         /// <param name="databaseContextsPack"></param>
-        public void SavePreferences(IDatabaseContextsPack databaseContextsPack)
+        public void SavePreferences(IDatabaseContextPack databaseContextsPack)
         {
             if(!SupportedPreferences) {
                 throw new InvalidOperationException(nameof(SupportedPreferences));
@@ -185,7 +185,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         /// <para>アンインストールとかね。将来的には非活性もここでやる。</para>
         /// </remarks>
         /// <param name="contextsPack"></param>
-        public void Save(IDatabaseContextsPack contextsPack)
+        public void Save(IDatabaseContextPack contextsPack)
         {
             var pluginsEntityDao = new PluginsEntityDao(contextsPack.Main.Context, DatabaseStatementLoader, contextsPack.Main.Implementation, LoggerFactory);
 

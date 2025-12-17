@@ -12,18 +12,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </remarks>
     public interface IDatabaseTransaction: IDatabaseContext, IDisposable
     {
-        #region property
-
-        /// <summary>
-        /// CRL上のトランザクション実体。
-        /// </summary>
-        /// <remarks>
-        /// <para>トランザクションを開始しない場合 <see langword="null" /> となり、扱いは <see cref="IDatabaseTransaction"/> 実装側依存となる。</para>
-        /// </remarks>
-        IDbTransaction? Transaction { get; }
-
-        #endregion
-
         #region function
 
         /// <summary>

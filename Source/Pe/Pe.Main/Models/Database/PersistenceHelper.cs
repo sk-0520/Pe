@@ -10,7 +10,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
     {
         #region define
 
-        public class PersistenceContextsPack: ApplicationDatabaseContextsPack
+        public class PersistenceContextsPack: ApplicationDatabaseContextPack
         {
             public PersistenceContextsPack(IDatabaseTransaction mainTransaction, IDatabaseTransaction fileTransaction, IDatabaseTransaction temporaryTransaction, IDatabaseCommonStatus commonStatus)
                 : base(

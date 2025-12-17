@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             LauncherItems.RemoveAt(index);
         }
 
-        public void Save(IDatabaseContextsPack pack)
+        public void Save(IDatabaseContextPack pack)
         {
             ThrowIfDisposed();
 

@@ -38,12 +38,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         #region function
 
-        public void Save(IDatabaseContextsPack contextsPack)
+        public void Save(IDatabaseContextPack contextsPack)
         {
             SaveImpl(contextsPack);
         }
 
-        protected abstract void SaveImpl(IDatabaseContextsPack contextsPack);
+        protected abstract void SaveImpl(IDatabaseContextPack contextsPack);
 
         #endregion
     }
@@ -101,7 +101,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
             var appExecuteSettingEntityDao = new AppExecuteSettingEntityDao(contextsPack.Main.Context, DatabaseStatementLoader, LoggerFactory);
             var data = new SettingAppExecuteSettingData() {
@@ -178,7 +178,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
             var appGeneralSettingEntityDao = new AppGeneralSettingEntityDao(contextsPack.Main.Context, DatabaseStatementLoader, LoggerFactory);
             var data = new SettingAppGeneralSettingData() {
@@ -234,7 +234,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
             var appUpdateSettingEntityDao = new AppUpdateSettingEntityDao(contextsPack.Main.Context, DatabaseStatementLoader, LoggerFactory);
             var data = new SettingAppUpdateSettingData() {
@@ -277,7 +277,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
             var appNotifyLogSettingEntityDao = new AppNotifyLogSettingEntityDao(contextsPack.Main.Context, DatabaseStatementLoader, LoggerFactory);
             var data = new SettingAppNotifyLogSettingData() {
@@ -326,7 +326,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
             var appLauncherToolbarSettingEntityDao = new AppLauncherToolbarSettingEntityDao(contextsPack.Main.Context, DatabaseStatementLoader, LoggerFactory);
             var data = new AppLauncherToolbarSettingData() {
@@ -379,7 +379,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             HideWaitTime = setting.HideWaitTime;
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
             Debug.Assert(Font != null);
 
@@ -461,7 +461,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             CaptionPosition = setting.CaptionPosition;
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
             Debug.Assert(Font != null);
 
@@ -539,7 +539,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             IsTopmost = setting.IsTopmost;
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
             Debug.Assert(Font != null);
 
@@ -607,7 +607,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
             var appProxySettingEntityDao = new AppProxySettingEntityDao(contextsPack.Main.Context, DatabaseStatementLoader, LoggerFactory);
             var data = new AppProxySettingData() {

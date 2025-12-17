@@ -15,7 +15,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
     /// </summary>
     public class PluginUninstaller
     {
-        public PluginUninstaller(IDatabaseContextsPack databaseContextsPack, IDatabaseStatementLoader statementLoader, EnvironmentParameters environmentParameters, ILoggerFactory loggerFactory)
+        public PluginUninstaller(IDatabaseContextPack databaseContextsPack, IDatabaseStatementLoader statementLoader, EnvironmentParameters environmentParameters, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         #region property
 
-        private IDatabaseContextsPack DatabaseContextsPack { get; }
+        private IDatabaseContextPack DatabaseContextsPack { get; }
         private IDatabaseStatementLoader StatementLoader { get; }
         private EnvironmentParameters EnvironmentParameters { get; }
 

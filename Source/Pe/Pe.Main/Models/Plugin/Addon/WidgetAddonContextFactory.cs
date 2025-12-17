@@ -15,13 +15,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         #region function
 
 
-        public WidgetAddonCreateContext CreateCreateContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack)
+        public WidgetAddonCreateContext CreateCreateContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
         {
             var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, true);
             return new WidgetAddonCreateContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 
-        public WidgetAddonClosedContext CreateClosedContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack)
+        public WidgetAddonClosedContext CreateClosedContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
         {
             var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, false);
             return new WidgetAddonClosedContext(pluginInformation.PluginIdentifiers, pluginStorage);

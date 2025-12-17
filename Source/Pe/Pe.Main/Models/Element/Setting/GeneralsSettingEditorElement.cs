@@ -69,7 +69,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             }
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
             foreach(var editor in Editors) {
                 editor.Save(contextsPack);
