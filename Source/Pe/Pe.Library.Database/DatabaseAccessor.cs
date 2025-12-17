@@ -117,6 +117,10 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return new ActionDisposer(d => {
                 ConnectionPausing = false;
                 LazyConnection = new Lazy<IDbConnection>(OpenConnection);
+                if(this._context is not null) {
+                    Context.Dispose();
+                }
+                this._context = null;
             });
         }
 

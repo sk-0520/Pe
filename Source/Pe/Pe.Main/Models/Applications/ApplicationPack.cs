@@ -179,9 +179,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         #endregion
     }
 
-    internal class ApplicationDatabaseContextPack: TApplicationPackBase<IDatabaseContext, DatabaseContext>, IDatabaseContextPack
+    internal class ApplicationDatabaseContextPack: TApplicationPackBase<IDatabaseContext, IDatabaseContext>, IDatabaseContextPack
     {
-        public ApplicationDatabaseContextPack(DatabaseContext main, DatabaseContext large, DatabaseContext temporary, IDatabaseCommonStatus commonStatus)
+        public ApplicationDatabaseContextPack(IDatabaseContext main, IDatabaseContext large, IDatabaseContext temporary, IDatabaseCommonStatus commonStatus)
             : base(main, large, temporary)
         {
             CommonStatus = commonStatus;
@@ -220,7 +220,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
         internal class Barriers: ApplicationDatabaseContextPack
         {
-            public Barriers(DatabaseContext main, DatabaseContext large, DatabaseContext temporary, IDatabaseCommonStatus commonStatus, bool isReadOnly)
+            public Barriers(IDatabaseContext main, IDatabaseContext large, IDatabaseContext temporary, IDatabaseCommonStatus commonStatus, bool isReadOnly)
                 : base(main, large, temporary, commonStatus)
             {
                 IsReadOnly = isReadOnly;
@@ -287,14 +287,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             );
         }
 
-        private DatabaseTransaction WaitReadCore(IDatabaseBarrier barrier)
+        private IDatabaseTransaction WaitReadCore(IDatabaseBarrier barrier)
         {
-            return (DatabaseTransaction)barrier.WaitRead();
+            var reader = barrier.WaitRead();
+            return reader;
         }
 
-        private DatabaseTransaction WaitWriteCore(IDatabaseBarrier barrier)
+        private IDatabaseTransaction WaitWriteCore(IDatabaseBarrier barrier)
         {
-            return (DatabaseTransaction)barrier.WaitWrite();
+            var writer = barrier.WaitWrite();
+            return writer;
         }
 
         #endregion
