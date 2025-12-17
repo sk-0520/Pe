@@ -54,7 +54,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup
         {
             IEnumerable<LauncherItemId> launcherItemIds;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherItemsLoader = new LauncherItemsLoader(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherItemsLoader = new LauncherItemsLoader(context, DatabaseStatementLoader, LoggerFactory);
                 launcherItemIds = launcherItemsLoader.LoadLauncherItemIds(LauncherGroupId, Kind);
             }
 

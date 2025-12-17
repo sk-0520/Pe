@@ -136,13 +136,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             IList<PluginStateData> pluginStates;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var pluginsEntityDao = new PluginsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var pluginsEntityDao = new PluginsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 pluginStates = pluginsEntityDao.SelectPluginStateData().ToList();
             }
 
             IList<PluginInstallData> installDataItems;
             using(var context = TemporaryDatabaseBarrier.WaitRead()) {
-                var installPluginsEntityDao = new InstallPluginsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var installPluginsEntityDao = new InstallPluginsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 installDataItems = installPluginsEntityDao.SelectInstallPlugins().ToList();
             }
 

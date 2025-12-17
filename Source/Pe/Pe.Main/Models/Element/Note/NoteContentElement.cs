@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 return dao.SelectExistsContent(NoteId);
             }
         }
@@ -160,7 +160,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         private NoteViewOffsetData? GetViewOffsetCore(IDatabaseContext context)
         {
-            var dao = new NoteViewOffsetsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+            var dao = new NoteViewOffsetsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
             return dao.SelectNoteViewOffset(NoteId);
         }
 
@@ -260,7 +260,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
 
             MainDatabaseDelayWriter.Stock(c => {
-                var dao = new NoteContentsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var dao = new NoteContentsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 var data = new NoteContentData() {
                     NoteId = NoteId,
                     ContentKind = contentKind,
@@ -384,7 +384,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 dao.UpdateLinkDisabled(NoteId, DatabaseCommonStatus.CreateCurrentAccount());
 
                 context.Commit();

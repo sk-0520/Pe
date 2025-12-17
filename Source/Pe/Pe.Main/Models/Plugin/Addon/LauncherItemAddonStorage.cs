@@ -83,7 +83,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         public IEnumerable<string> GetKeys(LauncherItemId launcherItemId)
         {
             return GetKeysImpl((d) => {
-                var pluginLauncherItemSettingsEntityDao = new PluginLauncherItemSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.DatabaseContexts.Implementation, d.LoggerFactory);
+                var pluginLauncherItemSettingsEntityDao = new PluginLauncherItemSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.LoggerFactory);
                 return pluginLauncherItemSettingsEntityDao.SelectPluginLauncherItemSettingKeys(PluginId, launcherItemId);
             });
         }
@@ -91,7 +91,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         public bool Exists(LauncherItemId launcherItemId, string key)
         {
             return ExistsImpl((launcherItemId, key), (p, d) => {
-                var pluginLauncherItemSettingsEntityDao = new PluginLauncherItemSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.DatabaseContexts.Implementation, d.LoggerFactory);
+                var pluginLauncherItemSettingsEntityDao = new PluginLauncherItemSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.LoggerFactory);
                 return pluginLauncherItemSettingsEntityDao.SelectExistsPluginLauncherItemSetting(PluginId, launcherItemId, NormalizeKey(key));
             });
         }
@@ -99,7 +99,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         public bool TryGet<TValue>(LauncherItemId launcherItemId, string key, [MaybeNullWhen(returnValue: false)] out TValue value)
         {
             return TryGetImpl((launcherItemId, key), (p, d) => {
-                var pluginLauncherItemSettingsEntityDao = new PluginLauncherItemSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.DatabaseContexts.Implementation, d.LoggerFactory);
+                var pluginLauncherItemSettingsEntityDao = new PluginLauncherItemSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.LoggerFactory);
                 return pluginLauncherItemSettingsEntityDao.SelectPluginLauncherItemValue(PluginId, p.launcherItemId, NormalizeKey(p.key));
             }, out value);
         }
@@ -108,7 +108,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
             where TValue : notnull
         {
             return SetImpl(value, format, (launcherItemId, key), (p, d, v) => {
-                var pluginLauncherItemSettingsEntityDao = new PluginLauncherItemSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.DatabaseContexts.Implementation, d.LoggerFactory);
+                var pluginLauncherItemSettingsEntityDao = new PluginLauncherItemSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.LoggerFactory);
                 var normalizedKey = NormalizeKey(p.key);
                 if(pluginLauncherItemSettingsEntityDao.SelectExistsPluginLauncherItemSetting(PluginId, p.launcherItemId, normalizedKey)) {
                     pluginLauncherItemSettingsEntityDao.UpdatePluginLauncherItemSetting(PluginId, p.launcherItemId, normalizedKey, v, DatabaseCommonStatus.CreatePluginAccount(PluginIdentifiers, PluginVersions));
@@ -126,7 +126,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         public bool Delete(LauncherItemId launcherItemId, string key)
         {
             return DeleteImpl((launcherItemId, key), (p, d) => {
-                var pluginLauncherItemSettingsEntityDao = new PluginLauncherItemSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.DatabaseContexts.Implementation, d.LoggerFactory);
+                var pluginLauncherItemSettingsEntityDao = new PluginLauncherItemSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.LoggerFactory);
                 return pluginLauncherItemSettingsEntityDao.DeletePluginLauncherItemSetting(PluginId, p.launcherItemId, NormalizeKey(p.key));
             });
         }

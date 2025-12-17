@@ -275,7 +275,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
         public void RemoveLauncherItem(LauncherGroupId launcherGroupId, LauncherItemId launcherItemId, int index)
         {
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherGroupItemsEntityDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherGroupItemsEntityDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 launcherGroupItemsEntityDao.DeleteGroupItemsLauncherItem(launcherGroupId, launcherItemId, index);
 
                 context.Commit();
@@ -392,7 +392,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             IsOpenedAppMenu = false;
 
             MainDatabaseDelayWriter.Stock(c => {
-                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 dao.UpdateToolbarPosition(LauncherToolbarId, ToolbarPosition, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -418,7 +418,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             IsOpenedAppMenu = false;
 
             MainDatabaseDelayWriter.Stock(c => {
-                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 dao.UpdateIsAutoHide(LauncherToolbarId, IsAutoHide, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -431,7 +431,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             IsOpenedAppMenu = false;
 
             MainDatabaseDelayWriter.Stock(c => {
-                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 dao.UpdateIsVisible(LauncherToolbarId, IsVisible, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -530,7 +530,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             var launcherItemIds = LauncherItems.Select(a => a.LauncherItemId).ToArray();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 launcherGroupItemsDao.DeleteGroupItemsByLauncherGroupId(launcherGroupId);
 
                 var currentMaxSequence = launcherGroupItemsDao.SelectMaxSequence(launcherGroupId);

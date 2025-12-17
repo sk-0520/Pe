@@ -271,14 +271,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.ExtendsExecute
 
             if(result.Success) {
                 using(var context = MainDatabaseBarrier.WaitWrite()) {
-                    var launcherItemsEntityDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                    var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                    var launcherItemsEntityDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                    var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
 
                     launcherItemsEntityDao.UpdateExecuteCountIncrement(LauncherItemId, DatabaseCommonStatus.CreateCurrentAccount());
 
                     var item = launcherItemsEntityDao.SelectLauncherItem(LauncherItemId);
                     if(item.Kind == LauncherItemKind.File) {
-                        var launcherFilesEntityDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                        var launcherFilesEntityDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                         var launcherFileData = launcherFilesEntityDao.SelectFile(LauncherItemId);
 
                         launcherItemHistoriesEntityDao.DeleteHistory(LauncherItemId, LauncherHistoryKind.Option, fileData.Option);

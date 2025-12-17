@@ -654,7 +654,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         public IEnumerable<string> GetKeys()
         {
             return GetKeysImpl((d) => {
-                var pluginSettingsEntityDao = new PluginSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.DatabaseContexts.Implementation, d.LoggerFactory);
+                var pluginSettingsEntityDao = new PluginSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.LoggerFactory);
                 return pluginSettingsEntityDao.SelectPluginSettingKeys(PluginId);
             });
         }
@@ -663,7 +663,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         public bool Exists(string key)
         {
             return ExistsImpl(key, (p, d) => {
-                var pluginSettingsEntityDao = new PluginSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.DatabaseContexts.Implementation, d.LoggerFactory);
+                var pluginSettingsEntityDao = new PluginSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.LoggerFactory);
                 return pluginSettingsEntityDao.SelectExistsPluginSetting(PluginId, NormalizeKey(key));
             });
         }
@@ -672,7 +672,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         public bool TryGet<TValue>(string key, [MaybeNullWhen(returnValue: false)] out TValue value)
         {
             return TryGetImpl(key, (p, d) => {
-                var pluginSettingsEntityDao = new PluginSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.DatabaseContexts.Implementation, d.LoggerFactory);
+                var pluginSettingsEntityDao = new PluginSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.LoggerFactory);
                 return pluginSettingsEntityDao.SelectPluginSettingValue(PluginId, NormalizeKey(key));
             }, out value);
         }
@@ -682,7 +682,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             where TValue : notnull
         {
             return SetImpl(value, format, key, (p, d, v) => {
-                var pluginSettingsEntityDao = new PluginSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.DatabaseContexts.Implementation, d.LoggerFactory);
+                var pluginSettingsEntityDao = new PluginSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.LoggerFactory);
                 var normalizedKey = NormalizeKey(p);
                 if(pluginSettingsEntityDao.SelectExistsPluginSetting(PluginId, normalizedKey)) {
                     pluginSettingsEntityDao.UpdatePluginSetting(PluginId, normalizedKey, v, DatabaseCommonStatus.CreatePluginAccount(PluginIdentifiers, PluginVersions));
@@ -702,7 +702,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         public bool Delete(string key)
         {
             return DeleteImpl(key, (p, d) => {
-                var pluginSettingsEntityDao = new PluginSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.DatabaseContexts.Implementation, d.LoggerFactory);
+                var pluginSettingsEntityDao = new PluginSettingsEntityDao(d.DatabaseContexts.Context, d.DatabaseStatementLoader, d.LoggerFactory);
                 return pluginSettingsEntityDao.DeletePluginSetting(PluginId, NormalizeKey(key));
             });
         }

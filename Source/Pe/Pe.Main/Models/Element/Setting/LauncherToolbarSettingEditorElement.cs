@@ -98,10 +98,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             LauncherToolbarsScreenData screenToolbar;
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherToolbarsEntityDao = new LauncherToolbarsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherToolbarsEntityDao = new LauncherToolbarsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 data = launcherToolbarsEntityDao.SelectDisplayData(LauncherToolbarId);
 
-                var launcherToolbarDomainDao = new LauncherToolbarDomainDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherToolbarDomainDao = new LauncherToolbarDomainDao(context, DatabaseStatementLoader, LoggerFactory);
                 screenToolbar = launcherToolbarDomainDao.SelectScreenToolbar(LauncherToolbarId);
             }
 

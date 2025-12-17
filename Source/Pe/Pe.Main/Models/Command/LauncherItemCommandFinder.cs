@@ -106,7 +106,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
             // タグ情報再構築
             Logger.LogTrace("タグ情報再構築");
             var tags = MainDatabaseBarrier.ReadData(c => {
-                var launcherTagsEntityDao = new LauncherTagsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var launcherTagsEntityDao = new LauncherTagsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 return launcherTagsEntityDao.SelectUniqueTags(launcherItemId).ToHashSet();
             });
             LauncherTags.Remove(launcherItemId);
@@ -143,7 +143,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
 
             IReadOnlyList<LauncherItemId> ids;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherItemsEntityDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherItemsEntityDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 ids = launcherItemsEntityDao.SelectAllLauncherItemIds().ToList();
             }
 
@@ -161,7 +161,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
 
             var tagItems = new Dictionary<LauncherItemId, IReadOnlyCollection<string>>(ids.Count);
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherTagsEntityDao = new LauncherTagsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherTagsEntityDao = new LauncherTagsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 foreach(var id in ids) {
                     var tags = launcherTagsEntityDao.SelectUniqueTags(id).ToHashSet();
                     if(tags.Count != 0) {

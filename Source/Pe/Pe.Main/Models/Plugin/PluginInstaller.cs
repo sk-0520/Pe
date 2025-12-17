@@ -72,7 +72,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
             //string extractDirectoryPath;
             using(var context = temporaryDatabaseBarrier.WaitWrite()) {
-                var installPluginsEntityDao = new InstallPluginsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var installPluginsEntityDao = new InstallPluginsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 if(!installPluginsEntityDao.SelectExistsInstallPluginByPluginId(removeTarget.PluginId)) {
                     return false;
                 }
@@ -272,7 +272,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
             // インストール対象のディレクトリを内部保持
             using(var context = temporaryDatabaseBarrier.WaitWrite()) {
-                var installPluginsEntityDao = new InstallPluginsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var installPluginsEntityDao = new InstallPluginsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 if(installPluginsEntityDao.SelectExistsInstallPluginByPluginId(loadStateData.PluginId)) {
                     installPluginsEntityDao.DeleteInstallPlugin(loadStateData.PluginId);
                 }
