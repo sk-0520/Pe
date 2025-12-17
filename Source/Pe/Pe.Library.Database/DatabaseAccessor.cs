@@ -57,13 +57,18 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             get
             {
-                return this._context ??= new DatabaseContext(OpenConnection(), null, Implementation, LoggerFactory);
+                return this._context ??= CreateDatabaseContext(OpenConnection(), Implementation, LoggerFactory);
             }
         }
 
         #endregion
 
         #region function
+
+        protected virtual DatabaseContext CreateDatabaseContext(IDbConnection dbConnection, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        {
+            return new DatabaseContext(dbConnection, null, implementation, loggerFactory);
+        }
 
         /// <summary>
         /// DB接続を開く。
@@ -280,20 +285,20 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            return new DatabaseTransaction(true, this, isolationLevel);
+            return new DatabaseTransaction(BaseConnection, Implementation, isolationLevel, LoggerFactory);
         }
 
         public virtual IDatabaseTransaction BeginReadOnlyTransaction()
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(true, this);
+            return new ReadOnlyDatabaseTransaction(BaseConnection, Implementation, LoggerFactory);
         }
         public virtual IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(true, this, isolationLevel);
+            return new ReadOnlyDatabaseTransaction(BaseConnection, Implementation, isolationLevel, LoggerFactory);
         }
 
         #endregion

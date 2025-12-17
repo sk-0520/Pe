@@ -141,7 +141,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
             var dataTable = new DataTable();
             var startTime = Stopwatch.GetTimestamp();
-            using(var reader = GetDataReader(transaction, statement, parameter)) {
+            using(var reader = GetDataReader(statement, parameter)) {
                 dataTable.Load(reader);
             }
             LoggingDataTable(dataTable, Stopwatch.GetElapsedTime(startTime));
@@ -159,7 +159,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
             var dataTable = new DataTable();
             var startTime = Stopwatch.GetTimestamp();
-            using(var reader = await GetDataReaderAsync(transaction, statement, parameter, cancellationToken)) {
+            using(var reader = await GetDataReaderAsync(statement, parameter, cancellationToken)) {
                 dataTable.Load(reader);
             }
             LoggingDataTable(dataTable, Stopwatch.GetElapsedTime(startTime));

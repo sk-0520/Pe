@@ -80,7 +80,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         public IReadOnlyList<SettingGroup> GetGroups()
         {
             using(var transaction = MainDatabaseBarrier.WaitRead()) {
-                var dao = new SettingExporterDomainDao(transaction.Context, DatabaseStatementLoader, transaction.Implementation, LoggerFactory);
+                var dao = new SettingExporterDomainDao(transaction, DatabaseStatementLoader, LoggerFactory);
                 return dao.SelectSettingGroups().ToArray();
             }
         }
@@ -88,7 +88,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         public IReadOnlyList<SettingLauncherItem> GetLauncherItems()
         {
             using(var transaction = MainDatabaseBarrier.WaitRead()) {
-                var dao = new SettingExporterDomainDao(transaction.Context, DatabaseStatementLoader, transaction.Implementation, LoggerFactory);
+                var dao = new SettingExporterDomainDao(transaction, DatabaseStatementLoader, LoggerFactory);
                 return dao.SelectSettingLauncherItems().ToArray();
             }
         }
@@ -96,7 +96,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         public IReadOnlyList<SettingNote> GetNotes()
         {
             using(var transaction = MainDatabaseBarrier.WaitRead()) {
-                var dao = new SettingExporterDomainDao(transaction.Context, DatabaseStatementLoader, transaction.Implementation, LoggerFactory);
+                var dao = new SettingExporterDomainDao(transaction, DatabaseStatementLoader, LoggerFactory);
                 return dao.SelectSettingNotes().ToArray();
             }
         }

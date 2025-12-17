@@ -22,6 +22,10 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
         }
 
+        public DatabaseTransaction(IDbConnection connection, IDatabaseImplementation implementation, IsolationLevel isolationLevel, ILoggerFactory loggerFactory)
+            : base(connection, connection.BeginTransaction(isolationLevel), implementation, loggerFactory)
+        {
+        }
 
         #region property
 

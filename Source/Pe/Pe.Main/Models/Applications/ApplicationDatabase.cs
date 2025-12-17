@@ -88,16 +88,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
     public interface ITemporaryDatabaseAccessor: IApplicationDatabaseAccessor
     { }
 
-    /// <summary>
-    /// アプリケーション用<see cref="IDatabaseAccessor"/>実装。
-    /// </summary>
-    internal class ApplicationDatabaseAccessor: SqliteAccessor, IMainDatabaseAccessor, ILargeDatabaseAccessor, ITemporaryDatabaseAccessor
+    internal class ApplicationDtabaseContext: DatabaseContext
     {
-        public ApplicationDatabaseAccessor(IDatabaseFactory connectionCreator, ILoggerFactory loggerFactory)
-            : base(connectionCreator, loggerFactory)
-        { }
+        public ApplicationDtabaseContext(IDbConnection connection, IDbTransaction? transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(connection, transaction, implementation, loggerFactory)
+        {
+            //NOP
+        }
 
-        #region DatabaseAccessor
+        #region DatabaseContext
 
         protected override void LoggingStatement(string statement, object? parameter)
         {
@@ -238,6 +237,25 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             if(Logger.IsEnabled(LogLevel.Trace)) {
                 Logger.LogTrace("table: {TableName} -> {ColumnsCount} * {RowsCount} = {Count}, {Time}", table.TableName, table.Columns.Count, table.Rows.Count, table.Columns.Count * table.Rows.Count, elapsedTime);
             }
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// アプリケーション用<see cref="IDatabaseAccessor"/>実装。
+    /// </summary>
+    internal class ApplicationDatabaseAccessor: SqliteAccessor, IMainDatabaseAccessor, ILargeDatabaseAccessor, ITemporaryDatabaseAccessor
+    {
+        public ApplicationDatabaseAccessor(IDatabaseFactory connectionCreator, ILoggerFactory loggerFactory)
+            : base(connectionCreator, loggerFactory)
+        { }
+
+        #region DatabaseAccessor
+
+        protected override DatabaseContext CreateDatabaseContext(IDbConnection dbConnection, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        {
+            return new ApplicationDtabaseContext(dbConnection, null, implementation, loggerFactory);
         }
 
         #endregion

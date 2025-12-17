@@ -366,8 +366,6 @@ values
         public async Task ReadonlyTransactionTest()
         {
             using(var transaction = DatabaseAccessor.BeginReadOnlyTransaction()) {
-                Assert.Null(transaction.Transaction);
-
                 var actualNone = await transaction.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 0", cancellationToken: TestContext.Current.CancellationToken);
                 Assert.Null(actualNone);
 

@@ -79,7 +79,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 Sequence = Sequence
             };
             // 存在しないランチャーアイテムは保存対象外とする
-            var launcherItemsEntityDao = new LauncherItemsEntityDao(pack.Main.Context, DatabaseStatementLoader, pack.Main.Implementation, LoggerFactory);
+            var launcherItemsEntityDao = new LauncherItemsEntityDao(pack.Main, DatabaseStatementLoader, LoggerFactory);
             var launcherItemIds = LauncherItems
                 // こんなとこでSQL発行するとか業務じゃむり
                 .Where(i => launcherItemsEntityDao.SelectExistsLauncherItem(i))
@@ -88,10 +88,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             var launcherFactory = new LauncherFactory(IdFactory, LoggerFactory);
 
-            var launcherGroupsEntityDao = new LauncherGroupsEntityDao(pack.Main.Context, DatabaseStatementLoader, pack.Main.Implementation, LoggerFactory);
+            var launcherGroupsEntityDao = new LauncherGroupsEntityDao(pack.Main, DatabaseStatementLoader, LoggerFactory);
             launcherGroupsEntityDao.UpdateGroup(launcherGroupData, DatabaseCommonStatus.CreateCurrentAccount());
 
-            var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(pack.Main.Context, DatabaseStatementLoader, pack.Main.Implementation, LoggerFactory);
+            var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(pack.Main, DatabaseStatementLoader, LoggerFactory);
             launcherGroupItemsDao.DeleteGroupItemsByLauncherGroupId(LauncherGroupId);
 
             var currentMaxSequence = launcherGroupItemsDao.SelectMaxSequence(LauncherGroupId);

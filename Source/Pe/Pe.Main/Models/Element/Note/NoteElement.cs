@@ -286,7 +286,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                 noteContentDao.InsertNewContent(noteContent, DatabaseCommonStatus.CreateCurrentAccount());
                 */
 
-                ScreenUtility.RegisterDatabase(DockScreen, context, DatabaseStatementLoader, context.Implementation, DatabaseCommonStatus.CreateCurrentAccount(), LoggerFactory);
+                ScreenUtility.RegisterDatabase(DockScreen, context, DatabaseStatementLoader, DatabaseCommonStatus.CreateCurrentAccount(), LoggerFactory);
 
                 noteData = notesEntityDao.SelectNote(NoteId)!;
 
@@ -896,7 +896,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
 
             using(var mainContext = MainDatabaseBarrier.WaitWrite()) {
-                var noteFilesEntityDao = new NoteFilesEntityDao(mainContext, DatabaseStatementLoader, mainContext.Implementation, LoggerFactory);
+                var noteFilesEntityDao = new NoteFilesEntityDao(mainContext, DatabaseStatementLoader, LoggerFactory);
                 // 削除処理
                 noteFilesEntityDao.DeleteNoteFilesById(NoteId, noteFileId);
 

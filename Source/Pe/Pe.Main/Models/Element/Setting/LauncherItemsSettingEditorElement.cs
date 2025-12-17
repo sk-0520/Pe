@@ -256,7 +256,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             foreach(var item in AllLauncherItems.Where(i => !i.IsLazyLoad)) {
                 var needIconClear = item.SaveItem(contextsPack);
                 if(needIconClear) {
-                    item.ClearIcon(contextsPack.Large.Context);
+                    item.ClearIcon(contextsPack.Large);
                 }
             }
         }

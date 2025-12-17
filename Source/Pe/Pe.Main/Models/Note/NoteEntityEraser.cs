@@ -16,7 +16,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Note
             NoteId = noteId;
         }
 
-        public NoteEntityEraser(NoteId noteId, IDatabaseContexts mainContexts, IDatabaseContexts fileContexts, IDatabaseContexts temporaryContexts, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+        public NoteEntityEraser(NoteId noteId, IDatabaseContext mainContexts, IDatabaseContext fileContexts, IDatabaseContext temporaryContexts, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
             : base(mainContexts, fileContexts, temporaryContexts, statementLoader, loggerFactory)
         {
             NoteId = noteId;

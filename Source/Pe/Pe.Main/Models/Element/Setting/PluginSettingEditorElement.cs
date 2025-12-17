@@ -187,7 +187,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         /// <param name="contextsPack"></param>
         public void Save(IDatabaseContextPack contextsPack)
         {
-            var pluginsEntityDao = new PluginsEntityDao(contextsPack.Main.Context, DatabaseStatementLoader, contextsPack.Main.Implementation, LoggerFactory);
+            var pluginsEntityDao = new PluginsEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
 
             if(CanUninstall && MarkedUninstall) {
                 var pluginState = new PluginStateData() {

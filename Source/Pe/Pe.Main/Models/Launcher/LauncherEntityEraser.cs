@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             LauncherItemKind = launcherItemKind;
         }
 
-        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContexts mainContexts, IDatabaseContexts fileContexts, IDatabaseContexts temporaryContexts, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContext mainContexts, IDatabaseContext fileContexts, IDatabaseContext temporaryContexts, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
             : base(mainContexts, fileContexts, temporaryContexts, statementLoader, loggerFactory)
         {
             LauncherItemId = launcherItemId;

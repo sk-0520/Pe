@@ -200,10 +200,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 .Concat(PressedJobEditors)
             ;
             foreach(var job in jobs) {
-                job.Save(contextsPack.Main.Context, contextsPack.CommonStatus);
+                job.Save(contextsPack.Main, contextsPack.CommonStatus);
             }
             foreach(var job in RemovedJobEditors) {
-                job.Remove(contextsPack.Main.Context);
+                job.Remove(contextsPack.Main);
             }
         }
 

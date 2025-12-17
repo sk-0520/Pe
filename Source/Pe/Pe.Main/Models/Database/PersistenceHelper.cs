@@ -14,9 +14,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
         {
             public PersistenceContextsPack(IDatabaseTransaction mainTransaction, IDatabaseTransaction fileTransaction, IDatabaseTransaction temporaryTransaction, IDatabaseCommonStatus commonStatus)
                 : base(
-                    new DatabaseContexts(mainTransaction, mainTransaction.Implementation),
-                    new DatabaseContexts(fileTransaction, mainTransaction.Implementation),
-                    new DatabaseContexts(temporaryTransaction, mainTransaction.Implementation),
+                    (DatabaseTransaction)mainTransaction,
+                    (DatabaseTransaction)fileTransaction,
+                    (DatabaseTransaction)temporaryTransaction,
                     commonStatus
                 )
             {

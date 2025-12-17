@@ -1,7 +1,8 @@
 using System;
 using System.Data;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
@@ -10,15 +11,18 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </summary>
     public sealed class ReadOnlyDatabaseTransaction: DatabaseTransaction
     {
-        /// <inheritdoc cref="DatabaseTransaction.DatabaseTransaction(bool, IDatabaseAccessor)" />
-        public ReadOnlyDatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor)
-            : base(beginTransaction, databaseAccessor)
-        { }
+        public ReadOnlyDatabaseTransaction(IDbConnection connection, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(connection, implementation, loggerFactory)
+        {
+            //NOP
+        }
 
-        /// <inheritdoc cref="DatabaseTransaction.DatabaseTransaction(bool, IDatabaseAccessor, IsolationLevel)" />
-        public ReadOnlyDatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor, IsolationLevel isolationLevel)
-            : base(beginTransaction, databaseAccessor, isolationLevel)
-        { }
+        public ReadOnlyDatabaseTransaction(IDbConnection connection, IDatabaseImplementation implementation, IsolationLevel isolationLevel, ILoggerFactory loggerFactory)
+            : base(connection, implementation, isolationLevel, loggerFactory)
+        {
+            //NOP
+        }
+
 
         #region DatabaseTransaction
 

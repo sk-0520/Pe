@@ -36,13 +36,13 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(false, this);
+            return new ReadOnlyDatabaseTransaction(BaseConnection, Implementation, LoggerFactory);
         }
         public override IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(false, this, isolationLevel);
+            return new ReadOnlyDatabaseTransaction(BaseConnection, Implementation, isolationLevel, LoggerFactory);
         }
 
         #endregion

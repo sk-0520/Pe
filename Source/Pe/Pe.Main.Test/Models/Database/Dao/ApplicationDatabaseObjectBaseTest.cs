@@ -18,6 +18,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao
 
         class Dc: IDatabaseContext
         {
+            public IDatabaseImplementation Implementation => throw new NotImplementedException();
+
             public IDataReader GetDataReader(string statement, object? parameter)
             {
                 throw new NotImplementedException();
@@ -187,7 +189,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao
         class Adao: ApplicationDatabaseObjectBase
         {
             public Adao()
-                : base(new Dc(), new Dsl(), new Di(), new LoggerFactory())
+                : base(new Dc(), new Dsl(), new LoggerFactory())
             { }
 
             public int ToInt_Public(long v) => base.ToInt(v);
