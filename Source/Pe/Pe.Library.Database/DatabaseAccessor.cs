@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             get
             {
-                return this._context ??= CreateDatabaseContext(OpenConnection(), Implementation, LoggerFactory);
+                return this._context ??= CreateDatabaseContext(LazyConnection.Value, Implementation, LoggerFactory);
             }
         }
 
