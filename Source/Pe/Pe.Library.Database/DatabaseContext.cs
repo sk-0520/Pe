@@ -25,8 +25,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region property
 
-        protected IDbConnection Connection { get; }
-        protected IDbTransaction? Transaction { get; }
+        protected IDbConnection Connection { get; set; }
+        protected IDbTransaction? Transaction { get; set; }
 
         protected ILoggerFactory LoggerFactory { get; }
         protected ILogger Logger { get;}
