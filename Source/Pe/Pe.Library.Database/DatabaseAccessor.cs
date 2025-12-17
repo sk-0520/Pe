@@ -21,6 +21,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </remarks>
     public class DatabaseAccessor: DisposerBase, IDatabaseAccessor
     {
+        #region variable
+
+        DatabaseContext? _context;
+
+        #endregion
+
         public DatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
@@ -47,6 +53,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// </summary>
         public bool ConnectionPausing { get; private set; }
 
+        private DatabaseContext Context
+        {
+            get
+            {
+                return this._context ??= new DatabaseContext(OpenConnection(), null, Implementation, LoggerFactory);
+            }
+        }
+
         #endregion
 
         #region function
@@ -70,68 +84,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
             IsOpened = true;
             return con;
         }
-
-
-        /// <summary>
-        /// 問い合わせ文をログ出力。
-        /// </summary>
-        /// <remarks>
-        /// <para>あくまで実行するための文をログに出すだけで実際に実行される文ではない。</para>
-        /// </remarks>
-        /// <param name="statement">問い合わせ文。</param>
-        /// <param name="parameter">パラメータ。</param>
-        protected virtual void LoggingStatement(string statement, object? parameter)
-        { }
-
-        /// <summary>
-        ///
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="result"></param>
-        /// <param name="elapsedTime"></param>
-        protected virtual void LoggingExecuteScalarResult<TResult>(TResult result, TimeSpan elapsedTime)
-        { }
-
-        /// <summary>
-        /// 単体結果の問い合わせ結果のログ出力。
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="result"></param>
-        /// <param name="elapsedTime"></param>
-        protected virtual void LoggingQueryResult<T>([MaybeNull] T result, TimeSpan elapsedTime)
-        { }
-
-        /// <summary>
-        /// 複数結果の問い合わせ結果のログ出力。
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="result"></param>
-        /// <param name="buffered">偽の場合、<paramref name="result"/>に全数は存在しない。</param>
-        /// <param name="elapsedTime"></param>
-        protected virtual void LoggingQueryResults<T>(IEnumerable<T> result, bool buffered, TimeSpan elapsedTime)
-        { }
-
-        /// <summary>
-        /// 実行結果のログ出力。
-        /// </summary>
-        /// <remarks>
-        /// <para><see cref="IDatabaseExecutor.Execute(string, object?)"/>で使用される。</para>
-        /// </remarks>
-        /// <param name="result"></param>
-        /// <param name="elapsedTime"></param>
-        protected virtual void LoggingExecuteResult(int result, TimeSpan elapsedTime)
-        { }
-
-        /// <summary>
-        /// 問い合わせ結果のログ出力。
-        /// </summary>
-        /// <remarks>
-        /// <para><see cref="IDatabaseReader.GetDataTable(string, object?)"/>で使用される。</para>
-        /// </remarks>
-        /// <param name="table"></param>
-        /// <param name="elapsedTime"></param>
-        protected virtual void LoggingDataTable(DataTable table, TimeSpan elapsedTime)
-        { }
 
         #endregion
 
@@ -163,22 +115,11 @@ namespace ContentTypeTextNet.Pe.Library.Database
             });
         }
 
-        public IDataReader GetDataReader(IDatabaseTransaction? transaction, string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            var formattedStatement = Implementation.PreFormatStatement(statement);
-            LoggingStatement(formattedStatement, parameter);
-
-            var result = BaseConnection.ExecuteReader(formattedStatement, parameter, transaction?.Transaction);
-            return result;
-        }
-
         public IDataReader GetDataReader(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
-            return GetDataReader(null, statement, parameter);
+            return Context.GetDataReader(statement, parameter);
         }
 
         public Task<IDataReader> GetDataReaderAsync(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)

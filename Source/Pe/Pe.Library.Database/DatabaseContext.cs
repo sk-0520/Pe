@@ -102,25 +102,18 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         public IDatabaseImplementation Implementation { get; }
 
-        public IDataReader GetDataReader(IDatabaseTransaction? transaction, string statement, object? parameter)
+        public IDataReader GetDataReader( string statement, object? parameter)
         {
             ThrowIfDisposed();
 
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var result = Connection.ExecuteReader(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.ExecuteReader(formattedStatement, parameter, Transaction);
             return result;
         }
 
-        public IDataReader GetDataReader(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return GetDataReader(null, statement, parameter);
-        }
-
-        public Task<IDataReader> GetDataReaderAsync(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
+        public Task<IDataReader> GetDataReaderAsync( string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -130,7 +123,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: transaction?.Transaction,
+                transaction: Transaction,
                 cancellationToken: cancellationToken
             );
 
@@ -138,12 +131,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            return GetDataReaderAsync(null, statement, parameter, cancellationToken);
-        }
-
-        public virtual DataTable GetDataTable(IDatabaseTransaction? transaction, string statement, object? parameter)
+        public virtual DataTable GetDataTable(string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -161,14 +149,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return dataTable;
         }
 
-        public virtual DataTable GetDataTable(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return GetDataTable(null, statement, parameter);
-        }
-
-        public async virtual Task<DataTable> GetDataTableAsync(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
+        public async virtual Task<DataTable> GetDataTableAsync( string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -186,14 +167,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return dataTable;
         }
 
-        public virtual Task<DataTable> GetDataTableAsync(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return GetDataTableAsync(null, statement, parameter, cancellationToken);
-        }
-
-        public virtual TResult? GetScalar<TResult>(IDatabaseTransaction? transaction, string statement, object? parameter)
+        public virtual TResult? GetScalar<TResult>( string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -201,20 +175,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.ExecuteScalar<TResult>(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.ExecuteScalar<TResult>(formattedStatement, parameter, Transaction);
             LoggingExecuteScalarResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
 
-        public virtual TResult? GetScalar<TResult>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return GetScalar<TResult>(null, statement, parameter);
-        }
-
-        public virtual async Task<TResult?> GetScalarAsync<TResult>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
+        public virtual async Task<TResult?> GetScalarAsync<TResult>( string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -225,7 +192,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: transaction?.Transaction,
+                transaction: Transaction,
                 cancellationToken: cancellationToken
             );
             var result = await Connection.ExecuteScalarAsync<TResult>(command);
@@ -234,15 +201,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return GetScalarAsync<TResult?>(null, statement, parameter, cancellationToken);
-        }
-
         /// <inheritdoc cref="IDatabaseAccessor.Query{T}(IDatabaseTransaction?, string, object?, bool)"/>
-        public virtual IEnumerable<T> Query<T>(IDatabaseTransaction? transaction, string statement, object? parameter, bool buffered)
+        public virtual IEnumerable<T> Query<T>( string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
@@ -250,22 +210,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.Query<T>(formattedStatement, parameter, transaction?.Transaction, buffered);
+            var result = Connection.Query<T>(formattedStatement, parameter, Transaction, buffered);
             LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseReader.Query{T}(string, object?, bool)"/>
-        public virtual IEnumerable<T> Query<T>(string statement, object? parameter, bool buffered)
-        {
-            ThrowIfDisposed();
-
-            return Query<T>(null, statement, parameter, buffered);
-        }
-
         /// <inheritdoc cref="IDatabaseAccessor.QueryAsync{T}(IDatabaseTransaction?, string, object?, bool, CancellationToken)"/>
-        public virtual async Task<IEnumerable<T>> QueryAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
+        public virtual async Task<IEnumerable<T>> QueryAsync<T>( string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -276,7 +228,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: transaction?.Transaction,
+                transaction: Transaction,
                 flags: buffered ? CommandFlags.Buffered : CommandFlags.NoCache,
                 cancellationToken: cancellationToken
             );
@@ -286,16 +238,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseReader.QueryAsync{T}(string, object?, bool, CancellationToken)"/>
-        public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return QueryAsync<T>(null, statement, parameter, buffered, cancellationToken);
-        }
-
         /// <inheritdoc cref="IDatabaseReader.Query(string, object?, bool)"/>
-        public virtual IEnumerable<dynamic> Query(IDatabaseTransaction? transaction, string statement, object? parameter, bool buffered)
+        public virtual IEnumerable<dynamic> Query( string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
 
@@ -303,22 +247,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.Query(formattedStatement, parameter, transaction?.Transaction, buffered);
+            var result = Connection.Query(formattedStatement, parameter, Transaction, buffered);
             LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseReader.Query(string, object?, bool)"/>
-        public virtual IEnumerable<dynamic> Query(string statement, object? parameter, bool buffered)
-        {
-            ThrowIfDisposed();
-
-            return Query(null, statement, parameter, buffered);
-        }
-
         /// <inheritdoc cref="IDatabaseAccessor.QueryAsync{T}(IDatabaseTransaction?, string, object?, bool, CancellationToken)"/>
-        public virtual async Task<IEnumerable<dynamic>> QueryAsync(IDatabaseTransaction? transaction, string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
+        public virtual async Task<IEnumerable<dynamic>> QueryAsync( string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -329,7 +265,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: transaction?.Transaction,
+                transaction: Transaction,
                 flags: buffered ? CommandFlags.Buffered : CommandFlags.NoCache,
                 cancellationToken: cancellationToken
             );
@@ -339,16 +275,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseReader.QueryAsync(string, object?, bool, CancellationToken)"/>
-        public virtual Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return QueryAsync(null, statement, parameter, buffered, cancellationToken);
-        }
-
         /// <inheritdoc cref="IDatabaseAccessor.QueryFirst{T}(IDatabaseTransaction?, string, object?)"/>
-        public virtual T QueryFirst<T>(IDatabaseTransaction? transaction, string statement, object? parameter)
+        public virtual T QueryFirst<T>( string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -356,21 +284,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.QueryFirst<T>(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.QueryFirst<T>(formattedStatement, parameter, Transaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseReader.QueryFirst{T}(string, object?)"/>
-        public virtual T QueryFirst<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return QueryFirst<T>(null, statement, parameter);
-        }
-
-        public virtual async Task<T> QueryFirstAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
+        public virtual async Task<T> QueryFirstAsync<T>( string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -381,7 +301,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: transaction?.Transaction,
+                transaction: Transaction,
                 cancellationToken: cancellationToken
             );
 
@@ -390,16 +310,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual Task<T> QueryFirstAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return QueryFirstAsync<T>(null, statement, parameter, cancellationToken);
-        }
-
-
         [return: MaybeNull]
-        public virtual T QueryFirstOrDefault<T>(IDatabaseTransaction? transaction, string statement, object? parameter)
+        public virtual T QueryFirstOrDefault<T>( string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -407,21 +319,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.QueryFirstOrDefault<T>(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.QueryFirstOrDefault<T>(formattedStatement, parameter, Transaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
 
-        [return: MaybeNull]
-        public T QueryFirstOrDefault<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return QueryFirstOrDefault<T>(null, statement, parameter);
-        }
-
-        public Task<T?> QueryFirstOrDefaultAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
+        public Task<T?> QueryFirstOrDefaultAsync<T>( string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -432,7 +336,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: transaction?.Transaction,
+                transaction: Transaction,
                 cancellationToken: cancellationToken
             );
 
@@ -442,14 +346,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             }, TaskContinuationOptions.OnlyOnRanToCompletion);
         }
 
-        public Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return QueryFirstOrDefaultAsync<T>(null, statement, parameter, cancellationToken);
-        }
-
-        public virtual T QuerySingle<T>(IDatabaseTransaction? transaction, string statement, object? parameter)
+        public virtual T QuerySingle<T>( string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -457,20 +354,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.QuerySingle<T>(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.QuerySingle<T>(formattedStatement, parameter, Transaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
 
-        public virtual T QuerySingle<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return QuerySingle<T>(null, statement, parameter);
-        }
-
-        public virtual async Task<T> QuerySingleAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
+        public virtual async Task<T> QuerySingleAsync<T>( string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -481,7 +371,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: transaction?.Transaction,
+                transaction: Transaction,
                 cancellationToken: cancellationToken
             );
 
@@ -490,15 +380,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual Task<T> QuerySingleAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return QuerySingleAsync<T>(null, statement, parameter, cancellationToken);
-        }
-
         [return: MaybeNull]
-        public virtual T QuerySingleOrDefault<T>(IDatabaseTransaction? transaction, string statement, object? parameter)
+        public virtual T QuerySingleOrDefault<T>( string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -506,21 +389,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.QuerySingleOrDefault<T>(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.QuerySingleOrDefault<T>(formattedStatement, parameter, Transaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
 
-        [return: MaybeNull]
-        public virtual T QuerySingleOrDefault<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return QuerySingleOrDefault<T>(null, statement, parameter);
-        }
-
-        public virtual async Task<T?> QuerySingleOrDefaultAsync<T>(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
+        public virtual async Task<T?> QuerySingleOrDefaultAsync<T>( string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -531,7 +406,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: transaction?.Transaction,
+                transaction: Transaction,
                 cancellationToken: cancellationToken
             );
             var result = await Connection.QuerySingleOrDefaultAsync<T>(command);
@@ -540,14 +415,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        public virtual Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return QuerySingleOrDefaultAsync<T>(null, statement, parameter, cancellationToken);
-        }
-
-        public virtual int Execute(IDatabaseTransaction? transaction, string statement, object? parameter)
+        public virtual int Execute( string statement, object? parameter)
         {
             ThrowIfDisposed();
 
@@ -555,20 +423,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.Execute(formattedStatement, parameter, transaction?.Transaction);
+            var result = Connection.Execute(formattedStatement, parameter, Transaction);
             LoggingExecuteResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
         }
 
-        public virtual int Execute(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return Execute(null, statement, parameter);
-        }
-
-        public virtual async Task<int> ExecuteAsync(IDatabaseTransaction? transaction, string statement, object? parameter, CancellationToken cancellationToken)
+        public virtual async Task<int> ExecuteAsync( string statement, object? parameter, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
 
@@ -579,20 +440,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: transaction?.Transaction,
+                transaction: Transaction,
                 cancellationToken: cancellationToken
             );
             var result = await Connection.ExecuteAsync(command);
             LoggingExecuteResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
-        }
-
-        public virtual Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return ExecuteAsync(null, statement, parameter, cancellationToken);
         }
 
         #endregion
