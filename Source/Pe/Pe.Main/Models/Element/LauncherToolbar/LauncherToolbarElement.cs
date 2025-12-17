@@ -227,7 +227,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var dao = new LauncherToolbarDomainDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var dao = new LauncherToolbarDomainDao(context, DatabaseStatementLoader, LoggerFactory);
                 var screenToolbars = dao.SelectAllScreenToolbars().ToList();
                 var launcherToolbarId = FindMaybeToolbarId(screenToolbars);
                 return launcherToolbarId;
@@ -244,16 +244,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             var newFontId = IdFactory.CreateFontId();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appLauncherToolbarSettingEntityDao = new AppLauncherToolbarSettingEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var appLauncherToolbarSettingEntityDao = new AppLauncherToolbarSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 var srcFontId = appLauncherToolbarSettingEntityDao.SelectAppLauncherToolbarSettingFontId();
 
-                var fontsEntityDao = new FontsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var fontsEntityDao = new FontsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 fontsEntityDao.InsertCopyFont(srcFontId, newFontId, DatabaseCommonStatus.CreateCurrentAccount());
 
-                var toolbarsDao = new LauncherToolbarsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var toolbarsDao = new LauncherToolbarsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 toolbarsDao.InsertNewToolbar(toolbarId, newFontId, DockScreen.DeviceName, DatabaseCommonStatus.CreateCurrentAccount());
 
-                ScreenUtility.RegisterDatabase(DockScreen, context, DatabaseStatementLoader, context.Implementation, DatabaseCommonStatus.CreateCurrentAccount(), LoggerFactory);
+                ScreenUtility.RegisterDatabase(DockScreen, context, DatabaseStatementLoader, DatabaseCommonStatus.CreateCurrentAccount(), LoggerFactory);
 
                 context.Commit();
             }

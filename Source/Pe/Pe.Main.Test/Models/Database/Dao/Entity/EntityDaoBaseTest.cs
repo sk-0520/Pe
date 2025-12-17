@@ -22,8 +22,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
 
         private sealed class EntityNotDao: EntityDaoBase
         {
-            public EntityNotDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-                : base(context, statementLoader, implementation, loggerFactory)
+            public EntityNotDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+                : base(context, statementLoader, loggerFactory)
             { }
         }
 
@@ -36,8 +36,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
 
         private sealed class EntityDao: EntityDaoBase
         {
-            public EntityDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-                : base(context, statementLoader, implementation, loggerFactory)
+            public EntityDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+                : base(context, statementLoader, loggerFactory)
             { }
         }
 
@@ -50,8 +50,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
 
         private sealed class TableNameEntityDao: EntityDaoBase
         {
-            public TableNameEntityDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-                : base(context, statementLoader, implementation, loggerFactory)
+            public TableNameEntityDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+                : base(context, statementLoader, loggerFactory)
             { }
         }
 

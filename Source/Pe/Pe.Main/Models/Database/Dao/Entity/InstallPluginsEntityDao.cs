@@ -40,8 +40,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
 
         #endregion
 
-        public InstallPluginsEntityDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(context, statementLoader, implementation, loggerFactory)
+        public InstallPluginsEntityDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(context, statementLoader, loggerFactory)
         { }
 
         #region function

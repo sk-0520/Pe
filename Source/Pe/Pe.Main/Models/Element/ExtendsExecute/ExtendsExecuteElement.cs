@@ -198,7 +198,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.ExtendsExecute
             bool removed;
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
 
                 var removedCount = launcherItemHistoriesEntityDao.DeleteHistoryByLauncherItemId(LauncherItemId, kind, lastExecuteTimestamp);
                 if(1 < removedCount) {
@@ -232,12 +232,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.ExtendsExecute
             LauncherRedoData launcherRedoData;
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherItemsEntityDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherFilesEntityDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherEnvVarsEntityDao = new LauncherEnvVarsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherRedoSuccessExitCodesEntityDao = new LauncherRedoSuccessExitCodesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherItemsEntityDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherFilesEntityDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherEnvVarsEntityDao = new LauncherEnvVarsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherRedoSuccessExitCodesEntityDao = new LauncherRedoSuccessExitCodesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
 
                 launcherItem = launcherItemsEntityDao.SelectLauncherItem(LauncherItemId);
                 fileData = launcherFilesEntityDao.SelectFile(LauncherItemId);

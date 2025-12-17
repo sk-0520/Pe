@@ -46,7 +46,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Vendor.Sqlite
         private class SqliteDatabaseAccessObject: DatabaseAccessObjectBase
         {
             public SqliteDatabaseAccessObject()
-                : base(default!, new TestStatementLoader(), new SqliteImplementation(), NullLoggerFactory.Instance)
+                : base(default!, new TestStatementLoader(), NullLoggerFactory.Instance)
             { }
 
             #region function

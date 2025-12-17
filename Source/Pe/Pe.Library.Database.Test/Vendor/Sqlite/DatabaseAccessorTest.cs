@@ -59,7 +59,7 @@ values
         public void ConnectionTest()
         {
             var factory = new InMemorySqliteFactory();
-            var databaseAccessor = new SqliteAccessor(factory, NullLoggerFactory.Instance.CreateLogger(GetType().ToString()));
+            var databaseAccessor = new SqliteAccessor(factory, NullLoggerFactory.Instance);
             Assert.Equal(databaseAccessor.BaseConnection, databaseAccessor.Connection);
         }
 
