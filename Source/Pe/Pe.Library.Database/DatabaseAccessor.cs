@@ -277,7 +277,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            return new DatabaseTransaction(BaseConnection, Implementation, LoggerFactory);
+            return new DatabaseTransaction(BaseConnection, true, Implementation, LoggerFactory);
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            return new DatabaseTransaction(BaseConnection, Implementation, isolationLevel, LoggerFactory);
+            return new DatabaseTransaction(BaseConnection, true, Implementation, isolationLevel, LoggerFactory);
         }
 
         public virtual IDatabaseTransaction BeginReadOnlyTransaction()

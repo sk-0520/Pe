@@ -17,14 +17,16 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </remarks>
     public class DatabaseTransaction: DatabaseContext, IDatabaseTransaction
     {
-        public DatabaseTransaction(IDbConnection connection, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(connection, connection.BeginTransaction(), implementation, loggerFactory)
+        public DatabaseTransaction(IDbConnection connection, bool beginTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(connection, beginTransaction ? connection.BeginTransaction(): null, implementation, loggerFactory)
         {
+            //NOP
         }
 
-        public DatabaseTransaction(IDbConnection connection, IDatabaseImplementation implementation, IsolationLevel isolationLevel, ILoggerFactory loggerFactory)
-            : base(connection, connection.BeginTransaction(isolationLevel), implementation, loggerFactory)
+        public DatabaseTransaction(IDbConnection connection, bool beginTransaction, IDatabaseImplementation implementation, IsolationLevel isolationLevel, ILoggerFactory loggerFactory)
+            : base(connection, beginTransaction ? connection.BeginTransaction(isolationLevel) : null, implementation, loggerFactory)
         {
+            //NOP
         }
 
         #region property
