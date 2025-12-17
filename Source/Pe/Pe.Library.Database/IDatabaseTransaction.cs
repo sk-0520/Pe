@@ -10,7 +10,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// <para>これが実体化されてればトランザクション中でしょうね。</para>
     /// <para>コミット・ロールバックは一回だけ実行される使用を想定している。</para>
     /// </remarks>
-    public interface IDatabaseTransaction: IDatabaseContext, IDatabaseContexts, IDisposable
+    public interface IDatabaseTransaction: IDatabaseContext, IDisposable
     {
         #region property
 

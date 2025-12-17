@@ -11,10 +11,6 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
 {
     public class SqliteAccessor: DatabaseAccessor<SQLiteConnection>
     {
-        public SqliteAccessor(IDatabaseFactory databaseFactory, ILogger logger)
-            : base(databaseFactory, logger)
-        { }
-
         public SqliteAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
             : base(databaseFactory, loggerFactory)
         { }

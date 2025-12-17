@@ -19,30 +19,19 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// <remarks>
     /// <para>DBまで行く前にプログラム側で制御する目的。</para>
     /// </remarks>
-    public class DatabaseAccessor: DatabaseContext, IDatabaseAccessor
+    public class DatabaseAccessor: DisposerBase, IDatabaseAccessor
     {
-        public DatabaseAccessor(IDatabaseFactory databaseFactory, ILogger logger)
-        {
-            Logger = logger;
-            DatabaseFactory = databaseFactory;
-            LazyConnection = new Lazy<IDbConnection>(OpenConnection);
-            LazyImplementation = new Lazy<IDatabaseImplementation>(DatabaseFactory.CreateImplementation);
-        }
-
         public DatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
         {
             Logger = loggerFactory.CreateLogger(GetType());
             DatabaseFactory = databaseFactory;
             LazyConnection = new Lazy<IDbConnection>(OpenConnection);
-            LazyImplementation = new Lazy<IDatabaseImplementation>(DatabaseFactory.CreateImplementation);
+            Implementation = DatabaseFactory.CreateImplementation();
         }
 
         #region property
 
         private Lazy<IDbConnection> LazyConnection { get; set; }
-
-        private Lazy<IDatabaseImplementation> LazyImplementation { get; }
-        protected IDatabaseImplementation Implementation => LazyImplementation.Value;
 
         protected ILogger Logger { get; }
 
@@ -145,6 +134,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #endregion
 
         #region IDatabaseAccessor
+
+        public IDatabaseImplementation Implementation { get; }
 
         /// <inheritdoc cref="IDatabaseAccessor.DatabaseFactory"/>
         public IDatabaseFactory DatabaseFactory { get; }
@@ -728,10 +719,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
     public class DatabaseAccessor<TDbConnection>: DatabaseAccessor
         where TDbConnection : IDbConnection
     {
-        public DatabaseAccessor(IDatabaseFactory connectionFactory, ILogger logger)
-            : base(connectionFactory, logger)
-        { }
-
         public DatabaseAccessor(IDatabaseFactory connectionFactory, ILoggerFactory loggerFactory)
             : base(connectionFactory, loggerFactory)
         { }

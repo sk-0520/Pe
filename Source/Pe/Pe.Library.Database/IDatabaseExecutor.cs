@@ -14,12 +14,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </remarks>
     public interface IDatabaseExecutor
     {
-        #region property
-
-        IDatabaseImplementation Implementation { get; }
-
-        #endregion
-
         #region function
 
         /// <summary>

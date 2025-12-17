@@ -158,9 +158,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             return LoadRawContent();
         }
 
-        private NoteViewOffsetData? GetViewOffsetCore(IDatabaseContexts contexts)
+        private NoteViewOffsetData? GetViewOffsetCore(IDatabaseContext context)
         {
-            var dao = new NoteViewOffsetsEntityDao(contexts.Context, DatabaseStatementLoader, contexts.Implementation, LoggerFactory);
+            var dao = new NoteViewOffsetsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
             return dao.SelectNoteViewOffset(NoteId);
         }
 
