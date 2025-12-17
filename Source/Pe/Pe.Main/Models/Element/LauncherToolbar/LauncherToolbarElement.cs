@@ -297,7 +297,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             var groupData = launcherFactory.CreateGroupData(newGroupName, kind);
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherGroupsDao = new LauncherGroupsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherGroupsDao = new LauncherGroupsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 var groupStep = launcherFactory.GroupItemStep;
                 groupData.Sequence = launcherGroupsDao.SelectMaxSequence() + groupStep;
                 launcherGroupsDao.InsertNewGroup(groupData, DatabaseCommonStatus.CreateCurrentAccount());
@@ -329,8 +329,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             LauncherToolbarsDisplayData displayData;
             AppLauncherToolbarSettingData appLauncherToolbarSettingData;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherToolbarsEntityDao = new LauncherToolbarsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var appLauncherToolbarSettingEntityDao = new AppLauncherToolbarSettingEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherToolbarsEntityDao = new LauncherToolbarsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appLauncherToolbarSettingEntityDao = new AppLauncherToolbarSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
 
                 displayData = launcherToolbarsEntityDao.SelectDisplayData(LauncherToolbarId);
                 appLauncherToolbarSettingData = appLauncherToolbarSettingEntityDao.SelectSettingLauncherToolbarSetting();
@@ -405,7 +405,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             IsOpenedAppMenu = false;
 
             MainDatabaseDelayWriter.Stock(c => {
-                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 dao.UpdateIsTopmost(LauncherToolbarId, IsTopmost, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -452,11 +452,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             var tags = launcherFactory.GetTags(file).ToList();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherItemsDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherTagsDao = new LauncherTagsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherFilesDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherItemsDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherTagsDao = new LauncherTagsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherFilesDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
 
                 bool isNewItem = true;
                 if(DuplicatedFileRegisterMode != LauncherToolbarDuplicatedFileRegisterMode.None) {

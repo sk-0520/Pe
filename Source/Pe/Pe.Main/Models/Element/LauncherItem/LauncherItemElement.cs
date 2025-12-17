@@ -213,7 +213,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             }
 
             var pluginId = MainDatabaseBarrier.ReadData(c => {
-                var launcherAddonsEntityDao = new LauncherAddonsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var launcherAddonsEntityDao = new LauncherAddonsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 return launcherAddonsEntityDao.SelectAddonPluginId(LauncherItemId);
             });
 
@@ -288,7 +288,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
         private void IncrementExecuteCount()
         {
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var dao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var dao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 dao.UpdateExecuteCountIncrement(LauncherItemId, DatabaseCommonStatus.CreateCurrentAccount());
                 context.Commit();
             }
@@ -319,7 +319,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherFilesEntityDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherFilesEntityDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 return launcherFilesEntityDao.SelectPath(LauncherItemId);
             }
         }

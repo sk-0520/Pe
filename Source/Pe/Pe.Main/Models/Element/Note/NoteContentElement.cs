@@ -89,7 +89,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 var data = new NoteContentData() {
                     NoteId = NoteId,
                     ContentKind = ContentKind,
@@ -117,7 +117,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 return dao.SelectFullContent(NoteId);
             }
         }
@@ -174,7 +174,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
         public void ChangeViewOffsetDelaySave(NoteViewOffsetData offset, object key)
         {
             MainDatabaseDelayWriter.Stock(c => {
-                var noteViewOffsetsEntityDao = new NoteViewOffsetsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var noteViewOffsetsEntityDao = new NoteViewOffsetsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 noteViewOffsetsEntityDao.DeleteNoteViewOffset(NoteId);
                 noteViewOffsetsEntityDao.InsertNoteViewOffset(NoteId, offset, DatabaseCommonStatus.CreateCurrentAccount());
             }, key);
@@ -332,7 +332,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             };
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 // 環境変数込みで書き込み
                 dao.UpdateLinkEnabled(NoteId, filePath, encoding, noteLinkWatchParameter, DatabaseCommonStatus.CreateCurrentAccount());
 
@@ -407,7 +407,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             NoteContentData linkData;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var dao = new NoteContentsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 linkData = dao.SelectLinkParameter(NoteId);
             }
 

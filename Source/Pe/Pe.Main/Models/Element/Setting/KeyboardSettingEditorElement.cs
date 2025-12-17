@@ -164,7 +164,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             IReadOnlyList<KeyActionData> disableKeyActions;
             IReadOnlyList<KeyActionData> pressedKeyActions;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var keyActionsEntityDao = new KeyActionsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var keyActionsEntityDao = new KeyActionsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 replaceKeyActions = keyActionsEntityDao.SelectAllKeyActionsFromKind(KeyActionKind.Replace).ToList();
                 disableKeyActions = keyActionsEntityDao.SelectAllKeyActionsFromKind(KeyActionKind.Disable).ToList();
                 pressedKeyActions = keyActionsEntityDao.SelectAllKeyActionsIgnoreKinds(new[] { KeyActionKind.Replace, KeyActionKind.Disable }).ToList();
@@ -200,10 +200,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 .Concat(PressedJobEditors)
             ;
             foreach(var job in jobs) {
-                job.Save(contextsPack.Main.Context, contextsPack.Main.Implementation, contextsPack.CommonStatus);
+                job.Save(contextsPack.Main.Context, contextsPack.CommonStatus);
             }
             foreach(var job in RemovedJobEditors) {
-                job.Remove(contextsPack.Main.Context, contextsPack.Main.Implementation);
+                job.Remove(contextsPack.Main.Context);
             }
         }
 

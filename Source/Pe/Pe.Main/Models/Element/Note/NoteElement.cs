@@ -275,7 +275,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
 
-                var notesEntityDao = new NotesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var notesEntityDao = new NotesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 notesEntityDao.InsertNewNote(noteData, DatabaseCommonStatus.CreateCurrentAccount());
 
                 /*
@@ -303,7 +303,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             IList<NoteScreenData> noteScreens;
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var noteDomainDao = new NoteDomainDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var noteDomainDao = new NoteDomainDao(context, DatabaseStatementLoader, LoggerFactory);
                 noteScreens = noteDomainDao.SelectNoteScreens(NoteId).ToList();
             }
 
@@ -363,11 +363,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             oldContentElement?.Dispose();
         }
 
-        private void UpdateFontId(SavingFontElement fontElement, IDatabaseContext context, IDatabaseImplementation implementation)
+        private void UpdateFontId(SavingFontElement fontElement, IDatabaseContext context)
         {
             ThrowIfDisposed();
 
-            var notesEntityDao = new NotesEntityDao(context, DatabaseStatementLoader, implementation, LoggerFactory);
+            var notesEntityDao = new NotesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
             notesEntityDao.UpdateFontId(NoteId, fontElement.FontId, DatabaseCommonStatus.CreateCurrentAccount());
         }
 
@@ -385,7 +385,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
 
             MainDatabaseDelayWriter.Stock(c => {
-                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 notesEntityDao.UpdateCompact(NoteId, IsCompact, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -412,7 +412,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             IsLocked = !IsLocked;
             MainDatabaseDelayWriter.Stock(c => {
-                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 notesEntityDao.UpdateLock(NoteId, IsLocked, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -438,7 +438,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             Title = editingTitle;
             MainDatabaseDelayWriter.Stock(c => {
-                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 notesEntityDao.UpdateTitle(NoteId, Title, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -482,7 +482,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             MainDatabaseDelayWriter.Stock(c => {
-                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 var currentNote = notesEntityDao.SelectNote(NoteId);
                 if(currentNote is null) {
                     return;
@@ -506,7 +506,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             ForegroundColor = color;
             MainDatabaseDelayWriter.Stock(c => {
-                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 notesEntityDao.UpdateForegroundColor(NoteId, ForegroundColor, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -527,7 +527,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             CaptionPosition = captionPosition;
             MainDatabaseDelayWriter.Stock(c => {
-                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 notesEntityDao.UpdateCaptionPosition(NoteId, CaptionPosition, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -649,14 +649,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                     Content = convertedContent,
                 };
                 using(var context = MainDatabaseBarrier.WaitWrite()) {
-                    var noteContentsEntityDao = new NoteContentsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                    var noteContentsEntityDao = new NoteContentsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                     if(noteContentsEntityDao.SelectExistsContent(contentData.NoteId)) {
                         noteContentsEntityDao.UpdateContent(contentData, DatabaseCommonStatus.CreateCurrentAccount());
                     } else {
                         noteContentsEntityDao.InsertNewContent(contentData, DatabaseCommonStatus.CreateCurrentAccount());
                     }
 
-                    var notesEntityDao = new NotesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                    var notesEntityDao = new NotesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                     notesEntityDao.UpdateContentKind(NoteId, toContentKind, DatabaseCommonStatus.CreateCurrentAccount());
 
                     context.Commit();
@@ -673,10 +673,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
         {
             Flush();
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var notesEntityDao = new NotesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var notesEntityDao = new NotesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 notesEntityDao.UpdateLayoutKind(NoteId, layoutData.LayoutKind, DatabaseCommonStatus.CreateCurrentAccount());
 
-                var noteLayoutsEntityDao = new NoteLayoutsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var noteLayoutsEntityDao = new NoteLayoutsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 if(noteLayoutsEntityDao.SelectExistsLayout(NoteId, layoutData.LayoutKind)) {
                     noteLayoutsEntityDao.UpdateLayout(layoutData, DatabaseCommonStatus.CreateCurrentAccount());
                 } else {
@@ -698,7 +698,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             IsVisible = isVisible;
             MainDatabaseDelayWriter.Stock(c => {
-                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 notesEntityDao.UpdateVisible(NoteId, IsVisible, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -709,7 +709,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             HiddenMode = hiddenMode;
             MainDatabaseDelayWriter.Stock(c => {
-                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var notesEntityDao = new NotesEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 notesEntityDao.UpdateHiddenMode(NoteId, HiddenMode, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -736,7 +736,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var noteLayoutsEntityDao = new NoteLayoutsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var noteLayoutsEntityDao = new NoteLayoutsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 if(noteLayoutsEntityDao.SelectExistsLayout(layout.NoteId, layout.LayoutKind)) {
                     noteLayoutsEntityDao.UpdateLayout(layout, DatabaseCommonStatus.CreateCurrentAccount());
                 } else {
@@ -833,7 +833,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
                 NoteFileData noteFileData;
                 using(var mainContext = MainDatabaseBarrier.WaitWrite()) {
-                    var noteFilesEntityDao = new NoteFilesEntityDao(mainContext, DatabaseStatementLoader, mainContext.Implementation, LoggerFactory);
+                    var noteFilesEntityDao = new NoteFilesEntityDao(mainContext, DatabaseStatementLoader, LoggerFactory);
 
                     // 現存データ有無確認
                     var noteFileId = noteFilesEntityDao.SelectNoteFileExistsFilePath(NoteId, path);
