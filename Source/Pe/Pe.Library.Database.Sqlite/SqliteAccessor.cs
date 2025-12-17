@@ -29,22 +29,5 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
         }
 
         #endregion
-
-        #region DatabaseAccessor
-
-        public override IDatabaseTransaction BeginReadOnlyTransaction()
-        {
-            ThrowIfDisposed();
-
-            return new ReadOnlyDatabaseTransaction(BaseConnection, Implementation, LoggerFactory);
-        }
-        public override IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
-        {
-            ThrowIfDisposed();
-
-            return new ReadOnlyDatabaseTransaction(BaseConnection, Implementation, isolationLevel, LoggerFactory);
-        }
-
-        #endregion
     }
 }
