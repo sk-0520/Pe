@@ -13,7 +13,7 @@ namespace SqlPack
         public Executor(string sqlRootDirectoryPath, string outputSqlitePath)
         {
             SqlRootDirectory = new DirectoryInfo(sqlRootDirectoryPath);
-            DatabaseAccessor = new SqliteAccessor(new SqliteFactory2(outputSqlitePath), NullLogger.Instance);
+            DatabaseAccessor = new SqliteAccessor(new SqliteFactory2(outputSqlitePath), NullLoggerFactory.Instance);
         }
 
         #region property
