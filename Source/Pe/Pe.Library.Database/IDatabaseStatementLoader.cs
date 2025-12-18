@@ -25,19 +25,31 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
     public static class IDatabaseStatementLoaderExtensions
     {
-        extension(IDatabaseStatementLoader statementLoader)
+        //extension(IDatabaseStatementLoader statementLoader)
+        //{
+        //    /// <summary>
+        //    /// 呼び出しクラス・メンバ名の完全名からデータベース実行文を取得する。
+        //    /// </summary>
+        //    /// <param name="callerType"></param>
+        //    /// <param name="callerMemberName"></param>
+        //    /// <returns></returns>
+        //    public string LoadStatementByCurrent(Type callerType, [CallerMemberName] string callerMemberName = "")
+        //    {
+        //        var key = callerType.FullName + "." + callerMemberName;
+        //        return statementLoader.LoadStatement(key);
+        //    }
+        //}
+
+        /// <summary>
+        /// 呼び出しクラス・メンバ名の完全名からデータベース実行文を取得する。
+        /// </summary>
+        /// <param name="callerType"></param>
+        /// <param name="callerMemberName"></param>
+        /// <returns></returns>
+        public static string LoadStatementByCurrent(this IDatabaseStatementLoader statementLoader, Type callerType, [CallerMemberName] string callerMemberName = "")
         {
-            /// <summary>
-            /// 呼び出しクラス・メンバ名の完全名からデータベース実行文を取得する。
-            /// </summary>
-            /// <param name="callerType"></param>
-            /// <param name="callerMemberName"></param>
-            /// <returns></returns>
-            public string LoadStatementByCurrent(Type callerType, [CallerMemberName] string callerMemberName = "")
-            {
-                var key = callerType.FullName + "." + callerMemberName;
-                return statementLoader.LoadStatement(key);
-            }
+            var key = callerType.FullName + "." + callerMemberName;
+            return statementLoader.LoadStatement(key);
         }
     }
 
