@@ -52,7 +52,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             if(CanUninstall) {
                 using(var context = MainDatabaseBarrier.WaitRead()) {
-                    var pluginsEntityDao = new PluginsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                    var pluginsEntityDao = new PluginsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                     var data = pluginsEntityDao.SelectPluginStateDataByPluginId(PluginId);
                     if(data != null) {
                         MarkedUninstall = data.State == Data.PluginState.Uninstall;
@@ -143,7 +143,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         /// プラグイン側の保存処理。
         /// </summary>
         /// <param name="databaseContextsPack"></param>
-        public void SavePreferences(IDatabaseContextsPack databaseContextsPack)
+        public void SavePreferences(IDatabaseContextPack databaseContextsPack)
         {
             if(!SupportedPreferences) {
                 throw new InvalidOperationException(nameof(SupportedPreferences));
@@ -185,9 +185,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         /// <para>アンインストールとかね。将来的には非活性もここでやる。</para>
         /// </remarks>
         /// <param name="contextsPack"></param>
-        public void Save(IDatabaseContextsPack contextsPack)
+        public void Save(IDatabaseContextPack contextsPack)
         {
-            var pluginsEntityDao = new PluginsEntityDao(contextsPack.Main.Context, DatabaseStatementLoader, contextsPack.Main.Implementation, LoggerFactory);
+            var pluginsEntityDao = new PluginsEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
 
             if(CanUninstall && MarkedUninstall) {
                 var pluginState = new PluginStateData() {
@@ -216,7 +216,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 PluginVersion = Plugin.PluginInformation.PluginVersions.PluginVersion;
             } else {
                 var pluginVersion = MainDatabaseBarrier.ReadData(c => {
-                    var pluginsEntityDao = new PluginsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                    var pluginsEntityDao = new PluginsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                     return pluginsEntityDao.SelectLastUsePluginVersion(PluginId);
                 });
                 if(pluginVersion != null) {

@@ -95,7 +95,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
             );
         }
 
-        private void Vacuum()
+        public void Vacuum()
         {
             var statement = """
                 vacuum
@@ -104,7 +104,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
             Context.Execute(statement);
         }
 
-        private void Reindex()
+        public void Reindex()
         {
             var statement = """
                 reindex
@@ -112,8 +112,8 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
             """;
             Context.Execute(statement);
         }
-        
-        private void Analyze()
+
+        public void Analyze()
         {
             var statement = """
                 analyze

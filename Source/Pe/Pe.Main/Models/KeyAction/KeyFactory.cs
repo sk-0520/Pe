@@ -57,9 +57,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
             var result = new List<KeyItem>();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var keyActionsEntityDao = new KeyActionsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var keyOptionsEntityDao = new KeyOptionsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var keyMappingsEntityDao = new KeyMappingsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var keyActionsEntityDao = new KeyActionsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var keyOptionsEntityDao = new KeyOptionsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var keyMappingsEntityDao = new KeyMappingsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
 
                 foreach(var keyAction in keyActionsEntityDao.SelectAllKeyActionsFromKind(keyActionKind)) {
                     var keyItem = CreateKeyItem(keyAction, keyOptionsEntityDao, keyMappingsEntityDao);
@@ -77,9 +77,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
             var noPressedKinds = new[] { KeyActionKind.Replace, KeyActionKind.Disable };
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var keyActionsEntityDao = new KeyActionsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var keyOptionsEntityDao = new KeyOptionsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var keyMappingsEntityDao = new KeyMappingsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var keyActionsEntityDao = new KeyActionsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var keyOptionsEntityDao = new KeyOptionsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var keyMappingsEntityDao = new KeyMappingsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 foreach(var keyAction in keyActionsEntityDao.SelectAllKeyActionsIgnoreKinds(noPressedKinds)) {
                     var keyItem = CreateKeyItem(keyAction, keyOptionsEntityDao, keyMappingsEntityDao);
                     result.Add(keyItem);

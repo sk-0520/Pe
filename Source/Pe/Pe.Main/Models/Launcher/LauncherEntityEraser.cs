@@ -15,14 +15,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 {
     internal class LauncherEntityEraser: EntityEraserBase
     {
-        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContextsPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContextPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
             : base(contextsPack, statementLoader, loggerFactory)
         {
             LauncherItemId = launcherItemId;
             LauncherItemKind = launcherItemKind;
         }
 
-        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContexts mainContexts, IDatabaseContexts fileContexts, IDatabaseContexts temporaryContexts, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContext mainContexts, IDatabaseContext fileContexts, IDatabaseContext temporaryContexts, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
             : base(mainContexts, fileContexts, temporaryContexts, statementLoader, loggerFactory)
         {
             LauncherItemId = launcherItemId;
@@ -40,15 +40,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         protected override void ExecuteMainImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
-            var launcherBadgesEntityDao = new LauncherBadgesEntityDao(context, statementLoader, implementation, LoggerFactory);
-            var launcherEnvVarsEntityDao = new LauncherEnvVarsEntityDao(context, statementLoader, implementation, LoggerFactory);
+            var launcherBadgesEntityDao = new LauncherBadgesEntityDao(context, statementLoader, LoggerFactory);
+            var launcherEnvVarsEntityDao = new LauncherEnvVarsEntityDao(context, statementLoader, LoggerFactory);
 
             launcherBadgesEntityDao.DeleteLauncherBadge(LauncherItemId);
             launcherEnvVarsEntityDao.DeleteEnvVarItemsByLauncherItemId(LauncherItemId);
 
             switch(LauncherItemKind) {
                 case LauncherItemKind.File: {
-                        var launcherFilesEntityDao = new LauncherFilesEntityDao(context, statementLoader, implementation, LoggerFactory);
+                        var launcherFilesEntityDao = new LauncherFilesEntityDao(context, statementLoader, LoggerFactory);
                         launcherFilesEntityDao.DeleteFileByLauncherItemId(LauncherItemId);
                     }
                     break;
@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                     break;
 
                 case LauncherItemKind.Separator: {
-                        var launcherSeparatorsEntityDao = new LauncherSeparatorsEntityDao(context, statementLoader, implementation, LoggerFactory);
+                        var launcherSeparatorsEntityDao = new LauncherSeparatorsEntityDao(context, statementLoader, LoggerFactory);
                         launcherSeparatorsEntityDao.DeleteSeparatorByLauncherItemId(LauncherItemId);
                     }
                     break;
@@ -66,28 +66,28 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                     throw new NotImplementedException();
             }
 
-            var launcherGroupItemsEntityDao = new LauncherGroupItemsEntityDao(context, statementLoader, implementation, LoggerFactory);
+            var launcherGroupItemsEntityDao = new LauncherGroupItemsEntityDao(context, statementLoader, LoggerFactory);
             launcherGroupItemsEntityDao.DeleteGroupItemsByLauncherItemId(LauncherItemId);
 
-            var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, statementLoader, implementation, LoggerFactory);
+            var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, statementLoader, LoggerFactory);
             launcherItemHistoriesEntityDao.DeleteHistoriesByLauncherItemId(LauncherItemId);
 
-            var launcherTagsEntityDao = new LauncherTagsEntityDao(context, statementLoader, implementation, LoggerFactory);
+            var launcherTagsEntityDao = new LauncherTagsEntityDao(context, statementLoader, LoggerFactory);
             launcherTagsEntityDao.DeleteTagByLauncherItemId(LauncherItemId);
 
-            var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, statementLoader, implementation, LoggerFactory);
+            var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, statementLoader, LoggerFactory);
             launcherRedoItemsEntityDao.DeleteRedoItemByLauncherItemId(LauncherItemId);
 
-            var launcherRedoSuccessExitCodesEntityDao = new LauncherRedoSuccessExitCodesEntityDao(context, statementLoader, implementation, LoggerFactory);
+            var launcherRedoSuccessExitCodesEntityDao = new LauncherRedoSuccessExitCodesEntityDao(context, statementLoader, LoggerFactory);
             launcherRedoSuccessExitCodesEntityDao.DeleteSuccessExitCodes(LauncherItemId);
 
-            var launcherItemsEntityDao = new LauncherItemsEntityDao(context, statementLoader, implementation, LoggerFactory);
+            var launcherItemsEntityDao = new LauncherItemsEntityDao(context, statementLoader, LoggerFactory);
             launcherItemsEntityDao.DeleteLauncherItem(LauncherItemId);
         }
 
         protected override void ExecuteLargeImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
-            var launcherItemIconsEntityDao = new LauncherItemIconsEntityDao(context, statementLoader, implementation, LoggerFactory);
+            var launcherItemIconsEntityDao = new LauncherItemIconsEntityDao(context, statementLoader, LoggerFactory);
             launcherItemIconsEntityDao.DeleteAllSizeImageBinary(LauncherItemId);
         }
 

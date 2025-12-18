@@ -14,25 +14,25 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Preferences
 
         #region function
 
-        public PreferencesLoadContext CreatePreferencesLoadContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack)
+        public PreferencesLoadContext CreatePreferencesLoadContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
         {
             var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, true);
             return new PreferencesLoadContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 
-        public PreferencesCheckContext CreateCheckContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack)
+        public PreferencesCheckContext CreateCheckContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
         {
             var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, true);
             return new PreferencesCheckContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 
-        public PreferencesSaveContext CreateSaveContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack)
+        public PreferencesSaveContext CreateSaveContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
         {
             var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, false);
             return new PreferencesSaveContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 
-        public PreferencesEndContext CreateEndContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack)
+        public PreferencesEndContext CreateEndContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
         {
             var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, true);
             return new PreferencesEndContext(pluginInformation.PluginIdentifiers, pluginStorage);

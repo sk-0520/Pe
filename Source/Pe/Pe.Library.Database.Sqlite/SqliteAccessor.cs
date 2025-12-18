@@ -11,10 +11,6 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
 {
     public class SqliteAccessor: DatabaseAccessor<SQLiteConnection>
     {
-        public SqliteAccessor(IDatabaseFactory databaseFactory, ILogger logger)
-            : base(databaseFactory, logger)
-        { }
-
         public SqliteAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
             : base(databaseFactory, loggerFactory)
         { }
@@ -30,23 +26,6 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
         public void CopyTo(string sourceName, SqliteAccessor destination, string destinationName)
         {
             Connection.BackupDatabase(destination.Connection, destinationName, sourceName, -1, null, -1);
-        }
-
-        #endregion
-
-        #region DatabaseAccessor
-
-        public override IDatabaseTransaction BeginReadOnlyTransaction()
-        {
-            ThrowIfDisposed();
-
-            return new ReadOnlyDatabaseTransaction(false, this);
-        }
-        public override IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
-        {
-            ThrowIfDisposed();
-
-            return new ReadOnlyDatabaseTransaction(false, this, isolationLevel);
         }
 
         #endregion

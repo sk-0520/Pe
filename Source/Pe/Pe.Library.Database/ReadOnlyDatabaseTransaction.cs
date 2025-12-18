@@ -1,7 +1,8 @@
 using System;
 using System.Data;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
@@ -10,19 +11,27 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </summary>
     public sealed class ReadOnlyDatabaseTransaction: DatabaseTransaction
     {
-        /// <inheritdoc cref="DatabaseTransaction.DatabaseTransaction(bool, IDatabaseAccessor)" />
-        public ReadOnlyDatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor)
-            : base(beginTransaction, databaseAccessor)
-        { }
+        public ReadOnlyDatabaseTransaction(IDbConnection connection, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(connection, false, implementation, loggerFactory)
+        {
+            //NOP
+        }
 
-        /// <inheritdoc cref="DatabaseTransaction.DatabaseTransaction(bool, IDatabaseAccessor, IsolationLevel)" />
-        public ReadOnlyDatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor, IsolationLevel isolationLevel)
-            : base(beginTransaction, databaseAccessor, isolationLevel)
-        { }
+        public ReadOnlyDatabaseTransaction(IDbConnection connection, IDatabaseImplementation implementation, IsolationLevel isolationLevel, ILoggerFactory loggerFactory)
+            : base(connection, false, implementation, isolationLevel, loggerFactory)
+        {
+            //NOP
+        }
+
 
         #region DatabaseTransaction
 
         public override void Commit() => throw new NotSupportedException();
+
+        public override void Rollback()
+        {
+            Logger.LogTrace("読み込み専用トランザクション");
+        }
 
         public override int Execute(string statement, object? parameter) => throw new NotSupportedException();
 

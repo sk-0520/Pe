@@ -10,12 +10,24 @@ using Xunit;
 using ContentTypeTextNet.Pe.CommonTest;
 using System.Runtime.CompilerServices;
 using ContentTypeTextNet.Pe.Library.Database.Sqlite;
+using System.Data;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Test.Vendor.Sqlite
 {
     public class DatabaseAccessObjectTest
     {
         #region define
+        private class TestDatabaseImplementation: DatabaseImplementation
+        {
+        }
+
+        private class TestDatabaseContext: DatabaseContext
+        {
+            public TestDatabaseContext(IDbConnection connection, IDbTransaction? transaction, IDatabaseImplementation implementation, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory)
+                : base(connection, transaction, implementation, loggerFactory)
+            {
+            }
+        }
 
         private class TestStatementLoader: DatabaseStatementLoaderBase
         {
@@ -46,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Vendor.Sqlite
         private class SqliteDatabaseAccessObject: DatabaseAccessObjectBase
         {
             public SqliteDatabaseAccessObject()
-                : base(default!, new TestStatementLoader(), new SqliteImplementation(), NullLoggerFactory.Instance)
+                : base(new TestDatabaseContext(null!, null, new TestDatabaseImplementation(), NullLoggerFactory.Instance), new TestStatementLoader(), NullLoggerFactory.Instance)
             { }
 
             #region function

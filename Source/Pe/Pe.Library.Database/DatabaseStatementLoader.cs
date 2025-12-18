@@ -15,15 +15,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <summary>
         /// 生成。
         /// </summary>
-        /// <param name="logger"></param>
-        protected DatabaseStatementLoaderBase(ILogger logger)
-        {
-            Logger = logger;
-        }
-
-        /// <summary>
-        /// 生成。
-        /// </summary>
         /// <param name="loggerFactory"></param>
         protected DatabaseStatementLoaderBase(ILoggerFactory loggerFactory)
         {
@@ -42,12 +33,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #region IDatabaseStatementLoader
 
         public abstract string LoadStatement(string key);
-
-        public string LoadStatementByCurrent(Type callerType, [CallerMemberName] string callerMemberName = "")
-        {
-            var key = callerType.FullName + "." + callerMemberName;
-            return LoadStatement(key);
-        }
 
         #endregion
     }

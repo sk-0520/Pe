@@ -19,25 +19,25 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         #region function
 
-        public PluginInitializeContext CreateInitializeContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack)
+        public PluginInitializeContext CreateInitializeContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
         {
             var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, true);
             return new PluginInitializeContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 
-        public PluginFinalizeContext CreateFinalizeContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack)
+        public PluginFinalizeContext CreateFinalizeContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
         {
             var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, false);
             return new PluginFinalizeContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 
-        public PluginLoadContext CreateLoadContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack)
+        public PluginLoadContext CreateLoadContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
         {
             var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, true);
             return new PluginLoadContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 
-        public PluginUnloadContext CreateUnloadContext(IPluginInformation pluginInformation, IDatabaseContextsPack databaseContextsPack)
+        public PluginUnloadContext CreateUnloadContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
         {
             var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, false);
             return new PluginUnloadContext(pluginInformation.PluginIdentifiers, pluginStorage);

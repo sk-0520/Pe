@@ -153,7 +153,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
         {
             SettingAppCommandSettingData setting;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appCommandSettingEntityDao = new AppCommandSettingEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var appCommandSettingEntityDao = new AppCommandSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 setting = appCommandSettingEntityDao.SelectSettingCommandSetting();
             }
 
@@ -228,7 +228,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
             Width = width;
 
             MainDatabaseDelayWriter.Stock(c => {
-                var dao = new AppCommandSettingEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var dao = new AppCommandSettingEntityDao(c, DatabaseStatementLoader, LoggerFactory);
                 dao.UpdateCommandSettingWidth(Width, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }

@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             LauncherItems.RemoveAt(index);
         }
 
-        public void Save(IDatabaseContextsPack pack)
+        public void Save(IDatabaseContextPack pack)
         {
             ThrowIfDisposed();
 
@@ -79,7 +79,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 Sequence = Sequence
             };
             // 存在しないランチャーアイテムは保存対象外とする
-            var launcherItemsEntityDao = new LauncherItemsEntityDao(pack.Main.Context, DatabaseStatementLoader, pack.Main.Implementation, LoggerFactory);
+            var launcherItemsEntityDao = new LauncherItemsEntityDao(pack.Main, DatabaseStatementLoader, LoggerFactory);
             var launcherItemIds = LauncherItems
                 // こんなとこでSQL発行するとか業務じゃむり
                 .Where(i => launcherItemsEntityDao.SelectExistsLauncherItem(i))
@@ -88,10 +88,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             var launcherFactory = new LauncherFactory(IdFactory, LoggerFactory);
 
-            var launcherGroupsEntityDao = new LauncherGroupsEntityDao(pack.Main.Context, DatabaseStatementLoader, pack.Main.Implementation, LoggerFactory);
+            var launcherGroupsEntityDao = new LauncherGroupsEntityDao(pack.Main, DatabaseStatementLoader, LoggerFactory);
             launcherGroupsEntityDao.UpdateGroup(launcherGroupData, DatabaseCommonStatus.CreateCurrentAccount());
 
-            var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(pack.Main.Context, DatabaseStatementLoader, pack.Main.Implementation, LoggerFactory);
+            var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(pack.Main, DatabaseStatementLoader, LoggerFactory);
             launcherGroupItemsDao.DeleteGroupItemsByLauncherGroupId(LauncherGroupId);
 
             var currentMaxSequence = launcherGroupItemsDao.SelectMaxSequence(LauncherGroupId);
@@ -107,10 +107,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             LauncherGroupData data;
             IEnumerable<LauncherItemId> launcherItemIds;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherGroupsEntityDao = new LauncherGroupsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherGroupsEntityDao = new LauncherGroupsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
                 data = launcherGroupsEntityDao.SelectLauncherGroup(LauncherGroupId);
 
-                var launcherItemsLoader = new LauncherItemsLoader(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherItemsLoader = new LauncherItemsLoader(context, DatabaseStatementLoader, LoggerFactory);
                 launcherItemIds = launcherItemsLoader.LoadLauncherItemIds(LauncherGroupId, data.Kind);
             }
 
