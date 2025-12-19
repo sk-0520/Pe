@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </summary>
     public sealed class ReadOnlyDatabaseTransaction: DatabaseTransaction
     {
-        public ReadOnlyDatabaseTransaction(IDbConnection connection, IDbTransaction transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        public ReadOnlyDatabaseTransaction(IDbConnection connection, IDbTransaction? transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
             : base(connection, transaction, implementation, loggerFactory)
         {
             //NOP

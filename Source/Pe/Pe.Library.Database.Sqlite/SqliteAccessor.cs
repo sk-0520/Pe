@@ -29,5 +29,20 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
         }
 
         #endregion
+
+        #region DatabaseAccessor
+
+        public override IDatabaseTransaction BeginReadOnlyTransaction()
+        {
+            // SQLite は複数スレッドでトランザクション開くと死ぬのでトランザクション実体なしで仮想的に対応。
+            return BeginTransactionCore(null, true);
+        }
+
+        public override IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
+        {
+            return BeginReadOnlyTransaction();
+        }
+
+        #endregion
     }
 }

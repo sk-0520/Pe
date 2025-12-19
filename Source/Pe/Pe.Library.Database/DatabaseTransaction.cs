@@ -13,11 +13,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// トランザクション中の処理をサポート。
     /// </summary>
     /// <remarks>
+    /// <para>コミットと <see cref="IDatabaseExecutor"/> を見る感じなのでトランザクションの実体(<see cref="IDbTransaction"/>)は <see langword="null"/>でも構わない。</para>
     /// <para>基本的にはユーザーコードで登場せず <see cref="IDatabaseContext"/>がすべて上位から良しなに対応する。</para>
     /// </remarks>
     public class DatabaseTransaction: DatabaseContext, IDatabaseTransaction
     {
-        public DatabaseTransaction(IDbConnection connection, IDbTransaction transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        public DatabaseTransaction(IDbConnection connection, IDbTransaction? transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
             : base(connection, transaction, implementation, loggerFactory)
         {
             //NOP

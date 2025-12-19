@@ -90,7 +90,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return con;
         }
 
-        protected virtual IDatabaseTransaction BeginTransactionCore(IDbTransaction transaction, bool isReadonly)
+        protected virtual IDatabaseTransaction BeginTransactionCore(IDbTransaction? transaction, bool isReadonly)
         {
             if(isReadonly) {
                 return new ReadOnlyDatabaseTransaction(BaseConnection, transaction, Implementation, LoggerFactory);
