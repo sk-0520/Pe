@@ -12,12 +12,12 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
-    public class DatabaseContext: DisposerBase, IDatabaseContext
+    public abstract class DatabaseContextBase: DisposerBase, IDatabaseContext
     {
-        public DatabaseContext(IDbConnection connection, IDbTransaction? transaction,  IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        protected DatabaseContextBase(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
-            Connection = connection;
-            Transaction = transaction;
+            DbConnection = dbConnection;
+            DbTransaction = dbTransaction;
             Implementation = implementation;
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
@@ -25,8 +25,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region property
 
-        protected IDbConnection Connection { get; set; }
-        protected IDbTransaction? Transaction { get; set; }
+        protected virtual IDbConnection DbConnection { get; private set; }
+        protected IDbTransaction? DbTransaction { get; private set; }
 
         protected ILoggerFactory LoggerFactory { get; }
         protected ILogger Logger { get;}
@@ -109,7 +109,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var formattedStatement = Implementation.PreFormatStatement(statement);
             LoggingStatement(formattedStatement, parameter);
 
-            var result = Connection.ExecuteReader(formattedStatement, parameter, Transaction);
+            var result = DbConnection.ExecuteReader(formattedStatement, parameter, DbTransaction);
             return result;
         }
 
@@ -123,11 +123,11 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: Transaction,
+                transaction: DbTransaction,
                 cancellationToken: cancellationToken
             );
 
-            var result = Connection.ExecuteReaderAsync(command);
+            var result = DbConnection.ExecuteReaderAsync(command);
             return result;
         }
 
@@ -175,7 +175,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.ExecuteScalar<TResult>(formattedStatement, parameter, Transaction);
+            var result = DbConnection.ExecuteScalar<TResult>(formattedStatement, parameter, DbTransaction);
             LoggingExecuteScalarResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -192,10 +192,10 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: Transaction,
+                transaction: DbTransaction,
                 cancellationToken: cancellationToken
             );
-            var result = await Connection.ExecuteScalarAsync<TResult>(command);
+            var result = await DbConnection.ExecuteScalarAsync<TResult>(command);
             LoggingExecuteScalarResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -210,7 +210,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.Query<T>(formattedStatement, parameter, Transaction, buffered);
+            var result = DbConnection.Query<T>(formattedStatement, parameter, DbTransaction, buffered);
             LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -228,12 +228,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: Transaction,
+                transaction: DbTransaction,
                 flags: buffered ? CommandFlags.Buffered : CommandFlags.NoCache,
                 cancellationToken: cancellationToken
             );
 
-            var result = await Connection.QueryAsync<T>(command);
+            var result = await DbConnection.QueryAsync<T>(command);
             LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
@@ -247,7 +247,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.Query(formattedStatement, parameter, Transaction, buffered);
+            var result = DbConnection.Query(formattedStatement, parameter, DbTransaction, buffered);
             LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -265,12 +265,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: Transaction,
+                transaction: DbTransaction,
                 flags: buffered ? CommandFlags.Buffered : CommandFlags.NoCache,
                 cancellationToken: cancellationToken
             );
 
-            var result = await Connection.QueryAsync(command);
+            var result = await DbConnection.QueryAsync(command);
             LoggingQueryResults(result, buffered, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
@@ -284,7 +284,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.QueryFirst<T>(formattedStatement, parameter, Transaction);
+            var result = DbConnection.QueryFirst<T>(formattedStatement, parameter, DbTransaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -301,11 +301,11 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: Transaction,
+                transaction: DbTransaction,
                 cancellationToken: cancellationToken
             );
 
-            var result = await Connection.QueryFirstAsync<T>(command);
+            var result = await DbConnection.QueryFirstAsync<T>(command);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
@@ -319,7 +319,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.QueryFirstOrDefault<T>(formattedStatement, parameter, Transaction);
+            var result = DbConnection.QueryFirstOrDefault<T>(formattedStatement, parameter, DbTransaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -336,11 +336,11 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: Transaction,
+                transaction: DbTransaction,
                 cancellationToken: cancellationToken
             );
 
-            return Connection.QueryFirstOrDefaultAsync<T?>(command).ContinueWith(t => {
+            return DbConnection.QueryFirstOrDefaultAsync<T?>(command).ContinueWith(t => {
                 LoggingQueryResult(t.Result, Stopwatch.GetElapsedTime(startTime));
                 return t.Result;
             }, TaskContinuationOptions.OnlyOnRanToCompletion);
@@ -354,7 +354,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.QuerySingle<T>(formattedStatement, parameter, Transaction);
+            var result = DbConnection.QuerySingle<T>(formattedStatement, parameter, DbTransaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -371,11 +371,11 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: Transaction,
+                transaction: DbTransaction,
                 cancellationToken: cancellationToken
             );
 
-            var result = await Connection.QuerySingleAsync<T>(command);
+            var result = await DbConnection.QuerySingleAsync<T>(command);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
             return result;
         }
@@ -389,7 +389,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.QuerySingleOrDefault<T>(formattedStatement, parameter, Transaction);
+            var result = DbConnection.QuerySingleOrDefault<T>(formattedStatement, parameter, DbTransaction);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -406,10 +406,10 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: Transaction,
+                transaction: DbTransaction,
                 cancellationToken: cancellationToken
             );
-            var result = await Connection.QuerySingleOrDefaultAsync<T>(command);
+            var result = await DbConnection.QuerySingleOrDefaultAsync<T>(command);
             LoggingQueryResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -423,7 +423,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingStatement(formattedStatement, parameter);
 
             var startTime = Stopwatch.GetTimestamp();
-            var result = Connection.Execute(formattedStatement, parameter, Transaction);
+            var result = DbConnection.Execute(formattedStatement, parameter, DbTransaction);
             LoggingExecuteResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
@@ -440,13 +440,29 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var command = new CommandDefinition(
                 statement,
                 parameters: parameter,
-                transaction: Transaction,
+                transaction: DbTransaction,
                 cancellationToken: cancellationToken
             );
-            var result = await Connection.ExecuteAsync(command);
+            var result = await DbConnection.ExecuteAsync(command);
             LoggingExecuteResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
+        }
+
+        #endregion
+
+        #region DisposerBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                // DatabaseContext 自体に所有権はないため参照だけ外す。
+                // DatabaseAccessor, DatabaseTransaction などがそれぞれ責任もって処理する。
+                DbTransaction = null;
+                DbConnection = null!;
+            }
+
+            base.Dispose(disposing);
         }
 
         #endregion

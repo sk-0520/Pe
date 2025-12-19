@@ -20,7 +20,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <summary>
         /// 接続元。
         /// </summary>
-        IDbConnection BaseConnection { get; }
+        IDbConnection BaseDbConnection { get; }
         /// <summary>
         /// 対象DBに対する生成処理機。
         /// </summary>
@@ -53,7 +53,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// 読み込み専用でトランザクション開始。
         /// </summary>
         /// <remarks>
-        /// <para>意味わからん名前だけどいるの！</para>
+        /// <para>書き込みを行わないトランザクション処理。DB直接実行とあんまり変わりはないがソース上で読み込みのみを明記する役割。</para>
+        /// <para>実際にトランザクションとして実行されるかどうかは未定義。マルチスレッドでトランザクションが開けないデータベースなどの場合は仮想的なトランザクションとして扱われる可能性あり。</para>
         /// </remarks>
         /// <param name="isolationLevel"></param>
         /// <returns></returns>

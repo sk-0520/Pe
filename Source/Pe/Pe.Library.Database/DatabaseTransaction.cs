@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -13,18 +14,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// トランザクション中の処理をサポート。
     /// </summary>
     /// <remarks>
+    /// <para>コミットと <see cref="IDatabaseExecutor"/> を見る感じなのでトランザクションの実体(<see cref="IDbTransaction"/>)は <see langword="null"/> でも構わない。</para>
     /// <para>基本的にはユーザーコードで登場せず <see cref="IDatabaseContext"/>がすべて上位から良しなに対応する。</para>
     /// </remarks>
-    public class DatabaseTransaction: DatabaseContext, IDatabaseTransaction
+    public class DatabaseTransaction: DatabaseContextBase, IDatabaseTransaction
     {
-        public DatabaseTransaction(IDbConnection connection, bool beginTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(connection, beginTransaction ? connection.BeginTransaction(): null, implementation, loggerFactory)
-        {
-            //NOP
-        }
-
-        public DatabaseTransaction(IDbConnection connection, bool beginTransaction, IDatabaseImplementation implementation, IsolationLevel isolationLevel, ILoggerFactory loggerFactory)
-            : base(connection, beginTransaction ? connection.BeginTransaction(isolationLevel) : null, implementation, loggerFactory)
+        public DatabaseTransaction(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(dbConnection, dbTransaction, implementation, loggerFactory)
         {
             //NOP
         }
@@ -37,18 +33,17 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region IDatabaseTransaction
 
-        /// <summary>
-        /// <see cref="IDatabaseContext"/>としての自身を返す。
-        /// </summary>
-        public IDatabaseContext Context => this;
+        public new IDbTransaction? DbTransaction => base.DbTransaction;
 
         public virtual void Commit()
         {
-            Debug.Assert(Transaction is not null);
+            if(DbTransaction is null) {
+                throw new InvalidOperationException($"{nameof(DbTransaction)} is null");
+            }
 
             ThrowIfDisposed();
 
-            Transaction.Commit();
+            DbTransaction.Commit();
             Committed = true;
         }
 
@@ -56,8 +51,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            if(Transaction is not null && Transaction.Connection is not null) {
-                Transaction.Rollback();
+            if(DbTransaction is not null && DbTransaction.Connection is not null) {
+                DbTransaction.Rollback();
             }
         }
 
@@ -72,16 +67,39 @@ namespace ContentTypeTextNet.Pe.Library.Database
                     if(!Committed) {
                         Rollback();
                     }
-                    if(Transaction is not null) {
-                        Transaction.Dispose();
+                    if(DbTransaction is not null) {
+                        DbTransaction.Dispose();
                     }
-                    Transaction = null;
-                    Connection = null!;
                 }
             }
 
             base.Dispose(disposing);
         }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// 読み込み専用トランザクション。
+    /// </summary>
+    /// <remarks>
+    /// <para><see cref="IDatabaseTransaction.Rollback"/>は実装ミス・不具合により書き込みが実施されていた場合も考慮し、最後の防衛線として無効化しない。</para>
+    /// </remarks>
+    public sealed class ReadOnlyDatabaseTransaction: DatabaseTransaction
+    {
+        public ReadOnlyDatabaseTransaction(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(dbConnection, dbTransaction, implementation, loggerFactory)
+        {
+            //NOP
+        }
+
+        #region DatabaseTransaction
+
+        public override void Commit() => throw new NotSupportedException();
+
+        public override int Execute(string statement, object? parameter) => throw new NotSupportedException();
+
+        public override Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken) => throw new NotSupportedException();
 
         #endregion
     }

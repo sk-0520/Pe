@@ -88,13 +88,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
     public interface ITemporaryDatabaseAccessor: IApplicationDatabaseAccessor
     { }
 
-    internal class ApplicationDtabaseContext: DatabaseContext
+    /// <summary>
+    /// アプリケーション用<see cref="IDatabaseAccessor"/>実装。
+    /// </summary>
+    internal class ApplicationDatabaseAccessor: SqliteAccessor, IMainDatabaseAccessor, ILargeDatabaseAccessor, ITemporaryDatabaseAccessor
     {
-        public ApplicationDtabaseContext(IDbConnection connection, IDbTransaction? transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(connection, transaction, implementation, loggerFactory)
-        {
-            //NOP
-        }
+        public ApplicationDatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
+            : base(databaseFactory, loggerFactory)
+        { }
 
         #region DatabaseContext
 
@@ -242,25 +243,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         #endregion
     }
 
-    /// <summary>
-    /// アプリケーション用<see cref="IDatabaseAccessor"/>実装。
-    /// </summary>
-    internal class ApplicationDatabaseAccessor: SqliteAccessor, IMainDatabaseAccessor, ILargeDatabaseAccessor, ITemporaryDatabaseAccessor
-    {
-        public ApplicationDatabaseAccessor(IDatabaseFactory connectionCreator, ILoggerFactory loggerFactory)
-            : base(connectionCreator, loggerFactory)
-        { }
-
-        #region DatabaseAccessor
-
-        protected override DatabaseContext CreateDatabaseContext(IDbConnection dbConnection, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-        {
-            return new ApplicationDtabaseContext(dbConnection, null, implementation, loggerFactory);
-        }
-
-        #endregion
-    }
-
     internal readonly struct StatementAccessorParameter
     {
         public StatementAccessorParameter(string fullName)
@@ -333,9 +315,9 @@ limit
                 Logger.LogInformation("SQL文読み込み方法 -> ファイル: {0}", BaseDirectory.FullName);
             } else {
                 if(GivePriorityToFile) {
-                    Logger.LogInformation("SQL文読み込み方法 -> ファイル優先の sqlite: {0} -> {1}", BaseDirectory.FullName, StatementAccessor.BaseConnection.ConnectionString);
+                    Logger.LogInformation("SQL文読み込み方法 -> ファイル優先の sqlite: {0} -> {1}", BaseDirectory.FullName, StatementAccessor.BaseDbConnection.ConnectionString);
                 } else {
-                    Logger.LogInformation("SQL文読み込み方法 -> sqlite: {0}", StatementAccessor.BaseConnection.ConnectionString);
+                    Logger.LogInformation("SQL文読み込み方法 -> sqlite: {0}", StatementAccessor.BaseDbConnection.ConnectionString);
                 }
             }
         }

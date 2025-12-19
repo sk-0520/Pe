@@ -5,203 +5,66 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.Common;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
-    file sealed class DatabaseBarrierTransaction: DisposerBase, IDatabaseTransaction
+    file class DatabaseBarrierTransaction: DatabaseTransaction
     {
-        public DatabaseBarrierTransaction(IDisposable locker, IDatabaseTransaction transaction, IDatabaseImplementation implementation)
+        public DatabaseBarrierTransaction(IDisposable locker, IDbConnection connection, IDatabaseTransaction transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(connection, transaction.DbTransaction, implementation, loggerFactory)
         {
             Locker = locker;
-            Transaction = transaction;
-            Implementation = implementation;
+            BaseTransaction = transaction;
         }
 
         #region property
 
         private IDisposable Locker { get; [Unused(UnusedKinds.Dispose)] set; }
-        public IDatabaseTransaction Transaction { get; [Unused(UnusedKinds.Dispose)] set; }
-
-        public IDatabaseImplementation Implementation { get; }
+        // トランザクションは参照だけ保持しておく
+        private IDatabaseTransaction BaseTransaction { get; set; }
 
         #endregion
 
         #region function
         #endregion
 
-        #region IDatabaseTransaction
-
-        public IDatabaseContext Context => this;
-
-        public int Execute(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.Execute(statement, parameter);
-        }
-
-        public Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.ExecuteAsync(statement, parameter, cancellationToken);
-        }
-
-        public IDataReader GetDataReader(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.GetDataReader(statement, parameter);
-        }
-
-        public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            return Transaction.GetDataReaderAsync(statement, parameter, cancellationToken);
-        }
-
-        public DataTable GetDataTable(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.GetDataTable(statement, parameter);
-        }
-
-        public Task<DataTable> GetDataTableAsync(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            return Transaction.GetDataTableAsync(statement, parameter, cancellationToken);
-        }
-
-        public TResult? GetScalar<TResult>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.GetScalar<TResult?>(statement, parameter);
-        }
-
-        public Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.GetScalarAsync<TResult?>(statement, parameter, cancellationToken);
-        }
-
-        public IEnumerable<T> Query<T>(string statement, object? parameter, bool buffered)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.Query<T>(statement, parameter, buffered);
-        }
-
-        public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.QueryAsync<T>(statement, parameter, buffered, cancellationToken);
-        }
-
-        public IEnumerable<dynamic> Query(string statement, object? parameter, bool buffered)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.Query(statement, parameter, buffered);
-        }
-
-        public Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.QueryAsync(statement, parameter, buffered, cancellationToken);
-        }
-
-        public T QueryFirst<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.QueryFirst<T>(statement, parameter);
-        }
-
-        public Task<T> QueryFirstAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.QueryFirstAsync<T>(statement, parameter, cancellationToken);
-        }
-
-        [return: MaybeNull]
-        public T QueryFirstOrDefault<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.QueryFirstOrDefault<T>(statement, parameter);
-        }
-
-        public Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.QueryFirstOrDefaultAsync<T?>(statement, parameter, cancellationToken);
-        }
-
-        public T QuerySingle<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.QuerySingle<T>(statement, parameter);
-        }
-
-        public Task<T> QuerySingleAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.QuerySingleAsync<T>(statement, parameter, cancellationToken);
-        }
-
-        [return: MaybeNull]
-        public T QuerySingleOrDefault<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.QuerySingleOrDefault<T>(statement, parameter);
-        }
-
-        public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return Transaction.QuerySingleOrDefaultAsync<T>(statement, parameter, cancellationToken);
-        }
-
-        public void Commit()
-        {
-            ThrowIfDisposed();
-
-            Transaction.Commit();
-        }
-
-        public void Rollback()
-        {
-            Transaction.Rollback();
-
-            ThrowIfDisposed();
-        }
-
-        #endregion
-
         #region DisposerBase
 
         protected override void Dispose(bool disposing)
         {
-            if(!IsDisposed) {
+            // 解放順序としてトランザクション処理後にロック解除が必要なためトランザクション処理を担う基底を先に呼ぶ
+            var isDisposed = IsDisposed;
+            base.Dispose(disposing);
+            // BaseTransaction の解放すべき対象は基底で解放されているので参照だけ解除する
+            BaseTransaction = null!;
+
+            if(!isDisposed) {
                 if(disposing) {
-                    Transaction.Dispose();
                     Locker.Dispose();
                 }
-                Transaction = null!;
                 Locker = null!;
             }
-
-            base.Dispose(disposing);
         }
+
+        #endregion
+    }
+
+    file sealed class ReadOnlyDatabaseBarrierTransaction: DatabaseBarrierTransaction
+    {
+        public ReadOnlyDatabaseBarrierTransaction(IDisposable locker, IDbConnection connection, IDatabaseTransaction transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(locker, connection, transaction, implementation, loggerFactory)
+        {
+            //NOP
+        }
+
+        #region DatabaseBarrierTransaction
+
+        public override void Commit() => throw new NotSupportedException();
+
+        public override int Execute(string statement, object? parameter) => throw new NotSupportedException();
+
+        public override Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken) => throw new NotSupportedException();
 
         #endregion
     }
@@ -209,17 +72,18 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// <inheritdoc cref="IDatabaseBarrier" />
     public class DatabaseBarrier: IDatabaseBarrier
     {
-        public DatabaseBarrier(IDatabaseAccessor accessor, ReadWriteLockHelper locker)
+        public DatabaseBarrier(IDatabaseAccessor accessor, IReadWriteLockHelper locker, ILoggerFactory loggerFactory)
         {
             Accessor = accessor;
             Locker = locker;
+            LoggerFactory = loggerFactory;
         }
 
         #region property
 
         protected IDatabaseAccessor Accessor { get; }
-        protected ReadWriteLockHelper Locker { get; }
-
+        protected IReadWriteLockHelper Locker { get; }
+        protected ILoggerFactory LoggerFactory { get; }
         #endregion
 
         #region IDatabaseBarrier
@@ -234,7 +98,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             var locker = Locker.WaitWriteByDefaultTimeout();
             var transaction = Accessor.BeginTransaction();
-            var result = new DatabaseBarrierTransaction(locker, transaction, Accessor.DatabaseFactory.CreateImplementation());
+            var result = new DatabaseBarrierTransaction(locker, Accessor.BaseDbConnection, transaction, Accessor.Implementation, LoggerFactory);
             return result;
         }
 
@@ -243,7 +107,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             var locker = Locker.WaitWrite(timeout);
             var transaction = Accessor.BeginTransaction();
-            var result = new DatabaseBarrierTransaction(locker, transaction, Accessor.DatabaseFactory.CreateImplementation());
+            var result = new DatabaseBarrierTransaction(locker, Accessor.BaseDbConnection, transaction, Accessor.Implementation, LoggerFactory);
             return result;
         }
 
@@ -258,7 +122,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             var locker = Locker.WaitReadByDefaultTimeout();
             var transaction = Accessor.BeginReadOnlyTransaction();
-            var result = new DatabaseBarrierTransaction(locker, transaction, Accessor.DatabaseFactory.CreateImplementation());
+            var result = new ReadOnlyDatabaseBarrierTransaction(locker, Accessor.BaseDbConnection, transaction, Accessor.Implementation, LoggerFactory);
             return result;
         }
 
@@ -267,7 +131,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             var locker = Locker.WaitRead(timeout);
             var transaction = Accessor.BeginReadOnlyTransaction();
-            var result = new DatabaseBarrierTransaction(locker, transaction, Accessor.DatabaseFactory.CreateImplementation());
+            var result = new ReadOnlyDatabaseBarrierTransaction(locker, Accessor.BaseDbConnection, transaction, Accessor.Implementation, LoggerFactory);
             return result;
         }
 
