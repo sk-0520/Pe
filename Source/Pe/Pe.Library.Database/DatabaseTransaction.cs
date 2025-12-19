@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// <para>コミットと <see cref="IDatabaseExecutor"/> を見る感じなのでトランザクションの実体(<see cref="IDbTransaction"/>)は <see langword="null"/> でも構わない。</para>
     /// <para>基本的にはユーザーコードで登場せず <see cref="IDatabaseContext"/>がすべて上位から良しなに対応する。</para>
     /// </remarks>
-    public class DatabaseTransaction: DatabaseContext, IDatabaseTransaction
+    public class DatabaseTransaction: DatabaseContextBase, IDatabaseTransaction
     {
         public DatabaseTransaction(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
             : base(dbConnection, dbTransaction, implementation, loggerFactory)

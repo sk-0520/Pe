@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Vendor.Sqlite
         {
         }
 
-        private class TestDatabaseContext: DatabaseContext
+        private class TestDatabaseContext: DatabaseContextBase
         {
             public TestDatabaseContext(IDbConnection connection, IDbTransaction? transaction, IDatabaseImplementation implementation, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory)
                 : base(connection, transaction, implementation, loggerFactory)

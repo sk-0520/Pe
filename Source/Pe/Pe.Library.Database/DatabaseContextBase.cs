@@ -12,9 +12,9 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
-    public class DatabaseContext: DisposerBase, IDatabaseContext
+    public abstract class DatabaseContextBase: DisposerBase, IDatabaseContext
     {
-        public DatabaseContext(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        protected DatabaseContextBase(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
             DbConnection = dbConnection;
             DbTransaction = dbTransaction;

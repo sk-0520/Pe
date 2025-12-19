@@ -150,7 +150,7 @@
     <File Path="../../Define/changelogs.ts" />
     <File Path="../../Directory.Build.props" />
   </Folder>
-  <Project Path="Pe.Main.Test/Pe.Main.Test.csproj">
+  <Project Path="Pe.Main.Test/Pe.Main.Test.csproj" DefaultStartup="True">
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>

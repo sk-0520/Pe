@@ -19,7 +19,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// <remarks>
     /// <para>DBまで行く前にプログラム側で制御する目的。</para>
     /// </remarks>
-    public class DatabaseAccessor: DatabaseContext, IDatabaseAccessor
+    public class DatabaseAccessor: DatabaseContextBase, IDatabaseAccessor
     {
         public DatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
             // 第一引数は本クラスの DbConnection が使用されるので null で問題ない
