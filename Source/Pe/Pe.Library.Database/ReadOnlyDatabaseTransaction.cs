@@ -22,13 +22,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         public override void Commit() => throw new NotSupportedException();
 
-#if DEBUG
-        public override void Rollback()
-        {
-            Logger.LogTrace("読み込み専用トランザクション");
-        }
-#endif
-
         public override int Execute(string statement, object? parameter) => throw new NotSupportedException();
 
         public override Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken) => throw new NotSupportedException();
