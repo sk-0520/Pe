@@ -78,9 +78,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 new ApplicationTemporaryReadWriteLockHelper()
             );
             var barrierPack = new ApplicationDatabaseBarrierPack(
-                new ApplicationDatabaseBarrier(accessorPack.Main, readerWriterLockerPack.Main),
-                new ApplicationDatabaseBarrier(accessorPack.Large, readerWriterLockerPack.Large),
-                new ApplicationDatabaseBarrier(accessorPack.Temporary, readerWriterLockerPack.Temporary)
+                new ApplicationDatabaseBarrier(accessorPack.Main, readerWriterLockerPack.Main, loggerFactory),
+                new ApplicationDatabaseBarrier(accessorPack.Large, readerWriterLockerPack.Large, loggerFactory),
+                new ApplicationDatabaseBarrier(accessorPack.Temporary, readerWriterLockerPack.Temporary, loggerFactory)
             );
 
             var delayWriterPack = new ApplicationDatabaseDelayWriterPack(

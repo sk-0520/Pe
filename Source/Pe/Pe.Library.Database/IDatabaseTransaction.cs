@@ -12,6 +12,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </remarks>
     public interface IDatabaseTransaction: IDatabaseContext, IDisposable
     {
+        #region property
+
+        IDbTransaction? Transaction { get; }
+
+        #endregion
+
         #region function
 
         /// <summary>

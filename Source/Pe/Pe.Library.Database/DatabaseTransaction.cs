@@ -33,6 +33,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region IDatabaseTransaction
 
+        public new IDbTransaction? Transaction => base.Transaction;
+
         public virtual void Commit()
         {
             Debug.Assert(Transaction is not null);
@@ -66,8 +68,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
                     if(Transaction is not null) {
                         Transaction.Dispose();
                     }
-                    Transaction = null;
-                    Connection = null!;
                 }
             }
 

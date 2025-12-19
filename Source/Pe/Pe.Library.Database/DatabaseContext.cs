@@ -25,8 +25,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region property
 
-        protected IDbConnection Connection { get; set; }
-        protected IDbTransaction? Transaction { get; set; }
+        protected IDbConnection Connection { get; private set; }
+        protected IDbTransaction? Transaction { get; private set; }
 
         protected ILoggerFactory LoggerFactory { get; }
         protected ILogger Logger { get;}
@@ -447,6 +447,22 @@ namespace ContentTypeTextNet.Pe.Library.Database
             LoggingExecuteResult(result, Stopwatch.GetElapsedTime(startTime));
 
             return result;
+        }
+
+        #endregion
+
+        #region DisposerBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                // DatabaseContext 自体に所有権はないため参照だけ外す。
+                // DatabaseAccessor, DatabaseTransaction などがそれぞれ責任もって処理する。
+                Transaction = null;
+                Connection = null!;
+            }
+
+            base.Dispose(disposing);
         }
 
         #endregion

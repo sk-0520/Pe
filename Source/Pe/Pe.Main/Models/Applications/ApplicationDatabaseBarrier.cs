@@ -1,6 +1,7 @@
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Database;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {
@@ -16,8 +17,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
     internal sealed class ApplicationDatabaseBarrier: DatabaseBarrier, IMainDatabaseBarrier, ILargeDatabaseBarrier, ITemporaryDatabaseBarrier
     {
-        public ApplicationDatabaseBarrier(IDatabaseAccessor accessor, ReadWriteLockHelper locker)
-            : base(accessor, locker)
+        public ApplicationDatabaseBarrier(IDatabaseAccessor accessor, ReadWriteLockHelper locker, ILoggerFactory loggerFactory)
+            : base(accessor, locker, loggerFactory)
         { }
     }
 }
