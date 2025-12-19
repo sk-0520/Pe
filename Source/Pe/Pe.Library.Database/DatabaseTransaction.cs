@@ -17,14 +17,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </remarks>
     public class DatabaseTransaction: DatabaseContext, IDatabaseTransaction
     {
-        public DatabaseTransaction(IDbConnection connection, bool beginTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(connection, beginTransaction ? connection.BeginTransaction(): null, implementation, loggerFactory)
-        {
-            //NOP
-        }
-
-        public DatabaseTransaction(IDbConnection connection, bool beginTransaction, IDatabaseImplementation implementation, IsolationLevel isolationLevel, ILoggerFactory loggerFactory)
-            : base(connection, beginTransaction ? connection.BeginTransaction(isolationLevel) : null, implementation, loggerFactory)
+        public DatabaseTransaction(IDbConnection connection, IDbTransaction transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(connection, transaction, implementation, loggerFactory)
         {
             //NOP
         }
@@ -36,11 +30,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #endregion
 
         #region IDatabaseTransaction
-
-        /// <summary>
-        /// <see cref="IDatabaseContext"/>としての自身を返す。
-        /// </summary>
-        public IDatabaseContext Context => this;
 
         public virtual void Commit()
         {

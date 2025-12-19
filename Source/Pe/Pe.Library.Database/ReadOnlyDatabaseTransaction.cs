@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -11,27 +12,22 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </summary>
     public sealed class ReadOnlyDatabaseTransaction: DatabaseTransaction
     {
-        public ReadOnlyDatabaseTransaction(IDbConnection connection, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(connection, false, implementation, loggerFactory)
+        public ReadOnlyDatabaseTransaction(IDbConnection connection, IDbTransaction transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(connection, transaction, implementation, loggerFactory)
         {
             //NOP
         }
-
-        public ReadOnlyDatabaseTransaction(IDbConnection connection, IDatabaseImplementation implementation, IsolationLevel isolationLevel, ILoggerFactory loggerFactory)
-            : base(connection, false, implementation, isolationLevel, loggerFactory)
-        {
-            //NOP
-        }
-
 
         #region DatabaseTransaction
 
         public override void Commit() => throw new NotSupportedException();
 
+#if DEBUG
         public override void Rollback()
         {
             Logger.LogTrace("読み込み専用トランザクション");
         }
+#endif
 
         public override int Execute(string statement, object? parameter) => throw new NotSupportedException();
 

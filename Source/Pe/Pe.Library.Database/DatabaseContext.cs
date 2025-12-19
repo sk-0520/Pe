@@ -14,7 +14,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 {
     public class DatabaseContext: DisposerBase, IDatabaseContext
     {
-        public DatabaseContext(IDbConnection connection, IDbTransaction? transaction,  IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        public DatabaseContext(IDbConnection connection, IDbTransaction? transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
             Connection = connection;
             Transaction = transaction;

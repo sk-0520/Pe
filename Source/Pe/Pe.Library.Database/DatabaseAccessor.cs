@@ -90,6 +90,15 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return con;
         }
 
+        protected virtual IDatabaseTransaction BeginTransactionCore(IDbTransaction transaction, bool isReadonly)
+        {
+            if(isReadonly) {
+                return new ReadOnlyDatabaseTransaction(BaseConnection, transaction, Implementation, LoggerFactory);
+            }
+            return new DatabaseTransaction(BaseConnection, transaction, Implementation, LoggerFactory);
+        }
+
+
         #endregion
 
         #region IDatabaseAccessor
@@ -277,7 +286,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            return new DatabaseTransaction(BaseConnection, true, Implementation, LoggerFactory);
+            var transaction = BaseConnection.BeginTransaction();
+            return BeginTransactionCore(transaction, false);
         }
 
         /// <summary>
@@ -289,20 +299,23 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            return new DatabaseTransaction(BaseConnection, true, Implementation, isolationLevel, LoggerFactory);
+            var transaction = BaseConnection.BeginTransaction(isolationLevel);
+            return BeginTransactionCore(transaction, false);
         }
 
         public virtual IDatabaseTransaction BeginReadOnlyTransaction()
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(BaseConnection, Implementation, LoggerFactory);
+            var transaction = BaseConnection.BeginTransaction();
+            return BeginTransactionCore(transaction, true);
         }
         public virtual IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(BaseConnection, Implementation, isolationLevel, LoggerFactory);
+            var transaction = BaseConnection.BeginTransaction(isolationLevel);
+            return BeginTransactionCore(transaction, true);
         }
 
         #endregion
