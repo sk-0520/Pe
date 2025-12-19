@@ -44,7 +44,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
         {
             ThrowIfDisposed();
 
-            // SqliteAccessor.BeginReadOnlyTransaction() でトランザクションは仮想的に扱うことにより、
+            // `SqliteAccessor.BeginReadOnlyTransaction()` でトランザクションは仮想的に扱うことにより、
             // 実際のトランザクションは開かないため isolationLevel は意味を持たない。
             return BeginReadOnlyTransaction();
         }

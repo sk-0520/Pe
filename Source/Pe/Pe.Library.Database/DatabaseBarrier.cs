@@ -36,6 +36,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             // 解放順序としてトランザクション処理後にロック解除が必要なためトランザクション処理を担う基底を先に呼ぶ
             var isDisposed = IsDisposed;
             base.Dispose(disposing);
+            // BaseTransaction の解放すべき対象は基底で解放されているので参照だけ解除する
             BaseTransaction = null!;
 
             if(!isDisposed) {

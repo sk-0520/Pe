@@ -88,13 +88,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
     public interface ITemporaryDatabaseAccessor: IApplicationDatabaseAccessor
     { }
 
-    internal class ApplicationDtabaseContext: DatabaseContext
+    /// <summary>
+    /// アプリケーション用<see cref="IDatabaseAccessor"/>実装。
+    /// </summary>
+    internal class ApplicationDatabaseAccessor: SqliteAccessor, IMainDatabaseAccessor, ILargeDatabaseAccessor, ITemporaryDatabaseAccessor
     {
-        public ApplicationDtabaseContext(IDbConnection connection, IDbTransaction? transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(connection, transaction, implementation, loggerFactory)
-        {
-            //NOP
-        }
+        public ApplicationDatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
+            : base(databaseFactory, loggerFactory)
+        { }
 
         #region DatabaseContext
 
@@ -237,25 +238,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             if(Logger.IsEnabled(LogLevel.Trace)) {
                 Logger.LogTrace("table: {TableName} -> {ColumnsCount} * {RowsCount} = {Count}, {Time}", table.TableName, table.Columns.Count, table.Rows.Count, table.Columns.Count * table.Rows.Count, elapsedTime);
             }
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// アプリケーション用<see cref="IDatabaseAccessor"/>実装。
-    /// </summary>
-    internal class ApplicationDatabaseAccessor: SqliteAccessor, IMainDatabaseAccessor, ILargeDatabaseAccessor, ITemporaryDatabaseAccessor
-    {
-        public ApplicationDatabaseAccessor(IDatabaseFactory connectionCreator, ILoggerFactory loggerFactory)
-            : base(connectionCreator, loggerFactory)
-        { }
-
-        #region DatabaseAccessor
-
-        protected override DatabaseContext CreateDatabaseContext(IDbConnection dbConnection, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-        {
-            return new ApplicationDtabaseContext(dbConnection, null, implementation, loggerFactory);
         }
 
         #endregion

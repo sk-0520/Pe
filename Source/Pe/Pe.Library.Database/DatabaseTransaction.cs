@@ -37,7 +37,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         public virtual void Commit()
         {
-            Debug.Assert(DbTransaction is not null);
+            if(DbTransaction is null) {
+                throw new InvalidOperationException($"{nameof(DbTransaction)} is null");
+            }
 
             ThrowIfDisposed();
 
@@ -80,6 +82,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// <summary>
     /// 読み込み専用トランザクション。
     /// </summary>
+    /// <remarks>
+    /// <para><see cref="IDatabaseTransaction.Rollback"/>は実装ミス・不具合により書き込みが実施されていた場合も考慮し、最後の防衛線として無効化しない。</para>
+    /// </remarks>
     public sealed class ReadOnlyDatabaseTransaction: DatabaseTransaction
     {
         public ReadOnlyDatabaseTransaction(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
