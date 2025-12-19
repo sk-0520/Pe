@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -13,7 +14,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// トランザクション中の処理をサポート。
     /// </summary>
     /// <remarks>
-    /// <para>コミットと <see cref="IDatabaseExecutor"/> を見る感じなのでトランザクションの実体(<see cref="IDbTransaction"/>)は <see langword="null"/>でも構わない。</para>
+    /// <para>コミットと <see cref="IDatabaseExecutor"/> を見る感じなのでトランザクションの実体(<see cref="IDbTransaction"/>)は <see langword="null"/> でも構わない。</para>
     /// <para>基本的にはユーザーコードで登場せず <see cref="IDatabaseContext"/>がすべて上位から良しなに対応する。</para>
     /// </remarks>
     public class DatabaseTransaction: DatabaseContext, IDatabaseTransaction
@@ -72,6 +73,28 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
             base.Dispose(disposing);
         }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// 読み込み専用トランザクション。
+    /// </summary>
+    public sealed class ReadOnlyDatabaseTransaction: DatabaseTransaction
+    {
+        public ReadOnlyDatabaseTransaction(IDbConnection connection, IDbTransaction? transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(connection, transaction, implementation, loggerFactory)
+        {
+            //NOP
+        }
+
+        #region DatabaseTransaction
+
+        public override void Commit() => throw new NotSupportedException();
+
+        public override int Execute(string statement, object? parameter) => throw new NotSupportedException();
+
+        public override Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken) => throw new NotSupportedException();
 
         #endregion
     }

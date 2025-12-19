@@ -90,7 +90,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return con;
         }
 
-        protected virtual IDatabaseTransaction BeginTransactionCore(IDbTransaction? transaction, bool isReadonly)
+        private IDatabaseTransaction BeginTransactionCore(IDbTransaction? transaction, bool isReadonly)
         {
             if(isReadonly) {
                 return new ReadOnlyDatabaseTransaction(BaseConnection, transaction, Implementation, LoggerFactory);
@@ -278,10 +278,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return Context.ExecuteAsync(statement, parameter, cancellationToken);
         }
 
-        /// <summary>
-        /// トランザクション開始。
-        /// </summary>
-        /// <returns></returns>
+        /// <inheritdoc cref="IDatabaseAccessor.BeginTransaction"/>
         public virtual IDatabaseTransaction BeginTransaction()
         {
             ThrowIfDisposed();
@@ -290,11 +287,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return BeginTransactionCore(transaction, false);
         }
 
-        /// <summary>
-        /// トランザクション開始。
-        /// </summary>
-        /// <param name="isolationLevel">トランザクションの分離レベル。</param>
-        /// <returns></returns>
+        /// <inheritdoc cref="IDatabaseAccessor.BeginTransaction(IsolationLevel)"/>
         public virtual IDatabaseTransaction BeginTransaction(IsolationLevel isolationLevel)
         {
             ThrowIfDisposed();
@@ -303,6 +296,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return BeginTransactionCore(transaction, false);
         }
 
+        /// <inheritdoc cref="IDatabaseAccessor.BeginReadOnlyTransaction"/>
         public virtual IDatabaseTransaction BeginReadOnlyTransaction()
         {
             ThrowIfDisposed();
@@ -310,6 +304,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var transaction = BaseConnection.BeginTransaction();
             return BeginTransactionCore(transaction, true);
         }
+        /// <inheritdoc cref="IDatabaseAccessor.BeginReadOnlyTransaction(IsolationLevel)"/>
         public virtual IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
         {
             ThrowIfDisposed();

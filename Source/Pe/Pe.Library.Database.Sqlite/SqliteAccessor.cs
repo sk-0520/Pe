@@ -37,14 +37,14 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
             ThrowIfDisposed();
 
             // SQLite は複数スレッドでトランザクション開くと死ぬのでトランザクション実体なしで仮想的に対応。
-            return BeginTransactionCore(null, true);
+            return new ReadOnlyDatabaseTransaction(BaseConnection, null, Implementation, LoggerFactory);
         }
 
         public override IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
         {
             ThrowIfDisposed();
 
-            // SqliteAccessor.BeginReadOnlyTransaction でトランザクションは仮想的に扱うことにより、
+            // SqliteAccessor.BeginReadOnlyTransaction() でトランザクションは仮想的に扱うことにより、
             // 実際のトランザクションは開かないため isolationLevel は意味を持たない。
             return BeginReadOnlyTransaction();
         }
