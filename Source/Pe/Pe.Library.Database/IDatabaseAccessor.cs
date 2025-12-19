@@ -20,7 +20,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <summary>
         /// 接続元。
         /// </summary>
-        IDbConnection BaseConnection { get; }
+        IDbConnection BaseDbConnection { get; }
         /// <summary>
         /// 対象DBに対する生成処理機。
         /// </summary>

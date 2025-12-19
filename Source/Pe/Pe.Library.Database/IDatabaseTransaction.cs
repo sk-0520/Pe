@@ -14,7 +14,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
     {
         #region property
 
-        IDbTransaction? Transaction { get; }
+        IDbTransaction? DbTransaction { get; }
 
         #endregion
 

@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
     file class DatabaseBarrierTransaction: DatabaseTransaction
     {
         public DatabaseBarrierTransaction(IDisposable locker, IDbConnection connection, IDatabaseTransaction transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(connection, transaction.Transaction, implementation, loggerFactory)
+            : base(connection, transaction.DbTransaction, implementation, loggerFactory)
         {
             Locker = locker;
             BaseTransaction = transaction;
@@ -97,7 +97,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             var locker = Locker.WaitWriteByDefaultTimeout();
             var transaction = Accessor.BeginTransaction();
-            var result = new DatabaseBarrierTransaction(locker, Accessor.BaseConnection, transaction, Accessor.Implementation, LoggerFactory);
+            var result = new DatabaseBarrierTransaction(locker, Accessor.BaseDbConnection, transaction, Accessor.Implementation, LoggerFactory);
             return result;
         }
 
@@ -106,7 +106,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             var locker = Locker.WaitWrite(timeout);
             var transaction = Accessor.BeginTransaction();
-            var result = new DatabaseBarrierTransaction(locker, Accessor.BaseConnection, transaction, Accessor.Implementation, LoggerFactory);
+            var result = new DatabaseBarrierTransaction(locker, Accessor.BaseDbConnection, transaction, Accessor.Implementation, LoggerFactory);
             return result;
         }
 
@@ -121,7 +121,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             var locker = Locker.WaitReadByDefaultTimeout();
             var transaction = Accessor.BeginReadOnlyTransaction();
-            var result = new ReadOnlyDatabaseBarrierTransaction(locker, Accessor.BaseConnection, transaction, Accessor.Implementation, LoggerFactory);
+            var result = new ReadOnlyDatabaseBarrierTransaction(locker, Accessor.BaseDbConnection, transaction, Accessor.Implementation, LoggerFactory);
             return result;
         }
 
@@ -130,7 +130,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             var locker = Locker.WaitRead(timeout);
             var transaction = Accessor.BeginReadOnlyTransaction();
-            var result = new ReadOnlyDatabaseBarrierTransaction(locker, Accessor.BaseConnection, transaction, Accessor.Implementation, LoggerFactory);
+            var result = new ReadOnlyDatabaseBarrierTransaction(locker, Accessor.BaseDbConnection, transaction, Accessor.Implementation, LoggerFactory);
             return result;
         }
 

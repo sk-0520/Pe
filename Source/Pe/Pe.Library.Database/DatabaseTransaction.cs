@@ -19,8 +19,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </remarks>
     public class DatabaseTransaction: DatabaseContext, IDatabaseTransaction
     {
-        public DatabaseTransaction(IDbConnection connection, IDbTransaction? transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(connection, transaction, implementation, loggerFactory)
+        public DatabaseTransaction(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(dbConnection, dbTransaction, implementation, loggerFactory)
         {
             //NOP
         }
@@ -33,15 +33,15 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region IDatabaseTransaction
 
-        public new IDbTransaction? Transaction => base.Transaction;
+        public new IDbTransaction? DbTransaction => base.DbTransaction;
 
         public virtual void Commit()
         {
-            Debug.Assert(Transaction is not null);
+            Debug.Assert(DbTransaction is not null);
 
             ThrowIfDisposed();
 
-            Transaction.Commit();
+            DbTransaction.Commit();
             Committed = true;
         }
 
@@ -49,8 +49,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            if(Transaction is not null && Transaction.Connection is not null) {
-                Transaction.Rollback();
+            if(DbTransaction is not null && DbTransaction.Connection is not null) {
+                DbTransaction.Rollback();
             }
         }
 
@@ -65,8 +65,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
                     if(!Committed) {
                         Rollback();
                     }
-                    if(Transaction is not null) {
-                        Transaction.Dispose();
+                    if(DbTransaction is not null) {
+                        DbTransaction.Dispose();
                     }
                 }
             }
@@ -82,8 +82,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </summary>
     public sealed class ReadOnlyDatabaseTransaction: DatabaseTransaction
     {
-        public ReadOnlyDatabaseTransaction(IDbConnection connection, IDbTransaction? transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(connection, transaction, implementation, loggerFactory)
+        public ReadOnlyDatabaseTransaction(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(dbConnection, dbTransaction, implementation, loggerFactory)
         {
             //NOP
         }

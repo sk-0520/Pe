@@ -93,9 +93,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
         private IDatabaseTransaction BeginTransactionCore(IDbTransaction? transaction, bool isReadonly)
         {
             if(isReadonly) {
-                return new ReadOnlyDatabaseTransaction(BaseConnection, transaction, Implementation, LoggerFactory);
+                return new ReadOnlyDatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory);
             }
-            return new DatabaseTransaction(BaseConnection, transaction, Implementation, LoggerFactory);
+            return new DatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory);
         }
 
 
@@ -108,8 +108,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <inheritdoc cref="IDatabaseAccessor.DatabaseFactory"/>
         public IDatabaseFactory DatabaseFactory { get; }
 
-        /// <inheritdoc cref="IDatabaseAccessor.BaseConnection"/>
-        public virtual IDbConnection BaseConnection => LazyConnection.Value;
+        /// <inheritdoc cref="IDatabaseAccessor.BaseDbConnection"/>
+        public virtual IDbConnection BaseDbConnection => LazyConnection.Value;
 
         /// <inheritdoc cref="IDatabaseAccessor.PauseConnection"/>
         public virtual IDisposable PauseConnection()
@@ -120,7 +120,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 return ActionDisposerHelper.CreateEmpty();
             }
 
-            BaseConnection.Close();
+            BaseDbConnection.Close();
             IsOpened = false;
             ConnectionPausing = true;
             return new ActionDisposer(d => {
@@ -283,7 +283,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            var transaction = BaseConnection.BeginTransaction();
+            var transaction = BaseDbConnection.BeginTransaction();
             return BeginTransactionCore(transaction, false);
         }
 
@@ -292,7 +292,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            var transaction = BaseConnection.BeginTransaction(isolationLevel);
+            var transaction = BaseDbConnection.BeginTransaction(isolationLevel);
             return BeginTransactionCore(transaction, false);
         }
 
@@ -301,7 +301,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            var transaction = BaseConnection.BeginTransaction();
+            var transaction = BaseDbConnection.BeginTransaction();
             return BeginTransactionCore(transaction, true);
         }
         /// <inheritdoc cref="IDatabaseAccessor.BeginReadOnlyTransaction(IsolationLevel)"/>
@@ -309,7 +309,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            var transaction = BaseConnection.BeginTransaction(isolationLevel);
+            var transaction = BaseDbConnection.BeginTransaction(isolationLevel);
             return BeginTransactionCore(transaction, true);
         }
 
@@ -322,7 +322,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             if(!IsDisposed) {
                 if(disposing) {
                     if(LazyConnection.IsValueCreated) {
-                        BaseConnection.Dispose();
+                        BaseDbConnection.Dispose();
                     }
                 }
                 IsOpened = false;
@@ -336,9 +336,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
     }
 
     /// <summary>
-    /// <see cref="DatabaseAccessor"/>の型付き<see cref="DatabaseAccessor.BaseConnection"/>実装。
+    /// <see cref="DatabaseAccessor"/>の型付き<see cref="DatabaseAccessor.BaseDbConnection"/>実装。
     /// </summary>
-    /// <typeparam name="TDbConnection">具象<see cref="DatabaseAccessor.BaseConnection"/>。</typeparam>
+    /// <typeparam name="TDbConnection">具象<see cref="DatabaseAccessor.BaseDbConnection"/>。</typeparam>
     public class DatabaseAccessor<TDbConnection>: DatabaseAccessor
         where TDbConnection : IDbConnection
     {
@@ -351,7 +351,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <summary>
         /// 接続元。
         /// </summary>
-        public TDbConnection Connection => (TDbConnection)BaseConnection;
+        public TDbConnection DbConnection => (TDbConnection)BaseDbConnection;
 
         #endregion
     }
