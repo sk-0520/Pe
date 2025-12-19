@@ -18,12 +18,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
             BaseTransaction = transaction;
         }
 
-
         #region property
 
         private IDisposable Locker { get; [Unused(UnusedKinds.Dispose)] set; }
         // トランザクションは参照だけ保持しておく
         private IDatabaseTransaction BaseTransaction { get; set; }
+
         #endregion
 
         #region function
@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         protected override void Dispose(bool disposing)
         {
-            // 解放順序としてトランザクション→ロック解除のため、先に基底を呼ぶ
+            // 解放順序としてトランザクション処理後にロック解除が必要なためトランザクション処理を担う基底を先に呼ぶ
             var isDisposed = IsDisposed;
             base.Dispose(disposing);
             BaseTransaction = null!;
