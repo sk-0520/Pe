@@ -51,3 +51,12 @@ Define/changelogs.ts
   Issue から PR を作成する場合は元となった Issue が subject になる。
   revision はリリース前に整理するので、PR 時点では空欄でよい。
 ```
+
+# 命名規則
+
+* 基本的には `.editorconfig` に従うこと
+
+## C#
+
+* 抽象クラスは `XxxBase` という形でサフィックスを `Base` とする
+* ただし `ContentTypeTextNet.Pe.Library.Common.Service` は例外的に `Base` を付与しない

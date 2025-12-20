@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.CommonTest;
+using ContentTypeTextNet.Pe.Library.Common.Service;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test
@@ -244,6 +245,61 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             Assert.Contains(actualFiles, a => a.Name == "target_2.ymd");
             Assert.Contains(actualFiles, a => a.Name == "target_3.ymd");
         }
+
+        private sealed class FileSystemTarget2ExceptionProvider: FileSystemProvider
+        {
+            #region FileSystemProvider
+
+            public override void DeleteFile(string path)
+            {
+                var name = Path.GetFileName(path);
+                if(name == "target_2.dmy") {
+                    throw new NotImplementedException();
+                }
+
+                base.DeleteFile(path);
+            }
+
+            #endregion
+        }
+
+        [Fact]
+        public void ExceptionCatcher_Ignore_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            testIO.Work.CreateEmptyFile("target_1.dmy");
+            testIO.Work.CreateEmptyFile("target_2.dmy");
+            testIO.Work.CreateEmptyFile("target_3.dmy");
+
+            var fileRotator = new FileRotator(new FileSystemTarget2ExceptionProvider());
+            fileRotator.ExecuteExtensions(testIO.Work.Directory, ["dmy"], 0, ex => {
+                return true;
+            });
+
+            var files = testIO.Work.Directory.GetFiles();
+            Assert.Single(files);
+            Assert.Contains(files, a => a.Name == "target_2.dmy");
+        }
+
+        [Fact]
+        public void ExceptionCatcher_Handle_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            testIO.Work.CreateEmptyFile("target_1.dmy");
+            testIO.Work.CreateEmptyFile("target_2.dmy");
+            testIO.Work.CreateEmptyFile("target_3.dmy");
+
+            var fileRotator = new FileRotator(new FileSystemTarget2ExceptionProvider());
+            fileRotator.ExecuteExtensions(testIO.Work.Directory, ["dmy"], 0, ex => {
+                return false;
+            });
+
+            var files = testIO.Work.Directory.GetFiles();
+            Assert.Equal(2, files.Length);
+            Assert.Contains(files, a => a.Name == "target_1.dmy");
+            Assert.Contains(files, a => a.Name == "target_2.dmy");
+        }
+
         #endregion
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Common.Service;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
@@ -14,12 +15,22 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// </summary>
     public class FileRotator
     {
-        #region function
+        public FileRotator()
+            : this(FileSystemProvider.Default)
+        { }
 
-        protected void DeleteFile(FileInfo file)
+        public FileRotator(FileSystemProvider fileSystemProvider)
         {
-
+            FileSystemProvider = fileSystemProvider;
         }
+
+        #region property
+
+        private FileSystemProvider FileSystemProvider { get; }
+
+        #endregion
+
+        #region function
 
         /// <summary>
         /// ローテート処理。
@@ -48,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             var removedCount = 0;
             for(var i = 0; i < targetFiles.Length; i++) {
                 try {
-                    File.Delete(targetFiles[i].FullName);
+                    FileSystemProvider.Delete(targetFiles[i]);
                     removedCount += 1;
                 } catch(Exception ex) {
                     if(!exceptionCatcher(ex)) {
