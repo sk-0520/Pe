@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using ContentTypeTextNet.Pe.CommonTest;
-using ContentTypeTextNet.Pe.Library.Common.Service;
+using ContentTypeTextNet.Pe.Library.Provider;
 using Xunit;
 
-namespace ContentTypeTextNet.Pe.Library.Common.Test.Provider
+namespace ContentTypeTextNet.Pe.Library.Provider.Test
 {
     public class DefaultFileSystemProviderTest
     {

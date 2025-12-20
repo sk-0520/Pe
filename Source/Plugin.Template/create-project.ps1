@@ -384,6 +384,10 @@ try {
 			directory = 'Pe\lib\library'
 		},
 		@{
+			project = 'Pe.Library.Provider'
+			directory = 'Pe\lib\library'
+		},
+		@{
 			project = 'Pe.Library.Common'
 			directory = 'Pe\lib\library'
 		},

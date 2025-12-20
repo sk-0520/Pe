@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace ContentTypeTextNet.Pe.Library.Common.Provider
+namespace ContentTypeTextNet.Pe.Library.Provider
 {
     /// <summary>
     /// 環境変数系の抽象化基底。

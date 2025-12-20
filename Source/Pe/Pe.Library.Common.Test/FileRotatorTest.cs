@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.CommonTest;
-using ContentTypeTextNet.Pe.Library.Common.Service;
+using ContentTypeTextNet.Pe.Library.Provider;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test

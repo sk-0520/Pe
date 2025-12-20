@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using ContentTypeTextNet.Pe.Library.Common.Provider;
+using ContentTypeTextNet.Pe.Library.Provider;
 using Xunit;
 
-namespace ContentTypeTextNet.Pe.Library.Common.Test.Provider
+namespace ContentTypeTextNet.Pe.Library.Provider.Test
 {
     public class DefaultEnvironmentProviderTest
     {

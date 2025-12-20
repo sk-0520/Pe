@@ -120,6 +120,14 @@
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
+    <Project Path="Pe.Library.Provider.Test/Pe.Library.Provider.Test.csproj" Id="c48d9965-254f-48d7-8bd1-07822608d641">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe.Library.Provider/Pe.Library.Provider.csproj" Id="3599e25d-2de9-4971-9132-3e2f013a0453">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
   </Folder>
   <Folder Name="/lib/plugins/">
     <Project Path="Pe.Plugins.DefaultTheme/Pe.Plugins.DefaultTheme.csproj">
@@ -158,7 +166,4 @@
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Properties Name="ExtensibilityGlobals" Scope="PostLoad">
-    <Property Name="RESX_PrefixTranslations" Value="False" />
-  </Properties>
 </Solution>

@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
-using ContentTypeTextNet.Pe.Library.Common.Service;
+using ContentTypeTextNet.Pe.Library.Provider;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {

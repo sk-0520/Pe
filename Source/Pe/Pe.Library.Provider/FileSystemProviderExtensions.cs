@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace ContentTypeTextNet.Pe.Library.Common.Service
+namespace ContentTypeTextNet.Pe.Library.Provider
 {
     public static class FileSystemProviderExtensions
     {
