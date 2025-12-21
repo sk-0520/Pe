@@ -4,15 +4,18 @@ using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
+    public readonly record struct DatabaseStatementData(string Statement, object? parameter);
+
     public interface IDatabaseStatementMiddleware
     {
         #region function
 
+        DatabaseStatementData Next(in DatabaseStatementData data);
 
         #endregion
     }
 
-    public interface IDatabaseQueryMiddleware
+    public interface IDatabaseReaderMiddleware
     {
         #region function
 
@@ -20,7 +23,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #endregion
     }
 
-    public interface IDatabaseExecuteMiddleware
+    public interface IDatabaseExecutorMiddleware
     {
         #region function
 
