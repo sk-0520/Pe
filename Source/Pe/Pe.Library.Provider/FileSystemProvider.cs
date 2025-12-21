@@ -22,11 +22,13 @@ namespace ContentTypeTextNet.Pe.Library.Provider
 
         #region function
 
+        /// <inheritdoc cref="File.Exists(string)"/>
         public virtual bool ExistsFile(string path)
         {
             return File.Exists(path);
         }
 
+        /// <inheritdoc cref="Directory.Exists(string)"/>
         public virtual bool ExistsDirectory(string path)
         {
             return Directory.Exists(path);
