@@ -101,16 +101,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// 失敗状態の生成。
         /// </summary>
         /// <typeparam name="TFailure"></typeparam>
-        /// <returns>失敗データ。</returns>
-        public static ResultFailure<TFailure> CreateSuccess<TFailure>()
-        {
-            return new ResultFailure<TFailure>(true, default);
-        }
-
-        /// <summary>
-        /// 失敗状態の生成。
-        /// </summary>
-        /// <typeparam name="TFailure"></typeparam>
         /// <param name="failureValue"></param>
         /// <returns>失敗データ。</returns>
         public static ResultFailure<TFailure> CreateFailure<TFailure>([AllowNull] TFailure failureValue)
