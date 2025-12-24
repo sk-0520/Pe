@@ -39,23 +39,10 @@ namespace ContentTypeTextNet.Pe.Library.Common.Throw
             ParamNames = [paramName1, paramName2];
         }
 
-        public ArgumentComplexException(string message, string paramName1, string paramName2, string paramName3)
-            : base(message, ToParameterName([paramName1, paramName2, paramName3]))
+        public ArgumentComplexException(string message, string paramName1, string paramName2, string paramName3, params string[] paramNames)
+            : base(message, ToParameterName([paramName1, paramName2, paramName3, .. paramNames]))
         {
-            ParamNames = [paramName1, paramName2, paramName3];
-        }
-
-
-        public ArgumentComplexException(string message, string paramName1, string paramName2, string paramName3, string paramName4)
-            : base(message, ToParameterName([paramName1, paramName2, paramName3, paramName4]))
-        {
-            ParamNames = [paramName1, paramName2, paramName3, paramName4];
-        }
-
-        public ArgumentComplexException(string message, string paramName1, string paramName2, string paramName3, string paramName4, string paramName5, params string[] paramNames)
-            : base(message, ToParameterName([paramName1, paramName2, paramName3, paramName4, paramName5, .. paramNames]))
-        {
-            ParamNames = [paramName1, paramName2, paramName3, paramName4, paramName5, .. paramNames];
+            ParamNames = [paramName1, paramName2, paramName3, .. paramNames];
         }
 
         #region property
