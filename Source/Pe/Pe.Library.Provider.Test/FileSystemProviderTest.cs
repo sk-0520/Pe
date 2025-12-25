@@ -141,6 +141,37 @@ namespace ContentTypeTextNet.Pe.Library.Provider.Test
             Assert.False(directory.Directory.Exists);
         }
 
+        [Fact]
+        public void CreateFileTest()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var path = testIO.Work.CombineGhostPath("a.txt");
+
+            var provider = FileSystemProvider.Default;
+            using (var stream = provider.CreateFile(path, 4096, FileOptions.None)) {
+                stream.Write(Encoding.UTF8.GetBytes("test"));
+            }
+
+            var actual = File.ReadAllText(path);
+            Assert.Equal("test", actual);
+        }
+
+        [Fact]
+        public void CreateDirectoryTest()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var dir = testIO.Work.CreateGhostDirectory("dir");
+
+            var provider = FileSystemProvider.Default;
+
+            Assert.False(dir.Exists);
+
+            var actual = provider.CreateDirectory(dir.FullName);
+
+            Assert.Equal(dir.FullName, actual.FullName);
+            Assert.True(actual.Exists);
+        }
+
         #endregion
     }
 }

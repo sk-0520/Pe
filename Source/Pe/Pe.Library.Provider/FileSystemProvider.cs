@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Versioning;
 using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Provider
@@ -44,6 +45,41 @@ namespace ContentTypeTextNet.Pe.Library.Provider
         public virtual void DeleteDirectory(string path, bool recursive = false)
         {
             Directory.Delete(path, recursive);
+        }
+
+        /// <inheritdoc cref="File.Move(string, string, bool)"/>
+        public virtual void MoveFile(string sourceFileName, string destFileName, bool overwrite = false)
+        {
+            File.Move(sourceFileName, destFileName, overwrite);
+        }
+
+        /// <inheritdoc cref="Directory.Move(string, string)"/>
+        public virtual void MoveDirectory(string sourceDirName, string destDirName)
+        {
+            Directory.Move(sourceDirName, destDirName);
+        }
+
+        /// <inheritdoc cref="File.Copy(string, string, bool)"/>
+        public virtual void CopyFile(string sourceFileName, string destFileName, bool overwrite = false)
+        {
+            File.Copy(sourceFileName, destFileName, overwrite);
+        }
+
+        /// <inheritdoc cref="File.Create(string, int, FileOptions)"/>
+        public virtual FileStream CreateFile(string path, int bufferSize, FileOptions options)
+        {
+            return File.Create(path, bufferSize, options);
+        }
+
+        public virtual DirectoryInfo CreateDirectory(string path)
+        {
+            return Directory.CreateDirectory(path);
+        }
+
+        [UnsupportedOSPlatform("windows")]
+        public virtual DirectoryInfo CreateDirectory(string path, UnixFileMode unixCreateMode)
+        {
+            return Directory.CreateDirectory(path, unixCreateMode);
         }
 
         #endregion

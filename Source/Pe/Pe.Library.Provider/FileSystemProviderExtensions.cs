@@ -9,6 +9,13 @@ namespace ContentTypeTextNet.Pe.Library.Provider
 {
     public static class FileSystemProviderExtensions
     {
+        #region property
+
+        // System.IO.DefaultBufferSize
+        public static int DefaultBufferSize { get; } = 1024 * 4;
+
+        #endregion
+
         #region function
 
         /// <summary>
@@ -24,12 +31,22 @@ namespace ContentTypeTextNet.Pe.Library.Provider
 
         public static bool Exists(this FileSystemProvider provider, FileInfo file)
         {
-            return provider.ExistsFile(file.FullName);
+            var old = file.Exists;
+            var now = provider.ExistsFile(file.FullName);
+            if(old != now) {
+                file.Refresh();
+            }
+            return now;
         }
 
         public static bool Exists(this FileSystemProvider provider, DirectoryInfo directory)
         {
-            return provider.ExistsDirectory(directory.FullName);
+            var old = directory.Exists;
+            var now = provider.ExistsDirectory(directory.FullName);
+            if(old != now) {
+                directory.Refresh();
+            }
+            return now;
         }
 
         /// <summary>
@@ -54,11 +71,23 @@ namespace ContentTypeTextNet.Pe.Library.Provider
         public static void Delete(this FileSystemProvider service, FileInfo file)
         {
             service.DeleteFile(file.FullName);
+            file.Refresh();
         }
 
         public static void Delete(this FileSystemProvider service, DirectoryInfo directory, bool recursive = false)
         {
             service.DeleteDirectory(directory.FullName, recursive);
+            directory.Refresh();
+        }
+
+        public static FileStream CreateFile(this FileSystemProvider service, string path)
+        {
+            return service.CreateFile(path, DefaultBufferSize, FileOptions.None);
+        }
+
+        public static FileStream CreateFile(this FileSystemProvider service, string path, int bufferSize)
+        {
+            return service.CreateFile(path, bufferSize, FileOptions.None);
         }
 
         #endregion

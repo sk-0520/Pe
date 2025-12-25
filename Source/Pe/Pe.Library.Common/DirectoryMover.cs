@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using ContentTypeTextNet.Pe.Library.Provider;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Common
@@ -9,12 +10,20 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// </summary>
     public class DirectoryMover
     {
-        public DirectoryMover(ILoggerFactory loggerFactory)
+        public DirectoryMover(FileSystemProvider fileSystemProvider, ILoggerFactory loggerFactory)
         {
+            FileSystemProvider = fileSystemProvider;
             Logger = loggerFactory.CreateLogger(GetType());
         }
 
+        public DirectoryMover(ILoggerFactory loggerFactory)
+            :this(FileSystemProvider.Default, loggerFactory)
+        { }
+
         #region property
+
+        //TODO: 調整中
+        private FileSystemProvider FileSystemProvider { get; }
 
         private ILogger Logger { get; }
 

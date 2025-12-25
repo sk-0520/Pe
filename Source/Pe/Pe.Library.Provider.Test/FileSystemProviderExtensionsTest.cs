@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using ContentTypeTextNet.Pe.CommonTest;
@@ -164,6 +165,148 @@ namespace ContentTypeTextNet.Pe.Library.Provider.Test
 
             directory.Directory.Refresh();
             Assert.False(directory.Directory.Exists);
+        }
+
+        [Fact]
+        public void MoveFile_Path_Normal_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var src = testIO.Work.CreateEmptyFile("src");
+            var dst = testIO.Work.CreateGhostFile("dst");
+
+            var provider = FileSystemProvider.Default;
+
+            Assert.True(src.Exists);
+            Assert.False(dst.Exists);
+
+            provider.MoveFile(src.FullName, dst.FullName);
+
+            src.Refresh();
+            dst.Refresh();
+
+            Assert.False(src.Exists);
+            Assert.True(dst.Exists);
+        }
+
+        [Fact]
+        public void MoveFile_Path_Not_Overwrite_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var src = testIO.Work.CreateTextFile("src", "SRC");
+            var dst = testIO.Work.CreateTextFile("dst", "DST");
+
+            var provider = FileSystemProvider.Default;
+
+            Assert.Throws<IOException>(() => provider.MoveFile(src.FullName, dst.FullName, false));
+        }
+
+        [Fact]
+        public void MoveFile_Path_Overwrite_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var src = testIO.Work.CreateTextFile("src", "SRC");
+            var dst = testIO.Work.CreateTextFile("dst", "DST");
+
+            var provider = FileSystemProvider.Default;
+
+            provider.MoveFile(src.FullName, dst.FullName, true);
+
+            src.Refresh();
+            dst.Refresh();
+
+            Assert.False(src.Exists);
+            Assert.True(dst.Exists);
+
+            using var text = dst.OpenText();
+            var actual = text.ReadToEnd();
+            Assert.Equal("SRC", actual);
+        }
+
+        [Fact]
+        public void MoveDirectory_Path_Normal_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var src = testIO.Work.CreateDirectory("src");
+            var dst = testIO.Work.CreateGhostDirectory("dst");
+
+            src.CreateEmptyFile("file");
+            var sub = src.CreateDirectory("sub");
+            sub.CreateEmptyFile("sub-file");
+
+            var provider = FileSystemProvider.Default;
+
+            Assert.True(src.Directory.Exists);
+            Assert.False(dst.Exists);
+
+            provider.MoveDirectory(src.Directory.FullName, dst.FullName);
+
+            src.Directory.Refresh();
+            dst.Refresh();
+
+            Assert.False(src.Directory.Exists);
+            Assert.True(dst.Exists);
+            var actualNodes = dst.EnumerateFileSystemInfos("*", SearchOption.AllDirectories)
+                .Select(a => Path.GetRelativePath(dst.FullName, a.FullName))
+                .ToArray()
+            ;
+            Assert.Contains("file", actualNodes);
+            Assert.Contains("sub", actualNodes);
+            Assert.Contains(Path.Join("sub", "sub-file"), actualNodes);
+        }
+
+        [Fact]
+        public void CopyFile_Path_Normal_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var src = testIO.Work.CreateEmptyFile("src");
+            var dst = testIO.Work.CreateGhostFile("dst");
+
+            var provider = FileSystemProvider.Default;
+
+            Assert.True(src.Exists);
+            Assert.False(dst.Exists);
+
+            provider.CopyFile(src.FullName, dst.FullName);
+
+            src.Refresh();
+            dst.Refresh();
+
+            Assert.True(src.Exists);
+            Assert.True(dst.Exists);
+        }
+
+        [Fact]
+        public void CopyFile_Path_Not_Overwrite_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var src = testIO.Work.CreateTextFile("src", "SRC");
+            var dst = testIO.Work.CreateTextFile("dst", "DST");
+
+            var provider = FileSystemProvider.Default;
+
+            Assert.Throws<IOException>(() => provider.CopyFile(src.FullName, dst.FullName, false));
+        }
+
+        [Fact]
+        public void CopyFile_Path_Overwrite_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var src = testIO.Work.CreateTextFile("src", "SRC");
+            var dst = testIO.Work.CreateTextFile("dst", "DST");
+
+            var provider = FileSystemProvider.Default;
+
+            provider.CopyFile(src.FullName, dst.FullName, true);
+
+            src.Refresh();
+            dst.Refresh();
+
+            Assert.True(src.Exists);
+            Assert.True(dst.Exists);
+
+            using var text = dst.OpenText();
+            var actual = text.ReadToEnd();
+            Assert.Equal("SRC", actual);
         }
 
         #endregion

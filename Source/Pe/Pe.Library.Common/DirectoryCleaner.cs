@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading;
+using ContentTypeTextNet.Pe.Library.Provider;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Common
@@ -19,8 +20,9 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <param name="directory">対象ディレクトリ。</param>
         /// <param name="retryCount">ディレクトリ作成失敗時の再試行回数。</param>
         /// <param name="waitTime">ディレクトリ作成失敗時の再試行前に待機する時間。</param>
+        /// <param name="fileSystemProvider"></param>
         /// <param name="loggerFactory"></param>
-        public DirectoryCleaner(DirectoryInfo directory, int retryCount, TimeSpan waitTime, ILoggerFactory loggerFactory)
+        public DirectoryCleaner(DirectoryInfo directory, int retryCount, TimeSpan waitTime, FileSystemProvider fileSystemProvider ,ILoggerFactory loggerFactory)
         {
             Directory = directory;
             if(retryCount < 1) {
@@ -32,7 +34,12 @@ namespace ContentTypeTextNet.Pe.Library.Common
             }
             WaitTime = waitTime;
             Logger = loggerFactory.CreateLogger(GetType());
+            FileSystemProvider = fileSystemProvider;
         }
+
+        public DirectoryCleaner(DirectoryInfo directory, int retryCount, TimeSpan waitTime, ILoggerFactory loggerFactory)
+            : this(directory, retryCount, waitTime, FileSystemProvider.Default, loggerFactory)
+        { }
 
         #region property
 
@@ -48,6 +55,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// 一回の待機に対する待ち時間。
         /// </summary>
         private TimeSpan WaitTime { get; }
+        //TODO: 調整中
+        private FileSystemProvider FileSystemProvider { get; }
         private ILogger Logger { get; }
 
         #endregion
