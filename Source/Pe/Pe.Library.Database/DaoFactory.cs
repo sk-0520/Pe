@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
-    public class DaoFactory
+    public class DaoFactory: IDaoFactory
     {
         // コンストラクターでプロパティに値を設定
         public DaoFactory(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
@@ -56,6 +56,10 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
             throw new InvalidCastException();
         }
+
+        #endregion
+
+        #region IDaoFactory
 
         public DatabaseAccessObjectBase Create(Type type)
         {
