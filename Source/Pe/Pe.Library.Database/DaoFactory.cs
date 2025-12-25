@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using Microsoft.Extensions.Logging;
 
@@ -17,29 +19,48 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region property
 
-        private IDatabaseContext Context { get; }
-        private IDatabaseStatementLoader StatementLoader { get; }
-        private ILoggerFactory LoggerFactory { get; }
+        protected IDatabaseContext Context { get; }
+        protected IDatabaseStatementLoader StatementLoader { get; }
+        protected ILoggerFactory LoggerFactory { get; }
 
         #endregion
 
         #region function
 
-        public DatabaseAccessObjectBase Create(Type type)
+        protected virtual ConstructorInfo GetDaoConstructorInfo(Type type)
         {
+            //NOTE: 順序固定, DI コンテナ的なことするかどうかは使用状況次第で考慮する
             var constructor = type.GetConstructor([
                 typeof(IDatabaseContext),
                 typeof(IDatabaseStatementLoader),
-                typeof(ILoggerFactory)
+                typeof(ILoggerFactory),
             ]);
             if(constructor is null) {
-                throw new InvalidOperationException();
+                throw new InvalidProgramException();
             }
 
-            var dao = constructor.Invoke([Context, StatementLoader, LoggerFactory]) as DatabaseAccessObjectBase;
-            if(dao is null) {
-                throw new InvalidCastException();
+            return constructor;
+        }
+
+        protected virtual DatabaseAccessObjectBase CreateDao(ConstructorInfo constructor)
+        {
+            var dao = constructor.Invoke([
+                Context,
+                StatementLoader,
+                LoggerFactory
+            ]);
+
+            if(dao is DatabaseAccessObjectBase result) {
+                return result;
             }
+
+            throw new InvalidCastException();
+        }
+
+        public DatabaseAccessObjectBase Create(Type type)
+        {
+            var constructor = GetDaoConstructorInfo(type);
+            var dao = CreateDao(constructor);
 
             return dao;
         }
