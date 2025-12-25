@@ -18,6 +18,13 @@ using ContentTypeTextNet.Pe.Library.Database.Sqlite;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {
+    internal sealed class AppDaoFactory: DaoFactory
+    {
+        public AppDaoFactory(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(context, statementLoader, loggerFactory)
+        { }
+    }
+
     /// <summary>
     /// アプリケーション用<see cref="IDatabaseFactory"/>実装。
     /// </summary>
