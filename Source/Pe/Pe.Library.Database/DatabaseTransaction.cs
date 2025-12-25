@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
@@ -31,19 +32,43 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #endregion
 
+        #region function
+
+        protected virtual IDbTransaction GetIDbTransaction()
+        {
+            var tran = DbTransaction;
+
+            if(tran is null) {
+                throw new InvalidOperationException($"{nameof(DbTransaction)} is null");
+            }
+
+            return tran;
+        }
+
+        protected virtual DbTransaction GetDbTransaction()
+        {
+            var tran = GetIDbTransaction() as DbTransaction;
+
+            if(tran is null) {
+                throw new InvalidOperationException($"{nameof(DbTransaction)} is not {nameof(DbTransaction)}");
+            }
+
+            return tran;
+        }
+
+        #endregion
+
         #region IDatabaseTransaction
 
         public new IDbTransaction? DbTransaction => base.DbTransaction;
 
         public virtual void Commit()
         {
-            if(DbTransaction is null) {
-                throw new InvalidOperationException($"{nameof(DbTransaction)} is null");
-            }
-
             ThrowIfDisposed();
 
-            DbTransaction.Commit();
+            var tran = GetIDbTransaction();
+            tran.Commit();
+
             Committed = true;
         }
 
