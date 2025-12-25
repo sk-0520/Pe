@@ -1,20 +1,22 @@
 using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using ContentTypeTextNet.Pe.Core.Models;
-using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Collections;
-using System.Diagnostics.CodeAnalysis;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Database.Sqlite;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {
@@ -23,6 +25,21 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         public AppDaoFactory(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
             : base(context, statementLoader, loggerFactory)
         { }
+
+        #region property
+
+        private ConcurrentDictionary<Type, ConstructorInfo> ConstructorCache { get; } = new();
+
+        #endregion
+
+        #region DaoFactory
+
+        protected override ConstructorInfo GetDaoConstructorInfo(Type type)
+        {
+            return ConstructorCache.GetOrAdd(type, a => base.GetDaoConstructorInfo(a));
+        }
+
+        #endregion
     }
 
     /// <summary>

@@ -9,7 +9,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
 {
     public class DaoFactory: IDaoFactory
     {
-        // コンストラクターでプロパティに値を設定
         public DaoFactory(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
         {
             Context = context;
