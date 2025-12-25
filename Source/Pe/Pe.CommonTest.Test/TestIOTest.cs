@@ -94,8 +94,8 @@ namespace ContentTypeTextNet.Pe.CommonTest.Test
             var testIO = TestIO.InitializeMethod(this);
             var path = testIO.Work.CreateEmptyFile("path");    
             var exception = Assert.Throws<TestIOException>(() => testIO.Work.CombineGhostPath("path"));
-            exception.Message.StartsWith("Path already exists:");
-            exception.Message.Contains(path.FullName);
+            Assert.StartsWith("Path already exists:", exception.Message);
+            Assert.Contains(path.FullName, exception.Message);
         }
 
         [Fact]
@@ -104,8 +104,8 @@ namespace ContentTypeTextNet.Pe.CommonTest.Test
             var testIO = TestIO.InitializeMethod(this);
             var path = testIO.Work.CreateDirectory("path");
             var exception = Assert.Throws<TestIOException>(() => testIO.Work.CombineGhostPath("path"));
-            exception.Message.StartsWith("Path already exists:");
-            exception.Message.Contains(path.Directory.FullName);
+            Assert.StartsWith("Path already exists:", exception.Message);
+            Assert.Contains(path.Directory.FullName, exception.Message);
         }
 
         [Fact]
