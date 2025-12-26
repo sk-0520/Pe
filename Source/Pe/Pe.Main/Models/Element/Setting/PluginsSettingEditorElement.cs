@@ -136,13 +136,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             IList<PluginStateData> pluginStates;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var pluginsEntityDao = new PluginsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var pluginsEntityDao = daoFactory.Create<PluginsEntityDao>();
                 pluginStates = pluginsEntityDao.SelectPluginStateData().ToList();
             }
 
             IList<PluginInstallData> installDataItems;
             using(var context = TemporaryDatabaseBarrier.WaitRead()) {
-                var installPluginsEntityDao = new InstallPluginsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var installPluginsEntityDao = daoFactory.Create<InstallPluginsEntityDao>();
                 installDataItems = installPluginsEntityDao.SelectInstallPlugins().ToList();
             }
 
@@ -169,14 +171,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             }
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextPack)
         {
             foreach(var element in PluginItems) {
                 if(element.SupportedPreferences && element.StartedPreferences) {
-                    element.SavePreferences(contextsPack);
+                    element.SavePreferences(contextPack);
                 }
 
-                element.Save(contextsPack);
+                element.Save(contextPack);
             }
         }
 

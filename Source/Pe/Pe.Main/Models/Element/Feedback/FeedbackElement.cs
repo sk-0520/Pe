@@ -76,8 +76,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Feedback
 
             var settingData = await Task.Run(() => {
                 return MainDatabaseBarrier.ReadData(c => {
-                    var appExecuteSettingEntityDao = new AppExecuteSettingEntityDao(c, DatabaseStatementLoader, LoggerFactory);
-                    //var appGeneralSettingEntityDao = new AppGeneralSettingEntityDao(c, StatementLoader, c.Implementation, LoggerFactory);
+                    var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                    var appExecuteSettingEntityDao = daoFactory.Create<AppExecuteSettingEntityDao>();
+                    //var appGeneralSettingEntityDao = daoFactory.Create<AppGeneralSettingEntityDao>();
 
                     var userIdManager = new UserIdManager(LoggerFactory);
                     var userId = userIdManager.SafeGetOrCreateUserId(appExecuteSettingEntityDao);

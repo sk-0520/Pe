@@ -57,4 +57,22 @@ namespace ContentTypeTextNet.Pe.Library.Database
             : base(info, context)
         { }
     }
+
+    [Serializable]
+    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
+    public class DatabaseFactoryException: DatabaseException
+    {
+        /// <inheritdoc cref="DatabaseException()"/>
+        public DatabaseFactoryException() { }
+        /// <inheritdoc cref="DatabaseException(string)"/>
+        public DatabaseFactoryException(string message) : base(message) { }
+        /// <inheritdoc cref="DatabaseException(string, Exception)"/>
+        public DatabaseFactoryException(string message, Exception inner) : base(message, inner) { }
+        [Obsolete]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Info Code Smell", "S1133:Deprecated code should be removed")]
+        protected DatabaseFactoryException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+            : base(info, context)
+        { }
+    }
+
 }

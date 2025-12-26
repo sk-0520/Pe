@@ -11,6 +11,7 @@ using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.PInvoke.Windows.root.CIMV2;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
@@ -109,7 +110,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         public static bool RegisterDatabase(IScreen screen, IDatabaseContext context, IDatabaseStatementLoader databaseStatementLoader, IDatabaseCommonStatus databaseCommonStatus, ILoggerFactory loggerFactory)
         {
-            var screensDao = new ScreensEntityDao(context, databaseStatementLoader, loggerFactory);
+            var daoFactory = new AppDaoFactory(context, databaseStatementLoader, loggerFactory);
+            var screensDao = daoFactory.Create<ScreensEntityDao>();
             if(!screensDao.SelectExistsScreen(screen.DeviceName)) {
                 screensDao.InsertScreen(screen, databaseCommonStatus);
                 return true;

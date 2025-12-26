@@ -5,6 +5,7 @@ using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup
 {
@@ -30,7 +31,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup
 
         private IEnumerable<LauncherItemId> LoadNormalIds(LauncherGroupId launcherGroupId)
         {
-            var dao = new LauncherGroupItemsEntityDao(Context, StatementLoader, LoggerFactory);
+            var daoFactory = new AppDaoFactory(Context, StatementLoader, LoggerFactory);
+            var dao = daoFactory.Create<LauncherGroupItemsEntityDao>();
             return dao.SelectLauncherItemIds(launcherGroupId);
         }
 

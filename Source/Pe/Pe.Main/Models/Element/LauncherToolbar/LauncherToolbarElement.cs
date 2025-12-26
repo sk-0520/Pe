@@ -227,8 +227,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var dao = new LauncherToolbarDomainDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<LauncherToolbarDomainDao>();
                 var screenToolbars = dao.SelectAllScreenToolbars().ToList();
+                //TODO: DBアクセスではないはずなので外に出す
                 var launcherToolbarId = FindMaybeToolbarId(screenToolbars);
                 return launcherToolbarId;
             }
@@ -244,13 +246,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             var newFontId = IdFactory.CreateFontId();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appLauncherToolbarSettingEntityDao = new AppLauncherToolbarSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var appLauncherToolbarSettingEntityDao = daoFactory.Create<AppLauncherToolbarSettingEntityDao>();
                 var srcFontId = appLauncherToolbarSettingEntityDao.SelectAppLauncherToolbarSettingFontId();
 
-                var fontsEntityDao = new FontsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var fontsEntityDao = daoFactory.Create<FontsEntityDao>();
                 fontsEntityDao.InsertCopyFont(srcFontId, newFontId, DatabaseCommonStatus.CreateCurrentAccount());
 
-                var toolbarsDao = new LauncherToolbarsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var toolbarsDao = daoFactory.Create<LauncherToolbarsEntityDao>();
                 toolbarsDao.InsertNewToolbar(toolbarId, newFontId, DockScreen.DeviceName, DatabaseCommonStatus.CreateCurrentAccount());
 
                 ScreenUtility.RegisterDatabase(DockScreen, context, DatabaseStatementLoader, DatabaseCommonStatus.CreateCurrentAccount(), LoggerFactory);
@@ -275,7 +278,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
         public void RemoveLauncherItem(LauncherGroupId launcherGroupId, LauncherItemId launcherItemId, int index)
         {
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherGroupItemsEntityDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupItemsEntityDao = daoFactory.Create<LauncherGroupItemsEntityDao>();
                 launcherGroupItemsEntityDao.DeleteGroupItemsLauncherItem(launcherGroupId, launcherItemId, index);
 
                 context.Commit();
@@ -297,7 +301,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             var groupData = launcherFactory.CreateGroupData(newGroupName, kind);
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherGroupsDao = new LauncherGroupsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupsDao = daoFactory.Create<LauncherGroupsEntityDao>();
                 var groupStep = launcherFactory.GroupItemStep;
                 groupData.Sequence = launcherGroupsDao.SelectMaxSequence() + groupStep;
                 launcherGroupsDao.InsertNewGroup(groupData, DatabaseCommonStatus.CreateCurrentAccount());
@@ -329,8 +334,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             LauncherToolbarsDisplayData displayData;
             AppLauncherToolbarSettingData appLauncherToolbarSettingData;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherToolbarsEntityDao = new LauncherToolbarsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var appLauncherToolbarSettingEntityDao = new AppLauncherToolbarSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherToolbarsEntityDao = daoFactory.Create<LauncherToolbarsEntityDao>();
+                var appLauncherToolbarSettingEntityDao = daoFactory.Create<AppLauncherToolbarSettingEntityDao>();
 
                 displayData = launcherToolbarsEntityDao.SelectDisplayData(LauncherToolbarId);
                 appLauncherToolbarSettingData = appLauncherToolbarSettingEntityDao.SelectSettingLauncherToolbarSetting();
@@ -392,7 +398,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             IsOpenedAppMenu = false;
 
             MainDatabaseDelayWriter.Stock(c => {
-                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<LauncherToolbarsEntityDao>();
                 dao.UpdateToolbarPosition(LauncherToolbarId, ToolbarPosition, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -405,7 +412,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             IsOpenedAppMenu = false;
 
             MainDatabaseDelayWriter.Stock(c => {
-                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<LauncherToolbarsEntityDao>();
                 dao.UpdateIsTopmost(LauncherToolbarId, IsTopmost, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -418,7 +426,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             IsOpenedAppMenu = false;
 
             MainDatabaseDelayWriter.Stock(c => {
-                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<LauncherToolbarsEntityDao>();
                 dao.UpdateIsAutoHide(LauncherToolbarId, IsAutoHide, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -431,7 +440,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             IsOpenedAppMenu = false;
 
             MainDatabaseDelayWriter.Stock(c => {
-                var dao = new LauncherToolbarsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<LauncherToolbarsEntityDao>();
                 dao.UpdateIsVisible(LauncherToolbarId, IsVisible, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -452,11 +462,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             var tags = launcherFactory.GetTags(file).ToList();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherItemsDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherTagsDao = new LauncherTagsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherFilesDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsDao = daoFactory.Create<LauncherItemsEntityDao>();
+                var launcherTagsDao = daoFactory.Create<LauncherTagsEntityDao>();
+                var launcherFilesDao = daoFactory.Create<LauncherFilesEntityDao>();
+                var launcherGroupItemsDao = daoFactory.Create<LauncherGroupItemsEntityDao>();
+                var launcherRedoItemsEntityDao = daoFactory.Create<LauncherRedoItemsEntityDao>();
 
                 bool isNewItem = true;
                 if(DuplicatedFileRegisterMode != LauncherToolbarDuplicatedFileRegisterMode.None) {
@@ -530,7 +541,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             var launcherItemIds = LauncherItems.Select(a => a.LauncherItemId).ToArray();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupItemsDao = daoFactory.Create<LauncherGroupItemsEntityDao>();
                 launcherGroupItemsDao.DeleteGroupItemsByLauncherGroupId(launcherGroupId);
 
                 var currentMaxSequence = launcherGroupItemsDao.SelectMaxSequence(launcherGroupId);

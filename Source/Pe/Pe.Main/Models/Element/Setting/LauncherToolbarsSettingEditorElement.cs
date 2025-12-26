@@ -40,7 +40,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             IReadOnlyList<LauncherToolbarId> launcherToolbarIds;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherToolbarsEntityDao = new LauncherToolbarsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherToolbarsEntityDao = daoFactory.Create<LauncherToolbarsEntityDao>();
                 var ids = launcherToolbarsEntityDao.SelectAllLauncherToolbarIds();
                 launcherToolbarIds = ids.ToList();
             }
@@ -76,10 +77,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             Toolbars.AddRange(nonActiveToolbars);
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextPack)
         {
             foreach(var toolbar in Toolbars) {
-                toolbar.Save(contextsPack);
+                toolbar.Save(contextPack);
             }
         }
 

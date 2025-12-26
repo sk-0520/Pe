@@ -198,7 +198,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.ExtendsExecute
             bool removed;
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemHistoriesEntityDao = daoFactory.Create<LauncherItemHistoriesEntityDao>();
 
                 var removedCount = launcherItemHistoriesEntityDao.DeleteHistoryByLauncherItemId(LauncherItemId, kind, lastExecuteTimestamp);
                 if(1 < removedCount) {
@@ -232,12 +233,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.ExtendsExecute
             LauncherRedoData launcherRedoData;
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherItemsEntityDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherFilesEntityDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherEnvVarsEntityDao = new LauncherEnvVarsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherRedoSuccessExitCodesEntityDao = new LauncherRedoSuccessExitCodesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsEntityDao = daoFactory.Create<LauncherItemsEntityDao>();
+                var launcherFilesEntityDao = daoFactory.Create<LauncherFilesEntityDao>();
+                var launcherEnvVarsEntityDao = daoFactory.Create<LauncherEnvVarsEntityDao>();
+                var launcherItemHistoriesEntityDao = daoFactory.Create<LauncherItemHistoriesEntityDao>();
+                var launcherRedoItemsEntityDao = daoFactory.Create<LauncherRedoItemsEntityDao>();
+                var launcherRedoSuccessExitCodesEntityDao = daoFactory.Create<LauncherRedoSuccessExitCodesEntityDao>();
 
                 launcherItem = launcherItemsEntityDao.SelectLauncherItem(LauncherItemId);
                 fileData = launcherFilesEntityDao.SelectFile(LauncherItemId);
@@ -271,14 +273,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.ExtendsExecute
 
             if(result.Success) {
                 using(var context = MainDatabaseBarrier.WaitWrite()) {
-                    var launcherItemsEntityDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                    var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                    var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                    var launcherItemsEntityDao = daoFactory.Create<LauncherItemsEntityDao>();
+                    var launcherItemHistoriesEntityDao = daoFactory.Create<LauncherItemHistoriesEntityDao>();
 
                     launcherItemsEntityDao.UpdateExecuteCountIncrement(LauncherItemId, DatabaseCommonStatus.CreateCurrentAccount());
 
                     var item = launcherItemsEntityDao.SelectLauncherItem(LauncherItemId);
                     if(item.Kind == LauncherItemKind.File) {
-                        var launcherFilesEntityDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                        var launcherFilesEntityDao = daoFactory.Create<LauncherFilesEntityDao>();
                         var launcherFileData = launcherFilesEntityDao.SelectFile(LauncherItemId);
 
                         launcherItemHistoriesEntityDao.DeleteHistory(LauncherItemId, LauncherHistoryKind.Option, fileData.Option);

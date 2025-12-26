@@ -1,23 +1,32 @@
 using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using ContentTypeTextNet.Pe.Core.Models;
-using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Collections;
-using System.Diagnostics.CodeAnalysis;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Database.Sqlite;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {
+    internal sealed class AppDaoFactory: DaoFactory
+    {
+        public AppDaoFactory(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(context, statementLoader, loggerFactory)
+        { }
+    }
+
     /// <summary>
     /// アプリケーション用<see cref="IDatabaseFactory"/>実装。
     /// </summary>

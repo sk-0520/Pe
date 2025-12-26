@@ -187,7 +187,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             CommonStatus = commonStatus;
         }
 
-        #region IDatabaseContextsPack
+        #region TApplicationPackBase
 
         /// <inheritdoc cref="IDatabaseContextPack.CommonStatus"/>
         public IDatabaseCommonStatus CommonStatus { get; }
@@ -251,7 +251,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                     if(disposing) {
                         var disposableItems = Items
                             .OfType<IDisposable>()
-                            .ToList()
                         ;
                         foreach(var disposableItem in disposableItems) {
                             disposableItem.Dispose();
