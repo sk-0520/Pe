@@ -164,8 +164,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             IReadOnlyList<KeyActionData> disableKeyActions;
             IReadOnlyList<KeyActionData> pressedKeyActions;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var keyActionsEntityDao = appDaoFactory.Create<KeyActionsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var keyActionsEntityDao = daoFactory.Create<KeyActionsEntityDao>();
                 replaceKeyActions = keyActionsEntityDao.SelectAllKeyActionsFromKind(KeyActionKind.Replace).ToList();
                 disableKeyActions = keyActionsEntityDao.SelectAllKeyActionsFromKind(KeyActionKind.Disable).ToList();
                 pressedKeyActions = keyActionsEntityDao.SelectAllKeyActionsIgnoreKinds(new[] { KeyActionKind.Replace, KeyActionKind.Disable }).ToList();

@@ -52,8 +52,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             if(CanUninstall) {
                 using(var context = MainDatabaseBarrier.WaitRead()) {
-                    var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                    var pluginsEntityDao = appDaoFactory.Create<PluginsEntityDao>();
+                    var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                    var pluginsEntityDao = daoFactory.Create<PluginsEntityDao>();
                     var data = pluginsEntityDao.SelectPluginStateDataByPluginId(PluginId);
                     if(data != null) {
                         MarkedUninstall = data.State == Data.PluginState.Uninstall;
@@ -188,8 +188,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         /// <param name="contextsPack"></param>
         public void Save(IDatabaseContextPack contextsPack)
         {
-            var appDaoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
-            var pluginsEntityDao = appDaoFactory.Create<PluginsEntityDao>();
+            var daoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var pluginsEntityDao = daoFactory.Create<PluginsEntityDao>();
 
             if(CanUninstall && MarkedUninstall) {
                 var pluginState = new PluginStateData() {
@@ -218,8 +218,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 PluginVersion = Plugin.PluginInformation.PluginVersions.PluginVersion;
             } else {
                 var pluginVersion = MainDatabaseBarrier.ReadData(c => {
-                    var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                    var pluginsEntityDao = appDaoFactory.Create<PluginsEntityDao>();
+                    var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                    var pluginsEntityDao = daoFactory.Create<PluginsEntityDao>();
                     return pluginsEntityDao.SelectLastUsePluginVersion(PluginId);
                 });
                 if(pluginVersion != null) {

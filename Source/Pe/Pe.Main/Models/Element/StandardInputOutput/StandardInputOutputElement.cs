@@ -144,8 +144,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.StandardInputOutput
         {
             SettingAppStandardInputOutputSettingData setting;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var appStandardInputOutputSettingEntityDao = appDaoFactory.Create<AppStandardInputOutputSettingEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var appStandardInputOutputSettingEntityDao = daoFactory.Create<AppStandardInputOutputSettingEntityDao>();
                 setting = appStandardInputOutputSettingEntityDao.SelectSettingStandardInputOutputSetting();
             }
 

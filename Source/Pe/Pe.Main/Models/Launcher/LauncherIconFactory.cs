@@ -54,8 +54,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
                 case LauncherItemKind.Addon: {
                         var pluginId = MainDatabaseBarrier.ReadData(c => {
-                            var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                            var launcherAddonsEntityDao = appDaoFactory.Create<LauncherAddonsEntityDao>();
+                            var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                            var launcherAddonsEntityDao = daoFactory.Create<LauncherAddonsEntityDao>();
                             return launcherAddonsEntityDao.SelectAddonPluginId(LauncherItemId);
                         });
                         if(!LauncherItemAddonFinder.Exists(pluginId)) {
@@ -89,8 +89,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             BadgeData badge;
             if(isEnabledBadge) {
                 using(var context = MainDatabaseBarrier.WaitRead()) {
-                    var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                    var launcherBadgesEntityDao = appDaoFactory.Create<LauncherBadgesEntityDao>();
+                    var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                    var launcherBadgesEntityDao = daoFactory.Create<LauncherBadgesEntityDao>();
 
                     badge = launcherBadgesEntityDao.SelectLauncherBadge(LauncherItemId) ?? BadgeData.CreateEmpty();
                 }

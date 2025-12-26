@@ -87,8 +87,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherItemsDao = appDaoFactory.Create<LauncherItemsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsDao = daoFactory.Create<LauncherItemsEntityDao>();
 
                 var launcherItemData = launcherItemsDao.SelectLauncherItem(LauncherItemId);
 
@@ -105,8 +105,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
 
             LauncherExecutePathData pathData;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherFilesEntityDao = appDaoFactory.Create<LauncherFilesEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherFilesEntityDao = daoFactory.Create<LauncherFilesEntityDao>();
                 pathData = launcherFilesEntityDao.SelectPath(LauncherItemId);
             }
 
@@ -132,8 +132,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             var result = new LauncherAddonDetailData();
 
             var pluginId = MainDatabaseBarrier.ReadData(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var launcherAddonsEntityDao = appDaoFactory.Create<LauncherAddonsEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var launcherAddonsEntityDao = daoFactory.Create<LauncherAddonsEntityDao>();
                 return launcherAddonsEntityDao.SelectAddonPluginId(LauncherItemId);
             });
 
@@ -150,8 +150,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
         {
             LauncherSeparatorData launcherSeparatorData;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherSeparatorsEntityDao = appDaoFactory.Create<LauncherSeparatorsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherSeparatorsEntityDao = daoFactory.Create<LauncherSeparatorsEntityDao>();
                 launcherSeparatorData = launcherSeparatorsEntityDao.SelectSeparator(LauncherItemId);
             }
 
@@ -162,8 +162,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
         {
             ThrowIfDisposed();
 
-            var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-            var launcherEnvVarsEntityDao = appDaoFactory.Create<LauncherEnvVarsEntityDao>();
+            var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+            var launcherEnvVarsEntityDao = daoFactory.Create<LauncherEnvVarsEntityDao>();
             return launcherEnvVarsEntityDao.SelectEnvVarItems(LauncherItemId).ToList();
         }
 
@@ -175,10 +175,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             List<LauncherEnvironmentVariableData> envItems;
             LauncherRedoData redoData;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherFilesEntityDao = appDaoFactory.Create<LauncherFilesEntityDao>();
-                var launcherRedoItemsEntityDao = appDaoFactory.Create<LauncherRedoItemsEntityDao>();
-                var launcherRedoSuccessExitCodesEntityDao = appDaoFactory.Create<LauncherRedoSuccessExitCodesEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherFilesEntityDao = daoFactory.Create<LauncherFilesEntityDao>();
+                var launcherRedoItemsEntityDao = daoFactory.Create<LauncherRedoItemsEntityDao>();
+                var launcherRedoSuccessExitCodesEntityDao = daoFactory.Create<LauncherRedoSuccessExitCodesEntityDao>();
 
                 fileData = launcherFilesEntityDao.SelectFile(LauncherItemId);
                 if(customArgument != null) {
@@ -220,8 +220,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             }
 
             var pluginId = MainDatabaseBarrier.ReadData(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var launcherAddonsEntityDao = appDaoFactory.Create<LauncherAddonsEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var launcherAddonsEntityDao = daoFactory.Create<LauncherAddonsEntityDao>();
                 return launcherAddonsEntityDao.SelectAddonPluginId(LauncherItemId);
             });
 
@@ -296,8 +296,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
         private void IncrementExecuteCount()
         {
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<LauncherItemsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<LauncherItemsEntityDao>();
                 dao.UpdateExecuteCountIncrement(LauncherItemId, DatabaseCommonStatus.CreateCurrentAccount());
                 context.Commit();
             }
@@ -328,8 +328,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherFilesEntityDao = appDaoFactory.Create<LauncherFilesEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherFilesEntityDao = daoFactory.Create<LauncherFilesEntityDao>();
                 return launcherFilesEntityDao.SelectPath(LauncherItemId);
             }
         }

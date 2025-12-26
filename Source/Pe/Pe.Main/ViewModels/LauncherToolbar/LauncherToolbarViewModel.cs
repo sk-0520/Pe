@@ -536,8 +536,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
         {
             var shortcutDropMode = LauncherToolbarShortcutDropMode.Confirm;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<AppLauncherToolbarSettingEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<AppLauncherToolbarSettingEntityDao>();
                 var setting = dao.SelectSettingLauncherToolbarSetting();
                 shortcutDropMode = setting.ShortcutDropMode;
             }

@@ -40,8 +40,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             IReadOnlyList<LauncherToolbarId> launcherToolbarIds;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherToolbarsEntityDao = appDaoFactory.Create<LauncherToolbarsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherToolbarsEntityDao = daoFactory.Create<LauncherToolbarsEntityDao>();
                 var ids = launcherToolbarsEntityDao.SelectAllLauncherToolbarIds();
                 launcherToolbarIds = ids.ToList();
             }

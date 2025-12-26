@@ -58,9 +58,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             // DB から物理削除
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherGroupsEntityDao = appDaoFactory.Create<LauncherGroupsEntityDao>();
-                var launcherGroupItemsEntityDao = appDaoFactory.Create<LauncherGroupItemsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupsEntityDao = daoFactory.Create<LauncherGroupsEntityDao>();
+                var launcherGroupItemsEntityDao = daoFactory.Create<LauncherGroupItemsEntityDao>();
 
                 launcherGroupItemsEntityDao.DeleteGroupItemsByLauncherGroupId(targetItem.LauncherGroupId);
                 launcherGroupsEntityDao.DeleteGroup(targetItem.LauncherGroupId);
@@ -78,8 +78,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             var groupData = launcherFactory.CreateGroupData(newGroupName, kind);
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherGroupsDao = appDaoFactory.Create<LauncherGroupsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupsDao = daoFactory.Create<LauncherGroupsEntityDao>();
                 launcherGroupsDao.InsertNewGroup(groupData, DatabaseCommonStatus.CreateCurrentAccount());
 
                 context.Commit();
@@ -102,8 +102,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             IReadOnlyList<LauncherItemId> launcherItemIds;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherItemsEntityDao = appDaoFactory.Create<LauncherItemsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsEntityDao = daoFactory.Create<LauncherItemsEntityDao>();
                 launcherItemIds = launcherItemsEntityDao.SelectAllLauncherItemIds().ToList();
             }
             LauncherItems.SetRange(launcherItemIds);

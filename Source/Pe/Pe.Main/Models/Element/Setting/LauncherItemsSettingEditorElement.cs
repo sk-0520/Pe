@@ -93,8 +93,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             var launcherItemManager = new LauncherItemManager();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherItemsDao = appDaoFactory.Create< LauncherItemsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsDao = daoFactory.Create< LauncherItemsEntityDao>();
 
                 var item = new LauncherItemData() {
                     LauncherItemId = newLauncherItemId,
@@ -122,8 +122,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                             Debug.Assert(pluginId == PluginId.Empty);
                             Debug.Assert(launcherSeparatorKind == LauncherSeparatorKind.None);
 
-                            var launcherFilesDao = appDaoFactory.Create< LauncherFilesEntityDao>();
-                            var launcherRedoItemsEntityDao = appDaoFactory.Create<LauncherRedoItemsEntityDao>();
+                            var launcherFilesDao = daoFactory.Create< LauncherFilesEntityDao>();
+                            var launcherRedoItemsEntityDao = daoFactory.Create<LauncherRedoItemsEntityDao>();
 
                             var file = new LauncherFileData();
                             launcherFilesDao.InsertFile(item.LauncherItemId, file, DatabaseCommonStatus.CreateCurrentAccount());
@@ -135,7 +135,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                             Debug.Assert(pluginId == PluginId.Empty);
                             Debug.Assert(launcherSeparatorKind == LauncherSeparatorKind.None);
 
-                            var launcherStoreAppsEntityDao = appDaoFactory.Create<LauncherStoreAppsEntityDao>();
+                            var launcherStoreAppsEntityDao = daoFactory.Create<LauncherStoreAppsEntityDao>();
 
                             var store = new LauncherStoreAppData();
                             launcherStoreAppsEntityDao.InsertStoreApp(item.LauncherItemId, store, DatabaseCommonStatus.CreateCurrentAccount());
@@ -146,7 +146,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                             Debug.Assert(pluginId != PluginId.Empty);
                             Debug.Assert(launcherSeparatorKind == LauncherSeparatorKind.None);
 
-                            var launcherAddonsEntityDao = appDaoFactory.Create<LauncherAddonsEntityDao>();
+                            var launcherAddonsEntityDao = daoFactory.Create<LauncherAddonsEntityDao>();
 
                             launcherAddonsEntityDao.InsertAddonPluginId(item.LauncherItemId, pluginId, DatabaseCommonStatus.CreateCurrentAccount());
                         }
@@ -155,7 +155,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                     case LauncherItemKind.Separator: {
                             Debug.Assert(pluginId == PluginId.Empty);
 
-                            var launcherSeparatorsEntityDao = appDaoFactory.Create<LauncherSeparatorsEntityDao>();
+                            var launcherSeparatorsEntityDao = daoFactory.Create<LauncherSeparatorsEntityDao>();
 
                             var data = new LauncherSeparatorData() {
                                 Kind = launcherSeparatorKind,
@@ -198,12 +198,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             var tags = launcherFactory.GetTags(file).ToList();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherItemsDao = appDaoFactory.Create<LauncherItemsEntityDao>();
-                var launcherTagsDao = appDaoFactory.Create<LauncherTagsEntityDao>();
-                var launcherFilesDao = appDaoFactory.Create<LauncherFilesEntityDao>();
-                var launcherGroupItemsDao = appDaoFactory.Create<LauncherGroupItemsEntityDao>();
-                var launcherRedoItemsEntityDao = appDaoFactory.Create<LauncherRedoItemsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsDao = daoFactory.Create<LauncherItemsEntityDao>();
+                var launcherTagsDao = daoFactory.Create<LauncherTagsEntityDao>();
+                var launcherFilesDao = daoFactory.Create<LauncherFilesEntityDao>();
+                var launcherGroupItemsDao = daoFactory.Create<LauncherGroupItemsEntityDao>();
+                var launcherRedoItemsEntityDao = daoFactory.Create<LauncherRedoItemsEntityDao>();
 
                 launcherItemsDao.InsertLauncherItem(data.Item, DatabaseCommonStatus.CreateCurrentAccount());
                 launcherFilesDao.InsertFile(data.Item.LauncherItemId, data.File, DatabaseCommonStatus.CreateCurrentAccount());

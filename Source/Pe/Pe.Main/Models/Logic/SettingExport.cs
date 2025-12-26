@@ -80,8 +80,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         public IReadOnlyList<SettingGroup> GetGroups()
         {
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<SettingExporterDomainDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<SettingExporterDomainDao>();
                 return dao.SelectSettingGroups().ToArray();
             }
         }
@@ -89,8 +89,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         public IReadOnlyList<SettingLauncherItem> GetLauncherItems()
         {
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<SettingExporterDomainDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<SettingExporterDomainDao>();
                 return dao.SelectSettingLauncherItems().ToArray();
             }
         }
@@ -98,8 +98,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         public IReadOnlyList<SettingNote> GetNotes()
         {
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<SettingExporterDomainDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<SettingExporterDomainDao>();
                 return dao.SelectSettingNotes().ToArray();
             }
         }

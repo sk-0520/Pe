@@ -70,7 +70,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             ThrowIfDisposed();
 
-            var appDaoFactory = new AppDaoFactory(pack.Main, DatabaseStatementLoader, LoggerFactory);
+            var daoFactory = new AppDaoFactory(pack.Main, DatabaseStatementLoader, LoggerFactory);
 
             var launcherGroupData = new LauncherGroupData() {
                 LauncherGroupId = LauncherGroupId,
@@ -81,7 +81,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 Sequence = Sequence
             };
             // 存在しないランチャーアイテムは保存対象外とする
-            var launcherItemsEntityDao = appDaoFactory.Create< LauncherItemsEntityDao>();
+            var launcherItemsEntityDao = daoFactory.Create< LauncherItemsEntityDao>();
             var launcherItemIds = LauncherItems
                 // こんなとこでSQL発行するとか業務じゃむり
                 .Where(i => launcherItemsEntityDao.SelectExistsLauncherItem(i))
@@ -90,10 +90,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             var launcherFactory = new LauncherFactory(IdFactory, LoggerFactory);
 
-            var launcherGroupsEntityDao = appDaoFactory.Create<LauncherGroupsEntityDao>();
+            var launcherGroupsEntityDao = daoFactory.Create<LauncherGroupsEntityDao>();
             launcherGroupsEntityDao.UpdateGroup(launcherGroupData, DatabaseCommonStatus.CreateCurrentAccount());
 
-            var launcherGroupItemsDao = appDaoFactory.Create<LauncherGroupItemsEntityDao>();
+            var launcherGroupItemsDao = daoFactory.Create<LauncherGroupItemsEntityDao>();
             launcherGroupItemsDao.DeleteGroupItemsByLauncherGroupId(LauncherGroupId);
 
             var currentMaxSequence = launcherGroupItemsDao.SelectMaxSequence(LauncherGroupId);
@@ -109,8 +109,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             LauncherGroupData data;
             IEnumerable<LauncherItemId> launcherItemIds;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherGroupsEntityDao = appDaoFactory.Create< LauncherGroupsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupsEntityDao = daoFactory.Create< LauncherGroupsEntityDao>();
 
                 data = launcherGroupsEntityDao.SelectLauncherGroup(LauncherGroupId);
 

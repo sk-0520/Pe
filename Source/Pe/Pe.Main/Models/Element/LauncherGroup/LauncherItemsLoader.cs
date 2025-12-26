@@ -31,8 +31,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup
 
         private IEnumerable<LauncherItemId> LoadNormalIds(LauncherGroupId launcherGroupId)
         {
-            var appDaoFactory = new AppDaoFactory(Context, StatementLoader, LoggerFactory);
-            var dao = appDaoFactory.Create<LauncherGroupItemsEntityDao>();
+            var daoFactory = new AppDaoFactory(Context, StatementLoader, LoggerFactory);
+            var dao = daoFactory.Create<LauncherGroupItemsEntityDao>();
             return dao.SelectLauncherItemIds(launcherGroupId);
         }
 

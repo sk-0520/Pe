@@ -219,8 +219,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<NotesEntityDao>();
                 return dao.SelectNote(NoteId);
             }
         }
@@ -276,8 +276,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
 
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.InsertNewNote(noteData, DatabaseCommonStatus.CreateCurrentAccount());
 
                 ScreenUtility.RegisterDatabase(DockScreen, context, DatabaseStatementLoader, DatabaseCommonStatus.CreateCurrentAccount(), LoggerFactory);
@@ -297,8 +297,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             IList<NoteScreenData> noteScreens;
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var noteDomainDao = appDaoFactory.Create<NoteDomainDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var noteDomainDao = daoFactory.Create<NoteDomainDao>();
                 noteScreens = noteDomainDao.SelectNoteScreens(NoteId).ToList();
             }
 
@@ -327,8 +327,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             } else {
                 IEnumerable<NoteFileData> files;
                 using(var context = MainDatabaseBarrier.WaitRead()) {
-                    var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                    var noteFilesEntityDao = appDaoFactory.Create<NoteFilesEntityDao>();
+                    var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                    var noteFilesEntityDao = daoFactory.Create<NoteFilesEntityDao>();
                     files = noteFilesEntityDao.SelectNoteFiles(NoteId);
                 }
                 var fileElements = files.Select(a => new NoteFileElement(a, MainDatabaseBarrier, LargeDatabaseBarrier, DatabaseStatementLoader, ContextDispatcher, LoggerFactory));
@@ -363,8 +363,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
         {
             ThrowIfDisposed();
 
-            var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-            var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+            var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+            var notesEntityDao = daoFactory.Create<NotesEntityDao>();
             notesEntityDao.UpdateFontId(NoteId, fontElement.FontId, DatabaseCommonStatus.CreateCurrentAccount());
         }
 
@@ -382,8 +382,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
 
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.UpdateCompact(NoteId, IsCompact, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -394,8 +394,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             IsTopmost = !IsTopmost;
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.UpdateTopmost(NoteId, IsTopmost, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -411,8 +411,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             IsLocked = !IsLocked;
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.UpdateLock(NoteId, IsLocked, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -423,8 +423,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             TextWrap = !TextWrap;
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.UpdateTextWrap(NoteId, TextWrap, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -439,8 +439,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             Title = editingTitle;
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.UpdateTitle(NoteId, Title, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -462,8 +462,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var noteLayoutsEntityDao = appDaoFactory.Create<NoteLayoutsEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var noteLayoutsEntityDao = daoFactory.Create<NoteLayoutsEntityDao>();
                 var layout = new NoteLayoutData() {
                     NoteId = NoteId,
                     LayoutKind = LayoutKind,
@@ -485,14 +485,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 var currentNote = notesEntityDao.SelectNote(NoteId);
                 if(currentNote is null) {
                     return;
                 }
 
-                var screensEntityDao = appDaoFactory.Create<ScreensEntityDao>();
+                var screensEntityDao = daoFactory.Create<ScreensEntityDao>();
                 if(!screensEntityDao.SelectExistsScreen(screen.DeviceName)) {
                     screensEntityDao.InsertScreen(screen, DatabaseCommonStatus.CreateCurrentAccount());
                 }
@@ -510,8 +510,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             ForegroundColor = color;
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.UpdateForegroundColor(NoteId, ForegroundColor, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -521,8 +521,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             BackgroundColor = color;
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.UpdateBackgroundColor(NoteId, BackgroundColor, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -533,8 +533,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             CaptionPosition = captionPosition;
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.UpdateCaptionPosition(NoteId, CaptionPosition, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -577,8 +577,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<NoteContentsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<NoteContentsEntityDao>();
                 return dao.SelectExistsContent(NoteId);
             }
         }
@@ -657,15 +657,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                     Content = convertedContent,
                 };
                 using(var context = MainDatabaseBarrier.WaitWrite()) {
-                    var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                    var noteContentsEntityDao = appDaoFactory.Create<NoteContentsEntityDao>();
+                    var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                    var noteContentsEntityDao = daoFactory.Create<NoteContentsEntityDao>();
                     if(noteContentsEntityDao.SelectExistsContent(contentData.NoteId)) {
                         noteContentsEntityDao.UpdateContent(contentData, DatabaseCommonStatus.CreateCurrentAccount());
                     } else {
                         noteContentsEntityDao.InsertNewContent(contentData, DatabaseCommonStatus.CreateCurrentAccount());
                     }
 
-                    var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                    var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                     notesEntityDao.UpdateContentKind(NoteId, toContentKind, DatabaseCommonStatus.CreateCurrentAccount());
 
                     context.Commit();
@@ -682,11 +682,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
         {
             Flush();
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.UpdateLayoutKind(NoteId, layoutData.LayoutKind, DatabaseCommonStatus.CreateCurrentAccount());
 
-                var noteLayoutsEntityDao = appDaoFactory.Create<NoteLayoutsEntityDao>();
+                var noteLayoutsEntityDao = daoFactory.Create<NoteLayoutsEntityDao>();
                 if(noteLayoutsEntityDao.SelectExistsLayout(NoteId, layoutData.LayoutKind)) {
                     noteLayoutsEntityDao.UpdateLayout(layoutData, DatabaseCommonStatus.CreateCurrentAccount());
                 } else {
@@ -708,8 +708,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             IsVisible = isVisible;
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.UpdateVisible(NoteId, IsVisible, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -720,8 +720,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             HiddenMode = hiddenMode;
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var notesEntityDao = appDaoFactory.Create<NotesEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var notesEntityDao = daoFactory.Create<NotesEntityDao>();
                 notesEntityDao.UpdateHiddenMode(NoteId, HiddenMode, DatabaseCommonStatus.CreateCurrentAccount());
             }, UniqueKeyPool.Get());
         }
@@ -731,8 +731,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var noteLayoutsEntityDao = appDaoFactory.Create<NoteLayoutsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var noteLayoutsEntityDao = daoFactory.Create<NoteLayoutsEntityDao>();
                 var layoutData = noteLayoutsEntityDao.SelectLayout(NoteId, LayoutKind);
                 return layoutData;
             }
@@ -749,8 +749,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var noteLayoutsEntityDao = appDaoFactory.Create<NoteLayoutsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var noteLayoutsEntityDao = daoFactory.Create<NoteLayoutsEntityDao>();
                 if(noteLayoutsEntityDao.SelectExistsLayout(layout.NoteId, layout.LayoutKind)) {
                     noteLayoutsEntityDao.UpdateLayout(layout, DatabaseCommonStatus.CreateCurrentAccount());
                 } else {
@@ -770,8 +770,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             TimeSpan waitTime;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var appNoteHiddenSettingEntityDao = appDaoFactory.Create<AppNoteHiddenSettingEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var appNoteHiddenSettingEntityDao = daoFactory.Create<AppNoteHiddenSettingEntityDao>();
                 waitTime = appNoteHiddenSettingEntityDao.SelectHiddenWaitTime(HiddenMode);
             }
 
@@ -848,8 +848,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
                 NoteFileData noteFileData;
                 using(var mainContext = MainDatabaseBarrier.WaitWrite()) {
-                    var appDaoFactory = new AppDaoFactory(mainContext, DatabaseStatementLoader, LoggerFactory);
-                    var noteFilesEntityDao = appDaoFactory.Create<NoteFilesEntityDao>();
+                    var daoFactory = new AppDaoFactory(mainContext, DatabaseStatementLoader, LoggerFactory);
+                    var noteFilesEntityDao = daoFactory.Create<NoteFilesEntityDao>();
 
                     // 現存データ有無確認
                     var noteFileId = noteFilesEntityDao.SelectNoteFileExistsFilePath(NoteId, path);
@@ -912,8 +912,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
 
             using(var mainContext = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(mainContext, DatabaseStatementLoader, LoggerFactory);
-                var noteFilesEntityDao = appDaoFactory.Create<NoteFilesEntityDao>();
+                var daoFactory = new AppDaoFactory(mainContext, DatabaseStatementLoader, LoggerFactory);
+                var noteFilesEntityDao = daoFactory.Create<NoteFilesEntityDao>();
                 // 削除処理
                 noteFilesEntityDao.DeleteNoteFilesById(NoteId, noteFileId);
 

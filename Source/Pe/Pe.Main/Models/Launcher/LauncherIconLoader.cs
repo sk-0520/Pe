@@ -54,8 +54,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             return Task.Run((Func<ResultSuccess<BitmapSource>>)(() => {
                 byte[] imageBinary;
                 using(var context = LargeDatabaseBarrier.WaitRead()) {
-                    var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                    var dao = appDaoFactory.Create<LauncherItemIconsEntityDao>();
+                    var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                    var dao = daoFactory.Create<LauncherItemIconsEntityDao>();
                     imageBinary = dao.SelectImageBinary(LauncherItemId, iconScale);
                 }
 
@@ -78,8 +78,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<LauncherItemDomainDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<LauncherItemDomainDao>();
                 return dao.SelectFileIcon(LauncherItemId);
             }
         }
@@ -165,8 +165,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
                 DateTime iconUpdatedTimestamp = DateTime.UtcNow;
                 using(var context = LargeDatabaseBarrier.WaitWrite()) {
-                    var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                    var launcherItemIconsEntityDao = appDaoFactory.Create<LauncherItemIconsEntityDao>();
+                    var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                    var launcherItemIconsEntityDao = daoFactory.Create<LauncherItemIconsEntityDao>();
                     launcherItemIconsEntityDao.DeleteImageBinary(LauncherItemId, iconScale);
                     launcherItemIconsEntityDao.InsertImageBinary(LauncherItemId, iconScale, stream.GetBuffer().Take((int)stream.Position), iconUpdatedTimestamp, DatabaseCommonStatus.CreateCurrentAccount());
                     context.Commit();

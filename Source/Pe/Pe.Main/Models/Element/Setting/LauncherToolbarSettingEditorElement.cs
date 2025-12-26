@@ -58,8 +58,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             Debug.Assert(Font != null);
 
-            var appDaoFactory = new AppDaoFactory(commandPack.Main, DatabaseStatementLoader, LoggerFactory);
-            var fontsEntityDao = appDaoFactory.Create<FontsEntityDao>();
+            var daoFactory = new AppDaoFactory(commandPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var fontsEntityDao = daoFactory.Create<FontsEntityDao>();
             fontsEntityDao.UpdateFont(Font.FontId, Font.FontData, commandPack.CommonStatus);
 
             var defaultLauncherGroupId = LauncherGroupId;
@@ -70,7 +70,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 }
             }
 
-            var launcherToolbarsEntityDao = appDaoFactory.Create<LauncherToolbarsEntityDao>();
+            var launcherToolbarsEntityDao = daoFactory.Create<LauncherToolbarsEntityDao>();
             var data = new LauncherToolbarsDisplayData() {
                 LauncherToolbarId = LauncherToolbarId,
                 FontId = Font.FontId,
@@ -99,11 +99,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             LauncherToolbarsScreenData screenToolbar;
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherToolbarsEntityDao = appDaoFactory.Create<LauncherToolbarsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherToolbarsEntityDao = daoFactory.Create<LauncherToolbarsEntityDao>();
                 data = launcherToolbarsEntityDao.SelectDisplayData(LauncherToolbarId);
 
-                var launcherToolbarDomainDao = appDaoFactory.Create<LauncherToolbarDomainDao>();
+                var launcherToolbarDomainDao = daoFactory.Create<LauncherToolbarDomainDao>();
                 screenToolbar = launcherToolbarDomainDao.SelectScreenToolbar(LauncherToolbarId);
             }
 

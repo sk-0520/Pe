@@ -75,8 +75,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
         {
             KeyGestureSetting? setting = null;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<KeyGestureGuideDomainDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<KeyGestureGuideDomainDao>();
                 setting = dao.SelectKeyMappings(keyActionKind, parameter);
             }
 
@@ -87,8 +87,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
         {
             KeyGestureSetting? setting = null;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<KeyGestureGuideDomainDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<KeyGestureGuideDomainDao>();
                 setting = dao.SelectLauncherKeyMappings(launcherItemId);
             }
 

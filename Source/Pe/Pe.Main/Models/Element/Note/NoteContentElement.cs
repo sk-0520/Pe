@@ -78,8 +78,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<NoteContentsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<NoteContentsEntityDao>();
                 return dao.SelectExistsContent(NoteId);
             }
         }
@@ -90,8 +90,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<NoteContentsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<NoteContentsEntityDao>();
                 var data = new NoteContentData() {
                     NoteId = NoteId,
                     ContentKind = ContentKind,
@@ -119,8 +119,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<NoteContentsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<NoteContentsEntityDao>();
                 return dao.SelectFullContent(NoteId);
             }
         }
@@ -163,8 +163,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         private NoteViewOffsetData? GetViewOffsetCore(IDatabaseContext context)
         {
-            var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-            var dao = appDaoFactory.Create<NoteViewOffsetsEntityDao>();
+            var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+            var dao = daoFactory.Create<NoteViewOffsetsEntityDao>();
             return dao.SelectNoteViewOffset(NoteId);
         }
 
@@ -178,8 +178,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
         public void ChangeViewOffsetDelaySave(NoteViewOffsetData offset, object key)
         {
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var noteViewOffsetsEntityDao = appDaoFactory.Create<NoteViewOffsetsEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var noteViewOffsetsEntityDao = daoFactory.Create<NoteViewOffsetsEntityDao>();
                 noteViewOffsetsEntityDao.DeleteNoteViewOffset(NoteId);
                 noteViewOffsetsEntityDao.InsertNoteViewOffset(NoteId, offset, DatabaseCommonStatus.CreateCurrentAccount());
             }, key);
@@ -265,8 +265,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
 
             MainDatabaseDelayWriter.Stock(c => {
-                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<NoteContentsEntityDao>();
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<NoteContentsEntityDao>();
                 var data = new NoteContentData() {
                     NoteId = NoteId,
                     ContentKind = contentKind,
@@ -338,8 +338,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             };
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<NoteContentsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<NoteContentsEntityDao>();
                 // 環境変数込みで書き込み
                 dao.UpdateLinkEnabled(NoteId, filePath, encoding, noteLinkWatchParameter, DatabaseCommonStatus.CreateCurrentAccount());
 
@@ -391,8 +391,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             }
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<NoteContentsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<NoteContentsEntityDao>();
                 dao.UpdateLinkDisabled(NoteId, DatabaseCommonStatus.CreateCurrentAccount());
 
                 context.Commit();
@@ -415,8 +415,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             NoteContentData linkData;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = appDaoFactory.Create<NoteContentsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<NoteContentsEntityDao>();
                 linkData = dao.SelectLinkParameter(NoteId);
             }
 

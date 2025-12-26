@@ -136,15 +136,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             IList<PluginStateData> pluginStates;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var pluginsEntityDao = appDaoFactory.Create<PluginsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var pluginsEntityDao = daoFactory.Create<PluginsEntityDao>();
                 pluginStates = pluginsEntityDao.SelectPluginStateData().ToList();
             }
 
             IList<PluginInstallData> installDataItems;
             using(var context = TemporaryDatabaseBarrier.WaitRead()) {
-                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var installPluginsEntityDao = appDaoFactory.Create<InstallPluginsEntityDao>();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var installPluginsEntityDao = daoFactory.Create<InstallPluginsEntityDao>();
                 installDataItems = installPluginsEntityDao.SelectInstallPlugins().ToList();
             }
 

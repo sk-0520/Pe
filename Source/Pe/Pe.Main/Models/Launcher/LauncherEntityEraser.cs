@@ -40,16 +40,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         protected override void ExecuteMainImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
-            var appDaoFactory = new AppDaoFactory(context, statementLoader, LoggerFactory);
-            var launcherBadgesEntityDao = appDaoFactory.Create<LauncherBadgesEntityDao>();
-            var launcherEnvVarsEntityDao = appDaoFactory.Create<LauncherEnvVarsEntityDao>();
+            var daoFactory = new AppDaoFactory(context, statementLoader, LoggerFactory);
+            var launcherBadgesEntityDao = daoFactory.Create<LauncherBadgesEntityDao>();
+            var launcherEnvVarsEntityDao = daoFactory.Create<LauncherEnvVarsEntityDao>();
 
             launcherBadgesEntityDao.DeleteLauncherBadge(LauncherItemId);
             launcherEnvVarsEntityDao.DeleteEnvVarItemsByLauncherItemId(LauncherItemId);
 
             switch(LauncherItemKind) {
                 case LauncherItemKind.File: {
-                        var launcherFilesEntityDao = appDaoFactory.Create<LauncherFilesEntityDao>();
+                        var launcherFilesEntityDao = daoFactory.Create<LauncherFilesEntityDao>();
                         launcherFilesEntityDao.DeleteFileByLauncherItemId(LauncherItemId);
                     }
                     break;
@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                     break;
 
                 case LauncherItemKind.Separator: {
-                        var launcherSeparatorsEntityDao = appDaoFactory.Create<LauncherSeparatorsEntityDao>();
+                        var launcherSeparatorsEntityDao = daoFactory.Create<LauncherSeparatorsEntityDao>();
                         launcherSeparatorsEntityDao.DeleteSeparatorByLauncherItemId(LauncherItemId);
                     }
                     break;
@@ -67,29 +67,29 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                     throw new NotImplementedException();
             }
 
-            var launcherGroupItemsEntityDao = appDaoFactory.Create<LauncherGroupItemsEntityDao>();
+            var launcherGroupItemsEntityDao = daoFactory.Create<LauncherGroupItemsEntityDao>();
             launcherGroupItemsEntityDao.DeleteGroupItemsByLauncherItemId(LauncherItemId);
 
-            var launcherItemHistoriesEntityDao = appDaoFactory.Create<LauncherItemHistoriesEntityDao>();
+            var launcherItemHistoriesEntityDao = daoFactory.Create<LauncherItemHistoriesEntityDao>();
             launcherItemHistoriesEntityDao.DeleteHistoriesByLauncherItemId(LauncherItemId);
 
-            var launcherTagsEntityDao = appDaoFactory.Create<LauncherTagsEntityDao>();
+            var launcherTagsEntityDao = daoFactory.Create<LauncherTagsEntityDao>();
             launcherTagsEntityDao.DeleteTagByLauncherItemId(LauncherItemId);
 
-            var launcherRedoItemsEntityDao = appDaoFactory.Create<LauncherRedoItemsEntityDao>();
+            var launcherRedoItemsEntityDao = daoFactory.Create<LauncherRedoItemsEntityDao>();
             launcherRedoItemsEntityDao.DeleteRedoItemByLauncherItemId(LauncherItemId);
 
-            var launcherRedoSuccessExitCodesEntityDao = appDaoFactory.Create<LauncherRedoSuccessExitCodesEntityDao>();
+            var launcherRedoSuccessExitCodesEntityDao = daoFactory.Create<LauncherRedoSuccessExitCodesEntityDao>();
             launcherRedoSuccessExitCodesEntityDao.DeleteSuccessExitCodes(LauncherItemId);
 
-            var launcherItemsEntityDao = appDaoFactory.Create<LauncherItemsEntityDao>();
+            var launcherItemsEntityDao = daoFactory.Create<LauncherItemsEntityDao>();
             launcherItemsEntityDao.DeleteLauncherItem(LauncherItemId);
         }
 
         protected override void ExecuteLargeImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
-            var appDaoFactory = new AppDaoFactory(context, statementLoader, LoggerFactory);
-            var launcherItemIconsEntityDao = appDaoFactory.Create<LauncherItemIconsEntityDao>();
+            var daoFactory = new AppDaoFactory(context, statementLoader, LoggerFactory);
+            var launcherItemIconsEntityDao = daoFactory.Create<LauncherItemIconsEntityDao>();
             launcherItemIconsEntityDao.DeleteAllSizeImageBinary(LauncherItemId);
         }
 

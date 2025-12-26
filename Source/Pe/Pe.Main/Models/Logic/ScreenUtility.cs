@@ -110,8 +110,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         public static bool RegisterDatabase(IScreen screen, IDatabaseContext context, IDatabaseStatementLoader databaseStatementLoader, IDatabaseCommonStatus databaseCommonStatus, ILoggerFactory loggerFactory)
         {
-            var appDaoFactory = new AppDaoFactory(context, databaseStatementLoader, loggerFactory);
-            var screensDao = appDaoFactory.Create<ScreensEntityDao>();
+            var daoFactory = new AppDaoFactory(context, databaseStatementLoader, loggerFactory);
+            var screensDao = daoFactory.Create<ScreensEntityDao>();
             if(!screensDao.SelectExistsScreen(screen.DeviceName)) {
                 screensDao.InsertScreen(screen, databaseCommonStatus);
                 return true;
