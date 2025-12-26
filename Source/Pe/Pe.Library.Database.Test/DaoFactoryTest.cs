@@ -57,23 +57,26 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test
         [Fact]
         public void Create_Not_Dao_Test()
         {
-            Assert.Throws<InvalidProgramException>(() => DaoFactory.Create(typeof(object)));
+            var exception = Assert.Throws<DatabaseFactoryException>(() => DaoFactory.Create(typeof(object)));
+            Assert.Equal("constructor", exception.Message);
         }
 
         [Fact]
         public void Create_InvalidConstructor_Dao_Test()
         {
-            Assert.Throws<InvalidProgramException>(() => DaoFactory.Create(typeof(InvalidConstructorDao)));
+            var exception = Assert.Throws<DatabaseFactoryException>(() => DaoFactory.Create(typeof(InvalidConstructorDao)));
+            Assert.Equal("constructor", exception.Message);
         }
 
         [Fact]
         public void Create_InvalidType_Dao_Test()
         {
-            Assert.Throws<InvalidCastException>(() => DaoFactory.Create(typeof(InvalidCastDao)));
+            var exception = Assert.Throws<DatabaseFactoryException>(() => DaoFactory.Create(typeof(InvalidCastDao)));
+            Assert.Equal($"dao is not DatabaseAccessObjectBase: {typeof(InvalidCastDao)}", exception.Message);
         }
 
         [Fact]
-        public void CreateTest()
+        public void DaoFactoryExtensions_CreateTest()
         {
             var exception = Record.Exception(() => DaoFactory.Create<TestDao>());
             Assert.Null(exception);

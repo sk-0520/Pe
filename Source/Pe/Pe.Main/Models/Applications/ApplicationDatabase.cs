@@ -25,21 +25,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         public AppDaoFactory(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
             : base(context, statementLoader, loggerFactory)
         { }
-
-        #region property
-
-        private ConcurrentDictionary<Type, ConstructorInfo> ConstructorCache { get; } = new();
-
-        #endregion
-
-        #region DaoFactory
-
-        protected override ConstructorInfo GetDaoConstructorInfo(Type type)
-        {
-            return ConstructorCache.GetOrAdd(type, a => base.GetDaoConstructorInfo(a));
-        }
-
-        #endregion
     }
 
     /// <summary>

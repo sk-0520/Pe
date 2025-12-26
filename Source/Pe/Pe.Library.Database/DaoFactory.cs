@@ -14,68 +14,53 @@ namespace ContentTypeTextNet.Pe.Library.Database
             Context = context;
             StatementLoader = statementLoader;
             LoggerFactory = loggerFactory;
+
+            ConstructorParameters = [
+                Context,
+                StatementLoader,
+                LoggerFactory
+            ];
         }
 
         #region property
 
+        /*
+         * 型と値をキャッシュするとちょっとだけ改善されるんだ。意味はたぶんない。
+            | Method       | Mean     | Error   | StdDev  | Min      | Max      | Rank | Gen0   | Allocated |
+            |------------- |---------:|--------:|--------:|---------:|---------:|-----:|-------:|----------:|
+            | Test1_Create | 259.7 ns | 1.70 ns | 1.50 ns | 257.5 ns | 263.0 ns |    2 | 0.0606 |     792 B | 未キャッシュ
+            | Test2_Create | 232.6 ns | 1.64 ns | 1.53 ns | 230.4 ns | 234.4 ns |    1 | 0.0384 |     504 B | 今の実装
+        */
+        private static Type[] ConstructorTypes { get; } = [
+            typeof(IDatabaseContext),
+            typeof(IDatabaseStatementLoader),
+            typeof(ILoggerFactory),
+        ];
+
         protected IDatabaseContext Context { get; }
         protected IDatabaseStatementLoader StatementLoader { get; }
         protected ILoggerFactory LoggerFactory { get; }
-
-        #endregion
-
-        #region function
-
-        protected virtual ConstructorInfo GetDaoConstructorInfo(Type type)
-        {
-            //NOTE: 順序固定, DI コンテナ的なことするかどうかは使用状況次第で考慮する
-            var constructor = type.GetConstructor([
-                typeof(IDatabaseContext),
-                typeof(IDatabaseStatementLoader),
-                typeof(ILoggerFactory),
-            ]);
-            if(constructor is null) {
-                throw new InvalidProgramException();
-            }
-
-            return constructor;
-        }
-
-        protected virtual DatabaseAccessObjectBase CreateDao(ConstructorInfo constructor)
-        {
-            var dao = constructor.Invoke([
-                Context,
-                StatementLoader,
-                LoggerFactory
-            ]);
-
-            if(dao is DatabaseAccessObjectBase result) {
-                return result;
-            }
-
-            throw new InvalidCastException();
-        }
+        protected object[] ConstructorParameters { get; }
 
         #endregion
 
         #region IDaoFactory
 
-        public DatabaseAccessObjectBase Create(Type type)
+        public virtual DatabaseAccessObjectBase Create(Type type)
         {
-            var constructor = GetDaoConstructorInfo(type);
-            var dao = CreateDao(constructor);
+            var constructor = type.GetConstructor(ConstructorTypes);
+            if(constructor is null) {
+                throw new DatabaseFactoryException("constructor");
+            }
 
-            return dao;
-        }
+            var dao = constructor.Invoke(ConstructorParameters);
+            if(dao is DatabaseAccessObjectBase result) {
+                return result;
+            }
 
-        public TDao Create<TDao>()
-            where TDao : DatabaseAccessObjectBase
-        {
-            var type = typeof(TDao);
-            return (TDao)Create(type);
+            throw new DatabaseFactoryException($"dao is not {nameof(DatabaseAccessObjectBase)}: {dao.GetType()}");
         }
 
         #endregion
     }
-
 }

@@ -10,9 +10,19 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         DatabaseAccessObjectBase Create(Type type);
 
-        TDao Create<TDao>()
+        #endregion
+    }
+
+    public static class IDaoFactoryExtensions
+    {
+        #region function
+
+        public static TDao Create<TDao>(this IDaoFactory daoFactory)
             where TDao : DatabaseAccessObjectBase
-        ;
+        {
+            var type = typeof(TDao);
+            return (TDao)daoFactory.Create(type);
+        }
 
         #endregion
     }
