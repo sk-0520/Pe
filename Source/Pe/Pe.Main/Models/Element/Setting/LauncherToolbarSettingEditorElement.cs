@@ -58,7 +58,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             Debug.Assert(Font != null);
 
-            var fontsEntityDao = new FontsEntityDao(commandPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(commandPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var fontsEntityDao = appDaoFactory.Create<FontsEntityDao>();
             fontsEntityDao.UpdateFont(Font.FontId, Font.FontData, commandPack.CommonStatus);
 
             var defaultLauncherGroupId = LauncherGroupId;
@@ -69,7 +70,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 }
             }
 
-            var launcherToolbarsEntityDao = new LauncherToolbarsEntityDao(commandPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var launcherToolbarsEntityDao = appDaoFactory.Create<LauncherToolbarsEntityDao>();
             var data = new LauncherToolbarsDisplayData() {
                 LauncherToolbarId = LauncherToolbarId,
                 FontId = Font.FontId,
@@ -98,10 +99,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             LauncherToolbarsScreenData screenToolbar;
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherToolbarsEntityDao = new LauncherToolbarsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherToolbarsEntityDao = appDaoFactory.Create<LauncherToolbarsEntityDao>();
                 data = launcherToolbarsEntityDao.SelectDisplayData(LauncherToolbarId);
 
-                var launcherToolbarDomainDao = new LauncherToolbarDomainDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherToolbarDomainDao = appDaoFactory.Create<LauncherToolbarDomainDao>();
                 screenToolbar = launcherToolbarDomainDao.SelectScreenToolbar(LauncherToolbarId);
             }
 

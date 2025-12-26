@@ -79,24 +79,27 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         public IReadOnlyList<SettingGroup> GetGroups()
         {
-            using(var transaction = MainDatabaseBarrier.WaitRead()) {
-                var dao = new SettingExporterDomainDao(transaction, DatabaseStatementLoader, LoggerFactory);
+            using(var context = MainDatabaseBarrier.WaitRead()) {
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = appDaoFactory.Create<SettingExporterDomainDao>();
                 return dao.SelectSettingGroups().ToArray();
             }
         }
 
         public IReadOnlyList<SettingLauncherItem> GetLauncherItems()
         {
-            using(var transaction = MainDatabaseBarrier.WaitRead()) {
-                var dao = new SettingExporterDomainDao(transaction, DatabaseStatementLoader, LoggerFactory);
+            using(var context = MainDatabaseBarrier.WaitRead()) {
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = appDaoFactory.Create<SettingExporterDomainDao>();
                 return dao.SelectSettingLauncherItems().ToArray();
             }
         }
 
         public IReadOnlyList<SettingNote> GetNotes()
         {
-            using(var transaction = MainDatabaseBarrier.WaitRead()) {
-                var dao = new SettingExporterDomainDao(transaction, DatabaseStatementLoader, LoggerFactory);
+            using(var context = MainDatabaseBarrier.WaitRead()) {
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = appDaoFactory.Create<SettingExporterDomainDao>();
                 return dao.SelectSettingNotes().ToArray();
             }
         }

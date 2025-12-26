@@ -86,7 +86,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             SettingAppExecuteSettingData setting;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appExecuteSettingEntityDao = new AppExecuteSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var appExecuteSettingEntityDao = appDaoFactory.Create<AppExecuteSettingEntityDao>();
                 setting = appExecuteSettingEntityDao.SelectSettingExecuteSetting();
             }
 
@@ -103,7 +104,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
-            var appExecuteSettingEntityDao = new AppExecuteSettingEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appExecuteSettingEntityDao = appDaoFactory.Create<AppExecuteSettingEntityDao>();
             var data = new SettingAppExecuteSettingData() {
                 IsEnabledTelemetry = IsEnabledTelemetry,
                 UserId = UserId,
@@ -146,7 +148,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             SettingAppGeneralSettingData setting;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appGeneralSettingEntityDao = new AppGeneralSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var appGeneralSettingEntityDao = appDaoFactory.Create<AppGeneralSettingEntityDao>();
                 setting = appGeneralSettingEntityDao.SelectSettingGeneralSetting();
             }
 
@@ -180,7 +183,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
-            var appGeneralSettingEntityDao = new AppGeneralSettingEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appGeneralSettingEntityDao = appDaoFactory.Create<AppGeneralSettingEntityDao>();
             var data = new SettingAppGeneralSettingData() {
                 Language = CultureInfo.Name,
                 UserBackupDirectoryPath = UserBackupDirectoryPath,
@@ -225,7 +229,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             SettingAppUpdateSettingData setting;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appUpdateSettingEntityDao = new AppUpdateSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var appUpdateSettingEntityDao = appDaoFactory.Create<AppUpdateSettingEntityDao>();
                 setting = appUpdateSettingEntityDao.SelectSettingUpdateSetting();
             }
 
@@ -236,7 +241,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
-            var appUpdateSettingEntityDao = new AppUpdateSettingEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appUpdateSettingEntityDao = appDaoFactory.Create<AppUpdateSettingEntityDao>();
             var data = new SettingAppUpdateSettingData() {
                 UpdateKind = UpdateKind,
             };
@@ -267,7 +273,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             var setting = MainDatabaseBarrier.ReadData(c => {
-                var dao = new AppNotifyLogSettingEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var dao = appDaoFactory.Create<AppNotifyLogSettingEntityDao>();
                 return dao.SelectSettingNotifyLogSetting();
             });
 
@@ -279,7 +286,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
-            var appNotifyLogSettingEntityDao = new AppNotifyLogSettingEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appNotifyLogSettingEntityDao = appDaoFactory.Create<AppNotifyLogSettingEntityDao>();
             var data = new SettingAppNotifyLogSettingData() {
                 IsVisible = IsVisible,
                 Position = Position,
@@ -314,7 +322,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
             var setting = MainDatabaseBarrier.ReadData(c => {
-                var appLauncherToolbarSettingEntityDao = new AppLauncherToolbarSettingEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var appLauncherToolbarSettingEntityDao = appDaoFactory.Create<AppLauncherToolbarSettingEntityDao>();
                 return appLauncherToolbarSettingEntityDao.SelectSettingLauncherToolbarSetting();
             });
 
@@ -328,7 +337,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
-            var appLauncherToolbarSettingEntityDao = new AppLauncherToolbarSettingEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appLauncherToolbarSettingEntityDao = appDaoFactory.Create<AppLauncherToolbarSettingEntityDao>();
             var data = new AppLauncherToolbarSettingData() {
                 ContentDropMode = ContentDropMode,
                 ShortcutDropMode = ShortcutDropMode,
@@ -367,7 +377,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             SettingAppCommandSettingData setting;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appCommandSettingEntityDao = new AppCommandSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var appCommandSettingEntityDao = appDaoFactory.Create<AppCommandSettingEntityDao>();
                 setting = appCommandSettingEntityDao.SelectSettingCommandSetting();
             }
 
@@ -383,7 +394,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             Debug.Assert(Font != null);
 
-            var appCommandSettingEntityDao = new AppCommandSettingEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appCommandSettingEntityDao = appDaoFactory.Create<AppCommandSettingEntityDao>();
             var data = new SettingAppCommandSettingData() {
                 FontId = Font.FontId,
                 IconBox = IconBox,
@@ -392,7 +404,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             };
             appCommandSettingEntityDao.UpdateSettingCommandSetting(data, contextsPack.CommonStatus);
 
-            var fontsEntityDao = new FontsEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var fontsEntityDao = appDaoFactory.Create<FontsEntityDao>();
             fontsEntityDao.UpdateFont(Font.FontId, Font.FontData, contextsPack.CommonStatus);
 
         }
@@ -441,8 +453,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             SettingAppNoteSettingData setting;
             WaitTimes.Clear();
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appNoteSettingEntityDao = new AppNoteSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var appNoteHiddenSettingEntityDao = new AppNoteHiddenSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var appNoteSettingEntityDao = appDaoFactory.Create<AppNoteSettingEntityDao>();
+                var appNoteHiddenSettingEntityDao = appDaoFactory.Create<AppNoteHiddenSettingEntityDao>();
 
                 setting = appNoteSettingEntityDao.SelectSettingNoteSetting();
                 foreach(var pair in appNoteHiddenSettingEntityDao.SelectHiddenWaitTimes()) {
@@ -465,7 +478,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             Debug.Assert(Font != null);
 
-            var appNoteSettingEntityDao = new AppNoteSettingEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appNoteSettingEntityDao = appDaoFactory.Create<AppNoteSettingEntityDao>();
             var data = new SettingAppNoteSettingData() {
                 FontId = Font.FontId,
                 TitleKind = TitleKind,
@@ -477,12 +491,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             };
             appNoteSettingEntityDao.UpdateSettingNoteSetting(data, contextsPack.CommonStatus);
 
-            var appNoteHiddenSettingEntityDao = new AppNoteHiddenSettingEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appNoteHiddenSettingEntityDao = appDaoFactory.Create<AppNoteHiddenSettingEntityDao>();
             appNoteHiddenSettingEntityDao.UpdateHiddenWaitTimes(WaitTimes, contextsPack.CommonStatus);
 
-            var fontsEntityDao = new FontsEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var fontsEntityDao = appDaoFactory.Create<FontsEntityDao>();
             fontsEntityDao.UpdateFont(Font.FontId, Font.FontData, contextsPack.CommonStatus);
-
         }
 
         protected override void Dispose(bool disposing)
@@ -525,7 +538,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             SettingAppStandardInputOutputSettingData setting;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appStandardInputOutputSettingEntityDao = new AppStandardInputOutputSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var appStandardInputOutputSettingEntityDao = appDaoFactory.Create<AppStandardInputOutputSettingEntityDao>();
                 setting = appStandardInputOutputSettingEntityDao.SelectSettingStandardInputOutputSetting();
             }
 
@@ -543,7 +557,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             Debug.Assert(Font != null);
 
-            var appStandardInputOutputSettingEntityDao = new AppStandardInputOutputSettingEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appStandardInputOutputSettingEntityDao = appDaoFactory.Create<AppStandardInputOutputSettingEntityDao>();
             var data = new SettingAppStandardInputOutputSettingData() {
                 FontId = Font.FontId,
                 OutputForegroundColor = OutputForegroundColor,
@@ -554,7 +569,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             };
             appStandardInputOutputSettingEntityDao.UpdateSettingStandardInputOutputSetting(data, contextsPack.CommonStatus);
 
-            var fontsEntityDao = new FontsEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var fontsEntityDao = appDaoFactory.Create<FontsEntityDao>();
             fontsEntityDao.UpdateFont(Font.FontId, Font.FontData, contextsPack.CommonStatus);
         }
 
@@ -594,7 +609,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             AppProxySettingData data;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appProxySettingEntityDao = new AppProxySettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var appProxySettingEntityDao = appDaoFactory.Create<AppProxySettingEntityDao>();
                 data = appProxySettingEntityDao.SelectProxySetting();
             }
 
@@ -609,7 +625,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         protected override void SaveImpl(IDatabaseContextPack contextsPack)
         {
-            var appProxySettingEntityDao = new AppProxySettingEntityDao(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var appProxySettingEntityDao = appDaoFactory.Create<AppProxySettingEntityDao>();
             var data = new AppProxySettingData() {
                 ProxyIsEnabled = ProxyIsEnabled,
                 ProxyUrl = ProxyUrl,

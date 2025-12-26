@@ -244,7 +244,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
             AppProxySettingData settingAppProxySettingData;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var appProxySettingEntityDao = new AppProxySettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var appProxySettingEntityDao = appDaoFactory.Create<AppProxySettingEntityDao>();
                 settingAppProxySettingData = appProxySettingEntityDao.SelectProxySetting();
             }
             if(settingAppProxySettingData.ProxyIsEnabled) {

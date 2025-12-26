@@ -80,7 +80,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Font
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var dao = new FontsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = appDaoFactory.Create<FontsEntityDao>();
                 return dao.SelectFont(FontId);
             }
         }
@@ -179,7 +180,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Font
                 IsItalic = IsItalic,
             };
 
-            var dao = new FontsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+            var dao = appDaoFactory.Create<FontsEntityDao>();
             dao.InsertFont(fontId, fontData, DatabaseCommonStatus.CreateCurrentAccount());
 
             FontId = fontId;
@@ -198,7 +200,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Font
                     CreateAndSaveFontId(c);
                 }
 
-                var dao = new FontsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var dao = appDaoFactory.Create<FontsEntityDao> ();
                 updater(dao, DatabaseCommonStatus.CreateCurrentAccount());
             }, uniqueKey);
 
@@ -263,21 +266,23 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Font
         {
             FontId defaultFontId;
             using(var context = MainDatabaseBarrier.WaitRead()) {
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+
                 switch(DefaultFontKind) {
                     case DefaultFontKind.Note: {
-                            var dao = new AppNoteSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                            var dao = appDaoFactory.Create<AppNoteSettingEntityDao> ();
                             defaultFontId = dao.SelectAppNoteSettingFontId();
                         }
                         break;
 
                     case DefaultFontKind.Command: {
-                            var dao = new AppCommandSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                            var dao = appDaoFactory.Create<AppCommandSettingEntityDao> ();
                             defaultFontId = dao.SelectCommandSettingFontId();
                         }
                         break;
 
                     case DefaultFontKind.LauncherToolbar: {
-                            var dao = new AppLauncherToolbarSettingEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                            var dao = appDaoFactory.Create<AppLauncherToolbarSettingEntityDao> ();
                             defaultFontId = dao.SelectAppLauncherToolbarSettingFontId();
                         }
                         break;

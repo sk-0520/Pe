@@ -87,7 +87,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherItemsDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsDao = appDaoFactory.Create<LauncherItemsEntityDao>();
+
                 var launcherItemData = launcherItemsDao.SelectLauncherItem(LauncherItemId);
 
                 Name = launcherItemData.Name;
@@ -103,7 +105,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
 
             LauncherExecutePathData pathData;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherFilesEntityDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherFilesEntityDao = appDaoFactory.Create<LauncherFilesEntityDao>();
                 pathData = launcherFilesEntityDao.SelectPath(LauncherItemId);
             }
 
@@ -129,7 +132,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             var result = new LauncherAddonDetailData();
 
             var pluginId = MainDatabaseBarrier.ReadData(c => {
-                var launcherAddonsEntityDao = new LauncherAddonsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var launcherAddonsEntityDao = appDaoFactory.Create<LauncherAddonsEntityDao>();
                 return launcherAddonsEntityDao.SelectAddonPluginId(LauncherItemId);
             });
 
@@ -146,7 +150,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
         {
             LauncherSeparatorData launcherSeparatorData;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherSeparatorsEntityDao = new LauncherSeparatorsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherSeparatorsEntityDao = appDaoFactory.Create<LauncherSeparatorsEntityDao>();
                 launcherSeparatorData = launcherSeparatorsEntityDao.SelectSeparator(LauncherItemId);
             }
 
@@ -157,7 +162,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
         {
             ThrowIfDisposed();
 
-            var launcherEnvVarsEntityDao = new LauncherEnvVarsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+            var launcherEnvVarsEntityDao = appDaoFactory.Create<LauncherEnvVarsEntityDao>();
             return launcherEnvVarsEntityDao.SelectEnvVarItems(LauncherItemId).ToList();
         }
 
@@ -169,9 +175,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             List<LauncherEnvironmentVariableData> envItems;
             LauncherRedoData redoData;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherFilesEntityDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherRedoSuccessExitCodesEntityDao = new LauncherRedoSuccessExitCodesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherFilesEntityDao = appDaoFactory.Create<LauncherFilesEntityDao>();
+                var launcherRedoItemsEntityDao = appDaoFactory.Create<LauncherRedoItemsEntityDao>();
+                var launcherRedoSuccessExitCodesEntityDao = appDaoFactory.Create<LauncherRedoSuccessExitCodesEntityDao>();
 
                 fileData = launcherFilesEntityDao.SelectFile(LauncherItemId);
                 if(customArgument != null) {
@@ -213,7 +220,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             }
 
             var pluginId = MainDatabaseBarrier.ReadData(c => {
-                var launcherAddonsEntityDao = new LauncherAddonsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var launcherAddonsEntityDao = appDaoFactory.Create<LauncherAddonsEntityDao>();
                 return launcherAddonsEntityDao.SelectAddonPluginId(LauncherItemId);
             });
 
@@ -288,7 +296,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
         private void IncrementExecuteCount()
         {
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var dao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = appDaoFactory.Create<LauncherItemsEntityDao>();
                 dao.UpdateExecuteCountIncrement(LauncherItemId, DatabaseCommonStatus.CreateCurrentAccount());
                 context.Commit();
             }
@@ -319,7 +328,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherFilesEntityDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherFilesEntityDao = appDaoFactory.Create<LauncherFilesEntityDao>();
                 return launcherFilesEntityDao.SelectPath(LauncherItemId);
             }
         }

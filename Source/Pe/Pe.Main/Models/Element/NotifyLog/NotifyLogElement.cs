@@ -107,7 +107,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.NotifyLog
         private Task RefreshSettingAsync(CancellationToken cancellationToken)
         {
             var setting = MainDatabaseBarrier.ReadData(c => {
-                var dao = new AppNotifyLogSettingEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var dao = appDaoFactory.Create<AppNotifyLogSettingEntityDao>();
                 return dao.SelectSettingNotifyLogSetting();
             });
             IsVisible = setting.IsVisible;

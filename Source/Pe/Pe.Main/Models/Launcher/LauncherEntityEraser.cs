@@ -40,15 +40,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         protected override void ExecuteMainImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
-            var launcherBadgesEntityDao = new LauncherBadgesEntityDao(context, statementLoader, LoggerFactory);
-            var launcherEnvVarsEntityDao = new LauncherEnvVarsEntityDao(context, statementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(context, statementLoader, LoggerFactory);
+            var launcherBadgesEntityDao = appDaoFactory.Create<LauncherBadgesEntityDao>();
+            var launcherEnvVarsEntityDao = appDaoFactory.Create<LauncherEnvVarsEntityDao>();
 
             launcherBadgesEntityDao.DeleteLauncherBadge(LauncherItemId);
             launcherEnvVarsEntityDao.DeleteEnvVarItemsByLauncherItemId(LauncherItemId);
 
             switch(LauncherItemKind) {
                 case LauncherItemKind.File: {
-                        var launcherFilesEntityDao = new LauncherFilesEntityDao(context, statementLoader, LoggerFactory);
+                        var launcherFilesEntityDao = appDaoFactory.Create<LauncherFilesEntityDao>();
                         launcherFilesEntityDao.DeleteFileByLauncherItemId(LauncherItemId);
                     }
                     break;
@@ -57,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                     break;
 
                 case LauncherItemKind.Separator: {
-                        var launcherSeparatorsEntityDao = new LauncherSeparatorsEntityDao(context, statementLoader, LoggerFactory);
+                        var launcherSeparatorsEntityDao = appDaoFactory.Create<LauncherSeparatorsEntityDao>();
                         launcherSeparatorsEntityDao.DeleteSeparatorByLauncherItemId(LauncherItemId);
                     }
                     break;
@@ -66,28 +67,29 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                     throw new NotImplementedException();
             }
 
-            var launcherGroupItemsEntityDao = new LauncherGroupItemsEntityDao(context, statementLoader, LoggerFactory);
+            var launcherGroupItemsEntityDao = appDaoFactory.Create<LauncherGroupItemsEntityDao>();
             launcherGroupItemsEntityDao.DeleteGroupItemsByLauncherItemId(LauncherItemId);
 
-            var launcherItemHistoriesEntityDao = new LauncherItemHistoriesEntityDao(context, statementLoader, LoggerFactory);
+            var launcherItemHistoriesEntityDao = appDaoFactory.Create<LauncherItemHistoriesEntityDao>();
             launcherItemHistoriesEntityDao.DeleteHistoriesByLauncherItemId(LauncherItemId);
 
-            var launcherTagsEntityDao = new LauncherTagsEntityDao(context, statementLoader, LoggerFactory);
+            var launcherTagsEntityDao = appDaoFactory.Create<LauncherTagsEntityDao>();
             launcherTagsEntityDao.DeleteTagByLauncherItemId(LauncherItemId);
 
-            var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, statementLoader, LoggerFactory);
+            var launcherRedoItemsEntityDao = appDaoFactory.Create<LauncherRedoItemsEntityDao>();
             launcherRedoItemsEntityDao.DeleteRedoItemByLauncherItemId(LauncherItemId);
 
-            var launcherRedoSuccessExitCodesEntityDao = new LauncherRedoSuccessExitCodesEntityDao(context, statementLoader, LoggerFactory);
+            var launcherRedoSuccessExitCodesEntityDao = appDaoFactory.Create<LauncherRedoSuccessExitCodesEntityDao>();
             launcherRedoSuccessExitCodesEntityDao.DeleteSuccessExitCodes(LauncherItemId);
 
-            var launcherItemsEntityDao = new LauncherItemsEntityDao(context, statementLoader, LoggerFactory);
+            var launcherItemsEntityDao = appDaoFactory.Create<LauncherItemsEntityDao>();
             launcherItemsEntityDao.DeleteLauncherItem(LauncherItemId);
         }
 
         protected override void ExecuteLargeImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
-            var launcherItemIconsEntityDao = new LauncherItemIconsEntityDao(context, statementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(context, statementLoader, LoggerFactory);
+            var launcherItemIconsEntityDao = appDaoFactory.Create<LauncherItemIconsEntityDao>();
             launcherItemIconsEntityDao.DeleteAllSizeImageBinary(LauncherItemId);
         }
 

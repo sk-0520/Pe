@@ -130,17 +130,19 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
             ;
 
             var groupNames = DatabaseBarrier.ReadData(c => {
-                var launcherGroupsDao = new LauncherGroupsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupsDao = appDaoFactory.Create<LauncherGroupsEntityDao>();
                 return launcherGroupsDao.SelectAllLauncherGroupNames().ToList();
             });
             var groupName = TextUtility.ToUniqueDefault(Properties.Resources.String_LauncherGroup_ImportItem_Name, groupNames, StringComparison.CurrentCultureIgnoreCase);
             var group = launcherFactory.CreateGroupData(groupName, LauncherGroupKind.Normal);
 
             using(var context = DatabaseBarrier.WaitWrite()) {
-                var launcherItemsDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherTagsDao = new LauncherTagsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherFilesDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsDao = appDaoFactory.Create<LauncherItemsEntityDao>();
+                var launcherTagsDao = appDaoFactory.Create<LauncherTagsEntityDao>();
+                var launcherFilesDao = appDaoFactory.Create<LauncherFilesEntityDao>();
+                var launcherRedoItemsEntityDao = appDaoFactory.Create<LauncherRedoItemsEntityDao>();
 
                 //TODO: db 今現在グループが一つでランチャーアイテムが登録されていなければ消してしまって
 
@@ -164,12 +166,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
                 }
 
                 // db グループ作る
-                var launcherGroupsDao = new LauncherGroupsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupsDao = appDaoFactory.Create<LauncherGroupsEntityDao>();
                 var groupStep = launcherFactory.GroupItemStep;
                 group.Sequence = launcherGroupsDao.SelectMaxSequence() + groupStep;
                 launcherGroupsDao.InsertNewGroup(group, DatabaseCommonStatus.CreateCurrentAccount());
 
-                var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupItemsDao = appDaoFactory.Create<LauncherGroupItemsEntityDao>();
                 var currentMaxSequence = launcherGroupItemsDao.SelectMaxSequence(group.LauncherGroupId);
                 launcherGroupItemsDao.InsertNewItems(group.LauncherGroupId, importItems.Select(i => i.Data.Item.LauncherItemId), currentMaxSequence + launcherFactory.GroupItemsStep, launcherFactory.GroupItemsStep, DatabaseCommonStatus.CreateCurrentAccount());
 

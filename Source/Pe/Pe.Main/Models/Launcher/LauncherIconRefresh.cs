@@ -105,7 +105,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
         private IReadOnlyList<LauncherIconStatus> GetUpdateTarget(LauncherItemId launcherItemIs)
         {
             using var context = LargeDatabaseBarrier.WaitRead();
-            var launcherItemIconsEntityDao = new LauncherItemIconsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+            var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+            var launcherItemIconsEntityDao = appDaoFactory.Create<LauncherItemIconsEntityDao>();
             var status = launcherItemIconsEntityDao.SelectLauncherItemIconAllStatus(launcherItemIs)
                 .Where(i => IsNeedUpdate(i, DateTime.UtcNow))
                 .ToList()
@@ -116,7 +117,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
         private Task UpdateTargetAsync(LauncherItemId launcherItemId, LauncherIconStatus target, CancellationToken cancellationToken)
         {
             using(var context = LargeDatabaseBarrier.WaitRead()) {
-                var launcherItemIconsEntityDao = new LauncherItemIconsEntityDao(context, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemIconsEntityDao = appDaoFactory.Create<LauncherItemIconsEntityDao>();
                 var nowStatus = launcherItemIconsEntityDao.SelectLauncherItemIconKeyStatus(launcherItemId, target.IconScale);
                 if(nowStatus == null) {
                     // 対象アイテムは破棄された
@@ -140,7 +142,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
         public Task ExecuteAsync(CancellationToken cancellationToken)
         {
             var allLauncherItemIds = MainDatabaseBarrier.ReadData(c => {
-                var dao = new LauncherItemsEntityDao(c, DatabaseStatementLoader, LoggerFactory);
+                var appDaoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var dao = appDaoFactory.Create<LauncherItemsEntityDao>();
                 return dao.SelectAllLauncherItemIds().ToList();
             });
 
