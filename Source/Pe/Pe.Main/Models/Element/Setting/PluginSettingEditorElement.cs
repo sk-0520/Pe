@@ -143,8 +143,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         /// <summary>
         /// プラグイン側の保存処理。
         /// </summary>
-        /// <param name="databaseContextsPack"></param>
-        public void SavePreferences(IDatabaseContextPack databaseContextsPack)
+        /// <param name="databaseContextPack"></param>
+        public void SavePreferences(IDatabaseContextPack databaseContextPack)
         {
             if(!SupportedPreferences) {
                 throw new InvalidOperationException(nameof(SupportedPreferences));
@@ -153,7 +153,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             Debug.Assert(StartedPreferences);
             Debug.Assert(Plugin != null);
 
-            using var context = PreferencesContextFactory.CreateSaveContext(Plugin.PluginInformation, databaseContextsPack);
+            using var context = PreferencesContextFactory.CreateSaveContext(Plugin.PluginInformation, databaseContextPack);
             Preferences.SavePreferences(context);
         }
 
@@ -185,10 +185,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         /// <remarks>
         /// <para>アンインストールとかね。将来的には非活性もここでやる。</para>
         /// </remarks>
-        /// <param name="contextsPack"></param>
-        public void Save(IDatabaseContextPack contextsPack)
+        /// <param name="contextPack"></param>
+        public void Save(IDatabaseContextPack contextPack)
         {
-            var daoFactory = new AppDaoFactory(contextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var daoFactory = new AppDaoFactory(contextPack.Main, DatabaseStatementLoader, LoggerFactory);
             var pluginsEntityDao = daoFactory.Create<PluginsEntityDao>();
 
             if(CanUninstall && MarkedUninstall) {
@@ -197,14 +197,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                     PluginName = PluginState.PluginName,
                     State = ContentTypeTextNet.Pe.Main.Models.Data.PluginState.Uninstall,
                 };
-                pluginsEntityDao.UpdatePluginStateData(pluginState, contextsPack.CommonStatus);
+                pluginsEntityDao.UpdatePluginStateData(pluginState, contextPack.CommonStatus);
             } else if(!MarkedUninstall) {
                 var pluginState = new PluginStateData() {
                     PluginId = PluginState.PluginId,
                     PluginName = PluginState.PluginName,
                     State = ContentTypeTextNet.Pe.Main.Models.Data.PluginState.Enable, // TODO: 無効化処理を入れた際には変更が必要
                 };
-                pluginsEntityDao.UpdatePluginStateData(pluginState, contextsPack.CommonStatus);
+                pluginsEntityDao.UpdatePluginStateData(pluginState, contextPack.CommonStatus);
             }
         }
 

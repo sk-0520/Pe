@@ -171,14 +171,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             }
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextPack)
         {
             foreach(var element in PluginItems) {
                 if(element.SupportedPreferences && element.StartedPreferences) {
-                    element.SavePreferences(contextsPack);
+                    element.SavePreferences(contextPack);
                 }
 
-                element.Save(contextsPack);
+                element.Save(contextPack);
             }
         }
 

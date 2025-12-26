@@ -15,15 +15,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         #region function
 
 
-        public WidgetAddonCreateContext CreateCreateContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
+        public WidgetAddonCreateContext CreateCreateContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextPack)
         {
-            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, true);
+            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextPack, true);
             return new WidgetAddonCreateContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 
-        public WidgetAddonClosedContext CreateClosedContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
+        public WidgetAddonClosedContext CreateClosedContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextPack)
         {
-            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, false);
+            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextPack, false);
             return new WidgetAddonClosedContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 

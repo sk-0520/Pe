@@ -13,19 +13,19 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
     /// </remarks>
     public abstract class EntityEraserBase
     {
-        protected EntityEraserBase(IDatabaseContextPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
-            : this(contextsPack.Main, contextsPack.Large, contextsPack.Temporary, statementLoader, loggerFactory)
-        { }
-
         protected EntityEraserBase(IDatabaseContext mainContext, IDatabaseContext fileContext, IDatabaseContext temporaryContext, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
         {
-            MainContext = mainContext ?? throw new ArgumentNullException(nameof(mainContext));
-            LargeContext = fileContext ?? throw new ArgumentNullException(nameof(fileContext));
-            TemporaryContext = temporaryContext ?? throw new ArgumentNullException(nameof(temporaryContext));
-            StatementLoader = statementLoader ?? throw new ArgumentNullException(nameof(statementLoader));
+            MainContext = mainContext;
+            LargeContext = fileContext;
+            TemporaryContext = temporaryContext;
+            StatementLoader = statementLoader;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
         }
+
+        protected EntityEraserBase(IDatabaseContextPack contextPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : this(contextPack.Main, contextPack.Large, contextPack.Temporary, statementLoader, loggerFactory)
+        { }
 
         #region property
 

@@ -94,7 +94,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
                 var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherItemsDao = daoFactory.Create< LauncherItemsEntityDao>();
+                var launcherItemsDao = daoFactory.Create<LauncherItemsEntityDao>();
 
                 var item = new LauncherItemData() {
                     LauncherItemId = newLauncherItemId,
@@ -122,7 +122,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                             Debug.Assert(pluginId == PluginId.Empty);
                             Debug.Assert(launcherSeparatorKind == LauncherSeparatorKind.None);
 
-                            var launcherFilesDao = daoFactory.Create< LauncherFilesEntityDao>();
+                            var launcherFilesDao = daoFactory.Create<LauncherFilesEntityDao>();
                             var launcherRedoItemsEntityDao = daoFactory.Create<LauncherRedoItemsEntityDao>();
 
                             var file = new LauncherFileData();
@@ -253,12 +253,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextPack)
         {
             foreach(var item in AllLauncherItems.Where(i => !i.IsLazyLoad)) {
-                var needIconClear = item.SaveItem(contextsPack);
+                var needIconClear = item.SaveItem(contextPack);
                 if(needIconClear) {
-                    item.ClearIcon(contextsPack.Large);
+                    item.ClearIcon(contextPack.Large);
                 }
             }
         }

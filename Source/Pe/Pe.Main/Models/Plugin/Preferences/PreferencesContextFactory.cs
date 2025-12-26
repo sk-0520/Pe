@@ -14,27 +14,27 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Preferences
 
         #region function
 
-        public PreferencesLoadContext CreatePreferencesLoadContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
+        public PreferencesLoadContext CreatePreferencesLoadContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextPack)
         {
-            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, true);
+            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextPack, true);
             return new PreferencesLoadContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 
-        public PreferencesCheckContext CreateCheckContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
+        public PreferencesCheckContext CreateCheckContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextPack)
         {
-            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, true);
+            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextPack, true);
             return new PreferencesCheckContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 
-        public PreferencesSaveContext CreateSaveContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
+        public PreferencesSaveContext CreateSaveContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextPack)
         {
-            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, false);
+            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextPack, false);
             return new PreferencesSaveContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 
-        public PreferencesEndContext CreateEndContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack)
+        public PreferencesEndContext CreateEndContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextPack)
         {
-            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextsPack, true);
+            var pluginStorage = CreatePluginStorage(pluginInformation, databaseContextPack, true);
             return new PreferencesEndContext(pluginInformation.PluginIdentifiers, pluginStorage);
         }
 

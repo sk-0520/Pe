@@ -81,7 +81,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 Sequence = Sequence
             };
             // 存在しないランチャーアイテムは保存対象外とする
-            var launcherItemsEntityDao = daoFactory.Create< LauncherItemsEntityDao>();
+            var launcherItemsEntityDao = daoFactory.Create<LauncherItemsEntityDao>();
             var launcherItemIds = LauncherItems
                 // こんなとこでSQL発行するとか業務じゃむり
                 .Where(i => launcherItemsEntityDao.SelectExistsLauncherItem(i))
@@ -110,7 +110,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             IEnumerable<LauncherItemId> launcherItemIds;
             using(var context = MainDatabaseBarrier.WaitRead()) {
                 var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var launcherGroupsEntityDao = daoFactory.Create< LauncherGroupsEntityDao>();
+                var launcherGroupsEntityDao = daoFactory.Create<LauncherGroupsEntityDao>();
 
                 data = launcherGroupsEntityDao.SelectLauncherGroup(LauncherGroupId);
 

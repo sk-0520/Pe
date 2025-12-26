@@ -10,25 +10,20 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
     {
         #region define
 
-        public class PersistenceContextsPack: ApplicationDatabaseContextPack
+        public class PersistenceContextPack: ApplicationDatabaseContextPack
         {
-            public PersistenceContextsPack(IDatabaseTransaction mainTransaction, IDatabaseTransaction fileTransaction, IDatabaseTransaction temporaryTransaction, IDatabaseCommonStatus commonStatus)
-                : base(
-                    mainTransaction,
-                    fileTransaction,
-                    temporaryTransaction,
-                    commonStatus
-                )
+            public PersistenceContextPack(IDatabaseTransaction main, IDatabaseTransaction large, IDatabaseTransaction temporary, IDatabaseCommonStatus commonStatus)
+                : base(main, large, temporary, commonStatus)
             {
-                MainTransaction = mainTransaction;
-                FileTransaction = fileTransaction;
-                TemporaryTransaction = temporaryTransaction;
+                MainTransaction = main;
+                LargeTransaction = large;
+                TemporaryTransaction = temporary;
             }
 
             #region property
 
             private IDatabaseTransaction MainTransaction { get; }
-            private IDatabaseTransaction FileTransaction { get; }
+            private IDatabaseTransaction LargeTransaction { get; }
             private IDatabaseTransaction TemporaryTransaction { get; }
 
             #endregion
@@ -38,27 +33,27 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
             public void Commit()
             {
                 MainTransaction.Commit();
-                FileTransaction.Commit();
+                LargeTransaction.Commit();
                 TemporaryTransaction.Commit();
             }
 
             public void Rollback()
             {
                 MainTransaction.Rollback();
-                FileTransaction.Rollback();
+                LargeTransaction.Rollback();
                 TemporaryTransaction.Rollback();
             }
 
             #endregion
 
-            #region ApplicationDatabaseContextsPack
+            #region ApplicationDatabaseContextPack
 
             protected override void Dispose(bool disposing)
             {
                 if(!IsDisposed) {
                     if(disposing) {
                         MainTransaction.Dispose();
-                        FileTransaction.Dispose();
+                        LargeTransaction.Dispose();
                         TemporaryTransaction.Dispose();
                     }
                 }
@@ -73,7 +68,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
 
         #region function
 
-        private static PersistenceContextsPack WaitPack(IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseCommonStatus databaseCommonStatus, bool isReadOnly)
+        private static PersistenceContextPack WaitPack(IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseCommonStatus databaseCommonStatus, bool isReadOnly)
         {
             static IDatabaseTransaction Do(IDatabaseBarrier databaseBarrier, bool isReadOnly)
             {
@@ -84,20 +79,20 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
             }
 
             var main = Do(mainDatabaseBarrier, isReadOnly);
-            var file = Do(largeDatabaseBarrier, isReadOnly);
+            var large = Do(largeDatabaseBarrier, isReadOnly);
             var temp = Do(temporaryDatabaseBarrier, isReadOnly);
 
-            var result = new PersistenceContextsPack(main, file, temp, databaseCommonStatus);
+            var result = new PersistenceContextPack(main, large, temp, databaseCommonStatus);
 
             return result;
         }
 
-        public static PersistenceContextsPack WaitWritePack(IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseCommonStatus databaseCommonStatus)
+        public static PersistenceContextPack WaitWritePack(IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseCommonStatus databaseCommonStatus)
         {
             return WaitPack(mainDatabaseBarrier, largeDatabaseBarrier, temporaryDatabaseBarrier, databaseCommonStatus, false);
         }
 
-        public static PersistenceContextsPack WaitReadPack(IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseCommonStatus databaseCommonStatus)
+        public static PersistenceContextPack WaitReadPack(IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, ITemporaryDatabaseBarrier temporaryDatabaseBarrier, IDatabaseCommonStatus databaseCommonStatus)
         {
             return WaitPack(mainDatabaseBarrier, largeDatabaseBarrier, temporaryDatabaseBarrier, databaseCommonStatus, true);
         }

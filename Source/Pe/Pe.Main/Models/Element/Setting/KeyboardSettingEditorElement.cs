@@ -193,7 +193,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         }
 
 
-        protected override void SaveImpl(IDatabaseContextPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextPack)
         {
             var jobs = ReplaceJobEditors
                 .Cast<KeyboardJobSettingEditorElementBase>()
@@ -201,10 +201,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 .Concat(PressedJobEditors)
             ;
             foreach(var job in jobs) {
-                job.Save(contextsPack.Main, contextsPack.CommonStatus);
+                job.Save(contextPack.Main, contextPack.CommonStatus);
             }
             foreach(var job in RemovedJobEditors) {
-                job.Remove(contextsPack.Main);
+                job.Remove(contextPack.Main);
             }
         }
 

@@ -231,8 +231,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             var launcherItemAddonViewSupporter = LauncherItemAddonViewSupporterCollection.Create(plugin.PluginInformation, LauncherItemId);
             var launcherItemExtensionExecuteParameter = LauncherItemAddonContextFactory.CreateExtensionExecuteParameter(plugin.PluginInformation, LauncherItemId, launcherItemAddonViewSupporter);
             ContextDispatcher.BeginAsync(() => {
-                using var databaseContextsPack = PersistenceHelper.WaitWritePack(MainDatabaseBarrier, LargeDatabaseBarrier, TemporaryDatabaseBarrier, DatabaseCommonStatus.CreatePluginAccount(plugin.PluginInformation));
-                using(var context = LauncherItemAddonContextFactory.CreateContext(plugin.PluginInformation, LauncherItemId, databaseContextsPack, false)) {
+                using var databaseContextPack = PersistenceHelper.WaitWritePack(MainDatabaseBarrier, LargeDatabaseBarrier, TemporaryDatabaseBarrier, DatabaseCommonStatus.CreatePluginAccount(plugin.PluginInformation));
+                using(var context = LauncherItemAddonContextFactory.CreateContext(plugin.PluginInformation, LauncherItemId, databaseContextPack, false)) {
                     addon.Execute(customArgument, commandExecuteParameter, launcherItemExtensionExecuteParameter, context);
                 }
             });

@@ -57,48 +57,48 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
             return pluginFile;
         }
 
-        private LauncherItemAddonPersistence CreateLauncherItemAddonPersistenceContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack, bool isReadOnly)
+        private LauncherItemAddonPersistence CreateLauncherItemAddonPersistenceContext(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextPack, bool isReadOnly)
         {
             var pluginPersistence = new LauncherItemAddonPersistence(
-                new LauncherItemAddonPersistenceStorage(pluginInformation.PluginIdentifiers, pluginInformation.PluginVersions, databaseContextsPack.Main, DatabaseStatementLoader, isReadOnly, LoggerFactory),
-                new LauncherItemAddonPersistenceStorage(pluginInformation.PluginIdentifiers, pluginInformation.PluginVersions, databaseContextsPack.Large, DatabaseStatementLoader, isReadOnly, LoggerFactory),
-                new LauncherItemAddonPersistenceStorage(pluginInformation.PluginIdentifiers, pluginInformation.PluginVersions, databaseContextsPack.Temporary, DatabaseStatementLoader, isReadOnly, LoggerFactory)
+                new LauncherItemAddonPersistenceStorage(pluginInformation.PluginIdentifiers, pluginInformation.PluginVersions, databaseContextPack.Main, DatabaseStatementLoader, isReadOnly, LoggerFactory),
+                new LauncherItemAddonPersistenceStorage(pluginInformation.PluginIdentifiers, pluginInformation.PluginVersions, databaseContextPack.Large, DatabaseStatementLoader, isReadOnly, LoggerFactory),
+                new LauncherItemAddonPersistenceStorage(pluginInformation.PluginIdentifiers, pluginInformation.PluginVersions, databaseContextPack.Temporary, DatabaseStatementLoader, isReadOnly, LoggerFactory)
             );
 
             return pluginPersistence;
         }
 
-        private LauncherItemAddonStorage CreateLauncherItemAddonStorage(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextsPack, bool isReadOnly)
+        private LauncherItemAddonStorage CreateLauncherItemAddonStorage(IPluginInformation pluginInformation, IDatabaseContextPack databaseContextPack, bool isReadOnly)
         {
             var pluginStorage = new LauncherItemAddonStorage(
                 CreateLauncherItemAddonFile(pluginInformation),
-                CreateLauncherItemAddonPersistenceContext(pluginInformation, databaseContextsPack, isReadOnly)
+                CreateLauncherItemAddonPersistenceContext(pluginInformation, databaseContextPack, isReadOnly)
             );
 
             return pluginStorage;
         }
 
-        public LauncherItemAddonContext CreateContext(IPluginInformation pluginInformation, LauncherItemId launcherItemId, IDatabaseContextPack databaseContextsPack, bool isReadOnly)
+        public LauncherItemAddonContext CreateContext(IPluginInformation pluginInformation, LauncherItemId launcherItemId, IDatabaseContextPack databaseContextPack, bool isReadOnly)
         {
-            var launcherItemAddonStorage = CreateLauncherItemAddonStorage(pluginInformation, databaseContextsPack, isReadOnly);
+            var launcherItemAddonStorage = CreateLauncherItemAddonStorage(pluginInformation, databaseContextPack, isReadOnly);
             return new LauncherItemAddonContext(pluginInformation.PluginIdentifiers, launcherItemId, launcherItemAddonStorage);
         }
 
-        public LauncherItemPreferencesLoadContext CreatePreferencesLoadContext(IPluginInformation pluginInformation, LauncherItemId launcherItemId, IDatabaseContextPack databaseContextsPack)
+        public LauncherItemPreferencesLoadContext CreatePreferencesLoadContext(IPluginInformation pluginInformation, LauncherItemId launcherItemId, IDatabaseContextPack databaseContextPack)
         {
-            var launcherItemAddonStorage = CreateLauncherItemAddonStorage(pluginInformation, databaseContextsPack, true);
+            var launcherItemAddonStorage = CreateLauncherItemAddonStorage(pluginInformation, databaseContextPack, true);
             return new LauncherItemPreferencesLoadContext(pluginInformation.PluginIdentifiers, launcherItemId, launcherItemAddonStorage);
         }
 
-        public LauncherItemPreferencesCheckContext CreatePreferencesCheckContext(IPluginInformation pluginInformation, LauncherItemId launcherItemId, IDatabaseContextPack databaseContextsPack)
+        public LauncherItemPreferencesCheckContext CreatePreferencesCheckContext(IPluginInformation pluginInformation, LauncherItemId launcherItemId, IDatabaseContextPack databaseContextPack)
         {
-            var launcherItemAddonStorage = CreateLauncherItemAddonStorage(pluginInformation, databaseContextsPack, true);
+            var launcherItemAddonStorage = CreateLauncherItemAddonStorage(pluginInformation, databaseContextPack, true);
             return new LauncherItemPreferencesCheckContext(pluginInformation.PluginIdentifiers, launcherItemId, launcherItemAddonStorage);
         }
 
-        public LauncherItemPreferencesSaveContext CreatePreferencesSaveContext(IPluginInformation pluginInformation, LauncherItemId launcherItemId, IDatabaseContextPack databaseContextsPack)
+        public LauncherItemPreferencesSaveContext CreatePreferencesSaveContext(IPluginInformation pluginInformation, LauncherItemId launcherItemId, IDatabaseContextPack databaseContextPack)
         {
-            var launcherItemAddonStorage = CreateLauncherItemAddonStorage(pluginInformation, databaseContextsPack, false);
+            var launcherItemAddonStorage = CreateLauncherItemAddonStorage(pluginInformation, databaseContextPack, false);
             return new LauncherItemPreferencesSaveContext(pluginInformation.PluginIdentifiers, launcherItemId, launcherItemAddonStorage);
         }
 

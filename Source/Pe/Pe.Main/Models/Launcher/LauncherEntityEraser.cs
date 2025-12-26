@@ -15,15 +15,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 {
     internal class LauncherEntityEraser: EntityEraserBase
     {
-        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContextPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
-            : base(contextsPack, statementLoader, loggerFactory)
+        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContextPack contextPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(contextPack, statementLoader, loggerFactory)
         {
             LauncherItemId = launcherItemId;
             LauncherItemKind = launcherItemKind;
         }
 
-        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContext mainContexts, IDatabaseContext fileContexts, IDatabaseContext temporaryContexts, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
-            : base(mainContexts, fileContexts, temporaryContexts, statementLoader, loggerFactory)
+        public LauncherEntityEraser(LauncherItemId launcherItemId, LauncherItemKind launcherItemKind, IDatabaseContext mainContext, IDatabaseContext fileContext, IDatabaseContext temporaryContext, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(mainContext, fileContext, temporaryContext, statementLoader, loggerFactory)
         {
             LauncherItemId = launcherItemId;
             LauncherItemKind = launcherItemKind;

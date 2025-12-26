@@ -16,12 +16,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
     /// </summary>
     public class PluginUninstaller
     {
-        public PluginUninstaller(IDatabaseContextPack databaseContextsPack, IDatabaseStatementLoader statementLoader, EnvironmentParameters environmentParameters, ILoggerFactory loggerFactory)
+        public PluginUninstaller(IDatabaseContextPack databaseContextPack, IDatabaseStatementLoader statementLoader, EnvironmentParameters environmentParameters, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
 
-            DatabaseContextsPack = databaseContextsPack;
+            DatabaseContextPack = databaseContextPack;
 
             StatementLoader = statementLoader;
             EnvironmentParameters = environmentParameters;
@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         #region property
 
-        private IDatabaseContextPack DatabaseContextsPack { get; }
+        private IDatabaseContextPack DatabaseContextPack { get; }
         private IDatabaseStatementLoader StatementLoader { get; }
         private EnvironmentParameters EnvironmentParameters { get; }
 
@@ -38,9 +38,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         /// <inheritdoc cref="ILogger"/>
         private ILogger Logger { get; }
 
-        private IDatabaseContext MainContext => DatabaseContextsPack.Main;
-        private IDatabaseContext FileContext => DatabaseContextsPack.Large;
-        private IDatabaseContext TemporaryContext => DatabaseContextsPack.Temporary;
+        private IDatabaseContext MainContext => DatabaseContextPack.Main;
+        private IDatabaseContext LargeContext => DatabaseContextPack.Large;
+        private IDatabaseContext TemporaryContext => DatabaseContextPack.Temporary;
 
         #endregion
 
@@ -71,7 +71,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         private void UninstallPersistence(IPluginIdentifiers pluginIdentifiers)
         {
             var mainDaoFactory = new AppDaoFactory(MainContext, StatementLoader, LoggerFactory);
-            var largeDaoFactory = new AppDaoFactory(FileContext, StatementLoader, LoggerFactory);
+            var largeDaoFactory = new AppDaoFactory(LargeContext, StatementLoader, LoggerFactory);
 
             // デカいデータ破棄
             var pluginValuesEntityDao = largeDaoFactory.Create<PluginValuesEntityDao>();
@@ -93,7 +93,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             pluginLauncherItemSettingsEntityDao.DeletePluginLauncherItemSettingsByPluginId(pluginIdentifiers.PluginId);
 
             foreach(var deleteTargetLauncherItemId in deleteTargetLauncherItemIds) {
-                var launcherEntityEraser = new LauncherEntityEraser(deleteTargetLauncherItemId, LauncherItemKind.Addon, MainContext, FileContext, TemporaryContext, StatementLoader, LoggerFactory);
+                var launcherEntityEraser = new LauncherEntityEraser(deleteTargetLauncherItemId, LauncherItemKind.Addon, MainContext, LargeContext, TemporaryContext, StatementLoader, LoggerFactory);
                 launcherEntityEraser.Execute();
             }
 

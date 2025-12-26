@@ -625,7 +625,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
     /// <inheritdoc cref="IPluginPersistenceStorage"/>
     public sealed class PluginPersistenceStorage: PluginPersistenceStorageBase, IPluginPersistenceStorage
     {
-        /// <inheritdoc cref="PluginPersistenceStorageBase.PluginPersistenceStorageBase(IPluginIdentifiers, IPluginVersions, IDatabaseContexts, IDatabaseStatementLoader, bool, ILoggerFactory)"/>
+        /// <inheritdoc cref="PluginPersistenceStorageBase.PluginPersistenceStorageBase(IPluginIdentifiers, IPluginVersions, IDatabaseContext, IDatabaseStatementLoader, bool, ILoggerFactory)"/>
         public PluginPersistenceStorage(IPluginIdentifiers pluginIdentifiers, IPluginVersions pluginVersions, IDatabaseContext databaseContext, IDatabaseStatementLoader databaseStatementLoader, bool isReadOnly, ILoggerFactory loggerFactory)
             : base(pluginIdentifiers, pluginVersions, databaseContext, databaseStatementLoader, isReadOnly, loggerFactory)
         { }

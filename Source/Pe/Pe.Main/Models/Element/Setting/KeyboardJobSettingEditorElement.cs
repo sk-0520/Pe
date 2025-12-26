@@ -65,7 +65,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         {
             using(var context = MainDatabaseBarrier.WaitRead()) {
                 var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var keyOptionsEntityDao = daoFactory.Create< KeyOptionsEntityDao>();
+                var keyOptionsEntityDao = daoFactory.Create<KeyOptionsEntityDao>();
                 var keyMappingsEntityDao = daoFactory.Create<KeyMappingsEntityDao>();
 
                 var options = keyOptionsEntityDao.SelectOptions(KeyActionId);
@@ -93,7 +93,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         public void Save(IDatabaseContext context, IDatabaseCommonStatus commonStatus)
         {
-                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+            var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
             var keyActionsEntityDao = daoFactory.Create<KeyActionsEntityDao>();
             var keyOptionsEntityDao = daoFactory.Create<KeyOptionsEntityDao>();
             var keyMappingsEntityDao = daoFactory.Create<KeyMappingsEntityDao>();
@@ -120,7 +120,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         public void Remove(IDatabaseContext context)
         {
-                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+            var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
             var keyActionsEntityDao = daoFactory.Create<KeyActionsEntityDao>();
             var keyOptionsEntityDao = daoFactory.Create<KeyOptionsEntityDao>();
             var keyMappingsEntityDao = daoFactory.Create<KeyMappingsEntityDao>();

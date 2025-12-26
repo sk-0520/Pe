@@ -10,14 +10,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Note
 {
     public class NoteEntityEraser: EntityEraserBase
     {
-        public NoteEntityEraser(NoteId noteId, IDatabaseContextPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
-            : base(contextsPack, statementLoader, loggerFactory)
+        public NoteEntityEraser(NoteId noteId, IDatabaseContextPack contextPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(contextPack, statementLoader, loggerFactory)
         {
             NoteId = noteId;
         }
 
-        public NoteEntityEraser(NoteId noteId, IDatabaseContext mainContexts, IDatabaseContext fileContexts, IDatabaseContext temporaryContexts, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
-            : base(mainContexts, fileContexts, temporaryContexts, statementLoader, loggerFactory)
+        public NoteEntityEraser(NoteId noteId, IDatabaseContext mainContext, IDatabaseContext fileContext, IDatabaseContext temporaryContext, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(mainContext, fileContext, temporaryContext, statementLoader, loggerFactory)
         {
             NoteId = noteId;
         }
@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Note
         protected override void ExecuteMainImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
             var daoFactory = new AppDaoFactory(context, statementLoader, LoggerFactory);
-            var noteViewOffsetsEntityDao = daoFactory.Create< NoteViewOffsetsEntityDao>();
+            var noteViewOffsetsEntityDao = daoFactory.Create<NoteViewOffsetsEntityDao>();
             var noteContentsEntityDao = daoFactory.Create<NoteContentsEntityDao>();
             var noteLayoutsEntityDao = daoFactory.Create<NoteLayoutsEntityDao>();
             var notesEntityDao = daoFactory.Create<NotesEntityDao>();

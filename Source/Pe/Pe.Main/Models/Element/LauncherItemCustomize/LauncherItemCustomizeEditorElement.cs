@@ -161,14 +161,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
             }
         }
 
-        private void LoadAddonCore(IDatabaseContextPack databaseContextsPack)
+        private void LoadAddonCore(IDatabaseContextPack databaseContextPack)
         {
             Debug.Assert(Kind == LauncherItemKind.Addon);
             Debug.Assert(LauncherItemPlugin == null);
             Debug.Assert(LauncherItemExtension == null);
             Debug.Assert(LauncherItemPreferences == null);
 
-            var daoFactory = new AppDaoFactory(databaseContextsPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var daoFactory = new AppDaoFactory(databaseContextPack.Main, DatabaseStatementLoader, LoggerFactory);
 
             var launcherAddonsEntityDao = daoFactory.Create<LauncherAddonsEntityDao>();
             var pluginId = launcherAddonsEntityDao.SelectAddonPluginId(LauncherItemId);
@@ -186,7 +186,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
                 return;
             }
 
-            using(var context = LauncherItemAddonContextFactory.CreateContext(LauncherItemPlugin.PluginInformation, LauncherItemId, databaseContextsPack, true)) {
+            using(var context = LauncherItemAddonContextFactory.CreateContext(LauncherItemPlugin.PluginInformation, LauncherItemId, databaseContextPack, true)) {
                 LauncherItemPreferences = LauncherItemExtension.CreatePreferences(context);
             }
         }
@@ -238,13 +238,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
             }
         }
 
-        internal void SaveLauncherPreferences(IDatabaseContextPack databaseContextsPack)
+        internal void SaveLauncherPreferences(IDatabaseContextPack databaseContextPack)
         {
             Debug.Assert(LauncherItemPlugin != null);
             Debug.Assert(LauncherItemSupportedPreferences);
             Debug.Assert(LauncherItemPreferences != null);
 
-            using(var context = LauncherItemAddonContextFactory.CreatePreferencesSaveContext(LauncherItemPlugin.PluginInformation, LauncherItemId, databaseContextsPack)) {
+            using(var context = LauncherItemAddonContextFactory.CreatePreferencesSaveContext(LauncherItemPlugin.PluginInformation, LauncherItemId, databaseContextPack)) {
                 LauncherItemPreferences.SavePreferences(context);
                 IsSaved = true;
             }
