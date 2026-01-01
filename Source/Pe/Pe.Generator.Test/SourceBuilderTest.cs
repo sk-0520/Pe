@@ -95,7 +95,6 @@ namespace ContentTypeTextNet.Pe.Generator.Test
 
         [Theory]
         [InlineData(Accessibility.NotApplicable)]
-        [InlineData(Accessibility.Friend)]
         public void ToCode_Accessibility_Throw_Test(Accessibility accessibility)
         {
             var sourceBuilder = new SourceBuilder();

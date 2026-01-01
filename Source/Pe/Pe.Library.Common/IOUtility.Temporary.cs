@@ -1,35 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using System.Text;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Generator.Exception;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
-    [Serializable]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class TemporaryException: IOUtilityException
-    {
-        public TemporaryException()
-        { }
-
-        public TemporaryException(string message)
-            : base(message)
-        { }
-
-        public TemporaryException(string message, Exception inner)
-            : base(message, inner)
-        { }
-
-        [Obsolete]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Info Code Smell", "S1133:Deprecated code should be removed")]
-        protected TemporaryException(
-          System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
-            : base(info, context)
-        { }
-    }
+    [GenerateException]
+    public partial class TemporaryException: IOUtilityException
+    { }
 
     /// <summary>
     /// 一時ディレクトリ・ファイル生成オプション。

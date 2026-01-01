@@ -43,6 +43,7 @@ namespace ContentTypeTextNet.Pe.Generator.Exception
                 .FilterAttribute(baseType.GetAttributes())
                 .Select(a => ToAttributeCode(sourceBuilder, a))
                 .Prepend("[global::System.SerializableAttribute]")
+                .Prepend("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]")
                 .Distinct()
                 .ToArray()
             ;

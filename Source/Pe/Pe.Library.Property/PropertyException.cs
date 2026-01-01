@@ -1,22 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
+using ContentTypeTextNet.Pe.Generator.Exception;
 
 namespace ContentTypeTextNet.Pe.Library.Property
 {
-    [Serializable]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     public class PropertyException: Exception
     {
         public PropertyException(string message) : base(message) { }
         public PropertyException(string message, Exception inner) : base(message, inner) { }
-
-        [Obsolete]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Info Code Smell", "S1133:Deprecated code should be removed")]
-        protected PropertyException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 
     [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
@@ -35,34 +26,15 @@ namespace ContentTypeTextNet.Pe.Library.Property
         #endregion
     }
 
-    [Serializable]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly", Justification = "<保留中>")]
-    public sealed class PropertyCanNotReadException: PropertyCanNotAccessException
-    {
-        public PropertyCanNotReadException(Type ownerType, MemberInfo member)
-            : base(ownerType, member)
-        { }
-    }
+    [GenerateException]
+    public partial class PropertyCanNotReadException: PropertyCanNotAccessException
+    { }
 
-    [Serializable]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly", Justification = "<保留中>")]
-    public sealed class PropertyCanNotWriteException: PropertyCanNotAccessException
-    {
-        public PropertyCanNotWriteException(Type ownerType, MemberInfo member)
-            : base(ownerType, member)
-        { }
-    }
+    [GenerateException]
+    public partial class PropertyCanNotWriteException: PropertyCanNotAccessException
+    { }
 
-    [Serializable]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly", Justification = "<保留中>")]
-    public sealed class PropertyNotFoundException: PropertyException
-    {
-        public PropertyNotFoundException(string propertyName)
-            : base(propertyName)
-        { }
-    }
-
+    [GenerateException]
+    public partial class PropertyNotFoundException: PropertyException
+    { }
 }
