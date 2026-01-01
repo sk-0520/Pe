@@ -25,6 +25,7 @@ namespace ContentTypeTextNet.Pe.Generator
             var compilerAttributes = new[] {
                 "global::System.Runtime.CompilerServices.NullableContextAttribute",
                 "global::System.Runtime.CompilerServices.NullableAttribute",
+                "global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute",
                 // 内部都合の不要分
                 "global::ContentTypeTextNet.Pe.Generator.Exception.GenerateExceptionAttribute",
             };

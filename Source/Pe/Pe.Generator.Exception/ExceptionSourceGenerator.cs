@@ -23,8 +23,7 @@ namespace ContentTypeTextNet.Pe.Generator.Exception
                 args.Add(na.Key + " = " + sourceBuilder.ToCode(na.Value));
             }
 
-            var argText = args.Count > 0 ? "(" + string.Join(", ", args) + ")" : "";
-            return "[" + className + argText + "]";
+            return "[" + className + "(" + string.Join(", ", args) + ")]";
         }
 
         private static string ToConstructorParameterCode(IParameterSymbol parameter)
