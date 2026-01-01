@@ -6,45 +6,34 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
-using Forms = System.Windows.Forms;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Generator.Exception;
+using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
+using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
 using ContentTypeTextNet.Pe.Main.Models.KeyAction;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Plugin;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Preferences;
-using ContentTypeTextNet.Pe.Main.Models.WebView;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Common;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
-using ContentTypeTextNet.Pe.Library.Args;
+using Forms = System.Windows.Forms;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {
-
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class ApplicationInitializerException: Exception
-    {
-        public ApplicationInitializerException()
-        { }
-        public ApplicationInitializerException(string message)
-            : base(message)
-        { }
-
-        public ApplicationInitializerException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
+    [GenerateException]
+    public partial class ApplicationInitializerException: Exception
+    { }
 
     internal class ApplicationInitializer
     {

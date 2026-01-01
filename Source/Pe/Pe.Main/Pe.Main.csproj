@@ -63,11 +63,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Hook.MouseHook.tt</DependentUpon>
     </None>
-    <None Include="Models\Plugin\PluginException.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PluginException.tt</DependentUpon>
-    </None>
     <None Include="Resources\File\Accept\AcceptDocument.xaml">
       <Generator></Generator>
     </None>
@@ -97,11 +92,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Observer.MouseHooker.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Models\Plugin\PluginException.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PluginException.tt</DependentUpon>
     </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -143,14 +133,15 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Hook.MouseHook.cs</LastGenOutput>
     </None>
-    <None Update="Models\Plugin\PluginException.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PluginException.cs</LastGenOutput>
-    </None>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Pe.Generator.Id\Pe.Generator.Id.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+
+    <ProjectReference Include="..\Pe.Generator.Exception\Pe.Generator.Exception.csproj">
       <OutputItemType>Analyzer</OutputItemType>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
@@ -185,5 +176,5 @@
   <ItemGroup>
     <PackageReference Update="chromiumembeddedframework.runtime.win-x86" Version="123.0.6" />
   </ItemGroup>
-
+  
 </Project>

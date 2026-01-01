@@ -1,31 +1,20 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using ContentTypeTextNet.Pe.Library.DependencyInjection;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
-using ContentTypeTextNet.Pe.Main.Models.Command;
-using ContentTypeTextNet.Pe.Main.Models.Data;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using System.Threading;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using System;
+using ContentTypeTextNet.Pe.Generator.Exception;
+using ContentTypeTextNet.Pe.Library.DependencyInjection;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
-using ContentTypeTextNet.Pe.Bridge.Models.Data;
+using ContentTypeTextNet.Pe.Main.Models.Command;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class ApplicationExceptionCommandException: Exception
-    {
-        public ApplicationExceptionCommandException()
-        { }
-        public ApplicationExceptionCommandException(string message)
-            : base(message)
-        { }
-        public ApplicationExceptionCommandException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
+    [GenerateException]
+    public partial class ApplicationExceptionCommandException: Exception
+    { }
 
     partial class ApplicationManager
     {
