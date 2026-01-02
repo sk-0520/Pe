@@ -19,27 +19,42 @@ namespace ContentTypeTextNet.Pe.Core.Models
         #region property
 
         private HashSet<Type> Exceptions { get; } = new();
+        private PolicyRetryOptions RetryOptions { get; set; } = new PolicyRetryOptions() {
+            Maximum = 1,
+        };
 
         #endregion
 
         #region function
 
-        private void AddException<TException>()
-            where TException : Exception
+        private void AddHandleCore(Type exceptionType)
         {
-            Exceptions.Add(typeof(TException));
+            if(exceptionType.IsAssignableFrom(typeof(Exception))) {
+                throw new ArgumentException($"{nameof(exceptionType)} is not ${nameof(Exception)}", nameof(exceptionType));
+            }
+
+            Exceptions.Add(exceptionType);
         }
 
         #endregion
 
         #region IPolicyBuilder
 
-        public PolicyBuilder Handle<TException>()
+        public PolicyBuilder AddHandle<TException>()
             where TException : Exception
         {
-            AddException<TException>();
+            AddHandleCore(typeof(TException));
             return this;
         }
+        IPolicyBuilder IPolicyBuilder.AddHandle<TException>() => AddHandle<TException>();
+
+        public PolicyBuilder SetRetry(PolicyRetryOptions options)
+        {
+            RetryOptions = options;
+            return this;
+        }
+        IPolicyBuilder IPolicyBuilder.SetRetry(PolicyRetryOptions options) => SetRetry(options);
+
 
         #endregion
     }
