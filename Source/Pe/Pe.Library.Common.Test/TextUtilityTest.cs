@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test
@@ -24,7 +21,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         [InlineData("[a][b]", "<a><b>", "<", ">")]
         public void ReplacePlaceholderTest(string expected, string src, string head, string tail)
         {
-            var actual = TextUtility.ReplacePlaceholder(src, head, tail, (s,w) => w(string.Concat("[", s, "]")));
+            var actual = TextUtility.ReplacePlaceholder(src, head, tail, (s, w) => w(string.Concat("[", s, "]")));
             Assert.Equal(expected, actual);
         }
 
@@ -86,27 +83,133 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         }
 
         [Theory]
-        [InlineData(0, "")]
-        [InlineData(1, "a")]
-        [InlineData(1, "a\r\n")]
-        [InlineData(2, "a\r\nb")]
-        [InlineData(2, "a\rb")]
-        [InlineData(2, "a\nb")]
-        [InlineData(2, " a \r b ")]
-        [InlineData(2, " a \n b ")]
-        [InlineData(2, " a \r\n b ")]
-        public void ReadLinesTest(int expected, string s)
+        [InlineData(new string[] { }, "")]
+        [InlineData(new[] { "a" }, "a")]
+        [InlineData(new[] { "a" }, "a\r\n")]
+        [InlineData(new[] { "a", "b" }, "a\r\nb")]
+        [InlineData(new[] { "a", "b" }, "a\rb")]
+        [InlineData(new[] { "a", "b" }, "a\nb")]
+        [InlineData(new[] { " a ", " b " }, " a \r b ")]
+        [InlineData(new[] { " a ", " b " }, " a \n b ")]
+        [InlineData(new[] { " a ", " b " }, " a \r\n b ")]
+        public void ReadLines_String_Test(string[] expected, string s)
         {
-            var actual = TextUtility.ReadLines(s).Count();
-            Assert.Equal(expected, actual);
+            int i = 0;
+            foreach(var line in TextUtility.ReadLines(s)) {
+                Assert.Equal(expected[i++], line);
+            }
+            Assert.Equal(expected.Length, i);
         }
 
-#if false
-        public void ReadLinesTest_Null()
+        [Theory]
+        [InlineData(new string[] { }, "")]
+        [InlineData(new[] { "a" }, "a")]
+        [InlineData(new[] { "a" }, "a\r\n")]
+        [InlineData(new[] { "a", "b" }, "a\r\nb")]
+        [InlineData(new[] { "a", "b" }, "a\rb")]
+        [InlineData(new[] { "a", "b" }, "a\nb")]
+        [InlineData(new[] { " a ", " b " }, " a \r b ")]
+        [InlineData(new[] { " a ", " b " }, " a \n b ")]
+        [InlineData(new[] { " a ", " b " }, " a \r\n b ")]
+        public void ReadLines_Reader_Test(string[] expected, string s)
         {
-            Assert.Throws<ArgumentException>(() => TextUtility.ReadLines(default(string)));
+            using var reader = new StringReader(s);
+            int i = 0;
+            foreach(var line in TextUtility.ReadLines(reader)) {
+                Assert.Equal(expected[i++], line);
+            }
+            Assert.Equal(expected.Length, i);
         }
-#endif
+
+        [Fact]
+        public void ReadLines_Span_None_Test()
+        {
+            var span = "".AsSpan();
+            var test = TextUtility.ReadLines(span);
+            var enumerator = test.GetEnumerator();
+            Assert.Equal("", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
+            Assert.Equal("", enumerator.Current);
+        }
+
+        [Fact]
+        public void ReadLines_Span_1Line_Test()
+        {
+            var span = "abc".AsSpan();
+            var test = TextUtility.ReadLines(span);
+            var enumerator = test.GetEnumerator();
+            Assert.True(enumerator.MoveNext());
+            Assert.Equal("abc", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
+        }
+
+        [Theory]
+        [InlineData(new string[] { }, "")]
+        [InlineData(new string[] { "abc" }, "abc")]
+        [InlineData(new[] { "line1", "line2" }, "line1\r\nline2")]
+        [InlineData(new[] { "line1", "line2" }, "line1\rline2")]
+        [InlineData(new[] { "line1", "line2" }, "line1\nline2")]
+        [InlineData(new[] { "line1" }, "line1\r\n")]
+        [InlineData(new[] { "line1" }, "line1\r")]
+        [InlineData(new[] { "line1" }, "line1\n")]
+        [InlineData(new[] { "line1", "line2", "line3" }, "line1\r\nline2\r\nline3")]
+        [InlineData(new[] { "line1", "line2", "line3" }, "line1\rline2\r\nline3")]
+        [InlineData(new[] { "line1", "line2", "line3" }, "line1\nline2\r\nline3")]
+        [InlineData(new[] { "line1", "line2", "line3" }, "line1\r\nline2\rline3")]
+        [InlineData(new[] { "line1", "line2", "line3" }, "line1\r\nline2\nline3")]
+        [InlineData(new[] { "line1", "", "line3" }, "line1\r\n\r\nline3")]
+        [InlineData(new[] { "line1", "", "line3" }, "line1\r\n\rline3")]
+        [InlineData(new[] { "line1", "", "line3" }, "line1\r\n\nline3")]
+        [InlineData(new[] { "line1", "", "line3" }, "line1\r\r\nline3")]
+        [InlineData(new[] { "line1", "", "line3" }, "line1\n\r\nline3")]
+        [InlineData(new[] { "line1", "", "line3" }, "line1\n\nline3")]
+        public void ReadLines_Span_Lines_Test(string[] expected, string input)
+        {
+            var span = input.AsSpan();
+            int i = 0;
+            foreach(var line in TextUtility.ReadLines(span)) {
+                Assert.Equal(expected[i++], line);
+            }
+            Assert.Equal(expected.Length, i);
+        }
+
+        [Fact]
+        public void ReadLines_String_Null_Test()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(() => TextUtility.ReadLines(default(string)!).ToArray());
+            Assert.Equal("s", exception.ParamName);
+        }
+
+        [Fact]
+        public void ReadLines_Reader_Null_Test()
+        {
+            var exception = Assert.Throws<ArgumentNullException>(() => TextUtility.ReadLines(default(StringReader)!).ToArray());
+            Assert.Equal("reader", exception.ParamName);
+        }
+
+        [Fact]
+        public void ToUnique_Throw_Source_Test()
+        {
+            var actual = () => TextUtility.ToUnique(null!, [], StringComparison.Ordinal, (s, i) => s + i);
+            var exception = Assert.Throws<ArgumentNullException>(actual);
+            Assert.Equal("source", exception.ParamName);
+        }
+
+        [Fact]
+        public void ToUnique_Throw_Sequence_Test()
+        {
+            var actual = () => TextUtility.ToUnique("", null!, StringComparison.Ordinal, (s, i) => s + i);
+            var exception = Assert.Throws<ArgumentNullException>(actual);
+            Assert.Equal("sequence", exception.ParamName);
+        }
+
+        [Fact]
+        public void ToUnique_Throw_Converter_Test()
+        {
+            var actual = () => TextUtility.ToUnique("", [], StringComparison.Ordinal, null!);
+            var exception = Assert.Throws<ArgumentNullException>(actual);
+            Assert.Equal("converter", exception.ParamName);
+        }
 
         [Theory]
         [InlineData("a", "a", new[] { "" })]

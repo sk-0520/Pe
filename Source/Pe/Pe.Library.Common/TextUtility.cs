@@ -8,6 +8,92 @@ using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
+    public ref struct SpanLinesEnumerator
+    {
+        public SpanLinesEnumerator(ReadOnlySpan<char> data)
+        {
+            Data = data;
+            Position = 0;
+            Current = default;
+        }
+
+        #region property
+
+        /// <summary>
+        /// 文字列。
+        /// </summary>
+        private ReadOnlySpan<char> Data { get; }
+        /// <summary>
+        /// 現在位置。
+        /// </summary>
+        private int Position { get; set; }
+
+        /// <summary>
+        /// 現在行。
+        /// </summary>
+        public ReadOnlySpan<char> Current { get; private set; }
+
+        #endregion
+
+        public bool MoveNext()
+        {
+            if(Position >= Data.Length) {
+                return false;
+            }
+
+            var start = Position;
+            var i = Position;
+
+            // 改行文字まで進める
+            while(i < Data.Length && Data[i] != '\r' && Data[i] != '\n') {
+                i++;
+            }
+
+            Current = Data.Slice(start, i - start);
+
+            // 改行をスキップ（CRLF の場合は 2 文字スキップ）
+            Position = i;
+            if(Position < Data.Length) {
+                if(Data[Position] == '\r' && Position + 1 < Data.Length && Data[Position + 1] == '\n') {
+                    // CR LF 対応
+                    Position += 2;
+                } else {
+                    Position += 1;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// <see cref="ReadOnlySpan{char}"/> の行。
+    /// </summary>
+    public readonly ref struct SpanLines
+    {
+        public SpanLines(ReadOnlySpan<char> s)
+        {
+            Data = s;
+        }
+
+        #region property
+
+        private readonly ReadOnlySpan<char> Data { get; }
+
+        #endregion
+
+        #region function
+
+        /// <summary>
+        /// <see langword="foreach" />で回すのです。
+        /// </summary>
+        /// <returns></returns>
+        public SpanLinesEnumerator GetEnumerator() => new(Data);
+
+        #endregion
+    }
+
+
     /// <summary>
     /// 文字列適当操作処理。
     /// </summary>
@@ -47,18 +133,18 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 throw new ArgumentNullException(nameof(converter));
             }
 
-            var changeName = source;
+            var result = source;
 
             int n = 1;
             RETRY:
             foreach(var value in sequence) {
-                if(string.Equals(value, changeName, comparisonType)) {
-                    changeName = converter(source, ++n);
+                if(string.Equals(value, result, comparisonType)) {
+                    result = converter(source, ++n);
                     goto RETRY;
                 }
             }
 
-            return changeName;
+            return result;
         }
 
         /// <summary>
@@ -190,9 +276,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4456:Parameter validation in yielding methods should be wrapped")]
         public static IEnumerable<string> ReadLines(string s)
         {
-            if(s == null) {
-                throw new ArgumentNullException(nameof(s));
-            }
+            ArgumentNullException.ThrowIfNull(s);
 
             using var reader = new StringReader(s);
             string? line;
@@ -200,7 +284,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 yield return line;
             }
         }
-
 
         /// <summary>
         /// リーダーから行毎に分割する。
@@ -210,15 +293,20 @@ namespace ContentTypeTextNet.Pe.Library.Common
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4456:Parameter validation in yielding methods should be wrapped")]
         public static IEnumerable<string> ReadLines(TextReader reader)
         {
-            if(reader == null) {
-                throw new ArgumentNullException(nameof(reader));
-            }
+            ArgumentNullException.ThrowIfNull(reader);
 
             string? line;
             while((line = reader.ReadLine()) != null) {
                 yield return line;
             }
         }
+
+        /// <summary>
+        /// 文字列から行毎に分割する。
+        /// </summary>
+        /// <param name="s">対象文字列。</param>
+        /// <returns>分割文字列を列挙。</returns>
+        public static SpanLines ReadLines(ReadOnlySpan<char> s) => new(s);
 
         /// <summary>
         /// 文字のなんちゃってな長さを取得。
