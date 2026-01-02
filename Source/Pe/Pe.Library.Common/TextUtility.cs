@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
@@ -29,33 +27,33 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #region function
 
         /// <summary>
-        /// 指定データを集合の中から単一である値に変換する。
+        /// 文字列を集合の中から単一である値に変換する。
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="seq">集合</param>
-        /// <param name="comparisonType">比較処理。</param>
-        /// <param name="converter"></param>
-        /// <returns></returns>
+        /// <param name="source">調べる文字列。</param>
+        /// <param name="sequence">集合。</param>
+        /// <param name="comparisonType">比較方法。</param>
+        /// <param name="converter">重複した際の文字列変換処理。</param>
+        /// <returns>単一の文字列。重複しない場合は<paramref name="source"/>となる。</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S907:\"goto\" statement should not be used")]
-        public static string ToUnique(string target, IReadOnlyCollection<string> seq, StringComparison comparisonType, Func<string, int, string> converter)
+        public static string ToUnique(string source, IReadOnlyCollection<string> sequence, StringComparison comparisonType, Func<string, int, string> converter)
         {
-            if(target == null) {
-                throw new ArgumentNullException(nameof(target));
+            if(source == null) {
+                throw new ArgumentNullException(nameof(source));
             }
-            if(seq == null) {
-                throw new ArgumentNullException(nameof(seq));
+            if(sequence == null) {
+                throw new ArgumentNullException(nameof(sequence));
             }
             if(converter == null) {
                 throw new ArgumentNullException(nameof(converter));
             }
 
-            var changeName = target;
+            var changeName = source;
 
             int n = 1;
             RETRY:
-            foreach(var value in seq) {
+            foreach(var value in sequence) {
                 if(string.Equals(value, changeName, comparisonType)) {
-                    changeName = converter(target, ++n);
+                    changeName = converter(source, ++n);
                     goto RETRY;
                 }
             }
@@ -66,13 +64,13 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <summary>
         /// 指定データを集合の中から単一である値に変換する。
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="seq"></param>
-        /// <param name="comparisonType"></param>
-        /// <returns>集合の中に同じものがなければ<paramref name="target"/>, 存在すれば<paramref name="target"/>(n)。</returns>
-        public static string ToUniqueDefault(string target, IReadOnlyCollection<string> seq, StringComparison comparisonType)
+        /// <param name="source">調べる文字列。</param>
+        /// <param name="sequence">集合。</param>
+        /// <param name="comparisonType">比較方法。</param>
+        /// <returns>集合の中に同じものがなければ<paramref name="source"/>, 存在すれば<paramref name="source"/>(n)。</returns>
+        public static string ToUniqueDefault(string source, IReadOnlyCollection<string> sequence, StringComparison comparisonType)
         {
-            return ToUnique(target, seq, comparisonType, (source, index) => string.Format(CultureInfo.InvariantCulture, "{0}({1})", source, index));
+            return ToUnique(source, sequence, comparisonType, static (source, index) => string.Format(CultureInfo.InvariantCulture, "{0}({1})", source, index));
         }
 
 #if false
