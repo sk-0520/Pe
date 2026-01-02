@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
 
 namespace ContentTypeTextNet.Pe.Core.Models
@@ -19,6 +16,31 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
     public class PolicyBuilder: IPolicyBuilder
     {
+        #region property
 
+        private HashSet<Type> Exceptions { get; } = new();
+
+        #endregion
+
+        #region function
+
+        private void AddException<TException>()
+            where TException : Exception
+        {
+            Exceptions.Add(typeof(TException));
+        }
+
+        #endregion
+
+        #region IPolicyBuilder
+
+        public PolicyBuilder Handle<TException>()
+            where TException : Exception
+        {
+            AddException<TException>();
+            return this;
+        }
+
+        #endregion
     }
 }
