@@ -19,9 +19,8 @@ namespace ContentTypeTextNet.Pe.Core.Models
         #region property
 
         private HashSet<Type> Exceptions { get; } = new();
-        private PolicyRetryOptions RetryOptions { get; set; } = new PolicyRetryOptions() {
-            Maximum = 1,
-        };
+        private PolicyRetryOptions RetryOptions { get; set; } = new PolicyRetryOptions();
+        private PolicyTimeoutOptions TimeoutOptions { get; set; } = new PolicyTimeoutOptions();
 
         #endregion
 
@@ -55,6 +54,12 @@ namespace ContentTypeTextNet.Pe.Core.Models
         }
         IPolicyBuilder IPolicyBuilder.SetRetry(PolicyRetryOptions options) => SetRetry(options);
 
+        public PolicyBuilder SetTimeout(PolicyTimeoutOptions options)
+        {
+            TimeoutOptions = options;
+            return this;
+        }
+        IPolicyBuilder IPolicyBuilder.SetTimeout(PolicyTimeoutOptions options) => SetTimeout(options);
 
         #endregion
     }
