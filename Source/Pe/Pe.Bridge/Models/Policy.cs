@@ -11,7 +11,19 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
         /// <summary>
         /// リトライ数。
         /// </summary>
-        public int Maximum { get; init; }
+        public int Count { get; init; } = 1;
+
+        #endregion
+    }
+
+    public record class PolicyTimeoutOptions
+    {
+        #region property
+
+        /// <summary>
+        /// タイムアウト時間。
+        /// </summary>
+        public TimeSpan Timeout { get; init; } = System.Threading.Timeout.InfiniteTimeSpan;
 
         #endregion
     }
@@ -34,6 +46,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
         ;
 
         IPolicyBuilder SetRetry(PolicyRetryOptions options);
+        IPolicyBuilder SetTimeout(PolicyTimeoutOptions options);
 
         #endregion
     }
