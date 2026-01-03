@@ -1,4 +1,14 @@
+#if !DOC_FX
 using ContentTypeTextNet.Pe.Generator.Exception;
+#else
+// docfx 用ダミー
+[System.AttributeUsage(System.AttributeTargets.Class)]
+file sealed class GenerateExceptionAttribute: System.Attribute
+{
+    public GenerateExceptionAttribute()
+    { }
+}
+#endif
 
 namespace ContentTypeTextNet.Pe.CommonTest
 {

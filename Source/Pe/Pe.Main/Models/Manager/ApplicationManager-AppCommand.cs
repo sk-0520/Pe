@@ -3,12 +3,22 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Generator.Exception;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Command;
 using ContentTypeTextNet.Pe.Main.Models.Data;
+#if !DOC_FX
+using ContentTypeTextNet.Pe.Generator.Exception;
+#else
+// docfx 用ダミー
+[System.AttributeUsage(System.AttributeTargets.Class)]
+file sealed class GenerateExceptionAttribute: System.Attribute
+{
+    public GenerateExceptionAttribute()
+    { }
+}
+#endif
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {

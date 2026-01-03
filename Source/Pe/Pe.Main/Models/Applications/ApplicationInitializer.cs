@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Generator.Exception;
 using ContentTypeTextNet.Pe.Library.Args;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Database;
@@ -28,6 +27,17 @@ using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Preferences;
 using Microsoft.Extensions.Logging;
 using Forms = System.Windows.Forms;
+#if !DOC_FX
+using ContentTypeTextNet.Pe.Generator.Exception;
+#else
+// docfx 用ダミー
+[System.AttributeUsage(System.AttributeTargets.Class)]
+file sealed class GenerateExceptionAttribute: System.Attribute
+{
+    public GenerateExceptionAttribute()
+    { }
+}
+#endif
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {

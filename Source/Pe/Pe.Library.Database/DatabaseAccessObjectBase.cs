@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using Microsoft.Extensions.Logging;
+using System.Threading;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
@@ -138,7 +138,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #region function
 
         /// <summary>
-        /// <see cref="IDatabaseStatementLoader.LoadStatementByCurrent(Type, string)"/>のヘルパー関数。
+        /// <see cref="IDatabaseStatementLoaderExtensions.LoadStatementByCurrent(IDatabaseStatementLoader, Type, string)"/> のヘルパー関数。
         /// </summary>
         /// <param name="callerMemberName"><see cref="CallerMemberNameAttribute"/></param>
         /// <returns></returns>
