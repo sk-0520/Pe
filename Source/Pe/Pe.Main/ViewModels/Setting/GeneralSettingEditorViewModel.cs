@@ -511,9 +511,23 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
         public int MinimumCompactWaitTimeSeconds => (int)NoteConfiguration.HiddenCompactWaitTime.Minimum.TotalSeconds;
         public int MaximumCompactWaitTimeSeconds => (int)NoteConfiguration.HiddenCompactWaitTime.Maximum.TotalSeconds;
 
+        /// <inheritdoc cref="AppNoteSettingEditorElement.ExcludeScreenCapture"/>
+        public bool ExcludeScreenCapture
+        {
+            get => Model.ExcludeScreenCapture;
+            set => SetModelValue(value);
+        }
+
         #endregion
 
         #region command
+
+        public ICommand OpenExcludeScreenCaptureDocumentCommand => field ??= new DelegateCommand(
+            () => {
+                Model.OpenExcludeScreenCaptureDocument();
+            }
+        );
+
         #endregion
 
         #region function

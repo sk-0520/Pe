@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -20,10 +19,10 @@ using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
-using ContentTypeTextNet.Pe.Main.Models.Element.NotifyLog;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Note;
@@ -31,14 +30,11 @@ using ContentTypeTextNet.Pe.Main.Models.Platform;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Theme;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using ContentTypeTextNet.Pe.Main.ViewModels.Font;
-using ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog;
-using ContentTypeTextNet.Pe.Main.ViewModels.Setting;
 using ContentTypeTextNet.Pe.Main.Views.Note;
+using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
-using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 {
@@ -1322,8 +1318,19 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         public Task ReceiveViewInitializedAsync(Window window, CancellationToken cancellationToken)
         {
-            // 各ディスプレイのDPIで事故らないように原点をディスプレイへ移動してウィンドウ位置・サイズをいい感じに頑張る
             var hWnd = HandleUtility.GetWindowHandle(window);
+
+            // スクリーンキャプチャ抑制処理
+            if(Model.GetExcludeScreenCapture()) {
+                var wda = NoteConfiguration.ExcludeScreenCaptureMonitorOnly
+                    ? WDA.WDA_MONITOR
+                    : WDA.WDA_EXCLUDEFROMCAPTURE
+                ;
+                Logger.LogInformation("スクリーンキャプチャ抑制: {WindowDisplayAffinity}", wda);
+                NativeMethods.SetWindowDisplayAffinity(hWnd, wda);
+            }
+
+            // 各ディスプレイのDPIで事故らないように原点をディスプレイへ移動してウィンドウ位置・サイズをいい感じに頑張る
             NativeMethods.SetWindowPos(hWnd, new IntPtr((int)HWND.HWND_TOP), (int)Model.DockScreen.DeviceBounds.X, (int)Model.DockScreen.DeviceBounds.Y, 0, 0, SWP.SWP_NOSIZE);
 
             window.Deactivated += Window_Deactivated;

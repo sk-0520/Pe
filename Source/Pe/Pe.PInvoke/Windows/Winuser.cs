@@ -2339,6 +2339,36 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
         MF_BYPOSITION = 0x00000400,
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso href="https://learn.microsoft.com/ja-jp/windows/win32/api/winuser/nf-winuser-setwindowdisplayaffinity" />
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1712:列挙値の前に型名を付けないでください", Justification = "<保留中>")]
+    public enum WDA: uint
+    {
+        /// <summary>
+        /// ウィンドウを表示できる場所に制限はありません。
+        /// </summary>
+        WDA_NONE = 0x00000000,
+        /// <summary>
+        /// ウィンドウの内容はモニターにのみ表示されます。 他の場所では、ウィンドウはコンテンツなしで表示されます。
+        /// </summary>
+        WDA_MONITOR = 0x00000001,
+        /// <summary>
+        /// このウィンドウはモニターにのみ表示されます。 他の場所では、ウィンドウはまったく表示されません。
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// このアフィニティの用途の 1 つは、コントロールがキャプチャに含まれないように、ビデオ記録コントロールを表示するウィンドウ用です。
+        /// </para>
+        /// <para>
+        /// Windows 10 バージョン 2004 で導入されました。 以前のバージョンの Windows に関する互換性に関する解説を参照してください。
+        /// </para>
+        /// </remarks>
+        WDA_EXCLUDEFROMCAPTURE = 0x00000011,
+    }
+
+
     partial class NativeMethods
     {
         /// <summary>
@@ -2815,5 +2845,8 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
         /// <returns></returns>
         [DllImport("user32.dll")]
         public static extern bool RemoveMenu(IntPtr hMenu, uint uPosition, MF uFlags);
+
+        [DllImport("user32.dll")]
+        public static extern bool SetWindowDisplayAffinity(IntPtr hWnd, WDA affinity);
     }
 }

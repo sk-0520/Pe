@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +15,8 @@ using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
@@ -27,8 +27,6 @@ using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Note;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
@@ -931,6 +929,19 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             file.Dispose();
 
             return true;
+        }
+
+        protected bool GetExcludeScreenCaptureCore(IDatabaseContext context)
+        {
+            var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+            var appNoteSettingEntityDao = daoFactory.Create<AppNoteSettingEntityDao>();
+            return appNoteSettingEntityDao.SelectAppNoteSettingExcludeScreenCapture();
+        }
+
+        public bool GetExcludeScreenCapture()
+        {
+            using var context = MainDatabaseBarrier.WaitRead();
+            return GetExcludeScreenCaptureCore(context);
         }
 
         #endregion

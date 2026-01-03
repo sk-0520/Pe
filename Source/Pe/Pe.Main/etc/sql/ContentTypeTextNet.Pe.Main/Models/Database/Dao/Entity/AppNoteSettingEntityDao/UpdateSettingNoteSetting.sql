@@ -8,6 +8,7 @@ set
 	BackgroundColor = @BackgroundColor,
 	IsTopmost = @IsTopmost,
 	CaptionPosition = @CaptionPosition,
+	ExcludeScreenCapture = @ExcludeScreenCapture,
 
 	UpdatedTimestamp = @UpdatedTimestamp,
 	UpdatedAccount = @UpdatedAccount,

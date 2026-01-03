@@ -1,14 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
+using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
-using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
@@ -44,6 +40,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
                 IsTopmost = true,
                 LayoutKind = NoteLayoutKind.Absolute,
                 TitleKind = NoteCreateTitleKind.Count,
+                ExcludeScreenCapture = false,
             };
 
             test.UpdateSettingNoteSetting(expected, Test.DiContainer.New<IDatabaseCommonStatus>());
@@ -57,6 +54,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
             Assert.Equal(expected.IsTopmost, actual.IsTopmost);
             Assert.Equal(expected.LayoutKind, actual.LayoutKind);
             Assert.Equal(expected.TitleKind, actual.TitleKind);
+            Assert.Equal(expected.ExcludeScreenCapture, actual.ExcludeScreenCapture);
         }
 
 
@@ -90,6 +88,32 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
 
             var actual = test.SelectSettingNoteSetting();
             Assert.Equal(NoteCreateTitleKind.Count, actual.TitleKind);
+        }
+
+
+        [Fact]
+        public void ExcludeScreenCapture_Test()
+        {
+            var test = Test.BuildDao<AppNoteSettingEntityDao>(AccessorKind.Main);
+
+            var actual1 = test.SelectAppNoteSettingExcludeScreenCapture();
+            Assert.True(actual1);
+
+            var expected = new SettingAppNoteSettingData() {
+                FontId = test.SelectAppNoteSettingFontId(),
+                BackgroundColor = Colors.Red,
+                ForegroundColor = Colors.Green,
+                CaptionPosition = NoteCaptionPosition.Right,
+                IsTopmost = true,
+                LayoutKind = NoteLayoutKind.Absolute,
+                TitleKind = NoteCreateTitleKind.Count,
+                ExcludeScreenCapture = false,
+            };
+            test.UpdateSettingNoteSetting(expected, Test.DiContainer.New<IDatabaseCommonStatus>());
+
+            var actual2 = test.SelectAppNoteSettingExcludeScreenCapture();
+            Assert.False(actual2);
+
         }
 
         #endregion

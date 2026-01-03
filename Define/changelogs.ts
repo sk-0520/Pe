@@ -33,7 +33,12 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "#1035: ノートをスクリーンキャプチャから外す",
+						comments: [
+							"デフォルトでスクリーンキャプチャから除外されます",
+							"除外設定は 設定 -> 基本 -> ノート で変更可能です",
+							"除外方法自体はアプリケーション構成ファイルによる変更が必要です",
+						],
 					},
 					{
 						revision: "",

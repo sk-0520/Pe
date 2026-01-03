@@ -91,7 +91,8 @@
 		"hidden_compact_wait_time": {
 			"minimum": "0.00:00:00.0",
 			"maximum": "0.00:00:00.0"
-		}
+		},
+		"exclude_screen_capture_monitor_only": false
 	},
 	"command": {
 		"icon_clear_wait_time": "0.00:00:00.0",

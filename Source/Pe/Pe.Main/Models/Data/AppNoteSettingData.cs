@@ -41,6 +41,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         /// タイトルバー位置。
         /// </summary>
         public NoteCaptionPosition CaptionPosition { get; set; }
+        /// <summary>
+        /// スクリーンキャプチャから除外するか。
+        /// </summary>
+        /// <remarks>
+        /// 除外方法は settings.json で調整。
+        /// </remarks>
+        public bool ExcludeScreenCapture { get; set; }
 
         #endregion
     }

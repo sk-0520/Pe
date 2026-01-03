@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Element.Font;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
@@ -425,12 +425,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
     public class AppNoteSettingEditorElement: GeneralSettingEditorElementBase
     {
-        public AppNoteSettingEditorElement(IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, ILoggerFactory loggerFactory)
+        public AppNoteSettingEditorElement(EnvironmentParameters environmentParameters, IMainDatabaseBarrier mainDatabaseBarrier, ILargeDatabaseBarrier largeDatabaseBarrier, IDatabaseStatementLoader databaseStatementLoader, ILoggerFactory loggerFactory)
             : base(mainDatabaseBarrier, largeDatabaseBarrier, databaseStatementLoader, loggerFactory)
-        { }
+        {
+            EnvironmentParameters = environmentParameters;
+        }
 
         #region property
 
+        private EnvironmentParameters EnvironmentParameters { get; }
         public FontElement? Font { get; private set; }
         public NoteCreateTitleKind TitleKind { get; set; }
         public NoteLayoutKind LayoutKind { get; set; }
@@ -441,9 +444,23 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         public Dictionary<NoteHiddenMode, TimeSpan> WaitTimes { get; private set; } = new Dictionary<NoteHiddenMode, TimeSpan>();
 
+        public bool ExcludeScreenCapture { get; set; }
+
         #endregion
 
         #region function
+
+        public void OpenExcludeScreenCaptureDocument()
+        {
+            try {
+                //TODO: パラメーターを渡すべし
+                var systemExecutor = new SystemExecutor();
+                systemExecutor.ExecuteFile(EnvironmentParameters.HelpFile.FullName);
+            } catch(Exception ex) {
+                Logger.LogError(ex, ex.Message);
+            }
+        }
+
         #endregion
 
         #region GeneralSettingEditorBase
@@ -472,6 +489,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             BackgroundColor = setting.BackgroundColor;
             IsTopmost = setting.IsTopmost;
             CaptionPosition = setting.CaptionPosition;
+            ExcludeScreenCapture = setting.ExcludeScreenCapture;
         }
 
         protected override void SaveImpl(IDatabaseContextPack contextPack)
@@ -488,6 +506,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 BackgroundColor = BackgroundColor,
                 IsTopmost = IsTopmost,
                 CaptionPosition = CaptionPosition,
+                ExcludeScreenCapture = ExcludeScreenCapture,
             };
             appNoteSettingEntityDao.UpdateSettingNoteSetting(data, contextPack.CommonStatus);
 
