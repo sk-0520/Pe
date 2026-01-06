@@ -5,19 +5,15 @@ using System.IO;
 using System.IO.Pipes;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
-    public delegate void ExecuteIpcDelegate(CommandLine commandLine, string output);
+    public delegate void ExecuteIpcDelegate(CommandLineParsedResult parsedResult, string output);
 
     /// <summary>
     /// 本体アプリケーション起動処理。
@@ -66,7 +62,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         /// <param name="switchArguments">コマンドライン引数(スイッチ, -- は不要)</param>
         /// <param name="action">結果データ受領。</param>
         /// <returns></returns>
-        public bool TryExecuteIpc(IpcMode ipcMode, IEnumerable<KeyValuePair<string,string>> keyValueArguments, IEnumerable<string> switchArguments, ExecuteIpcDelegate action)
+        public bool TryExecuteIpc(IpcMode ipcMode, IEnumerable<KeyValuePair<string, string>> keyValueArguments, IEnumerable<string> switchArguments, ExecuteIpcDelegate action)
         {
             try {
                 using var pipeServerStream = new AnonymousPipeServerStream(PipeDirection.In, HandleInheritability.Inheritable);
@@ -90,8 +86,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                     ipcArgs[keyValue.Key] = keyValue.Value;
                 }
 
-                var args = CommandLineHelper.ToCommandLineArguments(ipcArgs)
-                    .Concat(ipcSwitchArgs.Select(i => "--" + i))
+                var commandLineHelper = new CommandLineHelper();
+                var args = commandLineHelper.ToCommandLineArguments(ipcArgs)
+                    .Concat(ipcSwitchArgs.Select(i => commandLineHelper.OptionPrefix + i))
+                    .ToArray()
                 ;
                 var argument = args.JoinString(" ");
 
@@ -107,7 +105,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
                 using var pipeServerReader = new StreamReader(pipeServerStream);
 
-                var commandLine = new CommandLine(args, false);
+                var commandLineParser = new CommandLineParser(commandLineHelper);
+                var parsedResult = commandLineParser.Parse(CommandPath, args);
 
                 process.Start();
                 pipeServerStream.DisposeLocalCopyOfClientHandle();
@@ -116,7 +115,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 }
                 var output = pipeServerReader.ReadToEnd();
 
-                action(commandLine, output);
+                action(parsedResult, output);
 
                 return true;
             } catch(Exception ex) {

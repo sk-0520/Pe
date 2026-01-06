@@ -1,15 +1,37 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Main.Models.Platform;
-using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Main.Models.Platform;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
+    internal class PowerShellCommandLineHelper: CommandLineHelper
+    {
+        public PowerShellCommandLineHelper()
+        {
+            OptionPrefix = "-";
+        }
+    }
+
     public class PowerShellArguments
     {
+        public PowerShellArguments()
+            : this(new PowerShellCommandLineHelper())
+        { }
+
+        public PowerShellArguments(CommandLineHelper commandLineHelper)
+        {
+            CommandLineHelper = commandLineHelper;
+        }
+
+        #region property
+
+        private CommandLineHelper CommandLineHelper { get; }
+
+        #endregion
+
         #region function
 
         /// <summary>
@@ -26,7 +48,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 throw new ArgumentException(nameof(input.Key), nameof(input));
             }
 
-            static string Escape(string value)
+            string Escape(string value)
             {
                 if(string.IsNullOrEmpty(value)) {
                     return "\"" + value + "\"";
@@ -35,11 +57,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 return CommandLineHelper.Escape(value);
             }
 
-            if(input.Key.StartsWith('-')) {
+            if(input.Key.StartsWith(CommandLineHelper.OptionPrefix)) {
                 return KeyValuePair.Create(input.Key, Escape(input.Value));
             }
 
-            return KeyValuePair.Create("-" + input.Key, Escape(input.Value));
+            return KeyValuePair.Create(CommandLineHelper.OptionPrefix + input.Key, Escape(input.Value));
         }
 
         /// <inheritdoc cref="Create(KeyValuePair{string, string})"/>

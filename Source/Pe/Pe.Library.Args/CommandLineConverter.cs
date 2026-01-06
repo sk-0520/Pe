@@ -1,165 +1,139 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Args
 {
     /// <summary>
-    /// コマンドラインをデータ構造にマッピング。
+    /// コマンドライン引数のパース結果からオブジェクトに変換する。
     /// </summary>
-    /// <typeparam name="TData"></typeparam>
-    public class CommandLineConverter<TData>
-        where TData : class
+    public class CommandLineConverter
     {
-        public CommandLineConverter(CommandLine commandLine, TData data)
+        /// <summary>
+        /// 生成。
+        /// </summary>
+        /// <param name="loggerFactory"></param>
+        public CommandLineConverter(ILoggerFactory loggerFactory)
         {
-            CommandLine = commandLine;
-            Data = data;
+            Logger = loggerFactory.CreateLogger(GetType());
         }
 
         #region property
 
-        public CommandLine CommandLine { get; }
-        public TData Data { get; }
-        public Exception? Exception { get; private set; }
+        private ILogger Logger { get; }
+
+        /// <summary>
+        /// 変換処理一覧。
+        /// </summary>
+        /// <remarks>
+        /// <para>必要に応じて消したり追加したりすること。</para>
+        /// <para>実装メモ: 2026-01-06 時点では Pe で使用している型のみ対応(DateTime/TimeSpanは別に使ってないけど)。</para>
+        /// </remarks>
+        public List<ICommandLineConvertHandler> Handlers { get; } = [
+            new CommandLineStringConvertHandler(),
+            new CommandLineInt32ConvertHandler(),
+            new CommandLineBooleanConvertHandler(),
+            new CommandLineDateTimeConvertHandler(),
+            new CommandLineTimeSpanConvertHandler(),
+        ];
 
         #endregion
 
         #region function
 
-        private IReadOnlyDictionary<PropertyInfo, CommandLineAttribute> GetPropertyAttributeMapping(Type type)
+        private IReadOnlyDictionary<PropertyInfo, CommandLineOptionAttribute> GetPropertyAttributeMapping(Type type)
         {
             var properties = type.GetProperties();
 
-            var map = new Dictionary<PropertyInfo, CommandLineAttribute>(properties.Length);
+            var map = new Dictionary<PropertyInfo, CommandLineOptionAttribute>(properties.Length);
             foreach(var property in properties) {
-                var attributes = property.GetCustomAttributes(typeof(CommandLineAttribute), true);
+                var attributes = property.GetCustomAttributes(typeof(CommandLineOptionAttribute), true);
                 if(attributes != null && attributes.Any()) {
-                    map.Add(property, attributes.OfType<CommandLineAttribute>().First());
+                    map.Add(property, attributes.OfType<CommandLineOptionAttribute>().First());
                 }
             }
 
             return map;
         }
 
-        private IReadOnlyDictionary<PropertyInfo, CommandLineKey> SetPropertyKeyMapping(CommandLine commandLine, IReadOnlyDictionary<PropertyInfo, CommandLineAttribute> propertyAttributeMap)
+        private IReadOnlyDictionary<PropertyInfo, CommandLineOption> ApplyPropertyKeyMapping(CommandLineParser parser, IReadOnlyDictionary<PropertyInfo, CommandLineOptionAttribute> propertyAttributeMap)
         {
-            var map = new Dictionary<PropertyInfo, CommandLineKey>();
+            var map = new Dictionary<PropertyInfo, CommandLineOption>();
             foreach(var pair in propertyAttributeMap) {
                 var attribute = pair.Value;
-                var key = commandLine.Add(attribute.Key);
-                map.Add(pair.Key, key);
+                var option = parser.Add(attribute.Option);
+                map.Add(pair.Key, option);
             }
 
             return map;
         }
 
-        object? ConvertValue(Type type, ICommandLineValue value)
+        private object? ConvertValue(Type type, ICommandLineValues values)
         {
-            if(type == typeof(float)) {
-                return float.Parse(value.First, CultureInfo.InvariantCulture);
-            }
-            if(type == typeof(double)) {
-                return double.Parse(value.First, CultureInfo.InvariantCulture);
-            }
-
-            if(1 < value.Items.Count) {
-                if(type.IsArray) {
-                    return value.Items.ToArray();
-                }
-                if(typeof(System.Collections.IList).IsAssignableFrom(type)) {
-                    return value.Items.ToList();
-                }
-                if(typeof(System.Collections.IEnumerable).IsAssignableFrom(type)) {
-                    return value.Items;
-                }
-            }
-
-            return Convert.ChangeType(value.First, type, CultureInfo.InvariantCulture);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "HAA0601:Value type to reference type conversion causing boxing allocation")]
-        private object GetTrueSwitch(Type type)
-        {
-            if(type == typeof(bool)) {
-                return true;
-            }
-
-            if(type == typeof(char)) {
-                return 'Y';
-            }
-
-            if(type == typeof(string)) {
-                return true.ToString();
-            }
-
-            var numTypes = new[] {
-                typeof(sbyte),
-                typeof(byte),
-                typeof(short),
-                typeof(ushort),
-                typeof(int),
-                typeof(uint),
-                typeof(long),
-                typeof(ulong),
-                typeof(float),
-                typeof(double),
-            };
-
-            if(Array.IndexOf(numTypes, type) != -1) {
-                return 1;
-            }
-
-            if(type == typeof(decimal)) {
-                return 1m;
-            }
-
-            throw new NotImplementedException();
-        }
-
-        protected bool MappingCore()
-        {
-            var type = Data.GetType();
-            var attributeMap = GetPropertyAttributeMapping(type);
-
-            var keyMap = SetPropertyKeyMapping(CommandLine, attributeMap);
-            try {
-                if(CommandLine.Parse()) {
-                    foreach(var pair in keyMap) {
-                        if(pair.Value.kind == CommandLineKeyKind.Value) {
-                            // 値取得
-                            if(CommandLine.Values.TryGetValue(pair.Value, out var value)) {
-                                var convertedValue = ConvertValue(pair.Key.PropertyType, value);
-                                pair.Key.SetValue(Data, convertedValue);
-                            }
-                        } else {
-                            // スイッチ
-                            if(CommandLine.Switches.Contains(pair.Value)) {
-                                var switchValue = GetTrueSwitch(pair.Key.PropertyType);
-                                pair.Key.SetValue(Data, switchValue);
-                            }
+            foreach(var handler in Handlers) {
+                if(handler.Type == type) {
+                    foreach(var data in values.Data) {
+                        try {
+                            return handler.Convert(data);
+                        } catch(Exception ex) {
+                            Logger.LogWarning("{Message}: {Exception}", ex.Message, ex);
                         }
                     }
+                    return null;
                 }
-
-                return true;
-            } catch(Exception ex) {
-                Exception = ex;
-                return false;
             }
+
+            throw new CommandLineTypeConvertException(type);
+        }
+
+        protected virtual T ConvertCore<T>(CommandLineParser parser, IReadOnlyList<string> arguments)
+            where T : new()
+        {
+            var type = typeof(T);
+            var data = new T();
+            var propAttrMap = GetPropertyAttributeMapping(type);
+            var propKeyMap = ApplyPropertyKeyMapping(parser, propAttrMap);
+
+            var parsedResult = parser.Parse(string.Empty, arguments);
+
+            foreach(var pair in propKeyMap) {
+                if(pair.Value.Kind == CommandLineOptionKind.Value) {
+                    // 値取得
+                    if(parsedResult.Values.TryGetValue(pair.Value.Key, out var value)) {
+                        var convertedValue = ConvertValue(pair.Key.PropertyType, value);
+                        if(convertedValue is not null) {
+                            pair.Key.SetValue(data, convertedValue);
+                        }
+                    }
+                } else {
+                    // スイッチ
+                    if(parsedResult.Switches.Contains(pair.Value.Key)) {
+                        pair.Key.SetValue(data, true);
+                    }
+                }
+            }
+
+            return data;
         }
 
         /// <summary>
-        /// <see cref="Data"/>へマッピング。
+        /// 変換。
         /// </summary>
-        /// <returns>成功か。</returns>
-        public virtual bool Mapping()
+        /// <typeparam name="T">変換先データ型</typeparam>
+        /// <param name="parser">パーサー。</param>
+        /// <param name="arguments">引数。コマンド・プログラム名は含まない。</param>
+        /// <returns>変換結果。</returns>
+        /// <remarks>
+        /// <para>変換失敗の場合は例外が投げられる。投げられる例外は関連項目も参照のこと。</para>
+        /// </remarks>
+        /// <exception cref="CommandLineTypeConvertException"></exception>
+        /// <exception cref="CommandLineConverterException"></exception>
+        public T Convert<T>(CommandLineParser parser, IReadOnlyList<string> arguments)
+            where T : new()
         {
-            return MappingCore();
+            return ConvertCore<T>(parser, arguments.ToArray());
         }
 
         #endregion

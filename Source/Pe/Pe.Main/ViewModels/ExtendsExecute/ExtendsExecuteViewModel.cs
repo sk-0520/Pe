@@ -6,6 +6,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
@@ -13,21 +15,19 @@ using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.ExtendsExecute;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Common;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Threading;
-using ContentTypeTextNet.Pe.Library.Args;
-using ContentTypeTextNet.Pe.Mvvm.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
 {
@@ -373,8 +373,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
         private Task OptionDropAsync(UIElement sender, DragEventArgs e, CancellationToken cancellationToken)
         {
             if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                var commandLineHelper = new CommandLineHelper();
                 var filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
-                Option = string.Join(" ", filePaths.Select(i => CommandLineHelper.Escape(i)));
+                Option = string.Join(" ", filePaths.Select(i => commandLineHelper.Escape(i)));
                 e.Handled = true;
             } else if(e.Data.IsTextPresent()) {
                 Option = TextUtility.JoinLines(e.Data.RequireText());
