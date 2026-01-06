@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -120,35 +119,33 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
-        private CommandLine CreateCommandLine(IEnumerable<string> arguments)
+        private CommandLineParsedResult ParseCommandLine(IReadOnlyList<string> arguments)
         {
-            var commandLine = new CommandLine(arguments, false);
+            var commandLineParser = new CommandLineParser();
 
-            commandLine.Add(longKey: EnvironmentParameters.CommandLineKeyUserDirectory, kind: CommandLineKeyKind.Value);
-            commandLine.Add(longKey: EnvironmentParameters.CommandLineKeyMachineDirectory, kind: CommandLineKeyKind.Value);
-            commandLine.Add(longKey: EnvironmentParameters.CommandLineKeyTemporaryDirectory, kind: CommandLineKeyKind.Value);
-            commandLine.Add(longKey: CommandLineKeyRunMode, kind: CommandLineKeyKind.Value);
-            commandLine.Add(longKey: CommandLineKeyAppLogLimit, kind: CommandLineKeyKind.Value);
-            commandLine.Add(longKey: CommandLineKeyLog, kind: CommandLineKeyKind.Value);
-            commandLine.Add(longKey: CommandLineKeyWithLog, kind: CommandLineKeyKind.Value);
-            commandLine.Add(longKey: CommandLineSwitchFullTraceLog, kind: CommandLineKeyKind.Switch);
-            commandLine.Add(longKey: CommandLineSwitchForceLog, kind: CommandLineKeyKind.Switch);
-            commandLine.Add(longKey: CommandLineSwitchAcceptSkip, kind: CommandLineKeyKind.Switch);
-            commandLine.Add(longKey: CommandLineSwitchBetaVersion, kind: CommandLineKeyKind.Switch);
+            commandLineParser.Add(new CommandLineOption(EnvironmentParameters.CommandLineKeyUserDirectory, CommandLineOptionKind.Value, string.Empty));
+            commandLineParser.Add(new CommandLineOption(EnvironmentParameters.CommandLineKeyMachineDirectory, CommandLineOptionKind.Value, string.Empty));
+            commandLineParser.Add(new CommandLineOption(EnvironmentParameters.CommandLineKeyTemporaryDirectory, CommandLineOptionKind.Value, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineKeyRunMode, CommandLineOptionKind.Value, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineKeyAppLogLimit, CommandLineOptionKind.Value, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineKeyLog, CommandLineOptionKind.Value, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineKeyWithLog, CommandLineOptionKind.Value, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineSwitchFullTraceLog, CommandLineOptionKind.Switch, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineSwitchForceLog, CommandLineOptionKind.Switch, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineSwitchAcceptSkip, CommandLineOptionKind.Switch, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineSwitchBetaVersion, CommandLineOptionKind.Switch, string.Empty));
 #if DEBUG
-            commandLine.Add(longKey: CommandLineSwitchDebugDevelopMode, kind: CommandLineKeyKind.Switch);
+            commandLineParser.Add(new CommandLineOption(CommandLineSwitchDebugDevelopMode, CommandLineOptionKind.Switch, string.Empty));
 #endif
-            commandLine.Add(longKey: CommandLineTestPluginDirectoryPath, kind: CommandLineKeyKind.Value);
-            commandLine.Add(longKey: CommandLineTestPluginName, kind: CommandLineKeyKind.Value);
+            commandLineParser.Add(new CommandLineOption(CommandLineTestPluginDirectoryPath, CommandLineOptionKind.Value, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineTestPluginName, CommandLineOptionKind.Value, string.Empty));
 
-            commandLine.Parse();
-
-            return commandLine;
+            return commandLineParser.Parse("Pe.Main", arguments);
         }
 
-        private bool ShowCommandLineBetaMessageIfUnspecified(CommandLine commandLine)
+        private bool ShowCommandLineBetaMessageIfUnspecified(CommandLineParsedResult parsedResult)
         {
-            var knownBetaVersion = commandLine.ExistsSwitch(CommandLineSwitchBetaVersion);
+            var knownBetaVersion = parsedResult.ExistsSwitch(CommandLineSwitchBetaVersion);
             if(knownBetaVersion) {
                 return true;
             }
@@ -183,9 +180,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             return result == Forms.TaskDialogButton.Continue;
         }
 
-        private bool ShowCommandLineTestPlugin(CommandLine commandLine, EnvironmentParameters environmentParameters)
+        private bool ShowCommandLineTestPlugin(CommandLineParsedResult parsedResult, EnvironmentParameters environmentParameters)
         {
-            var testPluginDirectoryPath = commandLine.GetValue(CommandLineTestPluginDirectoryPath, string.Empty);
+            var testPluginDirectoryPath = parsedResult.GetValue(CommandLineTestPluginDirectoryPath, string.Empty);
             if(string.IsNullOrWhiteSpace(testPluginDirectoryPath)) {
                 return true;
             }
@@ -213,9 +210,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 return false;
             }
 
-            var userDirKey = commandLine.GetValue(EnvironmentParameters.CommandLineKeyUserDirectory, string.Empty);
-            var machineDirKey = commandLine.GetValue(EnvironmentParameters.CommandLineKeyMachineDirectory, string.Empty);
-            var tempDirKey = commandLine.GetValue(EnvironmentParameters.CommandLineKeyTemporaryDirectory, string.Empty);
+            var userDirKey = parsedResult.GetValue(EnvironmentParameters.CommandLineKeyUserDirectory, string.Empty);
+            var machineDirKey = parsedResult.GetValue(EnvironmentParameters.CommandLineKeyMachineDirectory, string.Empty);
+            var tempDirKey = parsedResult.GetValue(EnvironmentParameters.CommandLineKeyTemporaryDirectory, string.Empty);
 
             var hasEmpty = new[] { userDirKey, machineDirKey, tempDirKey, }.Any(i => string.IsNullOrWhiteSpace(i));
             if(hasEmpty) {
@@ -249,7 +246,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             }
 
             TestPluginDirectoryPath = expandedTestPluginDirectoryPath;
-            TestPluginName = commandLine.GetValue(CommandLineTestPluginName, string.Empty);
+            TestPluginName = parsedResult.GetValue(CommandLineTestPluginName, string.Empty);
 
             return true;
         }
@@ -262,13 +259,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             return new DirectoryInfo(rootDirectoryPath);
         }
 
-        private ApplicationEnvironmentParameters InitializeEnvironment(CommandLine commandLine)
+        private ApplicationEnvironmentParameters InitializeEnvironment(CommandLineParsedResult parsedResult)
         {
-            Debug.Assert(commandLine.IsParsed);
-
             var rootDirectory = GetRootDirectory();
 
-            return new ApplicationEnvironmentParameters(rootDirectory, commandLine);
+            return new ApplicationEnvironmentParameters(rootDirectory, parsedResult);
         }
 
         private bool CheckFirstStartup(EnvironmentParameters environmentParameters, ILogger logger)
@@ -548,24 +543,24 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             InitializeEnvironmentVariable();
             InitializeClr();
 
-            var commandLine = CreateCommandLine(e.Args);
-            RunMode = RunModeUtility.Parse(commandLine.GetValue(CommandLineKeyRunMode, string.Empty));
+            var parsedResult = ParseCommandLine(e.Args);
+            RunMode = RunModeUtility.Parse(parsedResult.GetValue(CommandLineKeyRunMode, string.Empty));
 
             if(BetaMode) {
                 if(RunModeUtility.CheckBetaModeAlert(RunMode)) {
-                    if(!ShowCommandLineBetaMessageIfUnspecified(commandLine)) {
+                    if(!ShowCommandLineBetaMessageIfUnspecified(parsedResult)) {
                         return false;
                     }
                 }
             }
 
 #if DEBUG
-            IsDebugDevelopMode = commandLine.ExistsSwitch(CommandLineSwitchDebugDevelopMode);
+            IsDebugDevelopMode = parsedResult.ExistsSwitch(CommandLineSwitchDebugDevelopMode);
 #endif
 
-            var environmentParameters = InitializeEnvironment(commandLine);
+            var environmentParameters = InitializeEnvironment(parsedResult);
 
-            if(!int.TryParse(commandLine.GetValue(CommandLineKeyAppLogLimit, string.Empty), out var appLogLimit)) {
+            if(!int.TryParse(parsedResult.GetValue(CommandLineKeyAppLogLimit, string.Empty), out var appLogLimit)) {
                 appLogLimit = AppLogLimit;
             }
             if(appLogLimit < 0) {
@@ -576,10 +571,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             Logging = new ApplicationLogging(
                 appLogLimit,
                 loggingConfigFilePath,
-                commandLine.GetValue(CommandLineKeyLog, string.Empty),
-                commandLine.GetValue(CommandLineKeyWithLog, string.Empty),
-                commandLine.ExistsSwitch(CommandLineSwitchForceLog),
-                commandLine.ExistsSwitch(CommandLineSwitchFullTraceLog),
+                parsedResult.GetValue(CommandLineKeyLog, string.Empty),
+                parsedResult.GetValue(CommandLineKeyWithLog, string.Empty),
+                parsedResult.ExistsSwitch(CommandLineSwitchForceLog),
+                parsedResult.ExistsSwitch(CommandLineSwitchFullTraceLog),
                 TimeProvider.System // DI 構築はこの後なのでここではこれでOK
             );
             var loggerFactory = Logging.Factory;
@@ -607,7 +602,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 return true;
             }
 
-            var skipAccept = commandLine.ExistsSwitch(CommandLineSwitchAcceptSkip);
+            var skipAccept = parsedResult.ExistsSwitch(CommandLineSwitchAcceptSkip);
             if(skipAccept) {
                 logger.LogInformation("使用許諾はコマンドライン設定によりスキップ");
             }
@@ -639,7 +634,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             }
 
             if(RunModeUtility.CanTestPluginInstall(RunMode)) {
-                if(!ShowCommandLineTestPlugin(commandLine, environmentParameters)) {
+                if(!ShowCommandLineTestPlugin(parsedResult, environmentParameters)) {
                     return false;
                 }
             }

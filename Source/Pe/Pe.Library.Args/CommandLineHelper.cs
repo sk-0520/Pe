@@ -1,40 +1,53 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ContentTypeTextNet.Pe.Library.Args
 {
-    public static class CommandLineHelper
+    public class CommandLineHelper
     {
         #region property
 
-        public static string Delimiter { get; } = "--";
+        /// <summary>
+        /// オプション開始文字列。
+        /// </summary>
+        public string OptionPrefix { get; init; } = "--";
+        /// <summary>
+        /// オプションのキー・値の区切り文字列。
+        /// </summary>
+        /// <remarks>
+        /// <para>スペースは自動的に処理(配列として分割)されるため明示的にスペースを設定した場合の動作はあまり考慮しない(参照: CommandLineParserTest.Parse_SingleValues_Test)。</para>
+        /// </remarks>
+        public char Separator { get; init; } = '=';
+        /// <summary>
+        /// 説明文のインデント。
+        /// </summary>
+        public string DescriptionIndent { get; init; } = "    ";
 
         #endregion
 
         #region function
 
         /// <summary>
-        /// 長いキーが不正なら落とす。
+        /// キーが不正なら落とす。
         /// </summary>
-        /// <param name="longKey"></param>
-        /// <returns></returns>
-        public static string ThrowIfInvalidLongKey(string longKey)
+        /// <param name="key"></param>
+        /// <exception cref="CommandLineInvalidKeyException"></exception>
+        /// <remarks>
+        /// <para>実装メモ: `<see cref="CommandLineInvalidKeyException"/>.ThrowIfInvalidKey` ではなく <see cref="CommandLineHelper"/> で実装しているのはキー判定処理が変更される可能性があるため継承可能なこちらで実装している。</para>
+        /// </remarks>
+        public virtual void ThrowIfInvalidKey(string key)
         {
-            ArgumentException.ThrowIfNullOrWhiteSpace(longKey);
-            return longKey;
+            if(string.IsNullOrWhiteSpace(key)) {
+                throw new CommandLineInvalidKeyException();
+            }
         }
 
         /// <summary>
-        /// 左右の " を切り落とす。
+        /// 左右の囲い文字を切り落とす。
         /// </summary>
         /// <param name="s"></param>
-        /// <returns></returns>
-        public static string StripDoubleQuotes(string s)
+        /// <returns>切り落とされた文字列。存在しない場合は<paramref name="s"/>が返る。</returns>
+        /// <remarks>本処理では `"` を対象とするため、対象とするシステムに合わせる場合は継承先で対応すること。</remarks>
+        public virtual string StripEnclosing(string s)
         {
-            if(s.Length > "\"\"".Length && s[0] == '"' && s[^1] == '"') {
+            if("\"\"".Length < s.Length && s.StartsWith('"') && s.EndsWith('"')) {
                 return s.Substring(1, s.Length - 1 - 1);
             }
 
@@ -45,8 +58,9 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// 文字列をコマンドライン引数の値に変換する。
         /// </summary>
         /// <param name="input">対象文字列。</param>
-        /// <returns></returns>
-        public static string Escape(string input)
+        /// <returns>変換後の文字列。</returns>
+        /// <remarks>対象とするシステムに合わせる場合は継承先で対応すること。</remarks>
+        public virtual string Escape(string input)
         {
             if(string.IsNullOrWhiteSpace(input)) {
                 return "\"" + input + "\"";
@@ -59,16 +73,6 @@ namespace ContentTypeTextNet.Pe.Library.Args
             } else {
                 return "\"" + result + "\"";
             }
-        }
-
-        /// <summary>
-        /// <see cref="IDictionary{TKey, TValue}"/>をいい感じにつなげる。
-        /// </summary>
-        /// <param name="map"></param>
-        /// <returns></returns>
-        public static IEnumerable<string> ToCommandLineArguments(IReadOnlyDictionary<string, string> map, char separator = '=', string delimiter = "--")
-        {
-            return map.Select(i => delimiter + i.Key + separator + Escape(i.Value));
         }
 
         #endregion

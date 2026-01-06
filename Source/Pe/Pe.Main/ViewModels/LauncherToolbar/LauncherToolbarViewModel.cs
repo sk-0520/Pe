@@ -2,7 +2,10 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -14,8 +17,14 @@ using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
+using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar;
@@ -27,20 +36,9 @@ using ContentTypeTextNet.Pe.Main.ViewModels.LauncherGroup;
 using ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem;
 using ContentTypeTextNet.Pe.Main.Views.Extend;
 using ContentTypeTextNet.Pe.Main.Views.LauncherToolbar;
+using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
-using ContentTypeTextNet.Pe.Library.Common;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Threading;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
-using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.Args;
-using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
-using System.Diagnostics.CodeAnalysis;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 {
@@ -634,8 +632,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 }
 
                 if(e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                    var commandLineHelper = new CommandLineHelper();
                     var filePaths = (string[])e.Data.GetData(DataFormats.FileDrop);
-                    var argument = string.Join(' ', filePaths.Select(i => CommandLineHelper.Escape(i)));
+                    var argument = string.Join(' ', filePaths.Select(i => commandLineHelper.Escape(i)));
                     await ContextDispatcher.BeginAsync(async () => await ExecuteExtendDropDataAsync(launcherItemId, argument, cancellationToken));
                 } else if(e.Data.IsTextPresent()) {
                     var argument = TextUtility.JoinLines(e.Data.RequireText());

@@ -12,7 +12,13 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						class: "compatibility",
+						subject:
+							"コマンドライン引数処理を調整したため一部互換性が失われました(#1053)",
+						comments: [
+							'"--key=value" 形式はサポートされなくなりました',
+							"Pe が内部的に生成するコマンドライン引数には影響しません",
+						],
 					},
 					{
 						revision: "",

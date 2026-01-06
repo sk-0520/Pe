@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,8 +19,11 @@ using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
-using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.CrashReport.Models;
 using ContentTypeTextNet.Pe.Main.CrashReport.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
@@ -43,6 +45,7 @@ using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Element.NotifyLog;
 using ContentTypeTextNet.Pe.Main.Models.Element.ReleaseNote;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting;
+using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
 using ContentTypeTextNet.Pe.Main.Models.Element.StandardInputOutput;
 using ContentTypeTextNet.Pe.Main.Models.Element.Widget;
 using ContentTypeTextNet.Pe.Main.Models.KeyAction;
@@ -55,20 +58,15 @@ using ContentTypeTextNet.Pe.Main.Models.Plugin;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Theme;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
+using ContentTypeTextNet.Pe.Main.Models.WebView;
 using ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar;
 using ContentTypeTextNet.Pe.Main.ViewModels.Manager;
 using ContentTypeTextNet.Pe.Main.ViewModels.Note;
 using ContentTypeTextNet.Pe.Main.ViewModels.Widget;
+using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.Plugins.DefaultTheme;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using ContentTypeTextNet.Pe.Main.Models.WebView;
-using ContentTypeTextNet.Pe.Library.Args;
-using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
@@ -1839,10 +1837,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         {
             var environmentParameters = ApplicationDiContainer.Get<EnvironmentParameters>();
             var saveReportFilePath = Path.Combine(environmentParameters.MachineCrashReportDirectory.FullName, Path.ChangeExtension(rawReport.Name, "json"));
+            var commandLineHelper = new CommandLineHelper();
 
             var currentCommands = Environment.GetCommandLineArgs()
                 .Skip(1)
-                .Select(i => CommandLineHelper.Escape(i))
+                .Select(i => commandLineHelper.Escape(i))
                 .ToList()
             ;
 
@@ -1853,14 +1852,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             });
 
             var args = new List<string> {
-                "--run-mode", CommandLineHelper.Escape("crash-report"),
-                "--language", CommandLineHelper.Escape(System.Globalization.CultureInfo.CurrentCulture.Name),
-                "--post-uri", CommandLineHelper.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportUri.OriginalString),
-                "--src-uri", CommandLineHelper.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportSourceUri.OriginalString),
-                "--report-raw-file", CommandLineHelper.Escape(rawReport.FullName),
-                "--report-save-file", CommandLineHelper.Escape(saveReportFilePath),
-                "--execute-command", CommandLineHelper.Escape(environmentParameters.RootApplication.FullName),
-                "--execute-argument", CommandLineHelper.Escape(string.Join(" ", currentCommands)),
+                "--run-mode", commandLineHelper.Escape("crash-report"),
+                "--language", commandLineHelper.Escape(System.Globalization.CultureInfo.CurrentCulture.Name),
+                "--post-uri", commandLineHelper.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportUri.OriginalString),
+                "--src-uri", commandLineHelper.Escape(environmentParameters.ApplicationConfiguration.Api.CrashReportSourceUri.OriginalString),
+                "--report-raw-file", commandLineHelper.Escape(rawReport.FullName),
+                "--report-save-file", commandLineHelper.Escape(saveReportFilePath),
+                "--execute-command", commandLineHelper.Escape(environmentParameters.RootApplication.FullName),
+                "--execute-argument", commandLineHelper.Escape(string.Join(" ", currentCommands)),
             };
             if(autoSend) {
                 args.Add("--auto-send");

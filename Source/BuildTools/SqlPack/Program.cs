@@ -1,9 +1,4 @@
-using System;
-using System.IO;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Args;
-using ContentTypeTextNet.Pe.Library.Common;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace SqlPack
 {
@@ -11,15 +6,13 @@ namespace SqlPack
     {
         static void Main(string[] args)
         {
-            var commandLine = new CommandLine();
-            var sqlRootDirKey = commandLine.Add(longKey: "sql-root-dir", CommandLineKeyKind.Value);
-            var outputPathKey = commandLine.Add(longKey: "output", CommandLineKeyKind.Value);
-            if(!commandLine.Parse()) {
-                throw commandLine.ParseException!;
-            }
+            var commandLineParser = new CommandLineParser();
+            var sqlRootDirKey = commandLineParser.Add("sql-root-dir", CommandLineOptionKind.Value);
+            var outputPathKey = commandLineParser.Add("output", CommandLineOptionKind.Value);
+            var parsedResult = commandLineParser.Parse("SqlPack", args);
 
-            var rootDirPath = commandLine.Values[sqlRootDirKey].First;
-            var outPath = commandLine.Values[outputPathKey].First;
+            var rootDirPath = parsedResult.Values[sqlRootDirKey.Key].First;
+            var outPath = parsedResult.Values[outputPathKey.Key].First;
 
             var executor = new Executor(rootDirPath, outPath);
             executor.Run();
