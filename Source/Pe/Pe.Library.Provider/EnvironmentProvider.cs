@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Provider
 {
@@ -37,6 +36,12 @@ namespace ContentTypeTextNet.Pe.Library.Provider
 
             result = value;
             return true;
+        }
+
+        /// <inheritdoc cref="Environment.GetCommandLineArgs"/>
+        public virtual IReadOnlyList<string> GetCommandLineArgs()
+        {
+            return Environment.GetCommandLineArgs();
         }
 
         #endregion
