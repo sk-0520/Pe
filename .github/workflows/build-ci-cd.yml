@@ -151,53 +151,13 @@ jobs:
               draft: false,
             });
 
-      # - name: <Upload> Pe.Plugins.Reference.*
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: artifacts/Pe.Plugins.Reference/Pe.Plugins.Reference.*.*
-      #     file_glob: true
-      #     tag: ${{ steps.version.outputs.dot }}
-
-      # - name: <Upload> Applications
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: artifacts/Pe/Pe_*
-      #     file_glob: true
-      #     tag: ${{ steps.version.outputs.dot }}
-
-
-      # - name: <Upload> Html (Application/Pe.Plugins.Reference)
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: artifacts/history/*.html
-      #     file_glob: true
-      #     tag: ${{ steps.version.outputs.dot }}
-
-
-      # - name: <Upload> Update Information (Pe.Plugins.Reference)
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: artifacts/info/plugins/update-*.json
-      #     file_glob: true
-      #     tag: ${{ steps.version.outputs.dot }}
-
-      # - name: <Upload> Update Information (Application)
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: artifacts/info/pe/Output/update.json
-      #     file_glob: false
-      #     tag: ${{ steps.version.outputs.dot }}
-
+      # Pe.Server 側にバージョン連携
       - name: <Update> Version API
         if: github.ref == 'refs/heads/master'
         run: |
           curl -H "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" -H "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" -X POST ${{ env.PE_UPDATE_API_ENDPOINT }} --data '{ "version": "${{ steps.version.outputs.dot }}" }'
 
+  # デプロイが終わったのでいい感じにまとめたプログラムを生成
   deploy-after-package:
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/ci-test'
     needs:
