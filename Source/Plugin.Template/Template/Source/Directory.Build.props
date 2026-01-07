@@ -11,7 +11,6 @@
     <Product>Plugin</Product>
     <Copyright>Copyright © &lt;CREATED-YEAR&gt;-&lt;@YYYY@&gt; &lt;@NAME@&gt; &lt;@SITE@&gt;</Copyright>
     <Configurations>Debug;Release</Configurations>
-    <PathMap>$(MSBuildThisFileDirectory)=.</PathMap>
   </PropertyGroup>
 
   <PropertyGroup>
