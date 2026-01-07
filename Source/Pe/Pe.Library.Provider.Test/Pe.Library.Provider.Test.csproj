@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Pe.Library.Provider.Test</AssemblyName>
+    <RootNamespace>ContentTypeTextNet.Pe.Library.Provider.Test</RootNamespace>
+    <IsTestProject>true</IsTestProject>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pe.CommonTest\Pe.CommonTest.csproj" />
+    <ProjectReference Include="..\Pe.Library.Provider\Pe.Library.Provider.csproj" />
+  </ItemGroup>
+
+</Project>

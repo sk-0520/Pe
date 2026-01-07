@@ -13,25 +13,25 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
     /// </remarks>
     public abstract class EntityEraserBase
     {
-        protected EntityEraserBase(IDatabaseContextsPack contextsPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
-            : this(contextsPack.Main, contextsPack.Large, contextsPack.Temporary, statementLoader, loggerFactory)
-        { }
-
-        protected EntityEraserBase(IDatabaseContexts mainContexts, IDatabaseContexts fileContexts, IDatabaseContexts temporaryContexts, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+        protected EntityEraserBase(IDatabaseContext mainContext, IDatabaseContext fileContext, IDatabaseContext temporaryContext, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
         {
-            MainContexts = mainContexts ?? throw new ArgumentNullException(nameof(mainContexts));
-            LargeContexts = fileContexts ?? throw new ArgumentNullException(nameof(fileContexts));
-            TemporaryContexts = temporaryContexts ?? throw new ArgumentNullException(nameof(temporaryContexts));
-            StatementLoader = statementLoader ?? throw new ArgumentNullException(nameof(statementLoader));
+            MainContext = mainContext;
+            LargeContext = fileContext;
+            TemporaryContext = temporaryContext;
+            StatementLoader = statementLoader;
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
         }
 
+        protected EntityEraserBase(IDatabaseContextPack contextPack, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : this(contextPack.Main, contextPack.Large, contextPack.Temporary, statementLoader, loggerFactory)
+        { }
+
         #region property
 
-        private IDatabaseContexts MainContexts { get; }
-        private IDatabaseContexts LargeContexts { get; }
-        private IDatabaseContexts TemporaryContexts { get; }
+        private IDatabaseContext MainContext { get; }
+        private IDatabaseContext LargeContext { get; }
+        private IDatabaseContext TemporaryContext { get; }
         private IDatabaseStatementLoader StatementLoader { get; }
 
         /// <inheritdoc cref="ILoggerFactory"/>
@@ -50,9 +50,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
 
         public void Execute()
         {
-            ExecuteMainImpl(MainContexts.Context, StatementLoader, MainContexts.Implementation);
-            ExecuteLargeImpl(LargeContexts.Context, StatementLoader, LargeContexts.Implementation);
-            ExecuteTemporaryImpl(TemporaryContexts.Context, StatementLoader, TemporaryContexts.Implementation);
+            ExecuteMainImpl(MainContext, StatementLoader, MainContext.Implementation);
+            ExecuteLargeImpl(LargeContext, StatementLoader, LargeContext.Implementation);
+            ExecuteTemporaryImpl(TemporaryContext, StatementLoader, TemporaryContext.Implementation);
         }
 
         #endregion

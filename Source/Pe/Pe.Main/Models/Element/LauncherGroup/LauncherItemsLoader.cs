@@ -5,16 +5,16 @@ using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup
 {
     public class LauncherItemsLoader
     {
-        public LauncherItemsLoader(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        public LauncherItemsLoader(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
         {
             Context = context;
             StatementLoader = statementLoader;
-            Implementation = implementation;
             LoggerFactory = loggerFactory;
         }
 
@@ -22,7 +22,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup
 
         private IDatabaseContext Context { get; }
         private IDatabaseStatementLoader StatementLoader { get; }
-        private IDatabaseImplementation Implementation { get; }
         /// <inheritdoc cref="ILoggerFactory"/>
         private ILoggerFactory LoggerFactory { get; }
 
@@ -32,7 +31,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup
 
         private IEnumerable<LauncherItemId> LoadNormalIds(LauncherGroupId launcherGroupId)
         {
-            var dao = new LauncherGroupItemsEntityDao(Context, StatementLoader, Implementation, LoggerFactory);
+            var daoFactory = new AppDaoFactory(Context, StatementLoader, LoggerFactory);
+            var dao = daoFactory.Create<LauncherGroupItemsEntityDao>();
             return dao.SelectLauncherItemIds(launcherGroupId);
         }
 

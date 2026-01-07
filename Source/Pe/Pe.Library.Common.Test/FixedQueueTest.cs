@@ -174,6 +174,8 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
                 test.Enqueue(i);
             }
 
+            Assert.NotEmpty(test);
+
             int index = 0;
             foreach(var value in test) {
                 Assert.Equal((++index) * 10, value);
@@ -348,6 +350,8 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             foreach(var i in Enumerable.Range(0, test.Limit).Select(a => (a + 1) * 10)) {
                 test.Enqueue(i);
             }
+
+            Assert.NotEmpty(test);
 
             int index = 0;
             foreach(var value in test) {

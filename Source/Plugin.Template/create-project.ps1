@@ -354,21 +354,18 @@ if (!$suppressScm) {
 try {
 	Push-Location $parameters.source
 
-	$pluginTargets = @(
-		Join-Path -Path $parameters.source -ChildPath $PluginName
-		Join-Path -Path $parameters.source -ChildPath "${PluginName}.Test"
-	)
-
-	foreach ($pluginTarget in $pluginTargets) {
-		Write-Verbose "プロジェクトを追加: $pluginTarget"
-		Start-DotNet -ArgumentList sln, add, $pluginTarget
-	}
+	$solutionFileName = "${PluginName}.slnx"
+	$solutionPathName = Join-Path -Path $parameters.source -ChildPath $solutionFileName
 
 	Write-Verbose 'Peを追加'
 	$appDir = Join-Path -Path $parameters.source -ChildPath 'Pe' | Join-Path -ChildPath 'Source' | Join-Path -ChildPath 'Pe'
 	$items = @(
 		@{
 			project = 'Pe.Generator.Id'
+			directory = 'Pe\generator'
+		},
+		@{
+			project = 'Pe.Generator.Exception'
 			directory = 'Pe\generator'
 		},
 		@{
@@ -381,6 +378,10 @@ try {
 		},
 		@{
 			project = 'Pe.Library.Args'
+			directory = 'Pe\lib\library'
+		},
+		@{
+			project = 'Pe.Library.Provider'
 			directory = 'Pe\lib\library'
 		},
 		@{
@@ -429,8 +430,70 @@ try {
 		Start-DotNet -ArgumentList sln, add, $projectFilePath, --solution-folder, $item.directory
 	}
 
-	$solutionFileName = "${PluginName}.slnx"
-	$solutionPathName = Join-Path -Path $parameters.source -ChildPath $solutionFileName
+	# <Project> の子要素 <Platform> が追加されないプロジェクトを補正
+	$fixPlatformPaths = @(
+		'Pe/Source/Pe/Pe.Generator.Id/Pe.Generator.Id.csproj'
+	)
+	$solutionXml = [xml]::new()
+	$solutionXml.Load($solutionPathName)
+	foreach ($fixPlatformPath in $fixPlatformPaths) {
+		$projectNode = $solutionXml.SelectSingleNode("//Project[@Path='$fixPlatformPath']")
+		$platforms = @('x86', 'x64')
+		foreach ($platform in $platforms) {
+			$platformNode = $solutionXml.CreateElement('Platform')
+			$platformNode.SetAttribute('Solution', "*|$platform")
+			$platformNode.SetAttribute('Project', $platform)
+			$projectNode.AppendChild($platformNode) | Out-Null
+		}
+	}
+	$solutionXml.Save($solutionPathName)
+
+	# プラグインプロジェクトを補正・追加
+	$pluginTargets = @(
+		Join-Path -Path $parameters.source -ChildPath $PluginName
+		Join-Path -Path $parameters.source -ChildPath "${PluginName}.Test"
+	)
+
+	$packagePath = Join-Path -Path $parameters.source -ChildPath 'Pe' | Join-Path -ChildPath 'Directory.Packages.props'
+	$packageVersions = Select-Xml -Path $packagePath -XPath '//PackageVersion'
+
+	$packageMap = @{}
+	foreach ($packageVersion in $packageVersions) {
+		$i = $packageVersion.Node.GetAttribute('Include')
+		$v = $packageVersion.Node.GetAttribute('Version')
+		Write-Verbose "${i}: ${v}"
+		$packageMap[$i] = $v
+	}
+
+	foreach ($pluginTarget in $pluginTargets) {
+		# プロジェクトの NuGet パッケージバージョンを Pe に合わせる
+		$pluginProject = Join-Path -Path $pluginTarget -ChildPath ((Split-Path -Path $pluginTarget -Leaf) + '.csproj')
+		$projectXml = [xml]::new()
+		$projectXml.Load($pluginProject)
+
+		$isUpdate = $false
+		$nodes = $projectXml.SelectNodes('//PackageReference')
+		foreach ($node in $nodes) {
+			$packageName = $node.GetAttribute('Include')
+			$packageVersion = $node.GetAttribute('Version')
+			if ($packageMap.ContainsKey($packageName) -and ($packageVersion -ne $packageMap[$packageName])) {
+				$version = $packageMap[$packageName]
+				Write-Verbose "`t${packageName}: ${packageVersion} -> ${version}  [変更あり]"
+				$node.SetAttribute('Version', $version)
+				$isUpdate = $true
+			} else {
+				Write-Verbose "`t${packageName}: ${packageVersion} [変更なし]"
+			}
+		}
+		if ($isUpdate) {
+			Write-Verbose "プロジェクトのパッケージを更新: $pluginTarget"
+			$projectXml.Save($pluginProject)
+		}
+
+		Write-Verbose "プロジェクトを追加: $pluginTarget"
+		Start-DotNet -ArgumentList sln, add, $pluginTarget
+	}
+
 
 	# Write-Verbose "ソリューションからAnyCPUを破棄"
 	# $solutionFileName = Convert-TemplateValue 'TEMPLATE_PluginShortName.slnx'
@@ -439,6 +502,11 @@ try {
 	# 	| Where-Object { !$_.Contains('Any CPU') }
 	# Set-Content -Path $solutionFileName -Value $solutionContent
 
+	# スタートアップ設定
+	$solutionXml.Load($solutionPathName)
+	$projectNode = $solutionXml.SelectSingleNode("//Project[@Path='${PluginName}/${PluginName}.csproj']")
+	$projectNode.SetAttribute('DefaultStartup', 'true')
+	$solutionXml.Save($solutionPathName)
 
 	Write-Verbose 'NuGet 復元'
 	if (!$suppressBuild) {

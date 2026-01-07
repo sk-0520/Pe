@@ -19,7 +19,6 @@
 * `--option=value`
 * `--option "space value2"`
 * `--option="space value2"`
-* `"--option=space value2"`
 * `--switch`
 
 # 各値

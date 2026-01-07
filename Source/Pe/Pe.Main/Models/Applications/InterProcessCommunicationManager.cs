@@ -4,29 +4,25 @@
 #endif
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.IO.Pipes;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Core.Models.Serialization;
+using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Data;
-using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
 using ContentTypeTextNet.Pe.Main.Models.Plugin;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Theme;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Core.Models.Serialization;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using ContentTypeTextNet.Pe.Library.Args;
+#if !NOT_IPC
+using System.IO.Pipes;
+#endif
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {
@@ -57,18 +53,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             ApplicationDiContainer.Register<IDatabaseStatementLoader, ApplicationDatabaseStatementLoader>(new ApplicationDatabaseStatementLoader(environmentParameters.MainSqlDirectory, TimeSpan.FromMinutes(6), null, environmentParameters.ApplicationConfiguration.File.GivePriorityToFile, LoggerFactory));
             ApplicationDiContainer.RegisterDatabase(factory, delayWriterWaitTimePack, LoggerFactory);
 
-            CommandLine = new CommandLine(e.Args, false);
-            var commandLineIpcHandle = CommandLine.Add(longKey: CommandLineKeyIpcHandle, kind: CommandLineKeyKind.Value);
-            var commandLineIpcMode = CommandLine.Add(longKey: CommandLineKeyIpcMode, kind: CommandLineKeyKind.Value);
-            CommandLineIpcFile = CommandLine.Add(longKey: CommandLineKeyIpcFile, kind: CommandLineKeyKind.Value);
+            CommandLine = new CommandLineParser();
+            var commandLineIpcHandle = CommandLine.Add(new CommandLineOption(CommandLineKeyIpcHandle, CommandLineOptionKind.Value, string.Empty));
+            var commandLineIpcMode = CommandLine.Add(new CommandLineOption(CommandLineKeyIpcMode, CommandLineOptionKind.Value, string.Empty));
+            CommandLineIpcFile = CommandLine.Add(new CommandLineOption(CommandLineKeyIpcFile, CommandLineOptionKind.Value, string.Empty));
 
             Logger.LogInformation("コマンドライン解析開始: {0}", e.Args.JoinString(" "));
-            if(!CommandLine.Parse()) {
-                throw new ArgumentException("parse error: " + e.Args.JoinString(" "), nameof(e) + "." + nameof(e.Args));
-            }
+            ParsedResult = CommandLine.Parse("Ipc", e.Args);
+
 
             Logger.LogInformation("プロセス間通信処理方法取得開始");
-            if(!CommandLine.Values.TryGetValue(commandLineIpcMode, out var ipcModeValue)) {
+            if(!ParsedResult.Values.TryGetValue(commandLineIpcMode.Key, out var ipcModeValue)) {
                 throw new ArgumentException(commandLineIpcMode.ToString(), nameof(e) + "." + nameof(e.Args));
             }
             if(!Enum.TryParse<IpcMode>(ipcModeValue.First, out var ipcMode)) {
@@ -79,7 +74,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
 #if !NOT_IPC
             Logger.LogInformation("パイプハンドル取得開始");
-            if(!CommandLine.Values.TryGetValue(commandLineIpcHandle, out var ipcHandleValue)) {
+            if(!ParsedResult.Values.TryGetValue(commandLineIpcHandle.Key, out var ipcHandleValue)) {
                 throw new ArgumentException(commandLineIpcHandle.ToString(), nameof(e) + "." + nameof(e.Args));
             }
             Logger.LogInformation("パイプハンドル: {0}", ipcHandleValue.First);
@@ -117,7 +112,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         private ClipboardManager ClipboardManager { get; set; }
         private UserAgentManager UserAgentManager { get; set; }
 
-        private CommandLine CommandLine { get; }
+        private CommandLineParser CommandLine { get; }
+        private CommandLineParsedResult ParsedResult { get; }
 
         private IpcMode IpcMode { get; }
 #if !NOT_IPC
@@ -126,7 +122,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
         #region 各処理ごとのコマンドライン
 
-        public CommandLineKey CommandLineIpcFile { get; }
+        public CommandLineOption CommandLineIpcFile { get; }
 
         #endregion
 
@@ -153,7 +149,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
 
             var pluginInstallData = pluginInstaller.LoadPluginInfo(
-                new FileInfo(CommandLine.Values[CommandLineIpcFile].First)
+                new FileInfo(ParsedResult.Values[CommandLineIpcFile.Key].First)
             );
 
             return pluginInstallData;
@@ -183,7 +179,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             //serializer.Save(responseObject, fs);
         }
 
-#endregion
+        #endregion
 
         #region DisposerBase
 

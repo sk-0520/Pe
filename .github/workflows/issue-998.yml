@@ -33,7 +33,7 @@ jobs:
 
       - name: <Install> NPM
         shell: bash
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: <Test> Script
         shell: bash

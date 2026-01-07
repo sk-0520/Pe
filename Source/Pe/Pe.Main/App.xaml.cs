@@ -2,11 +2,11 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
-using Forms = System.Windows.Forms;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using Microsoft.Extensions.Logging;
+using Forms = System.Windows.Forms;
 
 namespace ContentTypeTextNet.Pe.Main
 {
@@ -73,7 +73,7 @@ namespace ContentTypeTextNet.Pe.Main
             Logger = initializer.Logging.Factory.CreateLogger(GetType());
             RunMode = initializer.RunMode;
 
-            switch(initializer.RunMode) {
+            switch(RunMode) {
                 case Models.Data.RunMode.Normal: {
                         ApplicationManager = new ApplicationManager(initializer);
 
@@ -98,9 +98,12 @@ namespace ContentTypeTextNet.Pe.Main
 
                 case Models.Data.RunMode.CrashReport: {
                         ShutdownMode = ShutdownMode.OnMainWindowClose;
-                        var options = new Library.Args.CommandLineSimpleConverter<CrashReport.Models.Data.CrashReportOptions>(new Library.Args.CommandLine(e.Args, false)).GetMappingData();
-                        if(options == null) {
-                            Logger.LogError("クラッシュレポート起動できず: {0}", string.Join(" ", e.Args));
+                        var converter = new Library.Args.CommandLineConverter(initializer.Logging.Factory);
+                        CrashReport.Models.Data.CrashReportOptions? options;
+                        try {
+                            options = converter.Convert<CrashReport.Models.Data.CrashReportOptions>(new Library.Args.CommandLineParser(), e.Args);
+                        } catch(Exception ex) {
+                            Logger.LogError(ex, "クラッシュレポート起動できず: {0}", string.Join(" ", e.Args));
                             Shutdown(-1);
                             return;
                         }

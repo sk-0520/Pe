@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -229,6 +230,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
                 return thickness;
             }
             [Unused(UnusedKinds.TwoWayBinding)]
+            [SuppressMessage("SonarAnalyzer", "S108:Either remove or fill this block of code.", Justification = "TwoWay じゃないと動かんねん")]
+            [SuppressMessage("SonarAnalyzer", "S3237:Use the 'value' contextual keyword in this property set accessor declaration.", Justification = "TwoWay じゃないと動かんねん")]
             set { }
         }
         [ThemeProperty]

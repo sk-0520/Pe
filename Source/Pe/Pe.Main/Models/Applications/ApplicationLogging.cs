@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
         #endregion
 
-        public ApplicationLogging(int internalLogSize, string loggingConfigFilePath, string outputPath, string withLog, bool createDirectory, bool isFullTrace)
+        public ApplicationLogging(int internalLogSize, string loggingConfigFilePath, string outputPath, string withLog, bool createDirectory, bool isFullTrace, TimeProvider timeProvider)
         {
             ArgumentOutOfRangeException.ThrowIfNegative(internalLogSize);
 
@@ -68,7 +68,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 // ディレクトリ指定であればタイムスタンプ付きでファイル生成(プレーンログ)
                 var filePath = expandedOutputPath;
                 if(Directory.Exists(expandedOutputPath)) {
-                    var fileName = PathUtility.AddExtension(DateTime.Now.ToString("yyyy-MM-dd_HHmmss", CultureInfo.InvariantCulture), "log");
+                    var fileName = PathUtility.AddExtension(timeProvider.GetLocalNow().DateTime.ToString("yyyy-MM-dd_HHmmss", CultureInfo.InvariantCulture), "log");
                     filePath = Path.Combine(expandedOutputPath, fileName);
                 }
 

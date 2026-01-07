@@ -54,7 +54,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
                 case LauncherItemKind.Addon: {
                         var pluginId = MainDatabaseBarrier.ReadData(c => {
-                            var launcherAddonsEntityDao = new LauncherAddonsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                            var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                            var launcherAddonsEntityDao = daoFactory.Create<LauncherAddonsEntityDao>();
                             return launcherAddonsEntityDao.SelectAddonPluginId(LauncherItemId);
                         });
                         if(!LauncherItemAddonFinder.Exists(pluginId)) {
@@ -88,7 +89,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             BadgeData badge;
             if(isEnabledBadge) {
                 using(var context = MainDatabaseBarrier.WaitRead()) {
-                    var launcherBadgesEntityDao = new LauncherBadgesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                    var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                    var launcherBadgesEntityDao = daoFactory.Create<LauncherBadgesEntityDao>();
 
                     badge = launcherBadgesEntityDao.SelectLauncherBadge(LauncherItemId) ?? BadgeData.CreateEmpty();
                 }
@@ -96,25 +98,25 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                 badge = BadgeData.CreateEmpty();
             }
 
-                switch(iconSource) {
-                    case IconImageLoaderBase iconImageLoader:
-                        return new IconViewerViewModel(iconImageLoader, badge, contextDispatcher, LoggerFactory) {
-                            UseCache = useCache,
-                        };
+            switch(iconSource) {
+                case IconImageLoaderBase iconImageLoader:
+                    return new IconViewerViewModel(iconImageLoader, badge, contextDispatcher, LoggerFactory) {
+                        UseCache = useCache,
+                    };
 
-                    case ILauncherItemExtension launcherItemExtension:
-                        return new IconViewerViewModel(LauncherItemId, launcherItemExtension, badge, contextDispatcher, LoggerFactory) {
-                            UseCache = useCache,
-                        };
+                case ILauncherItemExtension launcherItemExtension:
+                    return new IconViewerViewModel(LauncherItemId, launcherItemExtension, badge, contextDispatcher, LoggerFactory) {
+                        UseCache = useCache,
+                    };
 
-                    case DependencyObject dependencyObject:
-                        return new IconViewerViewModel(dependencyObject, badge, contextDispatcher, LoggerFactory) {
-                            UseCache = useCache,
-                        };
+                case DependencyObject dependencyObject:
+                    return new IconViewerViewModel(dependencyObject, badge, contextDispatcher, LoggerFactory) {
+                        UseCache = useCache,
+                    };
 
-                    default:
-                        throw new NotImplementedException();
-                }
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         #endregion

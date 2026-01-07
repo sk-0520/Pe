@@ -28,6 +28,16 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         #region function
 
+        private static bool IsLowerAlphabet(char c)
+        {
+            return 'a' <= c && c <= 'z';
+        }
+
+        private static bool IsUpperAlphabet(char c)
+        {
+            return 'A' <= c && c <= 'Z';
+        }
+
         private string PascalToSeparatorCase(string source, char separator)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(source));
@@ -138,6 +148,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
             var isUpper = true;
             var builder = new StringBuilder(source.Length);
+
             for(var i = 0; i < source.Length; i++) {
                 var c = source[i];
                 if(c == separator) {
@@ -150,13 +161,13 @@ namespace ContentTypeTextNet.Pe.Library.Common
                         continue;
                     }
 
-                    if('a' <= next && next <= 'z') {
+                    if(IsLowerAlphabet(next)) {
                         builder.Append(char.ToUpper(next, CultureInfo));
                         i += 1;
                         isUpper = false;
                         continue;
                     }
-                    if('A' <= next && next <= 'Z') {
+                    if(IsUpperAlphabet(next)) {
                         builder.Append(next);
                         i += 1;
                         isUpper = false;

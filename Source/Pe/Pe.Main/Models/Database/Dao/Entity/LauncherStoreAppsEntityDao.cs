@@ -30,8 +30,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
 
         #endregion
 
-        public LauncherStoreAppsEntityDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(context, statementLoader, implementation, loggerFactory)
+        public LauncherStoreAppsEntityDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(context, statementLoader, loggerFactory)
         { }
 
         #region function

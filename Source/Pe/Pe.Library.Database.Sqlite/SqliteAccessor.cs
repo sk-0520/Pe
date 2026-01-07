@@ -11,10 +11,6 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
 {
     public class SqliteAccessor: DatabaseAccessor<SQLiteConnection>
     {
-        public SqliteAccessor(IDatabaseFactory databaseFactory, ILogger logger)
-            : base(databaseFactory, logger)
-        { }
-
         public SqliteAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
             : base(databaseFactory, loggerFactory)
         { }
@@ -29,7 +25,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
         /// <param name="destinationName">コピー先DB名。</param>
         public void CopyTo(string sourceName, SqliteAccessor destination, string destinationName)
         {
-            Connection.BackupDatabase(destination.Connection, destinationName, sourceName, -1, null, -1);
+            DbConnection.BackupDatabase(destination.DbConnection, destinationName, sourceName, -1, null, -1);
         }
 
         #endregion
@@ -40,13 +36,17 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(false, this);
+            // SQLite は複数スレッドでトランザクション開くと死ぬのでトランザクション実体なしで仮想的に対応。
+            return new ReadOnlyDatabaseTransaction(BaseDbConnection, null, Implementation, LoggerFactory);
         }
+
         public override IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)
         {
             ThrowIfDisposed();
 
-            return new ReadOnlyDatabaseTransaction(false, this, isolationLevel);
+            // `SqliteAccessor.BeginReadOnlyTransaction()` でトランザクションは仮想的に扱うことにより、
+            // 実際のトランザクションは開かないため isolationLevel は意味を持たない。
+            return BeginReadOnlyTransaction();
         }
 
         #endregion

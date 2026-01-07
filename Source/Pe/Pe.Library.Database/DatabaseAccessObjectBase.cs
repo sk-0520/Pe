@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using Microsoft.Extensions.Logging;
+using System.Threading;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
@@ -37,15 +37,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// </summary>
         /// <param name="context"></param>
         /// <param name="statementLoader"></param>
-        /// <param name="implementation"></param>
         /// <param name="loggerFactory"></param>
-        protected DatabaseAccessObjectBase(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        protected DatabaseAccessObjectBase(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
             Context = context;
             StatementLoader = statementLoader;
-            Implementation = implementation;
         }
 
         #region property
@@ -61,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <summary>
         /// データベースの実装依存専用窓口。
         /// </summary>
-        protected IDatabaseImplementation Implementation { get; }
+        protected IDatabaseImplementation Implementation => Context.Implementation;
         /// <summary>
         /// ログ出力担当。
         /// </summary>
@@ -140,7 +138,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #region function
 
         /// <summary>
-        /// <see cref="IDatabaseStatementLoader.LoadStatementByCurrent(Type, string)"/>のヘルパー関数。
+        /// <see cref="IDatabaseStatementLoaderExtensions.LoadStatementByCurrent(IDatabaseStatementLoader, Type, string)"/> のヘルパー関数。
         /// </summary>
         /// <param name="callerMemberName"><see cref="CallerMemberNameAttribute"/></param>
         /// <returns></returns>

@@ -81,6 +81,54 @@ namespace ContentTypeTextNet.Pe.CommonTest.Test
         }
 
         [Fact]
+        public void InitializeMethod_Work_CombineGhostPath_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var actual = testIO.Work.CombineGhostPath("path");
+            Assert.False(File.Exists(actual));
+        }
+
+        [Fact]
+        public void InitializeMethod_Work_CombineGhostPath_File_Throw_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var path = testIO.Work.CreateEmptyFile("path");    
+            var exception = Assert.Throws<TestIOException>(() => testIO.Work.CombineGhostPath("path"));
+            Assert.StartsWith("Path already exists:", exception.Message);
+            Assert.Contains(path.FullName, exception.Message);
+        }
+
+        [Fact]
+        public void InitializeMethod_Work_CombineGhostPath_Dir_Throw_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var path = testIO.Work.CreateDirectory("path");
+            var exception = Assert.Throws<TestIOException>(() => testIO.Work.CombineGhostPath("path"));
+            Assert.StartsWith("Path already exists:", exception.Message);
+            Assert.Contains(path.Directory.FullName, exception.Message);
+        }
+
+        [Fact]
+        public void InitializeMethod_Work_CreateGhostFile_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var file = testIO.Work.CreateGhostFile("path");
+            Assert.False(file.Exists);
+            file.Create().Dispose();
+            Assert.True(file.Exists);
+        }
+
+        [Fact]
+        public void InitializeMethod_Work_CreateGhostDirectory_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            var dir = testIO.Work.CreateGhostDirectory("path");
+            Assert.False(dir.Exists);
+            dir.Create();
+            Assert.True(dir.Exists);
+        }
+
+        [Fact]
         public void InitializeMethod_Data_Test()
         {
             var testIO = TestIO.InitializeMethod(this);

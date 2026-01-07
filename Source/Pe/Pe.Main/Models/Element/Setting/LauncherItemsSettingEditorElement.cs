@@ -93,7 +93,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             var launcherItemManager = new LauncherItemManager();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherItemsDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsDao = daoFactory.Create<LauncherItemsEntityDao>();
 
                 var item = new LauncherItemData() {
                     LauncherItemId = newLauncherItemId,
@@ -121,8 +122,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                             Debug.Assert(pluginId == PluginId.Empty);
                             Debug.Assert(launcherSeparatorKind == LauncherSeparatorKind.None);
 
-                            var launcherFilesDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                            var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                            var launcherFilesDao = daoFactory.Create<LauncherFilesEntityDao>();
+                            var launcherRedoItemsEntityDao = daoFactory.Create<LauncherRedoItemsEntityDao>();
 
                             var file = new LauncherFileData();
                             launcherFilesDao.InsertFile(item.LauncherItemId, file, DatabaseCommonStatus.CreateCurrentAccount());
@@ -134,7 +135,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                             Debug.Assert(pluginId == PluginId.Empty);
                             Debug.Assert(launcherSeparatorKind == LauncherSeparatorKind.None);
 
-                            var launcherStoreAppsEntityDao = new LauncherStoreAppsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                            var launcherStoreAppsEntityDao = daoFactory.Create<LauncherStoreAppsEntityDao>();
 
                             var store = new LauncherStoreAppData();
                             launcherStoreAppsEntityDao.InsertStoreApp(item.LauncherItemId, store, DatabaseCommonStatus.CreateCurrentAccount());
@@ -145,7 +146,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                             Debug.Assert(pluginId != PluginId.Empty);
                             Debug.Assert(launcherSeparatorKind == LauncherSeparatorKind.None);
 
-                            var launcherAddonsEntityDao = new LauncherAddonsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                            var launcherAddonsEntityDao = daoFactory.Create<LauncherAddonsEntityDao>();
 
                             launcherAddonsEntityDao.InsertAddonPluginId(item.LauncherItemId, pluginId, DatabaseCommonStatus.CreateCurrentAccount());
                         }
@@ -154,7 +155,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                     case LauncherItemKind.Separator: {
                             Debug.Assert(pluginId == PluginId.Empty);
 
-                            var launcherSeparatorsEntityDao = new LauncherSeparatorsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                            var launcherSeparatorsEntityDao = daoFactory.Create<LauncherSeparatorsEntityDao>();
 
                             var data = new LauncherSeparatorData() {
                                 Kind = launcherSeparatorKind,
@@ -197,11 +198,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             var tags = launcherFactory.GetTags(file).ToList();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherItemsDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherTagsDao = new LauncherTagsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherFilesDao = new LauncherFilesEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherGroupItemsDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherRedoItemsEntityDao = new LauncherRedoItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsDao = daoFactory.Create<LauncherItemsEntityDao>();
+                var launcherTagsDao = daoFactory.Create<LauncherTagsEntityDao>();
+                var launcherFilesDao = daoFactory.Create<LauncherFilesEntityDao>();
+                var launcherGroupItemsDao = daoFactory.Create<LauncherGroupItemsEntityDao>();
+                var launcherRedoItemsEntityDao = daoFactory.Create<LauncherRedoItemsEntityDao>();
 
                 launcherItemsDao.InsertLauncherItem(data.Item, DatabaseCommonStatus.CreateCurrentAccount());
                 launcherFilesDao.InsertFile(data.Item.LauncherItemId, data.File, DatabaseCommonStatus.CreateCurrentAccount());
@@ -251,12 +253,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextPack)
         {
             foreach(var item in AllLauncherItems.Where(i => !i.IsLazyLoad)) {
-                var needIconClear = item.SaveItem(contextsPack);
+                var needIconClear = item.SaveItem(contextPack);
                 if(needIconClear) {
-                    item.ClearIcon(contextsPack.Large.Context, contextsPack.Large.Implementation);
+                    item.ClearIcon(contextPack.Large);
                 }
             }
         }

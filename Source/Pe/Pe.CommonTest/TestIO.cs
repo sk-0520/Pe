@@ -197,6 +197,40 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// <inheritdoc cref="CreateTextFile(string, string, Encoding)"/>
         public FileInfo CreateTextFile(string name, string content) => CreateTextFile(name, content, Encoding.UTF8);
 
+        /// <summary>
+        /// 存在しないパスの生成。
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public string CombineGhostPath(string name)
+        {
+            var path = CombinePath(name);
+            if(File.Exists(path) || System.IO.Directory.Exists(path)) {
+                throw new TestIOException($"Path already exists: {path}.");
+            }
+            return path;
+        }
+
+        /// <summary>
+        /// 存在しない <see cref="FileInfo"/> の生成。
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public FileInfo CreateGhostFile(string name)
+        {
+            return new FileInfo(CombineGhostPath(name));
+        }
+
+        /// <summary>
+        /// 存在しない <see cref="DirectoryInfo"/> の生成。
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public DirectoryInfo CreateGhostDirectory(string name)
+        {
+            return new DirectoryInfo(CombineGhostPath(name));
+        }
+
         #endregion
     }
 

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Pe.Generator.Exception.Test</AssemblyName>
+    <RootNamespace>ContentTypeTextNet.Pe.Generator.Exception.Test</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pe.Generator.Exception\Pe.Generator.Exception.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <!--<ReferenceOutputAssembly>false</ReferenceOutputAssembly>-->
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>

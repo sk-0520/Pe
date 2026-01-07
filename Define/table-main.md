@@ -111,25 +111,26 @@ ___
 
 ## layout
 
-| PK | NN |      FK      |       論理カラム名       |     物理カラム名      | 論理データ型 |  マッピング型   |       コメント       |
-|:--:|:--:|:-------------|:-------------------------|:----------------------|:-------------|:----------------|:---------------------|
-| x  | x  |              | 世代                     | Generation            | integer      | System.Int64    | 最大のものを使用する |
-|    | x  |              | 作成タイムスタンプ       | CreatedTimestamp      | datetime     | System.DateTime | UTC                  |
-|    | x  |              | 作成ユーザー名           | CreatedAccount        | text         | System.String   |                      |
-|    | x  |              | 作成プログラム名         | CreatedProgramName    | text         | System.String   |                      |
-|    | x  |              | 作成プログラムバージョン | CreatedProgramVersion | text         | System.Version  |                      |
-|    | x  |              | 更新タイムスタンプ       | UpdatedTimestamp      | datetime     | System.DateTime | UTC                  |
-|    | x  |              | 更新ユーザー名           | UpdatedAccount        | text         | System.String   |                      |
-|    | x  |              | 更新プログラム名         | UpdatedProgramName    | text         | System.String   |                      |
-|    | x  |              | 更新プログラムバージョン | UpdatedProgramVersion | text         | System.Version  |                      |
-|    | x  |              | 更新回数                 | UpdatedCount          | integer      | System.Int64    | 0始まり              |
-|    | x  | Fonts.FontId | フォント                 | FontId                | text         | System.Guid     |                      |
-|    | x  |              | タイトル設定             | TitleKind             | text         | System.String   |                      |
-|    | x  |              | 位置種別                 | LayoutKind            | text         | System.String   |                      |
-|    | x  |              | 前景色                   | ForegroundColor       | text         | System.String   | #AARRGGBB            |
-|    | x  |              | 背景色                   | BackgroundColor       | text         | System.String   | #AARRGGBB            |
-|    | x  |              | 最前面                   | IsTopmost             | boolean      | System.Boolean  |                      |
-|    | x  |              | タイトル位置             | CaptionPosition       | text         | System.String   |                      |
+| PK | NN |      FK      |            論理カラム名            |     物理カラム名      | 論理データ型 |  マッピング型   |       コメント       |
+|:--:|:--:|:-------------|:-----------------------------------|:----------------------|:-------------|:----------------|:---------------------|
+| x  | x  |              | 世代                               | Generation            | integer      | System.Int64    | 最大のものを使用する |
+|    | x  |              | 作成タイムスタンプ                 | CreatedTimestamp      | datetime     | System.DateTime | UTC                  |
+|    | x  |              | 作成ユーザー名                     | CreatedAccount        | text         | System.String   |                      |
+|    | x  |              | 作成プログラム名                   | CreatedProgramName    | text         | System.String   |                      |
+|    | x  |              | 作成プログラムバージョン           | CreatedProgramVersion | text         | System.Version  |                      |
+|    | x  |              | 更新タイムスタンプ                 | UpdatedTimestamp      | datetime     | System.DateTime | UTC                  |
+|    | x  |              | 更新ユーザー名                     | UpdatedAccount        | text         | System.String   |                      |
+|    | x  |              | 更新プログラム名                   | UpdatedProgramName    | text         | System.String   |                      |
+|    | x  |              | 更新プログラムバージョン           | UpdatedProgramVersion | text         | System.Version  |                      |
+|    | x  |              | 更新回数                           | UpdatedCount          | integer      | System.Int64    | 0始まり              |
+|    | x  | Fonts.FontId | フォント                           | FontId                | text         | System.Guid     |                      |
+|    | x  |              | タイトル設定                       | TitleKind             | text         | System.String   |                      |
+|    | x  |              | 位置種別                           | LayoutKind            | text         | System.String   |                      |
+|    | x  |              | 前景色                             | ForegroundColor       | text         | System.String   | #AARRGGBB            |
+|    | x  |              | 背景色                             | BackgroundColor       | text         | System.String   | #AARRGGBB            |
+|    | x  |              | 最前面                             | IsTopmost             | boolean      | System.Boolean  |                      |
+|    | x  |              | タイトル位置                       | CaptionPosition       | text         | System.String   |                      |
+|    | x  |              | スクリーンキャプチャから除外するか | ExcludeScreenCapture  | boolean      | System.Boolean  |                      |
 
 ## index
 
@@ -818,15 +819,15 @@ ___
 
 ## layout
 
-| PK | NN |      FK      |       論理カラム名       |     物理カラム名      | 論理データ型 |  マッピング型   |                    コメント                    |
-|:--:|:--:|:-------------|:-------------------------|:----------------------|:-------------|:----------------|:-----------------------------------------------|
-| x  | x  | Notes.NoteId | ノートID                 | NoteId                | text         | System.Guid     |                                                |
-|    | x  |              | 作成タイムスタンプ       | CreatedTimestamp      | datetime     | System.DateTime | UTC                                            |
-|    | x  |              | 作成ユーザー名           | CreatedAccount        | text         | System.String   |                                                |
-|    | x  |              | 作成プログラム名         | CreatedProgramName    | text         | System.String   |                                                |
-|    | x  |              | 作成プログラムバージョン | CreatedProgramVersion | text         | System.Version  |                                                |
-|    | x  |              | X位置                    | X                     | real         | System.Double   |                                                |
-|    | x  |              | Y位置                    | Y                     | real         | System.Double   |                                                |
+| PK | NN |      FK      |       論理カラム名       |     物理カラム名      | 論理データ型 |  マッピング型   | コメント |
+|:--:|:--:|:-------------|:-------------------------|:----------------------|:-------------|:----------------|:---------|
+| x  | x  | Notes.NoteId | ノートID                 | NoteId                | text         | System.Guid     |          |
+|    | x  |              | 作成タイムスタンプ       | CreatedTimestamp      | datetime     | System.DateTime | UTC      |
+|    | x  |              | 作成ユーザー名           | CreatedAccount        | text         | System.String   |          |
+|    | x  |              | 作成プログラム名         | CreatedProgramName    | text         | System.String   |          |
+|    | x  |              | 作成プログラムバージョン | CreatedProgramVersion | text         | System.Version  |          |
+|    | x  |              | X位置                    | X                     | real         | System.Double   |          |
+|    | x  |              | Y位置                    | Y                     | real         | System.Double   |          |
 
 ## index
 

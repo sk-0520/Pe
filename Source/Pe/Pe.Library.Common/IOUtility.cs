@@ -2,28 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+#if !DOC_FX
+using ContentTypeTextNet.Pe.Generator.Exception;
+#else
+// docfx 用ダミー
+[System.AttributeUsage(System.AttributeTargets.Class)]
+file sealed class GenerateExceptionAttribute: System.Attribute
+{
+    public GenerateExceptionAttribute()
+    { }
+}
+#endif
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
 
-    [Serializable]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class IOUtilityException: IOException
-    {
-        public IOUtilityException() { }
-        public IOUtilityException(string message) : base(message) { }
-        public IOUtilityException(string message, Exception inner) : base(message, inner) { }
-
-        [Obsolete]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Info Code Smell", "S1133:Deprecated code should be removed")]
-        protected IOUtilityException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
-    }
+    [GenerateException]
+    public partial class IOUtilityException: IOException
+    { }
 
     /// <summary>
     /// ファイル関連の共通処理。

@@ -1,11 +1,12 @@
+using System;
 using System.Linq;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Launcher;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Plugin
@@ -15,12 +16,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
     /// </summary>
     public class PluginUninstaller
     {
-        public PluginUninstaller(IDatabaseContextsPack databaseContextsPack, IDatabaseStatementLoader statementLoader, EnvironmentParameters environmentParameters, ILoggerFactory loggerFactory)
+        public PluginUninstaller(IDatabaseContextPack databaseContextPack, IDatabaseStatementLoader statementLoader, EnvironmentParameters environmentParameters, ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
             Logger = LoggerFactory.CreateLogger(GetType());
 
-            DatabaseContextsPack = databaseContextsPack;
+            DatabaseContextPack = databaseContextPack;
 
             StatementLoader = statementLoader;
             EnvironmentParameters = environmentParameters;
@@ -28,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         #region property
 
-        private IDatabaseContextsPack DatabaseContextsPack { get; }
+        private IDatabaseContextPack DatabaseContextPack { get; }
         private IDatabaseStatementLoader StatementLoader { get; }
         private EnvironmentParameters EnvironmentParameters { get; }
 
@@ -37,9 +38,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         /// <inheritdoc cref="ILogger"/>
         private ILogger Logger { get; }
 
-        private IDatabaseContexts MainContexts => DatabaseContextsPack.Main;
-        private IDatabaseContexts FileContexts => DatabaseContextsPack.Large;
-        private IDatabaseContexts TemporaryContexts => DatabaseContextsPack.Temporary;
+        private IDatabaseContext MainContext => DatabaseContextPack.Main;
+        private IDatabaseContext LargeContext => DatabaseContextPack.Large;
+        private IDatabaseContext TemporaryContext => DatabaseContextPack.Temporary;
 
         #endregion
 
@@ -69,34 +70,37 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         private void UninstallPersistence(IPluginIdentifiers pluginIdentifiers)
         {
+            var mainDaoFactory = new AppDaoFactory(MainContext, StatementLoader, LoggerFactory);
+            var largeDaoFactory = new AppDaoFactory(LargeContext, StatementLoader, LoggerFactory);
+
             // デカいデータ破棄
-            var pluginValuesEntityDao = new PluginValuesEntityDao(FileContexts.Context, StatementLoader, FileContexts.Implementation, LoggerFactory);
+            var pluginValuesEntityDao = largeDaoFactory.Create<PluginValuesEntityDao>();
             pluginValuesEntityDao.DeletePluginValuesByPluginId(pluginIdentifiers.PluginId);
 
             // ウィジェットデータ破棄
-            var pluginWidgetSettingsEntityDao = new PluginWidgetSettingsEntityDao(MainContexts.Context, StatementLoader, MainContexts.Implementation, LoggerFactory);
+            var pluginWidgetSettingsEntityDao = mainDaoFactory.Create<PluginWidgetSettingsEntityDao>();
             pluginWidgetSettingsEntityDao.DeletePluginWidgetSettingsByPluginId(pluginIdentifiers.PluginId);
 
             // ランチャーアイテム系列の対象データを連鎖的に破棄(キー設定はきつない？)
-            var launcherAddonsEntityDao = new LauncherAddonsEntityDao(MainContexts.Context, StatementLoader, MainContexts.Implementation, LoggerFactory);
+            var launcherAddonsEntityDao = mainDaoFactory.Create<LauncherAddonsEntityDao>();
             var deleteTargetLauncherItemIds = launcherAddonsEntityDao.SelectLauncherItemIdsByPluginId(pluginIdentifiers.PluginId).ToArray();
             launcherAddonsEntityDao.DeleteLauncherAddonsByPluginId(pluginIdentifiers.PluginId);
 
-            var pluginVersionChecksEntityDao = new PluginVersionChecksEntityDao(MainContexts.Context, StatementLoader, MainContexts.Implementation, LoggerFactory);
+            var pluginVersionChecksEntityDao = mainDaoFactory.Create<PluginVersionChecksEntityDao>();
             pluginVersionChecksEntityDao.DeletePluginVersionChecks(pluginIdentifiers.PluginId);
 
-            var pluginLauncherItemSettingsEntityDao = new PluginLauncherItemSettingsEntityDao(MainContexts.Context, StatementLoader, MainContexts.Implementation, LoggerFactory);
+            var pluginLauncherItemSettingsEntityDao = mainDaoFactory.Create<PluginLauncherItemSettingsEntityDao>();
             pluginLauncherItemSettingsEntityDao.DeletePluginLauncherItemSettingsByPluginId(pluginIdentifiers.PluginId);
 
             foreach(var deleteTargetLauncherItemId in deleteTargetLauncherItemIds) {
-                var launcherEntityEraser = new LauncherEntityEraser(deleteTargetLauncherItemId, LauncherItemKind.Addon, MainContexts, FileContexts, TemporaryContexts, StatementLoader, LoggerFactory);
+                var launcherEntityEraser = new LauncherEntityEraser(deleteTargetLauncherItemId, LauncherItemKind.Addon, MainContext, LargeContext, TemporaryContext, StatementLoader, LoggerFactory);
                 launcherEntityEraser.Execute();
             }
 
-            var pluginSettingsEntityDao = new PluginSettingsEntityDao(MainContexts.Context, StatementLoader, MainContexts.Implementation, LoggerFactory);
+            var pluginSettingsEntityDao = mainDaoFactory.Create<PluginSettingsEntityDao>();
             pluginSettingsEntityDao.DeleteAllPluginSettings(pluginIdentifiers.PluginId);
 
-            var pluginsEntityDao = new PluginsEntityDao(MainContexts.Context, StatementLoader, MainContexts.Implementation, LoggerFactory);
+            var pluginsEntityDao = mainDaoFactory.Create<PluginsEntityDao>();
             pluginsEntityDao.DeletePlugin(pluginIdentifiers.PluginId);
         }
 

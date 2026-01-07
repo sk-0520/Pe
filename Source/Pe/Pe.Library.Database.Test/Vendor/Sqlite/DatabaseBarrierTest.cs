@@ -58,7 +58,7 @@ values
         public void WaitWrite_default_Test()
         {
             using var readerWriterLocker = new ReadWriteLockHelper();
-            var test = new DatabaseBarrier(DatabaseAccessor, readerWriterLocker);
+            var test = new DatabaseBarrier(DatabaseAccessor, readerWriterLocker, NullLoggerFactory.Instance);
             using(var transaction = test.WaitWrite()) {
                 transaction.Insert("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
                 var value = transaction.QueryFirst<string>("select ColVal from TestTable1 where ColKey = 5");
@@ -71,7 +71,7 @@ values
         public void WaitWrite_timeout_Test()
         {
             using var readerWriterLocker = new ReadWriteLockHelper();
-            var test = new DatabaseBarrier(DatabaseAccessor, readerWriterLocker);
+            var test = new DatabaseBarrier(DatabaseAccessor, readerWriterLocker, NullLoggerFactory.Instance);
             using(var transaction = test.WaitWrite(Timeout.InfiniteTimeSpan)) {
                 transaction.Insert("insert into TestTable1(ColKey, ColVal) values (5, 'E')");
                 var value = transaction.QueryFirst<string>("select ColVal from TestTable1 where ColKey = 5");
@@ -84,7 +84,7 @@ values
         public void WaitRead_default_Test()
         {
             using var readerWriterLocker = new ReadWriteLockHelper();
-            var test = new DatabaseBarrier(DatabaseAccessor, readerWriterLocker);
+            var test = new DatabaseBarrier(DatabaseAccessor, readerWriterLocker, NullLoggerFactory.Instance);
             using var transaction = test.WaitRead();
             var value = transaction.QueryFirst<string>("select ColVal from TestTable1 where ColKey = 4");
             Assert.Equal("D", value);
@@ -94,7 +94,7 @@ values
         public void WaitRead_timeout_Test()
         {
             using var readerWriterLocker = new ReadWriteLockHelper();
-            var test = new DatabaseBarrier(DatabaseAccessor, readerWriterLocker);
+            var test = new DatabaseBarrier(DatabaseAccessor, readerWriterLocker, NullLoggerFactory.Instance);
             using var transaction = test.WaitRead(Timeout.InfiniteTimeSpan);
             var value = transaction.QueryFirst<string>("select ColVal from TestTable1 where ColKey = 4");
             Assert.Equal("D", value);

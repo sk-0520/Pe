@@ -1,10 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.PInvoke.Windows;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Platform
 {
@@ -16,7 +14,19 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
     /// </remarks>
     public class SystemExecutor
     {
+        public SystemExecutor()
+            : this(new CommandLineHelper())
+        { }
+
+        public SystemExecutor(CommandLineHelper commandLineHelper)
+        {
+            CommandLineHelper = commandLineHelper;
+        }
+
         #region property
+
+        private CommandLineHelper CommandLineHelper { get; }
+
         #endregion
 
         #region function

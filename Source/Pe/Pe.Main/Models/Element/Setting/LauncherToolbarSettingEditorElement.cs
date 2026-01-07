@@ -54,11 +54,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         #region function
 
-        public void Save(IDatabaseContextsPack commandPack)
+        public void Save(IDatabaseContextPack commandPack)
         {
             Debug.Assert(Font != null);
 
-            var fontsEntityDao = new FontsEntityDao(commandPack.Main.Context, DatabaseStatementLoader, commandPack.Main.Implementation, LoggerFactory);
+            var daoFactory = new AppDaoFactory(commandPack.Main, DatabaseStatementLoader, LoggerFactory);
+            var fontsEntityDao = daoFactory.Create<FontsEntityDao>();
             fontsEntityDao.UpdateFont(Font.FontId, Font.FontData, commandPack.CommonStatus);
 
             var defaultLauncherGroupId = LauncherGroupId;
@@ -69,7 +70,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 }
             }
 
-            var launcherToolbarsEntityDao = new LauncherToolbarsEntityDao(commandPack.Main.Context, DatabaseStatementLoader, commandPack.Main.Implementation, LoggerFactory);
+            var launcherToolbarsEntityDao = daoFactory.Create<LauncherToolbarsEntityDao>();
             var data = new LauncherToolbarsDisplayData() {
                 LauncherToolbarId = LauncherToolbarId,
                 FontId = Font.FontId,
@@ -98,10 +99,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             LauncherToolbarsScreenData screenToolbar;
 
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherToolbarsEntityDao = new LauncherToolbarsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherToolbarsEntityDao = daoFactory.Create<LauncherToolbarsEntityDao>();
                 data = launcherToolbarsEntityDao.SelectDisplayData(LauncherToolbarId);
 
-                var launcherToolbarDomainDao = new LauncherToolbarDomainDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherToolbarDomainDao = daoFactory.Create<LauncherToolbarDomainDao>();
                 screenToolbar = launcherToolbarDomainDao.SelectScreenToolbar(LauncherToolbarId);
             }
 

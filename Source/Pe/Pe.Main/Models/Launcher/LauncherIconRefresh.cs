@@ -105,7 +105,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
         private IReadOnlyList<LauncherIconStatus> GetUpdateTarget(LauncherItemId launcherItemIs)
         {
             using var context = LargeDatabaseBarrier.WaitRead();
-            var launcherItemIconsEntityDao = new LauncherItemIconsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+            var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+            var launcherItemIconsEntityDao = daoFactory.Create<LauncherItemIconsEntityDao>();
             var status = launcherItemIconsEntityDao.SelectLauncherItemIconAllStatus(launcherItemIs)
                 .Where(i => IsNeedUpdate(i, DateTime.UtcNow))
                 .ToList()
@@ -116,7 +117,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
         private Task UpdateTargetAsync(LauncherItemId launcherItemId, LauncherIconStatus target, CancellationToken cancellationToken)
         {
             using(var context = LargeDatabaseBarrier.WaitRead()) {
-                var launcherItemIconsEntityDao = new LauncherItemIconsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemIconsEntityDao = daoFactory.Create<LauncherItemIconsEntityDao>();
                 var nowStatus = launcherItemIconsEntityDao.SelectLauncherItemIconKeyStatus(launcherItemId, target.IconScale);
                 if(nowStatus == null) {
                     // 対象アイテムは破棄された
@@ -140,7 +142,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
         public Task ExecuteAsync(CancellationToken cancellationToken)
         {
             var allLauncherItemIds = MainDatabaseBarrier.ReadData(c => {
-                var dao = new LauncherItemsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<LauncherItemsEntityDao>();
                 return dao.SelectAllLauncherItemIds().ToList();
             });
 

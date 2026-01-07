@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 #if !DOC_FX
 using ContentTypeTextNet.Pe.Generator.Id;
 #else
 // docfx 用ダミー
-[AttributeUsage(AttributeTargets.Struct)]
-file class GenerateGuidId: Attribute
+[System.AttributeUsage(System.AttributeTargets.Struct)]
+file sealed class GenerateGuidIdAttribute: System.Attribute
 {
-    public GenerateGuidId()
+    public GenerateGuidIdAttribute()
     { }
 }
 #endif

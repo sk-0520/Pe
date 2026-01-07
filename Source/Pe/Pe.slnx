@@ -32,7 +32,11 @@
     </Project>
   </Folder>
   <Folder Name="/generator/">
-    <Project Path="Pe.Generator/Pe.Generator.csproj">
+    <Project Path="Pe.Generator.Exception.Test/Pe.Generator.Exception.Test.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe.Generator.Exception/Pe.Generator.Exception.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
@@ -45,6 +49,10 @@
       <Platform Solution="*|x86" Project="x86" />
     </Project>
     <Project Path="Pe.Generator.Test/Pe.Generator.Test.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe.Generator/Pe.Generator.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
@@ -120,6 +128,14 @@
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
+    <Project Path="Pe.Library.Provider.Test/Pe.Library.Provider.Test.csproj" Id="c48d9965-254f-48d7-8bd1-07822608d641">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe.Library.Provider/Pe.Library.Provider.csproj" Id="3599e25d-2de9-4971-9132-3e2f013a0453">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
   </Folder>
   <Folder Name="/lib/plugins/">
     <Project Path="Pe.Plugins.DefaultTheme/Pe.Plugins.DefaultTheme.csproj">
@@ -150,15 +166,12 @@
     <File Path="../../Define/changelogs.ts" />
     <File Path="../../Directory.Build.props" />
   </Folder>
-  <Project Path="Pe.Main.Test/Pe.Main.Test.csproj">
+  <Project Path="Pe.Main.Test/Pe.Main.Test.csproj" DefaultStartup="True">
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Project DefaultStartup="true" Path="Pe.Main/Pe.Main.csproj">
+  <Project Path="Pe.Main/Pe.Main.csproj">
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>
-  <Properties Name="ExtensibilityGlobals" Scope="PostLoad">
-    <Property Name="RESX_PrefixTranslations" Value="False" />
-  </Properties>
 </Solution>

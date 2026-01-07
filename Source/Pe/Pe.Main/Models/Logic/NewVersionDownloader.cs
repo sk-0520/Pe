@@ -19,12 +19,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     /// </summary>
     public class NewVersionDownloader
     {
-        public NewVersionDownloader(ApplicationConfiguration applicationConfiguration, IHashAlgorithmGenerator hashAlgorithmGenerator,IUserAgentManager userAgentManager, ILoggerFactory loggerFactory)
+        public NewVersionDownloader(ApplicationConfiguration applicationConfiguration, IHashAlgorithmGenerator hashAlgorithmGenerator,IUserAgentManager userAgentManager, TimeProvider timeProvider, ILoggerFactory loggerFactory)
         {
             Logger = loggerFactory.CreateLogger(GetType());
             ApplicationConfiguration = applicationConfiguration;
             HashAlgorithmGenerator = hashAlgorithmGenerator;
             UserAgentManager = userAgentManager;
+            TimeProvider = timeProvider;
         }
 
         #region property
@@ -34,6 +35,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         private ApplicationConfiguration ApplicationConfiguration { get; }
         private IHashAlgorithmGenerator HashAlgorithmGenerator { get; }
         private IUserAgentManager UserAgentManager { get; }
+        private TimeProvider TimeProvider { get; }
         internal int ChecksumSize { get; init; } = 1024 * 2;
         internal int DownloadChunkSize { get; init; } = 1024 * 4;
 
@@ -116,7 +118,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
                 //NOTE: long が使えない！
                 int totalDownloadedSize = 0;
-                var sizePerTime = new SizePerTime(TimeSpan.FromSeconds(1));
+                var sizePerTime = new SizePerTime(TimeSpan.FromSeconds(1), TimeProvider);
 
                 sizePerTime.Start();
 

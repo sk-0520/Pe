@@ -54,7 +54,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup
         {
             IEnumerable<LauncherItemId> launcherItemIds;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherItemsLoader = new LauncherItemsLoader(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherItemsLoader = new LauncherItemsLoader(context, DatabaseStatementLoader, LoggerFactory);
                 launcherItemIds = launcherItemsLoader.LoadLauncherItemIds(LauncherGroupId, Kind);
             }
 
@@ -68,10 +68,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup
             LauncherGroupData data;
             IEnumerable<LauncherItemId> launcherItemIds;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var dao = new LauncherGroupsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<LauncherGroupsEntityDao>();
                 data = dao.SelectLauncherGroup(LauncherGroupId);
 
-                var launcherItemsLoader = new LauncherItemsLoader(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var launcherItemsLoader = new LauncherItemsLoader(context, DatabaseStatementLoader, LoggerFactory);
                 launcherItemIds = launcherItemsLoader.LoadLauncherItemIds(LauncherGroupId, data.Kind);
             }
 

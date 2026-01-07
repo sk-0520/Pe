@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Args;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Configuration;
-using ContentTypeTextNet.Pe.Library.Args;
 
 namespace ContentTypeTextNet.Pe.Main.Models
 {
@@ -21,13 +19,8 @@ namespace ContentTypeTextNet.Pe.Main.Models
 
     public class EnvironmentParameters
     {
-        public EnvironmentParameters(DirectoryInfo rootDirectory, CommandLine commandLine)
+        public EnvironmentParameters(DirectoryInfo rootDirectory, CommandLineParsedResult parsedResult)
         {
-            if(!commandLine.IsParsed) {
-                throw new ArgumentException(null, nameof(commandLine));
-            }
-            //CommandLine = commandLine;
-
             RootDirectory = rootDirectory;
 
 #if !PRODUCT
@@ -53,9 +46,9 @@ namespace ContentTypeTextNet.Pe.Main.Models
             ApplicationConfiguration = new ApplicationConfiguration(configurationRoot);
 
             var projectName = ApplicationConfiguration.General.ProjectName;
-            UserRoamingDirectory = GetDirectory(commandLine, CommandLineKeyUserDirectory, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), projectName));
-            MachineDirectory = GetDirectory(commandLine, CommandLineKeyMachineDirectory, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), projectName));
-            TemporaryDirectory = GetDirectory(commandLine, CommandLineKeyTemporaryDirectory, Path.Combine(Path.GetTempPath(), projectName));
+            UserRoamingDirectory = GetDirectory(parsedResult, CommandLineKeyUserDirectory, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), projectName));
+            MachineDirectory = GetDirectory(parsedResult, CommandLineKeyMachineDirectory, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), projectName));
+            TemporaryDirectory = GetDirectory(parsedResult, CommandLineKeyTemporaryDirectory, Path.Combine(Path.GetTempPath(), projectName));
         }
 
         #region property
@@ -304,15 +297,13 @@ namespace ContentTypeTextNet.Pe.Main.Models
 
         #region function
 
-        private static DirectoryInfo GetDirectory(CommandLine commandLine, string key, string defaultValue)
+        private static DirectoryInfo GetDirectory(CommandLineParsedResult parsedResult, string key, string defaultValue)
         {
-            if(commandLine.TryGetKey(key, out var commandLineKey)) {
-                if(commandLine.Values.TryGetValue(commandLineKey, out var commandLineValue)) {
-                    var rawPath = commandLineValue.First;
-                    if(!string.IsNullOrWhiteSpace(rawPath)) {
-                        var path = Environment.ExpandEnvironmentVariables(rawPath.Trim());
-                        return new DirectoryInfo(path);
-                    }
+            if(parsedResult.Values.TryGetValue(key, out var commandLineValue)) {
+                var rawPath = commandLineValue.First;
+                if(!string.IsNullOrWhiteSpace(rawPath)) {
+                    var path = Environment.ExpandEnvironmentVariables(rawPath.Trim());
+                    return new DirectoryInfo(path);
                 }
             }
 
@@ -352,8 +343,8 @@ namespace ContentTypeTextNet.Pe.Main.Models
 
     internal class ApplicationEnvironmentParameters: EnvironmentParameters
     {
-        public ApplicationEnvironmentParameters(DirectoryInfo rootDirectory, CommandLine commandLine)
-            : base(rootDirectory, commandLine)
+        public ApplicationEnvironmentParameters(DirectoryInfo rootDirectory, CommandLineParsedResult parsedResult)
+            : base(rootDirectory, parsedResult)
         { }
 
         #region function

@@ -43,27 +43,27 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
             }
 
             using(var test = creator()) {
-                Assert.Equal(0, test.Main.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
-                Assert.Equal(0, test.Large.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
-                Assert.Equal(0, test.Temporary.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
+                Assert.Equal(0, test.Main.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
+                Assert.Equal(0, test.Large.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
+                Assert.Equal(0, test.Temporary.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
             }
 
             using(var test = creator()) {
-                test.Main.Context.Execute("create table M(id integer, value text)");
-                test.Large.Context.Execute("create table L(id integer, value text)");
-                test.Temporary.Context.Execute("create table T(id integer, value text)");
+                test.Main.Execute("create table M(id integer, value text)");
+                test.Large.Execute("create table L(id integer, value text)");
+                test.Temporary.Execute("create table T(id integer, value text)");
 
-                Assert.Equal(1, test.Main.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
-                Assert.Equal(1, test.Large.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
-                Assert.Equal(1, test.Temporary.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
+                Assert.Equal(1, test.Main.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
+                Assert.Equal(1, test.Large.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
+                Assert.Equal(1, test.Temporary.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
 
                 test.Rollback();
             }
 
             using(var test = creator()) {
-                Assert.Equal(0, test.Main.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
-                Assert.Equal(0, test.Large.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
-                Assert.Equal(0, test.Temporary.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
+                Assert.Equal(0, test.Main.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
+                Assert.Equal(0, test.Large.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
+                Assert.Equal(0, test.Temporary.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
             }
         }
 
@@ -81,25 +81,25 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
             }
 
             using(var test = creator()) {
-                Assert.Equal(0, test.Main.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
-                Assert.Equal(0, test.Large.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
-                Assert.Equal(0, test.Temporary.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
+                Assert.Equal(0, test.Main.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
+                Assert.Equal(0, test.Large.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
+                Assert.Equal(0, test.Temporary.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
             }
 
             using(var test = creator()) {
-                test.Main.Context.Execute("create table M(id integer, value text)");
-                test.Large.Context.Execute("create table L(id integer, value text)");
-                test.Temporary.Context.Execute("create table T(id integer, value text)");
+                test.Main.Execute("create table M(id integer, value text)");
+                test.Large.Execute("create table L(id integer, value text)");
+                test.Temporary.Execute("create table T(id integer, value text)");
 
-                Assert.Equal(1, test.Main.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
-                Assert.Equal(1, test.Large.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
-                Assert.Equal(1, test.Temporary.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
+                Assert.Equal(1, test.Main.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
+                Assert.Equal(1, test.Large.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
+                Assert.Equal(1, test.Temporary.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
             }
 
             using(var test = creator()) {
-                Assert.Equal(0, test.Main.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
-                Assert.Equal(0, test.Large.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
-                Assert.Equal(0, test.Temporary.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
+                Assert.Equal(0, test.Main.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
+                Assert.Equal(0, test.Large.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
+                Assert.Equal(0, test.Temporary.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
             }
         }
 
@@ -117,27 +117,27 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
             }
 
             using(var test = creator()) {
-                Assert.Equal(0, test.Main.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
-                Assert.Equal(0, test.Large.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
-                Assert.Equal(0, test.Temporary.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
+                Assert.Equal(0, test.Main.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
+                Assert.Equal(0, test.Large.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
+                Assert.Equal(0, test.Temporary.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
             }
 
             using(var test = creator()) {
-                test.Main.Context.Execute("create table M(id integer, value text)");
-                test.Large.Context.Execute("create table L(id integer, value text)");
-                test.Temporary.Context.Execute("create table T(id integer, value text)");
+                test.Main.Execute("create table M(id integer, value text)");
+                test.Large.Execute("create table L(id integer, value text)");
+                test.Temporary.Execute("create table T(id integer, value text)");
 
-                Assert.Equal(1, test.Main.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
-                Assert.Equal(1, test.Large.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
-                Assert.Equal(1, test.Temporary.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
+                Assert.Equal(1, test.Main.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
+                Assert.Equal(1, test.Large.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
+                Assert.Equal(1, test.Temporary.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
 
                 test.Commit();
             }
 
             using(var test = creator()) {
-                Assert.Equal(1, test.Main.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
-                Assert.Equal(1, test.Large.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
-                Assert.Equal(1, test.Temporary.Context.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
+                Assert.Equal(1, test.Main.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'M'"));
+                Assert.Equal(1, test.Large.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'L'"));
+                Assert.Equal(1, test.Temporary.SelectSingleCount("select count(*) from sqlite_master where type = 'table' and name = 'T'"));
             }
         }
 
@@ -155,9 +155,9 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
             }
 
             using(var test = creator()) {
-                Assert.Throws<NotSupportedException>(() => test.Main.Context.Execute("create table M(id integer, value text)"));
-                Assert.Throws<NotSupportedException>(() => test.Large.Context.Execute("create table L(id integer, value text)"));
-                Assert.Throws<NotSupportedException>(() => test.Temporary.Context.Execute("create table T(id integer, value text)"));
+                Assert.Throws<NotSupportedException>(() => test.Main.Execute("create table M(id integer, value text)"));
+                Assert.Throws<NotSupportedException>(() => test.Large.Execute("create table L(id integer, value text)"));
+                Assert.Throws<NotSupportedException>(() => test.Temporary.Execute("create table T(id integer, value text)"));
 
                 Assert.Throws<NotSupportedException>(() => test.Commit());
                 var exception = Record.Exception(() => test.Rollback());

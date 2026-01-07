@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
             mockLog.VerifyMessageStartsWith(LogLevel.Debug, "0.7", Times.Exactly(2));
             mockLog.VerifyMessageEndsWith(LogLevel.Debug, ".75", Times.Exactly(2));
             mockLog.VerifyMessageContains(LogLevel.Debug, "7", Times.Exactly(2));
-            mockLog.VerifyMessageRegex(LogLevel.Debug, new Regex("\\d\\.\\d{2}"), Times.Exactly(2));
+            mockLog.VerifyMessageRegex(LogLevel.Debug, new TestRegex("\\d\\.\\d{2}"), Times.Exactly(2));
         }
 
         #endregion

@@ -2417,4 +2417,13 @@ URL: バージョンチェックURLを指定すればその内容からプラグ
   <data name="String_LauncherToolbar_AppToolTip_Group_Header" xml:space="preserve">
     <value>マウスホイールでグループ選択</value>
   </data>
+  <data name="String_Setting_Generals_Note_ScreenCapture_A" xml:space="preserve">
+    <value>スクリーンキャプチャ(_C)</value>
+  </data>
+  <data name="String_Setting_Generals_Note_ExcludeScreenCapture_A" xml:space="preserve">
+    <value>除外する(_E)</value>
+  </data>
+  <data name="String_Setting_Generals_Note_ExcludeScreenCapture_Description" xml:space="preserve">
+    <value>除外設定自体はアプリケーション構成ファイルにより制御されます</value>
+  </data>
 </root>

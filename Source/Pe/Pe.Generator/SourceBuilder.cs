@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace ContentTypeTextNet.Pe.Generator
@@ -15,6 +15,39 @@ namespace ContentTypeTextNet.Pe.Generator
 
         #region function
 
+        public bool IsIgnoreAttribute(INamedTypeSymbol attributeClass)
+        {
+            var attributeName = attributeClass.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+            if(attributeName is null) {
+                return true;
+            }
+
+            var compilerAttributes = new[] {
+                "global::System.Runtime.CompilerServices.NullableContextAttribute",
+                "global::System.Runtime.CompilerServices.NullableAttribute",
+                "global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute",
+                // 内部都合の不要分
+                "global::ContentTypeTextNet.Pe.Generator.Exception.GenerateExceptionAttribute",
+            };
+
+            return !compilerAttributes.Contains(attributeName, StringComparer.Ordinal);
+        }
+
+        public IEnumerable<AttributeData> FilterAttribute(IEnumerable<AttributeData> attributes)
+        {
+            foreach(var attributeData in attributes) {
+                var attributeClass = attributeData.AttributeClass;
+                if(attributeClass is null) {
+                    continue;
+                }
+                if(!IsIgnoreAttribute(attributeClass)) {
+                    continue;
+                }
+
+                yield return attributeData;
+            }
+        }
+
         public string ToCode<T>(T target)
             where T : Enum
         {
@@ -28,10 +61,67 @@ namespace ContentTypeTextNet.Pe.Generator
             return "global::" + type.FullName;
         }
 
+        public string ToCode(Accessibility accessibility)
+        {
+            return accessibility switch {
+                Accessibility.Public => "public",
+                Accessibility.Internal => "internal",
+                Accessibility.Protected => "protected",
+                Accessibility.ProtectedOrInternal => "protected internal",
+                Accessibility.ProtectedAndInternal => "private protected",
+                Accessibility.Private => "private",
+                _ => throw new NotSupportedException($"accessibility: {accessibility}"),
+            };
+        }
+
+        public string ToCode(TypedConstant c)
+        {
+            if(c.IsNull) {
+                return "null";
+            }
+
+            switch(c.Kind) {
+                case TypedConstantKind.Primitive: {
+                        switch(c.Value) {
+                            case string s:
+                                return "\"" + s.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
+                            case bool b:
+                                return b ? "true" : "false";
+                            case char ch:
+                                return "'" + ch.ToString().Replace("\\", "\\\\").Replace("'", "\\'") + "'";
+                            default:
+                                return Convert.ToString(c.Value, System.Globalization.CultureInfo.InvariantCulture);
+                        }
+                    }
+
+                case TypedConstantKind.Enum: {
+                        if(c.Type is null) {
+                            throw new InvalidOperationException("Enum type is null");
+                        }
+                        if(c.Value is null) {
+                            throw new InvalidOperationException("Enum value is null");
+                        }
+                        var enumType = c.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                        var enumFields = c.Type.GetMembers().OfType<IFieldSymbol>();
+                        var enumName = enumFields.First(a => c.Value!.Equals(a.ConstantValue));
+                        return enumType + "." + enumName.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+                    }
+
+                case TypedConstantKind.Type:
+                    if(c.Value is ITypeSymbol ts) {
+                        return "typeof(" + ts.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat) + ")";
+                    }
+                    break;
+            }
+
+            // 分かっている範囲で動けばいいので不明点は例外として、必要になったら対応する
+            throw new NotSupportedException($"TypedConstant: {c.Kind} / Value: {c.Value}");
+        }
+
         public string ToNamespaceCode(INamedTypeSymbol targetSymbol)
         {
             return targetSymbol.ContainingNamespace.IsGlobalNamespace ?
-                "" :
+                "// no namespace" :
                 "namespace " + targetSymbol.ContainingNamespace + ";"
             ;
         }

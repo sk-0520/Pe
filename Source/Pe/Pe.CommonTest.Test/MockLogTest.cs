@@ -212,16 +212,15 @@ namespace ContentTypeTextNet.Pe.CommonTest.Test
 
             logger.LogCritical("critical");
 
-            mockLog.VerifyMessageRegex(LogLevel.None, new Regex("^itical$"), Times.Never());
-            mockLog.VerifyMessageRegex(LogLevel.None, new Regex("itical"), Times.Once());
+            mockLog.VerifyMessageRegex(LogLevel.None, new TestRegex("^itical$"), Times.Never());
+            mockLog.VerifyMessageRegex(LogLevel.None, new TestRegex("itical"), Times.Once());
 
-            mockLog.VerifyMessageRegex(LogLevel.Information, new Regex("Critical", RegexOptions.IgnoreCase), Times.Never());
-            mockLog.VerifyMessageRegex(LogLevel.Information, new Regex("Critical"), Times.Never());
-            mockLog.VerifyMessageRegex(LogLevel.Critical, new Regex("Critical", RegexOptions.IgnoreCase), Times.Once());
-            mockLog.VerifyMessageRegex(LogLevel.Critical, new Regex("Critical"), Times.Never());
+            mockLog.VerifyMessageRegex(LogLevel.Information, new TestRegex("Critical", RegexOptions.IgnoreCase), Times.Never());
+            mockLog.VerifyMessageRegex(LogLevel.Information, new TestRegex("Critical"), Times.Never());
+            mockLog.VerifyMessageRegex(LogLevel.Critical, new TestRegex("Critical", RegexOptions.IgnoreCase), Times.Once());
+            mockLog.VerifyMessageRegex(LogLevel.Critical, new TestRegex("Critical"), Times.Never());
         }
 
-
-            #endregion
-        }
+        #endregion
     }
+}

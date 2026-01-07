@@ -1,6 +1,5 @@
 using System;
 using System.Windows;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Configuration;
 
@@ -49,6 +48,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
         /// </summary>
         [Configuration(rootConvertMethodName: nameof(ConvertMinMax))]
         public MinMax<TimeSpan> HiddenBlindWaitTime { get; }
+        /// <summary>
+        /// モニタのみ(<see cref="PInvoke.Windows.WDA.WDA_MONITOR"/>)を除外対象とするか。
+        /// </summary>
+        /// <remarks>
+        /// <see langword="false"/> の場合は、<see cref="PInvoke.Windows.WDA.WDA_EXCLUDEFROMCAPTURE"/>が使用される。
+        /// </remarks>
+        [Configuration]
+        public bool ExcludeScreenCaptureMonitorOnly { get; }
 
         #endregion
     }

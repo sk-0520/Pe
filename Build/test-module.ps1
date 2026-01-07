@@ -1,4 +1,4 @@
-﻿Param(
+﻿param(
 	[Parameter(mandatory = $true)][ValidateSet('boot', 'main', 'plugins')][string] $Module,
 	[switch] $ProductMode,
 	[string] $BuildType,
@@ -24,8 +24,30 @@ if ($Module -eq 'boot') {
 		$testFileName = $projectDirItem.BaseName + '.dll'
 		$testFilePath = Join-Path -Path $testDirPath -ChildPath $testFileName
 
-		Write-Verbose "VSTest.Console $testFilePath /InIsolation /Platform:$Platform"
-		Start-Command -Command VSTest.Console -ArgumentList @($testFilePath, '/InIsolation', "/Platform:$Platform")
+		if ($Configuration -eq 'CI_TEST') {
+			# コードカバレッジを収集
+			Start-Command -Command OpenCppCoverage -ArgumentList @(
+				'--sources',
+				$projectDirItem.FullName.Replace('.Test', ''),
+				'--excluded_sources',
+				'*.Test',
+				'--modules',
+				$testFilePath,
+				'--export_type',
+				('cobertura:' + (Join-Path -Path $testDirPath -ChildPath 'coverage.cobertura.xml')),
+				'--cover_children',
+				'-v',
+				'--',
+				'VSTest.Console.exe',
+				$testFilePath,
+				'/InIsolation',
+				"/Platform:$Platform"
+			)
+
+		} else {
+			Start-Command -Command VSTest.Console.exe -ArgumentList @($testFilePath, '/InIsolation', "/Platform:$Platform")
+		}
+
 	}
 } elseif ($Module -eq 'main' -or $Module -eq 'plugins') {
 	$loggerArg = ''
@@ -39,7 +61,7 @@ if ($Module -eq 'boot') {
 	foreach ($projectDirItem in $projectDirItems) {
 		Push-Location -Path $projectDirItem
 		try {
-			Start-Command -Command dotnet -ArgumentList @('test', "/p:Platform=$Platform", "--runtime", "win-$Platform", "--configuration", "Debug", "--collect:XPlat Code Coverage", "--test-adapter-path:.", $loggerArg)
+			Start-Command -Command dotnet -ArgumentList @('test', "/p:Platform=$Platform", '--runtime', "win-$Platform", '--configuration', 'Debug', '--collect:XPlat Code Coverage', '--test-adapter-path:.', $loggerArg)
 		} finally {
 			Pop-Location
 		}

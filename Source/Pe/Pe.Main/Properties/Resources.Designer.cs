@@ -19,7 +19,7 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
     // または Visual Studio のようなツールを使用して自動生成されました。
     // メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
     // ResGen を実行し直すか、または VS プロジェクトをビルドし直します。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -5783,6 +5783,24 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
+        ///   除外する(_E) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Setting_Generals_Note_ExcludeScreenCapture_A {
+            get {
+                return ResourceManager.GetString("String_Setting_Generals_Note_ExcludeScreenCapture_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   除外設定自体はアプリケーション構成ファイルにより制御されます に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Setting_Generals_Note_ExcludeScreenCapture_Description {
+            get {
+                return ResourceManager.GetString("String_Setting_Generals_Note_ExcludeScreenCapture_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   フォント に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Setting_Generals_Note_Font_A {
@@ -5806,6 +5824,15 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         public static string String_Setting_Generals_Note_Layout_A {
             get {
                 return ResourceManager.GetString("String_Setting_Generals_Note_Layout_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   スクリーンキャプチャ(_C) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Setting_Generals_Note_ScreenCapture_A {
+            get {
+                return ResourceManager.GetString("String_Setting_Generals_Note_ScreenCapture_A", resourceCulture);
             }
         }
         

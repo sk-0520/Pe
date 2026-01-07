@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
@@ -6,6 +7,24 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test.Linq
 {
+    file sealed class NormalComparer<T>: IComparer<T>
+        where T : IComparable<T>
+    {
+        public int Compare(T? x, T? y)
+        {
+            return x?.CompareTo(y) ?? 0;
+        }
+    }
+
+    file sealed class ReverseComparer<T>: IComparer<T>
+        where T : IComparable<T>
+    {
+        public int Compare(T? x, T? y)
+        {
+            return y?.CompareTo(x) ?? 0;
+        }
+    }
+
     public class IEnumerableExtensionsTest
     {
         #region define
@@ -103,6 +122,104 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test.Linq
             var actual = source.OrderBy(order, a => a);
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public void OrderBy_Throw_Test()
+        {
+            Order order = (Order)(-1);
+            Assert.Throws<NotImplementedException>(() => Array.Empty<int>().OrderBy(order, a => a));
+            Assert.Throws<NotImplementedException>(() => Array.Empty<int>().OrderBy(order, a => a, new NormalComparer<int>()));
+        }
+
+        public static TheoryData<IEnumerable<string>, IEnumerable<string>, Order, IComparer<string>> OrderBy_Comparer_Data => new() {
+            {
+                new[] { "a", "b", "c" },
+                new[] { "a", "b", "c" },
+                Order.Ascending,
+                new NormalComparer<string>()
+            },
+            {
+                new[] { "c", "b", "a" },
+                new[] { "a", "b", "c" },
+                Order.Ascending,
+                new ReverseComparer<string>()
+            },
+            {
+                new[] { "c", "b", "a" },
+                new[] { "c", "b", "a" },
+                Order.Descending,
+                new NormalComparer<string>()
+            },
+            {
+                new[] { "a", "b", "c" },
+                new[] { "c", "b", "a" },
+                Order.Descending,
+                new ReverseComparer<string>()
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(OrderBy_Comparer_Data))]
+        public void OrderBy_Comparer_Test(IEnumerable<string> expected, IEnumerable<string> source, Order order, IComparer<string>? comparer)
+        {
+            var actual = source.OrderBy(order, a => a, comparer);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(new[] { "a0", "a1", "a2" }, new[] { "a0", "a1", "a2" }, Order.Ascending)]
+        [InlineData(new[] { "a0", "b0", "b1" }, new[] { "b1", "a0", "b0" }, Order.Ascending)]
+        [InlineData(new[] { "a2", "a1", "a0" }, new[] { "a0", "a1", "a2" }, Order.Descending)]
+        [InlineData(new[] { "a0" , "b1", "b0", }, new[] { "b1", "a0", "b0" }, Order.Descending)]
+        public void ThenByTest(IEnumerable<string> expected, IEnumerable<string> source, Order order)
+        {
+            var actual = source.OrderBy(a => a.First()).ThenBy(order, a => a.Last());
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ThenBy_Throw_Test()
+        {
+            Order order = (Order)(-1);
+            Assert.Throws<NotImplementedException>(() => Array.Empty<int>().OrderBy(a => a).ThenBy(order, a => a));
+            Assert.Throws<NotImplementedException>(() => Array.Empty<int>().OrderBy(a => a).ThenBy(order, a => a, new NormalComparer<int>()));
+        }
+
+        public static TheoryData<IEnumerable<string>, IEnumerable<string>, Order, IComparer<string>> ThenBy_Comparer_Data => new() {
+            {
+                new[] { "a0", "a1", "a1" },
+                new[] { "a0", "a1", "a1" },
+                Order.Ascending,
+                new NormalComparer<string>()
+            },
+            {
+                new[] { "a2", "a1", "a0" },
+                new[] { "a0", "a1", "a2" },
+                Order.Ascending,
+                new ReverseComparer<string>()
+            },
+            {
+                new[] { "a2", "a1", "a0" },
+                new[] { "a2", "a1", "a0" },
+                Order.Descending,
+                new NormalComparer<string>()
+            },
+            {
+                new[] { "a0", "a1", "a2" },
+                new[] { "a2", "a1", "a0" },
+                Order.Descending,
+                new ReverseComparer<string>()
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(ThenBy_Comparer_Data))]
+        public void ThenBy_Comparer_Test(IEnumerable<string> expected, IEnumerable<string> source, Order order, IComparer<string>? comparer)
+        {
+            var actual = source.OrderBy(Order.Ascending, a => a.First()).ThenBy(order, a => a.Last().ToString(), comparer);
+            Assert.Equal(expected, actual);
+        }
+
 
         [Theory]
         [InlineData(false, new object[] { 1, 2, 3 })]

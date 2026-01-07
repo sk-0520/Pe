@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using System.Threading;
-using ContentTypeTextNet.Pe.Library.Common;
+using System.Data.Common;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Library.Common;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
@@ -12,68 +15,60 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// トランザクション中の処理をサポート。
     /// </summary>
     /// <remarks>
+    /// <para>コミットと <see cref="IDatabaseExecutor"/> を見る感じなのでトランザクションの実体(<see cref="IDbTransaction"/>)は <see langword="null"/> でも構わない。</para>
     /// <para>基本的にはユーザーコードで登場せず <see cref="IDatabaseContext"/>がすべて上位から良しなに対応する。</para>
     /// </remarks>
-    public class DatabaseTransaction: DisposerBase, IDatabaseTransaction
+    public class DatabaseTransaction: DatabaseContextBase, IDatabaseTransaction
     {
-        /// <summary>
-        /// 生成。
-        /// </summary>
-        /// <param name="beginTransaction">トランザクションを開始するか。</param>
-        /// <param name="databaseAccessor">アクセサ。</param>
-        public DatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor)
+        public DatabaseTransaction(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(dbConnection, dbTransaction, implementation, loggerFactory)
         {
-            DatabaseAccessor = databaseAccessor;
-            Implementation = DatabaseAccessor.DatabaseFactory.CreateImplementation();
-
-            if(beginTransaction) {
-                Transaction = DatabaseAccessor.BaseConnection.BeginTransaction();
-            } else {
-                Transaction = null;
-            }
-        }
-
-        /// <summary>
-        /// 生成。
-        /// </summary>
-        /// <param name="beginTransaction">トランザクションを開始するか。</param>
-        /// <param name="databaseAccessor">アクセサ。</param>
-        /// <param name="isolationLevel"><see cref="IsolationLevel"/></param>
-        public DatabaseTransaction(bool beginTransaction, IDatabaseAccessor databaseAccessor, IsolationLevel isolationLevel)
-        {
-            DatabaseAccessor = databaseAccessor;
-            Implementation = DatabaseAccessor.DatabaseFactory.CreateImplementation();
-
-            if(beginTransaction) {
-                Transaction = DatabaseAccessor.BaseConnection.BeginTransaction(isolationLevel);
-            } else {
-                Transaction = null;
-            }
+            //NOP
         }
 
         #region property
 
-        private IDatabaseAccessor DatabaseAccessor { get; [Unused(UnusedKinds.Dispose)] set; }
         public bool Committed { get; private set; }
+
+        #endregion
+
+        #region function
+
+        protected virtual IDbTransaction GetIDbTransaction()
+        {
+            var tran = DbTransaction;
+
+            if(tran is null) {
+                throw new InvalidOperationException($"{nameof(DbTransaction)} is null");
+            }
+
+            return tran;
+        }
+
+        protected virtual DbTransaction GetDbTransaction()
+        {
+            var tran = GetIDbTransaction() as DbTransaction;
+
+            if(tran is null) {
+                throw new InvalidOperationException($"{nameof(DbTransaction)} is not {nameof(DbTransaction)}");
+            }
+
+            return tran;
+        }
 
         #endregion
 
         #region IDatabaseTransaction
 
-        /// <summary>
-        /// <see cref="IDatabaseContext"/>としての自身を返す。
-        /// </summary>
-        public IDatabaseContext Context => this;
-        public IDbTransaction? Transaction { get; [Unused(UnusedKinds.Dispose)] private set; }
-        public IDatabaseImplementation Implementation { get; }
+        public new IDbTransaction? DbTransaction => base.DbTransaction;
 
         public virtual void Commit()
         {
-            Debug.Assert(Transaction is not null);
-
             ThrowIfDisposed();
 
-            Transaction.Commit();
+            var tran = GetIDbTransaction();
+            tran.Commit();
+
             Committed = true;
         }
 
@@ -81,151 +76,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            if(Transaction is not null && Transaction.Connection is not null) {
-                Transaction.Rollback();
+            if(DbTransaction is not null && DbTransaction.Connection is not null) {
+                DbTransaction.Rollback();
             }
-        }
-
-        public IDataReader GetDataReader(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.GetDataReader(this, statement, parameter);
-        }
-
-        public Task<IDataReader> GetDataReaderAsync(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.GetDataReaderAsync(this, statement, parameter, cancellationToken);
-        }
-
-        public DataTable GetDataTable(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.GetDataTable(this, statement, parameter);
-        }
-
-        public Task<DataTable> GetDataTableAsync(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.GetDataTableAsync(statement, parameter, cancellationToken);
-        }
-
-        public virtual TResult? GetScalar<TResult>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.GetScalar<TResult?>(this, statement, parameter);
-        }
-
-        public virtual Task<TResult?> GetScalarAsync<TResult>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.GetScalarAsync<TResult?>(this, statement, parameter, cancellationToken);
-        }
-
-        public IEnumerable<T> Query<T>(string statement, object? parameter, bool buffered)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.Query<T>(this, statement, parameter, buffered);
-        }
-
-        public IEnumerable<dynamic> Query(string statement, object? parameter, bool buffered)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.Query(this, statement, parameter, buffered);
-        }
-
-        public Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.QueryAsync<T>(statement, parameter, buffered, cancellationToken);
-        }
-
-        public Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.QueryAsync(statement, parameter, buffered, cancellationToken);
-        }
-
-        public T QueryFirst<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.QueryFirst<T>(this, statement, parameter);
-        }
-
-        public Task<T> QueryFirstAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.QueryFirstAsync<T>(this, statement, parameter, cancellationToken);
-        }
-
-        [return: MaybeNull]
-        public T QueryFirstOrDefault<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.QueryFirstOrDefault<T>(this, statement, parameter);
-        }
-
-        public Task<T?> QueryFirstOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.QueryFirstOrDefaultAsync<T>(this, statement, parameter, cancellationToken);
-        }
-
-        public T QuerySingle<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.QuerySingle<T>(this, statement, parameter);
-        }
-
-        public Task<T> QuerySingleAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.QuerySingleAsync<T>(statement, parameter, cancellationToken);
-        }
-
-        [return: MaybeNull]
-        public T QuerySingleOrDefault<T>(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.QuerySingleOrDefault<T>(this, statement, parameter);
-        }
-
-        public Task<T?> QuerySingleOrDefaultAsync<T>(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.QuerySingleOrDefaultAsync<T>(this, statement, parameter, cancellationToken);
-        }
-
-        public virtual int Execute(string statement, object? parameter)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.Execute(this, statement, parameter);
-        }
-
-        public virtual Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken)
-        {
-            ThrowIfDisposed();
-
-            return DatabaseAccessor.ExecuteAsync(this, statement, parameter, cancellationToken);
         }
 
         #endregion
@@ -239,16 +92,39 @@ namespace ContentTypeTextNet.Pe.Library.Database
                     if(!Committed) {
                         Rollback();
                     }
-                    if(Transaction is not null) {
-                        Transaction.Dispose();
+                    if(DbTransaction is not null) {
+                        DbTransaction.Dispose();
                     }
-                    Transaction = null;
-                    DatabaseAccessor = null!;
                 }
             }
 
             base.Dispose(disposing);
         }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// 読み込み専用トランザクション。
+    /// </summary>
+    /// <remarks>
+    /// <para><see cref="IDatabaseTransaction.Rollback"/>は実装ミス・不具合により書き込みが実施されていた場合も考慮し、最後の防衛線として無効化しない。</para>
+    /// </remarks>
+    public sealed class ReadOnlyDatabaseTransaction: DatabaseTransaction
+    {
+        public ReadOnlyDatabaseTransaction(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(dbConnection, dbTransaction, implementation, loggerFactory)
+        {
+            //NOP
+        }
+
+        #region DatabaseTransaction
+
+        public override void Commit() => throw new NotSupportedException();
+
+        public override int Execute(string statement, object? parameter) => throw new NotSupportedException();
+
+        public override Task<int> ExecuteAsync(string statement, object? parameter, CancellationToken cancellationToken) => throw new NotSupportedException();
 
         #endregion
     }

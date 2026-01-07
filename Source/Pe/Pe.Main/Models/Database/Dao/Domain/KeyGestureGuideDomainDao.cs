@@ -32,8 +32,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Domain
 
         #endregion
 
-        public KeyGestureGuideDomainDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(context, statementLoader, implementation, loggerFactory)
+        public KeyGestureGuideDomainDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(context, statementLoader, loggerFactory)
         { }
 
         #region function

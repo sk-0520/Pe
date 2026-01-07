@@ -70,6 +70,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             where TContainer : IDiRegisterContainer
         {
             var accessorPack = ApplicationDatabaseAccessorPack.Create(factoryPack, loggerFactory);
+            var timeProvider = container.Build<TimeProvider>();
 
             var readerWriterLockerPack = new ApplicationReadWriteLockHelperPack(
                 new ApplicationMainReadWriteLockHelper(),
@@ -77,15 +78,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 new ApplicationTemporaryReadWriteLockHelper()
             );
             var barrierPack = new ApplicationDatabaseBarrierPack(
-                new ApplicationDatabaseBarrier(accessorPack.Main, readerWriterLockerPack.Main),
-                new ApplicationDatabaseBarrier(accessorPack.Large, readerWriterLockerPack.Large),
-                new ApplicationDatabaseBarrier(accessorPack.Temporary, readerWriterLockerPack.Temporary)
+                new ApplicationDatabaseBarrier(accessorPack.Main, readerWriterLockerPack.Main, loggerFactory),
+                new ApplicationDatabaseBarrier(accessorPack.Large, readerWriterLockerPack.Large, loggerFactory),
+                new ApplicationDatabaseBarrier(accessorPack.Temporary, readerWriterLockerPack.Temporary, loggerFactory)
             );
 
             var delayWriterPack = new ApplicationDatabaseDelayWriterPack(
-                new ApplicationDatabaseDelayWriter(barrierPack.Main, delayWriterWaitTimePack.Main, loggerFactory),
-                new ApplicationDatabaseDelayWriter(barrierPack.Large, delayWriterWaitTimePack.Large, loggerFactory),
-                new ApplicationDatabaseDelayWriter(barrierPack.Temporary, delayWriterWaitTimePack.Temporary, loggerFactory)
+                new ApplicationDatabaseDelayWriter(barrierPack.Main, delayWriterWaitTimePack.Main, timeProvider, loggerFactory),
+                new ApplicationDatabaseDelayWriter(barrierPack.Large, delayWriterWaitTimePack.Large, timeProvider, loggerFactory),
+                new ApplicationDatabaseDelayWriter(barrierPack.Temporary, delayWriterWaitTimePack.Temporary, timeProvider, loggerFactory)
             );
 
             container

@@ -6,8 +6,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
 {
     public abstract class EntityDaoBase: ApplicationDatabaseObjectBase
     {
-        protected EntityDaoBase(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(context, statementLoader, implementation, loggerFactory)
+        protected EntityDaoBase(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(context, statementLoader, loggerFactory)
         { }
 
         #region property

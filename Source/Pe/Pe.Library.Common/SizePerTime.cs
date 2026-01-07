@@ -30,21 +30,22 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <summary>
         /// 1秒間隔で生成。
         /// </summary>
-        public SizePerTime()
-            : this(TimeSpan.FromSeconds(1))
+        public SizePerTime(TimeProvider timeProvider)
+            : this(TimeSpan.FromSeconds(1), timeProvider)
         { }
 
         /// <summary>
         /// 更新間隔時間を指定して生成。
         /// </summary>
         /// <param name="baseTime">更新間隔。</param>
-        public SizePerTime(TimeSpan baseTime)
+        public SizePerTime(TimeSpan baseTime, TimeProvider timeProvider)
         {
             if(Timeout.InfiniteTimeSpan == baseTime) {
                 throw new ArgumentException(nameof(Timeout) + "." + nameof(Timeout.InfiniteTimeSpan), nameof(baseTime));
             }
 
             BaseTime = baseTime;
+            TimeProvider = timeProvider;
         }
 
         #region property
@@ -53,8 +54,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// 時間単位。
         /// </summary>
         public TimeSpan BaseTime { get; }
-
-        private Stopwatch Stopwatch { get; } = new Stopwatch();
+        private TimeProvider TimeProvider { get; }
+        private long StartTimestamp { get; set; }
 
         /// <summary>
         /// <see cref="BaseTime"/>中での使用量。
@@ -78,7 +79,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// </summary>
         public void Start()
         {
-            Stopwatch.Restart();
+            StartTimestamp = TimeProvider.GetTimestamp();
             SizeInBaseTime = 0;
         }
 
@@ -88,9 +89,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <param name="addSize"></param>
         public void Add(long addSize)
         {
-            Debug.Assert(Stopwatch.IsRunning);
-
-            var elapsedTime = Stopwatch.Elapsed;
+            var elapsedTime = TimeProvider.GetElapsedTime(StartTimestamp);
 
             if(BaseTime <= elapsedTime) {
                 Size = SizeInBaseTime + addSize;
@@ -98,7 +97,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 PrevSize = Size;
                 SizeInBaseTime = 0;
 
-                Stopwatch.Restart();
+                StartTimestamp = TimeProvider.GetTimestamp();
             } else {
                 Size = PrevSize;
                 SizeInBaseTime += addSize;

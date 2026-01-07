@@ -9,7 +9,7 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Bridge.Test.Plugin.Theme
 {
-    public class ColorPair_G
+    public class ColorPairGenericTest
     {
         #region function
 

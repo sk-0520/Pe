@@ -62,7 +62,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         public void ToSafeNameDefaultTest(string expected, string value)
         {
             var actual = PathUtility.ToSafeNameDefault(value);
-            Assert.Equal(actual, expected);
+            Assert.Equal(expected, actual);
         }
 
         [Theory]

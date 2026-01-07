@@ -1,4 +1,14 @@
-using System;
+#if !DOC_FX
+using ContentTypeTextNet.Pe.Generator.Exception;
+#else
+// docfx 用ダミー
+[System.AttributeUsage(System.AttributeTargets.Class)]
+file sealed class GenerateExceptionAttribute: System.Attribute
+{
+    public GenerateExceptionAttribute()
+    { }
+}
+#endif
 
 namespace ContentTypeTextNet.Pe.CommonTest
 {
@@ -6,129 +16,43 @@ namespace ContentTypeTextNet.Pe.CommonTest
     /// テストインフラ系例外。
     /// </summary>
     /// <remarks>こいつを捕まえてどうこうすることはない。</remarks>
-    [Serializable]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class TestException: System.Exception
-    {
-        public TestException()
-        { }
-        public TestException(string message)
-            : base(message)
-        { }
-        public TestException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
+    [GenerateException]
+    public partial class TestException: System.Exception
+    { }
 
     #region PrivateObject
 
-    [Serializable]
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class PrivateObjectException: TestException
-    {
-        public PrivateObjectException()
-        { }
+    [GenerateException]
+    public partial class PrivateObjectException: TestException
+    { }
 
-        public PrivateObjectException(string message)
-            : base(message)
-        { }
+    [GenerateException]
+    public partial class PrivateObjectFieldException: PrivateObjectException
+    { }
 
-        public PrivateObjectException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
+    [GenerateException]
+    public partial class PrivateObjectPropertyException: PrivateObjectException
+    { }
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class PrivateObjectFieldException: PrivateObjectException
-    {
-        public PrivateObjectFieldException()
-        { }
+    [GenerateException]
+    public partial class PrivateObjectMethodException: PrivateObjectException
+    { }
 
-        public PrivateObjectFieldException(string message)
-            : base(message)
-        { }
-
-        public PrivateObjectFieldException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
-
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class PrivateObjectPropertyException: PrivateObjectException
-    {
-        public PrivateObjectPropertyException()
-        { }
-
-        public PrivateObjectPropertyException(string message)
-            : base(message)
-        { }
-
-        public PrivateObjectPropertyException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
-
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class PrivateObjectMethodException: PrivateObjectException
-    {
-        public PrivateObjectMethodException()
-        { }
-
-        public PrivateObjectMethodException(string message)
-            : base(message)
-        { }
-
-        public PrivateObjectMethodException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
-
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class PrivateObjectMethodParametersException: PrivateObjectException
-    {
-        public PrivateObjectMethodParametersException()
-        { }
-
-        public PrivateObjectMethodParametersException(string message)
-            : base(message)
-        { }
-
-        public PrivateObjectMethodParametersException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
+    [GenerateException]
+    public partial class PrivateObjectMethodParametersException: PrivateObjectException
+    { }
 
     #endregion
 
     #region TestIO
 
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class TestIOException: TestException
-    {
-        public TestIOException()
-        { }
+    [GenerateException]
+    public partial class TestIOException: TestException
+    { }
 
-        public TestIOException(string message)
-            : base(message)
-        { }
-
-        public TestIOException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
-
-    [System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
-    public class TestIOInitializedException: TestIOException
-    {
-        public TestIOInitializedException()
-        { }
-        public TestIOInitializedException(string message)
-            : base(message)
-        { }
-        public TestIOInitializedException(string message, Exception inner)
-            : base(message, inner)
-        { }
-    }
+    [GenerateException]
+    public partial class TestIOInitializedException: TestIOException
+    { }
 
     #endregion
 }

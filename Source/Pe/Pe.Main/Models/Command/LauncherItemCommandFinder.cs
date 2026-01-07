@@ -106,7 +106,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
             // タグ情報再構築
             Logger.LogTrace("タグ情報再構築");
             var tags = MainDatabaseBarrier.ReadData(c => {
-                var launcherTagsEntityDao = new LauncherTagsEntityDao(c, DatabaseStatementLoader, c.Implementation, LoggerFactory);
+                var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
+                var launcherTagsEntityDao = daoFactory.Create<LauncherTagsEntityDao>();
                 return launcherTagsEntityDao.SelectUniqueTags(launcherItemId).ToHashSet();
             });
             LauncherTags.Remove(launcherItemId);
@@ -141,17 +142,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
                 throw new InvalidOperationException(nameof(IsInitialized));
             }
 
-            IReadOnlyList<LauncherItemId> ids;
+            LauncherItemId[] ids;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherItemsEntityDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                ids = launcherItemsEntityDao.SelectAllLauncherItemIds().ToList();
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsEntityDao = daoFactory.Create<LauncherItemsEntityDao>();
+                ids = launcherItemsEntityDao.SelectAllLauncherItemIds().ToArray();
             }
 
             var launcherItemElements = ids
                 .Select(i => OrderManager.GetOrCreateLauncherItemElement(i))
                 .Where(i => i.IsEnabledCommandLauncher)
                 .Where(a => a.Kind != LauncherItemKind.Separator)
-                .ToList()
             ;
             LauncherItemElements.SetRange(launcherItemElements);
             LauncherItemElementMap.Clear();
@@ -159,9 +160,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
                 LauncherItemElementMap.Add(LauncherItemElement.LauncherItemId, LauncherItemElement);
             }
 
-            var tagItems = new Dictionary<LauncherItemId, IReadOnlyCollection<string>>(ids.Count);
+            var tagItems = new Dictionary<LauncherItemId, IReadOnlyCollection<string>>(ids.Length);
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherTagsEntityDao = new LauncherTagsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherTagsEntityDao = daoFactory.Create<LauncherTagsEntityDao>();
                 foreach(var id in ids) {
                     var tags = launcherTagsEntityDao.SelectUniqueTags(id).ToHashSet();
                     if(tags.Count != 0) {

@@ -9,9 +9,9 @@ on:
     - master
     - ci-test
     - develop
-  pull_request:
-    branches:
-      - develop
+  # pull_request:
+  #   branches:
+  #     - develop
 
 concurrency:
   group: ${{ github.ref }}
@@ -107,7 +107,7 @@ jobs:
         run: |
           Get-ChildItem artifacts -R -File | Select-Object FullName | Format-Table -AutoSize -Wrap
 
-
+      # CIテスト用処理ではタグ・リリースは破棄(破棄可能なリポジトリ設定であることが前提)
       - name: <Delete> TEST Tag
         if: github.ref == 'refs/heads/ci-test'
         continue-on-error: true
@@ -118,6 +118,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # ドラフトリリースを作成
       - name: <Create> Release
         id: create-release
         uses: actions/github-script@v7
@@ -129,60 +130,34 @@ jobs:
               generate_release_notes: true,
               name: '${{ steps.version.outputs.dot }}',
               tag_name: '${{ steps.version.outputs.dot }}',
+              draft: true,
             });
             return releaseResult['data']['id'];
 
+      # リリースにアセットをアップロード
       - name: <Upload> Assets
         shell: pwsh
         run: ./Build/upload-release-assets.ps1 -InformationAction Continue -TargetRepository 'github' -Token '${{ secrets.GITHUB_TOKEN }}' -ReleaseId '${{ steps.create-release.outputs.result }}' -RepositoryOwner '${{ github.repository_owner }}' -RepositoryName '${{ github.event.repository.name }}'
 
-      # - name: <Upload> Pe.Plugins.Reference.*
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: artifacts/Pe.Plugins.Reference/Pe.Plugins.Reference.*.*
-      #     file_glob: true
-      #     tag: ${{ steps.version.outputs.dot }}
+      # リリースを確定(後続処理はリリースページとはちょっと違うのでここで確定する)
+      - name: <Update> Release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            return await github.rest.repos.updateRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: ${{ steps.create-release.outputs.result }},
+              draft: false,
+            });
 
-      # - name: <Upload> Applications
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: artifacts/Pe/Pe_*
-      #     file_glob: true
-      #     tag: ${{ steps.version.outputs.dot }}
-
-
-      # - name: <Upload> Html (Application/Pe.Plugins.Reference)
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: artifacts/history/*.html
-      #     file_glob: true
-      #     tag: ${{ steps.version.outputs.dot }}
-
-
-      # - name: <Upload> Update Information (Pe.Plugins.Reference)
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: artifacts/info/plugins/update-*.json
-      #     file_glob: true
-      #     tag: ${{ steps.version.outputs.dot }}
-
-      # - name: <Upload> Update Information (Application)
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: artifacts/info/pe/Output/update.json
-      #     file_glob: false
-      #     tag: ${{ steps.version.outputs.dot }}
-
+      # Pe.Server 側にバージョン連携
       - name: <Update> Version API
         if: github.ref == 'refs/heads/master'
         run: |
           curl -H "X-API-KEY: ${{ secrets.PE_SERVER_API_KEY }}" -H "X-SECRET-KEY: ${{ secrets.PE_SERVER_API_SECRET }}" -X POST ${{ env.PE_UPDATE_API_ENDPOINT }} --data '{ "version": "${{ steps.version.outputs.dot }}" }'
 
+  # デプロイが終わったのでいい感じにまとめたプログラムを生成
   deploy-after-package:
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/ci-test'
     needs:

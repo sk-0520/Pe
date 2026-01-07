@@ -16,8 +16,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
     internal class ApplicationDatabaseDelayWriter: DatabaseDelayWriter, IMainDatabaseDelayWriter, ILargeDatabaseDelayWriter, ITemporaryDatabaseDelayWriter
     {
-        public ApplicationDatabaseDelayWriter(IDatabaseBarrier databaseBarrier, TimeSpan pauseRetryTime, ILoggerFactory loggerFactory)
-            : base(databaseBarrier, pauseRetryTime, loggerFactory)
+        public ApplicationDatabaseDelayWriter(IDatabaseBarrier databaseBarrier, TimeSpan pauseRetryTime, TimeProvider timeProvider, ILoggerFactory loggerFactory)
+            : base(databaseBarrier, pauseRetryTime, timeProvider, loggerFactory)
         { }
     }
 }

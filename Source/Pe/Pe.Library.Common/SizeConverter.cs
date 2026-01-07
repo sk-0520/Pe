@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
@@ -51,9 +50,9 @@ namespace ContentTypeTextNet.Pe.Library.Common
         }
 
         /// <inheritdoc cref="ConvertHumanReadableByte(long, string, IReadOnlyList{string})"/>
-        public string ConvertHumanReadableByte(long byteSize, IReadOnlyList<string> terms)
+        public string ConvertHumanReadableByte(long byteSize, IReadOnlyList<string> units)
         {
-            return ConvertHumanReadableByte(byteSize, "{0:0.00} {1}", terms);
+            return ConvertHumanReadableByte(byteSize, "{0:0.00} {1}", units);
         }
 
         /// <inheritdoc cref="ConvertHumanReadableByte(long, string, IReadOnlyList{string})"/>

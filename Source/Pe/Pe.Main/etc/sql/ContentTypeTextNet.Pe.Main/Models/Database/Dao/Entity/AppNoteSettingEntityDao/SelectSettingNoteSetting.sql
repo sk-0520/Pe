@@ -5,7 +5,8 @@ select
 	AppNoteSetting.ForegroundColor,
 	AppNoteSetting.BackgroundColor,
 	AppNoteSetting.IsTopmost,
-	AppNoteSetting.CaptionPosition
+	AppNoteSetting.CaptionPosition,
+	AppNoteSetting.ExcludeScreenCapture
 from
 	AppNoteSetting
 where

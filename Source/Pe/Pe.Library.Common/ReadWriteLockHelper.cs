@@ -6,6 +6,72 @@ using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
+    public enum ReadWriteLockMode
+    {
+        /// <summary>
+        /// 読み込みロック。
+        /// </summary>
+        Read,
+        /// <summary>
+        /// 更新ロック。
+        /// </summary>
+        Update,
+        /// <summary>
+        /// 書き込みロック。
+        /// </summary>
+        Write,
+    }
+
+    public interface ILockDisposeable: IDisposable
+    {
+        #region property
+
+        /// <summary>
+        /// ロックモード。
+        /// </summary>
+        public ReadWriteLockMode Mode { get; }
+
+        #endregion
+    }
+
+    // ActionDisposer は意図的に除外, あんま変わりないけど。
+    file sealed class LockDisposer: DisposerBase, ILockDisposeable
+    {
+        public LockDisposer(ReadWriteLockMode mode, Action action)
+        {
+            Action = action;
+            Mode = mode;
+        }
+
+        #region property
+
+        private Action? Action { get; set; }
+
+        #endregion
+
+        #region ILockDisposeable
+
+        public ReadWriteLockMode Mode { get; }
+
+        #endregion
+
+        #region DisposerBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                if(Action is not null) {
+                    Action();
+                    Action = null;
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
+    }
+
     /// <summary>
     /// <see cref="ReaderWriterLockSlim"/>のラッパー。
     /// </summary>
@@ -176,18 +242,14 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <param name="beginAction">ロック処理。</param>
         /// <param name="exitAction">ロック解除処理。</param>
         /// <returns>ロック解除用オブジェクト。</returns>
-        protected IDisposable BeginCore(Action beginAction, Action exitAction)
+        protected ILockDisposeable BeginCore(ReadWriteLockMode mode, Action beginAction, Action exitAction)
         {
             Debug.Assert(beginAction != null);
             Debug.Assert(exitAction != null);
             ThrowIfDisposed();
 
             beginAction();
-            return new ActionDisposer<Action>((disposing, action) => {
-                if(disposing) {
-                    action();
-                }
-            }, exitAction);
+            return new LockDisposer(mode, exitAction);
         }
 
         /// <summary>
@@ -224,18 +286,14 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <param name="tryAction">ロック処理。</param>
         /// <param name="exitAction">ロック解除処理。</param>
         /// <returns>ロック解除用オブジェクト。</returns>
-        protected IDisposable WaitCore(TimeSpan timeout, Func<TimeSpan, bool> tryAction, Action exitAction)
+        protected ILockDisposeable WaitCore(ReadWriteLockMode mode, TimeSpan timeout, Func<TimeSpan, bool> tryAction, Action exitAction)
         {
             Debug.Assert(tryAction != null);
             Debug.Assert(exitAction != null);
             ThrowIfDisposed();
 
             if(tryAction(timeout)) {
-                return new ActionDisposer<Action>((disposing, action) => {
-                    if(disposing) {
-                        action();
-                    }
-                }, exitAction);
+                return new LockDisposer(mode, exitAction);
             }
 
             throw new SynchronizationLockException();
@@ -258,7 +316,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         {
             ThrowIfDisposed();
 
-            return BeginCore(Locker.EnterReadLock, Locker.ExitReadLock);
+            return BeginCore(ReadWriteLockMode.Read, Locker.EnterReadLock, Locker.ExitReadLock);
         }
 
 
@@ -267,8 +325,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         {
             ThrowIfDisposed();
 
-            // write系と何が違うのか分からん
-            return BeginCore(Locker.EnterUpgradeableReadLock, Locker.ExitUpgradeableReadLock);
+            return BeginCore(ReadWriteLockMode.Update, Locker.EnterUpgradeableReadLock, Locker.ExitUpgradeableReadLock);
         }
 
         /// <inheritdoc cref="IReadWriteLockHelper.BeginWrite"/>
@@ -276,7 +333,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         {
             ThrowIfDisposed();
 
-            return BeginCore(Locker.EnterWriteLock, Locker.ExitWriteLock);
+            return BeginCore(ReadWriteLockMode.Write, Locker.EnterWriteLock, Locker.ExitWriteLock);
         }
 
         /// <inheritdoc cref="IReadWriteLockHelper.TryRead(TimeSpan, Action)"/>
@@ -341,7 +398,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         {
             ThrowIfDisposed();
 
-            return WaitCore(timeout, Locker.TryEnterReadLock, Locker.ExitReadLock);
+            return WaitCore(ReadWriteLockMode.Read, timeout, Locker.TryEnterReadLock, Locker.ExitReadLock);
         }
 
         /// <inheritdoc cref="IReadWriteLockHelper.WaitReadByDefaultTimeout"/>
@@ -357,7 +414,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         {
             ThrowIfDisposed();
 
-            return WaitCore(timeout, Locker.TryEnterUpgradeableReadLock, Locker.ExitUpgradeableReadLock);
+            return WaitCore(ReadWriteLockMode.Update, timeout, Locker.TryEnterUpgradeableReadLock, Locker.ExitUpgradeableReadLock);
         }
 
         /// <inheritdoc cref="IReadWriteLockHelper.WaitUpdateByDefaultTimeout"/>
@@ -373,7 +430,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         {
             ThrowIfDisposed();
 
-            return WaitCore(timeout, Locker.TryEnterWriteLock, Locker.ExitWriteLock);
+            return WaitCore(ReadWriteLockMode.Write, timeout, Locker.TryEnterWriteLock, Locker.ExitWriteLock);
         }
 
         /// <inheritdoc cref="IReadWriteLockHelper.WaitWriteByDefaultTimeout"/>

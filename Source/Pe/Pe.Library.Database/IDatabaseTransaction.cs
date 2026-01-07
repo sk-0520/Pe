@@ -7,20 +7,14 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// データベース実装におけるトランザクション処理。
     /// </summary>
     /// <remarks>
-    /// <para>これが実体化されてればトランザクション中でしょうね。</para>
+    /// <para><see cref="IDatabaseAccessor.BeginReadOnlyTransaction"/>でも説明のある通りデータベース実装のトランザクションではない可能性あり。</para>
     /// <para>コミット・ロールバックは一回だけ実行される使用を想定している。</para>
     /// </remarks>
-    public interface IDatabaseTransaction: IDatabaseContext, IDatabaseContexts, IDisposable
+    public interface IDatabaseTransaction: IDatabaseContext, IDisposable
     {
         #region property
 
-        /// <summary>
-        /// CRL上のトランザクション実体。
-        /// </summary>
-        /// <remarks>
-        /// <para>トランザクションを開始しない場合 <see langword="null" /> となり、扱いは <see cref="IDatabaseTransaction"/> 実装側依存となる。</para>
-        /// </remarks>
-        IDbTransaction? Transaction { get; }
+        IDbTransaction? DbTransaction { get; }
 
         #endregion
 
@@ -38,4 +32,5 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #endregion
     }
+
 }

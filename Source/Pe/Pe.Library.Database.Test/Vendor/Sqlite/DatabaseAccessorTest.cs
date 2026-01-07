@@ -59,8 +59,8 @@ values
         public void ConnectionTest()
         {
             var factory = new InMemorySqliteFactory();
-            var databaseAccessor = new SqliteAccessor(factory, NullLoggerFactory.Instance.CreateLogger(GetType().ToString()));
-            Assert.Equal(databaseAccessor.BaseConnection, databaseAccessor.Connection);
+            var databaseAccessor = new SqliteAccessor(factory, NullLoggerFactory.Instance);
+            Assert.Equal(databaseAccessor.BaseDbConnection, databaseAccessor.DbConnection);
         }
 
         [Fact]
@@ -366,8 +366,6 @@ values
         public async Task ReadonlyTransactionTest()
         {
             using(var transaction = DatabaseAccessor.BeginReadOnlyTransaction()) {
-                Assert.Null(transaction.Transaction);
-
                 var actualNone = await transaction.QueryFirstOrDefaultAsync<string>("select ColVal from TestTable1 where ColKey = 0", cancellationToken: TestContext.Current.CancellationToken);
                 Assert.Null(actualNone);
 

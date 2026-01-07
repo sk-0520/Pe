@@ -4,12 +4,96 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
+    public ref struct SpanLinesEnumerator
+    {
+        public SpanLinesEnumerator(ReadOnlySpan<char> data)
+        {
+            Data = data;
+            Position = 0;
+            Current = default;
+        }
+
+        #region property
+
+        /// <summary>
+        /// 文字列。
+        /// </summary>
+        private ReadOnlySpan<char> Data { get; }
+        /// <summary>
+        /// 現在位置。
+        /// </summary>
+        private int Position { get; set; }
+
+        /// <summary>
+        /// 現在行。
+        /// </summary>
+        public ReadOnlySpan<char> Current { get; private set; }
+
+        #endregion
+
+        public bool MoveNext()
+        {
+            if(Position >= Data.Length) {
+                return false;
+            }
+
+            var start = Position;
+            var i = Position;
+
+            // 改行文字まで進める
+            while(i < Data.Length && Data[i] != '\r' && Data[i] != '\n') {
+                i++;
+            }
+
+            Current = Data.Slice(start, i - start);
+
+            // 改行をスキップ（CRLF の場合は 2 文字スキップ）
+            Position = i;
+            if(Position < Data.Length) {
+                if(Data[Position] == '\r' && Position + 1 < Data.Length && Data[Position + 1] == '\n') {
+                    // CR LF 対応
+                    Position += 2;
+                } else {
+                    Position += 1;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    /// <summary>
+    /// <see cref="ReadOnlySpan{char}"/> の行。
+    /// </summary>
+    public readonly ref struct SpanLines
+    {
+        public SpanLines(ReadOnlySpan<char> s)
+        {
+            Data = s;
+        }
+
+        #region property
+
+        private readonly ReadOnlySpan<char> Data { get; }
+
+        #endregion
+
+        #region function
+
+        /// <summary>
+        /// <see langword="foreach" />で回すのです。
+        /// </summary>
+        /// <returns></returns>
+        public SpanLinesEnumerator GetEnumerator() => new(Data);
+
+        #endregion
+    }
+
+
     /// <summary>
     /// 文字列適当操作処理。
     /// </summary>
@@ -29,50 +113,50 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #region function
 
         /// <summary>
-        /// 指定データを集合の中から単一である値に変換する。
+        /// 文字列を集合の中から単一である値に変換する。
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="seq">集合</param>
-        /// <param name="comparisonType">比較処理。</param>
-        /// <param name="converter"></param>
-        /// <returns></returns>
+        /// <param name="source">調べる文字列。</param>
+        /// <param name="sequence">集合。</param>
+        /// <param name="comparisonType">比較方法。</param>
+        /// <param name="converter">重複した際の文字列変換処理。</param>
+        /// <returns>単一の文字列。重複しない場合は<paramref name="source"/>となる。</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S907:\"goto\" statement should not be used")]
-        public static string ToUnique(string target, IReadOnlyCollection<string> seq, StringComparison comparisonType, Func<string, int, string> converter)
+        public static string ToUnique(string source, IReadOnlyCollection<string> sequence, StringComparison comparisonType, Func<string, int, string> converter)
         {
-            if(target == null) {
-                throw new ArgumentNullException(nameof(target));
+            if(source == null) {
+                throw new ArgumentNullException(nameof(source));
             }
-            if(seq == null) {
-                throw new ArgumentNullException(nameof(seq));
+            if(sequence == null) {
+                throw new ArgumentNullException(nameof(sequence));
             }
             if(converter == null) {
                 throw new ArgumentNullException(nameof(converter));
             }
 
-            var changeName = target;
+            var result = source;
 
             int n = 1;
             RETRY:
-            foreach(var value in seq) {
-                if(string.Equals(value, changeName, comparisonType)) {
-                    changeName = converter(target, ++n);
+            foreach(var value in sequence) {
+                if(string.Equals(value, result, comparisonType)) {
+                    result = converter(source, ++n);
                     goto RETRY;
                 }
             }
 
-            return changeName;
+            return result;
         }
 
         /// <summary>
         /// 指定データを集合の中から単一である値に変換する。
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="seq"></param>
-        /// <param name="comparisonType"></param>
-        /// <returns>集合の中に同じものがなければ<paramref name="target"/>, 存在すれば<paramref name="target"/>(n)。</returns>
-        public static string ToUniqueDefault(string target, IReadOnlyCollection<string> seq, StringComparison comparisonType)
+        /// <param name="source">調べる文字列。</param>
+        /// <param name="sequence">集合。</param>
+        /// <param name="comparisonType">比較方法。</param>
+        /// <returns>集合の中に同じものがなければ<paramref name="source"/>, 存在すれば<paramref name="source"/>(n)。</returns>
+        public static string ToUniqueDefault(string source, IReadOnlyCollection<string> sequence, StringComparison comparisonType)
         {
-            return ToUnique(target, seq, comparisonType, (source, index) => string.Format(CultureInfo.InvariantCulture, "{0}({1})", source, index));
+            return ToUnique(source, sequence, comparisonType, static (source, index) => string.Format(CultureInfo.InvariantCulture, "{0}({1})", source, index));
         }
 
 #if false
@@ -192,9 +276,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4456:Parameter validation in yielding methods should be wrapped")]
         public static IEnumerable<string> ReadLines(string s)
         {
-            if(s == null) {
-                throw new ArgumentNullException(nameof(s));
-            }
+            ArgumentNullException.ThrowIfNull(s);
 
             using var reader = new StringReader(s);
             string? line;
@@ -202,7 +284,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 yield return line;
             }
         }
-
 
         /// <summary>
         /// リーダーから行毎に分割する。
@@ -212,15 +293,20 @@ namespace ContentTypeTextNet.Pe.Library.Common
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S4456:Parameter validation in yielding methods should be wrapped")]
         public static IEnumerable<string> ReadLines(TextReader reader)
         {
-            if(reader == null) {
-                throw new ArgumentNullException(nameof(reader));
-            }
+            ArgumentNullException.ThrowIfNull(reader);
 
             string? line;
             while((line = reader.ReadLine()) != null) {
                 yield return line;
             }
         }
+
+        /// <summary>
+        /// 文字列から行毎に分割する。
+        /// </summary>
+        /// <param name="s">対象文字列。</param>
+        /// <returns>分割文字列を列挙。</returns>
+        public static SpanLines ReadLines(ReadOnlySpan<char> s) => new(s);
 
         /// <summary>
         /// 文字のなんちゃってな長さを取得。

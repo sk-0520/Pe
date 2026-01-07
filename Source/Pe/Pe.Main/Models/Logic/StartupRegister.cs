@@ -151,13 +151,20 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 };
                 var arguments = shortcutFile.Arguments;
                 var args = arguments.Split(' ');
-                var commandLine = new CommandLine(args, false);
-                var waitKeys = new[] {
-                    commandLine.Add(longKey: "_boot-wait", kind: CommandLineKeyKind.Value),
+                var commandLineParser = new CommandLineParser();
+                var waitOptions = new[] {
+                    commandLineParser.Add(new CommandLineOption("_boot-wait", CommandLineOptionKind.Value, string.Empty)),
                 };
-                if(commandLine.Parse()) {
-                    foreach(var waitKey in waitKeys) {
-                        if(commandLine.Values.TryGetValue(waitKey, out var waitTimes)) {
+                CommandLineParsedResult? parsedResult = null;
+                try {
+                    parsedResult = commandLineParser.Parse(StartupFileName, args);
+                } catch(CommandLineException ex) {
+                    // 解析失敗は無視
+                    Logger.LogWarning("スタートアップ引数の解析に失敗: {Exception}", ex);
+                }
+                if(parsedResult is not null) {
+                    foreach(var waitOption in waitOptions) {
+                        if(parsedResult.Values.TryGetValue(waitOption.Key, out var waitTimes)) {
                             if(int.TryParse(waitTimes.First, out var waitTime)) {
                                 if(0 < waitTime) {
                                     startupParameter.StartupWaitTime = TimeSpan.FromMilliseconds(waitTime);
@@ -167,10 +174,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                             }
                         }
                     }
-                    if(commandLine.Unknowns.Any()) {
-                        startupParameter.Argument = string.Join(" ", commandLine.Unknowns);
+                    if(parsedResult.Unknowns.Any()) {
+                        startupParameter.Argument = string.Join(" ", parsedResult.Unknowns.OrderBy(a => a.Key).Select(a => a.Value));
                     }
                 }
+
                 return Result.CreateSuccess(startupParameter);
             } catch(Exception ex) {
                 Logger.LogError(ex, ex.Message);

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Args.Test
@@ -11,15 +6,22 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
     {
         #region function
 
-        [Fact]
-        public void ThrowIfInvalidLongKeyTest()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData(" ")]
+        public void ThrowIfInvalidKey_Throw_Test(string? s)
         {
-            Assert.Throws<ArgumentNullException>(() => CommandLineHelper.ThrowIfInvalidLongKey(null!));
-            Assert.Throws<ArgumentException>(() => CommandLineHelper.ThrowIfInvalidLongKey(""));
-            Assert.Throws<ArgumentException>(() => CommandLineHelper.ThrowIfInvalidLongKey(" "));
+            var test = new CommandLineHelper();
+            Assert.Throws<CommandLineInvalidKeyException>(() => test.ThrowIfInvalidKey(s!));
+        }
 
-            var actual = CommandLineHelper.ThrowIfInvalidLongKey(" key ");
-            Assert.Equal(" key ", actual);
+        [Fact]
+        public void ThrowIfInvalidKeyTest()
+        {
+            var test = new CommandLineHelper();
+            var actual = Record.Exception(() => test.ThrowIfInvalidKey("key"));
+            Assert.Null(actual);
         }
 
         [Theory]
@@ -30,9 +32,10 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         [InlineData("\"\"", "\"\"")]
         [InlineData("a", "\"a\"")]
         [InlineData(" \"a\" ", " \"a\" ")]
-        public void StripDoubleQuotesTest(string expected, string input)
+        public void StripEnclosingTest(string expected, string input)
         {
-            var actual = CommandLineHelper.StripDoubleQuotes(input);
+            var test = new CommandLineHelper();
+            var actual = test.StripEnclosing(input);
             Assert.Equal(expected, actual);
         }
 
@@ -49,36 +52,9 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         [InlineData("\"a \"\"\"\"\"\" b\"", "a \"\"\" b")]
         public void EscapeTest(string expected, string input)
         {
-            var actual = CommandLineHelper.Escape(input);
+            var test = new CommandLineHelper();
+            var actual = test.Escape(input);
             Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void ToCommandLineArgumentsTest()
-        {
-            var input = new Dictionary<string, string>() {
-                ["key"] = "value",
-                ["space"] = "abc xyz",
-                ["empty"] = "",
-                ["white"] = " ",
-            };
-            var actual1 = CommandLineHelper.ToCommandLineArguments(input);
-            Assert.Contains("--key=value", actual1);
-            Assert.Contains("--space=\"abc xyz\"", actual1);
-            Assert.Contains("--empty=\"\"", actual1);
-            Assert.Contains("--white=\" \"", actual1);
-
-            var actual2 = CommandLineHelper.ToCommandLineArguments(input, '=', "@@");
-            Assert.Contains("@@key=value", actual2);
-            Assert.Contains("@@space=\"abc xyz\"", actual2);
-            Assert.Contains("@@empty=\"\"", actual2);
-            Assert.Contains("@@white=\" \"", actual2);
-
-            var actual3 = CommandLineHelper.ToCommandLineArguments(input, ' ', "**");
-            Assert.Contains("**key value", actual3);
-            Assert.Contains("**space \"abc xyz\"", actual3);
-            Assert.Contains("**empty \"\"", actual3);
-            Assert.Contains("**white \" \"", actual3);
         }
 
         #endregion

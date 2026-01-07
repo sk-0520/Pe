@@ -71,15 +71,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             IsLoaded = true;
         }
 
-        protected abstract void SaveImpl(IDatabaseContextsPack contextsPack);
+        protected abstract void SaveImpl(IDatabaseContextPack contextPack);
 
-        public void Save(IDatabaseContextsPack contextsPack)
+        public void Save(IDatabaseContextPack contextPack)
         {
             if(!IsLoaded) {
                 throw new InvalidOperationException(nameof(IsLoaded));
             }
 
-            SaveImpl(contextsPack);
+            SaveImpl(contextPack);
         }
 
         protected virtual void ReceiveLauncherItemRemoved(LauncherItemId launcherItemId)

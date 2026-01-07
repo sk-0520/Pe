@@ -1,7 +1,6 @@
-using System;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
@@ -21,6 +20,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
             public string BackgroundColor { get; set; } = string.Empty;
             public bool IsTopmost { get; set; }
             public string CaptionPosition { get; set; } = string.Empty;
+            public bool ExcludeScreenCapture { get; set; } = false;
 
             #endregion
         }
@@ -35,8 +35,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
 
         #endregion
 
-        public AppNoteSettingEntityDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(context, statementLoader, implementation, loggerFactory)
+        public AppNoteSettingEntityDao(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(context, statementLoader, loggerFactory)
         { }
 
         #region function
@@ -45,6 +45,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
         {
             var statement = LoadStatement();
             return Context.QueryFirst<FontId>(statement);
+        }
+
+        public bool SelectAppNoteSettingExcludeScreenCapture()
+        {
+            var statement = LoadStatement();
+            return Context.QueryFirst<bool>(statement);
         }
 
         public SettingAppNoteSettingData SelectSettingNoteSetting()
@@ -63,6 +69,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
                 BackgroundColor = ToColor(dto.BackgroundColor),
                 IsTopmost = dto.IsTopmost,
                 CaptionPosition = noteCaptionPositionTransfer.ToEnum(dto.CaptionPosition),
+                ExcludeScreenCapture = dto.ExcludeScreenCapture,
             };
             return data;
         }
@@ -82,6 +89,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
                 BackgroundColor = FromColor(data.BackgroundColor),
                 IsTopmost = data.IsTopmost,
                 CaptionPosition = noteCaptionPositionTransfer.ToString(data.CaptionPosition),
+                ExcludeScreenCapture = data.ExcludeScreenCapture,
             };
             commonStatus.WriteCommonTo(dto);
             Context.UpdateByKey(statement, dto);

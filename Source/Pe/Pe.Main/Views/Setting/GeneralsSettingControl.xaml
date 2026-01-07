@@ -524,6 +524,29 @@
                     <ColumnDefinition Style="{StaticResource ContentDefinition}" />
                   </Grid.ColumnDefinitions>
 
+                  <Label x:Name="nodeScreenCapture" Target="{Binding ElementName=nodeExcludeScreenCapture}" Grid.Column="0" Content="{Binding Resources.String_Setting_Generals_Note_ScreenCapture_A, Source={x:Static app_main:CultureService.Instance}}" />
+                  <CheckBox x:Name="nodeExcludeScreenCapture" Grid.Column="1" Content="{Binding Resources.String_Setting_Generals_Note_ExcludeScreenCapture_A, Source={x:Static app_main:CultureService.Instance}}" IsChecked="{Binding ExcludeScreenCapture}" />
+                </Grid>
+
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Style="{StaticResource LabelDefinition}" />
+                    <ColumnDefinition Style="{StaticResource ContentDefinition}" />
+                  </Grid.ColumnDefinitions>
+
+                  <TextBlock Grid.Column="1">
+                    <Hyperlink Command="{Binding OpenExcludeScreenCaptureDocumentCommand}">
+                      <Run Text="{Binding Resources.String_Setting_Generals_Note_ExcludeScreenCapture_Description, Source={x:Static app_main:CultureService.Instance}, Mode=OneTime}" />
+                    </Hyperlink>
+                  </TextBlock>
+                </Grid>
+
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Style="{StaticResource LabelDefinition}" />
+                    <ColumnDefinition Style="{StaticResource ContentDefinition}" />
+                  </Grid.ColumnDefinitions>
+
                   <Label x:Name="nodeHiddenMode" Grid.Column="0" Content="{Binding Resources.String_Setting_Generals_Note_AutoHidden, Source={x:Static app_main:CultureService.Instance}}" />
                   <Grid Grid.Column="1" HorizontalAlignment="Left">
                     <Grid.ColumnDefinitions>
@@ -554,7 +577,6 @@
                     />
                   </Grid>
                 </Grid>
-
 
                 <Grid>
                   <Grid.ColumnDefinitions>

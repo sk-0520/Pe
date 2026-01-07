@@ -58,8 +58,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             // DB から物理削除
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherGroupsEntityDao = new LauncherGroupsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
-                var launcherGroupItemsEntityDao = new LauncherGroupItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupsEntityDao = daoFactory.Create<LauncherGroupsEntityDao>();
+                var launcherGroupItemsEntityDao = daoFactory.Create<LauncherGroupItemsEntityDao>();
 
                 launcherGroupItemsEntityDao.DeleteGroupItemsByLauncherGroupId(targetItem.LauncherGroupId);
                 launcherGroupsEntityDao.DeleteGroup(targetItem.LauncherGroupId);
@@ -77,7 +78,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             var groupData = launcherFactory.CreateGroupData(newGroupName, kind);
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
-                var launcherGroupsDao = new LauncherGroupsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherGroupsDao = daoFactory.Create<LauncherGroupsEntityDao>();
                 launcherGroupsDao.InsertNewGroup(groupData, DatabaseCommonStatus.CreateCurrentAccount());
 
                 context.Commit();
@@ -99,28 +101,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             ThrowIfDisposed();
 
             IReadOnlyList<LauncherItemId> launcherItemIds;
-            //IReadOnlyList<Guid> groupIds;
             using(var context = MainDatabaseBarrier.WaitRead()) {
-                var launcherItemsEntityDao = new LauncherItemsEntityDao(context, DatabaseStatementLoader, context.Implementation, LoggerFactory);
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var launcherItemsEntityDao = daoFactory.Create<LauncherItemsEntityDao>();
                 launcherItemIds = launcherItemsEntityDao.SelectAllLauncherItemIds().ToList();
-
-                //var launcherGroupsEntityDao = new LauncherGroupsEntityDao(commander, StatementLoader, commander.Implementation, LoggerFactory);
-                //groupIds = launcherGroupsEntityDao.SelectAllLauncherGroupIds().ToList();
             }
-
             LauncherItems.SetRange(launcherItemIds);
-
-            //GroupItems.Clear();
-            //foreach(var groupId in groupIds) {
-            //    var element = new LauncherGroupSettingEditorElement(groupId, MainDatabaseBarrier, StatementLoader, IdFactory, LoggerFactory);
-            //    element.Initialize();
-            //    GroupItems.Add(element);
-            //}
 
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextsPack contextsPack)
+        protected override void SaveImpl(IDatabaseContextPack contextPack)
         {
             var launcherFactory = new LauncherFactory(IdFactory, LoggerFactory);
             foreach(var group in GroupItems.Counting()) {
@@ -128,7 +119,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             }
 
             foreach(var group in GroupItems) {
-                group.Save(contextsPack);
+                group.Save(contextPack);
             }
         }
 

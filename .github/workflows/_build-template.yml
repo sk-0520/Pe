@@ -79,7 +79,7 @@ jobs:
 
       - name: <Install> NPM
         shell: bash
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: <Lint> Front
         shell: bash
@@ -134,7 +134,7 @@ jobs:
 
       - name: <Install> NPM
         shell: bash
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: <Test> Script
         shell: bash
@@ -165,13 +165,14 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: <Prepare> docfx
-        shell: pwsh
-        run: |
-          dotnet tool install docfx --tool-path _tools
+      - name: <Setup> dotnet tool
+        shell: cmd
+        run: install-dotnet-tool.bat
 
       - name: <Build> Main
         shell: pwsh
+        # # 別に無視したいわけじゃないけどソースジェネレータのやつの対応がようわからん
+        # continue-on-error: true
         run: |
           .\_tools\docfx docfx.json
 
@@ -241,6 +242,7 @@ jobs:
         shell: pwsh
         run: .\${{ env.EXPAND_DIR }}\create-project.ps1 -Verbose -InformationAction Continue -ProjectDirectory ${{ env.PROJECT_DIR }} -PluginName ${{ env.PROJECT_NAME }} -PluginId ([Guid]::Empty) -DefaultNamespace ${{ env.PROJECT_NAME }} -AppTargetBranch '${{ github.ref_name }}'
 
+      # PR は現状トリガーにしないけど将来用にコードだけは残しておく
       - name: <Create> Plugin Template [PR]
         if: ${{ github.event_name == 'pull_request' }}
         env:
@@ -319,7 +321,7 @@ jobs:
 
       - name: <Install> NPM
         shell: bash
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: <Check> Release Note
         shell: bash
@@ -488,6 +490,18 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
+      - name: <Setup> dotnet tool
+        shell: cmd
+        run: install-dotnet-tool.bat
+
+      - name: <Setup> add OpenCppCoverage + VSTest.Console to PATH
+        id: setup_opencppcoverage
+        shell: pwsh
+        run: |
+          choco install OpenCppCoverage -y
+          echo "C:\Program Files\OpenCppCoverage" >> $env:GITHUB_PATH
+          echo "${{ env.VS_TEST_CONSOLE_PATH }}" >> $env:GITHUB_PATH
+
       - name: <Rewrite> Module
         shell: pwsh
         run: |
@@ -511,11 +525,33 @@ jobs:
 
       - name: <Test> Module
         shell: pwsh
-        run: |
-          $env:Path += ';${{env.VS_TEST_CONSOLE_PATH}}'
-          echo $env:Path
-          .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
+        run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -Platform ${{ matrix.PLATFORM }} -Configuration ${{ matrix.CONFIGURATION }}
 
+      - name: <Make> CodeCoverage
+        if: matrix.CONFIGURATION == 'CI_TEST'
+        shell: pwsh
+        run: |
+          $files = @(Get-ChildItem -Filter coverage.cobertura.xml -Recurse)
+          # # ソースファイルの位置を渡しておかないとソースが読めない問題対応(Pe.Bridge/Pe.CommonTestがはしゃいでるので補正)
+          # $sources = @(
+          #   Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe
+          #   Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.Bridge
+          #   Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.CommonTest
+          # )
+          & .\_tools\reportgenerator `
+            -reports:$($files -join ';') `
+            -targetdir:"coveragereport" `
+            -reporttypes:Html
+
+      - name: <Artifact> CodeCoverage
+        if: matrix.CONFIGURATION == 'CI_TEST'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test_Pe.Boot_${{ matrix.PLATFORM }}
+          path: |
+            Source/Pe.Boot/*.Test/**/coverage.cobertura.xml
+            coveragereport
+          if-no-files-found: error
 
   build-main:
     name: Build Main
@@ -604,6 +640,10 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
+      - name: <Setup> dotnet tool
+        shell: cmd
+        run: install-dotnet-tool.bat
+
       - name: <Cache> Nuget
         uses: actions/cache@v4
         with:
@@ -630,7 +670,6 @@ jobs:
         if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool
           $files = @(Get-ChildItem -Filter coverage.cobertura.xml -Recurse)
           # ソースファイルの位置を渡しておかないとソースが読めない問題対応(Pe.Bridge/Pe.CommonTestがはしゃいでるので補正)
           $sources = @(
@@ -638,7 +677,7 @@ jobs:
             Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.Bridge
             Join-Path -Path (Get-Location) -ChildPath Source | Join-Path -ChildPath Pe | Join-Path -ChildPath Pe.CommonTest
           )
-          reportgenerator `
+          & .\_tools\reportgenerator `
             -reports:$($files -join ';') `
             -sourcedirs:$($sources -join ';') `
             -targetdir:"coveragereport" `
@@ -730,7 +769,9 @@ jobs:
 
       - name: <Compress> Application
         shell: pwsh
-        run: .\Build\compress-module.ps1 -InformationAction Continue -TargetDirectory 'Output' -OutputFileBaseName "Pe_${{ matrix.PLATFORM }}" -Archive ${{ inputs.APPLICATION_ARCHIVE }}
+        env:
+          Archive: ${{ inputs.APPLICATION_ARCHIVE }}
+        run: .\Build\compress-module.ps1 -InformationAction Continue -TargetDirectory 'Output' -OutputFileBaseName "Pe_${{ matrix.PLATFORM }}" -Archive "$env:Archive"
 
       - name: <Artifact> Application
         uses: actions/upload-artifact@v4
@@ -767,7 +808,11 @@ jobs:
 
       - name: <Generate> Update Information
         shell: pwsh
-        run: .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl ${{ inputs.PE_RELEASE_ARCHIVE_BASE_URL }} -NoteBaseUrl ${{ inputs.PE_RELEASE_NOTE_BASE_URL }} -OutputDirectory Output -Module 'application' -Archive ${{ inputs.APPLICATION_ARCHIVE }} -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe') -Platforms ${{ env.PLATFORMS }}
+        env:
+          ArchiveBaseUrl: ${{ inputs.PE_RELEASE_ARCHIVE_BASE_URL }}
+          NoteBaseUrl: ${{ inputs.PE_RELEASE_NOTE_BASE_URL }}
+          Archive: ${{ inputs.APPLICATION_ARCHIVE }}
+        run: .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl "$env.ArchiveBaseUrl" -NoteBaseUrl "$env:NoteBaseUrl" -OutputDirectory Output -Module 'application' -Archive "$env:Archive" -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe') -Platforms ${{ env.PLATFORMS }}
 
       - name: <Artifact> Update Information
         uses: actions/upload-artifact@v4
@@ -926,10 +971,12 @@ jobs:
 
       - name: <Compress> Plugins
         shell: pwsh
+        env:
+          Archive: ${{ inputs.PLUGINS_ARCHIVE }}
         run: |
           $dirs = Get-ChildItem -Path (Join-Path -Path 'artifacts' -ChildPath 'plugins')
           foreach($dir in $dirs) {
-            .\Build\compress-module.ps1 -InformationAction Continue -TargetDirectory $dir.FullName -OutputFileBaseName "$($dir.Name)_${{ matrix.PLATFORM }}" -Archive ${{ inputs.PLUGINS_ARCHIVE }}
+            .\Build\compress-module.ps1 -InformationAction Continue -TargetDirectory $dir.FullName -OutputFileBaseName "$($dir.Name)_${{ matrix.PLATFORM }}" -Archive "$env:Archive"
           }
 
       - name: <Artifact> Plugins
@@ -967,9 +1014,13 @@ jobs:
 
       - name: <Generate> Update Information
         shell: pwsh
+        env:
+          ArchiveBaseUrl: ${{ inputs.PE_RELEASE_ARCHIVE_BASE_URL }}
+          PeReleaseNoteBaseUrl: ${{ inputs.PE_RELEASE_NOTE_BASE_URL }}
+          Archive: ${{ inputs.PLUGINS_ARCHIVE }}
         run: |
-          $pluginNoteBaseUrl = "${{ inputs.PE_RELEASE_NOTE_BASE_URL }}".Replace("github.com", "pe.invalid")
-          .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl ${{ inputs.PE_RELEASE_ARCHIVE_BASE_URL }} -NoteBaseUrl $pluginNoteBaseUrl -OutputDirectory Output -Module 'plugins' -Archive ${{ inputs.PLUGINS_ARCHIVE }} -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe.Plugins.Reference') -Platforms ${{ env.PLATFORMS }}
+          $pluginNoteBaseUrl = "$env:PeReleaseNoteBaseUrl".Replace("github.com", "pe.invalid")
+          .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl "$env:ArchiveBaseUrl" -NoteBaseUrl $pluginNoteBaseUrl -OutputDirectory Output -Module 'plugins' -Archive "$env:Archive" -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe.Plugins.Reference') -Platforms ${{ env.PLATFORMS }}
 
       - name: <🌳> 🌲
         shell: pwsh
@@ -1011,6 +1062,7 @@ jobs:
           - ubuntu-24.04
           - ubuntu-22.04
         TARGET:
+          - Pe.Library.Provider.Test
           - Pe.Library.Args.Test
           - Pe.Library.Property.Test
           - Pe.Library.Common.Test

@@ -5,8 +5,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Domain
 {
     public abstract class DomainDaoBase: ApplicationDatabaseObjectBase
     {
-        protected DomainDaoBase(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(context, statementLoader, implementation, loggerFactory)
+        protected DomainDaoBase(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
+            : base(context, statementLoader, loggerFactory)
         { }
 
         #region property

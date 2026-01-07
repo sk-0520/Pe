@@ -1,5 +1,5 @@
-import { default as markdown_1 } from "bundle-text:./DevPluginTemplatePage_1.md";
-import { default as markdown_2 } from "bundle-text:./DevPluginTemplatePage_2.md";
+import markdown_1 from "bundle-text:./DevPluginTemplatePage_1.md";
+import markdown_2 from "bundle-text:./DevPluginTemplatePage_2.md";
 import ApiIcon from "@mui/icons-material/Api";
 import {
 	Box,

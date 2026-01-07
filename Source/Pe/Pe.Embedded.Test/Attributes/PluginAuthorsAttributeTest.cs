@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Test.Attributes
         [InlineData("")]
         [InlineData(" ")]
         [InlineData("\n")]
-        [InlineData("　")]
+        [InlineData("\u3000")]
         public void Constructor_name_throw_Test(string name)
         {
             var ex = Assert.Throws<ArgumentException>(() => new PluginAuthorsAttribute(name!, "license"));
@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Test.Attributes
         [InlineData("")]
         [InlineData(" ")]
         [InlineData("\n")]
-        [InlineData("　")]
+        [InlineData("\u3000")]
         public void Constructor_license_throw_Test(string license)
         {
             var ex = Assert.Throws<ArgumentException>(() => new PluginAuthorsAttribute("name", license!));

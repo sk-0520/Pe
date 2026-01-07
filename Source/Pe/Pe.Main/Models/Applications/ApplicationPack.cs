@@ -170,7 +170,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         #endregion
     }
 
-    public interface IDatabaseContextsPack: IApplicationPack<IDatabaseContexts>
+    public interface IDatabaseContextPack: IApplicationPack<IDatabaseContext>
     {
         #region property
 
@@ -179,17 +179,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         #endregion
     }
 
-    internal class ApplicationDatabaseContextsPack: TApplicationPackBase<IDatabaseContexts, DatabaseContexts>, IDatabaseContextsPack
+    internal class ApplicationDatabaseContextPack: TApplicationPackBase<IDatabaseContext, IDatabaseContext>, IDatabaseContextPack
     {
-        public ApplicationDatabaseContextsPack(DatabaseContexts main, DatabaseContexts large, DatabaseContexts temporary, IDatabaseCommonStatus commonStatus)
+        public ApplicationDatabaseContextPack(IDatabaseContext main, IDatabaseContext large, IDatabaseContext temporary, IDatabaseCommonStatus commonStatus)
             : base(main, large, temporary)
         {
             CommonStatus = commonStatus;
         }
 
-        #region IDatabaseContextsPack
+        #region TApplicationPackBase
 
-        /// <inheritdoc cref="IDatabaseContextsPack.CommonStatus"/>
+        /// <inheritdoc cref="IDatabaseContextPack.CommonStatus"/>
         public IDatabaseCommonStatus CommonStatus { get; }
 
         #endregion
@@ -200,8 +200,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
         #region function
 
-        IDatabaseContextsPack WaitRead();
-        IDatabaseContextsPack WaitWrite();
+        IDatabaseContextPack WaitRead();
+        IDatabaseContextPack WaitWrite();
 
         /// <summary>
         /// トランザクション処理を確定する。
@@ -218,9 +218,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
     {
         #region define
 
-        internal class Barriers: ApplicationDatabaseContextsPack
+        internal class Barriers: ApplicationDatabaseContextPack
         {
-            public Barriers(DatabaseContexts main, DatabaseContexts large, DatabaseContexts temporary, IDatabaseCommonStatus commonStatus, bool isReadOnly)
+            public Barriers(IDatabaseContext main, IDatabaseContext large, IDatabaseContext temporary, IDatabaseCommonStatus commonStatus, bool isReadOnly)
                 : base(main, large, temporary, commonStatus)
             {
                 IsReadOnly = isReadOnly;
@@ -236,7 +236,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
             public void Commit()
             {
-                foreach(var transaction in Items.Select(i => i.Context).OfType<IDatabaseTransaction>()) {
+                foreach(var transaction in Items.OfType<IDatabaseTransaction>()) {
                     transaction.Commit();
                 }
             }
@@ -250,9 +250,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 if(!IsDisposed) {
                     if(disposing) {
                         var disposableItems = Items
-                            .Select(i => i.Context)
                             .OfType<IDisposable>()
-                            .ToList()
                         ;
                         foreach(var disposableItem in disposableItems) {
                             disposableItem.Dispose();
@@ -288,16 +286,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             );
         }
 
-        DatabaseContexts WaitReadCore(IDatabaseBarrier barrier)
+        private IDatabaseTransaction WaitReadCore(IDatabaseBarrier barrier)
         {
-            var transaction = barrier.WaitRead();
-            return new DatabaseContexts(transaction, transaction.Implementation);
+            var reader = barrier.WaitRead();
+            return reader;
         }
 
-        DatabaseContexts WaitWriteCore(IDatabaseBarrier barrier)
+        private IDatabaseTransaction WaitWriteCore(IDatabaseBarrier barrier)
         {
-            var transaction = barrier.WaitWrite();
-            return new DatabaseContexts(transaction, transaction.Implementation);
+            var writer = barrier.WaitWrite();
+            return writer;
         }
 
         #endregion
@@ -315,7 +313,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             return CurrentBarriers;
         }
 
-        IDatabaseContextsPack IDatabaseBarrierPack.WaitRead() => WaitRead();
+        IDatabaseContextPack IDatabaseBarrierPack.WaitRead() => WaitRead();
 
         internal Barriers WaitWrite(/*IDatabaseCommonStatus databaseCommonStatus*/)
         {
@@ -327,7 +325,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             CurrentBarriers.Disposing += CurrentBarriers_Disposing;
             return CurrentBarriers;
         }
-        IDatabaseContextsPack IDatabaseBarrierPack.WaitWrite() => WaitWrite();
+        IDatabaseContextPack IDatabaseBarrierPack.WaitWrite() => WaitWrite();
 
         public void Save()
         {
