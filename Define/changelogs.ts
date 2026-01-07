@@ -90,7 +90,8 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"#1049: プラグインテンプレートのパッケージバージョンを Pe に追従させる",
 					},
 					{
 						revision: "",
