@@ -99,6 +99,11 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject:
+							"#1058: リリースページ作成処理は ドラフト → アセット配置 → 正式版 とする",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
