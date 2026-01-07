@@ -504,10 +504,8 @@ try {
 
 	# スタートアップ設定
 	$solutionXml.Load($solutionPathName)
-	foreach ($fixPlatformPath in $fixPlatformPaths) {
-		$projectNode = $solutionXml.SelectSingleNode("//Project[@Path='${PluginName}/${PluginName}.csproj']")
-		$projectNode.SetAttribute('DefaultStartup', 'true')
-	}
+	$projectNode = $solutionXml.SelectSingleNode("//Project[@Path='${PluginName}/${PluginName}.csproj']")
+	$projectNode.SetAttribute('DefaultStartup', 'true')
 	$solutionXml.Save($solutionPathName)
 
 	Write-Verbose 'NuGet 復元'
