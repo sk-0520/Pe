@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Property
 {
@@ -45,10 +43,9 @@ namespace ContentTypeTextNet.Pe.Library.Property
         #region function
 
         private PropertyAccessor GetAccessor(string propertyName) => AccessorCache.GetOrAdd(propertyName, s => {
-            if(!Properties.TryGetValue(s, out var accessor)) {
+            if(!Properties.TryGetValue(s, out var propertyInfo)) {
                 throw new PropertyNotFoundException(s);
             }
-            var propertyInfo = Properties[s];
             return new PropertyAccessor(OwnerExpression, propertyInfo);
         });
 
