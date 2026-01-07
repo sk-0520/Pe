@@ -4,14 +4,14 @@ import type { ChangelogVersion } from "../Source/Help/types/changelog";
 
 const Changelogs: ChangelogVersion[] = [
 	{
-		date: "YYYY/MM/DD",
-		version: "0.99.264+",
+		date: "2026/01/07",
+		version: "0.99.265",
 		contents: [
 			{
 				type: "note",
 				logs: [
 					{
-						revision: "",
+						revision: "550f6fb7adc97de26a88b988c5ec993c29ea196e",
 						class: "compatibility",
 						subject:
 							"コマンドライン引数処理を調整したため一部互換性が失われました(#1053)",
@@ -20,64 +20,19 @@ const Changelogs: ChangelogVersion[] = [
 							"Pe が内部的に生成するコマンドライン引数には影響しません",
 						],
 					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
 				],
 			},
 			{
 				type: "features",
 				logs: [
 					{
-						revision: "",
+						revision: "fadcba59f49d1e461f8fc8063c0b02104a482961",
 						subject: "#1035: ノートをスクリーンキャプチャから外す",
 						comments: [
 							"デフォルトでスクリーンキャプチャから除外されます",
 							"除外設定は 設定 -> 基本 -> ノート で変更可能です",
 							"除外方法自体はアプリケーション構成ファイルによる変更が必要です",
 						],
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "fixes",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
 					},
 				],
 			},
@@ -89,22 +44,18 @@ const Changelogs: ChangelogVersion[] = [
 						subject: "#929: CI上でコードカバレッジを取得する(C)",
 					},
 					{
-						revision: "",
+						revision: "b06210c603e455ea66b2a35a2a8185c8f6c68a74",
 						subject:
 							"#1049: プラグインテンプレートのパッケージバージョンを Pe に追従させる",
 					},
 					{
-						revision: "",
+						revision: "d60c89413712f289e0722648830b799513cfb853",
 						subject: "update npm",
 					},
 					{
-						revision: "",
+						revision: "f5c11eba96f80574401d05dc730053480d510fb8",
 						subject:
 							"#1058: リリースページ作成処理は ドラフト → アセット配置 → 正式版 とする",
-					},
-					{
-						revision: "",
-						subject: "",
 					},
 				],
 			},
@@ -150,10 +101,12 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "f2c01708eab9b1356f144774aad58e46c5cc6e7a",
+						class: "nuget",
 						subject: "BenchmarkDotNet 0.14.0 -> 0.15.6",
 					},
 					{
 						revision: "c2e3a2939cfbdd505323627c1ef4869e18761841",
+						class: "nuget",
 						subject: "xunit.v3 3.1.0 -> 3.2.1",
 						comments: [
 							"xunit.v3 3.1.0 -> 3.2.0 (c2e3a2939cfbdd505323627c1ef4869e18761841)",
