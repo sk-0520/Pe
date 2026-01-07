@@ -2,8 +2,8 @@
 	"profiles": {
 		"Plugin:Debug": {
 			"commandName": "Executable",
-			"executablePath": "$(SolutionDir)Pe.Main\\bin\\$(Platform)\\$(Configuration)\\$(TargetFramework)\\Pe.Main.exe",
-			"commandLineArgs": "--debug-dev-mode --log=X:\\pe\\log --with-log=xml --force-log --full-trace-log --user-dir=X:\\pe\\user --machine-dir=X:\\pe\\machine --temp-dir=X:\\pe\\temp  --test-plugin-name $(TargetName) --test-plugin-dir \"$(SolutionDir)$(ProjectName)\\bin\\$(Platform)\\$(Configuration)\\$(TargetFramework)\"",
+			"executablePath": "$(SolutionDir)Pe\\Source\\Pe\\Pe.Main\\bin\\$(Platform)\\$(Configuration)\\$(TargetFramework)\\Pe.Main.exe",
+			"commandLineArgs": "--debug-dev-mode --log=$(SolutionDir)work\\log --with-log=xml --force-log --full-trace-log --user-dir=$(SolutionDir)work\\user --machine-dir=$(SolutionDir)work\\machine --temp-dir=$(SolutionDir)work\\temp  --test-plugin-name $(TargetName) --test-plugin-dir \"$(SolutionDir)$(ProjectName)\\bin\\$(Platform)\\$(Configuration)\\$(TargetFramework)\"",
 			"workingDirectory": "$(SolutionDir)"
 		}
 	}
