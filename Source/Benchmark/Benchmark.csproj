@@ -36,5 +36,15 @@
     <PackageReference Include="System.Data.SQLite.Core" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Pe\Pe.Generator.Id\Pe.Generator.Id.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\Pe\Pe.Generator.Exception\Pe.Generator.Exception.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
 
 </Project>
