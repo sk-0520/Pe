@@ -421,6 +421,37 @@ jobs:
           path: sql.sqlite3
           if-no-files-found: error
 
+  build-tool-license:
+    name: "BuildTools License"
+    needs:
+      - build-tools
+    runs-on: ${{ inputs.OS_WINDOWS }}
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: <Download> BuildTools
+        uses: actions/download-artifact@v4
+        with:
+          name: BuildTools
+          path: artifacts/buildtools
+
+      - name: <Pack> License
+        shell: pwsh
+        run: .\Build\buildtools-license.ps1 -InformationAction Continue -BuildToolsLicense "artifacts\buildtools\License.exe"
+
+      - name: <Artifact> License
+        uses: actions/upload-artifact@v4
+        with:
+          name: License
+          path: component.json
+          if-no-files-found: error
 
   build-boot:
     name: Build Boot
@@ -555,6 +586,8 @@ jobs:
 
   build-main:
     name: Build Main
+    needs:
+      - build-tool-license
     env:
       MODULE: main
     runs-on: ${{ inputs.OS_WINDOWS }}
