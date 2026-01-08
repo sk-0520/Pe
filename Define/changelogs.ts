@@ -133,7 +133,7 @@ const Changelogs: ChangelogVersion[] = [
 				type: "developer",
 				logs: [
 					{
-						revision: "",
+						revision: "8dc8907e18c02d35f6a2dcf7a5c6fe6708fb81ec",
 						subject: "#929: CI上でコードカバレッジを取得する(C)",
 					},
 					{
