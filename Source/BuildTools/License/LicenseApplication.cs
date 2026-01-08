@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -40,7 +41,7 @@ namespace License
             };
         }
 
-        private IEnumerable<NuGetPackageItem> LoadNuGetPackageItems(string centralPackagePath)
+        private IEnumerable<NuGetPackageItem> ReadNuGetPackageItems(string centralPackagePath)
         {
             var propsXml = new XmlDocument();
             propsXml.Load(centralPackagePath);
@@ -69,11 +70,52 @@ namespace License
             return metadata;
         }
 
+        private async Task<LicenseComponent> ReadComponentFileAsync(string baseFilePath, CancellationToken cancellationToken)
+        {
+            var baseFileContent = await System.IO.File.ReadAllTextAsync(baseFilePath, cancellationToken);
+
+            var licenseComponent = JsonSerializer.Deserialize<LicenseComponent>(baseFileContent);
+            if(licenseComponent is null) {
+                throw new InvalidOperationException();
+            }
+
+            return licenseComponent;
+        }
+
+        private LicenseComponentItem ToLicenseComponentItem(IPackageSearchMetadata metadata)
+        {
+            return new LicenseComponentItem() {
+                Name = metadata.Identity.Id,
+                Uri = metadata.ProjectUrl?.ToString() ?? string.Empty,
+                License = new LicenseComponentLicense() {
+                    Name = metadata.LicenseMetadata?.License ?? "Unknown",
+                    Uri = metadata.LicenseUrl?.ToString() ?? string.Empty,
+                },
+            };
+        }
+
+        private List<LicenseComponentItem> ApplyMetadata(List<LicenseComponentItem> target, IEnumerable<IPackageSearchMetadata> metadatas)
+        {
+            foreach(var metadata in metadatas) {
+                var item = ToLicenseComponentItem(metadata);
+                target.Add(item);
+            }
+
+            return target;
+        }
+
+        private async Task WriteComponentFileAsync(LicenseComponent component, string outputPath, CancellationToken cancellationToken)
+        {
+            var options = new JsonSerializerOptions() {
+                WriteIndented = true,
+            };
+            var content = JsonSerializer.Serialize(component, options);
+            await System.IO.File.WriteAllTextAsync(outputPath, content, cancellationToken);
+        }
 
         public async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            var nugetPackageItems = LoadNuGetPackageItems(Options.CentralPackage);
-
+            var nugetPackageItems = ReadNuGetPackageItems(Options.CentralPackage);
 
             // nuget.org の V3 エンドポイント
             var providers = Repository.Provider.GetCoreV3();
@@ -83,14 +125,24 @@ namespace License
             // メタデータ取得用リソースを取得
             var metadataResource = await sourceRepository.GetResourceAsync<PackageMetadataResource>();
 
-            // キャッシュコンテキストとロガー（NuGet の API 用）
+            // キャッシュコンテキスト
             using var cache = new SourceCacheContext();
 
-            List<IPackageSearchMetadata> metadatas = new();
-            foreach(var nugetPackageItem in nugetPackageItems) {
-                var metadata = await GetMetadataAsync(nugetPackageItem, metadataResource, cache, cancellationToken);
-                metadatas.Add(metadata);
-            }
+            var metadataTasks = nugetPackageItems.Select(a => GetMetadataAsync(a, metadataResource, cache, cancellationToken));
+            var metadatas = (await Task.WhenAll(metadataTasks)).OrderBy(a => a.Identity.Id).ToArray();
+
+            var component = await ReadComponentFileAsync(Options.BaseJson, cancellationToken);
+
+            var library = ApplyMetadata(component.Library, metadatas);
+            var resource = component.Resource;
+
+            var newComponent = new LicenseComponent() {
+                Library = library,
+                Resource = resource,
+            };
+
+            await WriteComponentFileAsync(newComponent, Options.OutputJson, cancellationToken);
+
 
         }
 
