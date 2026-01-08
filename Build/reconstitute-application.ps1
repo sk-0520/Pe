@@ -58,13 +58,12 @@ Remove-Item -Path (Join-Path -Path $outputEtcDir -ChildPath '@appsettings.debug.
 
 # etc/sql の各 SQL をまとめたものに置き換え
 $outputSqlDir = Join-Path -Path $outputEtcDir -ChildPath 'sql'
-Get-ChildItem -Path $outputSqlDir -Directory |
-	Remove-Item -Force -Recurse
+Get-ChildItem -Path $outputSqlDir -Directory | Remove-Item -Force -Recurse
 Move-Item -Path $inputItems.sql -Destination $outputSqlDir
 
 # doc/license の各コンポーネントライセンス情報に置き換え
 $outputLicenseDir = Join-Path -Path $outputDocDir -ChildPath 'license'
-Move-Item -Path $inputItems.license -Destination $outputLicenseDir
+Move-Item -Path $inputItems.license -Destination $outputLicenseDir -Force
 
 # doc/help を生成済みヘルプに置き換え
 $helpRootDir = Join-Path -Path $OutputDirectory -ChildPath 'doc' | Join-Path -ChildPath 'help'
