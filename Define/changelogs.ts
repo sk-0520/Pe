@@ -4,6 +4,96 @@ import type { ChangelogVersion } from "../Source/Help/types/changelog";
 
 const Changelogs: ChangelogVersion[] = [
 	{
+		date: "YYYY/MM/DD",
+		version: "0.99.265+",
+		contents: [
+			{
+				type: "note",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "features",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "fixes",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "developer",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+		],
+	},
+	{
 		date: "2026/01/07",
 		version: "0.99.265",
 		contents: [
