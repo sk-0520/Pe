@@ -442,7 +442,7 @@ jobs:
           name: BuildTools
           path: artifacts/buildtools
 
-      - name: <Pack> License
+      - name: <Generate> License
         shell: pwsh
         run: .\Build\buildtools-license.ps1 -InformationAction Continue -BuildToolsLicense "artifacts\buildtools\License.exe" -InputFile 'Source/Pe/Pe.Main/doc/license/components.json' -OutputFile 'components.json'
 
@@ -746,17 +746,6 @@ jobs:
     steps:
       - name: <Checkout> Repository
         uses: actions/checkout@v4
-
-      # - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
-      #   uses: actions/setup-dotnet@v5
-      #   with:
-      #     dotnet-version: ${{ env.DOTNET_VERSION }}
-      #
-      # - name: <Download> BuildTools
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: BuildTools
-      #     path: artifacts/buildtools
 
       - name: <Download> SQL
         uses: actions/download-artifact@v4

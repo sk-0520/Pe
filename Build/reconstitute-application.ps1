@@ -18,6 +18,7 @@ Import-Module "${PSScriptRoot}/Modules/Project"
 $inputItems = @{
 	buildTools = Join-Path -Path $InputDirectory -ChildPath 'buildtools'
 	sql = Join-Path -Path $InputDirectory -ChildPath 'sql' | Join-Path -ChildPath 'sql.sqlite3'
+	license = Join-Path -Path $InputDirectory -ChildPath 'license' | Join-Path -ChildPath 'components.json'
 	help = Join-Path -Path $InputDirectory -ChildPath 'help'
 	boot = Join-Path -Path $InputDirectory -ChildPath 'boot'
 	main = Join-Path -Path $InputDirectory -ChildPath 'main-bin'
@@ -46,6 +47,8 @@ foreach ($mainSubDirName in $mainSubDirNames) {
 	Move-Item -Path $mainSubDir -Destination $OutputDirectory
 }
 
+$outputDocDir = Join-Path -Path $OutputDirectory -ChildPath 'doc'
+
 # etc/appsettings.*.json の整理
 $outputEtcDir = Join-Path -Path $OutputDirectory -ChildPath 'etc'
 if ($BuildType -ne 'BETA') {
@@ -58,6 +61,10 @@ $outputSqlDir = Join-Path -Path $outputEtcDir -ChildPath 'sql'
 Get-ChildItem -Path $outputSqlDir -Directory |
 	Remove-Item -Force -Recurse
 Move-Item -Path $inputItems.sql -Destination $outputSqlDir
+
+# doc/license の各コンポーネントライセンス情報に置き換え
+$outputLicenseDir = Join-Path -Path $outputDocDir -ChildPath 'license'
+Move-Item -Path $inputItems.license -Destination $outputLicenseDir
 
 # doc/help を生成済みヘルプに置き換え
 $helpRootDir = Join-Path -Path $OutputDirectory -ChildPath 'doc' | Join-Path -ChildPath 'help'
