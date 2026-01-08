@@ -444,13 +444,13 @@ jobs:
 
       - name: <Pack> License
         shell: pwsh
-        run: .\Build\buildtools-license.ps1 -InformationAction Continue -BuildToolsLicense "artifacts\buildtools\License.exe" -OutputFile 'component.json'
+        run: .\Build\buildtools-license.ps1 -InformationAction Continue -BuildToolsLicense "artifacts\buildtools\License.exe" -InputFile 'Source/Pe/Pe.Main/doc/license/components.json' -OutputFile 'components.json'
 
       - name: <Artifact> License
         uses: actions/upload-artifact@v4
         with:
           name: License
-          path: component.json
+          path: components.json
           if-no-files-found: error
 
   build-boot:
