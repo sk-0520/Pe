@@ -54,7 +54,10 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "#1059: アップデート処理に失敗する",
+						comments: [
+							"GHA の変数と PowerShell の変数がごっちゃになってデプロイ成果物が死んでた",
+						],
 					},
 					{
 						revision: "",

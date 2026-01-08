@@ -812,7 +812,7 @@ jobs:
           ArchiveBaseUrl: ${{ inputs.PE_RELEASE_ARCHIVE_BASE_URL }}
           NoteBaseUrl: ${{ inputs.PE_RELEASE_NOTE_BASE_URL }}
           Archive: ${{ inputs.APPLICATION_ARCHIVE }}
-        run: .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl "$env.ArchiveBaseUrl" -NoteBaseUrl "$env:NoteBaseUrl" -OutputDirectory Output -Module 'application' -Archive "$env:Archive" -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe') -Platforms ${{ env.PLATFORMS }}
+        run: .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl $env:ArchiveBaseUrl -NoteBaseUrl $env:NoteBaseUrl -OutputDirectory Output -Module 'application' -Archive $env:Archive -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe') -Platforms ${{ env.PLATFORMS }}
 
       - name: <Artifact> Update Information
         uses: actions/upload-artifact@v4
@@ -1020,7 +1020,7 @@ jobs:
           Archive: ${{ inputs.PLUGINS_ARCHIVE }}
         run: |
           $pluginNoteBaseUrl = "$env:PeReleaseNoteBaseUrl".Replace("github.com", "pe.invalid")
-          .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl "$env:ArchiveBaseUrl" -NoteBaseUrl $pluginNoteBaseUrl -OutputDirectory Output -Module 'plugins' -Archive "$env:Archive" -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe.Plugins.Reference') -Platforms ${{ env.PLATFORMS }}
+          .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl $env:ArchiveBaseUrl -NoteBaseUrl $pluginNoteBaseUrl -OutputDirectory Output -Module 'plugins' -Archive $env:Archive -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe.Plugins.Reference') -Platforms ${{ env.PLATFORMS }}
 
       - name: <🌳> 🌲
         shell: pwsh
