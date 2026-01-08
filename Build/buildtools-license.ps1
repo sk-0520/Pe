@@ -17,7 +17,7 @@ $centralPackagePath = Join-Path -Path (Get-RootDirectory) -ChildPath 'Directory.
 $componentFilePath = Join-Path -Path $sourceDirectory -ChildPath 'Pe.Main' | Join-Path -ChildPath 'doc' | Join-Path -ChildPath  'component.json'
 
 Write-Information 'License'
-if (Test-Path $outputFilePath) {
-	Remove-Item -Path $outputFilePath
+if (Test-Path $OutputFile) {
+	Remove-Item -Path $OutputFile
 }
-Start-Command -Command "$BuildToolsLicense" -ArgumentList @("--central-package", $centralPackagePath, "--base", $componentFilePath, "--output", $outputFilePath)
+Start-Command -Command "$BuildToolsLicense" -ArgumentList @("--central-package", $centralPackagePath, "--base", $componentFilePath, "--output", $OutputFile)
