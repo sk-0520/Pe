@@ -16,7 +16,4 @@ $projects = @(
 foreach ($project in $projects) {
 	Write-Information "Building Build Tool: $project"
 	Start-Command -Command dotnet -ArgumentList @('build', $project, '--verbosity', 'normal', '--configuration', 'Debug', '/p:Platform=x64', '--runtime', 'win-x64', '--output', $builToolDirPath, '--no-self-contained')
-	if (-not $?) {
-		throw "build error: Build Tool - $project"
-	}
 }

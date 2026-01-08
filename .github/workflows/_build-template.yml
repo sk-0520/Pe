@@ -444,7 +444,7 @@ jobs:
 
       - name: <Pack> License
         shell: pwsh
-        run: .\Build\buildtools-license.ps1 -InformationAction Continue -BuildToolsLicense "artifacts\buildtools\License.exe"
+        run: .\Build\buildtools-license.ps1 -InformationAction Continue -BuildToolsLicense "artifacts\buildtools\License.exe" --OutputFile 'component.json'
 
       - name: <Artifact> License
         uses: actions/upload-artifact@v4
