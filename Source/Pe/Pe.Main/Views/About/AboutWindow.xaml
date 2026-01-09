@@ -191,18 +191,32 @@
                   <StackPanel>
                     <WrapPanel Orientation="Horizontal" VerticalAlignment="Center">
                       <TextBlock FontWeight="Bold" Text="{Binding Name, Mode=OneTime}" />
-                      <TextBlock Margin="{StaticResource LeftMargin}" Visibility="{Binding HasLicenseUri, Converter={StaticResource BooleanToVisibilityConverter}}">
+                      <TextBlock Margin="{StaticResource LeftMargin}" Visibility="{Binding HasLicenseUri, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverter}}">
                       <Hyperlink Command="{Binding DataContext.OpenLicenseCommand, ElementName=root}" CommandParameter="{Binding}">
                         <Run Text="{Binding License, Mode=OneTime}" />
                       </Hyperlink>
                       </TextBlock>
                     </WrapPanel>
-                    <TextBlock Margin="{StaticResource LeftMargin}">
+                    <TextBlock Margin="{StaticResource LeftMargin}" Visibility="{Binding HasUri, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverter}}">
                       <Hyperlink Command="{Binding DataContext.OpenUriCommand, ElementName=root}" CommandParameter="{Binding}">
-                      <Run Text="{Binding Uri, Mode=OneTime}" />
-                    </Hyperlink>
+                        <Run Text="{Binding Uri, Mode=OneTime}" />
+                      </Hyperlink>
                     </TextBlock>
-                    <TextBlock Margin="{StaticResource LeftMargin}" Visibility="{Binding HasComment, Converter={StaticResource BooleanToVisibilityConverter}}" Text="{Binding Comment}" />
+
+                    <RichTextBox
+                      Margin="{StaticResource LeftMargin}"
+                      Visibility="{Binding HasComment, Mode=OneTime, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      IsReadOnly="True"
+                      BorderThickness="0"
+                      Padding="0"
+                      Background="Transparent"
+                    >
+                      <FlowDocument>
+                        <Paragraph>
+                          <Run Text="{Binding Comment, Mode=OneTime}" />
+                        </Paragraph>
+                      </FlowDocument>
+                    </RichTextBox>
 
                     <Separator Style="{StaticResource Vertical-Padding}"/>
                   </StackPanel>

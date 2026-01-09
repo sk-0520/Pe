@@ -5,7 +5,6 @@
     <ItemGroup>
         <!-- Source Generator -->
         <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.0.0" />
-        
         <!-- ライブラリ・アプリケーション -->
         <PackageVersion Include="System.Management" Version="10.0.0" />
         <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
@@ -19,11 +18,9 @@
         <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0" />
         <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.0" />
         <PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.3595.46" />
-        <PackageVersion Include="PackageVersion" Version="6.0.5" />
         <PackageVersion Include="SevenZipExtractor" Version="1.0.19" />
         <PackageVersion Include="System.DirectoryServices.AccountManagement" Version="10.0.0" />
         <PackageVersion Include="NLog.Extensions.Logging" Version="6.1.0" />
-        
         <!-- TEST: 共通 -->
         <PackageVersion Include="coverlet.collector" Version="6.0.4" />
         <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
@@ -32,10 +29,11 @@
         <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
         <PackageVersion Include="xunit.v3" Version="3.2.1" />
         <PackageVersion Include="xunit.v3.runner.msbuild" Version="3.2.1" />
-
         <!-- TEST: UI -->
         <PackageVersion Include="Xunit.StaFact" Version="3.0.13" />
-        
+        <!-- ビルドツール -->
+        <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.0" />
+        <PackageVersion Include="NuGet.PackageManagement" Version="7.0.1" />
         <!-- ベンチマーク -->
         <PackageVersion Include="BenchmarkDotNet" Version="0.15.6" />
     </ItemGroup>

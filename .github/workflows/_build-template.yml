@@ -421,6 +421,37 @@ jobs:
           path: sql.sqlite3
           if-no-files-found: error
 
+  build-tools-license:
+    name: "BuildTools License"
+    needs:
+      - build-tools
+    runs-on: ${{ inputs.OS_WINDOWS }}
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v4
+
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: <Download> BuildTools
+        uses: actions/download-artifact@v4
+        with:
+          name: BuildTools
+          path: artifacts/buildtools
+
+      - name: <Generate> License
+        shell: pwsh
+        run: .\Build\buildtools-license.ps1 -InformationAction Continue -BuildToolsLicense "artifacts\buildtools\License.exe" -InputFile 'Source/Pe/Pe.Main/doc/license/components.json' -OutputFile 'components.json'
+
+      - name: <Artifact> License
+        uses: actions/upload-artifact@v4
+        with:
+          name: License
+          path: components.json
+          if-no-files-found: error
 
   build-boot:
     name: Build Boot
@@ -700,6 +731,7 @@ jobs:
     needs:
       - help
       - build-tools-sql
+      - build-tools-license
       - build-boot
       - build-main
     runs-on: ${{ inputs.OS_WINDOWS }}
@@ -715,22 +747,17 @@ jobs:
       - name: <Checkout> Repository
         uses: actions/checkout@v4
 
-      # - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
-      #   uses: actions/setup-dotnet@v5
-      #   with:
-      #     dotnet-version: ${{ env.DOTNET_VERSION }}
-      #
-      # - name: <Download> BuildTools
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: BuildTools
-      #     path: artifacts/buildtools
-
       - name: <Download> SQL
         uses: actions/download-artifact@v4
         with:
           name: SQL
           path: artifacts/sql
+
+      - name: <Download> License
+        uses: actions/download-artifact@v4
+        with:
+          name: License
+          path: artifacts/license
 
       - name: <Download> Help
         uses: actions/download-artifact@v4
