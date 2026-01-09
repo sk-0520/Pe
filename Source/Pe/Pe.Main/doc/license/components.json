@@ -7,7 +7,7 @@
 				"name": "MIT License",
 				"uri": "https://github.com/microsoft/dotnet/blob/master/LICENSE"
 			},
-			"comment": "Microsoft.Extension.*, (MS)System.*, Microsoft.Web.WebView2.* を含む"
+			"comment": ""
 		}
 	],
 	"resource": [

@@ -20,13 +20,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
         public AboutComponentKind Kind => Item.Kind;
 
         public string Name => Item.Data.Name;
-        public Uri Uri => new Uri(Item.Data.Uri);
+        public bool HasUri => !string.IsNullOrWhiteSpace(Item.Data.Uri);
+        public Uri? Uri => HasUri ? new Uri(Item.Data.Uri) : null;
 
         //public bool HasLicenseName => !string.IsNullOrWhiteSpace(License);
         public bool HasLicenseUri => !string.IsNullOrWhiteSpace(Item.Data.License.Uri);
-
         public string License => Item.Data.License.Name;
-        public Uri LicenseUri => new Uri(Item.Data.License.Uri);
+        public Uri? LicenseUri => HasLicenseUri ? new Uri(Item.Data.License.Uri) : null;
 
         public bool HasComment => !string.IsNullOrWhiteSpace(Comment);
         public string Comment => Item.Data.Comment;

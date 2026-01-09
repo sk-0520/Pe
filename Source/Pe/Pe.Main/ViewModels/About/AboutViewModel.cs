@@ -1,32 +1,31 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
-using Forms = System.Windows.Forms;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.About;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
-using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Main.Models.WebView;
-using ContentTypeTextNet.Pe.Main.Views.ReleaseNote;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Windows;
 using ContentTypeTextNet.Pe.Main.Views.About;
-using Microsoft.Web.WebView2.Core;
-using System.Diagnostics;
-using Microsoft.Web.WebView2.Wpf;
-using System.Collections.Generic;
-using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Mvvm.Commands;
+using Microsoft.Extensions.Logging;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Wpf;
+using Forms = System.Windows.Forms;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 {
@@ -108,15 +107,21 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
         private ICommand? _OpenLicenseCommand;
         public ICommand OpenLicenseCommand => this._OpenLicenseCommand ??= CommandFactory.Create<AboutComponentItemViewModel>(
             o => {
-                Model.OpenUri(o.LicenseUri);
-            }
+                if(o?.LicenseUri is not null) {
+                    Model.OpenUri(o.LicenseUri);
+                }
+            },
+            o => o?.HasLicenseUri ?? false
         );
 
         private ICommand? _OpenUriCommand;
         public ICommand OpenUriCommand => this._OpenUriCommand ??= CommandFactory.Create<AboutComponentItemViewModel>(
             o => {
-                Model.OpenUri(o.Uri);
-            }
+                if(o?.Uri is not null) {
+                    Model.OpenUri(o.Uri);
+                }
+            },
+            o => o?.HasUri ?? false
         );
 
         private ICommand? _OpenForumUriCommand;
@@ -318,7 +323,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
             await WebViewInitializer.WaitInitializeAsync(cancellationToken);
 
             var options = new CoreWebView2EnvironmentOptions();
-            var parameter = new Dictionary<string,string>() {
+            var parameter = new Dictionary<string, string>() {
                 ["ASSEMBLY_NAME"] = typeof(WebView2).Assembly.FullName!,
                 ["SDK_VERSION"] = options.TargetCompatibleBrowserVersion,
                 ["RUNTIME_VERSION"] = view.webView.CoreWebView2.Environment.BrowserVersionString,

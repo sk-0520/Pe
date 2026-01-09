@@ -84,14 +84,40 @@ namespace License
 
         private LicenseComponentItem ToLicenseComponentItem(IPackageSearchMetadata metadata)
         {
-            return new LicenseComponentItem() {
+            var item = new LicenseComponentItem() {
                 Name = metadata.Identity.Id,
                 Uri = metadata.ProjectUrl?.ToString() ?? string.Empty,
                 License = new LicenseComponentLicense() {
                     Name = metadata.LicenseMetadata?.License ?? "Unknown",
-                    Uri = metadata.LicenseUrl?.ToString() ?? string.Empty,
+                    Uri = metadata.LicenseUrl?.ToString() ?? metadata.LicenseMetadata?.LicenseUrl.ToString() ?? string.Empty,
                 },
+                Comment = metadata.Description,
             };
+
+            // Pe 用の差し替え処理
+            switch(metadata.Identity.Id) {
+                case "Microsoft.Web.WebView2":
+                    item.License.Name = "Copyright (C) Microsoft Corporation.";
+                    break;
+
+                case "Prism.Wpf":
+                    item.License.Name = "Prism Commercial license";
+                    break;
+
+                case "SevenZipExtractor":
+                    item.License.Name = "MIT";
+                    item.License.Uri = "https://github.com/adoconnection/SevenZipExtractor/blob/master/LICENSE";
+                    break;
+
+                case "System.Data.SQLite.Core":
+                    item.License.Name = "Public Domain";
+                    break;
+
+                default:
+                    break;
+            }
+
+            return item;
         }
 
         private List<LicenseComponentItem> ApplyMetadata(List<LicenseComponentItem> target, IEnumerable<IPackageSearchMetadata> metadatas)
