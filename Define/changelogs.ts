@@ -79,7 +79,8 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"#836: ライブラリのライセンス周りは一括処理せな死ぬ",
 					},
 					{
 						revision: "",
