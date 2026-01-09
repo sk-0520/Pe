@@ -168,8 +168,6 @@ namespace License
             };
 
             await WriteComponentFileAsync(newComponent, Options.OutputJson, cancellationToken);
-
-
         }
 
         #endregion
