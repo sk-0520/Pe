@@ -81,6 +81,10 @@ const Changelogs: ChangelogVersion[] = [
 						revision: "",
 						subject:
 							"#836: ライブラリのライセンス周りは一括処理せな死ぬ",
+						comments: [
+							"C#(NuGet) パッケージは機械的に対応するようにした",
+							"JavaScript(NPM) パッケージはそもそもまとめてない、いるのか？",
+						],
 					},
 					{
 						revision: "",
