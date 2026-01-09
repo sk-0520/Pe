@@ -8,10 +8,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
     public class FontConverter
     {
-        public FontConverter(ILogger logger)
-        {
-            Logger = logger;
-        }
         public FontConverter(ILoggerFactory loggerFactory)
         {
             Logger = loggerFactory.CreateLogger(GetType());

@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Windows;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database.Setupper
@@ -29,7 +28,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Setupper
 
         public override void ExecuteMainDML(IDatabaseContext context, IReadOnlySetupDto dto)
         {
-            var fc = new FontConverter(Logger);
+            var fc = new FontConverter(LoggerFactory);
 
             //BUGS: FirstVersion おかしくね？
 

@@ -98,12 +98,6 @@ namespace ContentTypeTextNet.Pe.Core.Models
     /// </remarks>
     public class PropertyChangedObserver: DisposerBase
     {
-        HashSet<string> RaisePropertyNames { get; } = new HashSet<string>();
-        public PropertyChangedObserver(IContextDispatcher contextDispatcher, ILogger logger)
-        {
-            ContextDispatcher = contextDispatcher;
-            Logger = logger;
-        }
         public PropertyChangedObserver(IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
         {
             ContextDispatcher = contextDispatcher;
@@ -111,6 +105,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         }
 
         #region property
+        private HashSet<string> RaisePropertyNames { get; } = new HashSet<string>();
 
         protected IContextDispatcher ContextDispatcher { get; }
         protected ILogger Logger { get; }

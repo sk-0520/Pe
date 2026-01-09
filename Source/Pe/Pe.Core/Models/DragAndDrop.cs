@@ -71,16 +71,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
     public abstract class DragAndDropBase: IDragAndDrop
     {
         /// <summary>
-        /// <see cref="UsePreviewEvent"/> は false を使用する。
-        /// </summary>
-        /// <param name="logger"></param>
-        protected DragAndDropBase(ILogger logger)
-        {
-            UsePreviewEvent = false;
-            Logger = logger;
-        }
-        /// <summary>
-        /// <see cref="UsePreviewEvent"/> は false を使用する。
+        /// <see cref="UsePreviewEvent"/> は <see langword="false" /> を使用する。
         /// </summary>
         /// <param name="loggerFactory"></param>
         protected DragAndDropBase(ILoggerFactory loggerFactory)
@@ -88,16 +79,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
             UsePreviewEvent = false;
             Logger = loggerFactory.CreateLogger(GetType());
         }
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="usingPreviewEvent"><see cref="UIElement.PreviewMouseMove"/> 的な Preview のイベントを使用するか。</param>
-        /// <param name="logger"></param>
-        protected DragAndDropBase(bool usingPreviewEvent, ILogger logger)
-        {
-            UsePreviewEvent = usingPreviewEvent;
-            Logger = logger;
-        }
+
         /// <summary>
         ///
         /// </summary>
@@ -218,19 +200,13 @@ namespace ContentTypeTextNet.Pe.Core.Models
     public delegate IResultSuccess<DragParameter> GetDragParameterDelegate(UIElement sender, MouseEventArgs e);
     public delegate void DragAndDropDelegate(UIElement sender, DragEventArgs e);
     public delegate Task DragAndDropAsyncDelegate(UIElement sender, DragEventArgs e, CancellationToken cancellationToken);
-    
+
     public class DelegateDragAndDrop: DragAndDropBase
     {
-        public DelegateDragAndDrop(ILogger logger)
-            : base(logger)
-        { }
         public DelegateDragAndDrop(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         { }
 
-        public DelegateDragAndDrop(bool usingPreviewEvent, ILogger logger)
-            : base(usingPreviewEvent, logger)
-        { }
         public DelegateDragAndDrop(bool usingPreviewEvent, ILoggerFactory loggerFactory)
             : base(usingPreviewEvent, loggerFactory)
         { }

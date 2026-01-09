@@ -2,17 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using ContentTypeTextNet.Pe.Core.Models;
+using System.Threading;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Threading;
-using System.Reflection;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database.Setupper
 {
@@ -22,13 +21,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Setupper
         {
             IdFactory = idFactory;
             StatementLoader = statementLoader;
-            Logger = loggerFactory.CreateLogger(GetType());
+            LoggerFactory = loggerFactory;
+            Logger = LoggerFactory.CreateLogger(GetType());
         }
 
         #region property
 
         protected IIdFactory IdFactory { get; }
         protected IDatabaseStatementLoader StatementLoader { get; }
+        protected ILoggerFactory LoggerFactory { get; }
         protected ILogger Logger { get; }
 
         private const string TitleMark = "--//";
