@@ -7,11 +7,12 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
     {
         #region function
 
-        [Fact]
-        public void TypeTest()
+        [Theory]
+        [InlineData(typeof(string))]
+        public void IsSupportTypeTest(Type type)
         {
             var test = new CommandLineStringConvertHandler();
-            Assert.Equal(typeof(string), test.Type);
+            Assert.True(test.IsSupportType(type));
         }
 
         [Theory]
@@ -21,22 +22,25 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void ConvertTest(string expected, string? input)
         {
             var test = new CommandLineStringConvertHandler();
-            var actual = test.Convert(input);
+            var actual = test.Convert(typeof(string), input);
             Assert.Equal(expected, actual);
         }
 
         #endregion
     }
 
-    public class CommandLineInt32ConverterHandlerTest
+    public class CommandLineIntegerConvertHandlerTest
     {
         #region function
 
-        [Fact]
-        public void TypeTest()
+        [Theory]
+        [InlineData(typeof(sbyte))]
+        [InlineData(typeof(short))]
+        [InlineData(typeof(int))]
+        public void IsSupportTypeTest(Type type)
         {
-            var test = new CommandLineInt32ConvertHandler();
-            Assert.Equal(typeof(int), test.Type);
+            var test = new CommandLineIntegerConvertHandler();
+            Assert.True(test.IsSupportType(type));
         }
 
         [Theory]
@@ -49,16 +53,16 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         [InlineData(42, " 42 ")]
         public void ConvertTest(int expected, string? input)
         {
-            var test = new CommandLineInt32ConvertHandler();
-            var actual = test.Convert(input);
+            var test = new CommandLineIntegerConvertHandler();
+            var actual = test.Convert(typeof(int), input);
             Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void Convert_Throw_Test()
         {
-            var test = new CommandLineInt32ConvertHandler();
-            Assert.Throws<CommandLineConverterException>(() => test.Convert("a"));
+            var test = new CommandLineIntegerConvertHandler();
+            Assert.Throws<CommandLineConverterException>(() => test.Convert(null!, "a"));
         }
 
         #endregion
@@ -68,11 +72,12 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
     {
         #region function
 
-        [Fact]
-        public void TypeTest()
+        [Theory]
+        [InlineData(typeof(bool))]
+        public void IsSupportTypeTest(Type type)
         {
             var test = new CommandLineBooleanConvertHandler();
-            Assert.Equal(typeof(bool), test.Type);
+            Assert.True(test.IsSupportType(type));
         }
 
         [Theory]
@@ -85,7 +90,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void ConvertTest(bool expected, string? input)
         {
             var test = new CommandLineBooleanConvertHandler();
-            var actual = test.Convert(input);
+            var actual = test.Convert(typeof(bool), input);
             Assert.Equal(expected, actual);
         }
 
@@ -93,7 +98,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void Convert_Throw_Test()
         {
             var test = new CommandLineBooleanConvertHandler();
-            Assert.Throws<CommandLineConverterException>(() => test.Convert("yes"));
+            Assert.Throws<CommandLineConverterException>(() => test.Convert(null!, "yes"));
         }
 
         #endregion
@@ -103,11 +108,12 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
     {
         #region function
 
-        [Fact]
-        public void TypeTest()
+        [Theory]
+        [InlineData(typeof(DateTime))]
+        public void IsSupportTypeTest(Type type)
         {
             var test = new CommandLineDateTimeConvertHandler();
-            Assert.Equal(typeof(DateTime), test.Type);
+            Assert.True(test.IsSupportType(type));
         }
 
         public static TheoryData<DateTime, string?> ConvertData => new() {
@@ -154,7 +160,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void ConvertTest(DateTime expected, string? input)
         {
             var test = new CommandLineDateTimeConvertHandler();
-            var actual = test.Convert(input);
+            var actual = test.Convert(typeof(DateTime), input);
             Assert.Equal(expected, actual);
         }
 
@@ -162,7 +168,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void Convert_Throw_Test()
         {
             var test = new CommandLineDateTimeConvertHandler();
-            Assert.Throws<CommandLineConverterException>(() => test.Convert("令和！"));
+            Assert.Throws<CommandLineConverterException>(() => test.Convert(null!, "令和！"));
         }
 
         #endregion
@@ -172,11 +178,12 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
     {
         #region function
 
-        [Fact]
-        public void TypeTest()
+        [Theory]
+        [InlineData(typeof(TimeSpan))]
+        public void IsSupportTypeTest(Type type)
         {
             var test = new CommandLineTimeSpanConvertHandler();
-            Assert.Equal(typeof(TimeSpan), test.Type);
+            Assert.True(test.IsSupportType(type));
         }
 
         public static TheoryData<TimeSpan, string?> ConvertData => new() {
@@ -215,7 +222,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void ConvertTest(TimeSpan expected, string? input)
         {
             var test = new CommandLineTimeSpanConvertHandler();
-            var actual = test.Convert(input);
+            var actual = test.Convert(typeof(TimeSpan), input);
             Assert.Equal(expected, actual);
         }
 
@@ -223,7 +230,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
         public void Convert_Throw_Test()
         {
             var test = new CommandLineTimeSpanConvertHandler();
-            Assert.Throws<CommandLineConverterException>(() => test.Convert("💣"));
+            Assert.Throws<CommandLineConverterException>(() => test.Convert(null!, "💣"));
         }
 
         #endregion

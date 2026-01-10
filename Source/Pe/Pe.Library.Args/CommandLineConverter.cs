@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// </remarks>
         public List<ICommandLineConvertHandler> Handlers { get; } = [
             new CommandLineStringConvertHandler(),
-            new CommandLineInt32ConvertHandler(),
+            new CommandLineIntegerConvertHandler(),
             new CommandLineBooleanConvertHandler(),
             new CommandLineDateTimeConvertHandler(),
             new CommandLineTimeSpanConvertHandler(),
@@ -73,10 +73,10 @@ namespace ContentTypeTextNet.Pe.Library.Args
         private object? ConvertValue(Type type, ICommandLineValues values)
         {
             foreach(var handler in Handlers) {
-                if(handler.Type == type) {
+                if(handler.IsSupportType(type)) {
                     foreach(var data in values.Data) {
                         try {
-                            return handler.Convert(data);
+                            return handler.Convert(type, data);
                         } catch(Exception ex) {
                             Logger.LogWarning("{Message}: {Exception}", ex.Message, ex);
                         }

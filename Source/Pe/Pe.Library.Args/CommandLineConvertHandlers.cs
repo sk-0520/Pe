@@ -9,28 +9,26 @@ namespace ContentTypeTextNet.Pe.Library.Args
     /// </summary>
     public interface ICommandLineConvertHandler
     {
-        #region property
+        #region function
 
         /// <summary>
-        /// 変換先の値。
+        /// 変換可能か判定。
         /// </summary>
-        /// <remarks>型の昇格などは行わない。</remarks>
-        Type Type { get; }
-
-        #endregion
-
-        #region function
+        /// <param name="targetType">変換先の型。</param>
+        /// <returns>変換可能か。</returns>
+        bool IsSupportType(Type targetType);
 
         /// <summary>
         /// 変換処理。
         /// </summary>
+        /// <param name="targetType">変換先の型。</param>
         /// <param name="value">変換対象文字列。</param>
         /// <returns><see langword="null"/>の場合は変換できなかった扱われる。</returns>
         /// <remarks>
         /// <para>戻り値をわざわざ <see langword="null"/> にせず、例外を投げる方針で良い。</para>
         /// <para>むしろ <see langword="null"/> が特殊処理に近い。</para>
         /// </remarks>
-        object? Convert(string? value);
+        object? Convert(Type targetType, string? value);
 
         #endregion
     }
@@ -38,29 +36,48 @@ namespace ContentTypeTextNet.Pe.Library.Args
     /// <summary>
     /// 値変換処理 簡易的実装基底。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public abstract class CommandLineConvertHandlerBase<T>: ICommandLineConvertHandler
+    /// <typeparam name="TTarget">変換先の型。</typeparam>
+    public abstract class CommandLineConvertHandlerBase<TTarget>: ICommandLineConvertHandler
     {
         #region function
 
         /// <summary>
         /// 値変換処理。
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="targetType">変換先の型。</param>
+        /// <param name="value">変換対象文字列。</param>
         /// <returns>変換結果。<see langword="null"/>の場合は失敗として扱う。</returns>
         [return: MaybeNull]
-        public abstract T ConvertCore(string? value);
+        public abstract TTarget ConvertTarget(Type targetType, string? value);
+
+        /// <summary>
+        /// 値変換処理。
+        /// </summary>
+        /// <param name="targetType">変換先の型。</param>
+        /// <param name="value">変換対象文字列。</param>
+        /// <returns>変換結果。<see langword="null"/>の場合は失敗として扱う。</returns>
+        /// <remarks>
+        /// <para>基本的には <see cref="ConvertTarget(Type, string?)"/> を呼び出すだけ。</para>
+        /// <para><typeparamref name="TTarget"/> に変換しない場合等はこのメソッドを <see langword="override"/> して実装する。</para>
+        /// </remarks>
+        public virtual object? ConvertCore(Type targetType, string? value)
+        {
+            return ConvertTarget(targetType, value);
+        }
 
         #endregion
 
         #region ICommandLineConvertHandler
 
-        public Type Type => typeof(T);
+        public virtual bool IsSupportType(Type targetType)
+        {
+            return typeof(TTarget) == targetType;
+        }
 
-        public object? Convert(string? value)
+        public object? Convert(Type targetType, string? value)
         {
             try {
-                return ConvertCore(value);
+                return ConvertCore(targetType, value);
             } catch(Exception ex) when(ex is not CommandLineConverterException) {
                 throw new CommandLineConverterException(ex.Message, ex);
             }
@@ -74,9 +91,14 @@ namespace ContentTypeTextNet.Pe.Library.Args
     /// </summary>
     public class CommandLineStringConvertHandler: CommandLineConvertHandlerBase<string>
     {
-        #region ArgConverterHandlerBase
+        #region CommandLineConvertHandlerBase
 
-        public override string ConvertCore(string? value)
+        public override bool IsSupportType(Type targetType)
+        {
+            return typeof(string) == targetType;
+        }
+
+        public override string ConvertTarget(Type targetType, string? value)
         {
             return value ?? string.Empty;
         }
@@ -87,17 +109,66 @@ namespace ContentTypeTextNet.Pe.Library.Args
     /// <summary>
     /// <see langword="int"/> 変換処理。
     /// </summary>
-    public class CommandLineInt32ConvertHandler: CommandLineConvertHandlerBase<int>
+    public class CommandLineIntegerConvertHandler: CommandLineConvertHandlerBase<int>
     {
-        #region ArgConverterHandlerBase
+        #region function
 
-        public override int ConvertCore(string? value)
+        private sbyte ConvertInt8(Type targetType, ReadOnlySpan<char> value)
+        {
+            return sbyte.Parse(value);
+        }
+
+        private short ConvertInt16(Type targetType, ReadOnlySpan<char> value)
+        {
+            return short.Parse(value);
+        }
+
+        private int ConvertInt32(Type targetType, ReadOnlySpan<char> value)
+        {
+            return int.Parse(value);
+        }
+
+
+        #endregion
+
+        #region CommandLineConvertHandlerBase
+
+        public override bool IsSupportType(Type targetType)
+        {
+            return
+                typeof(int) == targetType
+                ||
+                typeof(short) == targetType
+                ||
+                typeof(sbyte) == targetType
+            ;
+        }
+
+        public override int ConvertTarget(Type targetType, string? value)
+        {
+            // ConvertCore で対応する
+            throw new NotImplementedException();
+        }
+
+        public override object? ConvertCore(Type targetType, string? value)
         {
             if(string.IsNullOrWhiteSpace(value)) {
                 return 0;
             }
 
-            return int.Parse(value.Trim());
+            var valueSpan = value.AsSpan().Trim();
+
+            if(targetType == typeof(int)) {
+                return ConvertInt32(targetType, valueSpan);
+            }
+            if(targetType == typeof(short)) {
+                return ConvertInt16(targetType, valueSpan);
+            }
+            if(targetType == typeof(sbyte)) {
+                return ConvertInt8(targetType, valueSpan);
+            }
+
+            throw new NotSupportedException(targetType.FullName);
         }
 
         #endregion
@@ -108,9 +179,9 @@ namespace ContentTypeTextNet.Pe.Library.Args
     /// </summary>
     public class CommandLineBooleanConvertHandler: CommandLineConvertHandlerBase<bool>
     {
-        #region ArgConverterHandlerBase
+        #region CommandLineConvertHandlerBase
 
-        public override bool ConvertCore(string? value)
+        public override bool ConvertTarget(Type targetType, string? value)
         {
             if(string.IsNullOrWhiteSpace(value)) {
                 return false;
@@ -127,9 +198,9 @@ namespace ContentTypeTextNet.Pe.Library.Args
     /// </summary>
     public class CommandLineDateTimeConvertHandler: CommandLineConvertHandlerBase<DateTime>
     {
-        #region ArgConverterHandlerBase
+        #region CommandLineConvertHandlerBase
 
-        public override DateTime ConvertCore(string? value)
+        public override DateTime ConvertTarget(Type targetType, string? value)
         {
             if(string.IsNullOrWhiteSpace(value)) {
                 return DateTime.MinValue;
@@ -150,9 +221,9 @@ namespace ContentTypeTextNet.Pe.Library.Args
     /// </summary>
     public class CommandLineTimeSpanConvertHandler: CommandLineConvertHandlerBase<TimeSpan>
     {
-        #region ArgConverterHandlerBase
+        #region CommandLineConvertHandlerBase
 
-        public override TimeSpan ConvertCore(string? value)
+        public override TimeSpan ConvertTarget(Type targetType, string? value)
         {
             if(string.IsNullOrWhiteSpace(value)) {
                 return TimeSpan.Zero;

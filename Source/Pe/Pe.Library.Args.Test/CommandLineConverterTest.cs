@@ -125,8 +125,9 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
 
         private sealed class ColorConvertHandler: CommandLineConvertHandlerBase<byte[]?>
         {
-            #region ArgConverterHandlerBase
-            public override byte[]? ConvertCore(string? value)
+            #region CommandLineConvertHandlerBase
+
+            public override byte[]? ConvertTarget(Type targetType, string? value)
             {
                 if(string.IsNullOrWhiteSpace(value)) {
                     return null;
@@ -140,6 +141,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
                 var b = System.Convert.ToByte(v.Substring(5, 2), 16);
                 return new byte[] { r, g, b };
             }
+
             #endregion
         }
 
