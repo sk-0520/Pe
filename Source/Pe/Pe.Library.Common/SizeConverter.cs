@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #region property
 
         /// <summary>
-        /// サイズ単位。
+        /// サイズ単位一覧。
         /// </summary>
         public string[] Units { get; init; } = new[] { "byte", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", }; // YB とか生きている間に見ることあるんだろうか
 
@@ -49,23 +49,6 @@ namespace ContentTypeTextNet.Pe.Library.Common
             return string.Format(CultureInfo.InvariantCulture, sizeFormat, size, units[order]);
         }
 
-        /// <inheritdoc cref="ConvertHumanReadableByte(long, string, IReadOnlyList{string})"/>
-        public string ConvertHumanReadableByte(long byteSize, IReadOnlyList<string> units)
-        {
-            return ConvertHumanReadableByte(byteSize, "{0:0.00} {1}", units);
-        }
-
-        /// <inheritdoc cref="ConvertHumanReadableByte(long, string, IReadOnlyList{string})"/>
-        public string ConvertHumanReadableByte(long byteSize, string sizeFormat)
-        {
-            return ConvertHumanReadableByte(byteSize, sizeFormat, Units);
-        }
-
-        /// <inheritdoc cref="ConvertHumanReadableByte(long, string, IReadOnlyList{string})"/>
-        public string ConvertHumanReadableByte(long byteSize)
-        {
-            return ConvertHumanReadableByte(byteSize, Units);
-        }
 
         #endregion
     }
