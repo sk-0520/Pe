@@ -1,25 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
-    public interface IResultBuffer
-    {
-        #region function
-
-        void Append(char c);
-        void Append(string s);
-        void AppendFormat(string format, object? arg);
-        void AppendFormat(string format, object? arg1, params object[]? args);
-
-        #endregion
-    }
-
-    internal class ResultBuffer: IResultBuffer
+    public class ResultBuffer
     {
         public ResultBuffer(StringBuilder buffer)
         {
@@ -28,32 +15,29 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         #region property
 
+        /// <summary>
+        /// バッファ。
+        /// </summary>
         private StringBuilder Buffer { get; }
-        public bool IsAppend { get; private set; }
+        /// <summary>
+        /// <see cref="Buffer"/>に対して追加済みか。
+        /// </summary>
+        public bool IsAppended { get; private set; }
+
         #endregion
 
         #region IResultBuffer
+
         public void Append(char c)
         {
             Buffer.Append(c);
-            IsAppend = true;
+            IsAppended = true;
         }
 
         public void Append(string s)
         {
             Buffer.Append(s);
-            IsAppend = true;
-        }
-
-        public void AppendFormat(string format, object? arg)
-        {
-            Buffer.AppendFormat(CultureInfo.InvariantCulture, format, arg);
-            IsAppend = true;
-        }
-        public void AppendFormat(string format, object? arg1, params object[]? args)
-        {
-            Buffer.AppendFormat(CultureInfo.InvariantCulture, format, arg1, args);
-            IsAppend = true;
+            IsAppended = true;
         }
 
         #endregion
@@ -68,12 +52,14 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <param name="currentText">今処理する文字列。<paramref name="characterBlocks"/>[<paramref name="currentIndex"/>]と同じ</param>
     /// <param name="resultBuffer">変換後文字列。格納された場合はそのまま、格納しない場合は<paramref name="resultBuffer"/>に書き込んだ場合にのみ使用される。<paramref name="currentText"/>が格納される。</param>
     /// <returns>次回読み飛ばし数。0で次文字列へ進んでいく。</returns>
-    public delegate int TextConvertDelegate(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, IResultBuffer resultBuffer);
+    public delegate int TextConvertDelegate(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, ResultBuffer resultBuffer);
 
     /// <summary>
-    ///
+    /// 文字列変換。
     /// </summary>
-    /// <remarks>http://www.unicode.org/Public/UNIDATA/Blocks.txt</remarks>
+    /// <remarks>
+    /// <para><seealso href="http://www.unicode.org/Public/UNIDATA/Blocks.txt"/></para>
+    /// </remarks>
     public class TextConverter
     {
         #region define
@@ -513,11 +499,11 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 var resultBuffer = new ResultBuffer(sb);
                 foreach(var converter in converters) {
                     skip = converter(chars, i, isLastIndex, currentText, resultBuffer);
-                    if(resultBuffer.IsAppend) {
+                    if(resultBuffer.IsAppended) {
                         break;
                     }
                 }
-                if(!resultBuffer.IsAppend) {
+                if(!resultBuffer.IsAppended) {
                     sb.Append(currentText);
                 }
                 i += skip;
@@ -526,7 +512,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             return sb.ToString();
         }
 
-        private int ConvertHiraganaToKatakanaCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, IResultBuffer resultBuffer)
+        private int ConvertHiraganaToKatakanaCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, ResultBuffer resultBuffer)
         {
             if(currentText.Length == 1 && IsHiragana(currentText[0])) {
                 resultBuffer.Append((char)(currentText[0] + 'ァ' - 'ぁ'));
@@ -551,7 +537,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             });
         }
 
-        private int ConvertKatakanaToHiraganaCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, IResultBuffer resultBuffer)
+        private int ConvertKatakanaToHiraganaCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, ResultBuffer resultBuffer)
         {
             if(currentText.Length == 1 && IsKatakana(currentText[0])) {
                 resultBuffer.Append((char)(currentText[0] + 'ぁ' - 'ァ'));
@@ -576,7 +562,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             });
         }
 
-        private int ConvertHankakuKatakanaToZenkakuKatakanaCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, IResultBuffer resultBuffer)
+        private int ConvertHankakuKatakanaToZenkakuKatakanaCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, ResultBuffer resultBuffer)
         {
             var skip = 0;
             if(currentText.Length == 1 && IsHalfwidthKatakana(currentText[0])) {
@@ -662,7 +648,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             });
         }
 
-        private int ConvertZenkakuKatakanaToHankakuKatakanaCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, IResultBuffer resultBuffer)
+        private int ConvertZenkakuKatakanaToHankakuKatakanaCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, ResultBuffer resultBuffer)
         {
             if(currentText.Length == 1) {
                 if(KatakanaFullToHalfMap.TryGetValue(currentText[0], out var normal)) {
@@ -719,7 +705,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             });
         }
 
-        private int ConvertAsciiAlphabetToZenkakuAlphabetCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, IResultBuffer resultBuffer)
+        private int ConvertAsciiAlphabetToZenkakuAlphabetCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, ResultBuffer resultBuffer)
         {
             if(currentText.Length == 1) {
                 var c = currentText[0];
@@ -752,7 +738,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             });
         }
 
-        private int ConvertZenkakuAlphabetToAsciiAlphabetCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, IResultBuffer resultBuffer)
+        private int ConvertZenkakuAlphabetToAsciiAlphabetCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, ResultBuffer resultBuffer)
         {
             if(currentText.Length == 1) {
                 var c = currentText[0];
@@ -785,7 +771,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             });
         }
 
-        private int ConvertAsciiDigitToZenkakuDigitCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, IResultBuffer resultBuffer)
+        private int ConvertAsciiDigitToZenkakuDigitCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, ResultBuffer resultBuffer)
         {
             if(currentText.Length == 1) {
                 var c = currentText[0];
@@ -813,7 +799,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             });
         }
 
-        private int ConvertZenkakuDigitToAsciiDigitCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, IResultBuffer resultBuffer)
+        private int ConvertZenkakuDigitToAsciiDigitCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, ResultBuffer resultBuffer)
         {
             if(currentText.Length == 1) {
                 var c = currentText[0];
@@ -841,7 +827,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             });
         }
 
-        private int ConvertHiraganaToAsciiRomeCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, IResultBuffer resultBuffer)
+        private int ConvertHiraganaToAsciiRomeCore(IReadOnlyList<string> characterBlocks, int currentIndex, bool isLastIndex, string currentText, ResultBuffer resultBuffer)
         {
             if(currentText.Length != 1) {
                 return 0;
