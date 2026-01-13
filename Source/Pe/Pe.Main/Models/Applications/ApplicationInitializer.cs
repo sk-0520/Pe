@@ -26,6 +26,7 @@ using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Preferences;
 using Microsoft.Extensions.Logging;
 using Forms = System.Windows.Forms;
+using ContentTypeTextNet.Pe.Library.Provider;
 #if !DOC_FX
 using ContentTypeTextNet.Pe.Generator.Exception;
 #else
@@ -420,10 +421,18 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
             // DIコンテナ一次登録（システム関係）
             container
+                // .NET エコシステム
                 .Register<ILoggerFactory, ILoggerFactory>(loggerFactory)
                 .Register(TimeProvider.System)
-                .Register<IDiContainer, ApplicationDiContainer>(container)
 
+                // おれおれ エコシステム
+                .Register<IDiContainer, ApplicationDiContainer>(container)
+                .Register(EnvironmentProvider.Default)
+                .Register(FileSystemProvider.Default)
+
+                // 以下アプリケーション
+
+                // appsettings.json
                 .Register(environmentParameters)
                 .Register(environmentParameters.ApplicationConfiguration)
                 .Register(environmentParameters.ApplicationConfiguration.General)
@@ -443,11 +452,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 .Register(environmentParameters.ApplicationConfiguration.Schedule)
                 .Register<IApplicationInformation>(new ApplicationInformation(BuildStatus.Version, ProcessArchitecture.ApplicationArchitecture))
 
+                // プラグイン
                 .Register<PluginContextFactory>(DiLifecycle.Transient)
                 .Register<PreferencesContextFactory>(DiLifecycle.Transient)
                 .Register<LauncherItemAddonContextFactory>(DiLifecycle.Transient)
                 .Register<WidgetAddonContextFactory>(DiLifecycle.Transient)
                 .Register<BackgroundAddonContextFactory>(DiLifecycle.Transient)
+
+                // あともう全部なんか必要なやつら
 
                 .Register<IContextDispatcher, IContextDispatcher>(DiLifecycle.Transient, () => new ApplicationContextDispatcher(environmentParameters.ApplicationConfiguration.General.DispatcherWait))
                 .Register(cultureService)
