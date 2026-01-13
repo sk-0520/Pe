@@ -45,9 +45,9 @@ namespace ContentTypeTextNet.Pe.Library.Args
     public partial class CommandLineParseException: CommandLineException
     { }
 
-    public partial class ArgRequiredException: CommandLineParseException
+    public partial class CommandLineRequiredException: CommandLineParseException
     {
-        public ArgRequiredException(IReadOnlyCollection<string> keys)
+        public CommandLineRequiredException(IReadOnlyCollection<string> keys)
             : base($"required: {string.Join(", ", keys)}")
         {
             Keys = keys;

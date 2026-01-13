@@ -230,7 +230,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             commandLine.Add(new CommandLineOption("abc", CommandLineOptionKind.Value, string.Empty) { Required = true });
             commandLine.Add(new CommandLineOption("def", CommandLineOptionKind.Value, string.Empty));
 
-            var exception = Assert.Throws<ArgRequiredException>(() => commandLine.Parse(
+            var exception = Assert.Throws<CommandLineRequiredException>(() => commandLine.Parse(
                 string.Empty,
                 [
                     "--def", "value",
@@ -246,7 +246,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             commandLine.Add(new CommandLineOption("abc", CommandLineOptionKind.Value, string.Empty));
             commandLine.Add(new CommandLineOption("def", CommandLineOptionKind.Value, string.Empty) { Required = true });
 
-            var exception = Assert.Throws<ArgRequiredException>(() => commandLine.Parse(
+            var exception = Assert.Throws<CommandLineRequiredException>(() => commandLine.Parse(
                 string.Empty,
                 [
                     "--abc", "value",
@@ -279,7 +279,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             commandLine.Add(new CommandLineOption("abc", CommandLineOptionKind.Value, string.Empty) { Required = true });
             commandLine.Add(new CommandLineOption("def", CommandLineOptionKind.Value, string.Empty) { Required = true });
 
-            var exception = Assert.Throws<ArgRequiredException>(() => commandLine.Parse(
+            var exception = Assert.Throws<CommandLineRequiredException>(() => commandLine.Parse(
                 string.Empty,
                 [
                     "--def", "value",
@@ -295,7 +295,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             commandLine.Add(new CommandLineOption("abc", CommandLineOptionKind.Value, string.Empty) { Required = true });
             commandLine.Add(new CommandLineOption("def", CommandLineOptionKind.Value, string.Empty) { Required = true });
 
-            var exception = Assert.Throws<ArgRequiredException>(() => commandLine.Parse(
+            var exception = Assert.Throws<CommandLineRequiredException>(() => commandLine.Parse(
                 string.Empty,
                 [
                     "--abc", "value",
@@ -312,7 +312,7 @@ namespace ContentTypeTextNet.Pe.Library.Args.Test
             commandLine.Add(new CommandLineOption("abc", CommandLineOptionKind.Value, string.Empty) { Required = true });
             commandLine.Add(new CommandLineOption("def", CommandLineOptionKind.Value, string.Empty) { Required = true });
 
-            var exception = Assert.Throws<ArgRequiredException>(() => commandLine.Parse(
+            var exception = Assert.Throws<CommandLineRequiredException>(() => commandLine.Parse(
                 string.Empty,
                 []
             ));

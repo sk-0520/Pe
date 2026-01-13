@@ -165,7 +165,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
                     .ToArray()
                 ;
                 if(0 < needRequiredKeys.Length) {
-                    exception = new ArgRequiredException(needRequiredKeys);
+                    exception = new CommandLineRequiredException(needRequiredKeys);
                     return false;
                 }
             }
@@ -183,7 +183,7 @@ namespace ContentTypeTextNet.Pe.Library.Args
         /// <param name="arguments">引数一覧</param>
         /// <returns>変換結果。</returns>
         /// <remarks>変換失敗の場合は例外が投げられる。投げられる例外は関連項目も参照のこと。</remarks>
-        /// <exception cref="ArgRequiredException">必須項目が指定されていない。</exception>
+        /// <exception cref="CommandLineRequiredException">必須項目が指定されていない。</exception>
         public CommandLineParsedResult Parse(string command, IReadOnlyList<string> arguments)
         {
             if(TryParseCore(command, arguments, out var result, out var exception)) {
