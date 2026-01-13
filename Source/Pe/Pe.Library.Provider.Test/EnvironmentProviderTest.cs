@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using ContentTypeTextNet.Pe.Library.Provider;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Provider.Test
@@ -27,6 +24,16 @@ namespace ContentTypeTextNet.Pe.Library.Provider.Test
 
             Assert.False(provider.TryGetVariableValue("\0", out var actual2));
             Assert.Equal(Environment.GetEnvironmentVariable("\0"), actual2);
+        }
+
+        [Fact]
+        public void ExpandEnvironmentVariablesTest()
+        {
+            var provider = EnvironmentProvider.Default;
+
+            Assert.True(provider.TryGetVariableValue("PATH", out var pathResult));
+            var actual = provider.ExpandEnvironmentVariables("%PATH%");
+            Assert.Equal(pathResult, actual);
         }
 
         #endregion
