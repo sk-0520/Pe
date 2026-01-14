@@ -7,11 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Xml.Serialization;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Mvvm.Bindings;
 using ContentTypeTextNet.Pe.Mvvm.Commands;
@@ -73,7 +69,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             }
 
             objectProperty.SetValue(obj, value);
-            OnPropertyChanged(notifyPropertyName);
+            RaisePropertyChanged(notifyPropertyName);
             ValidateProperty(obj, value, objectProperty, notifyPropertyName);
 
             return true;
@@ -457,7 +453,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             }
 
             foreach(var property in properties) {
-                OnPropertyChanged(property);
+                RaisePropertyChanged(property);
             }
             foreach(var command in commands) {
                 RaiseCommandChanged(command);

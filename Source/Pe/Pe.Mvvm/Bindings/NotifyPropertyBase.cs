@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.Common;
 
 namespace ContentTypeTextNet.Pe.Mvvm.Bindings
@@ -38,18 +34,47 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 
         #region function
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        protected void OnPropertyChanged(PropertyChangedEventArgs eventArgs)
         {
             if(PropertyChangedWeakEvent is null) {
-                StrongPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                StrongPropertyChanged?.Invoke(this, eventArgs);
             } else {
-                PropertyChangedWeakEvent.Raise(this, new PropertyChangedEventArgs(propertyName));
+                PropertyChangedWeakEvent.Raise(this, eventArgs);
             }
+        }
+
+        protected void RaisePropertyChanged(PropertyChangedEventArgs eventArgs)
+        {
+            OnPropertyChanged(eventArgs);
         }
 
         protected void RaisePropertyChanged(string notifyPropertyName)
         {
-            OnPropertyChanged(notifyPropertyName);
+            OnPropertyChanged(new PropertyChangedEventArgs(notifyPropertyName));
+        }
+
+        /// <summary>
+        /// プロパティ値変更処理。
+        /// </summary>
+        /// <remarks>
+        /// <para>プロパティ対象となるフィールドを指定し、変更があれば変更通知を行う。</para>
+        /// </remarks>
+        /// <typeparam name="T">プロパティの型。</typeparam>
+        /// <param name="variable">プロパティの実体となるフィールド。</param>
+        /// <param name="value">設定する値。</param>
+        /// <param name="notifyPropertyName">プロパティ名。</param>
+        /// <returns>変更されたか。</returns>
+        protected bool SetVariable<T>(ref T variable, T value, [CallerMemberName] string notifyPropertyName = "")
+        {
+            if(EqualityComparer<T>.Default.Equals(variable, value)) {
+                return false;
+            }
+
+            variable = value;
+
+            RaisePropertyChanged(notifyPropertyName);
+
+            return true;
         }
 
         #endregion
