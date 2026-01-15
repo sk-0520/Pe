@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Mvvm.ViewModels;
 using Xunit;
 
@@ -63,8 +58,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             var tvm = new TestViewModel();
             bool called = false;
             tvm.PropertyChanged += (s, e) => {
-                Assert.Equal(nameof(TestViewModel.PublicValue), e.PropertyName);
-                called = true;
+                if(e.PropertyName != nameof(tvm.HasErrors)) {
+                    Assert.Equal(nameof(TestViewModel.PublicValue), e.PropertyName);
+                    called = true;
+                }
             };
             Assert.False(called);
             tvm.PublicValue = 123;
@@ -78,8 +75,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             var tvm = new TestViewModel();
             bool called = false;
             tvm.PropertyChanged += (s, e) => {
-                Assert.Equal(nameof(TestViewModel.PrivateValue), e.PropertyName);
-                called = true;
+                if(e.PropertyName != nameof(tvm.HasErrors)) {
+                    Assert.Equal(nameof(TestViewModel.PrivateValue), e.PropertyName);
+                    called = true;
+                }
             };
             Assert.False(called);
             tvm.PrivateValue = 123;
@@ -93,8 +92,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             var tvm = new TestViewModel();
             bool called = false;
             tvm.PropertyChanged += (s, e) => {
-                Assert.Equal(nameof(TestViewModel.AliasValue), e.PropertyName);
-                called = true;
+                if(e.PropertyName != nameof(tvm.HasErrors)) {
+                    Assert.Equal(nameof(TestViewModel.AliasValue), e.PropertyName);
+                    called = true;
+                }
             };
             Assert.False(called);
             tvm.AliasValue = 123;
@@ -108,7 +109,9 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             var tvm = new TestViewModel();
             int callCount = 0;
             tvm.PropertyChanged += (s, e) => {
-                callCount += 1;
+                if(e.PropertyName != nameof(tvm.HasErrors)) {
+                    callCount += 1;
+                }
             };
             tvm.PublicValue = 123;
             Assert.Equal(1, callCount);

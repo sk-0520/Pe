@@ -21,6 +21,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
     {
         protected ViewModelBase()
         {
+            ErrorsContainer = new ErrorsContainer<string>(OnErrorsChanged);
+
             var type = GetType();
             var properties = type.GetProperties();
 
@@ -38,7 +40,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         #region property
 
-        protected Dictionary<string, IList<ValidateMessage>> Errors { get; } = new Dictionary<string, IList<ValidateMessage>>();
+        protected ErrorsContainer<string> ErrorsContainer { get; }
 
         private IReadOnlyCollection<AttributeProperty<ObservePropertyAttribute>> ObserveProperties { get; }
 
@@ -110,6 +112,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         protected virtual void OnErrorsChanged([CallerMemberName] string propertyName = "")
         {
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+            RaisePropertyChanged(nameof(HasErrors));
         }
 
         private void ValidateProperty<TObject, TValue>(TObject obj, TValue value, PropertyInfo objectProperty, string notifyPropertyName)
@@ -129,28 +132,21 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             var validationErrors = new List<ValidationResult>();
             if(!Validator.TryValidateProperty(validationValue, context, validationErrors)) {
                 foreach(var validationError in validationErrors) {
-                    AddError(notifyPropertyName, new ValidateMessage(validationError.ErrorMessage ?? string.Empty));
+                    AddError(notifyPropertyName, validationError.ErrorMessage ?? string.Empty);
                 }
             } else {
                 RemoveError(notifyPropertyName);
             }
         }
 
-        protected void AddError(string propertyName, ValidateMessage validateMessage)
+        protected void AddError(string propertyName, string validateError)
         {
-            if(!Errors.TryGetValue(propertyName, out var errorMessages)) {
-                errorMessages = new List<ValidateMessage>();
-                Errors.Add(propertyName, errorMessages);
-            }
-            errorMessages.Add(validateMessage);
-
-            OnErrorsChanged(propertyName);
+            ErrorsContainer.AddError(propertyName, validateError);
         }
 
         protected void RemoveError(string propertyName)
         {
-            Errors.Remove(propertyName);
-            OnErrorsChanged(propertyName);
+            ErrorsContainer.ClearError(propertyName);
         }
 
         protected void RaiseCommandChanged(ICommand command)
@@ -215,15 +211,11 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
-        public bool HasErrors => Errors.Any();
+        public bool HasErrors => ErrorsContainer.HasErrors;
 
-        public IEnumerable<ValidateMessage> GetErrors(string? propertyName)
+        public IEnumerable<string> GetErrors(string? propertyName)
         {
-            if(propertyName is not null && Errors.TryGetValue(propertyName, out var errors)) {
-                return errors;
-            }
-
-            return Array.Empty<ValidateMessage>();
+            return ErrorsContainer.GetError(propertyName ?? string.Empty);
         }
 
         IEnumerable INotifyDataErrorInfo.GetErrors(string? propertyName)
@@ -247,12 +239,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             if(!Validator.TryValidateProperty(value, context, validationErrors)) {
                 var errors = validationErrors
                     .Select(error => error.ErrorMessage ?? string.Empty)
-                    .Select(errorMessage => new ValidateMessage(errorMessage))
-                    .ToList()
                 ;
-                Errors[propertyName] = errors;
+                ErrorsContainer.SetError(propertyName, errors);
             } else {
-                Errors.Remove(propertyName);
+                ErrorsContainer.ClearError(propertyName);
             }
         }
 

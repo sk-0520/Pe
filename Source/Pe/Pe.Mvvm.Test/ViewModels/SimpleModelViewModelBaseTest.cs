@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Mvvm.Bindings;
 using ContentTypeTextNet.Pe.Mvvm.ViewModels;
 using Microsoft.Extensions.Logging;
@@ -49,8 +44,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             var vm = new TestSingleModelViewModel(model, NullLoggerFactory.Instance);
             bool called = false;
             vm.PropertyChanged += (s, e) => {
-                Assert.Equal(nameof(vm.PropertyA), e.PropertyName);
-                called = true;
+                if(e.PropertyName != nameof(vm.HasErrors)) {
+                    Assert.Equal(nameof(vm.PropertyA), e.PropertyName);
+                    called = true;
+                }
             };
             Assert.False(called);
             vm.PropertyA = 123;
@@ -66,8 +63,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             var vm = new TestSingleModelViewModel(model, NullLoggerFactory.Instance!);
             bool called = false;
             vm.PropertyChanged += (s, e) => {
-                Assert.Equal(nameof(vm.PropertyB), e.PropertyName);
-                called = true;
+                if(e.PropertyName != nameof(vm.HasErrors)) {
+                    Assert.Equal(nameof(vm.PropertyB), e.PropertyName);
+                    called = true;
+                }
             };
             Assert.False(called);
             vm.PropertyB = 123;
