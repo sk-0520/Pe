@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Pe.Bridge\Pe.Bridge.csproj" />
     <ProjectReference Include="..\Pe.Library.Common\Pe.Library.Common.csproj" />
+    <ProjectReference Include="..\Pe.Mvvm\Pe.Mvvm.csproj" />
     <ProjectReference Include="..\Pe.PInvoke\Pe.PInvoke.csproj" />
     <ProjectReference Include="..\Pe.Library.Database\Pe.Library.Database.csproj" />
     <ProjectReference Include="..\Pe.Library.Property\Pe.Library.Property.csproj" />

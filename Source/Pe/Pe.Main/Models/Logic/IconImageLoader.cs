@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
-    public abstract class IconImageLoaderBase: BindModelBase
+    public abstract class IconImageLoaderBase: BindModelWithLoggerBase
     {
         protected IconImageLoaderBase(IContextDispatcher? contextDispatcher, ILoggerFactory loggerFactory)
             : base(loggerFactory)

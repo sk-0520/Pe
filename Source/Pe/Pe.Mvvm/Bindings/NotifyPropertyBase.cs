@@ -77,6 +77,13 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
             return true;
         }
 
+        // 互換用処理
+        // TODO: 廃止予定
+        protected bool SetProperty<T>(ref T variable, T value, [CallerMemberName] string notifyPropertyName = "")
+        {
+            return SetVariable(ref variable, value, notifyPropertyName);
+        }
+
         #endregion
 
         #region INotifyPropertyChanged

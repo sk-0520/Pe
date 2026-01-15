@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element
     /// <summary>
     /// DataContext にあてる VM のモデルになる基底クラス。
     /// </summary>
-    public abstract class ElementBase: BindModelBase
+    public abstract class ElementBase: BindModelWithLoggerBase
     {
         #region variable
 

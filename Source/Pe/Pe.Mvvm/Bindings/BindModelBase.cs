@@ -80,7 +80,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 
         #endregion
 
-
         #region IDisposed
 
         private bool _isDisposed = false;

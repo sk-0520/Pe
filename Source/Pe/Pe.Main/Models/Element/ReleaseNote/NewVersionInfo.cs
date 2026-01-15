@@ -35,7 +35,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.ReleaseNote
         #endregion
     }
 
-    public class NewVersionInfo: BindModelBase, IReadOnlyNewVersionInfo
+    public class NewVersionInfo: BindModelWithLoggerBase, IReadOnlyNewVersionInfo
     {
         #region variable
 
