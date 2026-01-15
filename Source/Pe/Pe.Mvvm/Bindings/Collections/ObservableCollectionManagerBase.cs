@@ -4,9 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
 
@@ -202,24 +199,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         #region IDisposed
 
         /// <summary>
-        /// <see cref="IDisposable.Dispose"/>されたか。
-        /// </summary>
-        public bool IsDisposed { get; private set; }
-
-        /// <summary>
-        /// 既に破棄済みの場合は処理を中断する。
-        /// </summary>
-        /// <param name="callerMemberName"></param>
-        /// <exception cref="ObjectDisposedException">破棄済み。</exception>
-        /// <seealso cref="IDisposed"/>
-        protected void ThrowIfDisposed([CallerMemberName] string callerMemberName = "")
-        {
-            if(IsDisposed) {
-                throw new ObjectDisposedException(callerMemberName);
-            }
-        }
-
-        /// <summary>
         /// <see cref="IDisposable.Dispose"/>の内部処理。
         /// </summary>
         /// <remarks>
@@ -227,7 +206,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         /// </remarks>
         /// <param name="disposing">CLRの管理下か。</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2953:Methods named \"Dispose\" should implement \"IDisposable.Dispose\"", Justification = "OK")]
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
                 if(disposing) {
@@ -235,17 +214,9 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
                 }
                 CollectionNotifyCollectionChanged = null!;
                 Collection = null!;
-
-                IsDisposed = true;
             }
-        }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3971:\"GC.SuppressFinalize\" should not be called", Justification = "OK")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Blocker Code Smell", "S2953:Methods named \"Dispose\" should implement \"IDisposable.Dispose\"", Justification = "OK")]
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
+            base.Dispose(disposing);
         }
 
         #endregion
