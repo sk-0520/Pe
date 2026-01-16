@@ -117,22 +117,22 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
                 targetType = nowValue is not null ? nowValue.GetType() : typeof(TValue);
             }
 
-            if(!EqualityComparer<TValue>.Default.Equals(nowValue, value)) {
-                if(CachedProperty is null) {
-                    propertyInfo!.SetValue(obj, value);
-                } else {
-                    cachedProperty!.Set(targetMemberName, value);
-                }
-
-                ValidateProperty(obj, value, targetType, notifyPropertyName);
-
-                var e = PropertyChangedEventArgsCache.GetOrAdd(notifyPropertyName, s => new PropertyChangedEventArgs(s));
-                RaisePropertyChanged(e);
-
-                return true;
+            if(EqualityComparer<TValue>.Default.Equals(nowValue, value)) {
+                return false;
             }
 
-            return false;
+            if(CachedProperty is null) {
+                propertyInfo!.SetValue(obj, value);
+            } else {
+                cachedProperty!.Set(targetMemberName, value);
+            }
+
+            ValidateProperty(obj, value, targetType, notifyPropertyName);
+
+            var e = PropertyChangedEventArgsCache.GetOrAdd(notifyPropertyName, s => new PropertyChangedEventArgs(s));
+            RaisePropertyChanged(e);
+
+            return true;
         }
 
         protected virtual void OnErrorsChanged([CallerMemberName] string propertyName = "")
