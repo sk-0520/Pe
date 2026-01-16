@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
-namespace ContentTypeTextNet.Pe.Generator.Exception
+namespace ContentTypeTextNet.Pe.Generator.Throws
 {
     internal static class DiagnosticDescriptors
     {

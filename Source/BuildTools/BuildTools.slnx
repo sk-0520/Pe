@@ -12,7 +12,7 @@
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="../Pe/Pe.Generator.Exception/Pe.Generator.Exception.csproj">
+    <Project Path="../Pe/Pe.Generator.Throws/Pe.Generator.Throws.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>

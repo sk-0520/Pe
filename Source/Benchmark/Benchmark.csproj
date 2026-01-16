@@ -41,7 +41,7 @@
       <OutputItemType>Analyzer</OutputItemType>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\Pe\Pe.Generator.Exception\Pe.Generator.Exception.csproj">
+    <ProjectReference Include="..\Pe\Pe.Generator.Throws\Pe.Generator.Throws.csproj">
       <OutputItemType>Analyzer</OutputItemType>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

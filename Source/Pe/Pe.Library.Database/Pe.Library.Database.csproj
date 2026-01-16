@@ -15,10 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pe.Generator.Exception\Pe.Generator.Exception.csproj">
+    <ProjectReference Include="..\Pe.Generator.Throws\Pe.Generator.Throws.csproj">
       <OutputItemType>Analyzer</OutputItemType>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
-  
+
 </Project>

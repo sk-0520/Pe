@@ -3,7 +3,7 @@
 	"profiles": {
 		"Debug": {
 			"commandName": "DebugRoslynComponent",
-			"targetProject": "../Pe.Generator.Exception.Test/Pe.Generator.Exception.Test.csproj"
+			"targetProject": "../Pe.Generator.Throws.Test/Pe.Generator.Throws.Test.csproj"
 		}
 	}
 }

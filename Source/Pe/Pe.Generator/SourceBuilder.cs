@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.Pe.Generator
                 "global::System.Runtime.CompilerServices.NullableAttribute",
                 "global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute",
                 // 内部都合の不要分
-                "global::ContentTypeTextNet.Pe.Generator.Exception.GenerateExceptionAttribute",
+                "global::ContentTypeTextNet.Pe.Generator.Throws.GenerateExceptionAttribute",
             };
 
             return !compilerAttributes.Contains(attributeName, StringComparer.Ordinal);

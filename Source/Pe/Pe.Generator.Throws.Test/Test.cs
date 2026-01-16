@@ -1,4 +1,4 @@
-namespace ContentTypeTextNet.Pe.Generator.Exception.Test
+namespace ContentTypeTextNet.Pe.Generator.Throws.Test
 {
     [GenerateException]
     public partial class AbcException: System.Exception

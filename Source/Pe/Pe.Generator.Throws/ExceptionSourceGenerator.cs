@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace ContentTypeTextNet.Pe.Generator.Exception
+namespace ContentTypeTextNet.Pe.Generator.Throws
 {
     [Generator(LanguageNames.CSharp)]
     public class ExceptionSourceGenerator: IIncrementalGenerator
@@ -155,7 +155,7 @@ namespace ContentTypeTextNet.Pe.Generator.Exception
         {
             var sourceBuilder = new SourceBuilder();
 
-            var attributeNamespace = "ContentTypeTextNet.Pe.Generator.Exception";
+            var attributeNamespace = "ContentTypeTextNet.Pe.Generator.Throws";
             var attributeTarget = AttributeTargets.Class;
             var attributeName = "GenerateExceptionAttribute";
 

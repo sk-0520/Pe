@@ -28,7 +28,7 @@ using Microsoft.Extensions.Logging;
 using Forms = System.Windows.Forms;
 using ContentTypeTextNet.Pe.Library.Provider;
 #if !DOC_FX
-using ContentTypeTextNet.Pe.Generator.Exception;
+using ContentTypeTextNet.Pe.Generator.Throws;
 #else
 // docfx 用ダミー
 [System.AttributeUsage(System.AttributeTargets.Class)]

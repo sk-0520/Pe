@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 #if !DOC_FX
-using ContentTypeTextNet.Pe.Generator.Exception;
+using ContentTypeTextNet.Pe.Generator.Throws;
 #else
 // docfx 用ダミー
 [System.AttributeUsage(System.AttributeTargets.Class)]
