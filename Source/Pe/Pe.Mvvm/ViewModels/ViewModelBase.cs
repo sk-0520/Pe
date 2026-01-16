@@ -122,9 +122,11 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             }
 
             if(CachedProperty is null) {
-                propertyInfo!.SetValue(obj, value);
+                Debug.Assert(propertyInfo is not null);
+                propertyInfo.SetValue(obj, value);
             } else {
-                cachedProperty!.Set(targetMemberName, value);
+                Debug.Assert(cachedProperty is not null);
+                cachedProperty.Set(targetMemberName, value);
             }
 
             ValidateProperty(obj, value, targetType, notifyPropertyName);
