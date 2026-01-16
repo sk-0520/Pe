@@ -37,7 +37,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings
 
             public void SetNumber(int num)
             {
-                SetVariable(ref this.Number, num, nameof(this.Number));
+                SetProperty(ref this.Number, num, nameof(this.Number));
             }
         }
 

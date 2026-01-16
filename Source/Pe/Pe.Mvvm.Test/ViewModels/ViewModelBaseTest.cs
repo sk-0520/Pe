@@ -174,13 +174,13 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             public int A
             {
                 get;
-                set => SetVariable(ref field, value);
+                set => SetProperty(ref field, value);
             }
 
             public int B
             {
                 get;
-                set => SetVariable(ref field, value);
+                set => SetProperty(ref field, value);
             }
 
             [ObserveProperty(nameof(A))]
@@ -246,13 +246,13 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             public bool A
             {
                 get;
-                set => SetVariable(ref field, value);
+                set => SetProperty(ref field, value);
             }
 
             public bool B
             {
                 get;
-                set => SetVariable(ref field, value);
+                set => SetProperty(ref field, value);
             }
 
             [ObserveProperty(nameof(A))]

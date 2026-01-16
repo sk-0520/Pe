@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 
@@ -8,6 +9,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
     public class SimpleModelViewModelBase<TModel>: ViewModelBase
+        where TModel : notnull
     {
         protected SimpleModelViewModelBase(TModel model, PropertyMode propertyMode, ILoggerFactory loggerFactory)
             : base(propertyMode, loggerFactory)
@@ -37,22 +39,11 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         /// <returns>変更されたか。</returns>
         protected bool SetModel<T>(T value, [CallerMemberName] string modelPropertyName = "", [CallerMemberName] string notifyPropertyName = "")
         {
-#pragma warning disable CS8602 // null 参照の可能性があるものの逆参照です。
             var type = Model.GetType();
-#pragma warning restore CS8602 // null 参照の可能性があるものの逆参照です。
             var prop = type.GetProperty(modelPropertyName);
+            Debug.Assert(prop is not null);
 
-#pragma warning disable CS8604 // Null 参照引数の可能性があります。
-#pragma warning disable CS8602 // null 参照の可能性があるものの逆参照です。
             return SetProperty(Model, value, prop.Name, notifyPropertyName);
-#pragma warning restore CS8602 // null 参照の可能性があるものの逆参照です。
-#pragma warning restore CS8604 // Null 参照引数の可能性があります。
-        }
-
-        // 互換用
-        protected bool SetModelValue<T>(T value, [CallerMemberName] string modelPropertyName = "", [CallerMemberName] string notifyPropertyName = "")
-        {
-            return SetModel(value, modelPropertyName, notifyPropertyName);
         }
 
         /// <summary>
@@ -94,6 +85,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
+                DetachModelEvents();
+
                 Model = default!;
             }
 

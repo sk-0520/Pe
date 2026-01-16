@@ -64,7 +64,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
         /// <param name="value">設定する値。</param>
         /// <param name="notifyPropertyName">プロパティ名。</param>
         /// <returns>変更されたか。</returns>
-        protected bool SetVariable<T>(ref T variable, T value, [CallerMemberName] string notifyPropertyName = "")
+        protected bool SetProperty<T>(ref T variable, T value, [CallerMemberName] string notifyPropertyName = "")
         {
             if(EqualityComparer<T>.Default.Equals(variable, value)) {
                 return false;
@@ -75,13 +75,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
             RaisePropertyChanged(notifyPropertyName);
 
             return true;
-        }
-
-        // 互換用処理
-        // TODO: 廃止予定
-        protected bool SetProperty<T>(ref T variable, T value, [CallerMemberName] string notifyPropertyName = "")
-        {
-            return SetVariable(ref variable, value, notifyPropertyName);
         }
 
         #endregion
