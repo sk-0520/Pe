@@ -177,7 +177,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             ErrorsContainer.ClearError(propertyName);
         }
 
-        protected void RaiseCommandChanged(ICommand command)
+        protected virtual void RaiseCommandChanged(ICommand command)
         {
             if(command is CommandBase commandBase) {
                 commandBase.RaiseCanExecuteChanged();
