@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -9,19 +10,40 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Property;
 using ContentTypeTextNet.Pe.Mvvm.Bindings;
 using ContentTypeTextNet.Pe.Mvvm.Commands;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 {
+    public enum PropertyMode
+    {
+        Reflection,
+        Cache,
+    }
+
     /// <summary>
     /// ビューモデルの基底。
     /// </summary>
     public abstract class ViewModelBase: BindModelBase, INotifyDataErrorInfo
     {
-        protected ViewModelBase()
+        #region define
+
+        public const PropertyMode DefaultPropertyMode = PropertyMode.Cache;
+
+        #endregion
+
+        protected ViewModelBase(PropertyMode propertyMode, ILoggerFactory loggerFactory)
         {
+            LoggerFactory = loggerFactory;
+            Logger = loggerFactory.CreateLogger(GetType());
+
             ErrorsContainer = new ErrorsContainer<string>(OnErrorsChanged);
+
+            if(propertyMode == PropertyMode.Cache) {
+                CachedProperty = new ConcurrentDictionary<object, CachedProperty>();
+            }
 
             var type = GetType();
             var properties = type.GetProperties();
@@ -33,6 +55,11 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
                 PropertyChanged += ViewModelBase_PropertyChanged;
             }
         }
+
+        protected ViewModelBase(ILoggerFactory loggerFactory)
+            : this(DefaultPropertyMode, loggerFactory)
+        { }
+
         ~ViewModelBase()
         {
             Dispose(disposing: false);
@@ -40,9 +67,21 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         #region property
 
+        protected ILoggerFactory LoggerFactory { get; }
+        protected ILogger Logger { get; }
+
         protected ErrorsContainer<string> ErrorsContainer { get; }
 
         private IReadOnlyCollection<AttributeProperty<ObservePropertyAttribute>> ObserveProperties { get; }
+
+        /// <summary>
+        /// プロパティアクセス処理キャッシュ。
+        /// </summary>
+        private ConcurrentDictionary<object, CachedProperty>? CachedProperty { get; }
+        /// <summary>
+        /// プロパティ変更時のイベントキャッシュ。
+        /// </summary>
+        private ConcurrentDictionary<string, PropertyChangedEventArgs> PropertyChangedEventArgsCache { get; } = new ConcurrentDictionary<string, PropertyChangedEventArgs>();
 
         #endregion
 
@@ -51,62 +90,54 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         /// <summary>
         /// オブジェクトのプロパティに値設定。
         /// </summary>
-        /// <remarks>
-        /// <para>変更があれば変更通知を行う。</para>
-        /// </remarks>
-        /// <typeparam name="TObject">対象オブジェクトの型。</typeparam>
-        /// <typeparam name="TValue">設定値の型。</typeparam>
+        /// <typeparam name="TValue">設定値のデータ。</typeparam>
         /// <param name="obj">対象オブジェクト。</param>
         /// <param name="value">設定値。</param>
-        /// <param name="objectProperty"><paramref name="obj"/>のプロパティ。</param>
-        /// <param name="notifyPropertyName">変更通知としてのプロパティ名。</param>
-        /// <returns>変更されたか。</returns>
-        private protected bool ChangePropertyValue<TObject, TValue>(TObject obj, TValue value, PropertyInfo objectProperty, string notifyPropertyName)
+        /// <param name="targetMemberName">設定対象となる<paramref name="obj"/>のメンバ名。未設定で呼び出しメンバ名。</param>
+        /// <param name="notifyPropertyName">値設定後に通知するプロパティ名。未設定で呼び出しメンバ名。</param>
+        /// <returns>設定されたか。同一値の場合は設定しない。</returns>
+        protected virtual bool SetProperty<TValue>(object obj, TValue value, [CallerMemberName] string targetMemberName = "", [CallerMemberName] string notifyPropertyName = "")
         {
-#pragma warning disable CS8600 // Null リテラルまたは Null の可能性がある値を Null 非許容型に変換しています。
-            var propertyValue = (TValue)objectProperty.GetValue(obj);
-#pragma warning restore CS8600 // Null リテラルまたは Null の可能性がある値を Null 非許容型に変換しています。
-            if(EqualityComparer<TValue>.Default.Equals(propertyValue, value)) {
-                return false;
+#if DEBUG
+            using var _ = ActionDisposerHelper.Create((d, sw) => Debug.WriteLine($"PROP TIME: {sw.Elapsed}, {targetMemberName} {notifyPropertyName}"), Stopwatch.StartNew());
+#endif
+            ThrowIfDisposed();
+
+            PropertyInfo? propertyInfo = null;
+            CachedProperty? cachedProperty = null;
+            TValue? nowValue;
+            Type targetType;
+
+            if(CachedProperty is null) {
+                var type = obj.GetType();
+                propertyInfo = type.GetProperty(targetMemberName);
+                Debug.Assert(propertyInfo != null);
+
+                nowValue = (TValue?)propertyInfo.GetValue(obj);
+                targetType = propertyInfo.PropertyType;
+            } else {
+                cachedProperty = CachedProperty.GetOrAdd(obj, o => new CachedProperty(o));
+
+                nowValue = (TValue?)cachedProperty.Get(targetMemberName);
+                targetType = nowValue is not null ? nowValue.GetType() : typeof(TValue);
             }
 
-            objectProperty.SetValue(obj, value);
-            RaisePropertyChanged(notifyPropertyName);
-            ValidateProperty(obj, value, objectProperty, notifyPropertyName);
+            if(!EqualityComparer<TValue>.Default.Equals(nowValue, value)) {
+                if(CachedProperty is null) {
+                    propertyInfo!.SetValue(obj, value);
+                } else {
+                    cachedProperty!.Set(targetMemberName, value);
+                }
 
-            return true;
-        }
+                ValidateProperty(obj, value, targetType, notifyPropertyName);
 
-        /// <summary>
-        /// オブジェクトのプロパティに値設定。
-        /// </summary>
-        /// <remarks>
-        /// <para>変更があれば変更通知を行う。</para>
-        /// </remarks>
-        /// <typeparam name="TObject">対象オブジェクトの型。</typeparam>
-        /// <typeparam name="TValue">設定値の型。</typeparam>
-        /// <param name="model">対象オブジェクト。</param>
-        /// <param name="value">設定値。</param>
-        /// <param name="propertyName">プロパティ名。</param>
-        /// <param name="notifyPropertyName">変更通知のプロパティ名。基本的に呼び出し側のメンバ名となる想定。</param>
-        /// <returns>変更されたか。</returns>
-        protected bool SetProperty<TObject, TValue>(TObject model, TValue value, [CallerMemberName] string propertyName = "", [CallerMemberName] string notifyPropertyName = "")
-        {
-#pragma warning disable CS8602 // null 参照の可能性があるものの逆参照です。
-            var type = model.GetType();
-#pragma warning restore CS8602 // null 参照の可能性があるものの逆参照です。
-            var prop = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                var e = PropertyChangedEventArgsCache.GetOrAdd(notifyPropertyName, s => new PropertyChangedEventArgs(s));
+                RaisePropertyChanged(e);
 
-            // 動的な割当ては考慮していないのでデバッグ時にここで死ぬ場合は何か間違ってる。
-            Debug.Assert(prop != null);
+                return true;
+            }
 
-            return ChangePropertyValue(model, value, prop, notifyPropertyName);
-        }
-
-        // 互換用
-        protected bool SetPropertyValue<TObject, TValue>(TObject model, TValue value, [CallerMemberName] string propertyName = "", [CallerMemberName] string notifyPropertyName = "")
-        {
-            return SetProperty(model, value, propertyName, notifyPropertyName);
+            return false;
         }
 
         protected virtual void OnErrorsChanged([CallerMemberName] string propertyName = "")
@@ -115,7 +146,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             RaisePropertyChanged(nameof(HasErrors));
         }
 
-        private void ValidateProperty<TObject, TValue>(TObject obj, TValue value, PropertyInfo objectProperty, string notifyPropertyName)
+        private void ValidateProperty<TObject, TValue>(TObject obj, TValue value, Type targetMemberType, string notifyPropertyName)
         {
             var context = new ValidationContext(this) {
                 MemberName = notifyPropertyName
@@ -124,7 +155,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             //TODO: キャッシュするほどじゃないけど、なんだかなぁ感
             var viewModelProperty = GetType().GetProperty(notifyPropertyName);
             Debug.Assert(viewModelProperty != null);
-            var validationValue = viewModelProperty.PropertyType != objectProperty.PropertyType
+            var validationValue = viewModelProperty.PropertyType != targetMemberType
                 ? viewModelProperty.GetValue(this)
                 : value
             ;

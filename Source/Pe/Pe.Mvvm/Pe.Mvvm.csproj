@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pe.Library.Common\Pe.Library.Common.csproj" />
+    <ProjectReference Include="..\Pe.Library.Property\Pe.Library.Property.csproj" />
   </ItemGroup>
 
 </Project>

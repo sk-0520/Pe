@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 {
@@ -13,11 +9,15 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
     /// <typeparam name="TModel"></typeparam>
     public class SimpleModelViewModelBase<TModel>: ViewModelBase
     {
-        protected SimpleModelViewModelBase(TModel model)
-            : base()
+        protected SimpleModelViewModelBase(TModel model, PropertyMode propertyMode, ILoggerFactory loggerFactory)
+            : base(propertyMode, loggerFactory)
         {
             Model = model;
         }
+
+        protected SimpleModelViewModelBase(TModel model, ILoggerFactory loggerFactory)
+            : this(model, DefaultPropertyMode, loggerFactory)
+        { }
 
         #region property
 
@@ -43,7 +43,9 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             var prop = type.GetProperty(modelPropertyName);
 
 #pragma warning disable CS8604 // Null 参照引数の可能性があります。
-            return ChangePropertyValue(Model, value, prop, notifyPropertyName);
+#pragma warning disable CS8602 // null 参照の可能性があるものの逆参照です。
+            return SetProperty(Model, value, prop.Name, notifyPropertyName);
+#pragma warning restore CS8602 // null 参照の可能性があるものの逆参照です。
 #pragma warning restore CS8604 // Null 参照引数の可能性があります。
         }
 

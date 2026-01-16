@@ -1,4 +1,5 @@
 using ContentTypeTextNet.Pe.Mvvm.ViewModels;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
@@ -27,7 +28,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
         private class TestViewModel: ViewModelBase
         {
             public TestViewModel()
-                : base()
+                : base(NullLoggerFactory.Instance)
             { }
 
             private TestModel TestModel { get; } = new TestModel();

@@ -34,7 +34,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 
         #region function
 
-        protected void OnPropertyChanged(PropertyChangedEventArgs eventArgs)
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs eventArgs)
         {
             if(PropertyChangedWeakEvent is null) {
                 StrongPropertyChanged?.Invoke(this, eventArgs);
