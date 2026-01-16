@@ -469,7 +469,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 .Register<IMediaConverter, MediaConverter>(DiLifecycle.Transient)
                 .Register<IPolicy, Policy>(DiLifecycle.Transient)
                 .Register<IPluginArguments, PluginArguments>(DiLifecycle.Transient)
-                .Register<IHashAlgorithmGenerator, HashAlgorithmGenerator>(DiLifecycle.Transient)
+                .Register<IHashAlgorithmFactory, HashAlgorithmFactory>(DiLifecycle.Transient)
 
                 .Register<IIdFactory, IdFactory>(DiLifecycle.Transient)
                 .Register<IKeyGestureGuide, KeyGestureGuide>(DiLifecycle.Transient)

@@ -1,15 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Main.Models;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models
 {
-    public class HashGeneratorTest
+    public class HashAlgorithmFactoryTest
     {
         #region function
 
@@ -21,7 +18,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models
         [InlineData("ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f", HashAlgorithmKind.SHA512, "abc")]
         public void Create_enum_Test(string expected, HashAlgorithmKind algorithmKind, string input)
         {
-            using var hash = new HashAlgorithmGenerator().Create(algorithmKind);
+            using var hash = new HashAlgorithmFactory().Create(algorithmKind);
 
             var binary = Encoding.UTF8.GetBytes(input);
             var result = hash.ComputeHash(binary);
@@ -36,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models
         [InlineData((HashAlgorithmKind)0 + 6)]
         public void Create_enum_Throw_NotImplementedException_Test(HashAlgorithmKind algorithmKind)
         {
-            Assert.Throws<NotImplementedException>(() => new HashAlgorithmGenerator().Create(algorithmKind));
+            Assert.Throws<NotImplementedException>(() => new HashAlgorithmFactory().Create(algorithmKind));
         }
 
         [Theory]
@@ -51,7 +48,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models
         [InlineData("ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f", "SHA-512", "abc")]
         public void Create_Name_Test(string expected, string algorithmName, string input)
         {
-            using var hash = new HashAlgorithmGenerator().Create(algorithmName);
+            using var hash = new HashAlgorithmFactory().Create(algorithmName);
             var binary = Encoding.UTF8.GetBytes(input);
             var result = hash.ComputeHash(binary);
             var actual = BitConverter.ToString(result).Replace("-", "").ToLowerInvariant();
@@ -68,7 +65,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models
         [InlineData("System.Security.Cryptography.HashAlgorithm")]
         public void Create_Name_Throw_NotSupportedException_Test(string algorithmName)
         {
-            Assert.Throws<NotSupportedException>(() => new HashAlgorithmGenerator().Create(algorithmName));
+            Assert.Throws<NotSupportedException>(() => new HashAlgorithmFactory().Create(algorithmName));
         }
 
         [Theory]
@@ -76,7 +73,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models
         [InlineData("💩")]
         public void Create_Name_Throw_NotImplementedException_Test(string algorithmName)
         {
-            Assert.Throws<NotImplementedException>(() => new HashAlgorithmGenerator().Create(algorithmName));
+            Assert.Throws<NotImplementedException>(() => new HashAlgorithmFactory().Create(algorithmName));
         }
 
         #endregion

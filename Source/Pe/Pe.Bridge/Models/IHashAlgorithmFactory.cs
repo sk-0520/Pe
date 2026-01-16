@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.Pe.Bridge.Models
 {
@@ -23,7 +19,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
     /// <remarks>
     /// <para>Pe から提供される。</para>
     /// </remarks>
-    public interface IHashAlgorithmGenerator
+    public interface IHashAlgorithmFactory
     {
         #region function
 
