@@ -17,6 +17,16 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 {
+    /// <summary>
+    /// 検証無視。
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
+    public sealed class IgnoreValidationAttribute: Attribute
+    {
+        public IgnoreValidationAttribute()
+        { }
+    }
+
     public enum PropertyMode
     {
         Reflection,
@@ -61,6 +71,11 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         { }
 
         #region property
+
+        /// <summary>
+        /// このVMは検証非対象か。
+        /// </summary>
+        public bool SkipValidation { get; init; } = false;
 
         protected ILoggerFactory LoggerFactory { get; }
         protected ILogger Logger { get; }
@@ -177,6 +192,11 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             ErrorsContainer.ClearError(propertyName);
         }
 
+        protected void RemoveAllError()
+        {
+            ErrorsContainer.ClearErrors();
+        }
+
         protected virtual void RaiseCommandChanged(ICommand command)
         {
             if(command is CommandBase commandBase) {
@@ -186,34 +206,126 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             }
         }
 
-        #endregion
-
-        #region BindModelBase
-
-        protected override void Dispose(bool disposing)
+        /// <summary>
+        /// 子を含む全ての検証要素を取得。
+        /// </summary>
+        /// <returns></returns>
+        private (IReadOnlyCollection<PropertyInfo> properties, IReadOnlyCollection<ViewModelBase> childViewModels) GetValidationItems()
         {
-            PropertyChanged -= ViewModelBase_PropertyChanged;
+            ThrowIfDisposed();
 
-            base.Dispose(disposing);
+            if(SkipValidation) {
+                return (Array.Empty<PropertyInfo>(), Array.Empty<ViewModelBase>());
+            }
+
+            var type = GetType();
+            var properties = type.GetProperties()
+                .Select(i => (property: i, attribute: i.GetCustomAttribute<IgnoreValidationAttribute>()))
+                .Where(i => i.attribute == null)
+                .Select(i => i.property)
+                .ToList()
+            ;
+            var targetProperties = properties
+                .Select(i => (property: i, attributes: i.GetCustomAttributes<ValidationAttribute>()))
+                .Where(i => i.attributes.Any())
+                .Select(i => i.property)
+                .ToList()
+            ;
+
+            var childProperties = properties.Except(targetProperties);
+            var childViewModels = new List<ViewModelBase>();
+            foreach(var property in childProperties) {
+                var rawValue = property.GetValue(this);
+                switch(rawValue) {
+                    case ViewModelBase viewModel:
+                        childViewModels.Add(viewModel);
+                        break;
+
+                    case IEnumerable enumerable:
+                        foreach(var element in enumerable.OfType<ViewModelBase>()) {
+                            childViewModels.Add(element);
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            return (targetProperties, childViewModels);
         }
 
-
-        #endregion
-
-        #region INotifyDataErrorInfo
-
-        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
-
-        public bool HasErrors => ErrorsContainer.HasErrors;
-
-        public IEnumerable<string> GetErrors(string? propertyName)
+        /// <summary>
+        /// 子を含む全てのプロパティ検証。
+        /// </summary>
+        private void ValidateAllProperty()
         {
-            return ErrorsContainer.GetError(propertyName ?? string.Empty);
+            ThrowIfDisposed();
+
+            var validationItems = GetValidationItems();
+
+            foreach(var property in validationItems.properties) {
+                var rawValue = property.GetValue(this);
+                ValidateProperty(rawValue!, property.Name);
+            }
+
+            foreach(var childViewModel in validationItems.childViewModels) {
+                childViewModel.ValidateAllProperty();
+            }
         }
 
-        IEnumerable INotifyDataErrorInfo.GetErrors(string? propertyName)
+        /// <summary>
+        /// ビジネスロジックの検証。
+        /// </summary>
+        /// <remarks>
+        /// <para>継承先でこいつを最初に呼び出すこと。</para>
+        /// </remarks>
+        protected virtual void ValidateDomain()
         {
-            return GetErrors(propertyName);
+            ThrowIfDisposed();
+        }
+
+        /// <summary>
+        /// 子を含む全てのビジネスロジックの検証。
+        /// </summary>
+        private void ValidateAllDomain()
+        {
+            ThrowIfDisposed();
+
+            var v = GetValidationItems();
+            ValidateDomain();
+            foreach(var childViewModel in v.childViewModels) {
+                childViewModel.ValidateAllDomain();
+            }
+        }
+
+        private bool HasChildrenErrors()
+        {
+            ThrowIfDisposed();
+
+            var v = GetValidationItems();
+            var result = v.childViewModels.Any(i => i.HasErrors || i.HasChildrenErrors());
+            return result;
+        }
+
+        public bool Validate()
+        {
+            ThrowIfDisposed();
+
+            if(HasErrors || HasChildrenErrors()) {
+                return false;
+            }
+
+            ValidateAllProperty();
+
+            if(HasErrors || HasChildrenErrors()) {
+                return false;
+            }
+
+            RemoveAllError();
+            ValidateAllDomain();
+
+            return !HasErrors && !HasChildrenErrors();
         }
 
         /// <summary>
@@ -372,6 +484,36 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         //    return !HasErrors && !HasChildrenErrors();
         //}
+
+        #endregion
+
+        #region BindModelBase
+
+        protected override void Dispose(bool disposing)
+        {
+            PropertyChanged -= ViewModelBase_PropertyChanged;
+
+            base.Dispose(disposing);
+        }
+
+
+        #endregion
+
+        #region INotifyDataErrorInfo
+
+        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+
+        public bool HasErrors => ErrorsContainer.HasErrors;
+
+        public IEnumerable<string> GetErrors(string? propertyName)
+        {
+            return ErrorsContainer.GetError(propertyName ?? string.Empty);
+        }
+
+        IEnumerable INotifyDataErrorInfo.GetErrors(string? propertyName)
+        {
+            return GetErrors(propertyName);
+        }
 
         //protected void ClearError([CallerMemberName] string propertyName = "")
         //{
