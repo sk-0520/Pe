@@ -60,11 +60,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             : this(DefaultPropertyMode, loggerFactory)
         { }
 
-        ~ViewModelBase()
-        {
-            Dispose(disposing: false);
-        }
-
         #region property
 
         protected ILoggerFactory LoggerFactory { get; }
@@ -110,7 +105,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
             if(CachedProperty is null) {
                 var type = obj.GetType();
-                propertyInfo = type.GetProperty(targetMemberName);
+                propertyInfo = type.GetProperty(targetMemberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                 Debug.Assert(propertyInfo != null);
 
                 nowValue = (TValue?)propertyInfo.GetValue(obj);
@@ -191,7 +186,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         #endregion
 
-        #region IDisposed
+        #region BindModelBase
 
         protected override void Dispose(bool disposing)
         {
@@ -428,12 +423,11 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             foreach(var props in ObserveProperties) {
                 if(props.Attributes.Any(a => a.PropertyName == e.PropertyName)) {
                     if(typeof(ICommand).IsAssignableFrom(props.Property.PropertyType)) {
-                        var command = (ICommand?)props.Property.GetValue(this);
-#pragma warning disable CS8604 // Null 参照引数の可能性があります。
+                        var command = props.Property.GetValue(this) as ICommand;
+                        Debug.Assert(command is not null, "ICommand は判定済み");
                         commands.Add(command);
-#pragma warning restore CS8604 // Null 参照引数の可能性があります。
                     } else {
-                        properties.Add(nameof(props.Property.Name));
+                        properties.Add(props.Property.Name);
                     }
                 }
             }
