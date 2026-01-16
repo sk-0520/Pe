@@ -98,10 +98,10 @@ namespace ContentTypeTextNet.Pe.Main
 
                 case Models.Data.RunMode.CrashReport: {
                         ShutdownMode = ShutdownMode.OnMainWindowClose;
-                        var converter = new Library.Args.CommandLineConverter(initializer.Logging.Factory);
+                        var converter = new Library.CommandLine.CommandLineConverter(initializer.Logging.Factory);
                         CrashReport.Models.Data.CrashReportOptions? options;
                         try {
-                            options = converter.Convert<CrashReport.Models.Data.CrashReportOptions>(new Library.Args.CommandLineParser(), e.Args);
+                            options = converter.Convert<CrashReport.Models.Data.CrashReportOptions>(new Library.CommandLine.CommandLineParser(), e.Args);
                         } catch(Exception ex) {
                             Logger.LogError(ex, "クラッシュレポート起動できず: {0}", string.Join(" ", e.Args));
                             Shutdown(-1);

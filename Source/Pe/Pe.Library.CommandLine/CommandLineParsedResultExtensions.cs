@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ContentTypeTextNet.Pe.Library.Args
+namespace ContentTypeTextNet.Pe.Library.CommandLine
 {
     public static class CommandLineParsedResultExtensions
     {

@@ -12,7 +12,7 @@ file sealed class GenerateExceptionAttribute: System.Attribute
 }
 #endif
 
-namespace ContentTypeTextNet.Pe.Library.Args
+namespace ContentTypeTextNet.Pe.Library.CommandLine
 {
     [GenerateException]
     public partial class CommandLineException: System.Exception

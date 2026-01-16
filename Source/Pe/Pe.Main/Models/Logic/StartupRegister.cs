@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.CommandLine;
 using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 

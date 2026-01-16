@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Text;
 
-namespace ContentTypeTextNet.Pe.Library.Args
+namespace ContentTypeTextNet.Pe.Library.CommandLine
 {
     public static class CommandLineParserExtensions
     {

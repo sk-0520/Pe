@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace ContentTypeTextNet.Pe.Library.Args
+namespace ContentTypeTextNet.Pe.Library.CommandLine
 {
     public class CommandLineParser
     {

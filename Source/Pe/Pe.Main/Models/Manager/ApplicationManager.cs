@@ -19,7 +19,7 @@ using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.CommandLine;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Library.Database;

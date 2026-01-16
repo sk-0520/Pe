@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ContentTypeTextNet.Pe.Library.Args
+namespace ContentTypeTextNet.Pe.Library.CommandLine
 {
     internal class CommandLineParsing
     {

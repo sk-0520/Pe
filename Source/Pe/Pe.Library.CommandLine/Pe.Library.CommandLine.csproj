@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>Pe.Library.Args</AssemblyName>
-    <RootNamespace>ContentTypeTextNet.Pe.Library.Args</RootNamespace>
+    <AssemblyName>Pe.Library.CommandLine</AssemblyName>
+    <RootNamespace>ContentTypeTextNet.Pe.Library.CommandLine</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="Pe.Library.Args.Test" />
+    <InternalsVisibleTo Include="Pe.Library.CommandLine.Test" />
   </ItemGroup>
 
   <ItemGroup>

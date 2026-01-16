@@ -1,6 +1,6 @@
 using System;
 
-namespace ContentTypeTextNet.Pe.Library.Args
+namespace ContentTypeTextNet.Pe.Library.CommandLine
 {
     /// <summary>
     /// コマンドラインオプション属性。

@@ -44,7 +44,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pe.Core\Pe.Core.csproj" />
-    <ProjectReference Include="..\Pe.Library.Args\Pe.Library.Args.csproj" />
+    <ProjectReference Include="..\Pe.Library.CommandLine\Pe.Library.CommandLine.csproj" />
     <ProjectReference Include="..\Pe.Library.Common\Pe.Library.Common.csproj" />
     <ProjectReference Include="..\Pe.Library.Database.Sqlite\Pe.Library.Database.Sqlite.csproj" />
     <ProjectReference Include="..\Pe.Mvvm\Pe.Mvvm.csproj" />

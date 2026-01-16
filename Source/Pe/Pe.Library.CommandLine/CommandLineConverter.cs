@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 
-namespace ContentTypeTextNet.Pe.Library.Args
+namespace ContentTypeTextNet.Pe.Library.CommandLine
 {
     /// <summary>
     /// コマンドライン引数のパース結果からオブジェクトに変換する。

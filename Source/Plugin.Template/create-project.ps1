@@ -377,7 +377,7 @@ try {
 			directory = 'Pe\bridge'
 		},
 		@{
-			project = 'Pe.Library.Args'
+			project = 'Pe.Library.CommandLine'
 			directory = 'Pe\lib\library'
 		},
 		@{

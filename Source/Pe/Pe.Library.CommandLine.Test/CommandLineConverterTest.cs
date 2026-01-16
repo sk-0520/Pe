@@ -3,7 +3,7 @@ using ContentTypeTextNet.Pe.CommonTest;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace ContentTypeTextNet.Pe.Library.Args.Test
+namespace ContentTypeTextNet.Pe.Library.CommandLine.Test
 {
     public class CommandLineConverterTest
     {

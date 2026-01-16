@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.CommandLine;
 using Microsoft.Extensions.Logging;
 
 namespace License

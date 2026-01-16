@@ -1,7 +1,7 @@
 using ContentTypeTextNet.Pe.CommonTest;
 using Xunit;
 
-namespace ContentTypeTextNet.Pe.Library.Args.Test
+namespace ContentTypeTextNet.Pe.Library.CommandLine.Test
 {
     public class CommandLineParserExtensionsTest
     {
