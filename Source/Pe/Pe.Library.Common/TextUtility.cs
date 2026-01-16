@@ -37,7 +37,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         public bool MoveNext()
         {
-            if(Position >= Data.Length) {
+            if(Data.Length <= Position) {
                 return false;
             }
 
