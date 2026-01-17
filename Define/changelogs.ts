@@ -88,7 +88,11 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"#1056: 内部で使用している TS の実行処理はコマンドラインパラメータで実行できるようにしたい",
+						comments: [
+							"完全固定値の処理は現行のままにしておいた、面倒なので",
+						],
 					},
 					{
 						revision: "",

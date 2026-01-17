@@ -1,10 +1,22 @@
-import path from "node:path";
+import { parseArgs } from "node:util";
 import { type Input, main } from "./pick-release-note";
 
-const rootDirPath = path.resolve(__dirname, "..", "..");
+const parsed = parseArgs({
+	allowPositionals: true,
+	args: process.argv.slice(2),
+	options: {
+		outputChangelogPath: {
+			type: "string",
+		},
+	},
+});
+
+if (!parsed.values.outputChangelogPath) {
+	throw new Error("outputChangelogPath is required");
+}
 
 const input: Input = {
-	outputChangelogPath: path.resolve(rootDirPath, "Define", "@changelog.json"),
+	outputChangelogPath: parsed.values.outputChangelogPath,
 };
 
 main(input);
