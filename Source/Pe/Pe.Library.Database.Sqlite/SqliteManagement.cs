@@ -194,7 +194,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
             }
 
             var rows = Context.Query($@"
-                PRAGMA table_info('{Implementation.Escape(tableResource.Name)}')
+                PRAGMA table_info('{Implementation.EscapeString(tableResource.Name)}')
             ");
 
             var items = rows

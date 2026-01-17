@@ -65,10 +65,10 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test
         [InlineData(@"\r", "\r")]
         [InlineData(@"\n", "\n")]
         [InlineData(@"\n\r''''\\", "\n\r''\\")]
-        public void EscapeTest(string expected, string word)
+        public void EscapeStringTest(string expected, string word)
         {
             var test = new DatabaseImplementation();
-            var actual = test.Escape(word);
+            var actual = test.EscapeString(word);
             Assert.Equal(expected, actual);
         }
 

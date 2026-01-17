@@ -174,7 +174,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao
             public string ToBlockComment(string statement) => throw new NotSupportedException();
 
 
-            public string Escape(string word)
+            public string EscapeString(string word)
             {
                 throw new NotSupportedException();
             }

@@ -98,7 +98,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Implementations
         /// </remarks>
         /// <param name="word">対象単語。文全体ではなく値を指定する想定。</param>
         /// <returns>変換された値。</returns>
-        string Escape(string word);
+        string EscapeString(string word);
 
         /// <summary>
         /// <c>like</c>句のエスケープ処理を実施。

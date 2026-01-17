@@ -78,8 +78,8 @@ namespace ContentTypeTextNet.Pe.Library.Database.Implementations
             return builder.ToString();
         }
 
-        /// <inheritdoc cref="IDatabaseImplementation.Escape(string)"/>
-        public virtual string Escape(string word) => word
+        /// <inheritdoc cref="IDatabaseImplementation.EscapeString(string)"/>
+        public virtual string EscapeString(string word) => word
             .Replace("\\", @"\\")
             .Replace("\'", @"''")
             .Replace("\r", @"\r")
