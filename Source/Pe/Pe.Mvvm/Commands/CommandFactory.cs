@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.Pe.Mvvm.Commands
 {
+    // TODO: 生成処理はこいつに寄せておきたい
     public class CommandFactory: ICommandFactory
     {
         #region function
