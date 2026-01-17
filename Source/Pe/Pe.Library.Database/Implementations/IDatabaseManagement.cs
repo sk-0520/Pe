@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Text;
-using System.Xml.Linq;
 
-namespace ContentTypeTextNet.Pe.Library.Database
+namespace ContentTypeTextNet.Pe.Library.Database.Implementations
 {
     /// <summary>
     /// データベース情報。

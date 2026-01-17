@@ -9,6 +9,7 @@ using ContentTypeTextNet.Pe.Main.Models.Database.Dao;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 using Xunit;
+using ContentTypeTextNet.Pe.Library.Database.Implementations;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao
 {

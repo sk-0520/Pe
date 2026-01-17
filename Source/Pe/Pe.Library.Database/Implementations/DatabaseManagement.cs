@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace ContentTypeTextNet.Pe.Library.Database
+namespace ContentTypeTextNet.Pe.Library.Database.Implementations
 {
     public class DatabaseManagement: IDatabaseManagement
     {

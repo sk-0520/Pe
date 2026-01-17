@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.CommonTest;
+using ContentTypeTextNet.Pe.Library.Database.Implementations;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Test

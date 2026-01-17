@@ -1,4 +1,4 @@
-namespace ContentTypeTextNet.Pe.Library.Database
+namespace ContentTypeTextNet.Pe.Library.Database.Implementations
 {
     /// <summary>
     /// DBMS依存DBブロックコメントとコメント文中で特殊処理する起点・終点。

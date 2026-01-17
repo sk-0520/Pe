@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.Database.Implementations;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
 {

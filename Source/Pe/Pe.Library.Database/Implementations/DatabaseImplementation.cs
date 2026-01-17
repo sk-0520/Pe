@@ -5,7 +5,7 @@ using System.Text;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
 
-namespace ContentTypeTextNet.Pe.Library.Database
+namespace ContentTypeTextNet.Pe.Library.Database.Implementations
 {
     /// <inheritdoc cref="IDatabaseImplementation"/>
     public class DatabaseImplementation: IDatabaseImplementation

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ContentTypeTextNet.Pe.Library.Database
+namespace ContentTypeTextNet.Pe.Library.Database.Implementations
 {
     /// <summary>
     /// データベース実装依存処理。

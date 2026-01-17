@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Database.Implementations;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
