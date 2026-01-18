@@ -113,6 +113,12 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						class: "nuget",
+						subject:
+							"Microsoft.Extensions.TimeProvider.Testing 10.1.0 -> 10.2.0",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 					{
