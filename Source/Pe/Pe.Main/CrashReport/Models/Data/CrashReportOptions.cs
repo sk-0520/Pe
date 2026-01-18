@@ -1,4 +1,4 @@
-using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.CommandLine;
 
 namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Data
 {

@@ -87,7 +87,7 @@ namespace ContentTypeTextNet.Pe.Main.Test
                 .Register<ILoggerFactory, ILoggerFactory>(loggerFactory)
                 .Register(timeProvider ?? TimeProvider.System)
                 .Register<IIdFactory, IdFactory>(DiLifecycle.Transient)
-                .Register<IHashAlgorithmGenerator, HashAlgorithmGenerator>(DiLifecycle.Transient)
+                .Register<IHashAlgorithmFactory, HashAlgorithmFactory>(DiLifecycle.Transient)
             ;
 
             return diContainer;

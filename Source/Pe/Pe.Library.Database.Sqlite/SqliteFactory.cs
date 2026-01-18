@@ -5,7 +5,7 @@ using System;
 using System.Data;
 using System.Data.SQLite;
 using System.IO;
-using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.Database.Implementations;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
 {

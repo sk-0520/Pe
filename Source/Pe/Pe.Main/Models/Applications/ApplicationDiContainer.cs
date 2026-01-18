@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         //}
 
         public static IDiRegisterContainer RegisterMvvm<TModel, TViewModel, TView>(this IDiRegisterContainer container)
-            where TModel : BindModelBase
+            where TModel : BindModelWithLoggerBase
             where TViewModel : ViewModelBase
             where TView : FrameworkElement
         {

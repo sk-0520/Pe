@@ -10,7 +10,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 {
     public class BackgroundAddonProxy: AddonsProxyBase<IBackground>, IBackground
     {
-        public BackgroundAddonProxy(IReadOnlyList<IAddon> addons, PluginContextFactory pluginContextFactory, BackgroundAddonContextFactory backgroundAddonContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IHashAlgorithmGenerator hashAlgorithmGenerator, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+        public BackgroundAddonProxy(IReadOnlyList<IAddon> addons, PluginContextFactory pluginContextFactory, BackgroundAddonContextFactory backgroundAddonContextFactory, IHttpUserAgentFactory userAgentFactory, IViewManager viewManager, IHashAlgorithmFactory hashAlgorithmGenerator, IPlatformTheme platformTheme, IImageLoader imageLoader, IMediaConverter mediaConverter, IPolicy policy, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(addons, pluginContextFactory, userAgentFactory, viewManager, hashAlgorithmGenerator, platformTheme, imageLoader, mediaConverter, policy, contextDispatcher, loggerFactory)
         {
             BackgroundAddonContextFactory = backgroundAddonContextFactory;

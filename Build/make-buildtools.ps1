@@ -7,10 +7,13 @@ Import-Module "${PSScriptRoot}/Modules/Project"
 Import-Module "${PSScriptRoot}/Modules/Command"
 
 
-$builToolDirPath = Join-Path -Path (Get-RootDirectory) -ChildPath 'Output' | Join-Path -ChildPath 'tools'
+$buildToolDirPath = Join-Path -Path (Get-RootDirectory) -ChildPath 'Output' | Join-Path -ChildPath 'tools'
 
-Start-Command -Command dotnet -ArgumentList @('build', 'Source/BuildTools/SqlPack/SqlPack.csproj', '--verbosity', 'normal', '--configuration', 'Debug', '/p:Platform=x64', '--runtime', 'win-x64', '--output', $builToolDirPath, '--no-self-contained')
-if (-not $?) {
-	throw 'build error: Build Tool'
+$projects = @(
+	'Source/BuildTools/SqlPack/SqlPack.csproj',
+	'Source/BuildTools/License/License.csproj'
+)
+foreach ($project in $projects) {
+	Write-Information "Building Build Tool: $project"
+	Start-Command -Command dotnet -ArgumentList @('build', $project, '--verbosity', 'normal', '--configuration', 'Debug', '/p:Platform=x64', '--runtime', 'win-x64', '--output', $buildToolDirPath, '--no-self-contained')
 }
-

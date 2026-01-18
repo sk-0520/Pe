@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using ContentTypeTextNet.Pe.Library.Args;
+using ContentTypeTextNet.Pe.Library.CommandLine;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using Microsoft.Extensions.Configuration;

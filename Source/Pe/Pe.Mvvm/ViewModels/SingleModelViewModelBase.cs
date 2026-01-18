@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Mvvm.Bindings;
 using Microsoft.Extensions.Logging;
 
@@ -15,17 +10,15 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
     public abstract class SingleModelViewModelBase<TModel>: SimpleModelViewModelBase<TModel>
         where TModel : BindModelBase
     {
+        protected SingleModelViewModelBase(TModel model, PropertyMode propertyMode, ILoggerFactory loggerFactory)
+            : base(model, propertyMode, loggerFactory)
+        { }
+
         protected SingleModelViewModelBase(TModel model, ILoggerFactory loggerFactory)
-            : base(model)
-        {
-            LoggerFactory = loggerFactory;
-            Logger = loggerFactory.CreateLogger(GetType());
-        }
+            : this(model, DefaultPropertyMode, loggerFactory)
+        { }
 
         #region property
-
-        protected ILoggerFactory LoggerFactory { get; }
-        protected ILogger Logger { get; }
 
         #endregion
     }

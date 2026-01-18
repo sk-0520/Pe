@@ -9,7 +9,7 @@
 						"Source/Pe/Pe.Bridge/Pe.Bridge.csproj",
 						"Source/Pe/Pe.Embedded/Pe.Embedded.csproj",
 						"Source/Pe/Pe.Library.Property/Pe.Library.Property.csproj",
-						"Source/Pe/Pe.Library.Args/Pe.Library.Args.csproj",
+						"Source/Pe/Pe.Library.CommandLine/Pe.Library.CommandLine.csproj",
 						"Source/Pe/Pe.Library.CliProxy/Pe.Library.CliProxy.csproj",
 						"Source/Pe/Pe.Library.Common/Pe.Library.Common.csproj",
 						"Source/Pe/Pe.Library.Database/Pe.Library.Database.csproj",

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Mvvm.Bindings;
 using Xunit;
@@ -15,18 +11,33 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings
 
         private sealed class TestNotifyProperty: NotifyPropertyBase
         {
+            #region variable
+
+            public int Number;
+
+            #endregion
             public TestNotifyProperty(EventReference eventReference)
                 : base(eventReference)
             { }
 
-            public void On(string name)
+            public void On(PropertyChangedEventArgs eventArgs)
             {
-                OnPropertyChanged(name);
+                OnPropertyChanged(eventArgs);
+            }
+
+            public void On(string propertyName)
+            {
+                On(new PropertyChangedEventArgs(propertyName));
             }
 
             public void Raise(string name)
             {
                 RaisePropertyChanged(name);
+            }
+
+            public void SetNumber(int num)
+            {
+                SetProperty(ref this.Number, num, nameof(this.Number));
             }
         }
 
@@ -72,6 +83,17 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings
             Assert.PropertyChanged(test, "Property", () => {
                 test.Raise("Property");
             });
+        }
+
+        [Fact]
+        public void SetVariableTest()
+        {
+            var test = new TestNotifyProperty(EventReference.Weak);
+            Assert.PropertyChanged(test, nameof(test.Number), () => {
+                test.SetNumber(100);
+                Assert.Equal(100, test.Number);
+            });
+
         }
 
         #endregion

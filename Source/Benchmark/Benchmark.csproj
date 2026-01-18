@@ -20,7 +20,7 @@
     <Compile Include="..\Pe\Pe.Library.Provider\**\*.cs" Link="Pe\Pe.Library.Provider\%(RecursiveDir)%(FileName)%(Extension)" Exclude="..\Pe\Pe.Library.Provider\obj\**\*" />
     <Compile Include="..\Pe\Pe.Library.Common\**\*.cs" Link="Pe\Pe.Library.Common\%(RecursiveDir)%(FileName)%(Extension)" Exclude="..\Pe\Pe.Library.Common\obj\**\*" />
     <Compile Include="..\Pe\Pe.Library.DependencyInjection\**\*.cs" Link="Pe\Pe.Library.DependencyInjection\%(RecursiveDir)%(FileName)%(Extension)" Exclude="..\Pe\Pe.Library.DependencyInjection\obj\**\*" />
-    <Compile Include="..\Pe\Pe.Library.Args\**\*.cs" Link="Pe\Pe.Library.Args\%(RecursiveDir)%(FileName)%(Extension)" Exclude="..\Pe\Pe.Library.Args\obj\**\*" />
+    <Compile Include="..\Pe\Pe.Library.CommandLine\**\*.cs" Link="Pe\Pe.Library.CommandLine\%(RecursiveDir)%(FileName)%(Extension)" Exclude="..\Pe\Pe.Library.CommandLine\obj\**\*" />
     <Compile Include="..\Pe\Pe.Library.Property\**\*.cs" Link="Pe\Pe.Library.Property\%(RecursiveDir)%(FileName)%(Extension)" Exclude="..\Pe\Pe.Library.Property\obj\**\*" />
     <Compile Include="..\Pe\Pe.Library.Database\**\*.cs" Link="Pe\Pe.Library.Database\%(RecursiveDir)%(FileName)%(Extension)" Exclude="..\Pe\Pe.Library.Database\obj\**\*" />
     <Compile Include="..\Pe\Pe.Library.Database.Sqlite\**\*.cs" Link="Pe\Pe.Library.Database.Sqlite\%(RecursiveDir)%(FileName)%(Extension)" Exclude="..\Pe\Pe.Library.Database.Sqlite\obj\**\*" />
@@ -41,7 +41,7 @@
       <OutputItemType>Analyzer</OutputItemType>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="..\Pe\Pe.Generator.Exception\Pe.Generator.Exception.csproj">
+    <ProjectReference Include="..\Pe\Pe.Generator.Throws\Pe.Generator.Throws.csproj">
       <OutputItemType>Analyzer</OutputItemType>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

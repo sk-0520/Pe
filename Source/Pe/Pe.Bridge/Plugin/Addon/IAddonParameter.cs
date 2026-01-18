@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Plugin.Addon
         /// <see cref="IHttpUserAgent"/> 生成器。
         /// </summary>
         IHttpUserAgentFactory HttpUserAgentFactory { get; }
-        IHashAlgorithmGenerator HashAlgorithmGenerator { get; }
+        IHashAlgorithmFactory HashAlgorithmGenerator { get; }
         /// <summary>
         /// 実行処理。
         /// </summary>

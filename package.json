@@ -23,9 +23,9 @@
 		"help-build": "npm-run-all --sequential asset help-build:output help-build:module",
 		"check-release-note": "ts-node Build/scripts/check-release-note-entry.ts",
 		"release-note-watch": "parcel --dist-dir Output --public-url / Source/ReleaseNote/release-note.html",
-		"generate-release-note:pick": "ts-node Source/ReleaseNote/pick-release-note-entry.ts",
+		"generate-release-note:pick": "ts-node Source/ReleaseNote/pick-release-note-entry.ts --outputChangelogPath Define/@changelog.json",
 		"generate-release-note:build": "parcel build --no-autoinstall --no-source-maps --dist-dir Output --no-content-hash --public-url . Source/ReleaseNote/release-note.html",
-		"generate-release-note:output": "ts-node Source/ReleaseNote/output-release-note-entry.ts",
+		"generate-release-note:output": "ts-node Source/ReleaseNote/output-release-note-entry.ts --inputFilePath Output/release-note.html --outputFilePath history/Pe.html",
 		"generate-release-note": "npm-run-all --sequential generate-release-note:pick generate-release-note:build generate-release-note:output",
 		"npm-check": "ncu",
 		"npm-update": "ncu -u & npm install"

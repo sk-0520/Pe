@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <RootNamespace>SqlPack</RootNamespace>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Pe\Pe.Core\Pe.Core.csproj" />
-    <ProjectReference Include="..\..\Pe\Pe.Library.Args\Pe.Library.Args.csproj" />
+    <ProjectReference Include="..\..\Pe\Pe.Library.CommandLine\Pe.Library.CommandLine.csproj" />
     <ProjectReference Include="..\..\Pe\Pe.Library.Database.Sqlite\Pe.Library.Database.Sqlite.csproj" />
   </ItemGroup>
 

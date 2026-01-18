@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Pe.Generator.Throws.Test</AssemblyName>
+    <RootNamespace>ContentTypeTextNet.Pe.Generator.Throws.Test</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pe.Generator.Throws\Pe.Generator.Throws.csproj">
+      <OutputItemType>Analyzer</OutputItemType>
+      <!--<ReferenceOutputAssembly>false</ReferenceOutputAssembly>-->
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>

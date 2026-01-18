@@ -32,11 +32,11 @@
     </Project>
   </Folder>
   <Folder Name="/generator/">
-    <Project Path="Pe.Generator.Exception.Test/Pe.Generator.Exception.Test.csproj">
+    <Project Path="Pe.Generator.Throws.Test/Pe.Generator.Throws.Test.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="Pe.Generator.Exception/Pe.Generator.Exception.csproj">
+    <Project Path="Pe.Generator.Throws/Pe.Generator.Throws.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
@@ -80,11 +80,11 @@
     </Project>
   </Folder>
   <Folder Name="/lib/library/">
-    <Project Path="Pe.Library.Args.Test/Pe.Library.Args.Test.csproj">
+    <Project Path="Pe.Library.CommandLine.Test/Pe.Library.CommandLine.Test.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="Pe.Library.Args/Pe.Library.Args.csproj">
+    <Project Path="Pe.Library.CommandLine/Pe.Library.CommandLine.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>

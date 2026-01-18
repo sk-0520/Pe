@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Throw;
 using Microsoft.Extensions.Logging.Abstractions;
 using Prism.Commands;
@@ -121,7 +120,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_HookItem_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLoggerFactory.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(ObserveItem)!));
             Assert.Throws<ArgumentException>(() => test.AddObserver(new ObserveItem(null!, null, null, null)));
             Assert.Throws<ArgumentException>(() => test.AddObserver(new ObserveItem("", null, null, null)));
@@ -130,7 +129,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLoggerFactory.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!));
             Assert.Throws<ArgumentException>(() => test.AddObserver(""));
             var result = test.AddObserver("A");
@@ -143,7 +142,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_string_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLoggerFactory.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, default(string)!));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver("A", default(string)!));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, "B"));
@@ -157,7 +156,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_IEnumerableXstringX_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLoggerFactory.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, Array.Empty<string>()));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver("A", (IEnumerable<string>)null!));
             Assert.Throws<ArgumentEmptyCollectionException>(() => test.AddObserver("A", Array.Empty<string>()));
@@ -173,7 +172,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_ICommand_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLoggerFactory.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, default(ICommand)!));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, new Command(true)));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver("A", default(ICommand)!));
@@ -190,15 +189,15 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_IEnumerableXICommandX_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLoggerFactory.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, default(ICommand[])!));
-            Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, new [] { new Command(true)}));
+            Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, new[] { new Command(true) }));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver("A", default(ICommand[])!));
             Assert.Throws<ArgumentEmptyCollectionException>(() => test.AddObserver("A", Array.Empty<ICommand>()));
 
             var command1 = new Command(true);
             var command2 = new Command(true);
-            var result = test.AddObserver("a", new [] { command1 , command2});
+            var result = test.AddObserver("a", new[] { command1, command2 });
             Assert.Equal("a", result.NotifyPropertyName);
             Assert.Null(result.RaisePropertyNames);
             Assert.NotNull(result.RaiseCommands);
@@ -210,7 +209,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void AddObserver_string_Action_Test()
         {
-            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLogger.Instance);
+            var test = new PropertyChangedObserver(new CurrentContextDispatcher(), NullLoggerFactory.Instance);
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, default(Action)!));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver(default(string)!, () => { }));
             Assert.Throws<ArgumentNullException>(() => test.AddObserver("A", default(Action)!));

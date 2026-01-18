@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Mvvm.Bindings;
 using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 using ContentTypeTextNet.Pe.Mvvm.ViewModels;
@@ -37,14 +35,14 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings.Collections
             public int Value
             {
                 get => Model.Value;
-                set => SetModelValue(value);
+                set => SetModel(value);
             }
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1144:Unused private types or members should be removed", Justification = "OK")]
             public int BigValue
             {
                 get => Value * 100;
-                set => SetModelValue(value / 100, nameof(Model.Value));
+                set => SetModel(value / 100, nameof(Model.Value));
             }
         }
 

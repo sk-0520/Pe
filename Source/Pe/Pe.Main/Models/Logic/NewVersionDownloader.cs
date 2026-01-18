@@ -19,7 +19,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     /// </summary>
     public class NewVersionDownloader
     {
-        public NewVersionDownloader(ApplicationConfiguration applicationConfiguration, IHashAlgorithmGenerator hashAlgorithmGenerator,IUserAgentManager userAgentManager, TimeProvider timeProvider, ILoggerFactory loggerFactory)
+        public NewVersionDownloader(ApplicationConfiguration applicationConfiguration, IHashAlgorithmFactory hashAlgorithmGenerator,IUserAgentManager userAgentManager, TimeProvider timeProvider, ILoggerFactory loggerFactory)
         {
             Logger = loggerFactory.CreateLogger(GetType());
             ApplicationConfiguration = applicationConfiguration;
@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         private ILogger Logger { get; }
 
         private ApplicationConfiguration ApplicationConfiguration { get; }
-        private IHashAlgorithmGenerator HashAlgorithmGenerator { get; }
+        private IHashAlgorithmFactory HashAlgorithmGenerator { get; }
         private IUserAgentManager UserAgentManager { get; }
         private TimeProvider TimeProvider { get; }
         internal int ChecksumSize { get; init; } = 1024 * 2;

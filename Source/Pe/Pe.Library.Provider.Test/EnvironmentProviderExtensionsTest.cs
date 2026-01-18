@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
-using ContentTypeTextNet.Pe.Library.Provider;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Provider.Test
@@ -23,7 +21,6 @@ namespace ContentTypeTextNet.Pe.Library.Provider.Test
             var provider = EnvironmentProvider.Default;
             Assert.Equal(Environment.GetEnvironmentVariable("PATH"), provider.GetVariableValue("PATH"));
         }
-
 
         #endregion
     }

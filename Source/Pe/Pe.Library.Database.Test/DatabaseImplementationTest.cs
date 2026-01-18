@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.CommonTest;
+using ContentTypeTextNet.Pe.Library.Database.Implementations;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Test
@@ -70,10 +65,10 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test
         [InlineData(@"\r", "\r")]
         [InlineData(@"\n", "\n")]
         [InlineData(@"\n\r''''\\", "\n\r''\\")]
-        public void EscapeTest(string expected, string word)
+        public void EscapeStringTest(string expected, string word)
         {
             var test = new DatabaseImplementation();
-            var actual = test.Escape(word);
+            var actual = test.EscapeString(word);
             Assert.Equal(expected, actual);
         }
 

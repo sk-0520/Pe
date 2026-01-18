@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings
             private int variable;
 
             public int GetVariableTest() => this.variable;
-            public bool SetVariableTest(int value) => SetVariable(ref this.variable, value, nameof(this.variable));
+            public bool SetVariableTest(int value) => SetProperty(ref this.variable, value, nameof(this.variable));
         }
 
         [Fact]

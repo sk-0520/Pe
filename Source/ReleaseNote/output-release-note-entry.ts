@@ -1,11 +1,29 @@
-import path from "node:path";
+import { parseArgs } from "node:util";
 import { type Input, main } from "./output-release-note";
 
-const rootDirPath = path.resolve(__dirname, "..", "..");
+const parsed = parseArgs({
+	allowPositionals: true,
+	args: process.argv.slice(2),
+	options: {
+		inputFilePath: {
+			type: "string",
+		},
+		outputFilePath: {
+			type: "string",
+		},
+	},
+});
+
+if (!parsed.values.inputFilePath) {
+	throw new Error("inputFilePath is required");
+}
+if (!parsed.values.outputFilePath) {
+	throw new Error("outputFilePath is required");
+}
 
 const input: Input = {
-	inputFilePath: path.resolve(rootDirPath, "Output", "release-note.html"),
-	outputFilePath: path.resolve(rootDirPath, "history", "Pe.html"),
+	inputFilePath: parsed.values.inputFilePath,
+	outputFilePath: parsed.values.outputFilePath,
 };
 
 main(input);

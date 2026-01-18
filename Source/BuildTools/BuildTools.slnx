@@ -12,7 +12,7 @@
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="../Pe/Pe.Generator.Exception/Pe.Generator.Exception.csproj">
+    <Project Path="../Pe/Pe.Generator.Throws/Pe.Generator.Throws.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
@@ -20,7 +20,7 @@
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
-    <Project Path="../Pe/Pe.Library.Args/Pe.Library.Args.csproj">
+    <Project Path="../Pe/Pe.Library.CommandLine/Pe.Library.CommandLine.csproj">
       <Platform Solution="*|x64" Project="x64" />
       <Platform Solution="*|x86" Project="x86" />
     </Project>
@@ -66,6 +66,10 @@
     </Project>
   </Folder>
   <Project Path="AvalonEditSyntax/AvalonEditSyntax.csproj">
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
+  <Project Path="License/License.csproj" Id="8783dd36-c1cb-4a68-90c0-1a22ea24f1c2">
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />
   </Project>

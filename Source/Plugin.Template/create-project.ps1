@@ -365,7 +365,7 @@ try {
 			directory = 'Pe\generator'
 		},
 		@{
-			project = 'Pe.Generator.Exception'
+			project = 'Pe.Generator.Throws'
 			directory = 'Pe\generator'
 		},
 		@{
@@ -377,7 +377,7 @@ try {
 			directory = 'Pe\bridge'
 		},
 		@{
-			project = 'Pe.Library.Args'
+			project = 'Pe.Library.CommandLine'
 			directory = 'Pe\lib\library'
 		},
 		@{

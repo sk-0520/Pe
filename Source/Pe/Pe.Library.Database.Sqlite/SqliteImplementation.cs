@@ -4,7 +4,7 @@
 using System;
 using System.Data;
 using System.Globalization;
-using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.Database.Implementations;
 using Dapper;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Sqlite

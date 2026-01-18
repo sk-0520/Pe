@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Input;
+using ContentTypeTextNet.Pe.Mvvm.Commands;
 using ContentTypeTextNet.Pe.Mvvm.ViewModels;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
@@ -31,8 +29,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
 
         private class TestViewModel: ViewModelBase
         {
-            public TestViewModel()
-                : base()
+            public TestViewModel(PropertyMode propertyMode)
+                : base(propertyMode, NullLoggerFactory.Instance)
             { }
 
             private TestModel TestModel { get; } = new TestModel();
@@ -57,14 +55,18 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             }
         }
 
-        [Fact]
-        public void SetProperty_public_Test()
+        [Theory]
+        [InlineData(PropertyMode.Reflection)]
+        [InlineData(PropertyMode.Cache)]
+        public void SetProperty_public_Test(PropertyMode propertyMode)
         {
-            var tvm = new TestViewModel();
+            var tvm = new TestViewModel(propertyMode);
             bool called = false;
             tvm.PropertyChanged += (s, e) => {
-                Assert.Equal(nameof(TestViewModel.PublicValue), e.PropertyName);
-                called = true;
+                if(e.PropertyName != nameof(tvm.HasErrors)) {
+                    Assert.Equal(nameof(TestViewModel.PublicValue), e.PropertyName);
+                    called = true;
+                }
             };
             Assert.False(called);
             tvm.PublicValue = 123;
@@ -72,14 +74,18 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             Assert.Equal(123, tvm.PublicValue);
         }
 
-        [Fact]
-        public void SetProperty_private_Test()
+        [Theory]
+        [InlineData(PropertyMode.Reflection)]
+        [InlineData(PropertyMode.Cache)]
+        public void SetProperty_private_Test(PropertyMode propertyMode)
         {
-            var tvm = new TestViewModel();
+            var tvm = new TestViewModel(propertyMode);
             bool called = false;
             tvm.PropertyChanged += (s, e) => {
-                Assert.Equal(nameof(TestViewModel.PrivateValue), e.PropertyName);
-                called = true;
+                if(e.PropertyName != nameof(tvm.HasErrors)) {
+                    Assert.Equal(nameof(TestViewModel.PrivateValue), e.PropertyName);
+                    called = true;
+                }
             };
             Assert.False(called);
             tvm.PrivateValue = 123;
@@ -87,14 +93,18 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             Assert.Equal(123, tvm.PrivateValue);
         }
 
-        [Fact]
-        public void SetProperty_alias_Test()
+        [Theory]
+        [InlineData(PropertyMode.Reflection)]
+        [InlineData(PropertyMode.Cache)]
+        public void SetProperty_alias_Test(PropertyMode propertyMode)
         {
-            var tvm = new TestViewModel();
+            var tvm = new TestViewModel(propertyMode);
             bool called = false;
             tvm.PropertyChanged += (s, e) => {
-                Assert.Equal(nameof(TestViewModel.AliasValue), e.PropertyName);
-                called = true;
+                if(e.PropertyName != nameof(tvm.HasErrors)) {
+                    Assert.Equal(nameof(TestViewModel.AliasValue), e.PropertyName);
+                    called = true;
+                }
             };
             Assert.False(called);
             tvm.AliasValue = 123;
@@ -102,13 +112,17 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             Assert.Equal(123, tvm.AliasValue);
         }
 
-        [Fact]
-        public void SetProperty_equal_Test()
+        [Theory]
+        [InlineData(PropertyMode.Reflection)]
+        [InlineData(PropertyMode.Cache)]
+        public void SetProperty_equal_Test(PropertyMode propertyMode)
         {
-            var tvm = new TestViewModel();
+            var tvm = new TestViewModel(propertyMode);
             int callCount = 0;
             tvm.PropertyChanged += (s, e) => {
-                callCount += 1;
+                if(e.PropertyName != nameof(tvm.HasErrors)) {
+                    callCount += 1;
+                }
             };
             tvm.PublicValue = 123;
             Assert.Equal(1, callCount);
@@ -150,6 +164,157 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
 
         //    public bool PropIsEven => (this._prop % 2) == 0;
         //}
+
+        private sealed class PropertyChanged_Property_ViewModel: ViewModelBase
+        {
+            public PropertyChanged_Property_ViewModel(PropertyMode propertyMode)
+                : base(propertyMode, NullLoggerFactory.Instance)
+            { }
+
+            public int A
+            {
+                get;
+                set => SetProperty(ref field, value);
+            }
+
+            public int B
+            {
+                get;
+                set => SetProperty(ref field, value);
+            }
+
+            [ObserveProperty(nameof(A))]
+            [ObserveProperty(nameof(B))]
+            public int C => A + B;
+
+        }
+
+        [Theory]
+        [InlineData(PropertyMode.Reflection)]
+        [InlineData(PropertyMode.Cache)]
+        public void ViewModelBase_PropertyChanged_Property_Test(PropertyMode propertyMode)
+        {
+            var aCalledCount = 0;
+            var bCalledCount = 0;
+            var cCalledCount = 0;
+
+            var vm = new PropertyChanged_Property_ViewModel(propertyMode);
+            vm.PropertyChanged += (s, e) => {
+                if(e.PropertyName == nameof(vm.A)) {
+                    aCalledCount += 1;
+                }
+
+                if(e.PropertyName == nameof(vm.B)) {
+                    bCalledCount += 1;
+                }
+
+                if(e.PropertyName == nameof(vm.C)) {
+                    cCalledCount += 1;
+                }
+            };
+
+            Assert.Equal(0, aCalledCount);
+            Assert.Equal(0, bCalledCount);
+            Assert.Equal(0, cCalledCount);
+            Assert.Equal(0, vm.A);
+            Assert.Equal(0, vm.B);
+            Assert.Equal(0, vm.C);
+
+            vm.A = 10;
+            Assert.Equal(1, aCalledCount);
+            Assert.Equal(0, bCalledCount);
+            Assert.Equal(1, cCalledCount);
+            Assert.Equal(10, vm.A);
+            Assert.Equal(0, vm.B);
+            Assert.Equal(10, vm.C);
+
+            vm.B = 20;
+            Assert.Equal(1, aCalledCount);
+            Assert.Equal(1, bCalledCount);
+            Assert.Equal(2, cCalledCount);
+            Assert.Equal(10, vm.A);
+            Assert.Equal(20, vm.B);
+            Assert.Equal(30, vm.C);
+        }
+
+        private sealed class PropertyChanged_Command_ViewModel: ViewModelBase
+        {
+            public PropertyChanged_Command_ViewModel(PropertyMode propertyMode)
+                : base(propertyMode, NullLoggerFactory.Instance)
+            { }
+
+            public bool A
+            {
+                get;
+                set => SetProperty(ref field, value);
+            }
+
+            public bool B
+            {
+                get;
+                set => SetProperty(ref field, value);
+            }
+
+            [ObserveProperty(nameof(A))]
+            [ObserveProperty(nameof(B))]
+            public ICommand C
+            {
+                get => field ??= new DelegateCommand(
+                    _ => { },
+                    _ => A && B
+                );
+            }
+
+        }
+
+        [Theory]
+        [InlineData(PropertyMode.Reflection)]
+        [InlineData(PropertyMode.Cache)]
+        public void ViewModelBase_PropertyChanged_Command_Test(PropertyMode propertyMode)
+        {
+            var aCalledCount = 0;
+            var bCalledCount = 0;
+            var cCalledCount = 0;
+
+            var vm = new PropertyChanged_Command_ViewModel(propertyMode);
+            vm.PropertyChanged += (s, e) => {
+                if(e.PropertyName == nameof(vm.A)) {
+                    aCalledCount += 1;
+                }
+
+                if(e.PropertyName == nameof(vm.B)) {
+                    bCalledCount += 1;
+                }
+
+                if(e.PropertyName == nameof(vm.C)) {
+                    cCalledCount += 1;
+                }
+            };
+
+            Assert.Equal(0, aCalledCount);
+            Assert.Equal(0, bCalledCount);
+            Assert.Equal(0, cCalledCount);
+            Assert.False(vm.A);
+            Assert.False(vm.B);
+            Assert.False(vm.C.CanExecute(default));
+
+            vm.A = true;
+            Assert.Equal(1, aCalledCount);
+            Assert.Equal(0, bCalledCount);
+            Assert.Equal(0, cCalledCount);
+            Assert.True(vm.A);
+            Assert.False(vm.B);
+            Assert.False(vm.C.CanExecute(default));
+
+            vm.B = true;
+            Assert.Equal(1, aCalledCount);
+            Assert.Equal(1, bCalledCount);
+            Assert.Equal(0, cCalledCount);
+            Assert.True(vm.A);
+            Assert.True(vm.B);
+            Assert.True(vm.C.CanExecute(default));
+        }
+
 
         #endregion
     }
