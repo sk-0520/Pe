@@ -5,72 +5,18 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
-		date: "YYYY/MM/DD",
-		version: "0.99.265+",
+		date: "2026/01/18",
+		version: "0.99.266",
 		contents: [
-			{
-				type: "note",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "features",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
 			{
 				type: "fixes",
 				logs: [
 					{
-						revision: "",
+						revision: "1c766f5e9efcbdd23202be54951a81b8d8cca9ed",
 						subject: "#1059: アップデート処理に失敗する",
 						comments: [
 							"GHA の変数と PowerShell の変数がごっちゃになってデプロイ成果物が死んでた",
 						],
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
 					},
 				],
 			},
@@ -78,7 +24,7 @@ const Changelogs: ChangelogVersion[] = [
 				type: "developer",
 				logs: [
 					{
-						revision: "",
+						revision: "b0df06da0b9c9a6fc2dbbf5836beadc07e3da801",
 						subject:
 							"#836: ライブラリのライセンス周りは一括処理せな死ぬ",
 						comments: [
@@ -87,7 +33,7 @@ const Changelogs: ChangelogVersion[] = [
 						],
 					},
 					{
-						revision: "",
+						revision: "9be709e8c79c3181a2912bfb921bf431c4846ba8",
 						subject:
 							"#1056: 内部で使用している TS の実行処理はコマンドラインパラメータで実行できるようにしたい",
 						comments: [
@@ -95,30 +41,30 @@ const Changelogs: ChangelogVersion[] = [
 						],
 					},
 					{
-						revision: "",
+						revision: "669f4bbfbaffe6e8437363cf25ac9646a7659512",
 						class: "nuget",
 						subject: "xunit.v3 3.2.1 -> 3.2.2",
 						comments: ["xunit.v3.runner.msbuild を含む"],
 					},
 					{
-						revision: "",
+						revision: "ec66694c96941fcb4c6c9a70061903a6cc23a9e5",
 						class: "nuget",
 						subject: "System.Management 10.0.0 -> 10.0.2",
 					},
 					{
-						revision: "",
+						revision: "f335d2786f9b79604698e82534cc1200ce6d8c7d",
 						class: "nuget",
 						subject:
 							"System.DirectoryServices.AccountManagement 10.0.0 -> 10.0.2",
 					},
 					{
-						revision: "",
+						revision: "213e0cce9be6c0374d0c38d146ee72da3231142e",
 						class: "nuget",
 						subject:
 							"Microsoft.Extensions.TimeProvider.Testing 10.1.0 -> 10.2.0",
 					},
 					{
-						revision: "",
+						revision: "a6126b701ad111c94b693f9d42d392ff2487f873",
 						class: "nuget",
 						subject:
 							"Microsoft.Extensions.Logging 10.0.0 -> 10.0.2",
@@ -127,7 +73,7 @@ const Changelogs: ChangelogVersion[] = [
 						],
 					},
 					{
-						revision: "",
+						revision: "60ec3790cf4f7a2987112eb7d137e0e7352f2a74",
 						class: "nuget",
 						subject:
 							"Microsoft.Extensions.Configuration.* 10.0.0 -> 10.0.2",
@@ -137,14 +83,10 @@ const Changelogs: ChangelogVersion[] = [
 						],
 					},
 					{
-						revision: "",
+						revision: "8642802bcb26d25421b49c2fdd126ea021b0b3ee",
 						class: "nuget",
 						subject:
 							"Microsoft.Web.WebView2 1.0.3595.46 -> 1.0.3650.58",
-					},
-					{
-						revision: "",
-						subject: "",
 					},
 				],
 			},
