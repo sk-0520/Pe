@@ -128,6 +128,16 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						class: "nuget",
+						subject:
+							"Microsoft.Extensions.Configuration.* 10.0.0 -> 10.0.2",
+						comments: [
+							"Microsoft.Extensions.Configuration.Binder",
+							"Microsoft.Extensions.Configuration.Json",
+						],
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 					{
