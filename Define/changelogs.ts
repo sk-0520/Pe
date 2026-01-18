@@ -119,6 +119,15 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						class: "nuget",
+						subject:
+							"Microsoft.Extensions.Logging 10.0.0 -> 10.0.2",
+						comments: [
+							"Microsoft.Extensions.Logging.Abstractions を含む",
+						],
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 					{
