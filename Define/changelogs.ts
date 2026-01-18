@@ -96,6 +96,12 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						class: "nuget",
+						subject: "xunit.v3 3.2.1 -> 3.2.2",
+						comments: ["xunit.v3.runner.msbuild を含む"],
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 					{
