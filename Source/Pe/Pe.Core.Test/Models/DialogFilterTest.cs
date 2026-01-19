@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Core.Models;
 using Xunit;
 
@@ -13,7 +10,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         #region function
 
         [Theory]
-        [InlineData("a", "d", new [] { "x", "y", "z" })]
+        [InlineData("a", "d", new[] { "x", "y", "z" })]
         public void Constructor_IEnumerable_Test(string display, string defaultExtension, IEnumerable<string> wildcards)
         {
             var test = new DialogFilterItem(display, defaultExtension, wildcards);
@@ -46,6 +43,28 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
 
         #endregion
     }
+
+    public class DialogFilterItemTValueTest
+    {
+        #region function
+
+        [Fact]
+        public void Constructor_IEnumerable_Test()
+        {
+            var test = new DialogFilterItem<int>(0, "display", "txt", ["txt", "md"]);
+            Assert.Equal(0, test.Value);
+        }
+
+        [Fact]
+        public void Constructor_params_Test()
+        {
+            var test = new DialogFilterItem<int>(0, "display", "txt", "txt", "md");
+            Assert.Equal(0, test.Value);
+        }
+
+        #endregion
+    }
+
 
     public class DialogFilterListTest
     {

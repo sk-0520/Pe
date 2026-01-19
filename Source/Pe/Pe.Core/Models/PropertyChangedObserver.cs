@@ -74,10 +74,10 @@ namespace ContentTypeTextNet.Pe.Core.Models
     {
         public CachedObserveItem(IEnumerable<string> raisePropertyNames, IEnumerable<ICommand> raiseCommands, IEnumerable<DelegateCommandBase> raiseDelegateCommands, IEnumerable<Action> callbacks)
         {
-            RaisePropertyNames = raisePropertyNames.ToList();
-            RaiseCommands = raiseCommands.ToList();
-            RaiseDelegateCommands = raiseDelegateCommands.ToList();
-            Callbacks = callbacks.ToList();
+            RaisePropertyNames = raisePropertyNames.ToArray();
+            RaiseCommands = raiseCommands.ToArray();
+            RaiseDelegateCommands = raiseDelegateCommands.ToArray();
+            Callbacks = callbacks.ToArray();
         }
 
         #region property

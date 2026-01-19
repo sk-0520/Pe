@@ -4,8 +4,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 
@@ -16,7 +14,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
     /// </summary>
     public static class UIUtility
     {
-        #region variable
+        #region define
 
         /// <summary>
         /// デフォルトDPI(X)。

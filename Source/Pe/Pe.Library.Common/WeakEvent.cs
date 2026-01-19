@@ -1,19 +1,32 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.Tracing;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
+    /// <summary>
+    /// イベントの参照方法。
+    /// </summary>
     public enum EventReference
     {
+        /// <summary>
+        /// 強い参照。
+        /// </summary>
+        /// <remarks>通常。</remarks>
         Strong,
+        /// <summary>
+        /// 弱い参照。
+        /// </summary>
         Weak
     }
 
+    /// <summary>
+    /// 弱いイベントの基底。
+    /// </summary>
+    /// <typeparam name="TEventListener"></typeparam>
+    /// <typeparam name="TEventArgs"></typeparam>
     public class WeakEventBase<TEventListener, TEventArgs>
         where TEventListener : class
         where TEventArgs : EventArgs

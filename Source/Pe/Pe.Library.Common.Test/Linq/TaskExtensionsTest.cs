@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test.Linq
 {
-    public class TasksExtensionsTest
+    public class TaskExtensionsTest
     {
         #region function
 

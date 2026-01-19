@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -10,7 +7,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
 {
     public static class MediaUtility
     {
-        #region variable
+        #region define
 
         /// <summary>
         /// <see cref="Color.A"/>の完全な透明。
