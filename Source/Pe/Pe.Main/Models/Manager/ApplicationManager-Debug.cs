@@ -25,9 +25,8 @@ using ContentTypeTextNet.Pe.Main.Models.Platform;
 using ContentTypeTextNet.Pe.Main.ViewModels._Debug_;
 using ContentTypeTextNet.Pe.Main.Views;
 using ContentTypeTextNet.Pe.Main.Views._Debug_;
-using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Main.ViewModels.About;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
@@ -273,13 +272,13 @@ echo end
             //DebugSetting();
         }
 
-        private void Uninstall()
+        private Task UninstallAsync(CancellationToken cancellationToken)
         {
             var about = ApplicationDiContainer.Build<Element.About.AboutElement>();
             var path = @"x:a.bat";
             var uninstallTarget = UninstallTarget.Application | UninstallTarget.Batch;
             uninstallTarget |= UninstallTarget.User | UninstallTarget.Machine | UninstallTarget.Temporary;
-            about.CreateUninstallBatch(path, uninstallTarget);
+            return about.CreateUninstallBatchAsync(path, uninstallTarget, cancellationToken);
         }
 
         private void DebugIssue714()

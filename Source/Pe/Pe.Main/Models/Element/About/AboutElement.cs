@@ -7,7 +7,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Core.Models.Serialization;
-using ContentTypeTextNet.Pe.Library.CommandLine;
+using ContentTypeTextNet.Pe.Core.Models.Shell.Value;
+using ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt;
+using ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt.Command;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Library.Database;
@@ -536,50 +538,75 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.About
             return true;
         }
 
-        public void CreateUninstallBatch(string uninstallBatchFilePath, UninstallTarget uninstallTargets)
+        public async Task CreateUninstallBatchAsync(string uninstallBatchFilePath, UninstallTarget uninstallTargets, CancellationToken cancellationToken)
         {
             if(!CheckCreateUninstallBatch(uninstallBatchFilePath, uninstallTargets)) {
                 throw new InvalidOperationException();
             }
 
-            var commandLineHelper = new CommandLineHelper();
-
             IOUtility.MakeFileParentDirectory(uninstallBatchFilePath);
+
+            var editor = new CommandPromptEditor(new CommandPromptOptions {
+                Encoding = Encoding.UTF8,
+            });
+
+            editor.AddCommand(impl => new SwitchEchoCommand() {
+                On = false
+            });
+            editor.AddCommand(impl => new ChangeCodePageCommand() {
+                Encoding = editor.Options.Encoding,
+            });
+            editor.AddEmptyLine();
+
+            var deleteItems = new[] {
+                new { Target = UninstallTarget.User, Directory = EnvironmentParameters.UserRoamingDirectory },
+                new { Target = UninstallTarget.Machine, Directory = EnvironmentParameters.MachineDirectory },
+                new { Target = UninstallTarget.Temporary, Directory = EnvironmentParameters.TemporaryDirectory },
+                new { Target = UninstallTarget.Application, Directory = EnvironmentParameters.RootDirectory },
+            };
+
+            foreach(var deleteItem in deleteItems.Where(i => uninstallTargets.HasFlag(i.Target))) {
+                editor.AddCommand(impl => new EchoCommand() {
+                    Value = new Text($"[{deleteItem.Target}]"),
+                });
+                editor.AddCommand(impl => new DeleteDirectoryCommand() {
+                    Path = Express.Create(deleteItem.Directory.FullName),
+                    Recursion = true,
+                    Quiet = true,
+                });
+                editor.AddEmptyLine();
+            }
+
+            if(uninstallTargets.HasFlag(UninstallTarget.Application)) {
+                var startupRegister = new StartupRegister(LoggerFactory);
+                if(startupRegister.Exists()) {
+                    var startupFilePath = startupRegister.GetStartupFilePath();
+                    editor.AddCommand(impl => new EchoCommand() {
+                        Value = new Text("[STARTUP]"),
+                    });
+                    editor.AddCommand(impl => new DeleteCommand() {
+                        Path = Express.Create(startupFilePath),
+                    });
+                    editor.AddEmptyLine();
+                }
+            }
+
+            if(uninstallTargets.HasFlag(UninstallTarget.Batch)) {
+                editor.AddCommand(impl => new EchoCommand() {
+                    Value = new Text($"[{UninstallTarget.Batch}]"),
+                });
+                editor.AddCommand(impl => new EchoCommand() {
+                    Value = new Text("バッチファイル削除エラーは無視してください"),
+                });
+                editor.AddCommand(impl => new DeleteCommand() {
+                    Path = Express.Create("%~f0"),
+                    Force = true,
+                });
+                editor.AddEmptyLine();
+            }
+
             using(var stream = new FileStream(uninstallBatchFilePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read)) {
-                using var writer = new StreamWriter(stream, Encoding.UTF8);
-                writer.WriteLine("echo OFF");
-                writer.WriteLine("chcp 65001");
-                writer.WriteLine();
-
-                var deleteItems = new[] {
-                    new { Target = UninstallTarget.User, Directory = EnvironmentParameters.UserRoamingDirectory },
-                    new { Target = UninstallTarget.Machine, Directory = EnvironmentParameters.MachineDirectory },
-                    new { Target = UninstallTarget.Temporary, Directory = EnvironmentParameters.TemporaryDirectory },
-                    new { Target = UninstallTarget.Application, Directory = EnvironmentParameters.RootDirectory },
-                };
-
-                foreach(var deleteItem in deleteItems.Where(i => uninstallTargets.HasFlag(i.Target))) {
-                    writer.WriteLine("echo [{0}]", deleteItem.Target);
-                    writer.WriteLine("rmdir /S /Q {0}", commandLineHelper.Escape(deleteItem.Directory.FullName));
-                    writer.WriteLine();
-                }
-
-                if(uninstallTargets.HasFlag(UninstallTarget.Application)) {
-                    var startupRegister = new StartupRegister(LoggerFactory);
-                    if(startupRegister.Exists()) {
-                        var startupFilePath = startupRegister.GetStartupFilePath();
-                        writer.WriteLine("echo [{0}]", "STARTUP");
-                        writer.WriteLine("del {0}", commandLineHelper.Escape(startupFilePath));
-                        writer.WriteLine();
-                    }
-                }
-
-                if(uninstallTargets.HasFlag(UninstallTarget.Batch)) {
-                    writer.WriteLine("echo [{0}]", UninstallTarget.Batch);
-                    writer.WriteLine("echo {0}", "バッチファイル削除エラーは無視してください");
-                    writer.WriteLine("del /F \"%~f0\"");
-                    writer.WriteLine();
-                }
+                await editor.WriteAsync(stream, cancellationToken);
             }
         }
 

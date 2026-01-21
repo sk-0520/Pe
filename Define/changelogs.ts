@@ -76,7 +76,9 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"#1063: bat 生成処理をテキスト処理から置き換え",
+						comments: ["価値のない実装かなぁ"],
 					},
 					{
 						revision: "",
