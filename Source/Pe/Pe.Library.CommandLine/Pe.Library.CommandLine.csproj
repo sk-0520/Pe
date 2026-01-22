@@ -3,6 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Pe.Library.CommandLine</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Library.CommandLine</RootNamespace>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

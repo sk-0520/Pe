@@ -3,6 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Pe.CommonTest</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.CommonTest</RootNamespace>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

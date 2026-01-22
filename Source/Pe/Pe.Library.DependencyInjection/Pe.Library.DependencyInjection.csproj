@@ -3,6 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Pe.Library.DependencyInjection</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Library.DependencyInjection</RootNamespace>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Pe.Library.Database</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Library.Database</RootNamespace>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
