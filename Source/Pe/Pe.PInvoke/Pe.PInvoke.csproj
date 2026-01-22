@@ -4,6 +4,7 @@
     <AssemblyName>Pe.PInvoke</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.PInvoke</RootNamespace>
     <UseWPF>true</UseWPF>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
