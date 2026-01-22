@@ -1,7 +1,7 @@
-using System;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
@@ -25,7 +25,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         public override string ConnectionString
         {
             get => Raw.ConnectionString;
-            set => throw new NotSupportedException();
+            set => Raw.ConnectionString = value;
         }
 
         public override string Database => Raw.Database;
@@ -76,10 +76,17 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
     public class DbCommandWrapper: DbCommand
     {
+        static PropertyInfo DbParameterCollectionPropertyInfo;
+        static DbCommandWrapper()
+        {
+            var type = typeof(DbCommand);
+            var property = type.GetProperty("DbParameterCollection", BindingFlags.NonPublic | BindingFlags.Instance);
+            DbParameterCollectionPropertyInfo = property!;
+        }
+
         public DbCommandWrapper(IDbCommand command)
         {
             Raw = command;
-            //nameof(DbCommand.CommandText);
         }
 
         #region property
@@ -91,45 +98,84 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #region DbCommand
 
         [AllowNull]
-        public override string CommandText { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override int CommandTimeout { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override CommandType CommandType { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override bool DesignTimeVisible { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public override UpdateRowSource UpdatedRowSource { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        protected override DbConnection? DbConnection { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override string CommandText
+        {
+            get => Raw.CommandText;
+            set => Raw.CommandText = value;
+        }
 
-        protected override DbParameterCollection DbParameterCollection => throw new NotImplementedException();
+        public override int CommandTimeout
+        {
+            get => Raw.CommandTimeout;
+            set => Raw.CommandTimeout = value;
+        }
 
-        protected override DbTransaction? DbTransaction { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public override CommandType CommandType
+        {
+            get => Raw.CommandType;
+            set => Raw.CommandType = value;
+        }
+
+        public override bool DesignTimeVisible
+        {
+            get => ((DbCommand)Raw).DesignTimeVisible;
+            set => ((DbCommand)Raw).DesignTimeVisible = value;
+        }
+
+        public override UpdateRowSource UpdatedRowSource
+        {
+            get => Raw.UpdatedRowSource;
+            set => Raw.UpdatedRowSource = value;
+        }
+
+        protected override DbConnection? DbConnection
+        {
+            get => (DbConnection?)Raw.Connection;
+            set => Raw.Connection = value;
+        }
+
+        protected override DbParameterCollection DbParameterCollection
+        {
+            get
+            {
+                return (DbParameterCollection)DbParameterCollectionPropertyInfo.GetValue(Raw)!;
+            }
+        }
+
+        protected override DbTransaction? DbTransaction
+        {
+            get => (DbTransaction?)Raw.Transaction;
+            set => Raw.Transaction = value;
+        }
 
         public override void Cancel()
         {
-            throw new NotImplementedException();
+            Raw.Cancel();
         }
 
         public override int ExecuteNonQuery()
         {
-            throw new NotImplementedException();
+            return Raw.ExecuteNonQuery();
         }
 
         public override object? ExecuteScalar()
         {
-            throw new NotImplementedException();
+            return Raw.ExecuteScalar();
         }
 
         public override void Prepare()
         {
-            throw new NotImplementedException();
+            Raw.Prepare();
         }
 
         protected override DbParameter CreateDbParameter()
         {
-            throw new NotImplementedException();
+            return (DbParameter)Raw.CreateParameter();
         }
 
         protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
         {
-            throw new NotImplementedException();
+            return (DbDataReader)Raw.ExecuteReader(behavior);
         }
 
 
