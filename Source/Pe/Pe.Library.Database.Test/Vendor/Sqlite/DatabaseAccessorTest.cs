@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 using ContentTypeTextNet.Pe.Library.Database.Sqlite;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
@@ -60,7 +58,7 @@ values
         {
             var factory = new InMemorySqliteFactory();
             var databaseAccessor = new SqliteAccessor(factory, NullLoggerFactory.Instance);
-            Assert.Equal(databaseAccessor.BaseDbConnection, databaseAccessor.DbConnection);
+            Assert.Equal(databaseAccessor.BaseDbConnection.Raw, databaseAccessor.DbConnection);
         }
 
         [Fact]
