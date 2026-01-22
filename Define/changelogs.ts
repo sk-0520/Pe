@@ -13,7 +13,7 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "#1065: 可能な限りライブラリを AnyCPU とする",
 					},
 					{
 						revision: "",
