@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
                         try {
                             return handler.Convert(type, data);
                         } catch(Exception ex) {
-                            Logger.LogWarning("{Message}: {Exception}", ex.Message, ex);
+                            Logger.LogWarning(ex, "convert error: {Handler}, {Type}", handler, type);
                         }
                     }
                     return null;
@@ -133,7 +133,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
         public T Convert<T>(CommandLineParser parser, IReadOnlyList<string> arguments)
             where T : new()
         {
-            return ConvertCore<T>(parser, arguments.ToArray());
+            return ConvertCore<T>(parser, arguments);
         }
 
         #endregion
