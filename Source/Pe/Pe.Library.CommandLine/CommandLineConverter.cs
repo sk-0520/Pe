@@ -43,7 +43,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
 
         #region function
 
-        private IReadOnlyDictionary<PropertyInfo, CommandLineOptionAttribute> GetPropertyAttributeMapping(Type type)
+        private Dictionary<PropertyInfo, CommandLineOptionAttribute> GetPropertyAttributeMapping(Type type)
         {
             var properties = type.GetProperties();
 
@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
             return map;
         }
 
-        private IReadOnlyDictionary<PropertyInfo, CommandLineOption> ApplyPropertyKeyMapping(CommandLineParser parser, IReadOnlyDictionary<PropertyInfo, CommandLineOptionAttribute> propertyAttributeMap)
+        private Dictionary<PropertyInfo, CommandLineOption> ApplyPropertyKeyMapping(CommandLineParser parser, IReadOnlyDictionary<PropertyInfo, CommandLineOptionAttribute> propertyAttributeMap)
         {
             var map = new Dictionary<PropertyInfo, CommandLineOption>();
             foreach(var pair in propertyAttributeMap) {
