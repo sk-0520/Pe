@@ -91,7 +91,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region property
 
-        public IDbCommand Raw { get; }
+        public IDbCommand Raw { get; private set; }
 
         #endregion
 
@@ -176,6 +176,16 @@ namespace ContentTypeTextNet.Pe.Library.Database
         protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
         {
             return (DbDataReader)Raw.ExecuteReader(behavior);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if(disposing) {
+                Raw?.Dispose();
+                Raw = null!;
+            }
+
+            base.Dispose(disposing);
         }
 
 
