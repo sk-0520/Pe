@@ -20,11 +20,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             DbConnection = dbConnection;
             DbTransaction = dbTransaction;
             Implementation = implementation;
-            HandlerCollection = new HandlerCollection() {
-                StatementHandlers = {
-                    new RawStatementHandler(implementation),
-                },
-            };
+            HandlerCollection = new HandlerCollection();
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
         }

@@ -42,23 +42,4 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #endregion
     }
-
-    /// <summary>
-    /// 特に何もしない加工処理。
-    /// </summary>
-    public sealed class RawStatementHandler: StatementHandlerBase
-    {
-        public RawStatementHandler(IDatabaseImplementation databaseImplementation)
-            : base(databaseImplementation)
-        { }
-
-        #region StatementHandlerBase
-
-        public override string Handle(string statement)
-        {
-            return statement;
-        }
-
-        #endregion
-    }
 }

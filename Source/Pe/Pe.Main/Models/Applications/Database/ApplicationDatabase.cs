@@ -15,6 +15,7 @@ using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Database.Handler;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
 using ContentTypeTextNet.Pe.Library.Database.Sqlite;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database.Handler;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
@@ -105,12 +106,18 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             : base(databaseFactory, loggerFactory)
         {
             HandlerCollection = new HandlerCollection() {
-                StatementHandlers = {
-                    new RawStatementHandler(Implementation),
-                },
-                ExecuteNonQueryHandlers = {
-                    new ExecuteNonQueryAction(),
-                },
+                StatementHandlers = [
+                    new AppStatementHandler(Implementation),
+                ],
+                ExecuteNonQueryHandlers = [
+                    new AppLoggingExecuteNonQueryHandler(Implementation, LoggerFactory),
+                ],
+                ExecuteScalarHandlers = [
+                    new AppLoggingExecuteScalarHandler(Implementation, LoggerFactory),
+                ],
+                ExecuteDataReaderHandlers = [
+                    new AppLoggingExecuteDataReaderHandler(Implementation, LoggerFactory),
+                ],
             };
         }
 

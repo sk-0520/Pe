@@ -110,7 +110,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
         {
-            var handlers = HandlerCollection.ExecuteDbDataReaderHandlers.Append(new ExecuteDbDataReaderAction());
+            var handlers = HandlerCollection.ExecuteDataReaderHandlers.Append(new ExecuteDataReaderAction());
 
             DbDataReader? result = null;
 

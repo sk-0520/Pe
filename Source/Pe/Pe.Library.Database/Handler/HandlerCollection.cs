@@ -6,10 +6,10 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region property
 
-        public List<IStatementHandler> StatementHandlers { get; } = new List<IStatementHandler>();
-        public List<IExecuteNonQueryHandler> ExecuteNonQueryHandlers { get; } = new List<IExecuteNonQueryHandler>();
-        public List<IExecuteScalarHandler> ExecuteScalarHandlers { get; } = new List<IExecuteScalarHandler>();
-        public List<IExecuteDbDataReaderHandler> ExecuteDbDataReaderHandlers { get; } = new List<IExecuteDbDataReaderHandler>();
+        public List<IStatementHandler> StatementHandlers { get; init; } = [];
+        public List<IExecuteNonQueryHandler> ExecuteNonQueryHandlers { get; init; } = [];
+        public List<IExecuteScalarHandler> ExecuteScalarHandlers { get; init; } = [];
+        public List<IExecuteDataReaderHandler> ExecuteDataReaderHandlers { get; init; } = [];
 
         #endregion
     }

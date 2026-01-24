@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
-    public interface IExecuteDbDataReaderHandler
+    public interface IExecuteDataReaderHandler
     {
         #region function
 
@@ -14,9 +14,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         #endregion
     }
 
-    public sealed class ExecuteDbDataReaderAction: IExecuteDbDataReaderHandler
+    public sealed class ExecuteDataReaderAction: IExecuteDataReaderHandler
     {
-        public ExecuteDbDataReaderAction()
+        public ExecuteDataReaderAction()
         { }
 
         #region function
@@ -29,13 +29,13 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         #endregion
     }
 
-    public abstract class ExecuteDbDataReaderHandlerBase: IExecuteDbDataReaderHandler
+    public abstract class ExecuteDataReaderHandlerBase: IExecuteDataReaderHandler
     {
         /// <summary>
         /// 生成。
         /// </summary>
         /// <param name="implementation"></param>
-        protected ExecuteDbDataReaderHandlerBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        protected ExecuteDataReaderHandlerBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
             Implementation = implementation;
             LoggerFactory = loggerFactory;
@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #endregion
 
-        #region IExecuteDbDataReaderHandler
+        #region IExecuteDataReaderHandler
 
         public abstract void Next(DbCommand command, CommandBehavior behavior, ref DbDataReader? result);
 
