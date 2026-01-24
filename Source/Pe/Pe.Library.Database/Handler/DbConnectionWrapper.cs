@@ -6,15 +6,17 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
     public class DbConnectionWrapper: DbConnection
     {
-        public DbConnectionWrapper(DbConnection dbConnection)
+        public DbConnectionWrapper(DbConnection dbConnection, HandlerCollection handlerCollection)
         {
             Raw = dbConnection;
+            HandlerCollection = handlerCollection;
         }
 
 
         #region property
 
         public DbConnection Raw { get; private set; }
+        public HandlerCollection HandlerCollection { get; }
 
         #endregion
 

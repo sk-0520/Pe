@@ -10,14 +10,16 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "get_" + nameof(DbParameterCollection))]
         private static extern DbParameterCollection Get_DbParameterCollection(DbCommand dbCommand);
 
-        public DbCommandWrapper(DbCommand command)
+        public DbCommandWrapper(DbCommand command, HandlerCollection handlerCollection)
         {
             Raw = command;
+            HandlerCollection = handlerCollection;
         }
 
         #region property
 
         public DbCommand Raw { get; private set; }
+        public HandlerCollection HandlerCollection { get; }
 
         #endregion
 

@@ -37,6 +37,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// </summary>
         public bool ConnectionPausing { get; private set; }
 
+        public HandlerCollection HandlerCollection { get; }
+
         #endregion
 
         #region function
@@ -44,7 +46,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         private DbConnectionWrapper CreateDbConnectionWrapper(IDbConnection connection)
         {
             if(connection is DbConnection dbConnection) {
-                return new DbConnectionWrapper(dbConnection);
+                return new DbConnectionWrapper(dbConnection, HandlerCollection);
             }
 
             throw new NotSupportedException();
