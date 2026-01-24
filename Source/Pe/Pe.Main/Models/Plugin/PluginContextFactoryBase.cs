@@ -2,10 +2,10 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 {

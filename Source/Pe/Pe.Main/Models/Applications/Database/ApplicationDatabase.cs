@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -8,13 +7,12 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.Database.Handler;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
 using ContentTypeTextNet.Pe.Library.Database.Sqlite;
 using Microsoft.Extensions.Logging;
@@ -105,7 +103,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
     {
         public ApplicationDatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
             : base(databaseFactory, loggerFactory)
-        { }
+        {
+            HandlerCollection = new HandlerCollection() {
+                StatementHandlers = {
+                    new RawStatementHandler(Implementation),
+                },
+                ExecuteNonQueryHandlers = {
+                    new ExecuteNonQueryAction(),
+                },
+            };
+        }
 
         #region DatabaseContext
 

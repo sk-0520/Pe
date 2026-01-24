@@ -17,6 +17,7 @@ using ContentTypeTextNet.Pe.Main.Models.Logic;
 using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 {

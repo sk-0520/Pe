@@ -28,6 +28,7 @@ using ContentTypeTextNet.Pe.Main.CrashReport.Models;
 using ContentTypeTextNet.Pe.Main.CrashReport.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Command;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database;

@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Xunit;
 using ContentTypeTextNet.Pe.Library.Database.Sqlite;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
 {
