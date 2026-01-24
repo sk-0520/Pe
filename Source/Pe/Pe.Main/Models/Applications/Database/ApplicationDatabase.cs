@@ -109,15 +109,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 StatementHandlers = [
                     new AppStatementHandler(Implementation),
                 ],
-                ExecuteNonQueryHandlers = [
-                    new AppLoggingExecuteNonQueryHandler(Implementation, LoggerFactory),
-                ],
-                ExecuteScalarHandlers = [
-                    new AppLoggingExecuteScalarHandler(Implementation, LoggerFactory),
-                ],
-                ExecuteDataReaderHandlers = [
-                    new AppLoggingExecuteDataReaderHandler(Implementation, LoggerFactory),
-                ],
+                //ExecuteNonQueryHandlers = [
+                //    //new AppLoggingExecuteNonQueryHandler(Implementation, LoggerFactory),
+                //],
+                //ExecuteScalarHandlers = [
+                //    new AppLoggingExecuteScalarHandler(Implementation, LoggerFactory),
+                //],
+                //ExecuteDataReaderHandlers = [
+                //    new AppLoggingExecuteDataReaderHandler(Implementation, LoggerFactory),
+                //],
             };
         }
 

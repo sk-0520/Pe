@@ -8,8 +8,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Database.Handler
 {
     internal class AppLoggingExecuteDataReaderHandler: ExecuteDataReaderHandlerBase
     {
-        public AppLoggingExecuteDataReaderHandler(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(implementation, loggerFactory)
+        public AppLoggingExecuteDataReaderHandler(IExecuteDataReaderHandler handler, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(handler, implementation, loggerFactory)
         { }
 
         #region ExecuteDataReaderHandlerBase

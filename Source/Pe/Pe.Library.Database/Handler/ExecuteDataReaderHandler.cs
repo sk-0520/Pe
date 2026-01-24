@@ -35,8 +35,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         /// 生成。
         /// </summary>
         /// <param name="implementation"></param>
-        protected ExecuteDataReaderHandlerBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        protected ExecuteDataReaderHandlerBase(IExecuteDataReaderHandler handler, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
+            Handler = handler;
             Implementation = implementation;
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
@@ -44,6 +45,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region property
 
+        protected IExecuteDataReaderHandler Handler { get; }
         protected IDatabaseImplementation Implementation { get; }
 
         protected ILoggerFactory LoggerFactory { get; }

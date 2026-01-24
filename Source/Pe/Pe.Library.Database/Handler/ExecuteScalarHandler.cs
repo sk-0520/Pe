@@ -8,7 +8,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region function
 
-        void Next(DbCommand command, ref object? result);
+        object? Next(DbCommand command, object? input);
 
         #endregion
     }
@@ -20,9 +20,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region function
 
-        public void Next(DbCommand command, ref object? result)
+        public object? Next(DbCommand command, object? input)
         {
-            result = command.ExecuteScalar();
+            return command.ExecuteScalar();
         }
 
         #endregion
@@ -34,8 +34,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         /// 生成。
         /// </summary>
         /// <param name="implementation"></param>
-        protected ExecuteScalarHandlerBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        protected ExecuteScalarHandlerBase(IExecuteScalarHandler handler, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
+            Handler = handler;
             Implementation = implementation;
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
@@ -43,6 +44,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region property
 
+        protected IExecuteScalarHandler Handler { get; }
         protected IDatabaseImplementation Implementation { get; }
 
         protected ILoggerFactory LoggerFactory { get; }
@@ -52,7 +54,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region IExecuteScalarHandler
 
-        public abstract void Next(DbCommand command, ref object? result);
+        public abstract object? Next(DbCommand command, object? input);
 
         #endregion
     }

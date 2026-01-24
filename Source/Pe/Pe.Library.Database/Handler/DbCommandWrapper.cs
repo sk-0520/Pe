@@ -84,12 +84,13 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         public override int ExecuteNonQuery()
         {
-            var handlers = HandlerCollection.ExecuteNonQueryHandlers.Append(new ExecuteNonQueryAction());
-
             int result = 0;
 
-            foreach(var handler in handlers) {
-                handler.Next(Raw, ref result);
+            for(var i = 0; i < HandlerCollection.ExecuteNonQueryHandlers.Count + 1; i++) {
+                var handler = i < HandlerCollection.ExecuteNonQueryHandlers.Count
+                    ? HandlerCollection.ExecuteNonQueryHandlers[i]
+                    : new ExecuteNonQueryAction();
+                result = handler.Next(Raw, result);
             }
 
             return result;
@@ -97,13 +98,15 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         public override object? ExecuteScalar()
         {
-            var handlers = HandlerCollection.ExecuteScalarHandlers.Append(new ExecuteScalarAction());
-
             object? result = null;
 
-            foreach(var handler in handlers) {
-                handler.Next(Raw, ref result);
+            for(var i = 0; i < HandlerCollection.ExecuteScalarHandlers.Count + 1; i++) {
+                var handler = i < HandlerCollection.ExecuteScalarHandlers.Count
+                    ? HandlerCollection.ExecuteScalarHandlers[i]
+                    : new ExecuteScalarAction();
+                result = handler.Next(Raw, result);
             }
+
 
             return result;
         }

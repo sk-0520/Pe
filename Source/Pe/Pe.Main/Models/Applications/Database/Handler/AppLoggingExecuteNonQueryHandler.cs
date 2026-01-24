@@ -7,15 +7,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Database.Handler
 {
     internal class AppLoggingExecuteNonQueryHandler: ExecuteNonQueryHandlerBase
     {
-        public AppLoggingExecuteNonQueryHandler(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-            : base(implementation, loggerFactory)
+        public AppLoggingExecuteNonQueryHandler(IExecuteNonQueryHandler handler, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(handler, implementation, loggerFactory)
         { }
 
         #region ExecuteNonQueryHandlerBase
 
-        public override void Next(DbCommand command, ref int result)
+
+        public override int Next(DbCommand command, int input)
         {
-            throw new System.NotImplementedException();
+            return Handler.Next(command, input);
         }
 
         #endregion

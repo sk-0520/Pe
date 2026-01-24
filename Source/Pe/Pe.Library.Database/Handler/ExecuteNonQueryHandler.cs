@@ -6,7 +6,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
     public interface IExecuteNonQueryHandler
     {
-        void Next(DbCommand command, ref int result);
+        int Next(DbCommand command, int input);
     }
 
     public sealed class ExecuteNonQueryAction: IExecuteNonQueryHandler
@@ -16,9 +16,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region function
 
-        public void Next(DbCommand command, ref int result)
+        public int Next(DbCommand command, int input)
         {
-            result = command.ExecuteNonQuery();
+            return command.ExecuteNonQuery();
         }
 
         #endregion
@@ -30,15 +30,17 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         /// 生成。
         /// </summary>
         /// <param name="implementation"></param>
-        protected ExecuteNonQueryHandlerBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        protected ExecuteNonQueryHandlerBase(IExecuteNonQueryHandler handler, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
             Implementation = implementation;
+            Handler = handler;
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
         }
 
         #region property
 
+        protected IExecuteNonQueryHandler Handler { get; }
         protected IDatabaseImplementation Implementation { get; }
 
         protected ILoggerFactory LoggerFactory { get; }
@@ -48,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region IExecuteNonQueryHandler
 
-        public abstract void Next(DbCommand command, ref int result);
+        public abstract int Next(DbCommand command, int input);
 
         #endregion
     }
