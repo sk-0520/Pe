@@ -1,7 +1,7 @@
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
@@ -76,13 +76,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
     public class DbCommandWrapper: DbCommand
     {
-        static PropertyInfo DbParameterCollectionPropertyInfo;
-        static DbCommandWrapper()
-        {
-            var type = typeof(DbCommand);
-            var property = type.GetProperty("DbParameterCollection", BindingFlags.NonPublic | BindingFlags.Instance);
-            DbParameterCollectionPropertyInfo = property!;
-        }
+        [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "get_" + nameof(DbParameterCollection))]
+        private static extern DbParameterCollection Get_DbParameterCollection(DbCommand dbCommand);
 
         public DbCommandWrapper(IDbCommand command)
         {
@@ -138,7 +133,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             get
             {
-                return (DbParameterCollection)DbParameterCollectionPropertyInfo.GetValue(Raw)!;
+                return Get_DbParameterCollection((DbCommand)Raw);
             }
         }
 
