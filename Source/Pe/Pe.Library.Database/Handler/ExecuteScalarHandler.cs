@@ -8,7 +8,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region function
 
-        object? Next(DbCommand command);
+        void Next(DbCommand command, ref object? result);
 
         #endregion
     }
@@ -20,9 +20,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region function
 
-        public object? Next(DbCommand command)
+        public void Next(DbCommand command, ref object? result)
         {
-            return command.ExecuteScalar();
+            result = command.ExecuteScalar();
         }
 
         #endregion
@@ -52,7 +52,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region IExecuteScalarHandler
 
-        public abstract object? Next(DbCommand command);
+        public abstract void Next(DbCommand command, ref object? result);
 
         #endregion
     }

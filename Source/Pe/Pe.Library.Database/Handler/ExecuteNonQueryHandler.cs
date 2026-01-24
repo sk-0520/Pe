@@ -6,7 +6,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
     public interface IExecuteNonQueryHandler
     {
-        int Next(DbCommand command);
+        void Next(DbCommand command, ref int result);
     }
 
     public sealed class ExecuteNonQueryAction: IExecuteNonQueryHandler
@@ -16,9 +16,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region function
 
-        public int Next(DbCommand command)
+        public void Next(DbCommand command, ref int result)
         {
-            return command.ExecuteNonQuery();
+            result = command.ExecuteNonQuery();
         }
 
         #endregion
@@ -48,7 +48,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region IExecuteNonQueryHandler
 
-        public abstract int Next(DbCommand command);
+        public abstract void Next(DbCommand command, ref int result);
 
         #endregion
     }

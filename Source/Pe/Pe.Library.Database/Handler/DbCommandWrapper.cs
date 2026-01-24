@@ -85,34 +85,43 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         public override int ExecuteNonQuery()
         {
             var handlers = HandlerCollection.ExecuteNonQueryHandlers.Append(new ExecuteNonQueryAction());
+
             int result = 0;
+
             foreach(var handler in handlers) {
-                result = handler.Next(this.Raw);
+                handler.Next(Raw, ref result);
             }
+
             return result;
-            // return Raw.ExecuteNonQuery();
         }
 
         public override object? ExecuteScalar()
         {
             var handlers = HandlerCollection.ExecuteScalarHandlers.Append(new ExecuteScalarAction());
+
             object? result = null;
+
             foreach(var handler in handlers) {
-                result = handler.Next(this.Raw);
+                handler.Next(Raw, ref result);
             }
+
             return result;
-            // return Raw.ExecuteScalar();
         }
 
         protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
         {
             var handlers = HandlerCollection.ExecuteDbDataReaderHandlers.Append(new ExecuteDbDataReaderAction());
+
             DbDataReader? result = null;
+
             foreach(var handler in handlers) {
-                result = handler.Next(this.Raw, behavior);
+                handler.Next(Raw, behavior, ref result);
             }
-            return result!;
-            // return Raw.ExecuteReader(behavior);
+            if(result is null) {
+                throw new DatabaseException($"{nameof(DbDataReader)} is null");
+            }
+
+            return result;
         }
 
         public override void Prepare()

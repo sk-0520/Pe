@@ -9,7 +9,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region function
 
-        DbDataReader Next(DbCommand command, CommandBehavior behavior);
+        void Next(DbCommand command, CommandBehavior behavior, ref DbDataReader? result);
 
         #endregion
     }
@@ -21,9 +21,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region function
 
-        public DbDataReader Next(DbCommand command, CommandBehavior behavior)
+        public void Next(DbCommand command, CommandBehavior behavior, ref DbDataReader? result)
         {
-            return command.ExecuteReader(behavior);
+            result = command.ExecuteReader(behavior);
         }
 
         #endregion
@@ -53,7 +53,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region IExecuteDbDataReaderHandler
 
-        public abstract DbDataReader Next(DbCommand command, CommandBehavior behavior);
+        public abstract void Next(DbCommand command, CommandBehavior behavior, ref DbDataReader? result);
 
         #endregion
     }
