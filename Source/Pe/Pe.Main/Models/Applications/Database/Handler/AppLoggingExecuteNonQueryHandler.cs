@@ -14,9 +14,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Database.Handler
         #region ExecuteNonQueryHandlerBase
 
 
-        public override int Next(DbCommand command, int input)
+        public override int Next(IExecuteNonQueryHandler handler, DbCommand command, int input)
         {
-            return Handler.Next(command, input);
+            return Handler.Next(handler, command, input);
         }
 
         #endregion

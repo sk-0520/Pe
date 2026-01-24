@@ -86,11 +86,25 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         {
             int result = 0;
 
+            //for(var i = 0; i < HandlerCollection.ExecuteNonQueryHandlers.Count; i++) {
+            //    if(i < HandlerCollection.ExecuteNonQueryHandlers.Count) {
+
+            //    }
+            //}
+
             for(var i = 0; i < HandlerCollection.ExecuteNonQueryHandlers.Count + 1; i++) {
-                var handler = i < HandlerCollection.ExecuteNonQueryHandlers.Count
-                    ? HandlerCollection.ExecuteNonQueryHandlers[i]
-                    : new ExecuteNonQueryAction();
-                result = handler.Next(Raw, result);
+                var isLast = i < HandlerCollection.ExecuteNonQueryHandlers.Count;
+
+                var nextHandler = isLast
+                    ? null
+                    : new ExecuteNonQueryAction()
+                ;
+                if(nextHandler is not null) {
+                    result = HandlerCollection.ExecuteNonQueryHandlers[i].Next(nextHandler, Raw, result);
+                } else {
+                    result = HandlerCollection.ExecuteNonQueryHandlers[i].Next(nextHandler, Raw, result);
+
+                }
             }
 
             return result;
