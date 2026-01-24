@@ -106,7 +106,13 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
         {
-            return Raw.ExecuteReader(behavior);
+            var handlers = HandlerCollection.ExecuteDbDataReaderHandlers.Append(new ExecuteDbDataReaderAction());
+            DbDataReader? result = null;
+            foreach(var handler in handlers) {
+                result = handler.Next(this.Raw, behavior);
+            }
+            return result!;
+            // return Raw.ExecuteReader(behavior);
         }
 
         public override void Prepare()

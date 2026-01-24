@@ -1,36 +1,41 @@
+using System.Data;
 using System.Data.Common;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
-    public interface IExecuteNonQueryHandler
+    public interface IExecuteDbDataReaderHandler
     {
-        int Next(DbCommand command);
+        #region function
+
+        DbDataReader Next(DbCommand command, CommandBehavior behavior);
+
+        #endregion
     }
 
-    public sealed class ExecuteNonQueryAction: IExecuteNonQueryHandler
+    public sealed class ExecuteDbDataReaderAction: IExecuteDbDataReaderHandler
     {
-        public ExecuteNonQueryAction()
+        public ExecuteDbDataReaderAction()
         { }
 
         #region function
 
-        public int Next(DbCommand command)
+        public DbDataReader Next(DbCommand command, CommandBehavior behavior)
         {
-            return command.ExecuteNonQuery();
+            return command.ExecuteReader(behavior);
         }
 
         #endregion
     }
 
-    public abstract class ExecuteNonQueryHandlerBase: IExecuteNonQueryHandler
+    public abstract class ExecuteDbDataReaderHandlerBase: IExecuteDbDataReaderHandler
     {
         /// <summary>
         /// 生成。
         /// </summary>
         /// <param name="implementation"></param>
-        protected ExecuteNonQueryHandlerBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        protected ExecuteDbDataReaderHandlerBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
             Implementation = implementation;
             LoggerFactory = loggerFactory;
@@ -46,10 +51,11 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #endregion
 
-        #region IExecuteNonQueryHandler
+        #region IExecuteDbDataReaderHandler
 
-        public abstract int Next(DbCommand command);
+        public abstract DbDataReader Next(DbCommand command, CommandBehavior behavior);
 
         #endregion
     }
+
 }

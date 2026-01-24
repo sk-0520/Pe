@@ -1,4 +1,4 @@
-using System.Data;
+using System.Data.Common;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
 using Microsoft.Extensions.Logging;
 
@@ -8,7 +8,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region function
 
-        object? Next(IDbCommand command);
+        object? Next(DbCommand command);
 
         #endregion
     }
@@ -20,7 +20,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region function
 
-        public object? Next(IDbCommand command)
+        public object? Next(DbCommand command)
         {
             return command.ExecuteScalar();
         }
@@ -52,7 +52,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region IExecuteScalarHandler
 
-        public abstract object? Next(IDbCommand command);
+        public abstract object? Next(DbCommand command);
 
         #endregion
     }
