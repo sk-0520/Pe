@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Data.Common;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database.Handler;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database

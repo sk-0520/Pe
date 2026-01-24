@@ -3,90 +3,21 @@ using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-namespace ContentTypeTextNet.Pe.Library.Database
+namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
-    public class DbConnectionWrapper: DbConnection
-    {
-        public DbConnectionWrapper(DbConnection dbConnection)
-        {
-            Raw = dbConnection;
-        }
-
-
-        #region property
-
-        public DbConnection Raw { get; private set; }
-
-        #endregion
-
-        #region DbConnection
-
-        [AllowNull]
-        public override string ConnectionString
-        {
-            get => Raw.ConnectionString;
-            set => Raw.ConnectionString = value;
-        }
-
-        public override string Database => Raw.Database;
-
-        public override string DataSource => Raw.DataSource;
-
-        public override string ServerVersion => Raw.ServerVersion;
-
-        public override ConnectionState State => Raw.State;
-
-        public override void ChangeDatabase(string databaseName)
-        {
-            Raw.ChangeDatabase(databaseName);
-        }
-
-        public override void Close()
-        {
-            Raw.Close();
-        }
-
-        public override void Open()
-        {
-            Raw.Open();
-        }
-
-        protected override DbTransaction BeginDbTransaction(IsolationLevel isolationLevel)
-        {
-            return Raw.BeginTransaction(isolationLevel);
-        }
-
-        protected override DbCommand CreateDbCommand()
-        {
-            var command = new DbCommandWrapper(Raw.CreateCommand());
-            return command;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if(disposing) {
-                Raw?.Dispose();
-                Raw = null!;
-            }
-            base.Dispose(disposing);
-        }
-
-        #endregion
-    }
-
     public class DbCommandWrapper: DbCommand
     {
         [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "get_" + nameof(DbParameterCollection))]
         private static extern DbParameterCollection Get_DbParameterCollection(DbCommand dbCommand);
 
-        public DbCommandWrapper(IDbCommand command)
+        public DbCommandWrapper(DbCommand command)
         {
             Raw = command;
         }
 
         #region property
 
-        public IDbCommand Raw { get; private set; }
+        public DbCommand Raw { get; private set; }
 
         #endregion
 
@@ -113,8 +44,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         public override bool DesignTimeVisible
         {
-            get => ((DbCommand)Raw).DesignTimeVisible;
-            set => ((DbCommand)Raw).DesignTimeVisible = value;
+            get => Raw.DesignTimeVisible;
+            set => Raw.DesignTimeVisible = value;
         }
 
         public override UpdateRowSource UpdatedRowSource
@@ -125,7 +56,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         protected override DbConnection? DbConnection
         {
-            get => (DbConnection?)Raw.Connection;
+            get => Raw.Connection;
             set => Raw.Connection = value;
         }
 
@@ -133,13 +64,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             get
             {
-                return Get_DbParameterCollection((DbCommand)Raw);
+                return Get_DbParameterCollection(Raw);
             }
         }
 
         protected override DbTransaction? DbTransaction
         {
-            get => (DbTransaction?)Raw.Transaction;
+            get => Raw.Transaction;
             set => Raw.Transaction = value;
         }
 
@@ -165,12 +96,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         protected override DbParameter CreateDbParameter()
         {
-            return (DbParameter)Raw.CreateParameter();
+            return Raw.CreateParameter();
         }
 
         protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
         {
-            return (DbDataReader)Raw.ExecuteReader(behavior);
+            return Raw.ExecuteReader(behavior);
         }
 
         protected override void Dispose(bool disposing)
