@@ -7,6 +7,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         #region property
 
         public List<StatementHandlerBase> StatementHandlers { get; } = new List<StatementHandlerBase>();
+        public List<IExecuteNonQueryHandler> ExecuteNonQueryHandlers { get; } = new List<IExecuteNonQueryHandler>();
 
         #endregion
     }

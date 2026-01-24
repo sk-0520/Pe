@@ -2,10 +2,13 @@ using ContentTypeTextNet.Pe.Library.Database.Implementations;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
+    /// <summary>
+    /// データベース問い合わせ文の実行前ハンドラー基底。
+    /// </summary>
     public abstract class StatementHandlerBase
     {
         /// <summary>
-        /// データベース問い合わせ文の実行前ハンドラー基底。
+        /// 生成。
         /// </summary>
         /// <param name="implementation"></param>
         protected StatementHandlerBase(IDatabaseImplementation implementation)
