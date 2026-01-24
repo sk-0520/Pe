@@ -53,12 +53,6 @@ namespace ContentTypeTextNet.Pe.Library.Database.Implementations
         #region function
 
         /// <summary>
-        /// 文実行前に実行する文に対して変換処理を実行。
-        /// </summary>
-        /// <param name="statement">問い合わせ文</param>
-        /// <returns>変換処理後の問い合わせ文。</returns>
-        string PreFormatStatement(string statement);
-        /// <summary>
         /// テーブル名を文内で使用可能な文字列に変換。
         /// </summary>
         /// <param name="tableName">テーブル名。</param>

@@ -59,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         protected override DbCommand CreateDbCommand()
         {
-            var command = new DbCommandWrapper(Raw.CreateCommand());
+            var command = new DbCommandWrapper(Raw.CreateCommand(), HandlerCollection);
             return command;
         }
 

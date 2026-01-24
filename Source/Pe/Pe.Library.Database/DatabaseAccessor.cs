@@ -37,8 +37,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// </summary>
         public bool ConnectionPausing { get; private set; }
 
-        public HandlerCollection HandlerCollection { get; }
-
         #endregion
 
         #region function
@@ -75,9 +73,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
         private IDatabaseTransaction BeginTransactionCore(IDbTransaction? transaction, bool isReadonly)
         {
             if(isReadonly) {
-                return new ReadOnlyDatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory);
+                return new ReadOnlyDatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory) {
+                    HandlerCollection = HandlerCollection,
+                };
             }
-            return new DatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory);
+            return new DatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory) {
+                HandlerCollection = HandlerCollection,
+            };
         }
 
 
