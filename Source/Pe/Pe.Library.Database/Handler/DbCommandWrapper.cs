@@ -1,6 +1,7 @@
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
@@ -83,12 +84,29 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         public override int ExecuteNonQuery()
         {
-            return Raw.ExecuteNonQuery();
+            var handlers = HandlerCollection.ExecuteNonQueryHandlers.Append(new ExecuteNonQueryAction());
+            int result = 0;
+            foreach(var handler in handlers) {
+                result = handler.Next(this.Raw);
+            }
+            return result;
+            // return Raw.ExecuteNonQuery();
         }
 
         public override object? ExecuteScalar()
         {
-            return Raw.ExecuteScalar();
+            var handlers = HandlerCollection.ExecuteScalarHandlers.Append(new ExecuteScalarAction());
+            object? result = null;
+            foreach(var handler in handlers) {
+                result = handler.Next(this.Raw);
+            }
+            return result;
+            // return Raw.ExecuteScalar();
+        }
+
+        protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
+        {
+            return Raw.ExecuteReader(behavior);
         }
 
         public override void Prepare()
@@ -99,11 +117,6 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         protected override DbParameter CreateDbParameter()
         {
             return Raw.CreateParameter();
-        }
-
-        protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
-        {
-            return Raw.ExecuteReader(behavior);
         }
 
         protected override void Dispose(bool disposing)

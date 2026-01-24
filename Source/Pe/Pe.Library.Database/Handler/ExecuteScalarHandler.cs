@@ -4,34 +4,37 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
-    public interface IExecuteNonQueryHandler
+    public interface IExecuteScalarHandler
     {
-        int Next(IDbCommand command);
+        #region function
+
+        object? Next(IDbCommand command);
+
+        #endregion
     }
 
-    public sealed class ExecuteNonQueryAction: IExecuteNonQueryHandler
+    public sealed class ExecuteScalarAction: IExecuteScalarHandler
     {
-        public ExecuteNonQueryAction()
+        public ExecuteScalarAction()
         { }
 
         #region function
 
-        public int Next(IDbCommand command)
+        public object? Next(IDbCommand command)
         {
-            return command.ExecuteNonQuery();
+            return command.ExecuteScalar();
         }
 
         #endregion
     }
 
-
-    public abstract class ExecuteNonQueryHandlerBase: IExecuteNonQueryHandler
+    public abstract class ExecuteScalarHandlerBase: IExecuteScalarHandler
     {
         /// <summary>
         /// 生成。
         /// </summary>
         /// <param name="implementation"></param>
-        protected ExecuteNonQueryHandlerBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        protected ExecuteScalarHandlerBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
             Implementation = implementation;
             LoggerFactory = loggerFactory;
@@ -47,9 +50,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #endregion
 
-        #region IExecuteNonQueryHandler
+        #region IExecuteScalarHandler
 
-        public abstract int Next(IDbCommand command);
+        public abstract object? Next(IDbCommand command);
 
         #endregion
     }
