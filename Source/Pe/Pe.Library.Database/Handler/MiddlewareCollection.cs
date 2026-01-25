@@ -6,7 +6,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     /// データベース処理に対するミドルウェア群。
     /// </summary>
     /// <remarks>
-    /// <para>後ろに登録されているものから頭に向かって処理される。</para>
+    /// <para>先頭がパイプライン上の外側にあたる。</para>
     /// </remarks>
     public class MiddlewareCollection
     {

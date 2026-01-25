@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         protected StatementPipeline CreateStatementPipeline()
         {
             var pipline = new StatementPipeline();
-            pipline.AddRange(MiddlewareCollection.Statements);
+            pipline.UseRange(MiddlewareCollection.Statements);
             return pipline;
         }
 

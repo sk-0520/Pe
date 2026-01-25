@@ -58,9 +58,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         #endregion
     }
 
-    public class StatementHandler: IStatementHandler
+    public class StatementChainHandler: IStatementHandler
     {
-        public StatementHandler(IStatementMiddleware middleware, IStatementHandler handler)
+        public StatementChainHandler(IStatementMiddleware middleware, IStatementHandler handler)
         {
             Middleware = middleware;
             Handler = handler;
