@@ -8,7 +8,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region function
 
-        object? Handle(DbCommand command, object? input);
+        object? Invoke(DbCommand command, object? input);
 
         #endregion
     }
@@ -48,7 +48,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region IExecuteScalarHandler
 
-        public object? Handle(DbCommand command, object? input)
+        public object? Invoke(DbCommand command, object? input)
         {
             return Middleware.Next(Handler, command, input);
         }
@@ -60,7 +60,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region IExecuteScalarHandler
 
-        public object? Handle(DbCommand command, object? input)
+        public object? Invoke(DbCommand command, object? input)
         {
             return command.ExecuteScalar();
         }

@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         /// </summary>
         /// <param name="input">問い合わせ文。</param>
         /// <returns>加工後の問い合わせ文</returns>
-        string Handle(string input);
+        string Invoke(string input);
 
         #endregion
     }
@@ -62,7 +62,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region IStatementHandler
 
-        public string Handle(string input)
+        public string Invoke(string input)
         {
             return Middleware.Next(Handler, input);
         }
@@ -74,7 +74,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region IStatementHandler
 
-        public string Handle(string input)
+        public string Invoke(string input)
         {
             return input;
         }

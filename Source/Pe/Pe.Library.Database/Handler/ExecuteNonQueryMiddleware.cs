@@ -6,7 +6,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
     public interface IExecuteNonQueryHandler
     {
-        int Handle(DbCommand command, int input);
+        int Invoke(DbCommand command, int input);
     }
 
     public interface IExecuteNonQueryMiddleware
@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region IExecuteNonQueryHandler
 
-        public int Handle(DbCommand command, int input)
+        public int Invoke(DbCommand command, int input)
         {
             return Middleware.Next(Handler, command, input);
         }
@@ -52,7 +52,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region IExecuteNonQueryHandler
 
-        public int Handle(DbCommand command, int input)
+        public int Invoke(DbCommand command, int input)
         {
             return command.ExecuteNonQuery();
         }

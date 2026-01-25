@@ -126,7 +126,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
             var pipeline = CreateExecuteNonQueryPipeline();
             var process = CreateExecuteNonQueryProcess();
             var handler = pipeline.Build(process);
-            var result = handler.Handle(Raw, default);
+            var result = handler.Invoke(Raw, default);
 
             return result;
         }
@@ -136,7 +136,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
             var pipeline = CreateExecuteScalarPipeline();
             var process = CreateExecuteScalarProcess();
             var handler = pipeline.Build(process);
-            var result = handler.Handle(Raw, default);
+            var result = handler.Invoke(Raw, default);
 
             return result;
         }
@@ -146,7 +146,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
             var pipeline = CreateExecuteDataReaderPipeline();
             var process = CreateExecuteDataReaderProcess();
             var handler = pipeline.Build(process);
-            var result = handler.Handle(Raw, behavior, default!);
+            var result = handler.Invoke(Raw, behavior, default!);
 
             return result;
         }

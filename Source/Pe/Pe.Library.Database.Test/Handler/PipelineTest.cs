@@ -15,22 +15,22 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Handler
             middlewareOuter.Name = nameof(middlewareOuter);
             middlewareOuter
                 .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Handle(input + "+Outer"))
+                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Outer"))
             ;
             var middlewareMiddle = new Mock<IStatementMiddleware>();
             middlewareMiddle.Name = nameof(middlewareMiddle);
             middlewareMiddle
                 .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Handle(input + "+Middle"))
+                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Middle"))
             ;
             var middlewareInner = new Mock<IStatementMiddleware>();
             middlewareInner.Name = nameof(middlewareInner);
             middlewareInner
                 .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Handle(input + "+Inner"))
+                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Inner"))
             ;
             var process = new Mock<IStatementHandler>();
-            process.Setup(a => a.Handle(It.IsAny<string>()))
+            process.Setup(a => a.Invoke(It.IsAny<string>()))
                 .Returns((string input) => input + "+Process")
             ;
             var pipeline = new StatementPipeline();
@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Handler
             pipeline.Use(middlewareMiddle.Object);
             pipeline.Use(middlewareInner.Object);
             var handler = pipeline.Build(process.Object);
-            var actual = handler.Handle("input");
+            var actual = handler.Invoke("input");
             Assert.Equal("input+Outer+Middle+Inner+Process", actual);
         }
 
@@ -48,20 +48,20 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Handler
             var middlewareOuter = new Mock<IStatementMiddleware>();
             middlewareOuter
                 .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Handle(input + "+Outer"))
+                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Outer"))
             ;
             var middlewareMiddle = new Mock<IStatementMiddleware>();
             middlewareMiddle
                 .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Handle(input + "+Middle"))
+                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Middle"))
             ;
             var middlewareInner = new Mock<IStatementMiddleware>();
             middlewareInner
                 .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Handle(input + "+Inner"))
+                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Inner"))
             ;
             var process = new Mock<IStatementHandler>();
-            process.Setup(a => a.Handle(It.IsAny<string>()))
+            process.Setup(a => a.Invoke(It.IsAny<string>()))
                 .Returns((string input) => input + "+Process")
             ;
             var pipeline = new StatementPipeline();
@@ -71,7 +71,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Handler
                 middlewareInner.Object,
             ]);
             var handler = pipeline.Build(process.Object);
-            var actual = handler.Handle("input");
+            var actual = handler.Invoke("input");
             Assert.Equal("input+Outer+Middle+Inner+Process", actual);
         }
 

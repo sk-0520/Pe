@@ -14,7 +14,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Database.Middleware
 
         public override string Next(IStatementHandler handler, string input)
         {
-            return handler.Handle(input);
+            return handler.Invoke(input);
         }
 
         #endregion

@@ -9,7 +9,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region function
 
-        DbDataReader Handle(DbCommand command, CommandBehavior behavior, DbDataReader reader);
+        DbDataReader Invoke(DbCommand command, CommandBehavior behavior, DbDataReader reader);
 
         #endregion
     }
@@ -49,7 +49,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region IExecuteDataReaderHandler
 
-        public DbDataReader Handle(DbCommand command, CommandBehavior behavior, DbDataReader reader)
+        public DbDataReader Invoke(DbCommand command, CommandBehavior behavior, DbDataReader reader)
         {
             return Middleware.Next(Handler, command, behavior, reader);
         }
@@ -61,7 +61,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region IExecuteDataReaderHandler
 
-        public DbDataReader Handle(DbCommand command, CommandBehavior behavior, DbDataReader reader)
+        public DbDataReader Invoke(DbCommand command, CommandBehavior behavior, DbDataReader reader)
         {
             return command.ExecuteReader(behavior);
         }

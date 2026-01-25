@@ -55,7 +55,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var pipline = CreateStatementPipeline();
             var process = CreateStatementProcess();
             var handler = pipline.Build(process);
-            return handler.Handle(statement);
+            return handler.Invoke(statement);
         }
 
         /// <summary>
