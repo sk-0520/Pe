@@ -6,17 +6,17 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
     public class DbConnectionWrapper: DbConnection
     {
-        public DbConnectionWrapper(DbConnection dbConnection, HandlerCollection handlerCollection)
+        public DbConnectionWrapper(DbConnection dbConnection, MiddlewareCollection middlewareCollection)
         {
             Raw = dbConnection;
-            HandlerCollection = handlerCollection;
+            MiddlewareCollection = middlewareCollection;
         }
 
 
         #region property
 
         public DbConnection Raw { get; private set; }
-        public HandlerCollection HandlerCollection { get; }
+        public MiddlewareCollection MiddlewareCollection { get; }
 
         #endregion
 
@@ -59,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         protected override DbCommand CreateDbCommand()
         {
-            var command = new DbCommandWrapper(Raw.CreateCommand(), HandlerCollection);
+            var command = new DbCommandWrapper(Raw.CreateCommand(), MiddlewareCollection);
             return command;
         }
 

@@ -15,7 +15,7 @@ using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Database.Handler;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
 using ContentTypeTextNet.Pe.Library.Database.Sqlite;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database.Handler;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database.Middleware;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
@@ -105,9 +105,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         public ApplicationDatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
             : base(databaseFactory, loggerFactory)
         {
-            HandlerCollection = new HandlerCollection() {
-                StatementHandlers = [
-                    new AppStatementHandler(Implementation),
+            MiddlewareCollection = new MiddlewareCollection() {
+                Statements = [
+                    new AppStatementMiddleware(Implementation),
                 ],
                 //ExecuteNonQueryHandlers = [
                 //    //new AppLoggingExecuteNonQueryHandler(Implementation, LoggerFactory),

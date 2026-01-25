@@ -4,19 +4,19 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
-    public interface IExecuteNonQueryHandler
+    public interface IExecuteNonQueryMiddleware
     {
-        int Next(IExecuteNonQueryHandler handler, DbCommand command, int input);
+        int Next(IExecuteNonQueryMiddleware next, DbCommand command, int input);
     }
 
-    public sealed class ExecuteNonQueryAction: IExecuteNonQueryHandler
+    public sealed class ExecuteNonQueryAction: IExecuteNonQueryMiddleware
     {
         public ExecuteNonQueryAction()
         { }
 
         #region function
 
-        public int Next(IExecuteNonQueryHandler _, DbCommand command, int input)
+        public int Next(IExecuteNonQueryMiddleware _, DbCommand command, int input)
         {
             return command.ExecuteNonQuery();
         }
@@ -24,23 +24,21 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         #endregion
     }
 
-    public abstract class ExecuteNonQueryHandlerBase: IExecuteNonQueryHandler
+    public abstract class ExecuteNonQueryMiddlewareBase: IExecuteNonQueryMiddleware
     {
         /// <summary>
         /// 生成。
         /// </summary>
         /// <param name="implementation"></param>
-        protected ExecuteNonQueryHandlerBase(IExecuteNonQueryHandler handler, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+        protected ExecuteNonQueryMiddlewareBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
             Implementation = implementation;
-            Handler = handler;
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
         }
 
         #region property
 
-        protected IExecuteNonQueryHandler Handler { get; }
         protected IDatabaseImplementation Implementation { get; }
 
         protected ILoggerFactory LoggerFactory { get; }
@@ -48,9 +46,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #endregion
 
-        #region IExecuteNonQueryHandler
+        #region IExecuteNonQueryMiddleware
 
-        public abstract int Next(IExecuteNonQueryHandler handler, DbCommand command, int input);
+        public abstract int Next(IExecuteNonQueryMiddleware next, DbCommand command, int input);
 
         #endregion
     }

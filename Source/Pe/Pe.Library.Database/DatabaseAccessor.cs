@@ -44,7 +44,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         private DbConnectionWrapper CreateDbConnectionWrapper(IDbConnection connection)
         {
             if(connection is DbConnection dbConnection) {
-                return new DbConnectionWrapper(dbConnection, HandlerCollection);
+                return new DbConnectionWrapper(dbConnection, MiddlewareCollection);
             }
 
             throw new NotSupportedException();
@@ -74,11 +74,11 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             if(isReadonly) {
                 return new ReadOnlyDatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory) {
-                    HandlerCollection = HandlerCollection,
+                    MiddlewareCollection = MiddlewareCollection,
                 };
             }
             return new DatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory) {
-                HandlerCollection = HandlerCollection,
+                MiddlewareCollection = MiddlewareCollection,
             };
         }
 

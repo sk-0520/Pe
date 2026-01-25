@@ -1,7 +1,7 @@
+using System;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
@@ -11,16 +11,16 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "get_" + nameof(DbParameterCollection))]
         private static extern DbParameterCollection Get_DbParameterCollection(DbCommand dbCommand);
 
-        public DbCommandWrapper(DbCommand command, HandlerCollection handlerCollection)
+        public DbCommandWrapper(DbCommand command, MiddlewareCollection middlewareCollection)
         {
             Raw = command;
-            HandlerCollection = handlerCollection;
+            MiddlewareCollection = middlewareCollection;
         }
 
         #region property
 
         public DbCommand Raw { get; private set; }
-        public HandlerCollection HandlerCollection { get; }
+        public MiddlewareCollection MiddlewareCollection { get; }
 
         #endregion
 
@@ -86,59 +86,42 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         {
             int result = 0;
 
-            //for(var i = 0; i < HandlerCollection.ExecuteNonQueryHandlers.Count; i++) {
-            //    if(i < HandlerCollection.ExecuteNonQueryHandlers.Count) {
 
-            //    }
-            //}
-
-            for(var i = 0; i < HandlerCollection.ExecuteNonQueryHandlers.Count + 1; i++) {
-                var isLast = i < HandlerCollection.ExecuteNonQueryHandlers.Count;
-
-                var nextHandler = isLast
-                    ? null
-                    : new ExecuteNonQueryAction()
-                ;
-                if(nextHandler is not null) {
-                    result = HandlerCollection.ExecuteNonQueryHandlers[i].Next(nextHandler, Raw, result);
-                } else {
-                    result = HandlerCollection.ExecuteNonQueryHandlers[i].Next(nextHandler, Raw, result);
-
-                }
-            }
 
             return result;
         }
 
         public override object? ExecuteScalar()
         {
-            object? result = null;
+            //object? result = null;
 
-            for(var i = 0; i < HandlerCollection.ExecuteScalarHandlers.Count + 1; i++) {
-                var handler = i < HandlerCollection.ExecuteScalarHandlers.Count
-                    ? HandlerCollection.ExecuteScalarHandlers[i]
-                    : new ExecuteScalarAction();
-                result = handler.Next(Raw, result);
-            }
+            //for(var i = 0; i < MiddlewareCollection.ExecuteScalars.Count + 1; i++) {
+            //    var handler = i < MiddlewareCollection.ExecuteScalars.Count
+            //        ? MiddlewareCollection.ExecuteScalars[i]
+            //        : new ExecuteScalarAction();
+            //    result = handler.Next(Raw, result);
+            //}
 
 
-            return result;
+            //return result;
+            throw new NotImplementedException();
         }
 
         protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
         {
-            var handlers = HandlerCollection.ExecuteDataReaderHandlers.Append(new ExecuteDataReaderAction());
+            //var handlers = MiddlewareCollection.ExecuteDataReaderHandlers.Append(new ExecuteDataReaderAction());
 
-            DbDataReader? result = null;
+            //DbDataReader? result = null;
 
-            foreach(var handler in handlers) {
-                handler.Next(Raw, behavior, ref result);
-            }
-            if(result is null) {
-                throw new DatabaseException($"{nameof(DbDataReader)} is null");
-            }
+            //foreach(var handler in handlers) {
+            //    handler.Next(Raw, behavior, ref result);
+            //}
+            //if(result is null) {
+            //    throw new DatabaseException($"{nameof(DbDataReader)} is null");
+            //}
 
-            return result;
+            //return result;
+            throw new NotImplementedException();
         }
 
         public override void Prepare()

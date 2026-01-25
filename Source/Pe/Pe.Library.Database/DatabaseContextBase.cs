@@ -15,12 +15,28 @@ namespace ContentTypeTextNet.Pe.Library.Database
 {
     public abstract class DatabaseContextBase: DisposerBase, IDatabaseContext
     {
+        #region define
+
+        private sealed class StatementProcess: IStatementHandler
+        {
+            #region IStatementHandler
+
+            public string Handle(string input)
+            {
+                return input;
+            }
+
+            #endregion
+        }
+
+        #endregion
+
         protected DatabaseContextBase(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
             DbConnection = dbConnection;
             DbTransaction = dbTransaction;
             Implementation = implementation;
-            HandlerCollection = new HandlerCollection();
+            MiddlewareCollection = new MiddlewareCollection();
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
         }
@@ -29,7 +45,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         protected virtual IDbConnection DbConnection { get; private set; }
         protected IDbTransaction? DbTransaction { get; private set; }
-        public HandlerCollection HandlerCollection { get; set; }
+        public MiddlewareCollection MiddlewareCollection { get; set; }
 
         protected ILoggerFactory LoggerFactory { get; }
         protected ILogger Logger { get; }
@@ -38,13 +54,24 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region function
 
+        protected StatementPipeline CreateStatementPipeline()
+        {
+            var pipline = new StatementPipeline();
+            pipline.AddRange(MiddlewareCollection.Statements);
+            return pipline;
+        }
+
+        protected virtual IStatementHandler CreateStatementProcess()
+        {
+            return new StatementProcess();
+        }
+
         protected string FormatStatement(string statement)
         {
-            var formattedStatement = statement;
-            foreach(var handler in HandlerCollection.StatementHandlers) {
-                formattedStatement = handler.Handle(formattedStatement);
-            }
-            return formattedStatement;
+            var pipline = CreateStatementPipeline();
+            var process = CreateStatementProcess();
+            var handler = pipline.Build(process);
+            return handler.Handle(statement);
         }
 
         /// <summary>
