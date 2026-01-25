@@ -5,6 +5,7 @@ using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using Microsoft.Extensions.Logging;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {

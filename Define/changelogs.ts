@@ -82,7 +82,8 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"DB 処理周りを個別のロジックではなくミドルウェアとして分離",
 					},
 					{
 						revision: "",

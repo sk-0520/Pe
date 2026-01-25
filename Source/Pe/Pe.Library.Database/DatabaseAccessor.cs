@@ -1,14 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Data.Common;
 using ContentTypeTextNet.Pe.Library.Common;
-using Dapper;
+using ContentTypeTextNet.Pe.Library.Database.Handler;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
@@ -26,12 +20,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
             : base(null!, null, databaseFactory.CreateImplementation(), loggerFactory)
         {
             DatabaseFactory = databaseFactory;
-            LazyConnection = new Lazy<IDbConnection>(OpenConnection);
+            LazyConnection = new Lazy<DbConnectionWrapper>(OpenConnection);
         }
 
         #region property
 
-        private Lazy<IDbConnection> LazyConnection { get; set; }
+        private Lazy<DbConnectionWrapper> LazyConnection { get; set; }
 
         /// <summary>
         /// データベース接続が開いているか。
@@ -47,11 +41,20 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #region function
 
+        private DbConnectionWrapper CreateDbConnectionWrapper(IDbConnection connection)
+        {
+            if(connection is DbConnection dbConnection) {
+                return new DbConnectionWrapper(dbConnection, MiddlewareCollection);
+            }
+
+            throw new NotSupportedException();
+        }
+
         /// <summary>
         /// DB接続を開く。
         /// </summary>
         /// <returns></returns>
-        private IDbConnection OpenConnection()
+        private DbConnectionWrapper OpenConnection()
         {
             if(ConnectionPausing) {
                 throw new InvalidOperationException(nameof(ConnectionPausing));
@@ -64,15 +67,19 @@ namespace ContentTypeTextNet.Pe.Library.Database
             var con = DatabaseFactory.CreateConnection();
             con.Open();
             IsOpened = true;
-            return con;
+            return CreateDbConnectionWrapper(con);
         }
 
         private IDatabaseTransaction BeginTransactionCore(IDbTransaction? transaction, bool isReadonly)
         {
             if(isReadonly) {
-                return new ReadOnlyDatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory);
+                return new ReadOnlyDatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory) {
+                    MiddlewareCollection = MiddlewareCollection.Clone(),
+                };
             }
-            return new DatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory);
+            return new DatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory) {
+                MiddlewareCollection = MiddlewareCollection.Clone(),
+            };
         }
 
 
@@ -95,7 +102,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
         public IDatabaseFactory DatabaseFactory { get; }
 
         /// <inheritdoc cref="IDatabaseAccessor.BaseDbConnection"/>
-        public virtual IDbConnection BaseDbConnection => LazyConnection.Value;
+        public virtual DbConnectionWrapper BaseDbConnection => LazyConnection.Value;
+        IDbConnection IDatabaseAccessor.BaseDbConnection => BaseDbConnection;
+
 
         /// <inheritdoc cref="IDatabaseAccessor.PauseConnection"/>
         public virtual IDisposable PauseConnection()
@@ -111,7 +120,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             ConnectionPausing = true;
             return new ActionDisposer(d => {
                 ConnectionPausing = false;
-                LazyConnection = new Lazy<IDbConnection>(OpenConnection);
+                LazyConnection = new Lazy<DbConnectionWrapper>(OpenConnection);
             });
         }
 
@@ -178,7 +187,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// </summary>
     /// <typeparam name="TDbConnection">具象<see cref="DatabaseAccessor.BaseDbConnection"/>。</typeparam>
     public class DatabaseAccessor<TDbConnection>: DatabaseAccessor
-        where TDbConnection : IDbConnection
+        where TDbConnection : DbConnection
     {
         public DatabaseAccessor(IDatabaseFactory connectionFactory, ILoggerFactory loggerFactory)
             : base(connectionFactory, loggerFactory)
@@ -189,7 +198,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <summary>
         /// 接続元。
         /// </summary>
-        public new TDbConnection DbConnection => (TDbConnection)BaseDbConnection;
+        public new TDbConnection DbConnection => (TDbConnection)BaseDbConnection.BaseConnection;
 
         #endregion
     }

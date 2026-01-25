@@ -6,11 +6,11 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Plugins.DefaultTheme;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Theme
 {

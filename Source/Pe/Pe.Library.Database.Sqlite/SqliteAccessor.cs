@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
@@ -37,7 +32,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
             ThrowIfDisposed();
 
             // SQLite は複数スレッドでトランザクション開くと死ぬのでトランザクション実体なしで仮想的に対応。
-            return new ReadOnlyDatabaseTransaction(BaseDbConnection, null, Implementation, LoggerFactory);
+            return new ReadOnlyDatabaseTransaction(BaseDbConnection, null, Implementation, LoggerFactory) {
+                MiddlewareCollection = MiddlewareCollection.Clone(),
+            };
         }
 
         public override IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)

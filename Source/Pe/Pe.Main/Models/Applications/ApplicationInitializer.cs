@@ -27,6 +27,9 @@ using ContentTypeTextNet.Pe.Main.Models.Plugin.Preferences;
 using Microsoft.Extensions.Logging;
 using Forms = System.Windows.Forms;
 using ContentTypeTextNet.Pe.Library.Provider;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
+
+
 #if !DOC_FX
 using ContentTypeTextNet.Pe.Generator.Throws;
 #else
