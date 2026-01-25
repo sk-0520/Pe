@@ -42,7 +42,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         public int Invoke(DbCommand command, int input)
         {
-            return Middleware.Next(Handler, command, input);
+            return Middleware.Next(NextHandler, command, input);
         }
 
         #endregion

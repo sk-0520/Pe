@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         public DbDataReader Invoke(DbCommand command, CommandBehavior behavior, DbDataReader reader)
         {
-            return Middleware.Next(Handler, command, behavior, reader);
+            return Middleware.Next(NextHandler, command, behavior, reader);
         }
 
         #endregion

@@ -5,6 +5,10 @@ using System.Runtime.CompilerServices;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
+    /// <summary>
+    /// <see cref="DbCommand"/> ラッパー。
+    /// </summary>
+    /// <remarks><see cref="IDbCommand"/> は知らん。</remarks>
     public class DbCommandWrapper: DbCommand
     {
         [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "get_" + nameof(DbParameterCollection))]
@@ -12,13 +16,17 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         public DbCommandWrapper(DbCommand command, MiddlewareCollection middlewareCollection)
         {
-            Raw = command;
+            BaseCommand = command;
             MiddlewareCollection = middlewareCollection;
         }
 
         #region property
 
-        public DbCommand Raw { get; private set; }
+        /// <summary>
+        /// 元の <see cref="DbCommand"/>。
+        /// </summary>
+        public DbCommand BaseCommand { get; private set; }
+        /// <inheritdoc cref="ContentTypeTextNet.Pe.Library.Database.Handler.MiddlewareCollection"/>
         public MiddlewareCollection MiddlewareCollection { get; }
 
         #endregion
@@ -68,57 +76,57 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         [AllowNull]
         public override string CommandText
         {
-            get => Raw.CommandText;
-            set => Raw.CommandText = value;
+            get => BaseCommand.CommandText;
+            set => BaseCommand.CommandText = value;
         }
 
         public override int CommandTimeout
         {
-            get => Raw.CommandTimeout;
-            set => Raw.CommandTimeout = value;
+            get => BaseCommand.CommandTimeout;
+            set => BaseCommand.CommandTimeout = value;
         }
 
         public override CommandType CommandType
         {
-            get => Raw.CommandType;
-            set => Raw.CommandType = value;
+            get => BaseCommand.CommandType;
+            set => BaseCommand.CommandType = value;
         }
 
         public override bool DesignTimeVisible
         {
-            get => Raw.DesignTimeVisible;
-            set => Raw.DesignTimeVisible = value;
+            get => BaseCommand.DesignTimeVisible;
+            set => BaseCommand.DesignTimeVisible = value;
         }
 
         public override UpdateRowSource UpdatedRowSource
         {
-            get => Raw.UpdatedRowSource;
-            set => Raw.UpdatedRowSource = value;
+            get => BaseCommand.UpdatedRowSource;
+            set => BaseCommand.UpdatedRowSource = value;
         }
 
         protected override DbConnection? DbConnection
         {
-            get => Raw.Connection;
-            set => Raw.Connection = value;
+            get => BaseCommand.Connection;
+            set => BaseCommand.Connection = value;
         }
 
         protected override DbParameterCollection DbParameterCollection
         {
             get
             {
-                return Get_DbParameterCollection(Raw);
+                return Get_DbParameterCollection(BaseCommand);
             }
         }
 
         protected override DbTransaction? DbTransaction
         {
-            get => Raw.Transaction;
-            set => Raw.Transaction = value;
+            get => BaseCommand.Transaction;
+            set => BaseCommand.Transaction = value;
         }
 
         public override void Cancel()
         {
-            Raw.Cancel();
+            BaseCommand.Cancel();
         }
 
         public override int ExecuteNonQuery()
@@ -126,7 +134,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
             var pipeline = CreateExecuteNonQueryPipeline();
             var process = CreateExecuteNonQueryProcess();
             var handler = pipeline.Build(process);
-            var result = handler.Invoke(Raw, default);
+            var result = handler.Invoke(BaseCommand, default);
 
             return result;
         }
@@ -136,7 +144,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
             var pipeline = CreateExecuteScalarPipeline();
             var process = CreateExecuteScalarProcess();
             var handler = pipeline.Build(process);
-            var result = handler.Invoke(Raw, default);
+            var result = handler.Invoke(BaseCommand, default);
 
             return result;
         }
@@ -146,26 +154,26 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
             var pipeline = CreateExecuteDataReaderPipeline();
             var process = CreateExecuteDataReaderProcess();
             var handler = pipeline.Build(process);
-            var result = handler.Invoke(Raw, behavior, default!);
+            var result = handler.Invoke(BaseCommand, behavior, default!);
 
             return result;
         }
 
         public override void Prepare()
         {
-            Raw.Prepare();
+            BaseCommand.Prepare();
         }
 
         protected override DbParameter CreateDbParameter()
         {
-            return Raw.CreateParameter();
+            return BaseCommand.CreateParameter();
         }
 
         protected override void Dispose(bool disposing)
         {
             if(disposing) {
-                Raw?.Dispose();
-                Raw = null!;
+                BaseCommand?.Dispose();
+                BaseCommand = null!;
             }
 
             base.Dispose(disposing);

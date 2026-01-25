@@ -3,6 +3,12 @@ using System.Linq;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
+    /// <summary>
+    /// ミドルウェアパイプライン基底。
+    /// </summary>
+    /// <typeparam name="TMiddleware">ミドルウェア</typeparam>
+    /// <typeparam name="THandler">ハンドラー。</typeparam>
+    /// <remarks><typeparamref name="TMiddleware"/>, <typeparamref name="THandler"/> に対する制限はないため継承先で制限すること。</remarks>
     public abstract class PipelineBase<TMiddleware, THandler>
     {
         #region property
@@ -42,6 +48,11 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region function
 
+        /// <summary>
+        /// ミドルウェアからパイプラインの構築。
+        /// </summary>
+        /// <param name="process">最終処理。</param>
+        /// <returns>パイプラインによる先頭ハンドラー。</returns>
         public virtual THandler Build(THandler process)
         {
             var handler = process;
@@ -52,11 +63,20 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
             return handler;
         }
 
+        /// <summary>
+        /// チェーンハンドラの生成。
+        /// </summary>
+        /// <param name="middleware">ミドルウェア。</param>
+        /// <param name="handler">ハンドラー。</param>
+        /// <returns>チェーンハンドラ。</returns>
         protected abstract THandler CreateChainHandler(TMiddleware middleware, THandler handler);
 
         #endregion
     }
 
+    /// <summary>
+    /// <see cref="IStatementMiddleware"/> 用パイプライン。
+    /// </summary>
     public class StatementPipeline: PipelineBase<IStatementMiddleware, IStatementHandler>
     {
         #region PipelineBase
@@ -69,6 +89,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         #endregion
     }
 
+    /// <summary>
+    /// <see cref="IExecuteNonQueryMiddleware"/> 用パイプライン。
+    /// </summary>
     public class ExecuteNonQueryPipeline: PipelineBase<IExecuteNonQueryMiddleware, IExecuteNonQueryHandler>
     {
         #region PipelineBase
@@ -81,6 +104,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         #endregion
     }
 
+    /// <summary>
+    /// <see cref="IExecuteScalarMiddleware"/> 用パイプライン。
+    /// </summary>
     public class ExecuteScalarPipeline: PipelineBase<IExecuteScalarMiddleware, IExecuteScalarHandler>
     {
         #region PipelineBase
@@ -93,6 +119,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         #endregion
     }
 
+    /// <summary>
+    /// <see cref="IExecuteDataReaderMiddleware"/> 用パイプライン。
+    /// </summary>
     public class ExecuteDataReaderPipeline: PipelineBase<IExecuteDataReaderMiddleware, IExecuteDataReaderHandler>
     {
         #region PipelineBase
@@ -104,5 +133,4 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #endregion
     }
-
 }

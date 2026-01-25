@@ -64,7 +64,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         public string Invoke(string input)
         {
-            return Middleware.Next(Handler, input);
+            return Middleware.Next(NextHandler, input);
         }
 
         #endregion

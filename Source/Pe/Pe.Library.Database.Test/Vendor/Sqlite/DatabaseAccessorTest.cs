@@ -58,7 +58,7 @@ values
         {
             var factory = new InMemorySqliteFactory();
             var databaseAccessor = new SqliteAccessor(factory, NullLoggerFactory.Instance);
-            Assert.Equal(databaseAccessor.BaseDbConnection.Raw, databaseAccessor.DbConnection);
+            Assert.Equal(databaseAccessor.BaseDbConnection.BaseConnection, databaseAccessor.DbConnection);
         }
 
         [Fact]

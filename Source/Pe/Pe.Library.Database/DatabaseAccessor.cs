@@ -198,7 +198,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <summary>
         /// 接続元。
         /// </summary>
-        public new TDbConnection DbConnection => (TDbConnection)BaseDbConnection.Raw;
+        public new TDbConnection DbConnection => (TDbConnection)BaseDbConnection.BaseConnection;
 
         #endregion
     }
