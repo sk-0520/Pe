@@ -47,4 +47,16 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #endregion
     }
+
+    public sealed class DefaultExecuteNonQueryProcess: IExecuteNonQueryHandler
+    {
+        #region IExecuteNonQueryHandler
+
+        public int Handle(DbCommand command, int input)
+        {
+            return command.ExecuteNonQuery();
+        }
+
+        #endregion
+    }
 }

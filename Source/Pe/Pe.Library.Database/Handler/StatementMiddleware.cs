@@ -69,4 +69,17 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #endregion
     }
+
+    public sealed class DefaultStatementProcess: IStatementHandler
+    {
+        #region IStatementHandler
+
+        public string Handle(string input)
+        {
+            return input;
+        }
+
+        #endregion
+    }
+
 }

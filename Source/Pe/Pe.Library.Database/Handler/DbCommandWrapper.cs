@@ -1,4 +1,3 @@
-using System;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
@@ -21,6 +20,46 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         public DbCommand Raw { get; private set; }
         public MiddlewareCollection MiddlewareCollection { get; }
+
+        #endregion
+
+        #region function
+
+        protected ExecuteNonQueryPipeline CreateExecuteNonQueryPipeline()
+        {
+            var pipeline = new ExecuteNonQueryPipeline();
+            pipeline.UseRange(MiddlewareCollection.ExecuteNonQuerys);
+            return pipeline;
+        }
+
+        protected virtual IExecuteNonQueryHandler CreateExecuteNonQueryProcess()
+        {
+            return new DefaultExecuteNonQueryProcess();
+        }
+
+        protected ExecuteScalarPipeline CreateExecuteScalarPipeline()
+        {
+            var pipeline = new ExecuteScalarPipeline();
+            pipeline.UseRange(MiddlewareCollection.ExecuteScalars);
+            return pipeline;
+        }
+
+        protected virtual IExecuteScalarHandler CreateExecuteScalarProcess()
+        {
+            return new DefaultExecuteScalarProcess();
+        }
+
+        protected ExecuteDataReaderPipeline CreateExecuteDataReaderPipeline()
+        {
+            var pipeline = new ExecuteDataReaderPipeline();
+            pipeline.UseRange(MiddlewareCollection.ExecuteDataReaders);
+            return pipeline;
+        }
+
+        protected virtual IExecuteDataReaderHandler CreateExecuteDataReaderProcess()
+        {
+            return new DefaultExecuteDataReaderProcess();
+        }
 
         #endregion
 
@@ -84,44 +123,32 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         public override int ExecuteNonQuery()
         {
-            int result = 0;
-
-
+            var pipeline = CreateExecuteNonQueryPipeline();
+            var process = CreateExecuteNonQueryProcess();
+            var handler = pipeline.Build(process);
+            var result = handler.Handle(Raw, default);
 
             return result;
         }
 
         public override object? ExecuteScalar()
         {
-            //object? result = null;
+            var pipeline = CreateExecuteScalarPipeline();
+            var process = CreateExecuteScalarProcess();
+            var handler = pipeline.Build(process);
+            var result = handler.Handle(Raw, default);
 
-            //for(var i = 0; i < MiddlewareCollection.ExecuteScalars.Count + 1; i++) {
-            //    var handler = i < MiddlewareCollection.ExecuteScalars.Count
-            //        ? MiddlewareCollection.ExecuteScalars[i]
-            //        : new ExecuteScalarAction();
-            //    result = handler.Next(Raw, result);
-            //}
-
-
-            //return result;
-            throw new NotImplementedException();
+            return result;
         }
 
         protected override DbDataReader ExecuteDbDataReader(CommandBehavior behavior)
         {
-            //var handlers = MiddlewareCollection.ExecuteDataReaderHandlers.Append(new ExecuteDataReaderAction());
+            var pipeline = CreateExecuteDataReaderPipeline();
+            var process = CreateExecuteDataReaderProcess();
+            var handler = pipeline.Build(process);
+            var result = handler.Handle(Raw, behavior, default!);
 
-            //DbDataReader? result = null;
-
-            //foreach(var handler in handlers) {
-            //    handler.Next(Raw, behavior, ref result);
-            //}
-            //if(result is null) {
-            //    throw new DatabaseException($"{nameof(DbDataReader)} is null");
-            //}
-
-            //return result;
-            throw new NotImplementedException();
+            return result;
         }
 
         public override void Prepare()

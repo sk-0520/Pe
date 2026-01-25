@@ -56,4 +56,16 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #endregion
     }
+
+    public sealed class DefaultExecuteDataReaderProcess: IExecuteDataReaderHandler
+    {
+        #region IExecuteDataReaderHandler
+
+        public DbDataReader Handle(DbCommand command, CommandBehavior behavior, DbDataReader reader)
+        {
+            return command.ExecuteReader(behavior);
+        }
+
+        #endregion
+    }
 }

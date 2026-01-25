@@ -56,4 +56,15 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         #endregion
     }
 
+    public sealed class DefaultExecuteScalarProcess: IExecuteScalarHandler
+    {
+        #region IExecuteScalarHandler
+
+        public object? Handle(DbCommand command, object? input)
+        {
+            return command.ExecuteScalar();
+        }
+
+        #endregion
+    }
 }

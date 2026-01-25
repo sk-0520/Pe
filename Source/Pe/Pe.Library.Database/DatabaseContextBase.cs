@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
@@ -16,58 +15,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
 {
     public abstract class DatabaseContextBase: DisposerBase, IDatabaseContext
     {
-        #region define
-
-        private sealed class StatementProcess: IStatementHandler
-        {
-            #region IStatementHandler
-
-            public string Handle(string input)
-            {
-                return input;
-            }
-
-            #endregion
-        }
-
-        private sealed class ExecuteNonQueryProcess: IExecuteNonQueryHandler
-        {
-            #region IExecuteNonQueryHandler
-
-            public int Handle(DbCommand command, int input)
-            {
-                return command.ExecuteNonQuery();
-            }
-
-            #endregion
-        }
-
-        private sealed class ExecuteScalarProcess: IExecuteScalarHandler
-        {
-            #region IExecuteScalarHandler
-
-            public object? Handle(DbCommand command, object? input)
-            {
-                return command.ExecuteScalar();
-            }
-
-            #endregion
-        }
-
-        private sealed class ExecuteDataReaderProcess: IExecuteDataReaderHandler
-        {
-            #region IExecuteDataReaderHandler
-
-            public DbDataReader Handle(DbCommand command, CommandBehavior behavior, DbDataReader reader)
-            {
-                return command.ExecuteReader(behavior);
-            }
-
-            #endregion
-        }
-
-        #endregion
-
         protected DatabaseContextBase(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
         {
             DbConnection = dbConnection;
@@ -100,45 +47,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         protected virtual IStatementHandler CreateStatementProcess()
         {
-            return new StatementProcess();
+            return new DefaultStatementProcess();
         }
-
-        protected ExecuteNonQueryPipeline CreateExecuteNonQueryPipeline()
-        {
-            var pipeline = new ExecuteNonQueryPipeline();
-            pipeline.UseRange(MiddlewareCollection.ExecuteNonQuerys);
-            return pipeline;
-        }
-
-        protected virtual IExecuteNonQueryHandler CreateExecuteNonQueryProcess()
-        {
-            return new ExecuteNonQueryProcess();
-        }
-
-        protected ExecuteScalarPipeline CreateExecuteScalarPipeline()
-        {
-            var pipeline = new ExecuteScalarPipeline();
-            pipeline.UseRange(MiddlewareCollection.ExecuteScalars);
-            return pipeline;
-        }
-
-        protected virtual IExecuteScalarHandler CreateExecuteScalarProcess()
-        {
-            return new ExecuteScalarProcess();
-        }
-
-        protected ExecuteDataReaderPipeline CreateExecuteDataReaderPipeline()
-        {
-            var pipeline = new ExecuteDataReaderPipeline();
-            pipeline.UseRange(MiddlewareCollection.ExecuteDataReaders);
-            return pipeline;
-        }
-
-        protected virtual IExecuteDataReaderHandler CreateExecuteDataReaderProcess()
-        {
-            return new ExecuteDataReaderProcess();
-        }
-
 
         protected string FormatStatement(string statement)
         {
