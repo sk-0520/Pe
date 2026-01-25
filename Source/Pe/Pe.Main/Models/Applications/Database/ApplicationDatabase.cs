@@ -113,7 +113,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 Statements = [
                     new AppStatementMiddleware(Implementation, LoggerFactory),
                 ],
-                ExecuteNonQuerys = [
+                ExecuteNonQueries = [
                     loggingMiddleware,
                     new AppExecuteNonQueryMiddleware(Implementation, LoggerFactory),
                 ],

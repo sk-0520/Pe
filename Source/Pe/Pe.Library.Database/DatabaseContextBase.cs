@@ -45,9 +45,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         protected StatementPipeline CreateStatementPipeline()
         {
-            var pipline = new StatementPipeline();
-            pipline.UseRange(MiddlewareCollection.Statements);
-            return pipline;
+            var pipeline = new StatementPipeline();
+            pipeline.UseRange(MiddlewareCollection.Statements);
+            return pipeline;
         }
 
         protected virtual IStatementHandler CreateStatementProcess()
@@ -57,9 +57,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         protected string FormatStatement(string statement)
         {
-            var pipline = CreateStatementPipeline();
+            var pipeline = CreateStatementPipeline();
             var process = CreateStatementProcess();
-            var handler = pipline.Build(process);
+            var handler = pipeline.Build(process);
             return handler.Invoke(statement);
         }
 
@@ -100,10 +100,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            var formattedStatement = FormatStatement(statement);
-
             var dataTable = new DataTable();
-            using(var reader = GetDataReader(formattedStatement, parameter)) {
+            using(var reader = GetDataReader(statement, parameter)) {
                 dataTable.Load(reader);
             }
 
@@ -114,10 +112,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             ThrowIfDisposed();
 
-            var formattedStatement = FormatStatement(statement);
-
             var dataTable = new DataTable();
-            using(var reader = await GetDataReaderAsync(formattedStatement, parameter, cancellationToken)) {
+            using(var reader = await GetDataReaderAsync(statement, parameter, cancellationToken)) {
                 dataTable.Load(reader);
             }
 

@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         protected ExecuteNonQueryPipeline CreateExecuteNonQueryPipeline()
         {
             var pipeline = new ExecuteNonQueryPipeline();
-            pipeline.UseRange(MiddlewareCollection.ExecuteNonQuerys);
+            pipeline.UseRange(MiddlewareCollection.ExecuteNonQueries);
             return pipeline;
         }
 

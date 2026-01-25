@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         #region property
 
         public List<IStatementMiddleware> Statements { get; init; } = [];
-        public List<IExecuteNonQueryMiddleware> ExecuteNonQuerys { get; init; } = [];
+        public List<IExecuteNonQueryMiddleware> ExecuteNonQueries { get; init; } = [];
         public List<IExecuteScalarMiddleware> ExecuteScalars { get; init; } = [];
         public List<IExecuteDataReaderMiddleware> ExecuteDataReaders { get; init; } = [];
 
@@ -25,7 +25,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         {
             return new MiddlewareCollection() {
                 Statements = [.. Statements],
-                ExecuteNonQuerys = [.. ExecuteNonQuerys],
+                ExecuteNonQueries = [.. ExecuteNonQueries],
                 ExecuteScalars = [.. ExecuteScalars],
                 ExecuteDataReaders = [.. ExecuteDataReaders],
             };

@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         #region function
 
         /// <summary>
-        /// 問い合わせ分の加工。
+        /// 問い合わせ文の加工。
         /// </summary>
         /// <param name="handler">次の処理。</param>
         /// <param name="input">問い合わせ文。</param>
