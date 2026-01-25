@@ -14,8 +14,8 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         public List<IStatementMiddleware> Statements { get; init; } = [];
         public List<IExecuteNonQueryMiddleware> ExecuteNonQuerys { get; init; } = [];
-        public List<IExecuteScalarHandler> ExecuteScalars { get; init; } = [];
-        public List<IExecuteDataReaderHandler> ExecuteDataReaders { get; init; } = [];
+        public List<IExecuteScalarMiddleware> ExecuteScalars { get; init; } = [];
+        public List<IExecuteDataReaderMiddleware> ExecuteDataReaders { get; init; } = [];
 
         #endregion
     }

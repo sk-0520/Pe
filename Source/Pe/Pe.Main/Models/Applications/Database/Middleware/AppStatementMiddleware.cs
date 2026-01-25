@@ -1,12 +1,13 @@
 using ContentTypeTextNet.Pe.Library.Database.Handler;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications.Database.Middleware
 {
     internal class AppStatementMiddleware: StatementMiddlewareBase
     {
-        public AppStatementMiddleware(IDatabaseImplementation implementation)
-            : base(implementation)
+        public AppStatementMiddleware(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(implementation, loggerFactory)
         { }
 
         #region IStatementMiddleware

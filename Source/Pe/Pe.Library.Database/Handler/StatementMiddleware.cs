@@ -1,4 +1,5 @@
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
@@ -34,40 +35,30 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     /// <summary>
     /// データベース問い合わせ文の実行前ハンドラー基底。
     /// </summary>
-    public abstract class StatementMiddlewareBase: IStatementMiddleware
+
+    public abstract class StatementMiddlewareBase: MiddlewareBase, IStatementMiddleware
     {
         /// <summary>
         /// 生成。
         /// </summary>
         /// <param name="implementation"></param>
-        protected StatementMiddlewareBase(IDatabaseImplementation implementation)
-        {
-            Implementation = implementation;
-        }
+        /// <param name="loggerFactory"></param>
+        protected StatementMiddlewareBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
+            : base(implementation, loggerFactory)
+        { }
 
-        #region property
-
-        protected IDatabaseImplementation Implementation { get; }
-
-        #endregion
-
-        #region IStatementHandler
+        #region IStatementMiddleware
 
         public abstract string Next(IStatementHandler handler, string input);
 
         #endregion
     }
 
-    public class StatementChainHandler: IStatementHandler
+    public class StatementChainHandler: ChainHandlerBase<IStatementMiddleware, IStatementHandler>, IStatementHandler
     {
         public StatementChainHandler(IStatementMiddleware middleware, IStatementHandler handler)
-        {
-            Middleware = middleware;
-            Handler = handler;
-        }
-
-        private IStatementMiddleware Middleware { get; }
-        private IStatementHandler Handler { get; }
+            : base(middleware, handler)
+        { }
 
         #region IStatementHandler
 

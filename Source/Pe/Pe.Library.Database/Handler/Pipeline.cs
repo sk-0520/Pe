@@ -42,7 +42,17 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         #region function
 
-        public abstract THandler Build(THandler process);
+        public virtual THandler Build(THandler process)
+        {
+            var handler = process;
+            foreach(var middleware in Middlewares) {
+                handler = CreateChainHandler(middleware, handler);
+            }
+
+            return handler;
+        }
+
+        protected abstract THandler CreateChainHandler(TMiddleware middleware, THandler handler);
 
         #endregion
     }
@@ -51,50 +61,48 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     {
         #region PipelineBase
 
-        public override IStatementHandler Build(IStatementHandler process)
+        protected override IStatementHandler CreateChainHandler(IStatementMiddleware middleware, IStatementHandler handler)
         {
-            var handler = process;
-            foreach(var middleware in Middlewares) {
-                handler = new StatementChainHandler(middleware, handler);
-            }
-
-            return handler;
+            return new StatementChainHandler(middleware, handler);
         }
 
         #endregion
     }
 
-    //public class Pipeline
-    //{
-    //    public Pipeline() { }
+    public class ExecuteNonQueryPipeline: PipelineBase<IExecuteNonQueryMiddleware, IExecuteNonQueryHandler>
+    {
+        #region PipelineBase
 
-    //    #region property
+        protected override IExecuteNonQueryHandler CreateChainHandler(IExecuteNonQueryMiddleware middleware, IExecuteNonQueryHandler handler)
+        {
+            return new ExecuteNonQueryChainHandler(middleware, handler);
+        }
 
-    //    private List<IExecuteNonQueryMiddleware> Middlewares { get; } = [];
+        #endregion
+    }
 
-    //    #endregion
+    public class ExecuteScalarPipeline: PipelineBase<IExecuteScalarMiddleware, IExecuteScalarHandler>
+    {
+        #region PipelineBase
 
-    //    #region function
+        protected override IExecuteScalarHandler CreateChainHandler(IExecuteScalarMiddleware middleware, IExecuteScalarHandler handler)
+        {
+            return new ExecuteScalarChainHandler(middleware, handler);
+        }
 
-    //    public void Add(IExecuteNonQueryMiddleware middleware)
-    //    {
-    //        Middlewares.Insert(0, middleware);
-    //    }
+        #endregion
+    }
 
-    //    public void AddRange(IEnumerable<IExecuteNonQueryMiddleware> middlewares)
-    //    {
-    //        Middlewares.InsertRange(0, middlewares.Reverse());
-    //    }
+    public class ExecuteDataReaderPipeline: PipelineBase<IExecuteDataReaderMiddleware, IExecuteDataReaderHandler>
+    {
+        #region PipelineBase
 
-    //    #endregion
+        protected override IExecuteDataReaderHandler CreateChainHandler(IExecuteDataReaderMiddleware middleware, IExecuteDataReaderHandler handler)
+        {
+            return new ExecuteDataReaderChainHandler(middleware, handler);
+        }
 
-    //    #region function
+        #endregion
+    }
 
-    //    #endregion
-    //}
-
-    //public class Pipeline<THandler>
-    //where THandler : IExecuteScalarHandler
-    //{
-    //}
 }

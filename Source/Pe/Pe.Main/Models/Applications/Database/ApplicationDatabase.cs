@@ -107,7 +107,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         {
             MiddlewareCollection = new MiddlewareCollection() {
                 Statements = [
-                    new AppStatementMiddleware(Implementation),
+                    new AppStatementMiddleware(Implementation, LoggerFactory),
                 ],
                 //ExecuteNonQueryHandlers = [
                 //    //new AppLoggingExecuteNonQueryHandler(Implementation, LoggerFactory),

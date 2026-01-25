@@ -4,51 +4,46 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
+    public interface IExecuteNonQueryHandler
+    {
+        int Handle(DbCommand command, int input);
+    }
+
     public interface IExecuteNonQueryMiddleware
     {
-        int Next(IExecuteNonQueryMiddleware next, DbCommand command, int input);
+        int Next(IExecuteNonQueryHandler handler, DbCommand command, int input);
     }
 
-    public sealed class ExecuteNonQueryAction: IExecuteNonQueryMiddleware
-    {
-        public ExecuteNonQueryAction()
-        { }
-
-        #region function
-
-        public int Next(IExecuteNonQueryMiddleware _, DbCommand command, int input)
-        {
-            return command.ExecuteNonQuery();
-        }
-
-        #endregion
-    }
-
-    public abstract class ExecuteNonQueryMiddlewareBase: IExecuteNonQueryMiddleware
+    public abstract class ExecuteNonQueryMiddlewareBase: MiddlewareBase, IExecuteNonQueryMiddleware
     {
         /// <summary>
         /// 生成。
         /// </summary>
         /// <param name="implementation"></param>
+        /// <param name="loggerFactory"></param>
         protected ExecuteNonQueryMiddlewareBase(IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
-        {
-            Implementation = implementation;
-            LoggerFactory = loggerFactory;
-            Logger = loggerFactory.CreateLogger(GetType());
-        }
-
-        #region property
-
-        protected IDatabaseImplementation Implementation { get; }
-
-        protected ILoggerFactory LoggerFactory { get; }
-        protected ILogger Logger { get; }
-
-        #endregion
+            : base(implementation, loggerFactory)
+        { }
 
         #region IExecuteNonQueryMiddleware
 
-        public abstract int Next(IExecuteNonQueryMiddleware next, DbCommand command, int input);
+        public abstract int Next(IExecuteNonQueryHandler handler, DbCommand command, int input);
+
+        #endregion
+    }
+
+    public class ExecuteNonQueryChainHandler: ChainHandlerBase<IExecuteNonQueryMiddleware, IExecuteNonQueryHandler>, IExecuteNonQueryHandler
+    {
+        public ExecuteNonQueryChainHandler(IExecuteNonQueryMiddleware middleware, IExecuteNonQueryHandler handler)
+            : base(middleware, handler)
+        { }
+
+        #region IExecuteNonQueryHandler
+
+        public int Handle(DbCommand command, int input)
+        {
+            return Middleware.Next(Handler, command, input);
+        }
 
         #endregion
     }
