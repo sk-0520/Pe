@@ -1,16 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Database.Handler;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
@@ -109,160 +105,160 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 Statements = [
                     new AppStatementMiddleware(Implementation, LoggerFactory),
                 ],
-                //ExecuteNonQueryHandlers = [
-                //    //new AppLoggingExecuteNonQueryHandler(Implementation, LoggerFactory),
-                //],
-                //ExecuteScalarHandlers = [
-                //    new AppLoggingExecuteScalarHandler(Implementation, LoggerFactory),
-                //],
-                //ExecuteDataReaderHandlers = [
-                //    new AppLoggingExecuteDataReaderHandler(Implementation, LoggerFactory),
-                //],
+                ExecuteNonQuerys = [
+                    new AppExecuteNonQueryMiddleware(Implementation, LoggerFactory),
+                ],
+                ExecuteScalars = [
+                    new AppExecuteScalarMiddleware(Implementation, LoggerFactory),
+                ],
+                ExecuteDataReaders = [
+                    new AppExecuteDataReaderMiddleware(Implementation, LoggerFactory),
+                ],
             };
         }
 
         #region DatabaseContext
 
-        protected override void LoggingStatement(string statement, object? parameter)
-        {
-#if DEBUG
-            ThrowIfDisposed();
+        //        protected override void LoggingStatement(string statement, object? parameter)
+        //        {
+        //#if DEBUG
+        //            ThrowIfDisposed();
 
-            if(!Logger.IsEnabled(LogLevel.Trace)) {
-                return;
-            }
+        //            if(!Logger.IsEnabled(LogLevel.Trace)) {
+        //                return;
+        //            }
 
-            var indent = "    ";
+        //            var indent = "    ";
 
-            var lines = TextUtility.ReadLines(statement).ToArray();
+        //            var lines = TextUtility.ReadLines(statement).ToArray();
 
-            var sb = new StringBuilder((int)(lines.Sum(s => s.Length) * 1.5));
+        //            var sb = new StringBuilder((int)(lines.Sum(s => s.Length) * 1.5));
 
-            void Logging(ObjectDumpItem dumpItem, int nest)
-            {
-                var ns = new string('-', (int)(nest * 1.5)) + "->";
-                sb.Append(indent);
-                sb.Append(ns);
-                sb.Append(' ');
-                sb.Append(dumpItem.MemberInfo);
-                sb.Append('=');
-                sb.Append(dumpItem.Value);
-                sb.Append(" [");
-                sb.Append(dumpItem.MemberInfo.DeclaringType);
-                sb.Append(']');
-                sb.AppendLine();
+        //            void Logging(ObjectDumpItem dumpItem, int nest)
+        //            {
+        //                var ns = new string('-', (int)(nest * 1.5)) + "->";
+        //                sb.Append(indent);
+        //                sb.Append(ns);
+        //                sb.Append(' ');
+        //                sb.Append(dumpItem.MemberInfo);
+        //                sb.Append('=');
+        //                sb.Append(dumpItem.Value);
+        //                sb.Append(" [");
+        //                sb.Append(dumpItem.MemberInfo.DeclaringType);
+        //                sb.Append(']');
+        //                sb.AppendLine();
 
-                foreach(var childItem in dumpItem.Children) {
-                    Logging(childItem, nest + 1);
-                }
-            }
+        //                foreach(var childItem in dumpItem.Children) {
+        //                    Logging(childItem, nest + 1);
+        //                }
+        //            }
 
-            var method = new StackTrace(4).GetFrame(0)?.GetMethod();
-            if(method != null) {
-                sb.AppendLine(method.ReflectedType!.Name + "." + method.Name);
-            } else {
-                sb.AppendLine(nameof(LoggingStatement));
-            }
+        //            var method = new StackTrace(4).GetFrame(0)?.GetMethod();
+        //            if(method != null) {
+        //                sb.AppendLine(method.ReflectedType!.Name + "." + method.Name);
+        //            } else {
+        //                sb.AppendLine(nameof(LoggingStatement));
+        //            }
 
 
-            sb.Append(indent);
-            sb.AppendLine("[SQL]");
-            foreach(var line in lines.Counting(1)) {
-                sb.Append(indent);
-                sb.AppendLine(line.Value);
-            }
-            if(parameter != null) {
-                sb.Append(indent);
-                sb.AppendLine("[PARAM]");
+        //            sb.Append(indent);
+        //            sb.AppendLine("[SQL]");
+        //            foreach(var line in lines.Counting(1)) {
+        //                sb.Append(indent);
+        //                sb.AppendLine(line.Value);
+        //            }
+        //            if(parameter != null) {
+        //                sb.Append(indent);
+        //                sb.AppendLine("[PARAM]");
 
-                var od = new ObjectDumper();
-                var dumpItems = od.Dump(parameter);
-                foreach(var dumpItem in dumpItems) {
-                    Logging(dumpItem, 0);
-                }
-            }
+        //                var od = new ObjectDumper();
+        //                var dumpItems = od.Dump(parameter);
+        //                foreach(var dumpItem in dumpItems) {
+        //                    Logging(dumpItem, 0);
+        //                }
+        //            }
 
-            using(Logger.BeginScope(nameof(LoggingStatement))) {
-                Logger.LogTrace("{Statement}", sb.ToString());
-            }
-#else
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("{Statement}{NewLine}{Parameters}", statement, Environment.NewLine, ObjectDumper.GetDumpString(parameter));
-            }
-#endif
-        }
+        //            using(Logger.BeginScope(nameof(LoggingStatement))) {
+        //                Logger.LogTrace("{Statement}", sb.ToString());
+        //            }
+        //#else
+        //            if(Logger.IsEnabled(LogLevel.Trace)) {
+        //                Logger.LogTrace("{Statement}{NewLine}{Parameters}", statement, Environment.NewLine, ObjectDumper.GetDumpString(parameter));
+        //            }
+        //#endif
+        //        }
 
-        protected override void LoggingExecuteScalarResult<TResult>(TResult result, TimeSpan elapsedTime)
-        {
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("result: {Result}, {Time}", result, elapsedTime);
-            }
-        }
+        //        protected override void LoggingExecuteScalarResult<TResult>(TResult result, TimeSpan elapsedTime)
+        //        {
+        //            if(Logger.IsEnabled(LogLevel.Trace)) {
+        //                Logger.LogTrace("result: {Result}, {Time}", result, elapsedTime);
+        //            }
+        //        }
 
-        /// <summary>
-        /// 単体結果の問い合わせ結果のログ出力。
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="result"></param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        protected override void LoggingQueryResult<T>([MaybeNull] T result, TimeSpan elapsedTime)
-        {
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("{Type} -> {Result}, {Time}", typeof(T), result, elapsedTime);
-            }
-        }
+        //        /// <summary>
+        //        /// 単体結果の問い合わせ結果のログ出力。
+        //        /// </summary>
+        //        /// <typeparam name="T"></typeparam>
+        //        /// <param name="result"></param>
+        //        /// <param name="startUtcTime"></param>
+        //        /// <param name="endUtcTime"></param>
+        //        protected override void LoggingQueryResult<T>([MaybeNull] T result, TimeSpan elapsedTime)
+        //        {
+        //            if(Logger.IsEnabled(LogLevel.Trace)) {
+        //                Logger.LogTrace("{Type} -> {Result}, {Time}", typeof(T), result, elapsedTime);
+        //            }
+        //        }
 
-        /// <summary>
-        /// 複数結果の問い合わせ結果のログ出力。
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="result"></param>
-        /// <param name="buffered">偽の場合、<paramref name="result"/>に全数は存在しない。</param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        protected override void LoggingQueryResults<T>(IEnumerable<T> result, bool buffered, TimeSpan elapsedTime)
-        {
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                if(buffered) {
-                    Logger.LogTrace("{Collection}<{Type}> -> {Count}, {Time}", nameof(IEnumerable), typeof(T), result.Count(), elapsedTime);
-                } else {
-                    Logger.LogTrace("{Collection}<{Type}> -> no buffered, {Time}", nameof(IEnumerable), typeof(T), elapsedTime);
-                }
-            }
-        }
+        //        /// <summary>
+        //        /// 複数結果の問い合わせ結果のログ出力。
+        //        /// </summary>
+        //        /// <typeparam name="T"></typeparam>
+        //        /// <param name="result"></param>
+        //        /// <param name="buffered">偽の場合、<paramref name="result"/>に全数は存在しない。</param>
+        //        /// <param name="startUtcTime"></param>
+        //        /// <param name="endUtcTime"></param>
+        //        protected override void LoggingQueryResults<T>(IEnumerable<T> result, bool buffered, TimeSpan elapsedTime)
+        //        {
+        //            if(Logger.IsEnabled(LogLevel.Trace)) {
+        //                if(buffered) {
+        //                    Logger.LogTrace("{Collection}<{Type}> -> {Count}, {Time}", nameof(IEnumerable), typeof(T), result.Count(), elapsedTime);
+        //                } else {
+        //                    Logger.LogTrace("{Collection}<{Type}> -> no buffered, {Time}", nameof(IEnumerable), typeof(T), elapsedTime);
+        //                }
+        //            }
+        //        }
 
-        /// <summary>
-        /// 実行結果のログ出力。
-        /// </summary>
-        /// <remarks>
-        /// <para><see cref="IDatabaseExecutor.Execute(string, object?)"/>で使用される。</para>
-        /// </remarks>
-        /// <param name="result"></param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        protected override void LoggingExecuteResult(int result, TimeSpan elapsedTime)
-        {
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("result: {Result}, {Time}", result, elapsedTime);
-            }
-        }
+        //        /// <summary>
+        //        /// 実行結果のログ出力。
+        //        /// </summary>
+        //        /// <remarks>
+        //        /// <para><see cref="IDatabaseExecutor.Execute(string, object?)"/>で使用される。</para>
+        //        /// </remarks>
+        //        /// <param name="result"></param>
+        //        /// <param name="startUtcTime"></param>
+        //        /// <param name="endUtcTime"></param>
+        //        protected override void LoggingExecuteResult(int result, TimeSpan elapsedTime)
+        //        {
+        //            if(Logger.IsEnabled(LogLevel.Trace)) {
+        //                Logger.LogTrace("result: {Result}, {Time}", result, elapsedTime);
+        //            }
+        //        }
 
-        /// <summary>
-        /// 問い合わせ結果のログ出力。
-        /// </summary>
-        /// <remarks>
-        /// <para><see cref="IDatabaseReader.GetDataTable(string, object?)"/>で使用される。</para>
-        /// </remarks>
-        /// <param name="table"></param>
-        /// <param name="startUtcTime"></param>
-        /// <param name="endUtcTime"></param>
-        protected override void LoggingDataTable(DataTable table, TimeSpan elapsedTime)
-        {
-            if(Logger.IsEnabled(LogLevel.Trace)) {
-                Logger.LogTrace("table: {TableName} -> {ColumnsCount} * {RowsCount} = {Count}, {Time}", table.TableName, table.Columns.Count, table.Rows.Count, table.Columns.Count * table.Rows.Count, elapsedTime);
-            }
-        }
+        //        /// <summary>
+        //        /// 問い合わせ結果のログ出力。
+        //        /// </summary>
+        //        /// <remarks>
+        //        /// <para><see cref="IDatabaseReader.GetDataTable(string, object?)"/>で使用される。</para>
+        //        /// </remarks>
+        //        /// <param name="table"></param>
+        //        /// <param name="startUtcTime"></param>
+        //        /// <param name="endUtcTime"></param>
+        //        protected override void LoggingDataTable(DataTable table, TimeSpan elapsedTime)
+        //        {
+        //            if(Logger.IsEnabled(LogLevel.Trace)) {
+        //                Logger.LogTrace("table: {TableName} -> {ColumnsCount} * {RowsCount} = {Count}, {Time}", table.TableName, table.Columns.Count, table.Rows.Count, table.Columns.Count * table.Rows.Count, elapsedTime);
+        //            }
+        //        }
 
         #endregion
     }

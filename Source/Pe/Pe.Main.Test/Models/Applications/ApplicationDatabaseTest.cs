@@ -1,18 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.CommonTest;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
-using ContentTypeTextNet.Pe.Library.DependencyInjection;
-using Dapper;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
-using Xunit;
 using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
+using Dapper;
+using Xunit;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
 {
@@ -76,47 +67,47 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
         #endregion
     }
 
-    public class ApplicationDatabaseAccessorTest()
-    {
-        #region function
+    //public class ApplicationDatabaseAccessorTest()
+    //{
+    //    #region function
 
-        private (ApplicationDatabaseAccessor accessor, MockLog log) CreateAppDB(LogLevel logLevel)
-        {
-            var factory = new ApplicationDatabaseFactory(true, false);
-            var mockLog = MockLog.Create(logLevel);
-            var accessor = new ApplicationDatabaseAccessor(factory, mockLog.Factory.Object);
-            return (accessor, mockLog);
-        }
+    //    private (ApplicationDatabaseAccessor accessor, MockLog log) CreateAppDB(LogLevel logLevel)
+    //    {
+    //        var factory = new ApplicationDatabaseFactory(true, false);
+    //        var mockLog = MockLog.Create(logLevel);
+    //        var accessor = new ApplicationDatabaseAccessor(factory, mockLog.Factory.Object);
+    //        return (accessor, mockLog);
+    //    }
 
-        [Fact]
-        public void LoggingStatement_Disabled_Test()
-        {
-            var test = CreateAppDB(LogLevel.Debug);
-            var actual = test.accessor.GetScalar<long>("select 1 + 2");
-            test.log.VerifyLogNever();
-            Assert.Equal(3, actual);
-        }
+    //    [Fact]
+    //    public void LoggingStatement_Disabled_Test()
+    //    {
+    //        var test = CreateAppDB(LogLevel.Debug);
+    //        var actual = test.accessor.GetScalar<long>("select 1 + 2");
+    //        test.log.VerifyLogNever();
+    //        Assert.Equal(3, actual);
+    //    }
 
-        [Fact]
-        public void LoggingStatement_Enabled_WithoutParameter_Test()
-        {
-            var test = CreateAppDB(LogLevel.Trace);
-            var actual = test.accessor.GetScalar<long>("select 1 + 2");
-            test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", Moq.Times.Once());
-            test.log.VerifyMessageContains(LogLevel.Trace, "[PARAM]", Moq.Times.Never());
-            Assert.Equal(3, actual);
-        }
+    //    [Fact]
+    //    public void LoggingStatement_Enabled_WithoutParameter_Test()
+    //    {
+    //        var test = CreateAppDB(LogLevel.Trace);
+    //        var actual = test.accessor.GetScalar<long>("select 1 + 2");
+    //        test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", Moq.Times.Once());
+    //        test.log.VerifyMessageContains(LogLevel.Trace, "[PARAM]", Moq.Times.Never());
+    //        Assert.Equal(3, actual);
+    //    }
 
-        [Fact]
-        public void LoggingStatement_Enabled_WithParameter_Test()
-        {
-            var test = CreateAppDB(LogLevel.Trace);
-            var actual = test.accessor.GetScalar<long>("select 1 + 2 + @Value", new { Value = 3 });
-            test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", Moq.Times.Once());
-            test.log.VerifyMessageContains(LogLevel.Trace, "[PARAM]", Moq.Times.Once());
-            Assert.Equal(6, actual);
-        }
+    //    [Fact]
+    //    public void LoggingStatement_Enabled_WithParameter_Test()
+    //    {
+    //        var test = CreateAppDB(LogLevel.Trace);
+    //        var actual = test.accessor.GetScalar<long>("select 1 + 2 + @Value", new { Value = 3 });
+    //        test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", Moq.Times.Once());
+    //        test.log.VerifyMessageContains(LogLevel.Trace, "[PARAM]", Moq.Times.Once());
+    //        Assert.Equal(6, actual);
+    //    }
 
-        #endregion
-    }
+    //    #endregion
+    //}
 }
