@@ -66,6 +66,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             ConnectionString = builder.ToString();
         }
 
+        #region property
+
+        public TimeProvider TimeProvider { get; init; } = TimeProvider.System;
+
+        #endregion
+
         #region IDatabaseFactory
 
         /// <inheritdoc cref="IDatabaseFactory.CreateConnection"/>
@@ -98,20 +104,25 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
     /// </summary>
     internal class ApplicationDatabaseAccessor: SqliteAccessor, IMainDatabaseAccessor, ILargeDatabaseAccessor, ITemporaryDatabaseAccessor
     {
-        public ApplicationDatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
+        public ApplicationDatabaseAccessor(ApplicationDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
             : base(databaseFactory, loggerFactory)
         {
+            var loggingMiddleware = new AppLoggingMiddleware(databaseFactory.TimeProvider, LoggerFactory);
+
             MiddlewareCollection = new MiddlewareCollection() {
                 Statements = [
                     new AppStatementMiddleware(Implementation, LoggerFactory),
                 ],
                 ExecuteNonQuerys = [
+                    loggingMiddleware,
                     new AppExecuteNonQueryMiddleware(Implementation, LoggerFactory),
                 ],
                 ExecuteScalars = [
+                    loggingMiddleware,
                     new AppExecuteScalarMiddleware(Implementation, LoggerFactory),
                 ],
                 ExecuteDataReaders = [
+                    loggingMiddleware,
                     new AppExecuteDataReaderMiddleware(Implementation, LoggerFactory),
                 ],
             };
