@@ -74,11 +74,11 @@ namespace ContentTypeTextNet.Pe.Library.Database
         {
             if(isReadonly) {
                 return new ReadOnlyDatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory) {
-                    MiddlewareCollection = MiddlewareCollection,
+                    MiddlewareCollection = MiddlewareCollection.Clone(),
                 };
             }
             return new DatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory) {
-                MiddlewareCollection = MiddlewareCollection,
+                MiddlewareCollection = MiddlewareCollection.Clone(),
             };
         }
 

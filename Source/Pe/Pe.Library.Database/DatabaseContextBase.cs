@@ -27,6 +27,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         protected virtual IDbConnection DbConnection { get; private set; }
         protected IDbTransaction? DbTransaction { get; private set; }
+
+        /// <summary>
+        /// ミドルウェア一覧。
+        /// </summary>
+        /// <remarks>
+        /// <para>トランザクション中は複製されたユニークなものとなる。</para>
+        /// </remarks>
         public MiddlewareCollection MiddlewareCollection { get; set; }
 
         protected ILoggerFactory LoggerFactory { get; }

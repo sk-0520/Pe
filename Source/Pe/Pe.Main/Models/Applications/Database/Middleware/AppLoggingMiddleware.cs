@@ -66,6 +66,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Database.Middleware
                 sb.Append('(');
                 sb.Append(p.DbType);
                 sb.Append(") = ");
+                sb.Append(p.Value);
             }
 
             return sb.ToString();
