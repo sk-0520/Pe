@@ -55,7 +55,8 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"#1067: .NET Core からの Encoding.Default 変更に伴うSJIS固定使用箇所は OS から取得する",
 					},
 					{
 						revision: "",
