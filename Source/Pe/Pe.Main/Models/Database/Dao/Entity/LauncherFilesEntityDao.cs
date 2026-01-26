@@ -1,11 +1,11 @@
 using System;
+using System.Collections.Generic;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
 {
@@ -128,7 +128,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
         {
             var statement = LoadStatement();
             var blocks = new Dictionary<string, string>() {
-                ["OPTION"] = parameters.ContainsKey(Column.Option) ? "ON": string.Empty,
+                ["OPTION"] = parameters.ContainsKey(Column.Option) ? "ON" : string.Empty,
             };
             var processedStatement = ProcessStatement(statement, blocks);
 
@@ -185,7 +185,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
             param[Column.File] = data.Path;
             param[Column.Option] = data.Option;
             param[Column.WorkDirectory] = data.WorkDirectoryPath;
-            param[Column.StandardIoEncoding] = EncodingUtility.ToString(EncodingConverter.DefaultStandardInputOutputEncoding);
+            param[Column.StandardIoEncoding] = EncodingUtility.ToString(EncodingUtility.GetDefaultEncoding());
 
             Context.InsertSingle(statement, param);
         }

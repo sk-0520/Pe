@@ -1,6 +1,7 @@
 using System.Text;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt.Command;
+using ContentTypeTextNet.Pe.PInvoke.Windows;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models.Shell.Vendor.CommandPrompt.Command
@@ -33,6 +34,9 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Shell.Vendor.CommandPrompt.Comm
                 65001, EncodingUtility.UTF8Bom
             },
             {
+                (int)NativeMethods.GetACP(), EncodingUtility.GetDefaultEncoding()
+            },
+            {
                 1200, Encoding.Unicode
             },
             {
@@ -46,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Shell.Vendor.CommandPrompt.Comm
             },
             {
                 932, Encoding.GetEncoding("shift_jis")
-            }
+            },
         };
 
         [Theory]

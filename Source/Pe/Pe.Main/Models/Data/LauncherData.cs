@@ -7,6 +7,7 @@ using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Addon;
+using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Data
@@ -200,7 +201,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         public ShowMode ShowMode { get; set; } = ShowMode.Normal;
         public bool IsEnabledCustomEnvironmentVariable { get; set; }
         public bool IsEnabledStandardInputOutput { get; set; }
-        public Encoding StandardInputOutputEncoding { get; set; } = EncodingConverter.DefaultStandardInputOutputEncoding;
+        public Encoding StandardInputOutputEncoding { get; set; } = EncodingUtility.GetDefaultEncoding();
         public bool RunAdministrator { get; set; }
         #endregion
     }
