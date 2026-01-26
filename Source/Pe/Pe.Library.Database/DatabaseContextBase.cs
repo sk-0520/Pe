@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
+    [SuppressMessage("Low Code Smell", "S4136:Method overloads should be grouped together")]
     public abstract class DatabaseContextBase: DisposerBase, IDatabaseContext
     {
         protected DatabaseContextBase(IDbConnection dbConnection, IDbTransaction? dbTransaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
@@ -145,7 +146,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseAccessor.Query{T}(IDatabaseTransaction?, string, object?, bool)"/>
+        /// <inheritdoc cref="IDatabaseReader.Query{T}(string, object?, bool)"/>
         public virtual IEnumerable<T> Query<T>(string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
@@ -157,7 +158,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseAccessor.QueryAsync{T}(IDatabaseTransaction?, string, object?, bool, CancellationToken)"/>
+        /// <inheritdoc cref="IDatabaseReader.QueryAsync{T}(string, object?, bool, CancellationToken)"/>
         public virtual async Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();

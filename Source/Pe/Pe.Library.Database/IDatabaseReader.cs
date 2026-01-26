@@ -13,6 +13,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
     /// <remarks>
     /// <para>データが変更されるかはDBMS依存となる。シーケンスやファンクション呼び出し・トリガーなどの実装は<see cref="IDatabaseReader"/>からは判定不可。</para>
     /// </remarks>
+    [SuppressMessage("Low Code Smell", "S4136:Method overloads should be grouped together")]
     public interface IDatabaseReader
     {
         #region function
