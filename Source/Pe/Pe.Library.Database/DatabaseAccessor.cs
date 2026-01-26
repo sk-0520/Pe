@@ -73,13 +73,9 @@ namespace ContentTypeTextNet.Pe.Library.Database
         private IDatabaseTransaction BeginTransactionCore(IDbTransaction? transaction, bool isReadonly)
         {
             if(isReadonly) {
-                return new ReadOnlyDatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory) {
-                    MiddlewareCollection = MiddlewareCollection.Clone(),
-                };
+                return new ReadOnlyDatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory);
             }
-            return new DatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory) {
-                MiddlewareCollection = MiddlewareCollection.Clone(),
-            };
+            return new DatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory);
         }
 
 

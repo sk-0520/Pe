@@ -32,9 +32,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
             ThrowIfDisposed();
 
             // SQLite は複数スレッドでトランザクション開くと死ぬのでトランザクション実体なしで仮想的に対応。
-            return new ReadOnlyDatabaseTransaction(BaseDbConnection, null, Implementation, LoggerFactory) {
-                MiddlewareCollection = MiddlewareCollection.Clone(),
-            };
+            return new ReadOnlyDatabaseTransaction(BaseDbConnection, null, Implementation, LoggerFactory);
         }
 
         public override IDatabaseTransaction BeginReadOnlyTransaction(IsolationLevel isolationLevel)

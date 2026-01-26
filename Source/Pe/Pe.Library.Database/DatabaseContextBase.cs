@@ -31,9 +31,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <summary>
         /// ミドルウェア一覧。
         /// </summary>
-        /// <remarks>
-        /// <para>トランザクション中は複製されたユニークなものとなる。</para>
-        /// </remarks>
         public MiddlewareCollection MiddlewareCollection { get; set; }
 
         protected ILoggerFactory LoggerFactory { get; }

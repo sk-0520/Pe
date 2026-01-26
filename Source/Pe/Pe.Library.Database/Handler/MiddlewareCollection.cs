@@ -18,20 +18,6 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         public List<IExecuteDataReaderMiddleware> ExecuteDataReaders { get; init; } = [];
 
         #endregion
-
-        #region function
-
-        public MiddlewareCollection Clone()
-        {
-            return new MiddlewareCollection() {
-                Statements = [.. Statements],
-                ExecuteNonQueries = [.. ExecuteNonQueries],
-                ExecuteScalars = [.. ExecuteScalars],
-                ExecuteDataReaders = [.. ExecuteDataReaders],
-            };
-        }
-
-        #endregion
     }
 
 }
