@@ -146,7 +146,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseReader.Query{T}(string, object?, bool)"/>
         public virtual IEnumerable<T> Query<T>(string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
@@ -158,7 +157,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseReader.QueryAsync{T}(string, object?, bool, CancellationToken)"/>
         public virtual async Task<IEnumerable<T>> QueryAsync<T>(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
@@ -177,7 +175,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseReader.Query(string, object?, bool)"/>
         public virtual IEnumerable<dynamic> Query(string statement, object? parameter, bool buffered)
         {
             ThrowIfDisposed();
@@ -189,7 +186,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseAccessor.QueryAsync{T}(IDatabaseTransaction?, string, object?, bool, CancellationToken)"/>
         public virtual async Task<IEnumerable<dynamic>> QueryAsync(string statement, object? parameter, bool buffered, CancellationToken cancellationToken)
         {
             ThrowIfDisposed();
@@ -208,7 +204,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return result;
         }
 
-        /// <inheritdoc cref="IDatabaseAccessor.QueryFirst{T}(IDatabaseTransaction?, string, object?)"/>
         public virtual T QueryFirst<T>(string statement, object? parameter)
         {
             ThrowIfDisposed();

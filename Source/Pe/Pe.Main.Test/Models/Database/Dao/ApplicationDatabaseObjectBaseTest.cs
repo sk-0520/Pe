@@ -1,18 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
-using ContentTypeTextNet.Pe.Main.Models.Database.Dao;
 using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.Database.Implementations;
+using ContentTypeTextNet.Pe.Main.Models.Database.Dao;
 using Microsoft.Extensions.Logging;
 using Xunit;
-using ContentTypeTextNet.Pe.Library.Database.Implementations;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao
 {
+    [SuppressMessage("Low Code Smell", "S4136:Method overloads should be grouped together")]
     public class ApplicationDatabaseObjectBaseTest
     {
         #region define
@@ -150,10 +151,6 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao
             public IEnumerable<string> LineComments => throw new NotSupportedException();
             public IEnumerable<DatabaseBlockComment> BlockComments => throw new NotSupportedException();
             public DatabaseBlockComment ProcessBodyRange => throw new NotSupportedException();
-            public string PreFormatStatement(string statement)
-            {
-                throw new NotSupportedException();
-            }
 
             public string ToStatementColumnName(string columnName)
             {

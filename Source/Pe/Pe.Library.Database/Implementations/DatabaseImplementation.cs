@@ -35,9 +35,6 @@ namespace ContentTypeTextNet.Pe.Library.Database.Implementations
         /// <inheritdoc cref="IDatabaseImplementation.ProcessBodyRange"/>
         public virtual DatabaseBlockComment ProcessBodyRange { get; } = new DatabaseBlockComment("{{", "}}");
 
-        /// <inheritdoc cref="IDatabaseImplementation.PreFormatStatement(string)"/>
-        public virtual string PreFormatStatement(string statement) => statement;
-
         /// <inheritdoc cref="IDatabaseImplementation.ToStatementTableName(string)"/>
         public virtual string ToStatementTableName(string tableName) => tableName;
         /// <inheritdoc cref="IDatabaseImplementation.ToStatementColumnName(string)"/>
