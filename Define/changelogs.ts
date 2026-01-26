@@ -17,7 +17,13 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						class: "compatibility",
+						subject:
+							"#1067 対応に伴い既存データと新規データで処理が変わります",
+						comments: [
+							"既存データ(SJISで登録られたもの)は今まで通り",
+							"SJIS 前提 OS では処理は変わりません",
+						],
 					},
 					{
 						revision: "",
@@ -57,6 +63,10 @@ const Changelogs: ChangelogVersion[] = [
 						revision: "",
 						subject:
 							"#1067: .NET Core からの Encoding.Default 変更に伴うSJIS固定使用箇所は OS から取得する",
+						comments: [
+							"ユーザー操作の口は未開放なので登録済みの処理は今まで通り",
+							"初回登録時の処理は OS 依存になった",
+						],
 					},
 					{
 						revision: "",
