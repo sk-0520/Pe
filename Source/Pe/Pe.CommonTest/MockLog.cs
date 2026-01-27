@@ -72,9 +72,9 @@ namespace ContentTypeTextNet.Pe.CommonTest
             Logger.DidNotReceive().Log(
                 Arg.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
                 Arg.Any<EventId>(),
-                Arg.Any<Arg.AnyType>(),
+                Arg.Any<object>(),
                 Arg.Any<Exception>(),
-                Arg.Any<Func<Arg.AnyType, Exception?, string>>()
+                Arg.Any<Func<object, Exception?, string>>()
             );
         }
 
@@ -105,9 +105,9 @@ namespace ContentTypeTextNet.Pe.CommonTest
             Logger.Received(times).Log(
                 Arg.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
                 Arg.Any<EventId>(),
-                Arg.Is<Arg.AnyType>(a => predicate(a.ToString()!)),
+                Arg.Is<object>(a => predicate(a.ToString()!)),
                 Arg.Any<Exception>(),
-                Arg.Any<Func<Arg.AnyType, Exception?, string>>()
+                Arg.Any<Func<object, Exception?, string>>()
             );
 
         }
