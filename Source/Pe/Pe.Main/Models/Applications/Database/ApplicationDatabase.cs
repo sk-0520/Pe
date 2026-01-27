@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         public ApplicationDatabaseFactory(FileInfo file, bool foreignKeys, bool isReadOnly)
         {
             var builder = CreateConnectionBuilder();
-            builder.DataSource = ToSafeFile(file).FullName;
+            builder.DataSource = ToSafeFilePath(file);
             builder.ForeignKeys = foreignKeys;
             if(isReadOnly) {
                 builder.ReadOnly = isReadOnly;
