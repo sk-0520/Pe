@@ -29,6 +29,8 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
     <PackageVersion Include="xunit.v3.runner.msbuild" Version="3.2.2" />
+    <PackageVersion Include="NSubstitute" Version="5.3.0" />
+    <PackageVersion Include="NSubstitute.Analyzers.CSharp" Version="1.0.17" />
     <!-- TEST: UI -->
     <PackageVersion Include="Xunit.StaFact" Version="3.0.13" />
     <!-- ビルドツール -->
