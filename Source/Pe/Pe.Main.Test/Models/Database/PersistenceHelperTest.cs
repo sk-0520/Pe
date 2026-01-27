@@ -1,22 +1,15 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.CommonTest;
+using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.Database.Sqlite;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database;
-using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
-using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.CommonTest;
 using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
 using Xunit;
-using ContentTypeTextNet.Pe.Library.Database.Sqlite;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
 {

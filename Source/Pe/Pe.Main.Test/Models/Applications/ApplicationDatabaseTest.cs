@@ -76,7 +76,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
         {
             var factory = new ApplicationDatabaseFactory(true, false);
             var mockLog = MockLog.Create(logLevel);
-            var accessor = new ApplicationDatabaseAccessor(factory, mockLog.Factory.Object);
+            var accessor = new ApplicationDatabaseAccessor(factory, mockLog.Factory);
             return (accessor, mockLog);
         }
 
@@ -94,8 +94,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
         {
             var test = CreateAppDB(LogLevel.Trace);
             var actual = test.accessor.GetScalar<long>("select 1 + 2");
-            test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", Moq.Times.Once());
-            test.log.VerifyMessageContains(LogLevel.Trace, "[PARAMS]", Moq.Times.Once());
+            test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", 1);
+            test.log.VerifyMessageContains(LogLevel.Trace, "[PARAMS]", 1);
             Assert.Equal(3, actual);
         }
 
@@ -104,8 +104,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
         {
             var test = CreateAppDB(LogLevel.Trace);
             var actual = test.accessor.GetScalar<long>("select 1 + 2 + @Value", new { Value = 3 });
-            test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", Moq.Times.Once());
-            test.log.VerifyMessageContains(LogLevel.Trace, "[PARAMS]", Moq.Times.Once());
+            test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", 1);
+            test.log.VerifyMessageContains(LogLevel.Trace, "[PARAMS]", 1);
             Assert.Equal(6, actual);
         }
 
