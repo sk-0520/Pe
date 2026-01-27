@@ -98,7 +98,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "#1070: Moq から NSubstitute に変更する",
+						comments: [
+							"この問題自体はあんま興味なかったけど更新状況的に活発な方に移っておいた方が将来的に良いのでは感があったのでノリで",
+						],
 					},
 					{
 						revision: "",
