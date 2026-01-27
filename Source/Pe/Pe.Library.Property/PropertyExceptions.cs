@@ -5,9 +5,9 @@ using ContentTypeTextNet.Pe.Generator.Throws;
 #else
 // docfx 用ダミー
 [System.AttributeUsage(System.AttributeTargets.Class)]
-file sealed class GenerateExceptionAttribute: System.Attribute
+file sealed class GeneratedExceptionAttribute: System.Attribute
 {
-    public GenerateExceptionAttribute()
+    public GeneratedExceptionAttribute()
     { }
 }
 #endif
@@ -36,15 +36,15 @@ namespace ContentTypeTextNet.Pe.Library.Property
         #endregion
     }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class PropertyCanNotReadException: PropertyCanNotAccessException
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class PropertyCanNotWriteException: PropertyCanNotAccessException
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class PropertyNotFoundException: PropertyException
     { }
 }
