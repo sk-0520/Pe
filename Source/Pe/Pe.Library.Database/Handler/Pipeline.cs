@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         /// 登録されたミドルウェア。
         /// </summary>
         /// <remarks>
-        /// <para>先頭が外側。</para>
+        /// <para>先頭が内側。</para>
         /// </remarks>
         protected List<TMiddleware> Middlewares { get; } = [];
 
