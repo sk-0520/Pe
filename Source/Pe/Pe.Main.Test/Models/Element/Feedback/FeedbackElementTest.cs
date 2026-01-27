@@ -1,29 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Main.Models.Manager;
-using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
-using Xunit;
-using System.Threading;
-using ContentTypeTextNet.Pe.Main.Models.Element.Feedback;
-using ContentTypeTextNet.Pe.Main.Models;
-using ContentTypeTextNet.Pe.Library.Database;
-using System.Data;
-using ContentTypeTextNet.Pe.Library.DependencyInjection;
-using ContentTypeTextNet.Pe.Core.Models.Serialization;
+using System.Net.Http;
 using System.Net.Http.Json;
-using ContentTypeTextNet.Pe.Main.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
+using System.Threading;
+using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.CommonTest;
-using Microsoft.Extensions.Logging;
+using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
+using ContentTypeTextNet.Pe.Main.Models.Data;
+using ContentTypeTextNet.Pe.Main.Models.Element.Feedback;
+using ContentTypeTextNet.Pe.Main.Models.Manager;
+using Microsoft.Extensions.Logging;
+using NSubstitute;
+using Xunit;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Element.Feedback
 {
@@ -43,15 +33,15 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Element.Feedback
             var testIO = TestIO.InitializeMethod(this);
             var applicationConfiguration = Test.GetApplicationConfiguration(testIO);
 
-            var mockCultureService = new Mock<ICultureService>();
-            var mockOrderManager = new Mock<IOrderManager>();
+            var mockCultureService = Substitute.For<ICultureService>();
+            var mockOrderManager = Substitute.For<IOrderManager>();
             var mockLog = MockLog.Create();
 
             var mainDatabaseBarrier = Test.DiContainer.Build<IMainDatabaseBarrier>();
             var databaseStatementLoader = Test.DiContainer.Build<IDatabaseStatementLoader>();
 
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Post), It.IsAny<CancellationToken>()))
+                .SendAsync(Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Post), Arg.Any<CancellationToken>())
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = JsonContent.Create(new FeedbackResponse() {
                         Success = true,
@@ -64,10 +54,10 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Element.Feedback
                 applicationConfiguration.Api,
                 mainDatabaseBarrier,
                 databaseStatementLoader,
-                mockCultureService.Object,
-                mockOrderManager.Object,
+                mockCultureService,
+                mockOrderManager,
                 Test.UserAgentManager,
-                mockLog.Factory.Object
+                mockLog.Factory
             );
             await test.InitializeAsync(CancellationToken.None);
 
@@ -79,7 +69,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Element.Feedback
 
             Assert.Equal(RunningState.End, test.SendStatus.State);
 
-            mockLog.VerifyMessage(LogLevel.Information, "送信完了", Times.Once());
+            mockLog.VerifyMessage(LogLevel.Information, "送信完了", 1);
         }
 
         #endregion

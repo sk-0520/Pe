@@ -1,30 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Mail;
-using System.Text;
+using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Bridge.Plugin;
+using ContentTypeTextNet.Pe.CommonTest;
 using ContentTypeTextNet.Pe.Main.Models;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
+using ContentTypeTextNet.Pe.Main.Models.Data.ServerApi;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Property;
-using ContentTypeTextNet.Pe.CommonTest;
-using Microsoft.CodeAnalysis;
-using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
-using Xunit;
-using System.Net.Http.Json;
-using ContentTypeTextNet.Pe.Main.Models.Data.ServerApi;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using NSubstitute;
+using NSubstitute.ExceptionExtensions;
+using Xunit;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
 {
@@ -52,7 +44,10 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
             var mockLog = MockLog.Create();
             var pluginId = PluginId.NewId();
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Post), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Post),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = JsonContent.Create(new ServerApiResultData<PluginInformationResultData>() {
                         Data = new() {
@@ -72,11 +67,11 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
                 }))
             ;
 
-            var test = new NewVersionChecker(IgnoreApplicationProcessInformation, Test.UserAgentManager, mockLog.Factory.Object);
+            var test = new NewVersionChecker(IgnoreApplicationProcessInformation, Test.UserAgentManager, mockLog.Factory);
             var actual = await test.GetPluginVersionInfoByApiAsync(new Uri("http://localhost.invalid"), pluginId, CancellationToken.None);
             if(expectedIsNull) {
                 Assert.Null(actual);
-                mockLog.VerifyMessageContains(LogLevel.Warning, $"[{pluginId}] {nameof(PluginInformationItemData.PluginName)} can not install, state: {state}", Times.Once());
+                mockLog.VerifyMessageContains(LogLevel.Warning, $"[{pluginId}] {nameof(PluginInformationItemData.PluginName)} can not install, state: {state}", 1);
             } else {
                 Assert.NotNull(actual);
                 mockLog.VerifyLogNever();
@@ -138,7 +133,10 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         public async Task RequestUpdateDataAsync_not_IsSuccessStatusCode_Test(HttpStatusCode httpStatusCode)
         {
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(httpStatusCode)))
             ;
 
@@ -154,7 +152,10 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         public async Task RequestUpdateDataAsync_throw_Test(string json)
         {
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent(json),
                 }))
@@ -220,7 +221,10 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         public async Task RequestUpdateDataAsyncTest(NewVersionData expected, string json)
         {
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent(json)
                 }))
@@ -252,7 +256,10 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         public async Task CheckApplicationNewVersionAsync_not_IsSuccessStatusCode_Test()
         {
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound)))
             ;
             var test = new NewVersionChecker(IgnoreApplicationProcessInformation, Test.UserAgentManager, NullLoggerFactory.Instance);
@@ -267,7 +274,10 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         public async Task CheckApplicationNewVersionAsync_Deserialize_Test(string json)
         {
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent(json),
                 }))
@@ -282,7 +292,10 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         public async Task CheckApplicationNewVersionAsync_not_Platform_Test()
         {
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent(@"
                     {
@@ -315,7 +328,10 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         public async Task CheckApplicationNewVersionAsync_not_MinimumVersion_Test()
         {
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent($@"
                     {{
@@ -348,7 +364,10 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         public async Task CheckApplicationNewVersionAsync_not_Version_Test()
         {
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent($@"
                     {{
@@ -381,7 +400,10 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         public async Task CheckApplicationNewVersionAsyncTest()
         {
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent($@"
                     {{
@@ -427,17 +449,25 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         [Fact]
         public async Task CheckApplicationNewVersionAsync_not200_throw_200_Test()
         {
-            var mockHttpUserAgent = new Mock<IHttpUserAgent>();
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/1")),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.NotFound)))
             ;
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/2")), It.IsAny<CancellationToken>()))
-                .Throws(new Exception())
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/2")),
+                    Arg.Any<CancellationToken>()
+                )
+                .ThrowsAsync(_ => new Exception())
             ;
             Test.MockHttpUserAgent
-                .Setup(a => a.SendAsync(It.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/3")), It.IsAny<CancellationToken>()))
+                .SendAsync(
+                    Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/3")),
+                    Arg.Any<CancellationToken>()
+                )
                 .Returns(Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent($@"
                     {{
@@ -481,8 +511,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         [InlineData("http://localhost.invalid/00000001-0002-0003-0004-000000000005/1.02.003", "http://localhost.invalid/${PLUGIN-ID}/${PLUGIN-VERSION}", "00000001000200030004000000000005", "1.2.3")]
         public void BuildPluginUriTest(string? expectedUrl, string? baseUrl, string pluginId, string pluginVersion)
         {
-            var mockUserAgentManager = new Mock<IUserAgentManager>();
-            var test = new NewVersionChecker(new ApplicationInformation(new Version(1, 2, 3, 4), ProcessArchitecture.ApplicationArchitecture), mockUserAgentManager.Object, NullLoggerFactory.Instance);
+            var mockUserAgentManager = Substitute.For<IUserAgentManager>();
+            var test = new NewVersionChecker(new ApplicationInformation(new Version(1, 2, 3, 4), ProcessArchitecture.ApplicationArchitecture), mockUserAgentManager, NullLoggerFactory.Instance);
             var actual = test.BuildPluginUri(baseUrl!, PluginId.Parse(pluginId), Version.Parse(pluginVersion));
             Assert.Equal(expectedUrl, actual?.ToString());
         }
@@ -540,8 +570,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         [MemberData(nameof(GetPluginNewVersionItem_null_Data))]
         public void GetPluginNewVersionItem_null_Test(Version pluginVersion, IEnumerable<NewVersionItemData> items)
         {
-            var mockUserAgentManager = new Mock<IUserAgentManager>();
-            var test = new NewVersionChecker(new ApplicationInformation(new Version(1, 2, 3, 4), ProcessArchitecture.ApplicationArchitecture), mockUserAgentManager.Object, NullLoggerFactory.Instance);
+            var mockUserAgentManager = Substitute.For<IUserAgentManager>();
+            var test = new NewVersionChecker(new ApplicationInformation(new Version(1, 2, 3, 4), ProcessArchitecture.ApplicationArchitecture), mockUserAgentManager, NullLoggerFactory.Instance);
             var actual = test.GetPluginNewVersionItem(pluginVersion, items);
             Assert.Null(actual);
         }
@@ -568,8 +598,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
                 }
             };
 
-            var mockUserAgentManager = new Mock<IUserAgentManager>();
-            var test = new NewVersionChecker(new ApplicationInformation(new Version(1, 2, 3, 4), ProcessArchitecture.ApplicationArchitecture), mockUserAgentManager.Object, NullLoggerFactory.Instance);
+            var mockUserAgentManager = Substitute.For<IUserAgentManager>();
+            var test = new NewVersionChecker(new ApplicationInformation(new Version(1, 2, 3, 4), ProcessArchitecture.ApplicationArchitecture), mockUserAgentManager, NullLoggerFactory.Instance);
             var actual = test.GetPluginNewVersionItem(pluginVersion, items);
             Assert.NotNull(actual);
             Assert.Equal(new Version(1, 2, 3, 7), actual.Version);

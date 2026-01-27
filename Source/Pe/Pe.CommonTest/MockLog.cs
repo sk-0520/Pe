@@ -34,7 +34,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         {
             var mockLogger = Substitute.For<ILogger>();
             mockLogger.IsEnabled(default)
-                .ReturnsForAnyArgs(true)
+                .Returns(a => logLevel == LogLevel.None ? true : a.Arg<LogLevel>() == logLevel)
             ;
 
             var mockLoggerFactory = Substitute.For<ILoggerFactory>();
