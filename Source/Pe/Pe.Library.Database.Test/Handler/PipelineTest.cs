@@ -1,5 +1,5 @@
 using ContentTypeTextNet.Pe.Library.Database.Handler;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Test.Handler
@@ -11,33 +11,45 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Handler
         [Fact]
         public void Build_Use_Inner_Middle_Outer_Test()
         {
-            var middlewareOuter = new Mock<IStatementMiddleware>();
-            middlewareOuter.Name = nameof(middlewareOuter);
+            var middlewareOuter = Substitute.For<IStatementMiddleware>();
             middlewareOuter
-                .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Outer"))
+                .Next(Arg.Any<IStatementHandler>(), Arg.Any<string>())
+                .Returns(callInfo => {
+                    var handler = callInfo.Arg<IStatementHandler>();
+                    var input = callInfo.Arg<string>();
+                    return handler.Invoke(input + "+Outer");
+                })
             ;
-            var middlewareMiddle = new Mock<IStatementMiddleware>();
-            middlewareMiddle.Name = nameof(middlewareMiddle);
+            var middlewareMiddle = Substitute.For<IStatementMiddleware>();
             middlewareMiddle
-                .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Middle"))
+                .Next(Arg.Any<IStatementHandler>(), Arg.Any<string>())
+                .Returns(callInfo => {
+                    var handler = callInfo.Arg<IStatementHandler>();
+                    var input = callInfo.Arg<string>();
+                    return handler.Invoke(input + "+Middle");
+                })
             ;
-            var middlewareInner = new Mock<IStatementMiddleware>();
-            middlewareInner.Name = nameof(middlewareInner);
+            var middlewareInner = Substitute.For<IStatementMiddleware>();
             middlewareInner
-                .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Inner"))
+                .Next(Arg.Any<IStatementHandler>(), Arg.Any<string>())
+                  .Returns(callInfo => {
+                      var handler = callInfo.Arg<IStatementHandler>();
+                      var input = callInfo.Arg<string>();
+                      return handler.Invoke(input + "+Inner");
+                  })
             ;
-            var process = new Mock<IStatementHandler>();
-            process.Setup(a => a.Invoke(It.IsAny<string>()))
-                .Returns((string input) => input + "+Process")
+            var process = Substitute.For<IStatementHandler>();
+            process.Invoke(Arg.Any<string>())
+                .Returns(callInfo => {
+                    var input = callInfo.Arg<string>();
+                    return input + "+Process";
+                })
             ;
             var pipeline = new StatementPipeline();
-            pipeline.Use(middlewareOuter.Object);
-            pipeline.Use(middlewareMiddle.Object);
-            pipeline.Use(middlewareInner.Object);
-            var handler = pipeline.Build(process.Object);
+            pipeline.Use(middlewareOuter);
+            pipeline.Use(middlewareMiddle);
+            pipeline.Use(middlewareInner);
+            var handler = pipeline.Build(process);
             var actual = handler.Invoke("input");
             Assert.Equal("input+Outer+Middle+Inner+Process", actual);
         }
@@ -45,32 +57,47 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Handler
         [Fact]
         public void Build_UseRange_Inner_Middle_Outer_Test()
         {
-            var middlewareOuter = new Mock<IStatementMiddleware>();
+            var middlewareOuter = Substitute.For<IStatementMiddleware>();
             middlewareOuter
-                .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Outer"))
+                .Next(Arg.Any<IStatementHandler>(), Arg.Any<string>())
+                .Returns(callInfo => {
+                    var handler = callInfo.Arg<IStatementHandler>();
+                    var input = callInfo.Arg<string>();
+                    return handler.Invoke(input + "+Outer");
+                })
             ;
-            var middlewareMiddle = new Mock<IStatementMiddleware>();
+            var middlewareMiddle = Substitute.For<IStatementMiddleware>();
             middlewareMiddle
-                .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Middle"))
+                .Next(Arg.Any<IStatementHandler>(), Arg.Any<string>())
+                .Returns(callInfo => {
+                    var handler = callInfo.Arg<IStatementHandler>();
+                    var input = callInfo.Arg<string>();
+                    return handler.Invoke(input + "+Middle");
+                })
             ;
-            var middlewareInner = new Mock<IStatementMiddleware>();
+            var middlewareInner = Substitute.For<IStatementMiddleware>();
             middlewareInner
-                .Setup(a => a.Next(It.IsAny<IStatementHandler>(), It.IsAny<string>()))
-                .Returns((IStatementHandler handler, string input) => handler.Invoke(input + "+Inner"))
+                .Next(Arg.Any<IStatementHandler>(), Arg.Any<string>())
+                  .Returns(callInfo => {
+                      var handler = callInfo.Arg<IStatementHandler>();
+                      var input = callInfo.Arg<string>();
+                      return handler.Invoke(input + "+Inner");
+                  })
             ;
-            var process = new Mock<IStatementHandler>();
-            process.Setup(a => a.Invoke(It.IsAny<string>()))
-                .Returns((string input) => input + "+Process")
+            var process = Substitute.For<IStatementHandler>();
+            process.Invoke(Arg.Any<string>())
+                .Returns(callInfo => {
+                    var input = callInfo.Arg<string>();
+                    return input + "+Process";
+                })
             ;
             var pipeline = new StatementPipeline();
             pipeline.UseRange([
-                middlewareOuter.Object,
-                middlewareMiddle.Object,
-                middlewareInner.Object,
+                middlewareOuter,
+                middlewareMiddle,
+                middlewareInner,
             ]);
-            var handler = pipeline.Build(process.Object);
+            var handler = pipeline.Build(process);
             var actual = handler.Invoke("input");
             Assert.Equal("input+Outer+Middle+Inner+Process", actual);
         }
