@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-using Moq;
+using NSubstitute;
 
 namespace ContentTypeTextNet.Pe.CommonTest
 {
@@ -14,7 +10,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
     /// </summary>
     public class MockLog
     {
-        public MockLog(Mock<ILoggerFactory> loggerFactory, Mock<ILogger> logger)
+        public MockLog(ILoggerFactory loggerFactory, ILogger logger)
         {
             Factory = loggerFactory;
             Logger = logger;
@@ -22,8 +18,8 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         #region property
 
-        public Mock<ILoggerFactory> Factory { get; }
-        public Mock<ILogger> Logger { get; }
+        public ILoggerFactory Factory { get; }
+        public ILogger Logger { get; }
 
         #endregion
 
@@ -36,16 +32,15 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// <returns></returns>
         public static MockLog Create(LogLevel logLevel = LogLevel.None)
         {
-            var mockLogger = new Mock<ILogger>();
-            mockLogger
-                .Setup(a => a.IsEnabled(logLevel))
-                .Returns(true)
+            var mockLogger = Substitute.For<ILogger>();
+            mockLogger.IsEnabled(default)
+                .ReturnsForAnyArgs(true)
             ;
 
-            var mockLoggerFactory = new Mock<ILoggerFactory>();
+            var mockLoggerFactory = Substitute.For<ILoggerFactory>();
             mockLoggerFactory
-                .Setup(a => a.CreateLogger(It.IsAny<string>()))
-                .Returns(() => mockLogger.Object)
+                .CreateLogger(Arg.Any<string>())
+                .ReturnsForAnyArgs(mockLogger)
             ;
 
             return new MockLog(mockLoggerFactory, mockLogger);
@@ -56,16 +51,16 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// </summary>
         public void VerifyFactoryNever()
         {
-            Factory.Verify(a => a.CreateLogger(It.IsAny<string>()), Times.Never());
+            Factory.DidNotReceive().CreateLogger(Arg.Any<string>());
         }
 
         /// <summary>
         /// <see cref="Factory"/> が呼び出された。
         /// </summary>
         /// <param name="times"></param>
-        public void VerifyFactory(Times times)
+        public void VerifyFactory(int times)
         {
-            Factory.Verify(a => a.CreateLogger(It.IsAny<string>()), times);
+            Factory.Received(times).CreateLogger(Arg.Any<string>());
         }
 
         /// <summary>
@@ -74,14 +69,12 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// <param name="logLevel">対象ログレベル。<see cref="LogLevel.None"/>は全てを指す。</param>
         public void VerifyLogNever(LogLevel logLevel = LogLevel.None)
         {
-            Logger.Verify(
-                a => a.Log(
-                    It.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
-                    It.IsAny<EventId>(),
-                    It.IsAny<It.IsAnyType>(),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-                Times.Never()
+            Logger.DidNotReceive().Log(
+                Arg.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
+                Arg.Any<EventId>(),
+                Arg.Any<Arg.AnyType>(),
+                Arg.Any<Exception>(),
+                Arg.Any<Func<Arg.AnyType, Exception?, string>>()
             );
         }
 
@@ -90,16 +83,14 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// </summary>
         /// <param name="logLevel">対象ログレベル。<see cref="LogLevel.None"/>は全てを指す。</param>
         /// <param name="times"></param>
-        public void VerifyLog(LogLevel logLevel, Times times)
+        public void VerifyLog(LogLevel logLevel, int times)
         {
-            Logger.Verify(
-                a => a.Log(
-                    It.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
-                    It.IsAny<EventId>(),
-                    It.IsAny<It.IsAnyType>(),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()),
-                times
+            Logger.Received(times).Log(
+                Arg.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
+                Arg.Any<EventId>(),
+                Arg.Any<Arg.AnyType>(),
+                Arg.Any<Exception>(),
+                Arg.Any<Func<Arg.AnyType, Exception?, string>>()
             );
         }
 
@@ -109,51 +100,49 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// <param name="logLevel">対象ログレベル。<see cref="LogLevel.None"/>は全てを指す。</param>
         /// <param name="predicate">判定処理。</param>
         /// <param name="times"></param>
-        public void VerifyMessagePredicate(LogLevel logLevel, Predicate<string> predicate, Times times)
+        public void VerifyMessagePredicate(LogLevel logLevel, Predicate<string> predicate, int times)
         {
-            Logger.Verify(
-                a => a.Log(
-                    It.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((a, _) => predicate(a.ToString()!)),
-                    It.IsAny<Exception>(),
-                    It.IsAny<Func<It.IsAnyType, Exception?, string>>()
-                ),
-                times
+            Logger.Received(times).Log(
+                Arg.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
+                Arg.Any<EventId>(),
+                Arg.Is<Arg.AnyType>(a => predicate(a.ToString()!)),
+                Arg.Any<Exception>(),
+                Arg.Any<Func<Arg.AnyType, Exception?, string>>()
             );
+
         }
 
         /// <inheritdoc cref="VerifyMessagePredicate" />
         /// <param name="message">完全一致となるメッセージ。</param>
-        public void VerifyMessage(LogLevel logLevel, string message, Times times)
+        public void VerifyMessage(LogLevel logLevel, string message, int times)
         {
             VerifyMessagePredicate(logLevel, a => message == a, times);
         }
 
         /// <inheritdoc cref="VerifyMessagePredicate" />
         /// <param name="message">前方一致となるメッセージ。</param>
-        public void VerifyMessageStartsWith(LogLevel logLevel, string message, Times times)
+        public void VerifyMessageStartsWith(LogLevel logLevel, string message, int times)
         {
             VerifyMessagePredicate(logLevel, a => a.StartsWith(message), times);
         }
 
         /// <inheritdoc cref="VerifyMessagePredicate" />
         /// <param name="message">後方一致となるメッセージ。</param>
-        public void VerifyMessageEndsWith(LogLevel logLevel, string message, Times times)
+        public void VerifyMessageEndsWith(LogLevel logLevel, string message, int times)
         {
             VerifyMessagePredicate(logLevel, a => a.EndsWith(message), times);
         }
 
         /// <inheritdoc cref="VerifyMessagePredicate" />
         /// <param name="message">部分一致となるメッセージ。</param>
-        public void VerifyMessageContains(LogLevel logLevel, string message, Times times)
+        public void VerifyMessageContains(LogLevel logLevel, string message, int times)
         {
             VerifyMessagePredicate(logLevel, a => a.Contains(message, StringComparison.Ordinal), times);
         }
 
         /// <inheritdoc cref="VerifyMessagePredicate" />
         /// <param name="regex">メッセージに対する一致パターン。</param>
-        public void VerifyMessageRegex(LogLevel logLevel, Regex regex, Times times)
+        public void VerifyMessageRegex(LogLevel logLevel, Regex regex, int times)
         {
             VerifyMessagePredicate(logLevel, a => regex.IsMatch(a), times);
         }
