@@ -56,6 +56,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         public virtual THandler Build(THandler process)
         {
             var handler = process;
+
             foreach(var middleware in Middlewares) {
                 handler = CreateChainHandler(middleware, handler);
             }
