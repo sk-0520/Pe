@@ -8,56 +8,81 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
     {
         #region function
 
+        public static TheoryData<uint, Color> ConvertRawColorFromColorData => new() {
+            {
+                0xff000000,
+                Color.FromArgb(0xff, 0x00, 0x00, 0x00)
+            },
+            {
+                0x00ff0000,
+                Color.FromArgb(0x00, 0xff, 0x00, 0x00)
+            },
+            {
+                0x0000ff00,
+                Color.FromArgb(0x00, 0x00, 0xff, 0x00)
+            },
+            {
+                0x000000ff,
+                Color.FromArgb(0x00, 0x00, 0x00, 0xff)
+            },
+        };
+
         [Theory]
-        [InlineData(0xff000000, 0xff, 0x00, 0x00, 0x00)]
-        [InlineData(0x00ff0000, 0x00, 0xff, 0x00, 0x00)]
-        [InlineData(0x0000ff00, 0x00, 0x00, 0xff, 0x00)]
-        [InlineData(0x000000ff, 0x00, 0x00, 0x00, 0xff)]
-        public void ConvertRawColorFromColorTest(uint expected, byte a, byte r, byte g, byte b)
+        [MemberData(nameof(ConvertRawColorFromColorData))]
+        public void ConvertRawColorFromColorTest(uint expected, Color color)
         {
-            var color = Color.FromArgb(a, r, g, b);
             var actual = MediaUtility.ConvertRawColorFromColor(color);
 
             Assert.Equal(expected, actual);
-            Assert.Equal(color.A, a);
-            Assert.Equal(color.R, r);
-            Assert.Equal(color.G, g);
-            Assert.Equal(color.B, b);
         }
 
+        public static TheoryData<Color, uint> ConvertColorFromRawColorData => new() {
+            {
+                Color.FromArgb(0xff, 0x00, 0x00, 0x00),
+                0xff000000
+            },
+            {
+                Color.FromArgb(0x00, 0xff, 0x00, 0x00),
+                0x00ff0000
+            },
+            {
+                Color.FromArgb(0x00, 0x00, 0xff, 0x00),
+                0x0000ff00
+            },
+            {
+                Color.FromArgb(0x00, 0x00, 0x00, 0xff),
+                0x000000ff
+            },
+        };
+
         [Theory]
-        [InlineData(0xff, 0x00, 0x00, 0x00, 0xff000000)]
-        [InlineData(0x00, 0xff, 0x00, 0x00, 0x00ff0000)]
-        [InlineData(0x00, 0x00, 0xff, 0x00, 0x0000ff00)]
-        [InlineData(0x00, 0x00, 0x00, 0xff, 0x000000ff)]
-        public void ConvertColorFromRawColorTest(byte expectedA, byte expectedR, byte expectedG, byte expectedB, uint rawColor)
+        [MemberData(nameof(ConvertColorFromRawColorData))]
+        public void ConvertColorFromRawColorTest(Color expected, uint rawColor)
         {
             var actual = MediaUtility.ConvertColorFromRawColor(rawColor);
 
-            Assert.Equal(expectedR, actual.R);
-            Assert.Equal(expectedG, actual.G);
-            Assert.Equal(expectedB, actual.B);
-            Assert.Equal(expectedA, actual.A);
+            Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(
-            0x00, 0x00, 0x00, 0x00,
-            0x00, 0xff, 0xff, 0xff
-        )]
-        [InlineData(
-            0x00, 0xff, 0xff, 0xff,
-            0x00, 0x00, 0x00, 0x00
-        )]
-        [InlineData(
-            0x00, 0x10, 0xff, 0xff,
-            0x00, 0xef, 0x00, 0x00
-        )]
-        public void GetNegativeColorTest(byte expectedA, byte expectedR, byte expectedG, byte expectedB, byte a, byte r, byte g, byte b)
-        {
-            var expected = Color.FromArgb(expectedA, expectedR, expectedG, expectedB);
-            var color = Color.FromArgb(a, r, g, b);
+        public static TheoryData<Color, Color> GetNegativeColorData => new() {
+            {
+                Color.FromArgb(0x00, 0x00, 0x00, 0x00),
+                Color.FromArgb(0x00, 0xff, 0xff, 0xff)
+            },
+            {
+                Color.FromArgb(0x00, 0xff, 0xff, 0xff),
+                Color.FromArgb(0x00, 0x00, 0x00, 0x00)
+            },
+            {
+                Color.FromArgb(0x00, 0x10, 0xff, 0xff),
+                Color.FromArgb(0x00, 0xef, 0x00, 0x00)
+            },
+        };
 
+        [Theory]
+        [MemberData(nameof(GetNegativeColorData))]
+        public void GetNegativeColorTest(Color expected, Color color)
+        {
             var actual = MediaUtility.GetNegativeColor(color);
 
             Assert.Equal(expected, actual);
@@ -80,26 +105,27 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
 
         [Theory]
         [MemberData(nameof(GetComplementaryColorData))]
-        public void GetComplementaryColorTest(Color expected, Color input)
+        public void GetComplementaryColorTest(Color expected, Color color)
         {
-            var actual = MediaUtility.GetComplementaryColor(input);
+            var actual = MediaUtility.GetComplementaryColor(color);
             Assert.Equal(expected, actual);
         }
 
-        [Theory]
-        [InlineData(
-            MediaUtility.Opaque, 0xff, 0xff, 0xff,
-            MediaUtility.Opaque, 0x00, 0x00, 0x00
-        )]
-        [InlineData(
-            MediaUtility.Opaque, 0x00, 0x00, 0x00,
-            MediaUtility.Opaque, 0xff, 0xff, 0xff
-        )]
-        public void GetAutoColorTest(byte expectedA, byte expectedR, byte expectedG, byte expectedB, byte a, byte r, byte g, byte b)
-        {
-            var expected = Color.FromArgb(expectedA, expectedR, expectedG, expectedB);
-            var color = Color.FromArgb(a, r, g, b);
+        public static TheoryData<Color, Color> GetAutoColorData => new() {
+            {
+                Color.FromArgb(MediaUtility.Opaque, 0xff, 0xff, 0xff),
+                Color.FromArgb(MediaUtility.Opaque, 0x00, 0x00, 0x00)
+            },
+            {
+                Color.FromArgb(MediaUtility.Opaque, 0x00, 0x00, 0x00),
+                Color.FromArgb(MediaUtility.Opaque, 0xff, 0xff, 0xff)
+            },
+        };
 
+        [Theory]
+        [MemberData(nameof(GetAutoColorData))]
+        public void GetAutoColorTest(Color expected, Color color)
+        {
             var actual = MediaUtility.GetAutoColor(color);
 
             Assert.Equal(expected, actual);
