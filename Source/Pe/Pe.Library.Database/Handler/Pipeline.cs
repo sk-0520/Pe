@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         /// ミドルウェア登録。
         /// </summary>
         /// <param name="middleware">登録ミドルウェア。</param>
-        /// <remarks>外側に登録されるイメージ。</remarks>
+        /// <remarks>内側に登録されるイメージ。</remarks>
         public void Use(TMiddleware middleware)
         {
             Middlewares.Insert(0, middleware);
@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         /// <summary>
         /// ミドルウェア連続登録。
         /// </summary>
-        /// <param name="middlewares">登録ミドルウェア一覧。先頭が外側になる想定。</param>
+        /// <param name="middlewares">登録ミドルウェア一覧。先頭が内側になる想定。</param>
         public void UseRange(IEnumerable<TMiddleware> middlewares)
         {
             Middlewares.InsertRange(0, middlewares.Reverse());
