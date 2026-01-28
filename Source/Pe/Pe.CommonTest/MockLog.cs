@@ -34,7 +34,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         {
             var mockLogger = Substitute.For<ILogger>();
             mockLogger.IsEnabled(default)
-                .Returns(a => logLevel == LogLevel.None ? true : a.Arg<LogLevel>() == logLevel)
+                .Returns(a => logLevel == LogLevel.None || a.Arg<LogLevel>() == logLevel)
             ;
 
             var mockLoggerFactory = Substitute.For<ILoggerFactory>();
@@ -70,7 +70,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         public void VerifyLogNever(LogLevel logLevel = LogLevel.None)
         {
             Logger.DidNotReceive().Log(
-                Arg.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
+                Arg.Is<LogLevel>(a => logLevel == LogLevel.None || a == logLevel),
                 Arg.Any<EventId>(),
                 Arg.Any<object>(),
                 Arg.Any<Exception>(),
@@ -86,7 +86,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         public void VerifyLog(LogLevel logLevel, int times)
         {
             Logger.Received(times).Log(
-                Arg.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
+                Arg.Is<LogLevel>(a => logLevel == LogLevel.None || a == logLevel),
                 Arg.Any<EventId>(),
                 Arg.Any<Arg.AnyType>(),
                 Arg.Any<Exception>(),
@@ -103,7 +103,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         public void VerifyMessagePredicate(LogLevel logLevel, Predicate<string> predicate, int times)
         {
             Logger.Received(times).Log(
-                Arg.Is<LogLevel>(a => logLevel == LogLevel.None ? true : a == logLevel),
+                Arg.Is<LogLevel>(a => logLevel == LogLevel.None || a == logLevel),
                 Arg.Any<EventId>(),
                 Arg.Is<object>(a => predicate(a.ToString()!)),
                 Arg.Any<Exception>(),
