@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Handler
 {
@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         /// 登録されたミドルウェア。
         /// </summary>
         /// <remarks>
-        /// <para>先頭が内側。</para>
+        /// <para>先頭が外側。</para>
         /// </remarks>
         protected List<TMiddleware> Middlewares { get; } = [];
 
@@ -32,16 +32,16 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         /// <remarks>内側に登録されるイメージ。</remarks>
         public void Use(TMiddleware middleware)
         {
-            Middlewares.Insert(0, middleware);
+            Middlewares.Add(middleware);
         }
 
         /// <summary>
         /// ミドルウェア連続登録。
         /// </summary>
-        /// <param name="middlewares">登録ミドルウェア一覧。先頭が内側になる想定。</param>
+        /// <param name="middlewares">登録ミドルウェア一覧。先頭が外側になる想定。</param>
         public void UseRange(IEnumerable<TMiddleware> middlewares)
         {
-            Middlewares.InsertRange(0, middlewares.Reverse());
+            Middlewares.AddRange(middlewares);
         }
 
         #endregion
@@ -57,7 +57,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         {
             var handler = process;
 
-            foreach(var middleware in Middlewares) {
+            var middlewares = CollectionsMarshal.AsSpan(Middlewares);
+            for(var i = middlewares.Length - 1; i >= 0; i--) {
+                var middleware = middlewares[i];
                 handler = CreateChainHandler(middleware, handler);
             }
 

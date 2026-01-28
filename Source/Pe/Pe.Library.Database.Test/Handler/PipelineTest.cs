@@ -32,14 +32,15 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Handler
             var middlewareInner = Substitute.For<IStatementMiddleware>();
             middlewareInner
                 .Next(Arg.Any<IStatementHandler>(), Arg.Any<string>())
-                  .Returns(callInfo => {
-                      var handler = callInfo.Arg<IStatementHandler>();
-                      var input = callInfo.Arg<string>();
-                      return handler.Invoke(input + "+Inner");
-                  })
+                .Returns(callInfo => {
+                    var handler = callInfo.Arg<IStatementHandler>();
+                    var input = callInfo.Arg<string>();
+                    return handler.Invoke(input + "+Inner");
+                })
             ;
             var process = Substitute.For<IStatementHandler>();
-            process.Invoke(Arg.Any<string>())
+            process
+                .Invoke(Arg.Any<string>())
                 .Returns(callInfo => {
                     var input = callInfo.Arg<string>();
                     return input + "+Process";
@@ -78,14 +79,15 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Handler
             var middlewareInner = Substitute.For<IStatementMiddleware>();
             middlewareInner
                 .Next(Arg.Any<IStatementHandler>(), Arg.Any<string>())
-                  .Returns(callInfo => {
-                      var handler = callInfo.Arg<IStatementHandler>();
-                      var input = callInfo.Arg<string>();
-                      return handler.Invoke(input + "+Inner");
-                  })
+                .Returns(callInfo => {
+                    var handler = callInfo.Arg<IStatementHandler>();
+                    var input = callInfo.Arg<string>();
+                    return handler.Invoke(input + "+Inner");
+                })
             ;
             var process = Substitute.For<IStatementHandler>();
-            process.Invoke(Arg.Any<string>())
+            process
+                .Invoke(Arg.Any<string>())
                 .Returns(callInfo => {
                     var input = callInfo.Arg<string>();
                     return input + "+Process";
