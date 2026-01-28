@@ -77,6 +77,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
 
         #region IDisposable
 
+        // ここの構造わかんねぇなぁ！
         protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
