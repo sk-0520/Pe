@@ -14,7 +14,7 @@ namespace ContentTypeTextNet.Pe.Core.Compatibility.Forms
     public class CompatibleFormWindow: WinForms.IWin32Window, IWindowsHandle
     {
         /// <summary>
-        /// ,生成。
+        /// 生成。
         /// </summary>
         /// <param name="window"></param>
         public CompatibleFormWindow(Window window)
