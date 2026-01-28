@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Core.Models
@@ -27,7 +23,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
         public void Report(double value)
         {
-            Logger.LogDebug("{0}", value);
+            Logger.LogDebug("{Value}", value);
         }
 
         #endregion
@@ -53,7 +49,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
         public void Report(string value)
         {
-            Logger.LogDebug("{0}", value);
+            Logger.LogDebug("{Value}", value);
         }
 
         #endregion
