@@ -1,6 +1,5 @@
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.Common;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models
@@ -61,6 +60,29 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
 
             var actual = MediaUtility.GetNegativeColor(color);
 
+            Assert.Equal(expected, actual);
+        }
+
+        public static TheoryData<Color, Color> GetComplementaryColorData => new() {
+            {
+                Color.FromArgb(0x00, 0x01, 0x02, 0x03),
+                Color.FromArgb(0x00, 0x03, 0x02, 0x01)
+            },
+            {
+                Color.FromArgb(0x80, 0x10, 0x20, 0x30),
+                Color.FromArgb(0x80, 0x30, 0x20, 0x10)
+            },
+            {
+                Color.FromArgb(0xff, 0x10, 0x10, 0x10),
+                Color.FromArgb(0xff, 0x10, 0x10, 0x10)
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(GetComplementaryColorData))]
+        public void GetComplementaryColorTest(Color expected, Color input)
+        {
+            var actual = MediaUtility.GetComplementaryColor(input);
             Assert.Equal(expected, actual);
         }
 
