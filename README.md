@@ -26,6 +26,13 @@ Pe は Windows 10 以上で動作するデスクトップユーティリティ�
 * 自動で取得するには[こちら](https://github.com/sk-0520/Pe.Installer/releases/latest/download/Pe.Installer.exe) ※別プロジェクトのインストーラ
 * 手動で取得するには[リリース](https://github.com/sk-0520/Pe/releases)を参照
 
+## 開発版
+
+| CPU | URL |
+|---|---|
+| x64 | https://nightly.link/sk-0520/Pe/workflows/build-ci-only/next/Pe_x64.zip |
+| x86 | https://nightly.link/sk-0520/Pe/workflows/build-ci-only/next/Pe_x86.zip |
+
 ## 注意
 
 * 0.9.0 以前(正しいコミットだと `6bcf1830cc3aa5392200bb285888ead7516f2a65` くらい)は必要 DLL を削除したため基本的に戻し不可

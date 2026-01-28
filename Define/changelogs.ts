@@ -27,7 +27,7 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "README に開発版成果物を追加",
 					},
 					{
 						revision: "",
