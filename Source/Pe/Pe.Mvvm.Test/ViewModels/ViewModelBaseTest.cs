@@ -1,4 +1,7 @@
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Windows.Input;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Mvvm.Commands;
 using ContentTypeTextNet.Pe.Mvvm.ViewModels;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -315,6 +318,456 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
             Assert.True(vm.C.CanExecute(default));
         }
 
+        private class SimpleVariableValidateViewModel: ViewModelBase
+        {
+            public SimpleVariableValidateViewModel(PropertyMode propertyMode)
+                : base(propertyMode, NullLoggerFactory.Instance)
+            { }
+
+            #region property
+
+            [MaxLength(3)]
+            public string Name
+            {
+                get => field;
+                set => SetProperty(ref field, value);
+            } = string.Empty;
+
+            #endregion
+        }
+
+        [Theory]
+        [InlineData(PropertyMode.Reflection)]
+        [InlineData(PropertyMode.Cache)]
+        public void SimpleVariableValidateTest(PropertyMode propertyMode)
+        {
+            var vm = new SimpleVariableValidateViewModel(propertyMode);
+
+            vm.Name = "abc";
+            Assert.Equal("abc", vm.Name);
+            Assert.False(vm.HasErrors);
+
+            vm.Name = "abcd";
+            Assert.Equal("abcd", vm.Name);
+            Assert.True(vm.HasErrors);
+            Assert.Single(vm.GetErrors(nameof(vm.Name)));
+
+            vm.Name = "";
+            Assert.Equal("", vm.Name);
+            Assert.False(vm.HasErrors);
+            Assert.Empty(vm.GetErrors(nameof(vm.Name)));
+        }
+
+        private class SimplePropertyValidateModel
+        {
+            #region property
+
+            public string Name { get; set; } = string.Empty;
+
+            #endregion
+        }
+
+        private class SimplePropertyValidateViewModel: ViewModelBase
+        {
+            public SimplePropertyValidateViewModel(SimplePropertyValidateModel model, PropertyMode propertyMode)
+                : base(propertyMode, NullLoggerFactory.Instance)
+            {
+                Model = model;
+            }
+
+            #region property
+
+            private SimplePropertyValidateModel Model { get; }
+
+            [MaxLength(3)]
+            public string Name
+            {
+                get => Model.Name;
+                set => SetProperty(Model, value);
+            }
+
+            #endregion
+        }
+
+        [Theory]
+        [InlineData(PropertyMode.Reflection)]
+        [InlineData(PropertyMode.Cache)]
+        public void SimplePropertyValidateTest(PropertyMode propertyMode)
+        {
+            var model = new SimplePropertyValidateModel();
+            var vm = new SimplePropertyValidateViewModel(model, propertyMode);
+
+            vm.Name = "abc";
+            Assert.Equal("abc", vm.Name);
+            Assert.False(vm.HasErrors);
+
+            vm.Name = "abcd";
+            Assert.Equal("abcd", vm.Name);
+            Assert.True(vm.HasErrors);
+            Assert.Single(vm.GetErrors(nameof(vm.Name)));
+
+            vm.Name = "";
+            Assert.Equal("", vm.Name);
+            Assert.False(vm.HasErrors);
+            Assert.Empty(vm.GetErrors(nameof(vm.Name)));
+        }
+
+        public enum ObservePropertyOperator
+        {
+            Add,
+            Sub,
+            Mul,
+            Div
+        }
+
+        private sealed class ObservePropertyViewModel: ViewModelBase
+        {
+            #region variable
+
+            private ObservePropertyOperator _operator = (ObservePropertyOperator)(-1);
+
+            #endregion
+            public ObservePropertyViewModel(PropertyMode propertyMode)
+                : base(propertyMode, NullLoggerFactory.Instance)
+            { }
+
+            #region property
+
+            public int A
+            {
+                get => field;
+                set => SetProperty(ref field, value);
+            }
+
+            public int B
+            {
+                get => field;
+                set => SetProperty(ref field, value);
+            }
+
+            public ObservePropertyOperator Operator
+            {
+                get => this._operator;
+                set => SetProperty(ref this._operator, value);
+            }
+
+            [ObserveProperty(nameof(A))]
+            [ObserveProperty(nameof(B))]
+            [ObserveProperty(nameof(Operator))]
+            public string Reactive
+            {
+                get
+                {
+                    string op;
+                    int result;
+                    switch(Operator) {
+                        case ObservePropertyOperator.Add:
+                            op = "+";
+                            result = A + B;
+                            break;
+
+                        case ObservePropertyOperator.Sub:
+                            op = "-";
+                            result = A - B;
+                            break;
+
+                        case ObservePropertyOperator.Mul:
+                            op = "*";
+                            result = A * B;
+                            break;
+
+                        case ObservePropertyOperator.Div:
+                            op = "/";
+                            result = A / B;
+                            break;
+
+                        default:
+                            throw new NotImplementedException();
+                    }
+
+                    return $"{A} {op} {B} = {result}";
+                }
+            }
+
+            #endregion
+        }
+
+        public static TheoryData<PropertyMode, (string expected, int a, ObservePropertyOperator op, int b)> ObservePropertyData = new MatrixTheoryData<PropertyMode, (string, int, ObservePropertyOperator, int)>(
+            [PropertyMode.Reflection, PropertyMode.Cache],
+            [
+                // デフォルト値は反応しないので避けるべし
+                (
+                    "6 + 4 = 10",
+                    6,
+                    ObservePropertyOperator.Add,
+                    4
+                ),
+                (
+                    "1 + 2 = 3",
+                    1,
+                    ObservePropertyOperator.Add,
+                    2
+                ),
+                (
+                    "6 - 4 = 2",
+                    6,
+                    ObservePropertyOperator.Sub,
+                    4
+                ),
+                (
+                    "6 * 4 = 24",
+                    6,
+                    ObservePropertyOperator.Mul,
+                    4
+                ),
+                (
+                    "10 / 5 = 2",
+                    10,
+                    ObservePropertyOperator.Div,
+                    5
+                ),
+            ]
+        );
+
+        [Theory]
+        [MemberData(nameof(ObservePropertyData))]
+        public void ObservePropertyTest(PropertyMode propertyMode, (string expected, int a, ObservePropertyOperator op, int b) input)
+        {
+            var vm = new ObservePropertyViewModel(propertyMode);
+
+            int step = 0;
+            vm.PropertyChanged += (sender, e) => {
+                switch(step) {
+                    case 0:
+                        Assert.Equal(nameof(vm.A), e.PropertyName);
+                        step += 1;
+                        break;
+
+                    case 1:
+                        Assert.Equal(nameof(vm.Reactive), e.PropertyName);
+                        step += 1;
+                        break;
+
+                    case 2:
+                        Assert.Equal(nameof(vm.Operator), e.PropertyName);
+                        step += 1;
+                        break;
+
+                    case 3:
+                        Assert.Equal(nameof(vm.Reactive), e.PropertyName);
+                        step += 1;
+                        break;
+
+                    case 4:
+                        Assert.Equal(nameof(vm.B), e.PropertyName);
+                        step += 1;
+                        break;
+
+                    case 5:
+                        Assert.Equal(nameof(vm.Reactive), e.PropertyName);
+                        step += 1;
+                        break;
+
+                    default:
+                        Assert.Fail();
+                        break;
+                }
+            };
+
+            vm.A = input.a;
+            vm.Operator = input.op;
+            vm.B = input.b;
+            Assert.Equal(input.expected, vm.Reactive);
+            Assert.Equal(6, step);
+        }
+
+        #region validate
+
+        private class ValidateViewModelBase: ViewModelBase
+        {
+            protected ValidateViewModelBase(PropertyMode propertyMode, EventReference propertyChangedEventReference)
+                : base(propertyMode, propertyChangedEventReference, DefaultDisposing, NullLoggerFactory.Instance)
+            { }
+        }
+
+        private sealed class ValidateNest1ViewModel: ValidateViewModelBase
+        {
+            public ValidateNest1ViewModel(PropertyMode propertyMode, EventReference propertyChangedEventReference)
+                : base(propertyMode, propertyChangedEventReference)
+            { }
+
+            #region property
+
+            [Required]
+            public string? Required
+            {
+                get => field;
+                set => SetProperty(ref field, value);
+            }
+
+            #endregion
+        }
+
+        private sealed class ValidateNest2ViewModel: ValidateViewModelBase
+        {
+            #region variable
+
+            public string? stringLength;
+
+            #endregion
+
+            public ValidateNest2ViewModel(PropertyMode propertyMode, EventReference propertyChangedEventReference)
+                : base(propertyMode, propertyChangedEventReference)
+            { }
+
+            #region property
+
+            [StringLength(3)]
+            public string? StringLength
+            {
+                get => this.stringLength;
+                set => SetProperty(ref this.stringLength, value);
+            }
+
+            #endregion
+        }
+
+        private sealed class ValidateNestViewModel: ValidateViewModelBase
+        {
+            public ValidateNestViewModel(PropertyMode propertyMode, EventReference propertyChangedEventReference)
+                : base(propertyMode, propertyChangedEventReference)
+            {
+                Nest1 = new ValidateNest1ViewModel(propertyMode, propertyChangedEventReference);
+                Nest2 = new ValidateNest2ViewModel(propertyMode, propertyChangedEventReference);
+            }
+
+            #region property
+
+            public ValidateNest1ViewModel Nest1 { get; }
+            public ValidateNest2ViewModel Nest2 { get; }
+
+            [Range(0, 5)]
+            public int Range
+            {
+                get => field;
+                set => SetProperty(ref field, value);
+            }
+
+            #endregion
+        }
+
+        private sealed class ValidateRootViewModel: ValidateViewModelBase
+        {
+            public ValidateRootViewModel(PropertyMode propertyMode, EventReference propertyChangedEventReference)
+                : base(propertyMode, propertyChangedEventReference)
+            {
+                Nest = new ValidateNestViewModel(propertyMode, propertyChangedEventReference);
+            }
+
+            #region property
+
+            public ValidateNestViewModel Nest { get; }
+
+            [RegularExpression(@"[A-Z]{2}")]
+            public string RegularExpression
+            {
+                get => field;
+                set => SetProperty(ref field, value);
+            } = "AA";
+
+            #endregion
+        }
+
+        #endregion
+
+        public static TheoryData<PropertyMode, EventReference> ValidateData = new MatrixTheoryData<PropertyMode, EventReference>(
+            [PropertyMode.Reflection, PropertyMode.Cache],
+            [EventReference.Strong, EventReference.Weak]
+        );
+
+        [Theory]
+        [MemberData(nameof(ValidateData))]
+        public void ValidateTest(PropertyMode propertyMode, EventReference propertyChangedEventReference)
+        {
+            var test = new ValidateRootViewModel(propertyMode, propertyChangedEventReference);
+
+            Assert.False(test.HasErrors);
+
+            Assert.False(test.Validate());
+            Assert.False(test.HasErrors);
+            Assert.True(test.Nest.Nest1.HasErrors);
+
+            // リセット
+            test.Nest.Nest1.Required = "Required";
+            Assert.False(test.Nest.Nest1.HasErrors);
+            Assert.True(test.Validate());
+
+            // 孫検証
+            test.Nest.Nest2.StringLength = "abc";
+            Assert.False(test.Nest.Nest2.HasErrors);
+            test.Nest.Nest2.StringLength = "abcd";
+            Assert.True(test.Nest.Nest2.HasErrors);
+            Assert.False(test.HasErrors);
+            Assert.False(test.Validate());
+            Assert.False(test.HasErrors);
+
+            // リセット
+            test.Nest.Nest2.StringLength = "abc";
+            Assert.False(test.Nest.Nest2.HasErrors);
+            Assert.True(test.Validate());
+
+            // 孫非検証の検証
+            test.Nest.Nest2.stringLength = "abcd";
+            Assert.False(test.Nest.Nest2.HasErrors); // プロパティ未経由なので未検証
+            Assert.False(test.Validate()); // 全検証を通すので検証失敗となる
+            Assert.True(test.Nest.Nest2.HasErrors); // 検証後なのでエラーなのだ
+            Assert.False(test.HasErrors);
+
+            // リセット
+            test.Nest.Nest2.StringLength = "abc";
+            Assert.True(test.Validate());
+            Assert.False(test.Nest.Nest2.HasErrors);
+
+            // 子検証
+            test.Nest.Range = 5;
+            Assert.False(test.Nest.HasErrors);
+            Assert.False(test.HasErrors);
+            Assert.True(test.Validate());
+            test.Nest.Range = 0;
+            Assert.False(test.Nest.HasErrors);
+            Assert.False(test.HasErrors);
+            Assert.True(test.Validate());
+
+            test.Nest.Range = -1;
+            Assert.True(test.Nest.HasErrors);
+            Assert.False(test.HasErrors);
+            Assert.False(test.Validate());
+
+            test.Nest.Range = 0;
+            Assert.False(test.Nest.HasErrors);
+            Assert.False(test.HasErrors);
+            Assert.True(test.Validate());
+
+            test.Nest.Range = 6;
+            Assert.True(test.Nest.HasErrors);
+            Assert.False(test.HasErrors);
+            Assert.False(test.Validate());
+
+            // リセット
+            test.Nest.Range = 0;
+            Assert.False(test.Nest.HasErrors);
+            Assert.False(test.HasErrors);
+            Assert.True(test.Validate());
+
+            // ルート検証
+            test.RegularExpression = "00";
+            Assert.True(test.HasErrors);
+            Assert.False(test.Validate());
+
+            test.RegularExpression = "ZZ";
+            Assert.False(test.HasErrors);
+            Assert.True(test.Validate());
+        }
 
         #endregion
     }

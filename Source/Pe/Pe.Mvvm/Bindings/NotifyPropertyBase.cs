@@ -26,7 +26,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 
         #region property
 
-        public EventReference PropertyChangedEventReference { get; }
+        private EventReference PropertyChangedEventReference { get; }
 
         private PropertyChangedWeakEvent? PropertyChangedWeakEvent { get; }
 
@@ -64,7 +64,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
         /// <param name="value">設定する値。</param>
         /// <param name="notifyPropertyName">プロパティ名。</param>
         /// <returns>変更されたか。</returns>
-        protected bool SetProperty<T>(ref T variable, T value, [CallerMemberName] string notifyPropertyName = "")
+        protected virtual bool SetProperty<T>(ref T variable, T value, [CallerMemberName] string notifyPropertyName = "")
         {
             if(EqualityComparer<T>.Default.Equals(variable, value)) {
                 return false;

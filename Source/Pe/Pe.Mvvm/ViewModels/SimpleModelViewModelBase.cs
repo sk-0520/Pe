@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
@@ -11,11 +12,15 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
     public class SimpleModelViewModelBase<TModel>: ViewModelBase
         where TModel : notnull
     {
-        protected SimpleModelViewModelBase(TModel model, PropertyMode propertyMode, ILoggerFactory loggerFactory)
-            : base(propertyMode, loggerFactory)
+        protected SimpleModelViewModelBase(TModel model, PropertyMode propertyMode, EventReference propertyChangedEventReference, EventReference disposingEventReference, ILoggerFactory loggerFactory)
+            : base(propertyMode, propertyChangedEventReference, disposingEventReference, loggerFactory)
         {
             Model = model;
         }
+
+        protected SimpleModelViewModelBase(TModel model, PropertyMode propertyMode, ILoggerFactory loggerFactory)
+            : this(model, propertyMode, DefaultPropertyChanged, DefaultDisposing, loggerFactory)
+        { }
 
         protected SimpleModelViewModelBase(TModel model, ILoggerFactory loggerFactory)
             : this(model, DefaultPropertyMode, loggerFactory)

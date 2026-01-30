@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -44,7 +45,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         #endregion
 
-        protected ViewModelBase(PropertyMode propertyMode, ILoggerFactory loggerFactory)
+        protected ViewModelBase(PropertyMode propertyMode, EventReference propertyChangedEventReference, EventReference disposingEventReference, ILoggerFactory loggerFactory)
+            : base(propertyChangedEventReference, disposingEventReference)
         {
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
@@ -61,13 +63,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             ObserveProperties = AttributeUtility.GetPropertiesWithAttribute<ObservePropertyAttribute>(properties)
                 .ToHashSet()
             ;
-            if(ObserveProperties.Any()) {
-                PropertyChanged += ViewModelBase_PropertyChanged;
-            }
         }
 
-        protected ViewModelBase(ILoggerFactory loggerFactory)
-            : this(DefaultPropertyMode, loggerFactory)
+        protected ViewModelBase(PropertyMode propertyMode, ILoggerFactory loggerFactory)
+            : this(propertyMode, DefaultPropertyChanged, DefaultDisposing, loggerFactory)
         { }
 
         #region property
@@ -75,6 +74,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         /// <summary>
         /// このVMは検証非対象か。
         /// </summary>
+        [IgnoreValidation]
         public bool SkipValidation { get; init; } = false;
 
         protected ILoggerFactory LoggerFactory { get; }
@@ -101,12 +101,14 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         /// オブジェクトのプロパティに値設定。
         /// </summary>
         /// <typeparam name="TValue">設定値のデータ。</typeparam>
-        /// <param name="obj">対象オブジェクト。</param>
+        /// <param name="owner">対象オブジェクト。</param>
         /// <param name="value">設定値。</param>
-        /// <param name="targetMemberName">設定対象となる<paramref name="obj"/>のメンバ名。未設定で呼び出しメンバ名。</param>
+        /// <param name="targetMemberName">設定対象となる<paramref name="owner"/>のメンバ名。未設定で呼び出しメンバ名。</param>
         /// <param name="notifyPropertyName">値設定後に通知するプロパティ名。未設定で呼び出しメンバ名。</param>
         /// <returns>設定されたか。同一値の場合は設定しない。</returns>
-        protected virtual bool SetProperty<TValue>(object obj, TValue value, [CallerMemberName] string targetMemberName = "", [CallerMemberName] string notifyPropertyName = "")
+        [SuppressMessage("Low Code Smell", "S4136:Method overloads should be grouped together")]
+        protected virtual bool SetProperty<TOwner, TValue>(TOwner owner, TValue value, [CallerMemberName] string targetMemberName = "", [CallerMemberName] string notifyPropertyName = "")
+            where TOwner : notnull
         {
 #if DEBUG
             using var _ = ActionDisposerHelper.Create((d, sw) => Logger.LogDebug("PROP TIME: {Elapsed}, {TargetMemberName} {NotifyPropertyName}", sw.Elapsed, targetMemberName, notifyPropertyName), Stopwatch.StartNew());
@@ -119,14 +121,14 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             Type targetType;
 
             if(CachedProperty is null) {
-                var type = obj.GetType();
+                var type = owner.GetType();
                 propertyInfo = type.GetProperty(targetMemberName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                 Debug.Assert(propertyInfo != null);
 
-                nowValue = (TValue?)propertyInfo.GetValue(obj);
+                nowValue = (TValue?)propertyInfo.GetValue(owner);
                 targetType = propertyInfo.PropertyType;
             } else {
-                cachedProperty = CachedProperty.GetOrAdd(obj, o => new CachedProperty(o));
+                cachedProperty = CachedProperty.GetOrAdd(owner, o => new CachedProperty(o));
 
                 nowValue = (TValue?)cachedProperty.Get(targetMemberName);
                 targetType = nowValue is not null ? nowValue.GetType() : typeof(TValue);
@@ -138,13 +140,13 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
             if(CachedProperty is null) {
                 Debug.Assert(propertyInfo is not null);
-                propertyInfo.SetValue(obj, value);
+                propertyInfo.SetValue(owner, value);
             } else {
                 Debug.Assert(cachedProperty is not null);
                 cachedProperty.Set(targetMemberName, value);
             }
 
-            ValidateProperty(obj, value, targetType, notifyPropertyName);
+            ValidateProperty(owner, value, targetType, notifyPropertyName);
 
             var e = PropertyChangedEventArgsCache.GetOrAdd(notifyPropertyName, s => new PropertyChangedEventArgs(s));
             RaisePropertyChanged(e);
@@ -154,11 +156,16 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         protected virtual void OnErrorsChanged([CallerMemberName] string propertyName = "")
         {
+            var hasErrorsOld = HasErrors;
             ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-            RaisePropertyChanged(nameof(HasErrors));
+            var hasErrorsNew = HasErrors;
+            if(hasErrorsOld != hasErrorsNew) {
+                RaisePropertyChanged(nameof(HasErrors));
+            }
         }
 
-        private void ValidateProperty<TObject, TValue>(TObject obj, TValue value, Type targetMemberType, string notifyPropertyName)
+        private void ValidateProperty<TOwner, TValue>(TOwner owner, TValue value, Type targetMemberType, string notifyPropertyName)
+            where TOwner : notnull
         {
             var context = new ValidationContext(this) {
                 MemberName = notifyPropertyName
@@ -175,16 +182,23 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             var validationErrors = new List<ValidationResult>();
             if(!Validator.TryValidateProperty(validationValue, context, validationErrors)) {
                 foreach(var validationError in validationErrors) {
-                    AddError(notifyPropertyName, validationError.ErrorMessage ?? string.Empty);
+                    AddError(validationError.ErrorMessage ?? string.Empty, notifyPropertyName);
                 }
             } else {
                 RemoveError(notifyPropertyName);
             }
         }
 
-        protected void AddError(string propertyName, string validateError)
+        protected void AddError(string validateError, [CallerMemberName] string propertyName = "")
         {
             ErrorsContainer.AddError(propertyName, validateError);
+        }
+
+        protected void AddErrors(IEnumerable<string> validateErrors, [CallerMemberName] string propertyName = "")
+        {
+            ThrowIfDisposed();
+
+            ErrorsContainer.AddError(propertyName, validateErrors);
         }
 
         protected void RemoveError(string propertyName)
@@ -221,15 +235,15 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             var type = GetType();
             var properties = type.GetProperties()
                 .Select(i => (property: i, attribute: i.GetCustomAttribute<IgnoreValidationAttribute>()))
-                .Where(i => i.attribute == null)
+                .Where(i => i.attribute is null)
                 .Select(i => i.property)
-                .ToList()
+                .ToArray()
             ;
             var targetProperties = properties
                 .Select(i => (property: i, attributes: i.GetCustomAttributes<ValidationAttribute>()))
                 .Where(i => i.attributes.Any())
                 .Select(i => i.property)
-                .ToList()
+                .ToArray()
             ;
 
             var childProperties = properties.Except(targetProperties);
@@ -304,10 +318,18 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             ThrowIfDisposed();
 
             var v = GetValidationItems();
-            var result = v.childViewModels.Any(i => i.HasErrors || i.HasChildrenErrors());
+            var result = v.childViewModels.Any(a => a.HasErrors || a.HasChildrenErrors());
             return result;
         }
 
+        /// <summary>
+        /// 検証。
+        /// </summary>
+        /// <returns>異常なし！</returns>
+        /// <remarks>
+        /// <para><see cref="HasErrors"/> で子を回すと重そうなのでここで回す。</para>
+        /// <para>ので <see cref="HasErrors"/> では自分の検証状態しか分からない点に注意。</para>
+        /// </remarks>
         public bool Validate()
         {
             ThrowIfDisposed();
@@ -485,17 +507,57 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         //    return !HasErrors && !HasChildrenErrors();
         //}
 
+        private void ReactivePropertyChanged(PropertyChangedEventArgs e)
+        {
+            var properties = new HashSet<string>();
+            var commands = new HashSet<ICommand>();
+
+            foreach(var props in ObserveProperties) {
+                if(props.Attributes.Any(a => a.PropertyName == e.PropertyName)) {
+                    if(typeof(ICommand).IsAssignableFrom(props.Property.PropertyType)) {
+                        var command = props.Property.GetValue(this) as ICommand;
+                        Debug.Assert(command is not null, "ICommand は判定済み");
+                        commands.Add(command);
+                    } else {
+                        properties.Add(props.Property.Name);
+                    }
+                }
+            }
+
+            foreach(var property in properties) {
+                RaisePropertyChanged(property);
+            }
+            foreach(var command in commands) {
+                RaiseCommandChanged(command);
+            }
+        }
+
+
         #endregion
 
         #region BindModelBase
 
-        protected override void Dispose(bool disposing)
+        protected override void OnPropertyChanged(PropertyChangedEventArgs eventArgs)
         {
-            PropertyChanged -= ViewModelBase_PropertyChanged;
-
-            base.Dispose(disposing);
+            base.OnPropertyChanged(eventArgs);
+            ReactivePropertyChanged(eventArgs);
         }
 
+        protected override bool SetProperty<T>(ref T variable, T value, [CallerMemberName] string notifyPropertyName = "")
+        {
+            var isChanged = base.SetProperty(ref variable, value, notifyPropertyName);
+
+            ValidateProperty(this, value, value?.GetType() ?? typeof(T), notifyPropertyName);
+
+            return isChanged;
+        }
+
+        //protected override void Dispose(bool disposing)
+        //{
+        //    PropertyChanged -= ViewModelBase_PropertyChanged;
+
+        //    base.Dispose(disposing);
+        //}
 
         #endregion
 
@@ -559,29 +621,29 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         #endregion
 
-        private void ViewModelBase_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            var properties = new HashSet<string>();
-            var commands = new HashSet<ICommand>();
+        //private void ViewModelBase_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        //{
+        //    var properties = new HashSet<string>();
+        //    var commands = new HashSet<ICommand>();
 
-            foreach(var props in ObserveProperties) {
-                if(props.Attributes.Any(a => a.PropertyName == e.PropertyName)) {
-                    if(typeof(ICommand).IsAssignableFrom(props.Property.PropertyType)) {
-                        var command = props.Property.GetValue(this) as ICommand;
-                        Debug.Assert(command is not null, "ICommand は判定済み");
-                        commands.Add(command);
-                    } else {
-                        properties.Add(props.Property.Name);
-                    }
-                }
-            }
+        //    foreach(var props in ObserveProperties) {
+        //        if(props.Attributes.Any(a => a.PropertyName == e.PropertyName)) {
+        //            if(typeof(ICommand).IsAssignableFrom(props.Property.PropertyType)) {
+        //                var command = props.Property.GetValue(this) as ICommand;
+        //                Debug.Assert(command is not null, "ICommand は判定済み");
+        //                commands.Add(command);
+        //            } else {
+        //                properties.Add(props.Property.Name);
+        //            }
+        //        }
+        //    }
 
-            foreach(var property in properties) {
-                RaisePropertyChanged(property);
-            }
-            foreach(var command in commands) {
-                RaiseCommandChanged(command);
-            }
-        }
+        //    foreach(var property in properties) {
+        //        RaisePropertyChanged(property);
+        //    }
+        //    foreach(var command in commands) {
+        //        RaiseCommandChanged(command);
+        //    }
+        //}
     }
 }
