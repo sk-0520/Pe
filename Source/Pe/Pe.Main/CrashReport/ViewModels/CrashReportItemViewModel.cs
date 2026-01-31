@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
@@ -23,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
             Value = Item.Value;
             Children = Item.Children
                 .Select(i => new CrashReportItemViewModel(i, LoggerFactory))
-                .ToList()
+                .ToArray()
             ;
         }
 

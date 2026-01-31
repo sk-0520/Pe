@@ -8,16 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
-using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.Models.Serialization;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 {
@@ -178,7 +178,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         private IPluginLoadState LoadDirectPlugin(FileInfo pluginFile, DirectoryInfo pluginDirectory)
         {
-            var loadStateData2 = PluginContainer.LoadPlugin(pluginFile, Enumerable.Empty<PluginStateData>().ToList(), BuildStatus.Version, PluginConstructorContext, PauseReceiveLog);
+            var loadStateData2 = PluginContainer.LoadPlugin(pluginFile, Enumerable.Empty<PluginStateData>().ToArray(), BuildStatus.Version, PluginConstructorContext, PauseReceiveLog);
             if(loadStateData2.PluginId == PluginId.Empty || loadStateData2.LoadState != PluginState.Enable) {
                 // なんかもうダメっぽい
                 throw new PluginBrokenException(pluginDirectory.FullName);

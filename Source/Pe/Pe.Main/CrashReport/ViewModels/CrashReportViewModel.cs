@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels
         {
             RawProperties = Model.RawProperties
                 .Select(i => new CrashReportItemViewModel(i, LoggerFactory))
-                .ToList()
+                .ToArray()
             ;
             SendStatus = new RunningStatusViewModel(Model.SendStatus, LoggerFactory);
             SendStatus.PropertyChanged += SendStatus_PropertyChanged;

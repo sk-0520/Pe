@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.ViewModels;
 using ContentTypeTextNet.Pe.Plugins.Reference.Clock.Models;
@@ -26,7 +25,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
 
         #endregion
 
-        protected ClockWidgetContentBaseViewModel(ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher,ILoggerFactory loggerFactory)
+        protected ClockWidgetContentBaseViewModel(ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(skeletonImplements, contextDispatcher, loggerFactory)
         { }
 
@@ -102,8 +101,8 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
         public ClockWidgetSimpleAnalogClockContentViewModel(ISkeletonImplements skeletonImplements, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(skeletonImplements, contextDispatcher, loggerFactory)
         {
-            HourAngels = Enumerable.Range(0, 12).Select(i => i * 30.0).ToList();
-            SecondsAngels = Enumerable.Range(0, 60).Select(i => i * 6.0).Except(HourAngels).ToList();
+            HourAngels = Enumerable.Range(0, 12).Select(i => i * 30.0).ToArray();
+            SecondsAngels = Enumerable.Range(0, 60).Select(i => i * 6.0).Except(HourAngels).ToArray();
         }
 
         #region property

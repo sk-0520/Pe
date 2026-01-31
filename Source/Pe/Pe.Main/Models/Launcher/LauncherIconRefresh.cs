@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 {
@@ -110,7 +110,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             var launcherItemIconsEntityDao = daoFactory.Create<LauncherItemIconsEntityDao>();
             var status = launcherItemIconsEntityDao.SelectLauncherItemIconAllStatus(launcherItemIs)
                 .Where(i => IsNeedUpdate(i, DateTime.UtcNow))
-                .ToList()
+                .ToArray()
             ;
             return status;
         }
@@ -145,13 +145,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             var allLauncherItemIds = MainDatabaseBarrier.ReadData(c => {
                 var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
                 var dao = daoFactory.Create<LauncherItemsEntityDao>();
-                return dao.SelectAllLauncherItemIds().ToList();
+                return dao.SelectAllLauncherItemIds().ToArray();
             });
 
             return Task.Run(async () => {
                 Logger.LogInformation("ランチャーアイテムのアイコンを更新開始");
 
-                var refreshedLauncherItemsIds = new List<LauncherItemId>(allLauncherItemIds.Count);
+                var refreshedLauncherItemsIds = new List<LauncherItemId>(allLauncherItemIds.Length);
 
                 foreach(var launcherItemId in allLauncherItemIds) {
                     cancellationToken.ThrowIfCancellationRequested();

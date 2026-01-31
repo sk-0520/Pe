@@ -16,7 +16,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
             Properties = Type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToDictionary(k => k.Name, v => v);
             Methods = Type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 .GroupBy(a => a.Name)
-                .ToDictionary(k => k.Key, v => (IReadOnlyList<MethodInfo>)v.ToList())
+                .ToDictionary(k => k.Key, v => (IReadOnlyList<MethodInfo>)v.ToArray())
             ;
         }
 

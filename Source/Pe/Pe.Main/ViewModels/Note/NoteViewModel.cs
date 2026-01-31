@@ -402,7 +402,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         public double WindowMovingOrResizingOpacity => NoteConfiguration.MovingOrResizingOpacity;
 
-        public IReadOnlyList<NoteHiddenMode> HiddenModeItems { get; } = Enum.GetValues<NoteHiddenMode>().OrderBy(i => i).ToList();
+        public IReadOnlyList<NoteHiddenMode> HiddenModeItems { get; } = Enum.GetValues<NoteHiddenMode>().OrderBy(i => i).ToArray();
 
         public NoteHiddenMode SelectedHiddenMode
         {

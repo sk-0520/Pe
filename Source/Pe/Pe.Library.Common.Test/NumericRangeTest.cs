@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Throw;
 using Xunit;
 
@@ -119,7 +115,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         public void ParseTest(int[] expected, string values)
         {
             var nr = new NumericRange();
-            var actual = nr.Parse(values).ToList();
+            var actual = nr.Parse(values);
             Assert.Equal(expected, actual);
         }
 
@@ -129,7 +125,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
             var rnd = new Random();
             foreach(var _ in Enumerable.Range(1, 1000)) {
                 var length = rnd.Next(1, 1000);
-                var values1 = Enumerable.Repeat(0, length).Select(_ => rnd.Next()).ToList();
+                var values1 = Enumerable.Repeat(0, length).Select(_ => rnd.Next());
                 var nr = new NumericRange();
                 var s1 = nr.ToString(values1);
                 var values2 = nr.Parse(s1);

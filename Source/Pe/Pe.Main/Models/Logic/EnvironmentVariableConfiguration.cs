@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Extensions.Logging;
 
@@ -31,7 +30,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 .Select(i => i.Split(new char[] { '=' }, 2, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim()).ToArray())
                 .Where(i => i.Length == 2)
                 .Select(i => new LauncherEnvironmentVariableData() { Name = i[0], Value = i[1] })
-                .ToList()
+                .ToArray()
             ;
         }
 
@@ -40,7 +39,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             return TextUtility.ReadLines(textDocument.Text)
                 .Where(i => !string.IsNullOrWhiteSpace(i))
                 .Select(i => i.Trim())
-                .ToList()
+                .ToArray()
             ;
         }
 
@@ -93,7 +92,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         {
             collection.Clear();
 
-            var errors = func(textDocument!).ToList();
+            var errors = func(textDocument!).ToArray();
             if(errors.Any()) {
                 addErrors(errors);
                 foreach(var err in errors) {

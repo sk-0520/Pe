@@ -255,7 +255,7 @@ namespace ContentTypeTextNet.Pe.Main.Views.Setting
                     .Select(i => (int)i)
                     .Distinct()
                     .Select(i => (Key)i)
-                    .ToList()
+                    .ToArray()
                 ,
                 new PropertyChangedCallback(OnKeyItemsSourcePropertyChanged)
             )

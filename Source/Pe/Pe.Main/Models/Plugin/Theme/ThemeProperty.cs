@@ -30,7 +30,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Theme
                 .Select(i => new { Property = i, Attribute = i.GetCustomAttribute<ThemePropertyAttribute>() })
                 .Where(i => i.Attribute != null)
                 .Select(i => i.Property)
-                .ToList()
+                .ToArray()
             ;
         }
 

@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Addon;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Launcher;
@@ -19,10 +20,7 @@ using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Manager.Setting;
 using ContentTypeTextNet.Pe.Main.Models.Plugin;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 {
@@ -38,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             var addons = new List<IAddon>();
             var addonIds = pluginContainer.Addon.GetLauncherItemAddonIds();
-            var addonPlugins = pluginContainer.Plugins.OfType<IAddon>().ToList();
+            var addonPlugins = pluginContainer.Plugins.OfType<IAddon>().ToArray();
             foreach(var addonId in addonIds) {
                 var addon = addonPlugins.FirstOrDefault(i => i.PluginInformation.PluginIdentifiers.PluginId == addonId);
                 if(addon != null) {
@@ -100,7 +98,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 var item = new LauncherItemData() {
                     LauncherItemId = newLauncherItemId,
                     Kind = kind,
-                    Name = launcherItemManager.CreateNewName(kind, AllLauncherItems.Select(i => i.Name).ToList()),
+                    Name = launcherItemManager.CreateNewName(kind, AllLauncherItems.Select(i => i.Name).ToArray()),
                 };
 
                 item.IsEnabledCommandLauncher = true;
@@ -196,7 +194,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             var file = new FileInfo(filePath);
             var launcherFactory = new LauncherFactory(IdFactory, LoggerFactory);
             var data = launcherFactory.FromFile(file, expandShortcut);
-            var tags = launcherFactory.GetTags(file).ToList();
+            var tags = launcherFactory.GetTags(file).ToArray();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
                 var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);

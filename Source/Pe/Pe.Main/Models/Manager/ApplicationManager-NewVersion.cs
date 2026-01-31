@@ -251,7 +251,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             using(var context = mainDatabaseBarrier.WaitRead()) {
                 var daoFactory = new AppDaoFactory(context, statementLoader, LoggerFactory);
                 var pluginVersionChecksEntityDao = daoFactory.Create<PluginVersionChecksEntityDao>();
-                urls = pluginVersionChecksEntityDao.SelectPluginVersionCheckUrls(pluginId).ToList();
+                urls = pluginVersionChecksEntityDao.SelectPluginVersionCheckUrls(pluginId).ToArray();
             }
 
             var newVersionItem = await newVersionChecker.CheckPluginNewVersionAsync(apiConfiguration.ServerPluginInformation, pluginId, pluginVersion, urls, cancellationToken);
@@ -296,7 +296,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             IReadOnlyList<PluginInstallData> installItems;
             using(var context = temporaryDatabaseBarrier.WaitRead()) {
                 var installPluginsEntityDao = ApplicationDiContainer.Build<InstallPluginsEntityDao>(context, context.Implementation);
-                installItems = installPluginsEntityDao.SelectInstallPlugins().ToList();
+                installItems = installPluginsEntityDao.SelectInstallPlugins().ToArray();
             }
 
             var pluginInstaller = CreatePluginInstaller(environmentParameters);
@@ -310,12 +310,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         private async Task<bool> CheckPluginsNewVersionAsync(CancellationToken cancellationToken)
         {
             var mainDatabaseBarrier = ApplicationDiContainer.Get<IMainDatabaseBarrier>();
-            IList<PluginLastUsedData> lastUsedPlugins;
+            PluginLastUsedData[] lastUsedPlugins;
             using(var context = mainDatabaseBarrier.WaitRead()) {
                 var pluginsEntityDao = ApplicationDiContainer.Build<PluginsEntityDao>(context, context.Implementation);
-                lastUsedPlugins = pluginsEntityDao.SelectAllLastUsedPlugins().ToList();
+                lastUsedPlugins = pluginsEntityDao.SelectAllLastUsedPlugins().ToArray();
             }
-            var newVersionPlugins = new Dictionary<PluginId, bool>(lastUsedPlugins.Count);
+            var newVersionPlugins = new Dictionary<PluginId, bool>(lastUsedPlugins.Length);
             foreach(var lastUsePlugin in lastUsedPlugins) {
                 try {
                     var newVersion = await CheckPluginNewVersionAsync(lastUsePlugin.PluginId, lastUsePlugin.Version, cancellationToken);

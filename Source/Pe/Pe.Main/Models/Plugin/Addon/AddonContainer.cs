@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +56,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
         private IHttpUserAgentFactory UserAgentFactory { get; }
 
-        private IViewManager ViewManager {get;}
+        private IViewManager ViewManager { get; }
         private IHashAlgorithmFactory HashAlgorithmGenerator { get; }
         private IPlatformTheme PlatformTheme { get; }
         private IImageLoader ImageLoader { get; }
@@ -120,7 +119,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         {
             return WidgetSupportAddons
                 .Select(i => new WidgetAddonProxy(i, PluginContextFactory, UserAgentFactory, ViewManager, HashAlgorithmGenerator, PlatformTheme, ImageLoader, MediaConverter, Policy, ContextDispatcher, LoggerFactory))
-                .ToList()
+                .ToArray()
             ;
         }
 
@@ -128,7 +127,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         {
             return LauncherItemSupportAddons
                 .Select(i => i.PluginInformation.PluginIdentifiers.PluginId)
-                .ToList()
+                .ToArray()
             ;
         }
 

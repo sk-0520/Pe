@@ -293,12 +293,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
         {
             ThrowIfDisposed();
 
-            IList<NoteScreenData> noteScreens;
+            NoteScreenData[] noteScreens;
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
                 var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
                 var noteDomainDao = daoFactory.Create<NoteDomainDao>();
-                noteScreens = noteDomainDao.SelectNoteScreens(NoteId).ToList();
+                noteScreens = noteDomainDao.SelectNoteScreens(NoteId).ToArray();
             }
 
             var screens = Screen.AllScreens;

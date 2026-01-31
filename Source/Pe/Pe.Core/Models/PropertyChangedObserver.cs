@@ -264,7 +264,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
             var commands = hookItems
                 .Where(i => i.RaiseCommands != null)
                 .SelectMany(i => i.RaiseCommands!)
-                .ToList()
+                .ToArray()
             ;
 
             var result = new CachedObserveItem(

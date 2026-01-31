@@ -1,30 +1,19 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using ContentTypeTextNet.Pe.Bridge.Models;
+using System.Threading;
+using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
-using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Main.Models.Manager;
-using ContentTypeTextNet.Pe.Main.Models.Manager.Setting;
-using ContentTypeTextNet.Pe.Main.Models.Plugin;
-using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
-using ContentTypeTextNet.Pe.Main.Models.Plugin.Preferences;
-using ContentTypeTextNet.Pe.Main.Models.Telemetry;
-using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting.Factory;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Threading;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
+using ContentTypeTextNet.Pe.Main.Models.Plugin;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 {
@@ -125,10 +114,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             using(var context = ServiceLocator.Get<IMainDatabaseBarrier>().WaitRead()) {
                 var launcherItemsEntityDao = ServiceLocator.Build<LauncherItemsEntityDao>(context, context.Implementation);
-                launcherItemIds = launcherItemsEntityDao.SelectAllLauncherItemIds().ToList();
+                launcherItemIds = launcherItemsEntityDao.SelectAllLauncherItemIds().ToArray();
 
                 var launcherGroupsEntityDao = ServiceLocator.Build<LauncherGroupsEntityDao>(context, context.Implementation);
-                groupIds = launcherGroupsEntityDao.SelectAllLauncherGroupIds().ToList();
+                groupIds = launcherGroupsEntityDao.SelectAllLauncherGroupIds().ToArray();
 
                 var launcherTagsEntityDao = ServiceLocator.Build<LauncherTagsEntityDao>(context, context.Implementation);
                 var allTagMap = launcherTagsEntityDao.SelectAllTags();

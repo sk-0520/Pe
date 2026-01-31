@@ -138,7 +138,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         /// <returns></returns>
         private IReadOnlyList<TValue> ConvertList(IList list)
         {
-            return list.Cast<TValue>().ToList();
+            return list.Cast<TValue>().ToArray();
         }
 
         protected virtual void CollectionChanged(NotifyCollectionChangedEventArgs e)

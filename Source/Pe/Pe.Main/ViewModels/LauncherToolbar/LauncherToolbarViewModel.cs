@@ -423,7 +423,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private void ChangeLauncherGroup(LauncherGroupViewModel targetGroup)
         {
-            var currentLauncherItems = LauncherItemCollection.ViewModels.ToList();
+            var currentLauncherItems = LauncherItemCollection.ViewModels.ToArray();
 
             if(LauncherGroupCollection.TryGetModel(targetGroup, out var groupModel)) {
                 Model.ChangeLauncherGroup(groupModel);

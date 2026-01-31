@@ -4,13 +4,18 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Domain;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
@@ -22,12 +27,6 @@ using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Views.Extend;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.Common;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Threading;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
 {
@@ -230,7 +229,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             using(var context = MainDatabaseBarrier.WaitRead()) {
                 var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
                 var dao = daoFactory.Create<LauncherToolbarDomainDao>();
-                var screenToolbars = dao.SelectAllScreenToolbars().ToList();
+                var screenToolbars = dao.SelectAllScreenToolbars();
                 //TODO: DBアクセスではないはずなので外に出す
                 var launcherToolbarId = FindMaybeToolbarId(screenToolbars);
                 return launcherToolbarId;
@@ -298,7 +297,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
         public LauncherGroupElement AddNewGroup(LauncherGroupKind kind)
         {
             var launcherFactory = new LauncherFactory(IdFactory, LoggerFactory);
-            var newGroupName = launcherFactory.CreateUniqueGroupName(LauncherGroups.Select(i => i.Name).ToList());
+            var newGroupName = launcherFactory.CreateUniqueGroupName(LauncherGroups.Select(i => i.Name).ToArray());
             var groupData = launcherFactory.CreateGroupData(newGroupName, kind);
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
@@ -460,7 +459,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             var file = new FileInfo(filePath);
             var launcherFactory = new LauncherFactory(IdFactory, LoggerFactory);
             var data = launcherFactory.FromFile(file, expandShortcut);
-            var tags = launcherFactory.GetTags(file).ToList();
+            var tags = launcherFactory.GetTags(file).ToArray();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
                 var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);

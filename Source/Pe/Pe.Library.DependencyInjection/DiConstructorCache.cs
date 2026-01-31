@@ -63,9 +63,9 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
 
         private FuncN CreateFunction<FuncN>()
         {
-            var parameterExpressions = CreateParameterExpressions().ToList();
-            var convertExpressions = CreateConvertExpressions(parameterExpressions).ToList();
-            Debug.Assert(parameterExpressions.Count == convertExpressions.Count);
+            var parameterExpressions = CreateParameterExpressions().ToArray();
+            var convertExpressions = CreateConvertExpressions(parameterExpressions).ToArray();
+            Debug.Assert(parameterExpressions.Length == convertExpressions.Length);
 
             var constructorNewParams = Expression.Lambda<FuncN>(
                 Expression.Convert(

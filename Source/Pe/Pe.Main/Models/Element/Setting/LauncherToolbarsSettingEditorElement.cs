@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -6,14 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Manager.Setting;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 {
@@ -44,7 +43,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
                 var launcherToolbarsEntityDao = daoFactory.Create<LauncherToolbarsEntityDao>();
                 var ids = launcherToolbarsEntityDao.SelectAllLauncherToolbarIds();
-                launcherToolbarIds = ids.ToList();
+                launcherToolbarIds = ids.ToArray();
             }
 
             var toolbars = new List<LauncherToolbarSettingEditorElement>();
@@ -63,7 +62,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             var activeToolbars = toolbars
                 .Where(i => i.Screen != null)
                 .OrderBy(i => i.Screen!.DeviceName)
-                .ToList()
+                .ToArray()
             ;
             // 3.なんか適当に並べ替える
             var nonActiveToolbars = toolbars

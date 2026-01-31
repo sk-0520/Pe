@@ -313,7 +313,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 .Where(i => i.GetCustomAttribute<InitialDirectoryAttribute>() != null)
                 .Select(i => i.GetValue(environmentParameters))
                 .OfType<DirectoryInfo>()
-                .ToList()
+                .ToArray()
             ;
 
             foreach(var dir in dirs) {
