@@ -60,7 +60,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
 
         [Theory]
         [InlineData(PropertyMode.Reflection)]
-        [InlineData(PropertyMode.Cache)]
+        [InlineData(PropertyMode.Cached)]
         public void SetProperty_public_Test(PropertyMode propertyMode)
         {
             var tvm = new TestViewModel(propertyMode);
@@ -79,7 +79,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
 
         [Theory]
         [InlineData(PropertyMode.Reflection)]
-        [InlineData(PropertyMode.Cache)]
+        [InlineData(PropertyMode.Cached)]
         public void SetProperty_private_Test(PropertyMode propertyMode)
         {
             var tvm = new TestViewModel(propertyMode);
@@ -98,7 +98,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
 
         [Theory]
         [InlineData(PropertyMode.Reflection)]
-        [InlineData(PropertyMode.Cache)]
+        [InlineData(PropertyMode.Cached)]
         public void SetProperty_alias_Test(PropertyMode propertyMode)
         {
             var tvm = new TestViewModel(propertyMode);
@@ -117,7 +117,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
 
         [Theory]
         [InlineData(PropertyMode.Reflection)]
-        [InlineData(PropertyMode.Cache)]
+        [InlineData(PropertyMode.Cached)]
         public void SetProperty_equal_Test(PropertyMode propertyMode)
         {
             var tvm = new TestViewModel(propertyMode);
@@ -194,7 +194,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
 
         [Theory]
         [InlineData(PropertyMode.Reflection)]
-        [InlineData(PropertyMode.Cache)]
+        [InlineData(PropertyMode.Cached)]
         public void ViewModelBase_PropertyChanged_Property_Test(PropertyMode propertyMode)
         {
             var aCalledCount = 0;
@@ -272,7 +272,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
 
         [Theory]
         [InlineData(PropertyMode.Reflection)]
-        [InlineData(PropertyMode.Cache)]
+        [InlineData(PropertyMode.Cached)]
         public void ViewModelBase_PropertyChanged_Command_Test(PropertyMode propertyMode)
         {
             var aCalledCount = 0;
@@ -338,7 +338,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
 
         [Theory]
         [InlineData(PropertyMode.Reflection)]
-        [InlineData(PropertyMode.Cache)]
+        [InlineData(PropertyMode.Cached)]
         public void SimpleVariableValidateTest(PropertyMode propertyMode)
         {
             var vm = new SimpleVariableValidateViewModel(propertyMode);
@@ -391,7 +391,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
 
         [Theory]
         [InlineData(PropertyMode.Reflection)]
-        [InlineData(PropertyMode.Cache)]
+        [InlineData(PropertyMode.Cached)]
         public void SimplePropertyValidateTest(PropertyMode propertyMode)
         {
             var model = new SimplePropertyValidateModel();
@@ -493,7 +493,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
         }
 
         public static TheoryData<PropertyMode, (string expected, int a, ObservePropertyOperator op, int b)> ObservePropertyData = new MatrixTheoryData<PropertyMode, (string, int, ObservePropertyOperator, int)>(
-            [PropertyMode.Reflection, PropertyMode.Cache],
+            [PropertyMode.Reflection, PropertyMode.Cached],
             [
                 // デフォルト値は反応しないので避けるべし
                 (
@@ -681,7 +681,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
         #endregion
 
         public static TheoryData<PropertyMode, EventReference> ValidateData = new MatrixTheoryData<PropertyMode, EventReference>(
-            [PropertyMode.Reflection, PropertyMode.Cache],
+            [PropertyMode.Reflection, PropertyMode.Cached],
             [EventReference.Strong, EventReference.Weak]
         );
 

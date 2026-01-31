@@ -28,10 +28,22 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         { }
     }
 
+    /// <summary>
+    /// プロパティの扱い。
+    /// </summary>
     public enum PropertyMode
     {
+        /// <summary>
+        /// リフレクション。
+        /// </summary>
+        /// <remarks>多分確実。</remarks>
         Reflection,
-        Cache,
+        /// <summary>
+        /// キャッシュ。
+        /// </summary>
+        /// <remarks><see cref="CachedProperty"/>を使用するんだけどボックス化云々で何も意味ない。けど将来的に対応予定。</remarks>
+        /// <seealso href="https://gist.github.com/sk-0520/d3954a537547a029c23ccd3b0cdfd53e" />
+        Cached,
     }
 
     /// <summary>
@@ -41,7 +53,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
     {
         #region define
 
-        public const PropertyMode DefaultPropertyMode = PropertyMode.Cache;
+        /// <summary>
+        /// 未指定時のプロパティの扱い。
+        /// </summary>
+        public const PropertyMode DefaultPropertyMode = PropertyMode.Cached;
 
         #endregion
 
@@ -53,7 +68,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
             ErrorsContainer = new ErrorsContainer<string>(OnErrorsChanged);
 
-            if(propertyMode == PropertyMode.Cache) {
+            if(propertyMode == PropertyMode.Cached) {
                 CachedProperty = new ConcurrentDictionary<object, CachedProperty>();
             }
 
@@ -67,6 +82,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         protected ViewModelBase(PropertyMode propertyMode, ILoggerFactory loggerFactory)
             : this(propertyMode, DefaultPropertyChanged, DefaultDisposing, loggerFactory)
+        { }
+
+        protected ViewModelBase(ILoggerFactory loggerFactory)
+            : this(DefaultPropertyMode, DefaultPropertyChanged, DefaultDisposing, loggerFactory)
         { }
 
         #region property

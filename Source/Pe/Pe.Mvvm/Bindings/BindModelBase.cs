@@ -11,7 +11,13 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
     {
         #region define
 
+        /// <summary>
+        /// 未指定時の <see cref="System.ComponentModel.INotifyPropertyChanged.PropertyChanged"/> の参照方法。
+        /// </summary>
         public const EventReference DefaultPropertyChanged = EventReference.Weak;
+        /// <summary>
+        /// 未指定時の <see cref="IDisposeObservable.Disposing"/> の参照方法。
+        /// </summary>
         public const EventReference DefaultDisposing = EventReference.Weak;
 
         #endregion

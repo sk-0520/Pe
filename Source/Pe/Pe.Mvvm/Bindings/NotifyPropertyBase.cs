@@ -18,15 +18,12 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 
         protected NotifyPropertyBase(EventReference propertyChangedEventReference)
         {
-            PropertyChangedEventReference = propertyChangedEventReference;
-            if(PropertyChangedEventReference == EventReference.Weak) {
+            if(propertyChangedEventReference == EventReference.Weak) {
                 PropertyChangedWeakEvent = new PropertyChangedWeakEvent(nameof(PropertyChanged));
             }
         }
 
         #region property
-
-        private EventReference PropertyChangedEventReference { get; }
 
         private PropertyChangedWeakEvent? PropertyChangedWeakEvent { get; }
 

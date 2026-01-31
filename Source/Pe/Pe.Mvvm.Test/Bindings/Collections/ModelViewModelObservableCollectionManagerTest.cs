@@ -25,7 +25,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings.Collections
             #endregion
         }
 
-        private class ViewModel: SingleModelViewModelBase<Model>
+        private sealed class ViewModel: SimpleModelViewModelBase<Model>
         {
             public ViewModel(Model model, ILoggerFactory loggerFactory)
                 : base(model, loggerFactory)
