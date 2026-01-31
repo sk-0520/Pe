@@ -68,11 +68,11 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
 
             var s = input.Trim();
             var result = s.Replace("\"", "\"\"");
-            if(s.IndexOf(' ') == -1) {
-                return result;
-            } else {
+            if(s.Contains(' ')) {
                 return "\"" + result + "\"";
             }
+
+            return result;
         }
 
         #endregion
