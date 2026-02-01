@@ -22,6 +22,13 @@ namespace ContentTypeTextNet.Pe.CommonTest
             }
         }
 
+        private static (string expectedLines, string actualLines) NormalizeLines(string expected, string actual)
+        {
+            var expectedLines = string.Join(Environment.NewLine, ReadLines(expected));
+            var actualLines = string.Join(Environment.NewLine, ReadLines(actual));
+            return (expectedLines, actualLines);
+        }
+
         /// <summary>
         /// 複数行文字列の場合に改行符を無視して一致を判定する。
         /// </summary>
@@ -29,8 +36,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// <param name="actual">実測値。</param>
         public static void EqualMultiLineTextIgnoreNewline(string expected, string actual)
         {
-            var e = string.Join(Environment.NewLine, ReadLines(expected));
-            var a = string.Join(Environment.NewLine, ReadLines(actual));
+            var (e, a) = NormalizeLines(expected, actual);
             Assert.Equal(e, a);
         }
 
@@ -41,8 +47,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// <param name="actual">実測値。</param>
         public static void NotEqualMultiLineTextIgnoreNewline(string expected, string actual)
         {
-            var e = string.Join(Environment.NewLine, ReadLines(expected));
-            var a = string.Join(Environment.NewLine, ReadLines(actual));
+            var (e, a) = NormalizeLines(expected, actual);
             Assert.NotEqual(e, a);
         }
         #endregion
