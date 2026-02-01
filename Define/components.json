@@ -1,0 +1,34 @@
+{
+	"library": [
+		{
+			"name": ".NET 10",
+			"uri": "https://dotnet.microsoft.com/download/dotnet/10.0",
+			"license": {
+				"name": "MIT License",
+				"uri": "https://github.com/microsoft/dotnet/blob/master/LICENSE"
+			},
+			"comment": ""
+		}
+	],
+	"resource": [
+		{
+			"name": "Visual Studio 2017/2019/2022 Image Library",
+			"uri": "https://docs.microsoft.com/ja-jp/visualstudio/designers/the-visual-studio-image-library",
+			"license": {
+				"name": "MICROSOFT SOFTWARE LICENSE TERMS",
+				"uri": "http://msdn.microsoft.com/ja-jp/library/ms246582.aspx"
+			},
+			"comment": ""
+		},
+		{
+			"name": "Material Design Icons",
+			"uri": "https://materialdesignicons.com",
+			"license": {
+				"name": "",
+				"uri": ""
+			},
+			"comment": ""
+		}
+	]
+
+}

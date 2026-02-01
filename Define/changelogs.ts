@@ -105,6 +105,11 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject:
+							"#1073: Pe.Main/doc/license/components.json は Define で管理する",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
