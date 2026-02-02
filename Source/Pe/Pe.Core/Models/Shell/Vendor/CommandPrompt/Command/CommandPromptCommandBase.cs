@@ -49,6 +49,11 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt.Command
 
         public override string CommandName { get; }
 
+        public override void WriteStatement(IShellWriter writer)
+        {
+            throw new System.NotImplementedException();
+        }
+
         #endregion
     }
 }

@@ -23,6 +23,5 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell
         public string Indent { get; set; } = "    ";
 
         #endregion
-
     }
 }

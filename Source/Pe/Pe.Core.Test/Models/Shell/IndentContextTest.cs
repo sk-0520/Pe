@@ -25,6 +25,5 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Shell
         }
 
         #endregion
-
     }
 }

@@ -11,6 +11,11 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell
             return string.Empty;
         }
 
+        override public void WriteStatement(IShellWriter writer)
+        {
+            writer.WriteLine();
+        }
+
         #endregion
 
     }

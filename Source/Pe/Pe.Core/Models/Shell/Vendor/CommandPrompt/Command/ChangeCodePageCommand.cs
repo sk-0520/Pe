@@ -21,11 +21,18 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt.Command
 
         #endregion
 
-        #region function
+        #region CommandPromptCommandBase
 
         public override string GetStatement()
         {
             return $"{GetStatementCommandName()} {Encoding.CodePage}";
+        }
+
+        public override void WriteStatement(IShellWriter writer)
+        {
+            writer.Write(GetStatementCommandName());
+            writer.Write(' ');
+            writer.Write(Encoding.CodePage);
         }
 
         #endregion

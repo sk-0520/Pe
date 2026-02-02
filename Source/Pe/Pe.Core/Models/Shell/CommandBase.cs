@@ -39,6 +39,8 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell
         /// TODO: インデント対応や改行処理を簡略化するため書き込みの口を渡す設計にしたい
         public abstract string GetStatement();
 
+        public abstract void WriteStatement(IShellWriter writer);
+
         /// <summary>
         /// 文脈に合わせたコマンドの出力。
         /// </summary>
