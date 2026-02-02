@@ -2426,4 +2426,10 @@ URL: バージョンチェックURLを指定すればその内容からプラグ
   <data name="String_Setting_Generals_Note_ExcludeScreenCapture_Description" xml:space="preserve">
     <value>除外設定自体はアプリケーション構成ファイルにより制御されます</value>
   </data>
+  <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.NoteContentKind.Html" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.NoteContentKind.Html_A" xml:space="preserve">
+    <value>HTML(_H)</value>
+  </data>
 </root>

@@ -2323,6 +2323,24 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
+        ///   HTML に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_NoteContentKind_Html {
+            get {
+                return ResourceManager.GetString("String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.NoteContentKind.Html", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   HTML(_H) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_NoteContentKind_Html_A {
+            get {
+                return ResourceManager.GetString("String:Enum-ContentTypeTextNet.Pe.Main.Models.Data.NoteContentKind.Html_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   テキスト に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_Enum_ContentTypeTextNet_Pe_Main_Models_Data_NoteContentKind_Plain {

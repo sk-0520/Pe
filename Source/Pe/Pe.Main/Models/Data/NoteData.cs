@@ -74,6 +74,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         /// </summary>
         [EnumResource]
         RichText,
+        /// <summary>
+        /// HTML。
+        /// </summary>
+        [EnumResource]
+        Html,
     }
 
     /// <summary>
