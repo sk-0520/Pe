@@ -70,7 +70,8 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"HELP のサイドメニュー選択時にスクロール位置を調整",
 					},
 					{
 						revision: "",
