@@ -4,30 +4,30 @@
 ;arguments:
 ;	expression more_arguments*
 
-expression:
-	term TOKEN_KIND_OP_PLUS   term
-	term TOKEN_KIND_OP_MINUS  term
-	primary_expression
-
-primary_expression:
+primary:
 	TOKEN_KIND_WORD
 	TOKEN_KIND_LITERAL_INTEGER
 	TOKEN_KIND_LITERAL_DECIMAL
 	string
 
+factor:
+	TOKEN_KIND_BRACKET_LPAREN expression TOKEN_KIND_BRACKET_RPAREN
+	primary
+
+term:
+	term TOKEN_KIND_OP_STAR factor
+	term TOKEN_KIND_OP_SLASH factor
+	factor
+
+expression:
+	expression TOKEN_KIND_OP_PLUS term
+	expression TOKEN_KIND_OP_MINUS term
+	term
+
 string:
 	TOKEN_KIND_LITERAL_SSTRING
 	TOKEN_KIND_LITERAL_DSTRING
 	TOKEN_KIND_LITERAL_BSTRING
-
-term:
-	expression TOKEN_KIND_OP_STAR   expression
-	expression TOKEN_KIND_OP_SLASH  expression
-	factor
-
-factor:
-	TOKEN_KIND_BRACKET_LPAREN expression TOKEN_KIND_BRACKET_RPAREN
-
 
 
 
