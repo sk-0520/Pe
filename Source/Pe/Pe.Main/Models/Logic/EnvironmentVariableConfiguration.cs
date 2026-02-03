@@ -23,22 +23,34 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         #region function
 
-        public IReadOnlyList<LauncherEnvironmentVariableData> GetMergeItems(TextDocument textDocument)
+        private IEnumerable<LauncherEnvironmentVariableData> GetMergeItemsCore(string text)
         {
-            return TextUtility.ReadLines(textDocument.Text)
+            return TextUtility.ReadLines(text)
                 .Where(i => !string.IsNullOrWhiteSpace(i))
                 .Select(i => i.Split(new char[] { '=' }, 2, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim()).ToArray())
                 .Where(i => i.Length == 2)
                 .Select(i => new LauncherEnvironmentVariableData() { Name = i[0], Value = i[1] })
+            ;
+        }
+
+        public IReadOnlyList<LauncherEnvironmentVariableData> GetMergeItems(TextDocument textDocument)
+        {
+            return GetMergeItemsCore(textDocument.Text)
                 .ToArray()
+            ;
+        }
+
+        private IEnumerable<string> GetRemoveItemsCore(string text)
+        {
+            return TextUtility.ReadLines(text)
+                 .Where(i => !string.IsNullOrWhiteSpace(i))
+                .Select(i => i.Trim())
             ;
         }
 
         public IReadOnlyList<string> GetRemoveItems(TextDocument textDocument)
         {
-            return TextUtility.ReadLines(textDocument.Text)
-                .Where(i => !string.IsNullOrWhiteSpace(i))
-                .Select(i => i.Trim())
+            return GetRemoveItemsCore(textDocument.Text)
                 .ToArray()
             ;
         }
@@ -50,11 +62,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 var index = envVarItems.FindIndex(i => i.Name == item);
                 if(index != -1) {
                     envVarItems.RemoveAt(index);
+                    continue;
                 }
-                envVarItems.Add(new LauncherEnvironmentVariableData() {
-                    Name = item
-                });
             }
+
             return envVarItems;
         }
 
