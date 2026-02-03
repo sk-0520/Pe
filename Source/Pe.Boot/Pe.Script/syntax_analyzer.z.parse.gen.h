@@ -15,21 +15,36 @@ typedef enum tag_SYNTAX_DEFINE_KIND
     SYNTAX_DEFINE_KIND_NONE,
     /// <summary>
     /// <list type="number">
-    /// <item>term TOKEN_KIND_OP_PLUS term</item>
-    /// <item>term TOKEN_KIND_OP_MINUS term</item>
-    /// <item>primary_expression</item>
-    /// </list>
-    /// </summary>
-    SYNTAX_DEFINE_KIND_EXPRESSION,
-    /// <summary>
-    /// <list type="number">
     /// <item>TOKEN_KIND_WORD</item>
     /// <item>TOKEN_KIND_LITERAL_INTEGER</item>
     /// <item>TOKEN_KIND_LITERAL_DECIMAL</item>
     /// <item>string</item>
     /// </list>
     /// </summary>
-    SYNTAX_DEFINE_KIND_PRIMARY_EXPRESSION,
+    SYNTAX_DEFINE_KIND_PRIMARY,
+    /// <summary>
+    /// <list type="number">
+    /// <item>TOKEN_KIND_BRACKET_LPAREN expression TOKEN_KIND_BRACKET_RPAREN</item>
+    /// <item>primary</item>
+    /// </list>
+    /// </summary>
+    SYNTAX_DEFINE_KIND_FACTOR,
+    /// <summary>
+    /// <list type="number">
+    /// <item>term TOKEN_KIND_OP_STAR factor</item>
+    /// <item>term TOKEN_KIND_OP_SLASH factor</item>
+    /// <item>factor</item>
+    /// </list>
+    /// </summary>
+    SYNTAX_DEFINE_KIND_TERM,
+    /// <summary>
+    /// <list type="number">
+    /// <item>expression TOKEN_KIND_OP_PLUS term</item>
+    /// <item>expression TOKEN_KIND_OP_MINUS term</item>
+    /// <item>term</item>
+    /// </list>
+    /// </summary>
+    SYNTAX_DEFINE_KIND_EXPRESSION,
     /// <summary>
     /// <list type="number">
     /// <item>TOKEN_KIND_LITERAL_SSTRING</item>
@@ -38,20 +53,6 @@ typedef enum tag_SYNTAX_DEFINE_KIND
     /// </list>
     /// </summary>
     SYNTAX_DEFINE_KIND_STRING,
-    /// <summary>
-    /// <list type="number">
-    /// <item>expression TOKEN_KIND_OP_STAR expression</item>
-    /// <item>expression TOKEN_KIND_OP_SLASH expression</item>
-    /// <item>factor</item>
-    /// </list>
-    /// </summary>
-    SYNTAX_DEFINE_KIND_TERM,
-    /// <summary>
-    /// <list type="number">
-    /// <item>TOKEN_KIND_BRACKET_LPAREN expression TOKEN_KIND_BRACKET_RPAREN</item>
-    /// </list>
-    /// </summary>
-    SYNTAX_DEFINE_KIND_FACTOR,
 } SYNTAX_DEFINE_KIND;
 
 /// <summary>

@@ -9,6 +9,10 @@
   <Folder Name="/build/">
     <File Path="build-t4.bat" />
   </Folder>
+  <Folder Name="/define/">
+    <File Path="../../Define/script-syntax.def" />
+    <File Path="../../Define/script-token.def" />
+  </Folder>
   <Folder Name="/lib/">
     <Project Path="Pe.Library.Test/Pe.Library.Test.vcxproj" Id="3b755030-5607-42ea-bf8d-9439a3b55a04" />
     <Project Path="Pe.Library/Pe.Library.vcxproj" Id="778ce0a0-cb22-4b9c-ad32-490c1ed04f7a" />
