@@ -61,10 +61,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             foreach(var item in removeItems) {
                 var index = envVarItems.FindIndex(i => i.Name == item);
                 if(index != -1) {
+                    // 追加・変更対象から削除し、削除対象として追加する
                     envVarItems.RemoveAt(index);
-                    continue; //BUG: 削除印として↓処理に逃げないとダメでは？
                 }
 
+                // 削除フラグを立てた項目として追加（Value が空の場合、IsRemove が true になる）
                 envVarItems.Add(new LauncherEnvironmentVariableData() {
                     Name = item
                 });

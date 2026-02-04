@@ -132,6 +132,48 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
                     "B"
                 ]
             },
+            // 追加・変更対象かつ削除対象の環境変数のケース
+            {
+                [
+                    new LauncherEnvironmentVariableData() { Name = "A", Value = "1" },
+                    new LauncherEnvironmentVariableData() { Name = "B", Value = "" }, // IsRemove = true
+                ],
+                [
+                    new LauncherEnvironmentVariableData() { Name = "A", Value = "1" },
+                    new LauncherEnvironmentVariableData() { Name = "B", Value = "2" }
+                ],
+                [
+                    "B"
+                ]
+            },
+            // 削除対象のみのケース
+            {
+                [
+                    new LauncherEnvironmentVariableData() { Name = "C", Value = "" }, // IsRemove = true
+                ],
+                [],
+                [
+                    "C"
+                ]
+            },
+            // 複数の追加・変更と削除が混在するケース
+            {
+                [
+                    new LauncherEnvironmentVariableData() { Name = "A", Value = "1" },
+                    new LauncherEnvironmentVariableData() { Name = "B", Value = "" }, // IsRemove = true
+                    new LauncherEnvironmentVariableData() { Name = "C", Value = "3" },
+                    new LauncherEnvironmentVariableData() { Name = "D", Value = "" }, // IsRemove = true
+                ],
+                [
+                    new LauncherEnvironmentVariableData() { Name = "A", Value = "1" },
+                    new LauncherEnvironmentVariableData() { Name = "B", Value = "2" },
+                    new LauncherEnvironmentVariableData() { Name = "C", Value = "3" },
+                ],
+                [
+                    "B",
+                    "D"
+                ]
+            },
         };
 
         [Theory]
