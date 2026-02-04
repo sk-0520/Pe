@@ -115,14 +115,14 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
         }
 
         public static TheoryData<IEnumerable<LauncherEnvironmentVariableData>, IEnumerable<LauncherEnvironmentVariableData>, IEnumerable<string>> JoinData => new() {
-            //{
-            //    [],
-            //    [],
-            //    []
-            //},
+            {
+                [],
+                [],
+                []
+            },
             {
                 [
-                    new LauncherEnvironmentVariableData() { Name = "A", Value = "1" }
+                    new LauncherEnvironmentVariableData() { Name = "A", Value = "1" },
                 ],
                 [
                     new LauncherEnvironmentVariableData() { Name = "A", Value = "1" },
