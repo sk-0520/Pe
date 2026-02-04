@@ -144,9 +144,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
     {
         #region property
 
-        string Path { get; set; }
-        string Option { get; set; }
-        string WorkDirectoryPath { get; set; }
+        string Path { get; }
+        string Option { get; }
+        string WorkDirectoryPath { get; }
 
         #endregion
     }
@@ -162,9 +162,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
         #region ILauncherExecutePathParameter
 
-        public string Path { get; set; }
-        public string Option { get; set; }
-        public string WorkDirectoryPath { get; set; }
+        public string Path { get; }
+        public string Option { get; }
+        public string WorkDirectoryPath { get; }
 
         #endregion
     }
@@ -173,12 +173,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
     {
         #region property
 
-        string Caption { get; set; }
-        ShowMode ShowMode { get; set; }
-        bool IsEnabledCustomEnvironmentVariable { get; set; }
-        bool IsEnabledStandardInputOutput { get; set; }
-        Encoding StandardInputOutputEncoding { get; set; }
-        bool RunAdministrator { get; set; }
+        string Caption { get; }
+        ShowMode ShowMode { get; }
+        bool IsEnabledCustomEnvironmentVariable { get; }
+        bool IsEnabledStandardInputOutput { get; }
+        Encoding StandardInputOutputEncoding { get; }
+        bool RunAdministrator { get; }
         #endregion
     }
 
@@ -210,18 +210,18 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
     {
         #region property
 
-        public string ProtocolAlias { get; set; } = string.Empty;
-        public string Option { get; set; } = string.Empty;
+        public string ProtocolAlias { get; init; } = string.Empty;
+        public string Option { get; init; } = string.Empty;
         #endregion
     }
 
-    public class LauncherSeparatorData
+    public record class LauncherSeparatorData
     {
         #region property
 
-        public LauncherSeparatorKind Kind { get; set; } = LauncherSeparatorKind.Line;
+        public required LauncherSeparatorKind Kind { get; init; }
 
-        public int Width { get; set; } = 1;
+        public required int Width { get; init; }
 
         #endregion
     }
@@ -294,6 +294,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         #endregion
     }
 
+    [Obsolete("なんだこれは")]
     public class StandardStreamData
     {
         #region property
@@ -343,10 +344,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
     {
         #region property
 
-        public string Name { get; set; } = string.Empty;
-        public LauncherGroupKind Kind { get; set; }
-        public LauncherGroupImageName ImageName { get; set; }
-        public Color ImageColor { get; set; }
+        public string Name { get; init; } = string.Empty;
+        public LauncherGroupKind Kind { get; init; }
+        public LauncherGroupImageName ImageName { get; init; }
+        public Color ImageColor { get; init; }
         public long Sequence { get; set; }
 
         #endregion
@@ -456,7 +457,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
     {
         #region ILauncherToolbarId
 
-        public LauncherToolbarId LauncherToolbarId { get; set; }
+        public required LauncherToolbarId LauncherToolbarId { get; init; }
 
         #endregion
 
@@ -479,30 +480,29 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
     {
         #region property
 
-        public LauncherGroupId LauncherGroupId { get; set; }
-        public AppDesktopToolbarPosition ToolbarPosition { get; set; }
-        public LauncherToolbarIconDirection IconDirection { get; set; }
-        public IconBox IconBox { get; set; }
-        public FontId FontId { get; set; }
-        public TimeSpan DisplayDelayTime { get; set; }
-        public TimeSpan AutoHideTime { get; set; }
-        public int TextWidth { get; set; }
-        public bool IsVisible { get; set; }
-        public bool IsTopmost { get; set; }
-        public bool IsAutoHide { get; set; }
-        public bool IsIconOnly { get; set; }
+        public required LauncherGroupId LauncherGroupId { get; init; }
+        public required AppDesktopToolbarPosition ToolbarPosition { get; init; }
+        public required LauncherToolbarIconDirection IconDirection { get; init; }
+        public required IconBox IconBox { get; init; }
+        public required FontId FontId { get; init; }
+        public required TimeSpan DisplayDelayTime { get; init; }
+        public required TimeSpan AutoHideTime { get; init; }
+        public required int TextWidth { get; init; }
+        public required bool IsVisible { get; init; }
+        public required bool IsTopmost { get; init; }
+        public required bool IsAutoHide { get; init; }
+        public required bool IsIconOnly { get; init; }
 
         #endregion
 
         #region ILauncherToolbarId
 
-        public LauncherToolbarId LauncherToolbarId { get; set; }
+        public required LauncherToolbarId LauncherToolbarId { get; init; }
 
         #endregion
-
     }
 
-    internal class LauncherFileItemData
+    internal record class LauncherFileItemData
     {
         public LauncherFileItemData(LauncherItemData item, LauncherFileData file)
         {
@@ -513,6 +513,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         #region property
         public LauncherItemData Item { get; }
         public LauncherFileData File { get; }
+
         #endregion
     }
 
@@ -560,9 +561,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         #region IReadOnlyLauncherRedoData
 
         public RedoMode RedoMode { get; set; }
-        public TimeSpan WaitTime { get; set; }
-        public int RetryCount { get; set; }
-        public List<int> SuccessExitCodes { get; set; } = new List<int>();
+        public TimeSpan WaitTime { get; init; }
+        public int RetryCount { get; init; }
+        public List<int> SuccessExitCodes { get; init; } = new List<int>();
         IReadOnlyCollection<int> IReadOnlyLauncherRedoData.SuccessExitCodes => SuccessExitCodes;
 
         #endregion
@@ -580,7 +581,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
 
 
-    public class LauncherIconStatus
+    public record class LauncherIconStatus
     {
         public LauncherIconStatus(IconBox iconBox, Point dpiScale, [DateTimeKind(DateTimeKind.Utc)] DateTime lastUpdatedTimestamp)
         {
@@ -667,7 +668,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
         #endregion
 
-        #region property
+        #region function
 
         /// <summary>
         /// バッジ非表示データ。
