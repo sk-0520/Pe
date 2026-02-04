@@ -8,9 +8,13 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
-    public class EnvironmentVariableConfiguration
+    /// <summary>
+    /// 環境変数編集処理。
+    /// </summary>
+    /// <remarks>編集 UI とデータ変換処理の間に位置する。</remarks>
+    public class EnvironmentVariableEditor
     {
-        public EnvironmentVariableConfiguration(ILoggerFactory loggerFactory)
+        public EnvironmentVariableEditor(ILoggerFactory loggerFactory)
         {
             Logger = loggerFactory.CreateLogger(GetType());
         }
@@ -23,24 +27,27 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         #region function
 
-        private IEnumerable<LauncherEnvironmentVariableData> GetMergeItemsCore(string text)
+        /// <summary>
+        /// 文字列から編集用環境変数データに変換する。
+        /// </summary>
+        /// <param name="text">入力。</param>
+        /// <returns>環境変数データ一覧。</returns>
+        public IEnumerable<LauncherEnvironmentVariableData> ParseMergeItems(string text)
         {
             return TextUtility.ReadLines(text)
                 .Where(i => !string.IsNullOrWhiteSpace(i))
                 .Select(i => i.Split(new char[] { '=' }, 2, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim()).ToArray())
                 .Where(i => i.Length == 2)
-                .Select(i => new LauncherEnvironmentVariableData() { Name = i[0], Value = i[1] })
+                .Select(i => new LauncherEnvironmentVariableData(i[0], i[1]))
             ;
         }
 
-        public IReadOnlyList<LauncherEnvironmentVariableData> GetMergeItems(TextDocument textDocument)
-        {
-            return GetMergeItemsCore(textDocument.Text)
-                .ToArray()
-            ;
-        }
-
-        private IEnumerable<string> GetRemoveItemsCore(string text)
+        /// <summary>
+        /// 文字列から削除用環境変数データに変換する。
+        /// </summary>
+        /// <param name="text">入力。</param>
+        /// <returns>環境変数データ一覧。</returns>
+        public IEnumerable<string> ParseRemoveItems(string text)
         {
             return TextUtility.ReadLines(text)
                  .Where(i => !string.IsNullOrWhiteSpace(i))
@@ -48,13 +55,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             ;
         }
 
-        public IReadOnlyList<string> GetRemoveItems(TextDocument textDocument)
-        {
-            return GetRemoveItemsCore(textDocument.Text)
-                .ToArray()
-            ;
-        }
-
+        /// <summary>
+        /// 編集用環境変数データと削除用環境変数データを結合。
+        /// </summary>
+        /// <param name="mergeItems">編集用環境変数データ一覧。</param>
+        /// <param name="removeItems">削除用環境変数データ一覧。</param>
+        /// <returns>環境変数データ一覧。</returns>
         public IReadOnlyList<LauncherEnvironmentVariableData> Join(IEnumerable<LauncherEnvironmentVariableData> mergeItems, IEnumerable<string> removeItems)
         {
             var envVarItems = mergeItems.ToList();
@@ -64,32 +70,40 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                     envVarItems.RemoveAt(index);
                 }
 
-                envVarItems.Add(new LauncherEnvironmentVariableData() {
-                    Name = item
-                });
+                envVarItems.Add(new LauncherEnvironmentVariableData(item));
             }
 
             return envVarItems;
         }
 
-        public TextDocument CreateMergeDocument(IEnumerable<LauncherEnvironmentVariableData> items)
+        /// <summary>
+        /// 編集用環境変数データから文字列に変換する。
+        /// </summary>
+        /// <param name="items">環境変数データ一覧。</param>
+        /// <returns></returns>
+        public string ConvertMergeText(IEnumerable<LauncherEnvironmentVariableData> items)
         {
             var mergeItems = items
                 .Where(i => !i.IsRemove)
                 .Select(i => $"{i.Name}={i.Value}")
             ;
 
-            return new TextDocument(string.Join(Environment.NewLine, mergeItems));
+            return string.Join(Environment.NewLine, mergeItems);
         }
 
-        public TextDocument CreateRemoveDocument(IEnumerable<LauncherEnvironmentVariableData> items)
+        /// <summary>
+        /// 削除用環境変数データから文字列に変換する。
+        /// </summary>
+        /// <param name="items">環境変数データ一覧。</param>
+        /// <returns></returns>
+        public string ConvertRemoveText(IEnumerable<LauncherEnvironmentVariableData> items)
         {
             var removeItems = items
                 .Where(i => i.IsRemove)
                 .Select(i => i.Name)
             ;
 
-            return new TextDocument(string.Join(Environment.NewLine, removeItems));
+            return string.Join(Environment.NewLine, removeItems);
         }
 
         public IEnumerable<string> ValidateMergeDocument(TextDocument textDocument)

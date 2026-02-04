@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
+using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
-using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
@@ -37,14 +33,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao.Entity
             testEnv.InsertEnvVarItems(
                 data.LauncherItemId,
                 new[] {
-                    new LauncherEnvironmentVariableData() {
-                        Name = "Name1",
-                        Value = "Value1",
-                    },
-                    new LauncherEnvironmentVariableData() {
-                        Name = "Name2",
-                        Value = "Value2",
-                    },
+                    new LauncherEnvironmentVariableData("Name1", "Value1"),
+                    new LauncherEnvironmentVariableData("Name2", "Value2"),
                 },
                 Test.DiContainer.Build<IDatabaseCommonStatus>()
             );

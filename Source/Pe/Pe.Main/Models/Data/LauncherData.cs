@@ -226,13 +226,57 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         #endregion
     }
 
-    public class LauncherEnvironmentVariableData
+    /// <summary>
+    /// 環境変数設定データ。
+    /// </summary>
+    public record class LauncherEnvironmentVariableData
     {
+        /// <summary>
+        /// 値あり生成。
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <remarks>編集対象。</remarks>
+        public LauncherEnvironmentVariableData(string name, string value)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(name);
+            ArgumentNullException.ThrowIfNull(value);
+
+            Name = name;
+            Value = value;
+        }
+
+        /// <summary>
+        /// 値無し生成。
+        /// </summary>
+        /// <param name="name"></param>
+        /// <remarks>削除対象。</remarks>
+        public LauncherEnvironmentVariableData(string name)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(name);
+
+            Name = name;
+            Value = string.Empty;
+        }
+
         #region property
 
-        public string Name { get; set; } = string.Empty;
-        public string Value { get; set; } = string.Empty;
+        /// <summary>
+        /// 環境変数名。
+        /// </summary>
+        public string Name { get; }
+        /// <summary>
+        /// 環境変数の値。
+        /// </summary>
+        /// <remarks>
+        /// <para>空文字列(or <see langword="null"/> は NE)の場合は削除対象。</para>
+        /// <para><see cref="IsRemove"/>で判定する。</para>
+        /// </remarks>
+        public string Value { get; }
 
+        /// <summary>
+        /// 削除対象か。
+        /// </summary>
         public bool IsRemove => string.IsNullOrEmpty(Value);
 
         #endregion

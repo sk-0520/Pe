@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
@@ -44,10 +43,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
 
         private LauncherEnvironmentVariableData ConvertFromDto(LauncherEnvVarsEntityDto dto)
         {
-            var data = new LauncherEnvironmentVariableData() {
-                Name = dto.EnvName,
-                Value = dto.EnvValue,
-            };
+            var data = new LauncherEnvironmentVariableData(dto.EnvName, dto.EnvValue);
 
             return data;
         }
