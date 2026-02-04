@@ -126,6 +126,25 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
                 ],
                 [
                     new LauncherEnvironmentVariableData() { Name = "A", Value = "1" },
+                ],
+                []
+            },
+            {
+                [
+                    new LauncherEnvironmentVariableData() { Name = "B" },
+                ],
+                [],
+                [
+                    "B"
+                ]
+            },
+            {
+                [
+                    new LauncherEnvironmentVariableData() { Name = "A", Value = "1" },
+                    new LauncherEnvironmentVariableData() { Name = "B" },
+                ],
+                [
+                    new LauncherEnvironmentVariableData() { Name = "A", Value = "1" },
                     new LauncherEnvironmentVariableData() { Name = "B", Value = "1" }
                 ],
                 [

@@ -75,7 +75,8 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"#1074: 環境変数が追加・変更対象かつ削除対象になっている場合に削除されない",
 					},
 					{
 						revision: "",

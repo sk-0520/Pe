@@ -62,7 +62,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 var index = envVarItems.FindIndex(i => i.Name == item);
                 if(index != -1) {
                     envVarItems.RemoveAt(index);
-                    continue; //BUG: 削除印として↓処理に逃げないとダメでは？
                 }
 
                 envVarItems.Add(new LauncherEnvironmentVariableData() {
