@@ -19,6 +19,7 @@ using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Main.Models.Element.Command;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Theme;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
@@ -40,7 +41,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         private string _inputValue = string.Empty;
         private InputState _inputState;
         //bool _isActive;
-        private List<CommandItemViewModel> _commandItems = new List<CommandItemViewModel>();
+        private IReadOnlyList<CommandItemViewModel> _commandItems = new List<CommandItemViewModel>();
 
         #endregion
 
@@ -85,7 +86,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         public IReadOnlyList<CommandItemViewModel> CommandItems
         {
             get => this._commandItems;
-            private set => SetProperty(ref this._commandItems, (List<CommandItemViewModel>)value);
+            private set => SetProperty(ref this._commandItems, value);
         }
 
         public CommandItemViewModel? CurrentSelectedItem
@@ -412,11 +413,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         {
             if(!IsDisposed) {
                 Model.HideView(false);
-                SetCommandItems(new List<ICommandItem>());
+                SetCommandItems([]);
             }
         }
 
-        private void SetCommandItems(IReadOnlyList<ICommandItem> commandItems)
+        private void SetCommandItems(IEnumerable<ICommandItem> commandItems)
         {
             var prevItems = CommandItems;
             CommandItems = commandItems

@@ -197,7 +197,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
 
 
-        public Task<IReadOnlyList<ICommandItem>> EnumerateCommandItemsAsync(string inputValue, CancellationToken cancellationToken)
+        public Task<IEnumerable<ICommandItem>> EnumerateCommandItemsAsync(string inputValue, CancellationToken cancellationToken)
         {
             return Task.Run(async () => {
                 Logger.LogTrace("検索開始");
@@ -214,9 +214,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
                 Logger.LogTrace("検索終了: {0}", stopwatch.Elapsed);
 
-                return (IReadOnlyList<ICommandItem>)commandItems
+                return (IEnumerable<ICommandItem>)commandItems
                     .OrderByDescending(i => i.Score)
-                    .ToArray()
                 ;
             }, cancellationToken);
         }
