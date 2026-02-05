@@ -112,7 +112,9 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						class: "nuget",
+						subject:
+							"Microsoft.Web.WebView2 1.0.3650.58 -> 1.0.3719.77",
 					},
 					{
 						revision: "",
