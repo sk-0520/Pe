@@ -20,7 +20,7 @@
     <PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />
     <PackageVersion Include="SevenZipExtractor" Version="1.0.19" />
     <PackageVersion Include="System.DirectoryServices.AccountManagement" Version="10.0.2" />
-    <PackageVersion Include="NLog.Extensions.Logging" Version="6.1.0" />
+    <PackageVersion Include="NLog.Extensions.Logging" Version="6.1.1" />
     <!-- TEST: 共通 -->
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />

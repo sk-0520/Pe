@@ -118,6 +118,11 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						class: "nuget",
+						subject: "NLog.Extensions.Logging 6.1.0 -> 6.1.1",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
