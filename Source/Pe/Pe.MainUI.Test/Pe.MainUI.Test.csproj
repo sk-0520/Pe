@@ -1,24 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>Pe.Mvvm.Test</AssemblyName>
-    <RootNamespace>ContentTypeTextNet.Pe.Mvvm.Test</RootNamespace>
+    <AssemblyName>Pe.MainUI.Test</AssemblyName>
+    <RootNamespace>ContentTypeTextNet.Pe.Pe.MainUI.Test.Test</RootNamespace>
     <IsTestProject>true</IsTestProject>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="nlog.config" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FlaUI.UIA3" />
+    <PackageReference Include="NLog.Extensions.Logging" />
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="NSubstitute.Analyzers.CSharp">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Xunit.StaFact" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pe.Mvvm\Pe.Mvvm.csproj" />
+    <ProjectReference Include="..\Pe.CommonTest\Pe.CommonTest.csproj" />
+    <ProjectReference Include="..\Pe.Main\Pe.Main.csproj" />
   </ItemGroup>
 
 </Project>

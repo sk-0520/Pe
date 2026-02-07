@@ -20,6 +20,8 @@
 
   IsVisibleChanged="root_IsVisibleChanged"
 
+  AutomationProperties.AutomationId="StartupWindow"
+
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:datacontext="clr-namespace:ContentTypeTextNet.Pe.Main.ViewModels.Startup" d:DataContext="{d:DesignInstance Type=datacontext:StartupViewModel}"
   mc:Ignorable="d"
@@ -85,7 +87,7 @@
     </UniformGrid>
 
     <UniformGrid Grid.Row="1" Style="{StaticResource DialogCommand}">
-      <Button IsDefault="True" IsCancel="True" Command="{Binding CloseCommand, ElementName=root}" Content="{Binding Resources.String_Common_Close_A, Source={x:Static app_main:CultureService.Instance}}" />
+      <Button IsDefault="True" IsCancel="True" Command="{Binding CloseCommand, ElementName=root}" Content="{Binding Resources.String_Common_Close_A, Source={x:Static app_main:CultureService.Instance}}" AutomationProperties.AutomationId="CloseCommand" />
     </UniformGrid>
   </Grid>
 </Window>

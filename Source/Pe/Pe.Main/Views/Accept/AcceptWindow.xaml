@@ -20,6 +20,8 @@
   Foreground="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
   Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
   BorderBrush="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}"
+  
+  AutomationProperties.AutomationId="AcceptWindow"
 
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:datacontext="clr-namespace:ContentTypeTextNet.Pe.Main.ViewModels.Accept" d:DataContext="{d:DesignInstance Type=datacontext:AcceptViewModel}"
@@ -70,8 +72,8 @@
         <ColumnDefinition Width="*" />
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Command="{Binding AffirmativeCommand}" Content="{Binding Resources.String_Accept_Affirmative_A, Source={x:Static app_main:CultureService.Instance}}" />
-      <Button IsDefault="True" IsCancel="True" Grid.Column="1" Command="{Binding NegativeCommand}" Content="{Binding Resources.String_Accept_Negative_A, Source={x:Static app_main:CultureService.Instance}}" />
+      <Button Grid.Column="0" Command="{Binding AffirmativeCommand}" Content="{Binding Resources.String_Accept_Affirmative_A, Source={x:Static app_main:CultureService.Instance}}" AutomationProperties.AutomationId="AffirmativeCommand" />
+      <Button Grid.Column="1" IsDefault="True" IsCancel="True" Command="{Binding NegativeCommand}" Content="{Binding Resources.String_Accept_Negative_A, Source={x:Static app_main:CultureService.Instance}}" AutomationProperties.AutomationId="NegativeCommand" />
     </Grid>
 
     <StatusBar Grid.Row="2">

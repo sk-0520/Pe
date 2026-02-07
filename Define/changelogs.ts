@@ -123,6 +123,13 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "UI テスト用に FlaUI.UIA3 を導入",
+						comments: [
+							"最低限のインフラは整えたので今後 UI テストは #69 の一環として進めていきたいお気持ち表明",
+						],
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
