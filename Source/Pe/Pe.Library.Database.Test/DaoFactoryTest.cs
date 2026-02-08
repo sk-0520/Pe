@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Test
@@ -36,12 +33,12 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test
 
         public DaoFactoryTest()
         {
-            var dcMock = new Mock<IDatabaseContext>();
-            var dslMock = new Mock<IDatabaseStatementLoader>();
+            var dcMock = Substitute.For<IDatabaseContext>();
+            var dslMock = Substitute.For<IDatabaseStatementLoader>();
 
             DaoFactory = new DaoFactory(
-                dcMock.Object,
-                dslMock.Object,
+                dcMock,
+                dslMock,
                 NullLoggerFactory.Instance
             );
         }

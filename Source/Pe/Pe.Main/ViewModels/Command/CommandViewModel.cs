@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -42,7 +41,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         private string _inputValue = string.Empty;
         private InputState _inputState;
         //bool _isActive;
-        private List<CommandItemViewModel> _commandItems = new List<CommandItemViewModel>();
+        private IReadOnlyList<CommandItemViewModel> _commandItems = new List<CommandItemViewModel>();
 
         #endregion
 
@@ -87,7 +86,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         public IReadOnlyList<CommandItemViewModel> CommandItems
         {
             get => this._commandItems;
-            private set => SetProperty(ref this._commandItems, (List<CommandItemViewModel>)value);
+            private set => SetProperty(ref this._commandItems, value);
         }
 
         public CommandItemViewModel? CurrentSelectedItem
@@ -414,16 +413,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         {
             if(!IsDisposed) {
                 Model.HideView(false);
-                SetCommandItems(new List<ICommandItem>());
+                SetCommandItems([]);
             }
         }
 
-        private void SetCommandItems(IReadOnlyList<ICommandItem> commandItems)
+        private void SetCommandItems(IEnumerable<ICommandItem> commandItems)
         {
             var prevItems = CommandItems;
             CommandItems = commandItems
                 .Select(i => new CommandItemViewModel(i, new IconScale(IconBox, DpiScaleOutpour.GetDpiScale()), ContextDispatcher, LoggerFactory))
-                .ToList()
+                .ToArray()
             ;
             foreach(var item in prevItems) {
                 item.Dispose();

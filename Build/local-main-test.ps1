@@ -83,7 +83,11 @@ $sources = @(
 
 $assemblyfilters = @()
 foreach($dir in $targetProjectDirs) {
-	$assemblyfilters += "+$($dir.Name.SubString(0, $dir.Name.Length - '.Test'.Length))"
+	$removeName = '.Test'
+	if ($dir.Name.EndsWith('UI.Test')) {
+		$removeName = 'UI.Test'
+	}
+	$assemblyfilters += "+$($dir.Name.SubString(0, $dir.Name.Length - $removeName.Length))"
 }
 
 $reportgenerator = Join-Path -Path $rootDir -ChildPath '_tools' | Join-Path -ChildPath 'reportgenerator.exe'

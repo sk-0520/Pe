@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.ViewModels;
 using ContentTypeTextNet.Pe.Plugins.Reference.Clock.Models.Data;
@@ -36,7 +34,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.ViewModels
             set => SetPropertyValue(WidgetSetting, value, nameof(WidgetSetting.ClockWidgetKind));
         }
 
-        public IReadOnlyList<ClockWidgetKind> WidgetKindItems { get; } = Enum.GetValues(typeof(ClockWidgetKind)).Cast<ClockWidgetKind>().ToList();
+        public IReadOnlyList<ClockWidgetKind> WidgetKindItems { get; } = Enum.GetValues(typeof(ClockWidgetKind)).Cast<ClockWidgetKind>().ToArray();
 
         #endregion
     }

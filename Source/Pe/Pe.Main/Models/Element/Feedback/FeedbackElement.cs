@@ -19,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using System.Threading;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Feedback
 {

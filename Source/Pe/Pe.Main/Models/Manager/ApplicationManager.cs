@@ -28,6 +28,7 @@ using ContentTypeTextNet.Pe.Main.CrashReport.Models;
 using ContentTypeTextNet.Pe.Main.CrashReport.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Command;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database;
@@ -306,7 +307,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 var pack = ApplicationDiContainer.Get<IDatabaseAccessorPack>();
                 var stoppings = (new IDatabaseAccessor[] { pack.Main, pack.Large })
                     .Select(i => i.PauseConnection())
-                    .ToList()
+                    .ToArray()
                 ;
 
                 BackupSettingsDefault(container);
@@ -649,7 +650,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             // プラグイン情報取得
             var pluginStateItems = ApplicationDiContainer.Build<IMainDatabaseBarrier>().ReadData(c => {
                 var pluginsEntityDao = ApplicationDiContainer.Build<PluginsEntityDao>(c, c.Implementation);
-                return pluginsEntityDao.SelectPluginStateData().ToList();
+                return pluginsEntityDao.SelectPluginStateData().ToArray();
             });
 
             // アンインストール対象を消しちゃう
@@ -889,7 +890,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         private void UnloadPlugins()
         {
             var pluginContextFactory = ApplicationDiContainer.Build<PluginContextFactory>();
-            var plugins = PluginContainer.Plugins.Where(i => i.IsInitialized).ToList();
+            var plugins = PluginContainer.Plugins.Where(i => i.IsInitialized).ToArray();
             var themePlugins = plugins.Where(i => i.IsLoaded(PluginKind.Theme)).Select(i => new { Plugin = i, Kind = PluginKind.Theme });
             var addonPlugins = plugins.Where(i => i.IsLoaded(PluginKind.Addon)).Select(i => new { Plugin = i, Kind = PluginKind.Addon });
 
@@ -1137,13 +1138,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var barrier = ApplicationDiContainer.Build<IMainDatabaseBarrier>();
             var statementLoader = ApplicationDiContainer.Build<IDatabaseStatementLoader>();
 
-            IList<LauncherGroupId> launcherGroupIds;
+            LauncherGroupId[] launcherGroupIds;
             using(var context = barrier.WaitRead()) {
                 var dao = ApplicationDiContainer.Build<LauncherGroupsEntityDao>(context, context.Implementation);
-                launcherGroupIds = dao.SelectAllLauncherGroupIds().ToList();
+                launcherGroupIds = dao.SelectAllLauncherGroupIds().ToArray();
             }
 
-            var result = new List<LauncherGroupElement>(launcherGroupIds.Count);
+            var result = new List<LauncherGroupElement>(launcherGroupIds.Length);
             foreach(var launcherGroupId in launcherGroupIds) {
                 var element = await CreateLauncherGroupElementAsync(launcherGroupId, cancellationToken);
                 result.Add(element);
@@ -1170,13 +1171,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var barrier = ApplicationDiContainer.Build<IMainDatabaseBarrier>();
             var statementLoader = ApplicationDiContainer.Build<IDatabaseStatementLoader>();
 
-            IList<NoteId> noteIds;
+            NoteId[] noteIds;
             using(var context = barrier.WaitRead()) {
                 var dao = ApplicationDiContainer.Build<NotesEntityDao>(context, context.Implementation);
-                noteIds = dao.SelectAllNoteIds().ToList();
+                noteIds = dao.SelectAllNoteIds().ToArray();
             }
 
-            var result = new List<NoteElement>(noteIds.Count);
+            var result = new List<NoteElement>(noteIds.Length);
             foreach(var noteId in noteIds) {
                 var element = await CreateNoteElementAsync(noteId, default(IScreen), NoteStartupPosition.Setting, cancellationToken);
                 result.Add(element);
@@ -1229,7 +1230,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 .Where(i => !i.IsLocked)
                 .Where(i => i.IsVisible)
                 .Where(i => !i.IsCompact)
-                .ToList()
+                .ToArray()
             ;
             foreach(var note in noteItems) {
                 note.ToggleCompactCommand.ExecuteIfCanExecute(null);
@@ -1242,7 +1243,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 var noteElements = NoteElements
                     .Where(i => i.IsVisible)
                     .Where(i => !i.IsTopmost)
-                    .ToList()
+                    .ToArray()
                 ;
                 var contextDispatcher = ApplicationDiContainer.Get<IContextDispatcher>();
                 contextDispatcher.BeginAsync(() => {
@@ -1258,7 +1259,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 var noteItems = WindowManager.GetWindowItems(WindowKind.Note)
                     .Where(i => !i.Window.Topmost)
                     .Where(i => i.Window.IsVisible)
-                    .ToList()
+                    .ToArray()
                 ;
                 foreach(var noteItem in noteItems) {
                     var hWnd = HandleUtility.GetWindowHandle(noteItem.Window);
@@ -1290,7 +1291,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 .Concat(notes)
                 .Concat(launcherToolbars)
                 .Where(i => i.CanStartShowView)
-                .ToList()
+                .ToArray()
             ;
             foreach(var viewShowStater in viewShowStaters) {
                 viewShowStater.StartView();
@@ -1395,7 +1396,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         private void CloseViewsCore(WindowKind windowKind)
         {
-            var windowItems = WindowManager.GetWindowItems(windowKind).ToList();
+            var windowItems = WindowManager.GetWindowItems(windowKind).ToArray();
             foreach(var windowItem in windowItems) {
                 try {
                     if(windowItem.IsOpened) {
@@ -1473,10 +1474,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         private void PrepareLatestPlugins()
         {
             var temporaryBarrier = ApplicationDiContainer.Build<ITemporaryDatabaseBarrier>();
-            IList<PluginInstallData> installDataItems;
+            PluginInstallData[] installDataItems;
             using(var context = temporaryBarrier.WaitRead()) {
                 var installPluginsEntityDao = ApplicationDiContainer.Build<InstallPluginsEntityDao>(context, context.Implementation);
-                installDataItems = installPluginsEntityDao.SelectInstallPlugins().ToList();
+                installDataItems = installPluginsEntityDao.SelectInstallPlugins().ToArray();
             }
 
             if(!installDataItems.Any()) {
@@ -1640,8 +1641,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         public async Task ShowFeedbackViewAsync(CancellationToken cancellationToken)
         {
-            var items = WindowManager.GetWindowItems(WindowKind.Feedback).ToList();
-            if(items.Count != 0) {
+            var items = WindowManager.GetWindowItems(WindowKind.Feedback).ToArray();
+            if(items.Length != 0) {
                 foreach(var item in items) {
                     WindowManager.Flash(item);
                 }
@@ -1842,7 +1843,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var currentCommands = Environment.GetCommandLineArgs()
                 .Skip(1)
                 .Select(i => commandLineHelper.Escape(i))
-                .ToList()
+                .ToArray()
             ;
 
             var autoSend = ApplicationDiContainer.Get<IMainDatabaseBarrier>().ReadData(c => {

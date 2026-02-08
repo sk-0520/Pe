@@ -1,94 +1,94 @@
-						"class": "compatibility" "notice" "nuget" "myget" "plugin-compatibility"
-						"comments": [
+						class: "compatibility" "notice" "nuget" "myget" "plugin-compatibility"
+						comments: [
 							""
 						]
 	---------------------------------------------
 
 	{
-		"date": "YYYY/MM/DD",
-		"version": "0.xx.001",
-		"contents": [
+		date: "YYYY/MM/DD",
+		version: "0.xx.001",
+		contents: [
 			{
-				"type": "note",
-				"logs": [
+				type: "note",
+				logs: [
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					}
 				]
 			},
 			{
-				"type": "features",
-				"logs": [
+				type: "features",
+				logs: [
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					}
 				]
 			},
 			{
-				"type": "fixes",
-				"logs": [
+				type: "fixes",
+				logs: [
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					}
 				]
 			},
 			{
-				"type": "developer",
-				"logs": [
+				type: "developer",
+				logs: [
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					},
 					{
-						"revision": "",
-						"subject": ""
+						revision: "",
+						subject: ""
 					}
 				]
 			}

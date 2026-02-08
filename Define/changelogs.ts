@@ -5,6 +5,113 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
+		date: "2026/02/08",
+		version: "0.99.267",
+		contents: [
+			{
+				type: "note",
+				logs: [
+					{
+						class: "compatibility",
+						subject: "#1065 対応でなんかダメになってるかも",
+					},
+					{
+						class: "compatibility",
+						subject:
+							"#1067 対応に伴い既存データと新規データで処理が変わります",
+						comments: [
+							"既存データ(SJISで登録られたもの)は今まで通り",
+							"SJIS 前提 OS では処理は変わりません",
+						],
+					},
+					{
+						revision: "bdb2474f69de9131b183e46a43d4c3ae856e457e",
+						subject: "README に開発版成果物を追加",
+						comments: ["next ブランチのみ対応"],
+					},
+				],
+			},
+			{
+				type: "fixes",
+				logs: [
+					{
+						revision: "6e5d1bdcb87d4793010cc357e5d6bdefcf4d8b49",
+						subject:
+							"#1067: .NET Core からの Encoding.Default 変更に伴うSJIS固定使用箇所は OS から取得する",
+						comments: [
+							"ユーザー操作の口は未開放なので登録済みの処理は今まで通り",
+							"初回登録時の処理は OS 依存になった",
+						],
+					},
+					{
+						revision: "90b598674f10bb1a69444137c88ab9af8f8a960a",
+						subject:
+							"HELP のサイドメニュー選択時にスクロール位置を調整",
+					},
+					{
+						revision: "88e689754581e78c16d5d07860c03111acfb2fb6",
+						subject:
+							"#1074: 環境変数が追加・変更対象かつ削除対象になっている場合に削除されない",
+					},
+				],
+			},
+			{
+				type: "developer",
+				logs: [
+					{
+						revision: "d74c38130b7c644599a6bdb5390bcf789273f76e",
+						subject:
+							"#1063: bat 生成処理をテキスト処理から置き換え",
+						comments: ["価値のない実装かなぁ", "これ意味ねぇなぁ"],
+					},
+					{
+						revision: "f719c09a1777288315a16a376e17fdec47741c96",
+						subject:
+							"DB 処理周りを個別のロジックではなくミドルウェアとして分離",
+					},
+					{
+						revision: "5e82728ecfdb06982287241fdf5ede546d20de1e",
+						subject: "#1070: Moq から NSubstitute に変更する",
+						comments: [
+							"この問題自体はあんま興味なかったけど更新状況的に活発な方に移っておいた方が将来的に良いのでは感があったのでノリで",
+						],
+					},
+					{
+						revision: "9bf949cbddae8bd7a96ea4a5d7c0c78de4b8c877",
+						subject:
+							"#1073: Pe.Main/doc/license/components.json は Define で管理する",
+					},
+					{
+						revision: "8f416741fcc2a0701f47e7653592240490da44d9",
+						class: "nuget",
+						subject:
+							"Microsoft.Web.WebView2 1.0.3650.58 -> 1.0.3719.77",
+					},
+					{
+						revision: "69db86f6c5cd695d2c34bc1a13d9d1023238212b",
+						class: "nuget",
+						subject: "NLog.Extensions.Logging 6.1.0 -> 6.1.1",
+					},
+					{
+						revision: "2f4cda0470f8b378bbfde2bbbc6ad0d5d167a7e5",
+						subject: "UI テスト用に FlaUI.UIA3 を導入",
+						comments: [
+							"最低限のインフラは整えたので今後 UI テストは #69 の一環として進めていきたいお気持ち表明",
+						],
+					},
+					{
+						revision: "0e9a0fedf358985e39272518345142978d18bcf4",
+						subject: "update npm",
+					},
+					{
+						revision: "3a86dca5a722895972b3d062f14cdf8a54fe50b7",
+						subject: "#1065: 可能な限りライブラリを AnyCPU とする",
+					},
+				],
+			},
+		],
+	},
+	{
 		date: "2026/01/18",
 		version: "0.99.266",
 		contents: [

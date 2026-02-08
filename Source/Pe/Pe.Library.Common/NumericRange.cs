@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Throw;
 
 namespace ContentTypeTextNet.Pe.Library.Common
@@ -65,27 +64,16 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         #region function
 
-        /// <summary>
-        /// 数値群をパース可能な文字列に変換。
-        /// </summary>
-        /// <param name="values"></param>
-        /// <returns></returns>
-        public string ToString(IEnumerable<int>? values)
+        private string ToStringCore(ReadOnlySpan<int> orderedValues)
         {
-            if(values is null || !values.Any()) {
-                return string.Empty;
-            }
-
-            var orderedValues = values
-                .OrderBy(i => i)
-                .ToArray()
-            ;
-
             var builder = new StringBuilder(64);
+
             var prevValue = orderedValues[0];
             builder.Append(prevValue);
+
             var nowRange = false;
-            for(var i =1; i < orderedValues.Length; i++) {
+
+            for(var i = 1; i < orderedValues.Length; i++) {
                 var value = orderedValues[i];
 
                 if(prevValue == value) {
@@ -111,6 +99,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
                 prevValue = value;
             }
+
             if(nowRange) {
                 builder.Append(prevValue);
             }
@@ -118,8 +107,27 @@ namespace ContentTypeTextNet.Pe.Library.Common
             return builder.ToString();
         }
 
+        /// <summary>
+        /// 数値群をパース可能な文字列に変換。
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public string ToString(IEnumerable<int>? values)
+        {
+            if(values is null || !values.Any()) {
+                return string.Empty;
+            }
+
+            var orderedValues = values
+                .OrderBy(i => i)
+                .ToArray()
+            ;
+
+            return ToStringCore(orderedValues);
+        }
+
         [SuppressMessage("Performance", "HAA0601:Value type to reference type conversion causing boxing allocation")]
-        private bool ParseCore(string? s, [NotNullWhen(true)] out IReadOnlyCollection<int>? result, [NotNullWhen(false)] out Exception? ex)
+        private bool ParseCore(string? s, TimeSpan timeout, [NotNullWhen(true)] out IReadOnlyCollection<int>? result, [NotNullWhen(false)] out Exception? ex)
         {
             ex = null;
             if(string.IsNullOrWhiteSpace(s)) {
@@ -129,7 +137,20 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
             var values = s.Split(ValueSeparator);
 
-            var reg = new Regex(@"\s*(?<HEAD>[+\-]?\d+)\s*((?<RANGE>.+?)(?<TAIL>[+\-]?\d+))?\s*", default, Timeout.InfiniteTimeSpan);
+            var reg = new Regex(
+                @"
+                    \s*
+                    (?<HEAD>[+\-]?\d+)
+                    \s*
+                    (
+                        (?<RANGE>.+?)
+                        (?<TAIL>[+\-]?\d+)
+                    )?
+                    \s*
+                ",
+                RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture,
+                timeout
+            );
 
             var workValues = new List<int>();
 
@@ -168,7 +189,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             result = workValues
                 .OrderBy(i => i)
                 .Distinct()
-                .ToList()
+                .ToArray()
             ;
 
             return true;
@@ -182,7 +203,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <exception cref="Exception" />
         public IReadOnlyCollection<int> Parse(string? s)
         {
-            if(ParseCore(s, out var result, out var ex)) {
+            if(ParseCore(s, Timeout.InfiniteTimeSpan, out var result, out var ex)) {
                 Debug.Assert(ex == null);
                 return result;
             } else {
@@ -199,7 +220,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>パース成功・失敗。</returns>
         public bool TryParse(string? s, [NotNullWhen(true)] out IReadOnlyCollection<int>? result)
         {
-            return ParseCore(s, out result, out _);
+            return ParseCore(s, Timeout.InfiniteTimeSpan, out result, out _);
         }
 
         #endregion

@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Element;
 using ContentTypeTextNet.Pe.Main.ViewModels;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 using Microsoft.Extensions.Logging;
-using System.Windows.Data;
 using Microsoft.Web.WebView2.Wpf;
-using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
@@ -430,7 +430,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 item.Window.DataContext = null;
                 var dataContextChildren = UIUtility.FindChildren<FrameworkElement>(item.Window)
                     .Where(i => i.DataContext != null)
-                    .ToList()
+                    .ToArray()
                 ;
                 foreach(var child in dataContextChildren) {
                     child.DataContext = null;

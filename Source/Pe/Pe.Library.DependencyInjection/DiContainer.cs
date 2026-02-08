@@ -363,11 +363,11 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
                 .OrderBy(i => i.attribute != null ? 0 : 1)
                 .ThenByDescending(i => i.parameters.Length)
                 .Select(i => new DiConstructorCache(i.constructor, i.parameters))
-                .ToList()
+                .ToArray()
             ;
 
 #if ENABLED_STRUCT
-            if(!constructorItems.Any() && type.IsValueType) {
+            if(!constructorItems.Any() && objectType.IsValueType) {
                 //TODO: 構造体っぽければそのまま作る
             }
 #endif
@@ -464,7 +464,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
             var targetType = GetMappingType(typeof(TObject), name);
             var memberItems = targetType.GetMembers(MemberBindingFlags)
                 .Select(m => (memberInfo: m, inject: m.GetCustomAttribute<DiInjectionAttribute>()))
-                .ToList()
+                .ToArray()
             ;
             foreach(var memberItem in memberItems.Where(a => a.inject is not null)) {
                 SetMemberValue(ref target, memberItem.memberInfo, GetMemberType(memberItem.memberInfo), memberItem.inject!.Name);
@@ -773,7 +773,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         public bool Unregister(Type interfaceType, string name)
         {
             var mappingResult = Mapping[name].TryRemove(interfaceType, out _);
-           Constructors[name].TryRemove(interfaceType, out _);
+            Constructors[name].TryRemove(interfaceType, out _);
             if(Factory[name].TryGetValue(interfaceType, out var factory)) {
                 if(factory.Lifecycle == DiLifecycle.Singleton) {
                     factory.Dispose();
@@ -782,7 +782,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
             }
             ObjectPool[name].TryRemove(interfaceType, out _);
 
-            return mappingResult  ;
+            return mappingResult;
         }
 
         /// <inheritdoc cref="IDiRegisterContainer.Unregister{TInterface}"/>

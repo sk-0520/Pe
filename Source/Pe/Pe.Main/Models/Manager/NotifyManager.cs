@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.NotifyLog;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
-using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
@@ -23,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
     public class LauncherGroupChangedEventArgs: NotifyEventArgs, ILauncherToolbarId, ILauncherGroupId
     {
-        public LauncherGroupChangedEventArgs(LauncherToolbarId launcherToolbarId,  LauncherGroupId launcherGroupId)
+        public LauncherGroupChangedEventArgs(LauncherToolbarId launcherToolbarId, LauncherGroupId launcherGroupId)
         {
             LauncherToolbarId = launcherToolbarId;
             LauncherGroupId = launcherGroupId;
@@ -609,9 +608,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var removeLogs = StreamNotifyLogsImpl
                 .Where(i => i.Content.Timestamp + NotifyLogLifeTimes[i.Kind] < time)
                 .Select(i => i.NotifyLogId)
-                .ToList()
+                .ToArray()
             ;
-            if(0 < removeLogs.Count) {
+            if(0 < removeLogs.Length) {
                 foreach(var removeLog in removeLogs) {
                     ClearLog(removeLog);
                 }

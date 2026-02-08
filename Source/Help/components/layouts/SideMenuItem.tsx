@@ -26,7 +26,9 @@ export const SideMenuItem: FC<SideMenuItemProps> = (
 			<ListItemButton
 				ref={(ref) => {
 					if (isSelected && ref) {
-						ref.scrollIntoView();
+						ref.scrollIntoView({
+							block: "center",
+						});
 					}
 				}}
 				onClick={handleSelectMenu}

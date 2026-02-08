@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
+using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
@@ -25,9 +25,8 @@ using ContentTypeTextNet.Pe.Main.Models.Platform;
 using ContentTypeTextNet.Pe.Main.ViewModels._Debug_;
 using ContentTypeTextNet.Pe.Main.Views;
 using ContentTypeTextNet.Pe.Main.Views._Debug_;
-using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Main.ViewModels.About;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
@@ -114,7 +113,7 @@ rem ping localhost
 rem ping 127.0.0.1
 test
 echo end
-            ", Encoding.GetEncoding("shift_jis"));
+            ", EncodingUtility.GetDefaultEncoding());
             var launcherExecutor = new LauncherExecutor(EnvironmentPathExecuteFileCache.Instance, OrderManager, NotifyManager, new ApplicationContextDispatcher(Timeout.InfiniteTimeSpan), LoggerFactory);
             var data = new LauncherFileData() {
                 //Path = batchPath,
@@ -273,13 +272,13 @@ echo end
             //DebugSetting();
         }
 
-        private void Uninstall()
+        private Task UninstallAsync(CancellationToken cancellationToken)
         {
             var about = ApplicationDiContainer.Build<Element.About.AboutElement>();
             var path = @"x:a.bat";
             var uninstallTarget = UninstallTarget.Application | UninstallTarget.Batch;
             uninstallTarget |= UninstallTarget.User | UninstallTarget.Machine | UninstallTarget.Temporary;
-            about.CreateUninstallBatch(path, uninstallTarget);
+            return about.CreateUninstallBatchAsync(path, uninstallTarget, cancellationToken);
         }
 
         private void DebugIssue714()

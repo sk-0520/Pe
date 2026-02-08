@@ -3,6 +3,7 @@
   <PropertyGroup>
     <AssemblyName>Pe.Library.Property</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Library.Property</RootNamespace>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

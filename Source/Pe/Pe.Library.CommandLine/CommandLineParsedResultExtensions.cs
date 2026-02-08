@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace ContentTypeTextNet.Pe.Library.CommandLine
@@ -35,7 +34,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
                 return commandLineKey.Data;
             }
 
-            return Array.Empty<string>();
+            return [];
         }
 
         /// <summary>

@@ -166,6 +166,10 @@
     <File Path="../../Define/changelogs.ts" />
     <File Path="../../Directory.Build.props" />
   </Folder>
+  <Project Path="Pe.MainUI.Test/Pe.MainUI.Test.csproj" Id="f7dee629-f792-4a73-8fd3-8a0e064771c9">
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
   <Project Path="Pe.Main.Test/Pe.Main.Test.csproj" DefaultStartup="True">
     <Platform Solution="*|x64" Project="x64" />
     <Platform Solution="*|x86" Project="x86" />

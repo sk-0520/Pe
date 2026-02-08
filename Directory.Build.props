@@ -1,6 +1,6 @@
 <Project>
     <PropertyGroup>
-        <Version>0.99.266</Version>
+        <Version>0.99.267</Version>
 
         <TargetFramework>net10.0-windows</TargetFramework>
         <LangVersion>14</LangVersion>
@@ -62,6 +62,5 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Moq" />
     </ItemGroup>
 </Project>

@@ -27,21 +27,24 @@ using ContentTypeTextNet.Pe.Main.Models.Plugin.Preferences;
 using Microsoft.Extensions.Logging;
 using Forms = System.Windows.Forms;
 using ContentTypeTextNet.Pe.Library.Provider;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
+
+
 #if !DOC_FX
 using ContentTypeTextNet.Pe.Generator.Throws;
 #else
 // docfx 用ダミー
 [System.AttributeUsage(System.AttributeTargets.Class)]
-file sealed class GenerateExceptionAttribute: System.Attribute
+file sealed class GeneratedExceptionAttribute: System.Attribute
 {
-    public GenerateExceptionAttribute()
+    public GeneratedExceptionAttribute()
     { }
 }
 #endif
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {
-    [GenerateException]
+    [GeneratedException]
     public partial class ApplicationInitializerException: Exception
     { }
 
@@ -310,7 +313,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 .Where(i => i.GetCustomAttribute<InitialDirectoryAttribute>() != null)
                 .Select(i => i.GetValue(environmentParameters))
                 .OfType<DirectoryInfo>()
-                .ToList()
+                .ToArray()
             ;
 
             foreach(var dir in dirs) {

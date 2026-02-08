@@ -97,7 +97,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine.Test
         {
             var mockLog = MockLog.Create();
 
-            var converter = new CommandLineConverter(mockLog.Factory.Object);
+            var converter = new CommandLineConverter(mockLog.Factory);
             var actual = converter.Convert<ClassConvertError>(
                 new CommandLineParser(),
                 [
@@ -110,7 +110,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine.Test
             Assert.Equal(-100, actual.Int32_1);
             Assert.Equal(DateTime.MaxValue, actual.DateTime1);
 
-            mockLog.VerifyLog(Microsoft.Extensions.Logging.LogLevel.Warning, Moq.Times.Exactly(2));
+            mockLog.VerifyLog(Microsoft.Extensions.Logging.LogLevel.Warning, 2);
         }
 
         private sealed class ClassCustomHandler

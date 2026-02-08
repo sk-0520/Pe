@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize;
 using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 {
@@ -46,7 +45,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
             return TextUtility.ReadLines(TagDocument!.Text)
                 .Where(i => !string.IsNullOrWhiteSpace(i))
                 .Select(i => i.Trim())
-                .ToList()
+                .ToArray()
             ;
         }
 
@@ -55,7 +54,6 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
             var tagItems = TextUtility.ReadLines(ContextDispatcher.Get(() => TagDocument.Text))
                 .Where(i => !string.IsNullOrWhiteSpace(i))
                 .Select(i => i.Trim())
-                .ToList()
             ;
             Model.TagItems.SetRange(tagItems);
         }

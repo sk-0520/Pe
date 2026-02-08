@@ -176,7 +176,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
             CultureInfoItems.Add(CultureInfo.InvariantCulture);
             CultureInfoItems.AddRange(cultures);
 
-            ThemePluginItems = Model.ThemePlugins.Select(i => new ThemePluginItemViewModel(i, imageLoader, ContextDispatcher, LoggerFactory)).ToList();
+            ThemePluginItems = Model.ThemePlugins.Select(i => new ThemePluginItemViewModel(i, imageLoader, ContextDispatcher, LoggerFactory)).ToArray();
         }
 
         #region property

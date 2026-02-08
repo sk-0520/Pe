@@ -72,9 +72,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
             HistoryWorkDirectories = new ObservableCollection<HistoryViewModel>(Model.HistoryWorkDirectories.Select(i => new HistoryViewModel(i, CultureInfo.CurrentUICulture, loggerFactory)));
             HistoryWorkDirectories.Insert(0, new HistoryViewModel(Model.LauncherFileData.WorkDirectoryPath, loggerFactory));
 
-            var envConf = new EnvironmentVariableConfiguration(LoggerFactory);
-            this._mergeTextDocument = envConf.CreateMergeDocument(Model.EnvironmentVariables);
-            this._removeTextDocument = envConf.CreateRemoveDocument(Model.EnvironmentVariables);
+            var envEditor = new EnvironmentVariableEditor(LoggerFactory);
+            this._mergeTextDocument = new TextDocument(envEditor.ConvertMergeText(Model.EnvironmentVariables));
+            this._removeTextDocument = new TextDocument(envEditor.ConvertRemoveText(Model.EnvironmentVariables));
 
             //TODO: 自家製DIのコンストラクタキャッシュ問題によるダウンキャスト
             if(model is LauncherExtendsExecuteElement element) {
@@ -318,10 +318,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
             };
             IReadOnlyList<LauncherEnvironmentVariableData> envItems;
             if(launcherFileData.IsEnabledCustomEnvironmentVariable) {
-                var envConf = new EnvironmentVariableConfiguration(LoggerFactory);
-                var mergeItems = envConf.GetMergeItems(MergeTextDocument);
-                var removeItems = envConf.GetRemoveItems(RemoveTextDocument);
-                envItems = envConf.Join(mergeItems, removeItems);
+                var envEditor = new EnvironmentVariableEditor(LoggerFactory);
+                var mergeItems = envEditor.ParseMergeItems(MergeTextDocument.Text);
+                var removeItems = envEditor.ParseRemoveItems(RemoveTextDocument.Text);
+                envItems = envEditor.Join(mergeItems, removeItems);
             } else {
                 envItems = new List<LauncherEnvironmentVariableData>();
             }
@@ -458,10 +458,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
             //    }
             //}
 
-            var envConf = new EnvironmentVariableConfiguration(LoggerFactory);
+            var envEditor = new EnvironmentVariableEditor(LoggerFactory);
 
-            envConf.SetValidateCommon(MergeTextDocument!, envConf.ValidateMergeDocument, seq => AddErrors(seq, nameof(MergeTextDocument)), MergeErrors);
-            envConf.SetValidateCommon(RemoveTextDocument!, envConf.ValidateRemoveDocument, seq => AddErrors(seq, nameof(RemoveTextDocument)), RemoveErrors);
+            envEditor.SetValidateCommon(MergeTextDocument!, envEditor.ValidateMergeDocument, seq => AddErrors(seq, nameof(MergeTextDocument)), MergeErrors);
+            envEditor.SetValidateCommon(RemoveTextDocument!, envEditor.ValidateRemoveDocument, seq => AddErrors(seq, nameof(RemoveTextDocument)), RemoveErrors);
         }
 
         #endregion

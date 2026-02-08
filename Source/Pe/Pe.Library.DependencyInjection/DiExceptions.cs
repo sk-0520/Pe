@@ -4,9 +4,9 @@ using ContentTypeTextNet.Pe.Generator.Throws;
 #else
 // docfx 用ダミー
 [System.AttributeUsage(System.AttributeTargets.Class)]
-file sealed class GenerateExceptionAttribute: System.Attribute
+file sealed class GeneratedExceptionAttribute: System.Attribute
 {
-    public GenerateExceptionAttribute()
+    public GeneratedExceptionAttribute()
     { }
 }
 #endif
@@ -19,15 +19,15 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
     /// <remarks>
     /// <para>内部的に <see cref="ArgumentException"/> 等を投げる場合はわざわざラップしないのでこの例外だけ受ければ良いという話ではない。</para>
     /// </remarks>
-    [GenerateException]
+    [GeneratedException]
     public partial class DiException: Exception
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class DiFunctionMethodNotFoundException: DiException
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class DiFunctionResultException: DiException
     { }
 }

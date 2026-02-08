@@ -5,6 +5,7 @@
     <RootNamespace>ContentTypeTextNet.Pe.Core</RootNamespace>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

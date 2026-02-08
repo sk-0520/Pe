@@ -5,13 +5,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows;
-using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Main.Models.Platform;
-using Microsoft.Extensions.Configuration;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Main.Models.Platform;
+using Microsoft.Extensions.Configuration;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
 {
@@ -156,8 +154,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
                         var genName = valueType.Name.Substring(0, genIndex);
                         switch(genName) {
                             case "IReadOnlyList": {
-                                    var rawChildren = childSection.GetChildren().ToList();
-                                    var array = Array.CreateInstance(genArgs[0], rawChildren.Count);
+                                    var rawChildren = childSection.GetChildren().ToArray();
+                                    var array = Array.CreateInstance(genArgs[0], rawChildren.Length);
                                     foreach(var child in rawChildren.Counting()) {
                                         var childValue = GetValue(methodParent, child.Value, string.Empty, genArgs[0], methodInfo);
                                         array.SetValue(childValue, child.Number);
@@ -166,7 +164,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
                                 }
 
                             case "IReadOnlyDictionary": {
-                                    var rawChildren = childSection.GetChildren().ToList();
+                                    var rawChildren = childSection.GetChildren().ToArray();
                                     var dictionaryType = typeof(Dictionary<,>).MakeGenericType(genArgs);
                                     var dictionary = (IDictionary)Activator.CreateInstance(dictionaryType)!;
                                     foreach(var raw in rawChildren) {

@@ -1,13 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.CommonTest;
+using ContentTypeTextNet.Pe.Core.Models;
 using Microsoft.Extensions.Logging;
-using Moq;
 using Xunit;
 
 // こいつの評価基準はモックをありゃこりゃするやつなんですよ
@@ -26,32 +19,32 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
             mockLog.VerifyFactoryNever();
             mockLog.VerifyLogNever();
 
-            var test = new NullDoubleProgress(mockLog.Factory.Object);
-            mockLog.VerifyFactory(Times.Once());
+            var test = new NullDoubleProgress(mockLog.Factory);
+            mockLog.VerifyFactory(1);
             mockLog.VerifyLogNever();
 
             test.Report(0.5);
-            mockLog.VerifyMessage(LogLevel.Trace, "0.5", Times.Exactly(0));
-            mockLog.VerifyMessage(LogLevel.Debug, "0.5", Times.Exactly(1));
-            mockLog.VerifyMessage(LogLevel.Information, "0.5", Times.Exactly(0));
-            mockLog.VerifyMessage(LogLevel.Warning, "0.5", Times.Exactly(0));
-            mockLog.VerifyMessage(LogLevel.Error, "0.5", Times.Exactly(0));
-            mockLog.VerifyMessage(LogLevel.Critical, "0.5", Times.Exactly(0));
+            mockLog.VerifyMessage(LogLevel.Trace, "0.5", 0);
+            mockLog.VerifyMessage(LogLevel.Debug, "0.5", 1);
+            mockLog.VerifyMessage(LogLevel.Information, "0.5", 0);
+            mockLog.VerifyMessage(LogLevel.Warning, "0.5", 0);
+            mockLog.VerifyMessage(LogLevel.Error, "0.5", 0);
+            mockLog.VerifyMessage(LogLevel.Critical, "0.5", 0);
 
             test.Report(0.75);
-            mockLog.VerifyMessage(LogLevel.Trace, "0.75", Times.Exactly(0));
-            mockLog.VerifyMessage(LogLevel.Debug, "0.75", Times.Exactly(1));
-            mockLog.VerifyMessage(LogLevel.Information, "0.75", Times.Exactly(0));
-            mockLog.VerifyMessage(LogLevel.Warning, "0.75", Times.Exactly(0));
-            mockLog.VerifyMessage(LogLevel.Error, "0.75", Times.Exactly(0));
-            mockLog.VerifyMessage(LogLevel.Critical, "0.75", Times.Exactly(0));
+            mockLog.VerifyMessage(LogLevel.Trace, "0.75", 0);
+            mockLog.VerifyMessage(LogLevel.Debug, "0.75", 1);
+            mockLog.VerifyMessage(LogLevel.Information, "0.75", 0);
+            mockLog.VerifyMessage(LogLevel.Warning, "0.75", 0);
+            mockLog.VerifyMessage(LogLevel.Error, "0.75", 0);
+            mockLog.VerifyMessage(LogLevel.Critical, "0.75", 0);
 
             test.Report(0.75);
-            mockLog.VerifyMessage(LogLevel.Debug, "0.75", Times.Exactly(2));
-            mockLog.VerifyMessageStartsWith(LogLevel.Debug, "0.7", Times.Exactly(2));
-            mockLog.VerifyMessageEndsWith(LogLevel.Debug, ".75", Times.Exactly(2));
-            mockLog.VerifyMessageContains(LogLevel.Debug, "7", Times.Exactly(2));
-            mockLog.VerifyMessageRegex(LogLevel.Debug, new TestRegex("\\d\\.\\d{2}"), Times.Exactly(2));
+            mockLog.VerifyMessage(LogLevel.Debug, "0.75", 2);
+            mockLog.VerifyMessageStartsWith(LogLevel.Debug, "0.7", 2);
+            mockLog.VerifyMessageEndsWith(LogLevel.Debug, ".75", 2);
+            mockLog.VerifyMessageContains(LogLevel.Debug, "7", 2);
+            mockLog.VerifyMessageRegex(LogLevel.Debug, new TestRegex("\\d\\.\\d{2}"), 2);
         }
 
         #endregion
@@ -64,23 +57,17 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
         [Fact]
         public void ReportTest()
         {
-            var mockLogger = new Mock<ILogger>();
+            var mockLog = MockLog.Create();
 
-            var mockLoggerFactory = new Mock<ILoggerFactory>();
-            mockLoggerFactory
-                .Setup(a => a.CreateLogger(It.IsAny<string>()))
-                .Returns(() => mockLogger.Object)
-            ;
+            mockLog.VerifyFactoryNever();
+            mockLog.VerifyLogNever();
 
-            mockLoggerFactory.Verify(a => a.CreateLogger(It.IsAny<string>()), Times.Exactly(0));
-            mockLogger.Verify(a => a.Log(It.IsAny<LogLevel>(), It.IsAny<EventId>(), It.IsAny<It.IsAnyType>(), It.IsAny<Exception>(), It.IsAny<Func<It.IsAnyType, Exception?, string>>()), Times.Exactly(0));
-
-            var test = new NullStringProgress(mockLoggerFactory.Object);
-            mockLoggerFactory.Verify(a => a.CreateLogger(It.IsAny<string>()), Times.Exactly(1));
-            mockLogger.Verify(a => a.Log(It.IsAny<LogLevel>(), It.IsAny<EventId>(), It.IsAny<It.IsAnyType>(), It.IsAny<Exception>(), It.IsAny<Func<It.IsAnyType, Exception?, string>>()), Times.Exactly(0));
+            var test = new NullStringProgress(mockLog.Factory);
+            mockLog.VerifyFactory(1);
+            mockLog.VerifyLogNever(0);
 
             test.Report("abc");
-            mockLogger.Verify(a => a.Log(It.IsAny<LogLevel>(), It.IsAny<EventId>(), It.Is<It.IsAnyType>((a, _) => a.ToString() == "abc"), It.IsAny<Exception>(), It.IsAny<Func<It.IsAnyType, Exception?, string>>()), Times.Exactly(1));
+            mockLog.VerifyMessage(LogLevel.None, "abc", 1);
         }
 
         #endregion

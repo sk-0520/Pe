@@ -4,6 +4,7 @@
     <AssemblyName>Pe.Plugins.Reference.FileFinder</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Plugins.Reference.FileFinder</RootNamespace>
     <UseWPF>true</UseWPF>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

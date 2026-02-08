@@ -1,11 +1,14 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Launcher;
@@ -13,10 +16,6 @@ using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Manager.Setting;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 {
@@ -74,7 +73,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         public async Task<LauncherGroupId> AddNewGroupAsync(LauncherGroupKind kind, CancellationToken cancellationToken)
         {
             var launcherFactory = new LauncherFactory(IdFactory, LoggerFactory);
-            var newGroupName = launcherFactory.CreateUniqueGroupName(GroupItems.Select(i => i.Name).ToList());
+            var newGroupName = launcherFactory.CreateUniqueGroupName(GroupItems.Select(i => i.Name).ToArray());
             var groupData = launcherFactory.CreateGroupData(newGroupName, kind);
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
@@ -104,7 +103,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             using(var context = MainDatabaseBarrier.WaitRead()) {
                 var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
                 var launcherItemsEntityDao = daoFactory.Create<LauncherItemsEntityDao>();
-                launcherItemIds = launcherItemsEntityDao.SelectAllLauncherItemIds().ToList();
+                launcherItemIds = launcherItemsEntityDao.SelectAllLauncherItemIds().ToArray();
             }
             LauncherItems.SetRange(launcherItemIds);
 

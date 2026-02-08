@@ -10,9 +10,11 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Addon;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Command;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
@@ -21,8 +23,6 @@ using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Plugin;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 using Timer = System.Timers.Timer;
 
@@ -197,7 +197,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
 
 
-        public Task<IReadOnlyList<ICommandItem>> EnumerateCommandItemsAsync(string inputValue, CancellationToken cancellationToken)
+        public Task<IEnumerable<ICommandItem>> EnumerateCommandItemsAsync(string inputValue, CancellationToken cancellationToken)
         {
             return Task.Run(async () => {
                 Logger.LogTrace("検索開始");
@@ -214,9 +214,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
                 Logger.LogTrace("検索終了: {0}", stopwatch.Elapsed);
 
-                return (IReadOnlyList<ICommandItem>)commandItems
+                return (IEnumerable<ICommandItem>)commandItems
                     .OrderByDescending(i => i.Score)
-                    .ToList()
                 ;
             }, cancellationToken);
         }

@@ -4,21 +4,21 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Launcher;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Common;
-using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
 {
@@ -124,15 +124,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
                 .Where(i => !string.IsNullOrWhiteSpace(i.File.Path)) // 共有ドライブとかね
                 .Select(i => new {
                     Data = i,
-                    Tags = launcherFactory.GetTags(new FileInfo(i.File.Path)).ToList(),
+                    Tags = launcherFactory.GetTags(new FileInfo(i.File.Path)).ToArray(),
                 })
-                .ToList()
+                .ToArray()
             ;
 
             var groupNames = DatabaseBarrier.ReadData(c => {
                 var daoFactory = new AppDaoFactory(c, DatabaseStatementLoader, LoggerFactory);
                 var launcherGroupsDao = daoFactory.Create<LauncherGroupsEntityDao>();
-                return launcherGroupsDao.SelectAllLauncherGroupNames().ToList();
+                return launcherGroupsDao.SelectAllLauncherGroupNames().ToArray();
             });
             var groupName = TextUtility.ToUniqueDefault(Properties.Resources.String_LauncherGroup_ImportItem_Name, groupNames, StringComparison.CurrentCultureIgnoreCase);
             var group = launcherFactory.CreateGroupData(groupName, LauncherGroupKind.Normal);

@@ -43,7 +43,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
 
         #region function
 
-        private IReadOnlyDictionary<PropertyInfo, CommandLineOptionAttribute> GetPropertyAttributeMapping(Type type)
+        private Dictionary<PropertyInfo, CommandLineOptionAttribute> GetPropertyAttributeMapping(Type type)
         {
             var properties = type.GetProperties();
 
@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
             return map;
         }
 
-        private IReadOnlyDictionary<PropertyInfo, CommandLineOption> ApplyPropertyKeyMapping(CommandLineParser parser, IReadOnlyDictionary<PropertyInfo, CommandLineOptionAttribute> propertyAttributeMap)
+        private Dictionary<PropertyInfo, CommandLineOption> ApplyPropertyKeyMapping(CommandLineParser parser, IReadOnlyDictionary<PropertyInfo, CommandLineOptionAttribute> propertyAttributeMap)
         {
             var map = new Dictionary<PropertyInfo, CommandLineOption>();
             foreach(var pair in propertyAttributeMap) {
@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
                         try {
                             return handler.Convert(type, data);
                         } catch(Exception ex) {
-                            Logger.LogWarning("{Message}: {Exception}", ex.Message, ex);
+                            Logger.LogWarning(ex, "convert error: {Handler}, {Type}", handler, type);
                         }
                     }
                     return null;
@@ -133,7 +133,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
         public T Convert<T>(CommandLineParser parser, IReadOnlyList<string> arguments)
             where T : new()
         {
-            return ConvertCore<T>(parser, arguments.ToArray());
+            return ConvertCore<T>(parser, arguments);
         }
 
         #endregion

@@ -4,6 +4,7 @@
     <AssemblyName>Pe.Plugins.Reference.Clock</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Plugins.Reference.Clock</RootNamespace>
     <UseWPF>true</UseWPF>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

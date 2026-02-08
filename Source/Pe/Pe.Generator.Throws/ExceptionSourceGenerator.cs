@@ -157,7 +157,7 @@ namespace ContentTypeTextNet.Pe.Generator.Throws
 
             var attributeNamespace = "ContentTypeTextNet.Pe.Generator.Throws";
             var attributeTarget = AttributeTargets.Class;
-            var attributeName = "GenerateExceptionAttribute";
+            var attributeName = "GeneratedExceptionAttribute";
 
             context.RegisterPostInitializationOutput(initContext => {
                 var attributeSource = $$"""

@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                     .OrderBy(i => i == ".exe" ? 0 : 1)
                     .ThenBy(i => i)
                     .Select(i => addWildcard ? "*" + i : i)
-                    .ToList()
+                    .ToArray()
                 ;
                 if(result.Any()) {
                     // EXEが無いって事はないだろうけど実行できないしもうどうでもいい

@@ -12,15 +12,15 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3459:Unassigned members should be removed", Justification = "OK")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S1144:Unused private types or members should be removed", Justification = "OK")]
-        private class TestModel: BindModelBase
+        private sealed class TestModel: BindModelBase
         {
             public int PropertyA { get; set; }
             public int PropertyANext { get; set; }
         }
 
-        private class TestSingleModelViewModel: SingleModelViewModelBase<TestModel>
+        private sealed class TestSimpleModelViewModel: SimpleModelViewModelBase<TestModel>
         {
-            public TestSingleModelViewModel(TestModel model, ILoggerFactory loggerFactory)
+            public TestSimpleModelViewModel(TestModel model, ILoggerFactory loggerFactory)
                 : base(model, loggerFactory)
             { }
 
@@ -41,7 +41,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
         public void SetModel_a_Test()
         {
             var model = new TestModel();
-            var vm = new TestSingleModelViewModel(model, NullLoggerFactory.Instance);
+            var vm = new TestSimpleModelViewModel(model, NullLoggerFactory.Instance);
             bool called = false;
             vm.PropertyChanged += (s, e) => {
                 if(e.PropertyName != nameof(vm.HasErrors)) {
@@ -60,7 +60,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.ViewModels
         public void SetModel_b_Test()
         {
             var model = new TestModel();
-            var vm = new TestSingleModelViewModel(model, NullLoggerFactory.Instance!);
+            var vm = new TestSimpleModelViewModel(model, NullLoggerFactory.Instance!);
             bool called = false;
             vm.PropertyChanged += (s, e) => {
                 if(e.PropertyName != nameof(vm.HasErrors)) {

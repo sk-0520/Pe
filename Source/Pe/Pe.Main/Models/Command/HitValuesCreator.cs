@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
-using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Command
 {
@@ -45,10 +44,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
         }
 
         /// <inheritdoc cref="IHitValuesCreator.GetMatches(string, Regex)"/>
-        public IReadOnlyList<Match> GetMatches(string source, Regex regex) => regex.Matches(source).Cast<Match>().ToList();
+        public IReadOnlyList<Match> GetMatches(string source, Regex regex) => regex.Matches(source).Cast<Match>().ToArray();
 
         /// <inheritdoc cref="IHitValuesCreator.ConvertRanges(IEnumerable{Match})"/>
-        public IReadOnlyList<Range> ConvertRanges(IEnumerable<Match> matches) => matches.Select(i => new Range(i.Index, i.Index + i.Length)).ToList();
+        public IReadOnlyList<Range> ConvertRanges(IEnumerable<Match> matches) => matches.Select(i => new Range(i.Index, i.Index + i.Length)).ToArray();
 
         /// <inheritdoc cref="IHitValuesCreator.ConvertHitValues(ReadOnlySpan{char}, IReadOnlyList{Range})"/>
         public IReadOnlyList<HitValue> ConvertHitValues(ReadOnlySpan<char> source, IReadOnlyList<Range> hitRanges)
@@ -114,11 +113,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
                 }
             }
 
-            var nextItems = hitValues.Skip(1).Counting().ToList();
+            var nextItems = hitValues.Skip(1).Counting().ToArray();
             foreach(var item in nextItems) {
                 var hitValue = item.Value;
                 if(hitValue.IsHit) {
-                    score += GetScore(ScoreKind.Good, (nextItems.Count - item.Number) * 0.5);
+                    score += GetScore(ScoreKind.Good, (nextItems.Length - item.Number) * 0.5);
                 } else {
                     score += GetScore(ScoreKind.Bad, item.Number / 10.0);
                 }

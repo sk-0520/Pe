@@ -13,14 +13,14 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
     {
         #region function
 
-        protected static FileInfo ToSafeFile(FileInfo fileInfo)
+        protected static string ToSafeFilePath(FileInfo fileInfo)
         {
             // #66 を考慮
             if(fileInfo.FullName.StartsWith(@"\\")) {
-                return new FileInfo(@"\\" + fileInfo.FullName);
+                return @"\\" + fileInfo.FullName;
             }
 
-            return fileInfo;
+            return fileInfo.FullName;
         }
 
         protected static SQLiteConnectionStringBuilder CreateConnectionBuilder()

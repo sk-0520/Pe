@@ -9,14 +9,27 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
     /// </summary>
     public abstract class BindModelBase: NotifyPropertyBase, IDisposed, IDisposeObservable
     {
+        #region define
+
+        /// <summary>
+        /// 未指定時の <see cref="System.ComponentModel.INotifyPropertyChanged.PropertyChanged"/> の参照方法。
+        /// </summary>
+        public const EventReference DefaultPropertyChanged = EventReference.Weak;
+        /// <summary>
+        /// 未指定時の <see cref="IDisposeObservable.Disposing"/> の参照方法。
+        /// </summary>
+        public const EventReference DefaultDisposing = EventReference.Weak;
+
+        #endregion
+
         #region event
 
         private event EventHandler<EventArgs>? StrongDisposing;
 
         #endregion
 
-        protected BindModelBase(EventReference propertyChangedEventType, EventReference disposingEventReference)
-            : base(propertyChangedEventType)
+        protected BindModelBase(EventReference propertyChangedEventReference, EventReference disposingEventReference)
+            : base(propertyChangedEventReference)
         {
             if(disposingEventReference == EventReference.Weak) {
                 DisposingWeakEvent = new WeakEvent<EventArgs>(nameof(Disposing));
@@ -24,7 +37,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
         }
 
         protected BindModelBase()
-            : this(EventReference.Weak, EventReference.Weak)
+            : this(DefaultPropertyChanged, DefaultDisposing)
         { }
 
         ~BindModelBase()

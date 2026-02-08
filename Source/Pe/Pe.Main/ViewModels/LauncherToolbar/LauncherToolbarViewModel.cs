@@ -23,6 +23,7 @@ using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup;
@@ -422,7 +423,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         private void ChangeLauncherGroup(LauncherGroupViewModel targetGroup)
         {
-            var currentLauncherItems = LauncherItemCollection.ViewModels.ToList();
+            var currentLauncherItems = LauncherItemCollection.ViewModels.ToArray();
 
             if(LauncherGroupCollection.TryGetModel(targetGroup, out var groupModel)) {
                 Model.ChangeLauncherGroup(groupModel);

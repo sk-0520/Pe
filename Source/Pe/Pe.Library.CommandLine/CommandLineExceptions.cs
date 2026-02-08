@@ -5,24 +5,24 @@ using ContentTypeTextNet.Pe.Generator.Throws;
 #else
 // docfx 用ダミー
 [System.AttributeUsage(System.AttributeTargets.Class)]
-file sealed class GenerateExceptionAttribute: System.Attribute
+file sealed class GeneratedExceptionAttribute: System.Attribute
 {
-    public GenerateExceptionAttribute()
+    public GeneratedExceptionAttribute()
     { }
 }
 #endif
 
 namespace ContentTypeTextNet.Pe.Library.CommandLine
 {
-    [GenerateException]
+    [GeneratedException]
     public partial class CommandLineException: System.Exception
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class CommandLineInvalidKeyException: CommandLineException
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class CommandLineRequiredSwitchException: CommandLineException
     { }
 
@@ -41,7 +41,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
         #endregion
     }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class CommandLineParseException: CommandLineException
     { }
 
@@ -60,7 +60,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
         #endregion
     }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class CommandLineConverterException: CommandLineException
     { }
 

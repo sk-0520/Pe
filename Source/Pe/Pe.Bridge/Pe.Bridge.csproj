@@ -4,6 +4,7 @@
     <AssemblyName>Pe.Bridge</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Bridge</RootNamespace>
     <UseWPF>true</UseWPF>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

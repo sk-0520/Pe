@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Bridge.Test.Models
@@ -54,38 +49,38 @@ namespace ContentTypeTextNet.Pe.Bridge.Test.Models
         [Fact]
         public void GetTaskbarColor_ColorPrevalence_Test()
         {
-            var mockPlatformTheme = new Mock<IPlatformTheme>();
-            mockPlatformTheme.Setup(a => a.ColorPrevalence).Returns(true);
-            mockPlatformTheme.Setup(a => a.AccentColor).Returns(Colors.Red);
-            mockPlatformTheme.Setup(a => a.EnableTransparency).Returns(true);
+            var mockPlatformTheme = Substitute.For<IPlatformTheme>();
+            mockPlatformTheme.ColorPrevalence.Returns(true);
+            mockPlatformTheme.AccentColor.Returns(Colors.Red);
+            mockPlatformTheme.EnableTransparency.Returns(true);
 
-            var actual = mockPlatformTheme.Object.GetTaskbarColor();
+            var actual = mockPlatformTheme.GetTaskbarColor();
             Assert.Equal(Colors.Red, actual);
         }
 
         [Fact]
         public void GetTaskbarColor_not_ColorPrevalence_Test()
         {
-            var mockPlatformTheme = new Mock<IPlatformTheme>();
-            mockPlatformTheme.Setup(a => a.ColorPrevalence).Returns(false);
-            mockPlatformTheme.Setup(a => a.AccentColor).Returns(Colors.White);
-            mockPlatformTheme.Setup(a => a.GetWindowsThemeColors(It.IsAny<PlatformThemeKind>())).Returns(new PlatformThemeColors(Colors.Lime, Colors.Red, Colors.Gray, Colors.DarkGray));
-            mockPlatformTheme.Setup(a => a.EnableTransparency).Returns(true);
+            var mockPlatformTheme = Substitute.For<IPlatformTheme>();
+            mockPlatformTheme.ColorPrevalence.Returns(false);
+            mockPlatformTheme.AccentColor.Returns(Colors.White);
+            mockPlatformTheme.GetWindowsThemeColors(Arg.Any<PlatformThemeKind>()).Returns(new PlatformThemeColors(Colors.Lime, Colors.Red, Colors.Gray, Colors.DarkGray));
+            mockPlatformTheme.EnableTransparency.Returns(true);
 
-            var actual = mockPlatformTheme.Object.GetTaskbarColor();
+            var actual = mockPlatformTheme.GetTaskbarColor();
             Assert.Equal(Colors.Lime, actual);
         }
 
         [Fact]
         public void GetTaskbarColor_EnableTransparency_Test()
         {
-            var mockPlatformTheme = new Mock<IPlatformTheme>();
-            mockPlatformTheme.Setup(a => a.ColorPrevalence).Returns(false);
-            mockPlatformTheme.Setup(a => a.AccentColor).Returns(Color.FromArgb(0x99, 0xff, 0xff, 0xff));
-            mockPlatformTheme.Setup(a => a.GetWindowsThemeColors(It.IsAny<PlatformThemeKind>())).Returns(new PlatformThemeColors(Colors.Lime, Colors.Red, Colors.Gray, Colors.DarkGray));
-            mockPlatformTheme.Setup(a => a.EnableTransparency).Returns(false);
+            var mockPlatformTheme = Substitute.For<IPlatformTheme>();
+            mockPlatformTheme.ColorPrevalence.Returns(false);
+            mockPlatformTheme.AccentColor.Returns(Color.FromArgb(0x99, 0xff, 0xff, 0xff));
+            mockPlatformTheme.GetWindowsThemeColors(Arg.Any<PlatformThemeKind>()).Returns(new PlatformThemeColors(Colors.Lime, Colors.Red, Colors.Gray, Colors.DarkGray));
+            mockPlatformTheme.EnableTransparency.Returns(false);
 
-            var actual = mockPlatformTheme.Object.GetTaskbarColor();
+            var actual = mockPlatformTheme.GetTaskbarColor();
             Assert.Equal(Colors.Lime, actual);
         }
 

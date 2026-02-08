@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -11,8 +10,8 @@ using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models.Unmanaged;
 using ContentTypeTextNet.Pe.Core.Models.Unmanaged.Gdi;
-using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.PInvoke.Windows;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Core.Models
@@ -96,25 +95,25 @@ namespace ContentTypeTextNet.Pe.Core.Models
         {
             var hGroup = NativeMethods.FindResource(hModule, name, new IntPtr((int)resType));
             if(hGroup == IntPtr.Zero) {
-                Logger.LogTrace("return {FUNC}", nameof(NativeMethods.FindResource));
+                Logger.LogTrace("return {Func}", nameof(NativeMethods.FindResource));
                 return null;
             }
 
             var hLoadGroup = NativeMethods.LoadResource(hModule, hGroup);
             if(hLoadGroup == IntPtr.Zero) {
-                Logger.LogTrace("return {FUNC}", nameof(NativeMethods.LoadResource));
+                Logger.LogTrace("return {Func}", nameof(NativeMethods.LoadResource));
                 return null;
             }
 
             var resData = NativeMethods.LockResource(hLoadGroup);
             if(resData == IntPtr.Zero) {
-                Logger.LogTrace("return {FUNC}", nameof(NativeMethods.LockResource));
+                Logger.LogTrace("return {Func}", nameof(NativeMethods.LockResource));
                 return null;
             }
 
             var resSize = NativeMethods.SizeofResource(hModule, hGroup);
             if(resSize == 0) {
-                Logger.LogTrace("return {FUNC}", nameof(NativeMethods.SizeofResource));
+                Logger.LogTrace("return {Func}", nameof(NativeMethods.SizeofResource));
                 return null;
             }
 

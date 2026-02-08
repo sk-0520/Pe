@@ -9,14 +9,6 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test
         #region function
 
         [Fact]
-        public void PreFormatStatementTest()
-        {
-            var test = new DatabaseImplementation();
-            var actual = test.PreFormatStatement("statement");
-            Assert.Equal("statement", actual);
-        }
-
-        [Fact]
         public void ToStatementColumnNameTest()
         {
             var test = new DatabaseImplementation();

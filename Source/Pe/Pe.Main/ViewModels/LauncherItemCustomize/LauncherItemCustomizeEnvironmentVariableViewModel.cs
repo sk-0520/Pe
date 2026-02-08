@@ -1,13 +1,12 @@
 using System;
 using System.Collections.ObjectModel;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 {
@@ -44,11 +43,13 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         void ChangedEnvironmentVariable()
         {
-            var envConf = new EnvironmentVariableConfiguration(LoggerFactory);
+            var envEditor = new EnvironmentVariableEditor(LoggerFactory);
 
-            var envMergeItems = ContextDispatcher.Get(() => envConf.GetMergeItems(MergeTextDocument!));
-            var envRemoveItems = ContextDispatcher.Get(() => envConf.GetRemoveItems(RemoveTextDocument!));
-            var envVarItems = envConf.Join(envMergeItems, envRemoveItems);
+            var (envMergeText, envRemoveText) = ContextDispatcher.Get(() => (MergeTextDocument!.Text, RemoveTextDocument!.Text));
+
+            var envMergeItems = envEditor.ParseMergeItems(envMergeText);
+            var envRemoveItems = envEditor.ParseRemoveItems(envRemoveText);
+            var envVarItems = envEditor.Join(envMergeItems, envRemoveItems);
 
             Model.EnvironmentVariableItems!.SetRange(envVarItems);
         }
@@ -82,9 +83,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
             }
 
             var envItems = Model.EnvironmentVariableItems!;
-            var envConf = new EnvironmentVariableConfiguration(LoggerFactory);
-            MergeTextDocument = envConf.CreateMergeDocument(envItems);
-            RemoveTextDocument = envConf.CreateRemoveDocument(envItems);
+            var envEditor = new EnvironmentVariableEditor(LoggerFactory);
+            MergeTextDocument = new TextDocument(envEditor.ConvertMergeText(envItems));
+            RemoveTextDocument = new TextDocument(envEditor.ConvertRemoveText(envItems));
 
             MergeTextDocument.TextChanged += TextDocument_TextChanged;
             RemoveTextDocument.TextChanged += TextDocument_TextChanged;
@@ -92,11 +93,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         protected override void ValidateDomain()
         {
+            var envEditor = new EnvironmentVariableEditor(LoggerFactory);
 
-            var envConf = new EnvironmentVariableConfiguration(LoggerFactory);
-
-            envConf.SetValidateCommon(MergeTextDocument!, envConf.ValidateMergeDocument, seq => AddErrors(seq, nameof(MergeTextDocument)), MergeErrors);
-            envConf.SetValidateCommon(RemoveTextDocument!, envConf.ValidateRemoveDocument, seq => AddErrors(seq, nameof(RemoveTextDocument)), RemoveErrors);
+            envEditor.SetValidateCommon(MergeTextDocument!, envEditor.ValidateMergeDocument, seq => AddErrors(seq, nameof(MergeTextDocument)), MergeErrors);
+            envEditor.SetValidateCommon(RemoveTextDocument!, envEditor.ValidateRemoveDocument, seq => AddErrors(seq, nameof(RemoveTextDocument)), RemoveErrors);
         }
 
         #endregion

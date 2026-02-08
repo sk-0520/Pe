@@ -5,7 +5,6 @@ using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Plugin;
@@ -13,6 +12,8 @@ using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 using Xunit;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Plugin
 {

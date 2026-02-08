@@ -4,28 +4,28 @@ using ContentTypeTextNet.Pe.Generator.Throws;
 #else
 // docfx 用ダミー
 [System.AttributeUsage(System.AttributeTargets.Class)]
-file sealed class GenerateExceptionAttribute: System.Attribute
+file sealed class GeneratedExceptionAttribute: System.Attribute
 {
-    public GenerateExceptionAttribute()
+    public GeneratedExceptionAttribute()
     { }
 }
 #endif
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
-    [GenerateException]
+    [GeneratedException]
     public partial class DatabaseException: Exception
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class DatabaseStatementException: DatabaseException
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class DatabaseManipulationException: DatabaseException
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class DatabaseFactoryException: DatabaseException
     { }
 }

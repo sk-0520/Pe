@@ -1,29 +1,23 @@
 using System;
-using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.CommonTest;
+using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.DependencyInjection;
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Moq;
+using NSubstitute;
 using Xunit;
-using ContentTypeTextNet.Pe.Main.Models.Data;
-using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
-using ContentTypeTextNet.Pe.CommonTest;
 
 namespace ContentTypeTextNet.Pe.Main.Test
 {
@@ -53,7 +47,7 @@ namespace ContentTypeTextNet.Pe.Main.Test
 
         #endregion
 
-        public Test(IDiContainer diContainer, IUserAgentManager userAgentManager, Mock<IHttpUserAgent> mockHttpUserAgent, ILoggerFactory loggerFactory)
+        public Test(IDiContainer diContainer, IUserAgentManager userAgentManager, IHttpUserAgent mockHttpUserAgent, ILoggerFactory loggerFactory)
         {
             DiContainer = diContainer;
             LoggerFactory = loggerFactory;
@@ -73,7 +67,7 @@ namespace ContentTypeTextNet.Pe.Main.Test
         /// </summary>
         public IDiContainer DiContainer { get; }
 
-        public Mock<IHttpUserAgent> MockHttpUserAgent { get; }
+        public IHttpUserAgent MockHttpUserAgent { get; }
         public IUserAgentManager UserAgentManager { get; }
 
         #endregion
@@ -95,11 +89,11 @@ namespace ContentTypeTextNet.Pe.Main.Test
 
         public static void SetupHttpAgent(IHttpUserAgent httpUserAgent)
         {
-            var mockHttpUserAgent = new Mock<IHttpUserAgent>();
-            var mockUserAgentManager = new Mock<IUserAgentManager>();
+            var mockHttpUserAgent = Substitute.For<IHttpUserAgent>();
+            var mockUserAgentManager = Substitute.For<IUserAgentManager>();
             mockUserAgentManager
-                .Setup(a => a.CreateUserAgent())
-                .Returns(mockHttpUserAgent.Object)
+                .CreateUserAgent()
+                .Returns(mockHttpUserAgent)
             ;
         }
 
@@ -170,24 +164,24 @@ namespace ContentTypeTextNet.Pe.Main.Test
                 SetupDatabase(diContainer);
             }
 
-            var mockHttpUserAgent = new Mock<IHttpUserAgent>();
+            var mockHttpUserAgent = Substitute.For<IHttpUserAgent>();
             IUserAgentManager userAgentManager;
             if(setups.HasFlag(TestSetup.Http)) {
-                SetupHttpAgent(mockHttpUserAgent.Object);
+                SetupHttpAgent(mockHttpUserAgent);
 
-                var mockUserAgentManager = new Mock<IUserAgentManager>();
+                var mockUserAgentManager = Substitute.For<IUserAgentManager>();
                 mockUserAgentManager
-                    .Setup(a => a.CreateUserAgent())
-                    .Returns(mockHttpUserAgent.Object)
+                    .CreateUserAgent()
+                    .Returns(mockHttpUserAgent)
                 ;
 
-                diContainer.Register<IHttpUserAgentFactory>(mockUserAgentManager.Object);
-                diContainer.Register<IApplicationHttpUserAgentFactory>(mockUserAgentManager.Object);
-                diContainer.Register<IUserAgentManager>(mockUserAgentManager.Object);
-                userAgentManager = mockUserAgentManager.Object;
+                diContainer.Register<IHttpUserAgentFactory>(mockUserAgentManager);
+                diContainer.Register<IApplicationHttpUserAgentFactory>(mockUserAgentManager);
+                diContainer.Register<IUserAgentManager>(mockUserAgentManager);
+                userAgentManager = mockUserAgentManager;
             } else {
-                var mockUserAgentManager = new Mock<IUserAgentManager>();
-                userAgentManager = mockUserAgentManager.Object;
+                var mockUserAgentManager = Substitute.For<IUserAgentManager>();
+                userAgentManager = mockUserAgentManager;
             }
 
             return new Test(diContainer, userAgentManager, mockHttpUserAgent, loggerFactory);

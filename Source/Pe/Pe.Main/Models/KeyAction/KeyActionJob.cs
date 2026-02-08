@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
 {
@@ -214,7 +213,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
                 throw new ArgumentException(null, nameof(mappings));
             }
 
-            var keyIsNoneOrMods = Mappings.Counting().Where(i => i.Value.Key == Key.None || i.Value.Key.IsModifierKey()).ToList();
+            var keyIsNoneOrMods = Mappings.Counting().Where(i => i.Value.Key == Key.None || i.Value.Key.IsModifierKey()).ToArray();
             if(keyIsNoneOrMods.Any()) {
                 var errors = string.Join(", ", keyIsNoneOrMods.Select(i => $"{nameof(mappings)}[{i.Number}]"));
                 throw new ArgumentException("不正なキー設定(キー設定なし、修飾キーのみ): " + errors);
@@ -317,7 +316,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
                 throw new ArgumentException(null, nameof(mappings));
             }
 
-            var keyIsNoneOrMods = Mappings.Counting().Where(i => i.Value.Key == Key.None || i.Value.Key.IsModifierKey()).ToList();
+            var keyIsNoneOrMods = Mappings.Counting().Where(i => i.Value.Key == Key.None || i.Value.Key.IsModifierKey()).ToArray();
             if(keyIsNoneOrMods.Any()) {
                 var errors = string.Join(", ", keyIsNoneOrMods.Select(i => $"{nameof(mappings)}[{i.Number}]"));
                 throw new ArgumentException("不正なキー設定(キー設定なし、修飾キーのみ): " + errors);

@@ -1,13 +1,11 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
@@ -108,19 +106,19 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
             var pluginIdentifiersAttr = assembly.GetCustomAttribute<PluginIdentifiersAttribute>();
             if(pluginIdentifiersAttr == null) {
                 pluginIdentifiersAttr = new PluginIdentifiersAttribute(CreateRandomText("DUMMY-PLUGIN-{0}", 16), PluginId.NewId().ToString());
-                Logger.LogWarning("{0} の取得に失敗したためダミー値にて処理: {1}, {2}", nameof(PluginIdentifiersAttribute), pluginIdentifiersAttr.PluginName, pluginIdentifiersAttr.PluginId);
+                Logger.LogWarning("{Attribute} の取得に失敗したためダミー値にて処理: {PluginName}, {PluginId}", nameof(PluginIdentifiersAttribute), pluginIdentifiersAttr.PluginName, pluginIdentifiersAttr.PluginId);
             }
 
             var supportVersionsAttr = assembly.GetCustomAttribute<PluginSupportVersionsAttribute>();
             if(supportVersionsAttr == null) {
-                Logger.LogWarning("{0} の取得に失敗したため最低バージョンで補正", nameof(PluginSupportVersionsAttribute));
+                Logger.LogWarning("{Attribute} の取得に失敗したため最低バージョンで補正", nameof(PluginSupportVersionsAttribute));
                 supportVersionsAttr = new PluginSupportVersionsAttribute();
             }
 
             var pluginAuthorsAttr = assembly.GetCustomAttribute<PluginAuthorsAttribute>();
             if(pluginAuthorsAttr == null) {
                 pluginAuthorsAttr = new PluginAuthorsAttribute(CreateRandomText("NAME-{0}", 4), PluginLicense.Unknown);
-                Logger.LogWarning("{0} の取得に失敗したためダミー値にて処理: {1}, {2}", nameof(PluginIdentifiersAttribute), pluginAuthorsAttr.Name, pluginAuthorsAttr.License);
+                Logger.LogWarning("{Attribute} の取得に失敗したためダミー値にて処理: {Name}, {License}", nameof(PluginIdentifiersAttribute), pluginAuthorsAttr.Name, pluginAuthorsAttr.License);
             }
 
             var pluginIdentifiers = new PluginIdentifiers(pluginIdentifiersAttr.PluginId, pluginIdentifiersAttr.PluginName);
@@ -165,7 +163,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
             try {
                 return build(argument);
             } catch(NotImplementedException) {
-                Logger.LogError("{0} の実装が必要({1})", methodName, addonKind);
+                Logger.LogError("{MethodName} の実装が必要({AddonKind})", methodName, addonKind);
                 throw;
             }
         }
@@ -173,14 +171,14 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
         private TTheme BuildSupportedTheme<TArgument, TTheme>(ThemeKind themeKind, string methodName, TArgument argument, Func<TArgument, TTheme> build)
         {
             if(!Theme.IsSupported(themeKind)) {
-                Logger.LogWarning("{0} はサポートされていない", themeKind);
+                Logger.LogWarning("{ThemeKind} はサポートされていない", themeKind);
                 throw new NotSupportedException();
             }
 
             try {
                 return build(argument);
             } catch(NotImplementedException) {
-                Logger.LogError("{0} の実装が必要({1})", nameof(BuildGeneralTheme), themeKind);
+                Logger.LogError("{Theme} の実装が必要({ThemeKind})", nameof(BuildGeneralTheme), themeKind);
                 throw;
             }
         }

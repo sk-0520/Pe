@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Timers;
-using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.PInvoke.Windows;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Platform
@@ -130,7 +129,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                     return false;
                 }
 
-                var hTreeView = GetExplorerTreeViewHandle(hWnd, classTrees.Skip(1).ToList());
+                var hTreeView = GetExplorerTreeViewHandle(hWnd, classTrees.Skip(1).ToArray());
                 if(hTreeView == IntPtr.Zero) {
                     return true;
                 }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -43,7 +42,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Feedback
 
         public TextDocument ContentDocument { get; } = new TextDocument();
 
-        public IReadOnlyList<FeedbackKind> FeedbackKindItems { get; } = Enum.GetValues<FeedbackKind>().ToList();
+        public IReadOnlyList<FeedbackKind> FeedbackKindItems { get; } = Enum.GetValues<FeedbackKind>();
 
         [Required]
         public string Subject

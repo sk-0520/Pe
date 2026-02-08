@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Setupper;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
@@ -12,6 +11,7 @@ using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database
 {

@@ -19,6 +19,7 @@ using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Domain;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
@@ -292,12 +293,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
         {
             ThrowIfDisposed();
 
-            IList<NoteScreenData> noteScreens;
+            NoteScreenData[] noteScreens;
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
                 var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
                 var noteDomainDao = daoFactory.Create<NoteDomainDao>();
-                noteScreens = noteDomainDao.SelectNoteScreens(NoteId).ToList();
+                noteScreens = noteDomainDao.SelectNoteScreens(NoteId).ToArray();
             }
 
             var screens = Screen.AllScreens;

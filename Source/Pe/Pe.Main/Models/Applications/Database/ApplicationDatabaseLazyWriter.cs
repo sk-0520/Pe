@@ -2,7 +2,7 @@ using System;
 using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
 
-namespace ContentTypeTextNet.Pe.Main.Models.Applications
+namespace ContentTypeTextNet.Pe.Main.Models.Applications.Database
 {
     public interface IApplicationDatabaseDelayWriter: IDatabaseDelayWriter
     { }

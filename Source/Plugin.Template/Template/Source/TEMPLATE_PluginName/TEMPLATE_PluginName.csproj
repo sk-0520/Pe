@@ -4,6 +4,7 @@
     <RootNamespace>TEMPLATE_Namespace</RootNamespace>
     <UseWPF>true</UseWPF>
     <EnableDynamicLoading>true</EnableDynamicLoading>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

@@ -251,10 +251,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
 
         private ICommand? _CreateUninstallBatchCommand;
         public ICommand CreateUninstallBatchCommand => this._CreateUninstallBatchCommand ??= CommandFactory.Create(
-            () => {
+            async () => {
                 if(Model.CheckCreateUninstallBatch(UninstallBatchFilePath, UninstallTargets)) {
                     try {
-                        Model.CreateUninstallBatch(UninstallBatchFilePath, UninstallTargets);
+                        await Model.CreateUninstallBatchAsync(UninstallBatchFilePath, UninstallTargets, CancellationToken.None);
 
                         try {
                             var systemExecutor = new SystemExecutor();

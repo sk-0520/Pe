@@ -3,9 +3,9 @@ using ContentTypeTextNet.Pe.Generator.Throws;
 #else
 // docfx 用ダミー
 [System.AttributeUsage(System.AttributeTargets.Class)]
-file sealed class GenerateExceptionAttribute: System.Attribute
+file sealed class GeneratedExceptionAttribute: System.Attribute
 {
-    public GenerateExceptionAttribute()
+    public GeneratedExceptionAttribute()
     { }
 }
 #endif
@@ -16,29 +16,29 @@ namespace ContentTypeTextNet.Pe.CommonTest
     /// テストインフラ系例外。
     /// </summary>
     /// <remarks>こいつを捕まえてどうこうすることはない。</remarks>
-    [GenerateException]
+    [GeneratedException]
     public partial class TestException: System.Exception
     { }
 
     #region PrivateObject
 
-    [GenerateException]
+    [GeneratedException]
     public partial class PrivateObjectException: TestException
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class PrivateObjectFieldException: PrivateObjectException
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class PrivateObjectPropertyException: PrivateObjectException
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class PrivateObjectMethodException: PrivateObjectException
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class PrivateObjectMethodParametersException: PrivateObjectException
     { }
 
@@ -46,11 +46,11 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
     #region TestIO
 
-    [GenerateException]
+    [GeneratedException]
     public partial class TestIOException: TestException
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class TestIOInitializedException: TestIOException
     { }
 

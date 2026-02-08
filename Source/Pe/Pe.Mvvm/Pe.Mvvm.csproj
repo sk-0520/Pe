@@ -4,6 +4,7 @@
     <AssemblyName>Pe.Mvvm</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Mvvm</RootNamespace>
     <UseWPF>true</UseWPF>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

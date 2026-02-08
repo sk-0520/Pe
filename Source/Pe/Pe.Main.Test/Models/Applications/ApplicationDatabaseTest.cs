@@ -1,18 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Data.SQLite;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.CommonTest;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
-using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using Dapper;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
-using ContentTypeTextNet.Pe.Library.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
 {
@@ -84,7 +76,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
         {
             var factory = new ApplicationDatabaseFactory(true, false);
             var mockLog = MockLog.Create(logLevel);
-            var accessor = new ApplicationDatabaseAccessor(factory, mockLog.Factory.Object);
+            var accessor = new ApplicationDatabaseAccessor(factory, mockLog.Factory);
             return (accessor, mockLog);
         }
 
@@ -102,8 +94,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
         {
             var test = CreateAppDB(LogLevel.Trace);
             var actual = test.accessor.GetScalar<long>("select 1 + 2");
-            test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", Moq.Times.Once());
-            test.log.VerifyMessageContains(LogLevel.Trace, "[PARAM]", Moq.Times.Never());
+            test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", 1);
+            test.log.VerifyMessageContains(LogLevel.Trace, "[PARAMS]", 1);
             Assert.Equal(3, actual);
         }
 
@@ -112,8 +104,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Applications
         {
             var test = CreateAppDB(LogLevel.Trace);
             var actual = test.accessor.GetScalar<long>("select 1 + 2 + @Value", new { Value = 3 });
-            test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", Moq.Times.Once());
-            test.log.VerifyMessageContains(LogLevel.Trace, "[PARAM]", Moq.Times.Once());
+            test.log.VerifyMessageContains(LogLevel.Trace, "[SQL]", 1);
+            test.log.VerifyMessageContains(LogLevel.Trace, "[PARAMS]", 1);
             Assert.Equal(6, actual);
         }
 

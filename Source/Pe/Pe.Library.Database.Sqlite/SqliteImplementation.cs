@@ -104,10 +104,10 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
         static SqliteImplementation()
         {
             SqlMapper.AddTypeMap(typeof(TimeSpan), DbType.String);
-            SqlMapper.AddTypeHandler(typeof(bool), new SqliteBooleanHandler());
-            SqlMapper.AddTypeHandler(typeof(Version), new SqliteVersionHandler());
-            SqlMapper.AddTypeHandler(typeof(Guid), new SqliteGuidHandler());
-            SqlMapper.AddTypeHandler(typeof(TimeSpan), new SqliteTimeSpanHandler());
+            SqlMapper.AddTypeHandler(new SqliteBooleanHandler());
+            SqlMapper.AddTypeHandler(new SqliteVersionHandler());
+            SqlMapper.AddTypeHandler(new SqliteGuidHandler());
+            SqlMapper.AddTypeHandler(new SqliteTimeSpanHandler());
         }
 
         #region DatabaseImplementation

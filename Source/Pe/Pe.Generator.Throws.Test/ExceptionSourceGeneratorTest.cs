@@ -2,11 +2,11 @@ using Xunit;
 
 namespace ContentTypeTextNet.Pe.Generator.Throws.Test
 {
-    [GenerateException]
+    [GeneratedException]
     public partial class AbcException: System.Exception
     { }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class DefException: AbcException
     { }
 
@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Generator.Throws.Test
         public GhiCode Code { get; }
     }
 
-    [GenerateException]
+    [GeneratedException]
     public partial class JklException: GhiException
     { }
 

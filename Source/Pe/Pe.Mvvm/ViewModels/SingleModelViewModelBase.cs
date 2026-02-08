@@ -1,4 +1,5 @@
-using ContentTypeTextNet.Pe.Mvvm.Bindings;
+using System;
+using System.ComponentModel;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
@@ -7,11 +8,12 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
     /// モデルとビューモデルを一対一で紐づける。
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
+    [Obsolete("SimpleModelViewModelBase がある今、いるか、これ？ 追記: INotifyPropertyChanged の強制かぁ。。。 いらんな、何もしてないし")]
     public abstract class SingleModelViewModelBase<TModel>: SimpleModelViewModelBase<TModel>
-        where TModel : BindModelBase
+        where TModel : INotifyPropertyChanged
     {
         protected SingleModelViewModelBase(TModel model, PropertyMode propertyMode, ILoggerFactory loggerFactory)
-            : base(model, propertyMode, loggerFactory)
+            : base(model, propertyMode, DefaultPropertyChanged, DefaultDisposing, loggerFactory)
         { }
 
         protected SingleModelViewModelBase(TModel model, ILoggerFactory loggerFactory)

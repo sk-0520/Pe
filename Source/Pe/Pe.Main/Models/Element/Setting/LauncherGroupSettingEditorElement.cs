@@ -1,21 +1,20 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherGroup;
 using ContentTypeTextNet.Pe.Main.Models.Launcher;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 {
@@ -85,7 +84,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             var launcherItemIds = LauncherItems
                 // こんなとこでSQL発行するとか業務じゃむり
                 .Where(i => launcherItemsEntityDao.SelectExistsLauncherItem(i))
-                .ToList()
+                .ToArray()
             ;
 
             var launcherFactory = new LauncherFactory(IdFactory, LoggerFactory);

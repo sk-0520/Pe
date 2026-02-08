@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -10,7 +7,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
 {
     public static class MediaUtility
     {
-        #region variable
+        #region define
 
         /// <summary>
         /// <see cref="Color.A"/>の完全な透明。
@@ -189,14 +186,14 @@ namespace ContentTypeTextNet.Pe.Core.Models
         /// 指定要素をビットマップに落とし込む。
         /// </summary>
         /// <remarks>
-        /// <para>DPIは96を使用する。</para>
+        /// <para>DPIは <see cref="UIUtility.DefaultDpi"/> を使用する。</para>
         /// </remarks>
         /// <param name="element"></param>
         /// <param name="useActual"></param>
         /// <returns></returns>
         public static BitmapSource MakeBitmapSourceDefaultDpi(FrameworkElement element, bool useActual)
         {
-            return MakeBitmapSource(element, new Point(96, 96), useActual);
+            return MakeBitmapSource(element, UIUtility.DefaultDpi, useActual);
         }
 
         #endregion

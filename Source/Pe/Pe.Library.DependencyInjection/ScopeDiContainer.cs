@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         public bool Contains(T key) => ContainsKey(key);
         public bool Add(T key) => TryAdd(key, 1);
 
-        public IReadOnlyList<T> GetValues() => Keys.ToList();
+        public IReadOnlyList<T> GetValues() => Keys.ToArray();
 
         #endregion
     }
@@ -77,6 +77,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
 
         #region IDisposable
 
+        // ここの構造わかんねぇなぁ！
         protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
