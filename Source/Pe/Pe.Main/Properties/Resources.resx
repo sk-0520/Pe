@@ -219,10 +219,24 @@
     <value>上へ</value>
   </data>
   <data name="String_EnvironmentVariableEditor_Merge_A" xml:space="preserve">
-    <value>変更(_G)</value>
+    <value>追加・変更(_G)</value>
+  </data>
+  <data name="String_EnvironmentVariableEditor_MergeRemark" xml:space="preserve">
+    <value>環境変数を追加または変更します。
+形式: 環境変数名=値
+例:
+  TEMP=C:\Temp
+  DEBUG=1</value>
   </data>
   <data name="String_EnvironmentVariableEditor_Remove_A" xml:space="preserve">
     <value>削除(_V)</value>
+  </data>
+  <data name="String_EnvironmentVariableEditor_RemoveRemark" xml:space="preserve">
+    <value>環境変数を削除します。
+形式: 環境変数名
+例:
+  TEMP
+  DEBUG</value>
   </data>
   <data name="String_ExtendsExecute_Caption_Format" xml:space="preserve">
     <value>${ITEM} を指定して実行</value>

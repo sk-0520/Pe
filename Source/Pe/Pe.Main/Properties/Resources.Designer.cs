@@ -3703,11 +3703,24 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         }
         
         /// <summary>
-        ///   変更(_G) に類似しているローカライズされた文字列を検索します。
+        ///   追加・変更(_G) に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string String_EnvironmentVariableEditor_Merge_A {
             get {
                 return ResourceManager.GetString("String_EnvironmentVariableEditor_Merge_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   環境変数を追加または変更します。
+        ///   形式: 環境変数名=値
+        ///   例:
+        ///     TEMP=C:\Temp
+        ///     DEBUG=1 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_EnvironmentVariableEditor_MergeRemark {
+            get {
+                return ResourceManager.GetString("String_EnvironmentVariableEditor_MergeRemark", resourceCulture);
             }
         }
         
@@ -3717,6 +3730,19 @@ namespace ContentTypeTextNet.Pe.Main.Properties {
         public static string String_EnvironmentVariableEditor_Remove_A {
             get {
                 return ResourceManager.GetString("String_EnvironmentVariableEditor_Remove_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   環境変数を削除します。
+        ///   形式: 環境変数名
+        ///   例:
+        ///     TEMP
+        ///     DEBUG に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string String_EnvironmentVariableEditor_RemoveRemark {
+            get {
+                return ResourceManager.GetString("String_EnvironmentVariableEditor_RemoveRemark", resourceCulture);
             }
         }
         

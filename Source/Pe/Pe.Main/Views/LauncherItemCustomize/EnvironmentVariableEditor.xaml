@@ -31,8 +31,9 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
-      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
@@ -41,13 +42,15 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Target="{Binding ElementName=envMergeEditor}" Content="{Binding Resources.String_EnvironmentVariableEditor_Merge_A, Source={x:Static app_main:CultureService.Instance}}"  />
-    <sharpdevelop_avalonedit:TextEditor Grid.Row="1" Grid.Column="0" x:Name="envMergeEditor" Style="{StaticResource SettingEditor}" Document="{Binding MergeTextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}" Loaded="EnvMergeEditor_Loaded" />
-    <ItemsControl Grid.Row="2" Grid.Column="0" Style="{StaticResource ErrorMessages}" ItemsSource="{Binding MergeErrorItemsSource, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+    <TextBlock Grid.Row="1" Grid.Column="0" Margin="5,0,5,5" TextWrapping="Wrap" FontSize="10" Foreground="Gray" Text="{Binding Resources.String_EnvironmentVariableEditor_MergeRemark, Source={x:Static app_main:CultureService.Instance}}" />
+    <sharpdevelop_avalonedit:TextEditor Grid.Row="2" Grid.Column="0" x:Name="envMergeEditor" Style="{StaticResource SettingEditor}" Document="{Binding MergeTextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}" Loaded="EnvMergeEditor_Loaded" />
+    <ItemsControl Grid.Row="3" Grid.Column="0" Style="{StaticResource ErrorMessages}" ItemsSource="{Binding MergeErrorItemsSource, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 
-    <Separator Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Style="{StaticResource Normal-Indent}" />
+    <Separator Grid.Row="0" Grid.RowSpan="4" Grid.Column="1" Style="{StaticResource Normal-Indent}" />
 
     <Label Grid.Row="0" Grid.Column="2" Target="{Binding ElementName=envRemoveEditor}" Content="{Binding Resources.String_EnvironmentVariableEditor_Remove_A, Source={x:Static app_main:CultureService.Instance}}" />
-    <sharpdevelop_avalonedit:TextEditor x:Name="envRemoveEditor" Grid.Row="1" Grid.Column="2" Style="{StaticResource SettingEditor}" Document="{Binding RemoveTextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}" Loaded="EnvRemoveEditor_Loaded" KeyDown="envRemoveEditor_KeyDown" Initialized="envRemoveEditor_Initialized" />
-    <ItemsControl Grid.Row="2" Grid.Column="2" Style="{StaticResource ErrorMessages}" ItemsSource="{Binding RemoveErrorItemsSource, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+    <TextBlock Grid.Row="1" Grid.Column="2" Margin="5,0,5,5" TextWrapping="Wrap" FontSize="10" Foreground="Gray" Text="{Binding Resources.String_EnvironmentVariableEditor_RemoveRemark, Source={x:Static app_main:CultureService.Instance}}" />
+    <sharpdevelop_avalonedit:TextEditor x:Name="envRemoveEditor" Grid.Row="2" Grid.Column="2" Style="{StaticResource SettingEditor}" Document="{Binding RemoveTextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}" Loaded="EnvRemoveEditor_Loaded" KeyDown="envRemoveEditor_KeyDown" Initialized="envRemoveEditor_Initialized" />
+    <ItemsControl Grid.Row="3" Grid.Column="2" Style="{StaticResource ErrorMessages}" ItemsSource="{Binding RemoveErrorItemsSource, RelativeSource={RelativeSource AncestorType=UserControl}}" />
   </Grid>
 </UserControl>
