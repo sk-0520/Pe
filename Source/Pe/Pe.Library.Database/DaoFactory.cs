@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
@@ -64,7 +60,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #endregion
     }
 
-    public static class IDaoFactoryExtensions
+    public static class DaoFactoryExtensions
     {
         #region function
 
