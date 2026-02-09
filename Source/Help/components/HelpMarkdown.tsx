@@ -8,6 +8,7 @@ import { defaultOverrides, MuiMarkdown } from "mui-markdown";
 import { Highlight, themes } from "prism-react-renderer";
 import type { FC } from "react";
 import { MdAlert } from "./markdown/MdAlert";
+import { MdAnchor } from "./markdown/MdAnchor";
 import { MdBreadcrumbs } from "./markdown/MdBreadcrumbs";
 import { MdInline } from "./markdown/MdInline";
 import { MdLink } from "./markdown/MdLink";
@@ -92,6 +93,7 @@ export const HelpMarkdown: FC<HelpMarkdownProps> = (
 							stickyHeader: true,
 						} satisfies TableProps,
 					},
+					a: MdAnchor,
 					MdLink,
 					MdPath,
 					MdInline,
