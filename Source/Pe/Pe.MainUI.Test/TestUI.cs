@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using ContentTypeTextNet.Pe.CommonTest;
 using ContentTypeTextNet.Pe.Library.CommandLine;
 using ContentTypeTextNet.Pe.Library.Common;
@@ -120,6 +121,13 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
     /// </summary>
     public static class TestUI
     {
+        #region property
+
+        public static IReadOnlyDictionary<string, string> EmptyOptions => field ??= new Dictionary<string, string>();
+        public static IReadOnlySet<string> EmptySwitches => field ??= new HashSet<string>();
+
+        #endregion
+
         #region function
 
         /// <summary>
@@ -127,10 +135,11 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
         /// </summary>
         /// <param name="options">オプション一覧。</param>
         /// <returns><see cref="TestAutomation"/></returns>
-        public static TestAutomation Launch(IReadOnlyDictionary<string, string> options)
+        public static TestAutomation Launch(IReadOnlyDictionary<string, string> options, IReadOnlySet<string> switches)
         {
             var commandLineHelper = new CommandLineHelper();
             var arguments = commandLineHelper.ToCommandLineArguments(options)
+                .Concat(switches.Select(a => $"--{a}"))
                 .JoinString(" ")
             ;
 
@@ -145,9 +154,11 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
         /// 基本的にはこちらを使用して、テストごとのデータを分離する。
         /// </summary>
         /// <param name="testIO">このテスト用のIOを用いてユーザーディレクトリなどのデータディレクトリが構築される。</param>
+        /// <param name="skipAccept">使用許諾同意をスキップするか。</param>
         /// <param name="extensionOptions">追加するオプション一覧。</param>
+        /// <param name="extensionSwitches">追加するスイッチ一覧。</param>
         /// <returns><inheritdoc cref="Launch(IReadOnlyDictionary{string, string})"/></returns>
-        public static TestAutomation Launch(TestIO testIO, IReadOnlyDictionary<string, string>? extensionOptions = null)
+        public static TestAutomation Launch(TestIO testIO, IReadOnlyDictionary<string, string>? extensionOptions = null, IReadOnlySet<string>? extensionSwitches = null)
         {
             var data = testIO.Work.CreateDirectory("data");
             var user = data.CreateDirectory("user");
@@ -167,7 +178,51 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
                 }
             }
 
-            return Launch(options);
+            var switches = new HashSet<string>();
+            if(extensionSwitches is not null) {
+                foreach(var s in extensionSwitches) {
+                    switches.Add(s);
+                }
+            }
+
+            return Launch(options, switches);
+        }
+
+        public static TestAutomation EasyLaunch(TestIO testIO, IReadOnlyDictionary<string, string>? extensionOptions = null, IReadOnlySet<string>? extensionSwitches = null)
+        {
+            var switches = new HashSet<string>() {
+                "skip-accept",
+            };
+            if(extensionSwitches is not null) {
+                foreach(var s in extensionSwitches) {
+                    switches.Add(s);
+                }
+            }
+
+            var testApp = Launch(testIO, extensionOptions, switches);
+
+            // スタートアップウィンドウの表示確認と終了
+            using(var automation = new UIA3Automation()) {
+                var window = GetMainWindow(testApp, automation);
+                Assert.Equal("StartupWindow", window.Properties.AutomationId);
+
+                var closeCommand = TestUI.GetElementById("CloseCommand", window);
+                closeCommand.Click();
+
+                WaitUntilClosed(window);
+            }
+
+            // ランチャーツールバーのみが表示される
+            using(var automation = new UIA3Automation()) {
+                var windows = Get(
+                    () => testApp.Application.GetAllTopLevelWindows(automation),
+                    a => 1 <= a.Length
+                );
+                Assert.Single(windows);
+                Assert.Equal("LauncherToolbarWindow", windows[0].Properties.AutomationId);
+            }
+
+            return testApp;
         }
 
         /// <summary>

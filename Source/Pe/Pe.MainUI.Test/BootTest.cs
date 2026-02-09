@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using ContentTypeTextNet.Pe.CommonTest;
 using ContentTypeTextNet.Pe.Pe.MainUI.Test.Test;
@@ -16,7 +15,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.UI
         [Fact]
         public void DefaultBootKillTest()
         {
-            using var testApp = TestUI.Launch(new Dictionary<string, string>());
+            using var testApp = TestUI.Launch(TestUI.EmptyOptions, TestUI.EmptySwitches);
             using(var automation = new UIA3Automation()) {
                 var window = TestUI.GetMainWindow(testApp, automation);
                 Assert.Equal("AcceptWindow", window.Properties.AutomationId);
@@ -90,6 +89,16 @@ namespace ContentTypeTextNet.Pe.Main.Test.UI
                 Assert.Single(windows);
                 Assert.Equal("LauncherToolbarWindow", windows[0].Properties.AutomationId);
             }
+        }
+
+        [Fact]
+        public void BootExecute_EasyLaunch_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            using(var testApp = TestUI.EasyLaunch(testIO)) {
+                //NOP
+            }
+            Assert.True(true);
         }
 
         #endregion
