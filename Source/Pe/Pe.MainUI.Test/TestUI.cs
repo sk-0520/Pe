@@ -130,6 +130,33 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
 
         #region function
 
+        public static void SilentStartup(TestAutomation testApp)
+        {
+            // スタートアップウィンドウの表示確認と終了
+            using(var automation = new UIA3Automation()) {
+                var window = GetMainWindow(testApp, automation);
+                Assert.Equal("StartupWindow", window.Properties.AutomationId);
+
+                var closeCommand = TestUI.GetElementById("CloseCommand", window);
+                closeCommand.Click();
+
+                WaitUntilClosed(window);
+            }
+        }
+
+        public static void SilentLauncherToolbar(TestAutomation testApp)
+        {
+            // ランチャーツールバーのみが表示される
+            using(var automation = new UIA3Automation()) {
+                var windows = Get(
+                    () => testApp.Application.GetAllTopLevelWindows(automation),
+                    a => 1 <= a.Length
+                );
+                Assert.Single(windows);
+                Assert.Equal("LauncherToolbarWindow", windows[0].Properties.AutomationId);
+            }
+        }
+
         /// <summary>
         /// プログラムの実行。
         /// </summary>
@@ -201,29 +228,13 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
 
             var testApp = Launch(testIO, extensionOptions, switches);
 
-            // スタートアップウィンドウの表示確認と終了
-            using(var automation = new UIA3Automation()) {
-                var window = GetMainWindow(testApp, automation);
-                Assert.Equal("StartupWindow", window.Properties.AutomationId);
-
-                var closeCommand = TestUI.GetElementById("CloseCommand", window);
-                closeCommand.Click();
-
-                WaitUntilClosed(window);
-            }
-
-            // ランチャーツールバーのみが表示される
-            using(var automation = new UIA3Automation()) {
-                var windows = Get(
-                    () => testApp.Application.GetAllTopLevelWindows(automation),
-                    a => 1 <= a.Length
-                );
-                Assert.Single(windows);
-                Assert.Equal("LauncherToolbarWindow", windows[0].Properties.AutomationId);
-            }
+            SilentStartup(testApp);
+            SilentLauncherToolbar(testApp);
 
             return testApp;
         }
+
+
 
         /// <summary>
         /// UI要素的な何かを取得。

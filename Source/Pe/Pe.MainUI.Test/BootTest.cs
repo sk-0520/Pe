@@ -69,26 +69,8 @@ namespace ContentTypeTextNet.Pe.Main.Test.UI
                 TestUI.WaitUntilClosed(window);
             }
 
-            // スタートアップウィンドウ
-            using(var automation = new UIA3Automation()) {
-                var window = TestUI.GetMainWindow(testApp, automation);
-                Assert.Equal("StartupWindow", window.Properties.AutomationId);
-
-                var closeCommand = TestUI.GetElementById("CloseCommand", window);
-                closeCommand.Click();
-
-                TestUI.WaitUntilClosed(window);
-            }
-
-            // 何もせず閉じられたのでランチャーツールバーのみが表示される
-            using(var automation = new UIA3Automation()) {
-                var windows = TestUI.Get(
-                    () => testApp.Application.GetAllTopLevelWindows(automation),
-                    a => 1 <= a.Length
-                );
-                Assert.Single(windows);
-                Assert.Equal("LauncherToolbarWindow", windows[0].Properties.AutomationId);
-            }
+            TestUI.SilentStartup(testApp);
+            TestUI.SilentLauncherToolbar(testApp);
         }
 
         [Fact]
