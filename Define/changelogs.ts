@@ -13,86 +13,86 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
-					}
-				]
+						subject: "",
+					},
+				],
 			},
 			{
 				type: "features",
 				logs: [
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
-					}
-				]
+						subject: "",
+					},
+				],
 			},
 			{
 				type: "fixes",
 				logs: [
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
-					}
-				]
+						subject: "",
+					},
+				],
 			},
 			{
 				type: "developer",
 				logs: [
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
+						subject: "",
 					},
 					{
 						revision: "",
-						subject: ""
-					}
-				]
-			}
-		]
+						subject: "",
+					},
+				],
+			},
+		],
 	},
 	{
 		date: "2026/02/08",
