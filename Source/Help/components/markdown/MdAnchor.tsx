@@ -10,12 +10,11 @@ interface MdAnchorProps {
  * マークダウン内のリンク要素のカスタムコンポーネント
  * 外部リンクは新しいタブで開く
  */
-export const MdAnchor: FC<MdAnchorProps> = (props: MdAnchorProps) => {
+export const MdAnchor: FC<MdAnchorProps> = (props) => {
 	const { href, children } = props;
 
 	// 外部リンクかどうかを判定
-	const isExternalLink =
-		href && (href.startsWith("http://") || href.startsWith("https://"));
+	const isExternalLink = /^https?:\/\//i.test(href || "");
 
 	if (isExternalLink) {
 		// 外部リンクの場合は新しいタブで開く
