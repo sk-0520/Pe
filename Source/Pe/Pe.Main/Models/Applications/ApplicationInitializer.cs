@@ -73,7 +73,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         private string CommandLineSwitchFullTraceLog { get; } = "full-trace-log";
         public static string CommandLineSwitchForceLog { get; } = "force-log";
 
-        private string CommandLineSwitchAcceptSkip { get; } = "skip-accept";
+        private string CommandLineSwitchSkipAccept { get; } = "skip-accept";
+        private string CommandLineSwitchSkipStartup { get; } = "skip-startup";
         private string CommandLineSwitchBetaVersion { get; } = "beta-version";
 
 #if DEBUG
@@ -94,6 +95,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         private string CommandLineTestPluginName { get; } = "test-plugin-name";
 
         public bool IsFirstStartup { get; private set; }
+        /// <summary>
+        /// スタートアップ画面を表示するか。
+        /// </summary>
+        public bool SkipStartup { get; private set; }
         public RunMode RunMode { get; private set; }
         public ApplicationDiContainer? DiContainer { get; private set; }
         public ApplicationLogging? Logging { get; private set; }
@@ -136,7 +141,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             commandLineParser.Add(new CommandLineOption(CommandLineKeyWithLog, CommandLineOptionKind.Value, string.Empty));
             commandLineParser.Add(new CommandLineOption(CommandLineSwitchFullTraceLog, CommandLineOptionKind.Switch, string.Empty));
             commandLineParser.Add(new CommandLineOption(CommandLineSwitchForceLog, CommandLineOptionKind.Switch, string.Empty));
-            commandLineParser.Add(new CommandLineOption(CommandLineSwitchAcceptSkip, CommandLineOptionKind.Switch, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineSwitchSkipAccept, CommandLineOptionKind.Switch, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineSwitchSkipStartup, CommandLineOptionKind.Switch, string.Empty));
             commandLineParser.Add(new CommandLineOption(CommandLineSwitchBetaVersion, CommandLineOptionKind.Switch, string.Empty));
 #if DEBUG
             commandLineParser.Add(new CommandLineOption(CommandLineSwitchDebugDevelopMode, CommandLineOptionKind.Switch, string.Empty));
@@ -617,11 +623,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 return true;
             }
 
-            var skipAccept = parsedResult.ExistsSwitch(CommandLineSwitchAcceptSkip);
+            var skipAccept = parsedResult.ExistsSwitch(CommandLineSwitchSkipAccept);
             if(skipAccept) {
                 logger.LogInformation("使用許諾はコマンドライン設定によりスキップ");
             }
 
+            SkipStartup = parsedResult.ExistsSwitch(CommandLineSwitchSkipStartup);
+            if(SkipStartup) {
+                logger.LogInformation("スタートアップはコマンドライン設定によりスキップ");
+            }
 #if DEBUG
             if(IsDebugDevelopMode) {
                 if(!skipAccept) {

@@ -116,6 +116,15 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
         #endregion
     }
 
+    [Flags]
+    public enum LaunchMode
+    {
+        None,
+        SkipAccept = 0b_0001,
+        SkipStartup = 0b_0010,
+        Default = SkipAccept | SkipStartup
+    }
+
     /// <summary>
     /// UIテスト用ヘルパー。
     /// </summary>
@@ -129,33 +138,6 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
         #endregion
 
         #region function
-
-        public static void SilentStartup(TestAutomation testApp)
-        {
-            // スタートアップウィンドウの表示確認と終了
-            using(var automation = new UIA3Automation()) {
-                var window = GetMainWindow(testApp, automation);
-                Assert.Equal("StartupWindow", window.Properties.AutomationId);
-
-                var closeCommand = TestUI.GetElementById("CloseCommand", window);
-                closeCommand.Click();
-
-                WaitUntilClosed(window);
-            }
-        }
-
-        public static void SilentLauncherToolbar(TestAutomation testApp)
-        {
-            // ランチャーツールバーのみが表示される
-            using(var automation = new UIA3Automation()) {
-                var windows = Get(
-                    () => testApp.Application.GetAllTopLevelWindows(automation),
-                    a => 1 <= a.Length
-                );
-                Assert.Single(windows);
-                Assert.Equal("LauncherToolbarWindow", windows[0].Properties.AutomationId);
-            }
-        }
 
         /// <summary>
         /// プログラムの実行。
@@ -181,11 +163,11 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
         /// 基本的にはこちらを使用して、テストごとのデータを分離する。
         /// </summary>
         /// <param name="testIO">このテスト用のIOを用いてユーザーディレクトリなどのデータディレクトリが構築される。</param>
-        /// <param name="skipAccept">使用許諾同意をスキップするか。</param>
+        /// <param name="launchMode">初回UI表示をスキップするか。</param>
         /// <param name="extensionOptions">追加するオプション一覧。</param>
         /// <param name="extensionSwitches">追加するスイッチ一覧。</param>
         /// <returns><inheritdoc cref="Launch(IReadOnlyDictionary{string, string})"/></returns>
-        public static TestAutomation Launch(TestIO testIO, IReadOnlyDictionary<string, string>? extensionOptions = null, IReadOnlySet<string>? extensionSwitches = null)
+        public static TestAutomation Launch(TestIO testIO, LaunchMode launchMode, IReadOnlyDictionary<string, string>? extensionOptions = null, IReadOnlySet<string>? extensionSwitches = null)
         {
             var data = testIO.Work.CreateDirectory("data");
             var user = data.CreateDirectory("user");
@@ -206,6 +188,15 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
             }
 
             var switches = new HashSet<string>();
+            var launchModeMap = new Dictionary<LaunchMode, string>() {
+                [LaunchMode.SkipAccept] = "skip-accept",
+                [LaunchMode.SkipStartup] = "skip-startup",
+            };
+            foreach(var pair in launchModeMap) {
+                if(launchMode.HasFlag(pair.Key)) {
+                    switches.Add(pair.Value);
+                }
+            }
             if(extensionSwitches is not null) {
                 foreach(var s in extensionSwitches) {
                     switches.Add(s);
@@ -214,27 +205,6 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
 
             return Launch(options, switches);
         }
-
-        public static TestAutomation EasyLaunch(TestIO testIO, IReadOnlyDictionary<string, string>? extensionOptions = null, IReadOnlySet<string>? extensionSwitches = null)
-        {
-            var switches = new HashSet<string>() {
-                "skip-accept",
-            };
-            if(extensionSwitches is not null) {
-                foreach(var s in extensionSwitches) {
-                    switches.Add(s);
-                }
-            }
-
-            var testApp = Launch(testIO, extensionOptions, switches);
-
-            SilentStartup(testApp);
-            SilentLauncherToolbar(testApp);
-
-            return testApp;
-        }
-
-
 
         /// <summary>
         /// UI要素的な何かを取得。
@@ -293,6 +263,31 @@ namespace ContentTypeTextNet.Pe.Pe.MainUI.Test.Test
         public static Window GetMainWindow(Application application, UIA3Automation automation, TestTimeout? timeout = null)
         {
             return Get(() => application.GetMainWindow(automation), timeout);
+        }
+
+        /// <summary>
+        /// <see cref="Application.GetAllTopLevelWindows(AutomationBase)"/> ラッパー。
+        /// </summary>
+        /// <param name="application"></param>
+        /// <param name="automation"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        /// <remarks>ウィンドウ一覧が空は許容しない。</remarks>
+        public static Window[] GetAllTopLevelWindows(Application application, UIA3Automation automation, TestTimeout? timeout = null)
+        {
+            return Get(() => application.GetAllTopLevelWindows(automation), a => 1 <= a.Length, timeout);
+        }
+
+        /// <summary>
+        /// <see cref="Application.GetAllTopLevelWindows(AutomationBase)"/> ラッパー。
+        /// </summary>
+        /// <param name="application"></param>
+        /// <param name="automation"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        public static Window[] GetAllTopLevelWindowsWithEmpty(Application application, UIA3Automation automation, TestTimeout? timeout = null)
+        {
+            return Get(() => application.GetAllTopLevelWindows(automation), timeout);
         }
 
         /// <summary>

@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             Logging = initializer.Logging ?? throw new ArgumentNullException(nameof(initializer) + "." + nameof(initializer.Logging));
             Logger = Logging.Factory.CreateLogger(GetType());
             IsFirstStartup = initializer.IsFirstStartup;
-
+            SkipStartup = initializer.SkipStartup;
 
 #if DEBUG
             IsDebugDevelopMode = initializer.IsDebugDevelopMode;
@@ -172,6 +172,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         private ILoggerFactory LoggerFactory => Logging.Factory;
         private ApplicationDiContainer ApplicationDiContainer { get; set; }
         private bool IsFirstStartup { get; }
+        /// <inheritdoc cref="ApplicationInitializer.SkipStartup"/>
+        private bool SkipStartup { get; }
 
 #if DEBUG
         private bool IsDebugDevelopMode { get; }
@@ -1114,10 +1116,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 if(IsDebugDevelopMode) {
                     await StartDebugDevelopModeAsync(cancellationToken);
                 } else {
-                    await ShowStartupViewAsync(true, cancellationToken);
+                    if(!SkipStartup) {
+                        await ShowStartupViewAsync(true, cancellationToken);
+                    }
                 }
 #else
-                await ShowStartupViewAsync(true, cancellationToken);
+                if(!SkipStartup) {
+                    await ShowStartupViewAsync(true, cancellationToken);
+                }
 #endif
             }
 

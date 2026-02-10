@@ -30,7 +30,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.UI
         public void BootCancelTest()
         {
             var testIO = TestIO.InitializeMethod(this);
-            using(var testApp = TestUI.Launch(testIO))
+            using(var testApp = TestUI.Launch(testIO, LaunchMode.None))
             using(var automation = new UIA3Automation()) {
                 var window = TestUI.GetMainWindow(testApp, automation);
                 Assert.Equal("AcceptWindow", window.Properties.AutomationId);
@@ -54,7 +54,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.UI
         public void BootExecuteTest()
         {
             var testIO = TestIO.InitializeMethod(this);
-            using var testApp = TestUI.Launch(testIO);
+            using var testApp = TestUI.Launch(testIO, LaunchMode.None);
 
             // 使用許諾 同意
             using(var automation = new UIA3Automation()) {
@@ -69,18 +69,67 @@ namespace ContentTypeTextNet.Pe.Main.Test.UI
                 TestUI.WaitUntilClosed(window);
             }
 
-            TestUI.SilentStartup(testApp);
-            TestUI.SilentLauncherToolbar(testApp);
+            // スタートアップウィンドウの表示確認と終了
+            using(var automation = new UIA3Automation()) {
+                var window = TestUI.GetMainWindow(testApp, automation);
+                Assert.Equal("StartupWindow", window.Properties.AutomationId);
+
+                var closeCommand = TestUI.GetElementById("CloseCommand", window);
+                closeCommand.Click();
+
+                TestUI.WaitUntilClosed(window);
+            }
+
+            // ランチャーツールバーのみが表示される
+            using(var automation = new UIA3Automation()) {
+                var windows = TestUI.GetAllTopLevelWindows(testApp, automation);
+                Assert.Single(windows);
+                Assert.Equal("LauncherToolbarWindow", windows[0].Properties.AutomationId);
+            }
         }
 
         [Fact]
-        public void BootExecute_EasyLaunch_Test()
+        public void BootExecute_LaunchMode_SkipAccept_Test()
         {
             var testIO = TestIO.InitializeMethod(this);
-            using(var testApp = TestUI.EasyLaunch(testIO)) {
-                //NOP
+            using var testApp = TestUI.Launch(testIO, LaunchMode.SkipAccept);
+
+            using(var automation = new UIA3Automation()) {
+                var window = TestUI.GetMainWindow(testApp, automation);
+                // 使用許諾は表示されない
+                Assert.NotEqual("AcceptWindow", window.Properties.AutomationId);
+                // スタートアップが表示される
+                Assert.Equal("StartupWindow", window.Properties.AutomationId);
             }
-            Assert.True(true);
+        }
+
+        [Fact]
+        public void BootExecute_LaunchMode_SkipStartup_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            using var testApp = TestUI.Launch(testIO, LaunchMode.SkipStartup);
+
+            using(var automation = new UIA3Automation()) {
+                var window = TestUI.GetMainWindow(testApp, automation);
+                // 使用許諾が表示される
+                Assert.Equal("AcceptWindow", window.Properties.AutomationId);
+                // スタートアップは表示されない
+                Assert.NotEqual("StartupWindow", window.Properties.AutomationId);
+            }
+        }
+
+        [Fact]
+        public void BootExecute_LaunchMode_Default_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            using var testApp = TestUI.Launch(testIO, LaunchMode.Default);
+
+            // ランチャーツールバーのみが表示される
+            using(var automation = new UIA3Automation()) {
+                var windows = TestUI.GetAllTopLevelWindows(testApp, automation);
+                Assert.Single(windows);
+                Assert.Equal("LauncherToolbarWindow", windows[0].Properties.AutomationId);
+            }
         }
 
         #endregion
