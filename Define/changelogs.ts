@@ -55,7 +55,8 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"#1079: ヘルプの外部リンクは別ウィンドウ（別タブ）で開くようにする",
 					},
 					{
 						revision: "",
