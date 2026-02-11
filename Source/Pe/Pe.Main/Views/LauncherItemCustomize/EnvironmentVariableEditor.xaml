@@ -33,6 +33,7 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
       <RowDefinition Height="*" />
+      <RowDefinition Height="*" />
     </Grid.RowDefinitions>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
@@ -49,5 +50,7 @@
     <Label Grid.Row="0" Grid.Column="2" Target="{Binding ElementName=envRemoveEditor}" Content="{Binding Resources.String_EnvironmentVariableEditor_Remove_A, Source={x:Static app_main:CultureService.Instance}}" />
     <sharpdevelop_avalonedit:TextEditor x:Name="envRemoveEditor" Grid.Row="1" Grid.Column="2" Style="{StaticResource SettingEditor}" Document="{Binding RemoveTextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}" Loaded="EnvRemoveEditor_Loaded" KeyDown="envRemoveEditor_KeyDown" Initialized="envRemoveEditor_Initialized" />
     <ItemsControl Grid.Row="2" Grid.Column="2" Style="{StaticResource ErrorMessages}" ItemsSource="{Binding RemoveErrorItemsSource, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+
+    <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding IsEnabledCustomEnvironmentVariable}"/>
   </Grid>
 </UserControl>

@@ -8,10 +8,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize;
-using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
-using ICSharpCode.AvalonEdit.Editing;
 
 namespace ContentTypeTextNet.Pe.Main.Views.LauncherItemCustomize
 {
@@ -35,6 +33,33 @@ namespace ContentTypeTextNet.Pe.Main.Views.LauncherItemCustomize
 
         private IReadOnlyDictionary<string, string> EnvironmentVariables { get; }
         private CompletionWindow? EnvRemoveEditorCompletionWindow { get; set; }
+
+        #endregion
+
+        #region IsEnabledCustomEnvironmentVariableProperty
+
+        public static readonly DependencyProperty IsEnabledCustomEnvironmentVariableProperty = DependencyProperty.Register(
+            nameof(IsEnabledCustomEnvironmentVariable),
+            typeof(bool),
+            typeof(EnvironmentVariableEditor),
+            new PropertyMetadata(
+                false,
+                OnIsEnabledCustomEnvironmentVariableChanged
+            )
+        );
+
+        public bool IsEnabledCustomEnvironmentVariable
+        {
+            get { return (bool)GetValue(IsEnabledCustomEnvironmentVariableProperty); }
+            set { SetValue(IsEnabledCustomEnvironmentVariableProperty, value); }
+        }
+
+        private static void OnIsEnabledCustomEnvironmentVariableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if(d is EnvironmentVariableEditor control) {
+                control.IsEnabledCustomEnvironmentVariable = (bool)e.NewValue;
+            }
+        }
 
         #endregion
 

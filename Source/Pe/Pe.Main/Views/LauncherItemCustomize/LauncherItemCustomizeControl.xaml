@@ -455,6 +455,7 @@
                 MergeErrorItemsSource="{Binding MergeErrors}"
                 RemoveTextDocument="{Binding RemoveTextDocument}"
                 RemoveErrorItemsSource="{Binding RemoveErrors}"
+                IsEnabledCustomEnvironmentVariable="{Binding IsEnabledCustomEnvironmentVariable, Mode=OneWay}"
               />
             </Grid>
           </Grid>
