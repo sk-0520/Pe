@@ -1599,7 +1599,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var psCommands = powerShellArguments.CreateParameters(true, new[] {
                 KeyValuePair.Create("-File", environmentParameters.EtcRebootScriptFile.FullName),
                 KeyValuePair.Create("-LogPath", environmentParameters.TemporaryRebootLogFile.FullName),
-                KeyValuePair.Create("-ProcessId", Process.GetCurrentProcess().Id.ToString(CultureInfo.InvariantCulture)),
+                KeyValuePair.Create("-ProcessId", Environment.ProcessId.ToString(CultureInfo.InvariantCulture)),
                 KeyValuePair.Create("-WaitSeconds", TimeSpan.FromSeconds(10).TotalMilliseconds.ToString(CultureInfo.InvariantCulture)),
                 KeyValuePair.Create("-ExecuteCommand", environmentParameters.RootApplication.FullName)
             });
