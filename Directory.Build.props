@@ -21,7 +21,8 @@
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <InvariantGlobalization>true</InvariantGlobalization>
         <PredefinedCulturesOnly>false</PredefinedCulturesOnly>
-    </PropertyGroup>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
         <DefineConstants>TRACE;DEBUG</DefineConstants>
