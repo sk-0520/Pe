@@ -54,6 +54,7 @@ dotnet_diagnostic.CA1304.severity = warning
 dotnet_diagnostic.CA1305.severity = warning
 
 # AnalysisMode: Minimum
+# CA1873 は無視してOK
 dotnet_diagnostic.CA1873.severity = suggestion
 dotnet_diagnostic.CA2253.severity = suggestion
 dotnet_diagnostic.CA2254.severity = suggestion
