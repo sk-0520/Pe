@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 using var checkSumBuffer = new DisposableArrayPool<byte>(ChecksumSize);
                 long totalReadSize = 0;
                 while(true) {
-                    var readSize = await stream.ReadAsync(checkSumBuffer.Items, 0, checkSumBuffer.Items.Length, cancellationToken);
+                    var readSize = await stream.ReadAsync(checkSumBuffer.Items.AsMemory(0, checkSumBuffer.Items.Length), cancellationToken);
                     if(readSize == 0) {
                         break;
                     }
@@ -131,9 +131,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                         };
                     var format = Properties.Resources.String_Download_Seconds_Format_DOTNET;
                     while(true) {
-                        var downloadSize = await networkStream.ReadAsync(downloadChunkBuffer.Items, 0, downloadChunkBuffer.Length, cancellationToken);
+                        var downloadSize = await networkStream.ReadAsync(downloadChunkBuffer.Items.AsMemory(0, downloadChunkBuffer.Length), cancellationToken);
                         if(0 < downloadSize) {
-                            await localStream.WriteAsync(downloadChunkBuffer.Items, 0, downloadSize, cancellationToken);
+                            await localStream.WriteAsync(downloadChunkBuffer.Items.AsMemory(0, downloadSize), cancellationToken);
                             totalDownloadedSize += downloadSize;
                             sizePerTime.Add(downloadSize);
                             var size = sizeConverter.ConvertHumanReadableByte(sizePerTime.Size, format, units);
