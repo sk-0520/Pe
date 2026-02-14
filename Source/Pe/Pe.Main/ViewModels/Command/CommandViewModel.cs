@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -295,7 +296,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         private ICommand? _ExecuteCommand;
         public ICommand ExecuteCommand => this._ExecuteCommand ??= new DelegateCommand(
             () => {
-                Logger.LogInformation("コマンドアイテムの起動: {0}", SelectedItem!.Header);
+                Debug.Assert(SelectedItem != null);
+                Logger.LogInformation("コマンドアイテムの起動: {Header}", SelectedItem.Header);
                 SelectedItem.Execute(DpiScaleOutpour.GetOwnerScreen());
 
                 // 役目は終わったのでコマンドランチャーを閉じる

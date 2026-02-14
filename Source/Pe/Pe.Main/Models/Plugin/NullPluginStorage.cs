@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -30,29 +29,41 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         public void Copy(string sourceName, string destinationName, bool overwrite)
         {
-            Logger.LogTrace("{0}({1}): {2} = {3}, {4} = {5}, {6} = {7}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, nameof(sourceName), sourceName, nameof(destinationName), destinationName, nameof(overwrite), overwrite);
+            Logger.LogTrace(
+                "{PluginName}({PluginId}): sourceName = {SourceName}, destinationName = {DestinationName}, overwrite = {Overwrite}",
+                PluginIdentifiers.PluginName, PluginIdentifiers.PluginId,
+                sourceName,
+                destinationName,
+                overwrite
+            );
         }
 
         public void Delete(string name)
         {
-            Logger.LogTrace("{0}({1}): {2} = {3}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, nameof(name), name);
+            Logger.LogTrace("{PluginName}({PluginId}): name = {Name}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, name);
         }
 
         public bool Exists(string name)
         {
-            Logger.LogTrace("{0}({1}): {2} = {3}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, nameof(name), name);
+            Logger.LogTrace("{PluginName}({PluginId}): name = {Name}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, name);
             return true;
         }
 
         public Stream Open(string name, FileMode fileMode)
         {
-            Logger.LogTrace("{0}({1}): {2} = {3}, {4} = {5}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, nameof(name), name, nameof(fileMode), fileMode);
+            Logger.LogTrace("{PluginName}({PluginId}): name = {Name}, fileMode = {FileMode}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, name, fileMode);
             return Stream.Null;
         }
 
         public void Rename(string sourceName, string destinationName, bool overwrite)
         {
-            Logger.LogTrace("{0}({1}): {2} = {3}, {4} = {5}, {6} = {7}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, nameof(sourceName), sourceName, nameof(destinationName), destinationName, nameof(overwrite), overwrite);
+            Logger.LogTrace(
+                "{PluginName}({PluginId}): sourceName = {SourceName}, destinationName = {DestinationName}, overwrite = {Overwrite}",
+                PluginIdentifiers.PluginName, PluginIdentifiers.PluginId,
+                sourceName,
+                destinationName,
+                overwrite
+            );
         }
 
         #endregion
@@ -79,26 +90,32 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         public IEnumerable<string> GetKeys()
         {
-            Logger.LogTrace("{0}({1})", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId);
+            Logger.LogTrace("{PluginName}({PluginId})", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId);
             return Array.Empty<string>();
         }
 
         public bool Delete(string key)
         {
-            Logger.LogTrace("{0}({1}): {2} = {3}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, nameof(key), key);
+            Logger.LogTrace("{PluginName}({PluginId}): key = {Key}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, key);
             return true;
         }
 
         public bool Exists(string key)
         {
-            Logger.LogTrace("{0}({1}): {2} = {3}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, nameof(key), key);
+            Logger.LogTrace("{PluginName}({PluginId}): key = {Key}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, key);
             return true;
         }
 
         public bool Set<TValue>(string key, TValue value, PluginPersistenceFormat format)
             where TValue : notnull
         {
-            Logger.LogTrace("{0}({1}): {2} = {3}, {4} = {5}, {6} = {7}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, nameof(key), key, nameof(value), value, nameof(format), format);
+            Logger.LogTrace(
+                "{PluginName}({PluginId}): key = {Key}, value = {Value}, format = {Format}",
+                PluginIdentifiers.PluginName, PluginIdentifiers.PluginId,
+                key,
+                value,
+                format
+            );
             return true;
         }
 
@@ -110,7 +127,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         public bool TryGet<TValue>(string key, [MaybeNullWhen(returnValue: false)] out TValue value)
         {
-            Logger.LogTrace("{0}({1}): {2} = {3}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, nameof(key), key);
+            Logger.LogTrace("{PluginName}({PluginId}): key = {Key}", PluginIdentifiers.PluginName, PluginIdentifiers.PluginId, key);
             value = default;
             return false;
         }

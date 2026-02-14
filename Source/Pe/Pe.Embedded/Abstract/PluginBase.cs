@@ -156,7 +156,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
         private TTheme BuildSupportedAddon<TArgument, TTheme>(AddonKind addonKind, string methodName, TArgument argument, Func<TArgument, TTheme> build)
         {
             if(!Addon.IsSupported(addonKind)) {
-                Logger.LogWarning("{0} はサポートされていない", addonKind);
+                Logger.LogWarning("{AddonKind} はサポートされていない", addonKind);
                 throw new NotSupportedException();
             }
 

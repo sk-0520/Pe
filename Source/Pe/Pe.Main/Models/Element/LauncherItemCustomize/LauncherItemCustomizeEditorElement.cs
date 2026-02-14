@@ -174,7 +174,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
             var pluginId = launcherAddonsEntityDao.SelectAddonPluginId(LauncherItemId);
 
             if(!LauncherItemAddonFinder.Exists(pluginId)) {
-                Logger.LogError("ランチャーアイテムアドオンが存在しない: {0}", pluginId);
+                Logger.LogError("ランチャーアイテムアドオンが存在しない: {PluginId}", pluginId);
                 return;
             }
             LauncherItemPlugin = LauncherItemAddonFinder.GetPlugin(pluginId);
@@ -182,7 +182,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
             LauncherItemExtension = LauncherItemAddonFinder.Find(LauncherItemId, pluginId);
             LauncherItemSupportedPreferences = LauncherItemExtension.SupportedPreferences;
             if(!LauncherItemSupportedPreferences) {
-                Logger.LogInformation("{0} はアドオン設定をサポートしていない", LauncherItemPlugin.PluginInformation.PluginIdentifiers);
+                Logger.LogInformation("{PluginIdentifiers} はアドオン設定をサポートしていない", LauncherItemPlugin.PluginInformation.PluginIdentifiers);
                 return;
             }
 

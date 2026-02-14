@@ -336,7 +336,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
                 if(numericRange.TryParse(SuccessExitCodes, out var values)) {
                     redo.SuccessExitCodes.SetRange(values);
                 } else {
-                    Logger.LogError("終了コードが分解できず: {0}", SuccessExitCodes);
+                    Logger.LogError("終了コードが分解できず: {SuccessExitCodes}", SuccessExitCodes);
                     redo.RedoMode = RedoMode.None;
                 }
             }
@@ -423,10 +423,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
                             e.Handled = true;
                             break;
                         } else {
-                            Logger.LogInformation("非ディレクトリ: {0}", filePath);
+                            Logger.LogInformation("非ディレクトリ: {Path}", filePath);
                         }
                     } catch(Exception ex) {
-                        Logger.LogInformation(ex, "非ディレクトリ: {0}", filePath);
+                        Logger.LogInformation(ex, "非ディレクトリ: {Path}", filePath);
                     }
                 }
 

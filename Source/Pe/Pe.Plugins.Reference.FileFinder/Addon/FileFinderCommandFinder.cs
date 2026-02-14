@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Printing;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows.Controls;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
@@ -152,7 +148,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.FileFinder.Addon
             try {
                 files = dir.EnumerateFileSystemInfos(searchPattern, SearchOption.TopDirectoryOnly);
             } catch(UnauthorizedAccessException ex) {
-                Logger.LogWarning(ex, "{0}, {1}", ex.Message, dir.FullName);
+                Logger.LogWarning(ex, "{Message}, {FullName}", ex.Message, dir.FullName);
                 yield break;
             }
 
@@ -214,7 +210,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.FileFinder.Addon
                         var dir = new DirectoryInfo(dirPath);
                         dir.Refresh();
                         if(!dir.Exists) {
-                            Logger.LogInformation("存在しない PATH は無視: {0}", dir.FullName);
+                            Logger.LogInformation("存在しない PATH は無視: {Path}", dir.FullName);
                             continue;
                         }
                         IEnumerable<FileInfo> files = dir.EnumerateFiles("*", SearchOption.TopDirectoryOnly);

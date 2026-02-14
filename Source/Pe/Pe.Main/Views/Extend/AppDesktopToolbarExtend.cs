@@ -292,7 +292,7 @@ namespace ContentTypeTextNet.Pe.Main.Views.Extend
                         return;
                     }
 
-                    Logger.LogDebug("フルスクリーン対象: {0}", hForegroundWnd.ToInt64());
+                    Logger.LogDebug("フルスクリーン対象: {Handle}", hForegroundWnd.ToInt64());
                 }
 
                 ExtendData.ExistsFullScreenWindow = fullScreen;

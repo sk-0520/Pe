@@ -532,7 +532,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.About
 
             var path = Environment.ExpandEnvironmentVariables(uninstallBatchFilePath);
             if(Directory.Exists(path)) {
-                Logger.LogInformation("アンインストールバッチファイルパスはディレクトリして存在する: {0}", path);
+                Logger.LogInformation("アンインストールバッチファイルパスはディレクトリして存在する: {Path}", path);
                 return false;
             }
 

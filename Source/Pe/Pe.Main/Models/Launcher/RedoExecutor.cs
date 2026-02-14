@@ -7,10 +7,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Launcher
@@ -154,7 +153,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         private void StopWatch()
         {
-            Logger.LogInformation("{0}: 再試行中断", Parameter.Custom.Caption);
+            Logger.LogInformation("{Caption}: 再試行中断", Parameter.Custom.Caption);
             Dispose();
         }
 
@@ -187,7 +186,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             }
 
             if(Parameter.RedoData.SuccessExitCodes.Any(i => i == process.ExitCode)) {
-                Logger.LogInformation("正常終了コードのため再試行不要: {0}", process.ExitCode);
+                Logger.LogInformation("正常終了コードのため再試行不要: {ExitCode}", process.ExitCode);
                 if(NotifyLogId != NotifyLogId.Empty) {
                     await PutNotifyLogAsync(true, Properties.Resources.String_RedoExecutor_SuccessExit, cancellationToken);
                 }
@@ -270,9 +269,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         private async Task ExecuteAsync(CancellationToken cancellationToken)
         {
-            await PutNotifyLogAsync(false, CreateRedoNotifyLogMessage(),cancellationToken);
+            await PutNotifyLogAsync(false, CreateRedoNotifyLogMessage(), cancellationToken);
 
-            var result = (LauncherFileExecuteResult) await Executor.ExecuteAsync(FirstResult.Kind, Parameter.Path, Parameter.Custom, Parameter.EnvironmentVariableItems, LauncherRedoData.GetDisable(), Parameter.Screen, cancellationToken);
+            var result = (LauncherFileExecuteResult)await Executor.ExecuteAsync(FirstResult.Kind, Parameter.Path, Parameter.Custom, Parameter.EnvironmentVariableItems, LauncherRedoData.GetDisable(), Parameter.Screen, cancellationToken);
             RetryCount += 1;
             await WatchingAsync(result.Process!, true, cancellationToken);
         }

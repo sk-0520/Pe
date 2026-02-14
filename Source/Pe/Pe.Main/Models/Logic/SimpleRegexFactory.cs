@@ -70,7 +70,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                     return new Regex(patternBody, regOption, RegexTimeout);
                 } catch(Exception ex) {
                     // 正規表現が変な場合は全件一致させる
-                    Logger.LogWarning(ex, "正規表現パターン異常: {0}", ex.Message);
+                    Logger.LogWarning(ex, "正規表現パターン異常: {Message}", ex.Message);
                     return AllMatchRegex;
                 }
             }

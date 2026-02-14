@@ -128,7 +128,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         private void Process_Exited(object? sender, EventArgs e)
         {
             var process = (Process?)sender;
-            Logger.LogInformation("プロセス終了: {0}", process);
+            Logger.LogInformation("プロセス終了: {Process}", process);
             if(process is not null) {
                 process.Exited -= Process_Exited;
             }

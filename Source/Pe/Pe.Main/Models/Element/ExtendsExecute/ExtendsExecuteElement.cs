@@ -204,7 +204,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.ExtendsExecute
                 var removedCount = launcherItemHistoriesEntityDao.DeleteHistoryByLauncherItemId(LauncherItemId, kind, lastExecuteTimestamp);
                 if(1 < removedCount) {
                     // ここに来ることはないと思ってるけどテーブルレイアウトは許容可能なデータなので一応警告
-                    Logger.LogWarning("削除数が1を超過: {0}", removedCount);
+                    Logger.LogWarning("削除数が1を超過: {RemovedCount}", removedCount);
                 }
                 removed = removedCount != 0;
 

@@ -64,7 +64,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             lock(this._sync) {
                 if(Timer.Enabled) {
                     Timer.Stop();
-                    Logger.LogTrace("[{0}] タイマー終了", DelayName);
+                    Logger.LogTrace("[{DelayName}] タイマー終了", DelayName);
                 }
                 Action = null;
             }
@@ -85,10 +85,10 @@ namespace ContentTypeTextNet.Pe.Library.Common
             lock(this._sync) {
                 if(Timer.Enabled) {
                     Timer.Stop();
-                    Logger.LogTrace("[{0}] タイマー停止, 抑制", DelayName);
+                    Logger.LogTrace("[{DelayName}] タイマー停止, 抑制", DelayName);
                 }
                 Action = action;
-                Logger.LogTrace("[{0}] タイマー開始", DelayName);
+                Logger.LogTrace("[{DelayName}] タイマー開始", DelayName);
                 Timer.Start();
             }
         }
@@ -103,7 +103,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                     Timer.Stop();
                 }
                 if(Action != null) {
-                    Logger.LogTrace("[{0}] 実行", DelayName);
+                    Logger.LogTrace("[{DelayName}] 実行", DelayName);
                     Action();
                 }
                 Action = null;

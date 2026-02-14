@@ -198,12 +198,12 @@ limit
             StatementAccessor = statementAccessor;
 
             if(StatementAccessor == null) {
-                Logger.LogInformation("SQL文読み込み方法 -> ファイル: {0}", BaseDirectory.FullName);
+                Logger.LogInformation("SQL文読み込み方法 -> ファイル: {BaseDirectoryPath}", BaseDirectory.FullName);
             } else {
                 if(GivePriorityToFile) {
-                    Logger.LogInformation("SQL文読み込み方法 -> ファイル優先の sqlite: {0} -> {1}", BaseDirectory.FullName, StatementAccessor.BaseDbConnection.ConnectionString);
+                    Logger.LogInformation("SQL文読み込み方法 -> ファイル優先の sqlite: {BaseDirectoryPath} -> {ConnectionString}", BaseDirectory.FullName, StatementAccessor.BaseDbConnection.ConnectionString);
                 } else {
-                    Logger.LogInformation("SQL文読み込み方法 -> sqlite: {0}", StatementAccessor.BaseDbConnection.ConnectionString);
+                    Logger.LogInformation("SQL文読み込み方法 -> sqlite: {ConnectionString}", StatementAccessor.BaseDbConnection.ConnectionString);
                 }
             }
         }
@@ -252,7 +252,7 @@ limit
         private string CreateCache(string key)
         {
 #if DEBUG
-            using var x = ActionDisposerHelper.Create((d, sw) => Logger.LogTrace("SQL読み込み時間: {0}, {1}", sw.Elapsed, key), Stopwatch.StartNew());
+            using var x = ActionDisposerHelper.Create((d, sw) => Logger.LogTrace("SQL読み込み時間: {Elapsed}, {Key}", sw.Elapsed, key), Stopwatch.StartNew());
 #endif
             if(StatementAccessor == null) {
                 return CreateCacheFromFile(ConvertFileName(key));
@@ -261,7 +261,7 @@ limit
             if(GivePriorityToFile) {
                 var filePath = ConvertFileName(key);
                 if(File.Exists(filePath)) {
-                    Logger.LogDebug("{0} に該当するファイルが存在するため優先実行: {1}", key, filePath);
+                    Logger.LogDebug("{Key} に該当するファイルが存在するため優先実行: {Path}", key, filePath);
                     return CreateCacheFromFile(filePath);
                 }
             }

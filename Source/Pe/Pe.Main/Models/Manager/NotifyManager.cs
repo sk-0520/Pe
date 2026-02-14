@@ -489,7 +489,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
             if(FullscreenStatus.TryGetValue(screen, out var currentValue)) {
                 if(isFullScreen != currentValue) {
-                    Logger.LogTrace("通常: {0}", isFullScreen);
+                    Logger.LogTrace("通常: {IsFullScreen}", isFullScreen);
                     FullscreenStatus[screen] = isFullScreen;
                     fire = true;
                 }
@@ -497,21 +497,21 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 var existsScreen = FullscreenStatus.Keys.FirstOrDefault(i => i.DeviceName == screen.DeviceName);
                 if(existsScreen != null) {
                     if(FullscreenStatus[existsScreen] != isFullScreen) {
-                        Logger.LogTrace("デバイス名: {0}", isFullScreen);
+                        Logger.LogTrace("デバイス名: {IsFullScreen}", isFullScreen);
                         FullscreenStatus[existsScreen] = isFullScreen;
                         fire = true;
                     }
                 } else {
                     // 未登録ディスプレイでフルスクリーンじゃなければ別になんもしない
                     if(isFullScreen) {
-                        Logger.LogTrace("未登録: {0}", isFullScreen);
+                        Logger.LogTrace("未登録: {IsFullScreen}", isFullScreen);
                         FullscreenStatus.Add(screen, isFullScreen);
                         fire = true;
                     }
                 }
             }
             if(fire) {
-                Logger.LogDebug("フルスクリーン状態発火: {0}, {1}", screen, isFullScreen);
+                Logger.LogDebug("フルスクリーン状態発火: {Screen}, {IsFullScreen}", screen, isFullScreen);
                 OnFullscreenChanged(screen, isFullScreen, hWnd);
             }
         }
@@ -532,7 +532,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var element = DiContainer.Build<NotifyLogItemElement>(NotifyLogId.NewId(), notifyMessage);
             await element.InitializeAsync(cancellationToken);
 
-            Logger.LogDebug("[{0}] {1}: {2}, {3}", notifyMessage.Header, notifyMessage.Kind, notifyMessage.Content.Message, element.NotifyLogId);
+            Logger.LogDebug("[{Header}] {Kind}: {Message}, {NotifyLogId}", notifyMessage.Header, notifyMessage.Kind, notifyMessage.Content.Message, element.NotifyLogId);
 
             await ContextDispatcher.BeginAsync(() => {
                 NotifyLogs.Add(element);
@@ -554,7 +554,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 throw new KeyNotFoundException(notifyLogId.ToString());
             }
 
-            Logger.LogDebug("[{0}] 変更: {1}, {2}", element.Header, contentMessage, element.NotifyLogId);
+            Logger.LogDebug("[{Header}] 変更: {ContentMessage}, {NotifyLogId}", element.Header, contentMessage, element.NotifyLogId);
 
             ContextDispatcher.BeginAsync(() => {
                 element.ChangeContent(new NotifyLogContent(contentMessage, DateTime.UtcNow));

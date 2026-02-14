@@ -275,7 +275,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
                             var item = Items.First(i => HandleUtility.GetWindowHandle(i.Window) == hWnd);
 
-                            Logger.LogDebug("ウィンドウ破棄前(ユーザー操作): {0}, {1:x16}", item.Window, hWnd.ToInt64());
+                            Logger.LogDebug("ウィンドウ破棄前(ユーザー操作): {Window}, {Handle:x16}", item.Window, hWnd.ToInt64());
                             if(item.ViewModel is IViewLifecycleReceiver viewLifecycleReceiver) {
                                 viewLifecycleReceiver.ReceiveViewUserClosing(item.Window, e);
                             }
@@ -313,10 +313,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         #endregion
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:命名スタイル", Justification = "event")]
         private async void Window_SourceInitialized(object sender, EventArgs e)
         {
             var window = (Window)sender;
-            Logger.LogDebug("ウィンドウハンドル生成: {0}", window);
+            Logger.LogDebug("ウィンドウハンドル生成: {Window}", window);
 
             window.SourceInitialized -= Window_SourceInitialized!;
 
@@ -324,7 +325,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
             if(item.ViewModel.IsDisposed || item.Element.IsDisposed) {
                 Logger.LogWarning(
-                    "ウィンドウに紐づく" + nameof(window.DataContext) + ", Model がすでに終了しているためウィンドウ破棄: {0} - {1}." + nameof(item.ViewModel.IsDisposed) + "={2} - {3}." + nameof(item.Element.IsDisposed) + "={4}",
+                    "ウィンドウに紐づく DataContext, Model がすでに終了しているためウィンドウ破棄: {Window} - {ViewModel}.IsDisposed={ViewModelIsDisposed} - {Element}.IsDisposed={ElementIsDisposed}",
                     window,
                     item.ViewModel,
                     item.ViewModel.IsDisposed,
@@ -361,11 +362,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:命名スタイル", Justification = "event")]
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var window = (Window)sender;
-            Logger.LogDebug("ウィンドウ生成完了: {0}", window);
-
+            Logger.LogDebug("ウィンドウ生成完了: {Window}", window);
             window.Loaded -= Window_Loaded;
 
             var item = Items.First(i => i.Window == window);
@@ -378,7 +379,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         private void Window_Closing(object? sender, CancelEventArgs e)
         {
             var window = (Window?)sender;
-            Logger.LogDebug("ウィンドウ破棄前: {0}", window);
+            Logger.LogDebug("ウィンドウ破棄前: {Window}", window);
 
             var item = Items.First(i => i.Window == window);
             if(item.ViewModel is IViewLifecycleReceiver viewLifecycleReceiver) {
@@ -390,7 +391,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         private async void Window_Closed(object sender, EventArgs e)
         {
             var window = (Window)sender;
-            Logger.LogDebug("ウィンドウ破棄: {0}", window);
+            Logger.LogDebug("ウィンドウ破棄: {Window}", window);
 
             window.Loaded -= Window_Loaded;
             window.SourceInitialized -= Window_SourceInitialized!;

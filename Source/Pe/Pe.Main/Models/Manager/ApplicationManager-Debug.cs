@@ -131,10 +131,10 @@ echo end
         {
             dbgKeyboardHooker = new KeyboardHook(LoggerFactory);
             dbgKeyboardHooker.KeyDown += (sender, e) => {
-                Logger.LogTrace("UP: key = {0}, mods = {1}, {2}", e.Key, e.modifierKeyStatus, e.kbdll);
+                Logger.LogTrace("UP: key = {Key}, mods = {ModifierKeyStatus}, {Kbdll}", e.Key, e.modifierKeyStatus, e.kbdll);
             };
             dbgKeyboardHooker.KeyUp += (sender, e) => {
-                Logger.LogTrace("DW: key = {0}, mods = {1}, {2}", e.Key, e.modifierKeyStatus, e.kbdll);
+                Logger.LogTrace("DW: key = {Key}, mods = {ModifierKeyStatus}, {Kbdll}", e.Key, e.modifierKeyStatus, e.kbdll);
             };
             dbgKeyboardHooker.Register();
 

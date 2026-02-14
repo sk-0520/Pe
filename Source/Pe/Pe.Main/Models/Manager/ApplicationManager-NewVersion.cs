@@ -121,7 +121,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 ApplicationUpdateInfo.NewVersionItem = appVersion;
             }
 
-            Logger.LogInformation("アップデートあり: {0}", ApplicationUpdateInfo.NewVersionItem.Version);
+            Logger.LogInformation("アップデートあり: {Version}", ApplicationUpdateInfo.NewVersionItem.Version);
 
             // CheckApplicationUpdateAsync で弾いてる
             //if(BuildStatus.Version < ApplicationUpdateInfo.UpdateItem.MinimumVersion) {
@@ -273,7 +273,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             if(pluginArchiveFile.Exists) {
                 skipDownload = await newVersionDownloader.ChecksumAsync(newVersionItem, pluginArchiveFile, notifyProgress, cancellationToken);
                 if(skipDownload) {
-                    Logger.LogInformation("[{0}] 既存ファイルのチェックサムは正常", pluginId);
+                    Logger.LogInformation("[{PluginId}] 既存ファイルのチェックサムは正常", pluginId);
                 } else {
                     pluginArchiveFile.Delete();
                 }
@@ -287,7 +287,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
                 var checksumOk = await newVersionDownloader.ChecksumAsync(newVersionItem, pluginArchiveFile, notifyProgress, cancellationToken);
                 if(!checksumOk) {
-                    Logger.LogError("[{0}] チェックサム異常あり", pluginId);
+                    Logger.LogError("[{PluginId}] チェックサム異常あり", pluginId);
                     return false;
                 }
             }
@@ -302,7 +302,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var pluginInstaller = CreatePluginInstaller(environmentParameters);
             var pluginInstallData = await pluginInstaller.InstallPluginArchiveAsync(pluginArchiveFile, newVersionItem.ArchiveKind, false, installItems, PluginInstallAssemblyMode.Process, ApplicationDiContainer.Build<ITemporaryDatabaseBarrier>());
 
-            Logger.LogInformation("{0}", pluginInstallData);
+            Logger.LogInformation("{PluginInstallData}", pluginInstallData);
 
             return true;
         }

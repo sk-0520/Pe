@@ -4,23 +4,18 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
-using System.Security.RightsManagement;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Bridge.Plugin;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.Models.Serialization;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Data.ServerApi;
-using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Bridge.Models;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
@@ -56,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             try {
                 var response = await agent.GetAsync(uri, CancellationToken.None);
                 if(!response.IsSuccessStatusCode) {
-                    Logger.LogWarning("GetAsync: {0}, {1}", response.StatusCode, uri);
+                    Logger.LogWarning("GetAsync: {StatusCode}, {Uri}", response.StatusCode, uri);
                     return null;
                 }
                 var content = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -64,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 //TODO: Serializer.cs に統合したい
                 var updateData = System.Text.Json.JsonSerializer.Deserialize<NewVersionData>(content);
                 if(updateData == null) {
-                    Logger.LogError("復元失敗: {0}", content);
+                    Logger.LogError("復元失敗: {Content}", content);
                     return null;
                 }
 
@@ -97,7 +92,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 try {
                     var response = await agent.GetAsync(uri, cancellationToken);
                     if(!response.IsSuccessStatusCode) {
-                        Logger.LogWarning("GetAsync: {0}, {1}", response.StatusCode, uri);
+                        Logger.LogWarning("GetAsync: {StatusCode}, {Uri}", response.StatusCode, uri);
                         continue;
                     }
                     var content = await response.Content.ReadAsStringAsync(cancellationToken);
@@ -105,7 +100,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                     //TODO: Serializer.cs に統合したい
                     var updateData = System.Text.Json.JsonSerializer.Deserialize<NewVersionData>(content);
                     if(updateData == null) {
-                        Logger.LogError("復元失敗: {0}", content);
+                        Logger.LogError("復元失敗: {Content}", content);
                         return null;
                     }
                     var result = updateData.Items

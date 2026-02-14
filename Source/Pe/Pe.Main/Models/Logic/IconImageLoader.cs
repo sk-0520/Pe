@@ -9,8 +9,8 @@ using System.Windows.Media.Imaging;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
@@ -97,10 +97,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             var iconSize = iconScale.ToIconSize();
 
             if(iconSize.Width < bitmapSource.PixelWidth || iconSize.Height < bitmapSource.PixelHeight) {
-                Logger.LogDebug("アイコンサイズを縮小: アイコン({0}x{1}), 指定({2}x{3})", bitmapSource.PixelWidth, bitmapSource.PixelHeight, iconSize.Width, iconSize.Height);
+                Logger.LogDebug("アイコンサイズを縮小: アイコン({PixelWidth}x{PixelHeight}), 指定({IconWidth}x{IconHeight})", bitmapSource.PixelWidth, bitmapSource.PixelHeight, iconSize.Width, iconSize.Height);
                 var scaleX = iconSize.Width / (double)bitmapSource.PixelWidth;
                 var scaleY = iconSize.Height / (double)bitmapSource.PixelHeight;
-                Logger.LogTrace("scale: {0}x{1}", scaleX, scaleY);
+                Logger.LogTrace("scale: {X}x{Y}", scaleX, scaleY);
 
                 static BitmapSource ResizeCore(BitmapSource bitmapSource, double scaleX, double scaleY)
                 {
@@ -133,7 +133,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 BitmapSource? iconImage = null;
 
                 if(isFile && PathUtility.HasExtensions(path, ImageFileExtensions)) {
-                    Logger.LogDebug("画像ファイルとして読み込み {0}", path);
+                    Logger.LogDebug("画像ファイルとして読み込み {Path}", path);
                     using(var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)) {
                         static BitmapSource LoadCore(Stream stream)
                         {
@@ -143,7 +143,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                         iconImage = ContextDispatcher?.Get(static (s) => LoadCore(s), stream) ?? LoadCore(stream);
                     }
                 } else {
-                    Logger.LogDebug("アイコンファイルとして読み込み {0}", path);
+                    Logger.LogDebug("アイコンファイルとして読み込み {Path}", path);
                     var iconLoader = new IconLoader(LoggerFactory);
                     static BitmapSource? LoadCore(string path, int index, in IconScale iconScale, IconLoader iconLoader)
                     {

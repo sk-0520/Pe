@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Launcher
@@ -75,7 +73,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                     try {
                         itemResult.Comment = shortcut.Description;
                     } catch(COMException ex) {
-                        Logger.LogWarning(ex, "{0} {1}", ex.Message, expandedPath);
+                        Logger.LogWarning(ex, "{Message}, {ExpandedPath}", ex.Message, expandedPath);
                     }
 
                 }

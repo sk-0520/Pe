@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
@@ -66,11 +65,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         public void BackupUserSettingToCustomDirectory(DirectoryInfo userDirectory, DirectoryInfo targetDirectory)
         {
-            Logger.LogInformation("ユーザー設定バックアップディレクトリへバックアップ: {0}", targetDirectory.FullName);
+            Logger.LogInformation("ユーザー設定バックアップディレクトリへバックアップ: {Path}", targetDirectory.FullName);
 
             targetDirectory.Refresh();
             if(!targetDirectory.Exists) {
-                Logger.LogDebug("ユーザー設定バックアップディレクトリ作成: {0}", targetDirectory.FullName);
+                Logger.LogDebug("ユーザー設定バックアップディレクトリ作成: {Path}", targetDirectory.FullName);
                 targetDirectory.Create();
             }
 
@@ -87,7 +86,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
                 var cahcheDirPath = targetParentDirPath.ToLowerInvariant();
                 if(!createdDirs.Contains(cahcheDirPath)) {
-                    Logger.LogDebug("ユーザー設定バックアップ サブディレクトリ作成: {0}", targetParentDirPath);
+                    Logger.LogDebug("ユーザー設定バックアップ サブディレクトリ作成: {Path}", targetParentDirPath);
                     Directory.CreateDirectory(targetParentDirPath);
                     createdDirs.Add(cahcheDirPath);
                 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
@@ -92,7 +91,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 // 既に登録されている処理が存在する場合は破棄しておく
                 if(uniqueKey != null) {
                     if(UniqueItems.TryGetValue(uniqueKey, out var stockedItem)) {
-                        Logger.LogTrace("待機処理破棄: {0} {1}", stockedItem.StockUtcTimestamp, uniqueKey.GetHashCode());
+                        Logger.LogTrace("待機処理破棄: {Timestamp} {HashCode}", stockedItem.StockUtcTimestamp, uniqueKey.GetHashCode());
                         StockItems.Remove(stockedItem);
                         UniqueItems.Remove(uniqueKey);
                     }

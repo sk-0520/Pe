@@ -1,20 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
 using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.CrashReport.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Common;
-using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Element
 {
@@ -101,7 +99,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Element
 
                             if(response != null && response.Success) {
                                 SendStatus.State = RunningState.End;
-                                Logger.LogInformation("BODY: {0}", rawResponse);
+                                Logger.LogInformation("BODY: {Response}", rawResponse);
                             } else {
                                 ErrorMessage = response?.Message ?? Properties.Resources.String_Common_Network_UnknownResponse;
                                 SendStatus.State = RunningState.Error;
@@ -110,8 +108,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Element
                             return;
                         }
                         var s = await result.Content.ReadAsStringAsync(cancellationToken);
-                        Logger.LogWarning("HTTP: {0}", result.StatusCode);
-                        Logger.LogWarning("{0}", s);
+                        Logger.LogWarning("HTTP: {StatusCode}, {Content}", result.StatusCode, s);
                         if(!result.IsSuccessStatusCode && counter.IsLast) {
                             ErrorMessage = result.StatusCode.ToString();
                             SendStatus.State = RunningState.Error;
@@ -120,7 +117,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Element
                 } catch(Exception ex) {
                     Logger.LogWarning(ex, ex.Message);
                     if(!counter.IsLast) {
-                        Logger.LogDebug("待機中: {0}", RetryWaitTime);
+                        Logger.LogDebug("待機中: {RetryWaitTime}", RetryWaitTime);
                         await Task.Delay(RetryWaitTime, cancellationToken);
                     } else {
                         ErrorMessage = ex.Message;
@@ -133,8 +130,8 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Element
         public void Reboot()
         {
             var systemExecutor = new SystemExecutor();
-            Logger.LogInformation("App path: {0}", Options.ExecuteCommand);
-            Logger.LogInformation("App args: {0}", Options.ExecuteArgument);
+            Logger.LogInformation("App path: {ExecuteCommand}", Options.ExecuteCommand);
+            Logger.LogInformation("App args: {ExecuteArgument}", Options.ExecuteArgument);
             systemExecutor.ExecuteFile(Options.ExecuteCommand, Options.ExecuteArgument);
         }
 

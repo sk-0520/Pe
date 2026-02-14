@@ -132,7 +132,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         {
             var hModule = NativeMethods.LoadLibraryEx(resourcePath, IntPtr.Zero, LOAD_LIBRARY.LOAD_LIBRARY_AS_DATAFILE);
             if(hModule == IntPtr.Zero) {
-                Logger.LogError("{0}: {1}, {2}", nameof(NativeMethods.LoadLibraryEx), NativeMethods.GetLastError(), resourcePath);
+                Logger.LogError("{LoadLibraryEx}: {LastError}, {Path}", nameof(NativeMethods.LoadLibraryEx), NativeMethods.GetLastError(), resourcePath);
                 return new List<byte[]>();
             }
 

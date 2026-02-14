@@ -1,11 +1,8 @@
 using System;
 using System.IO;
-using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
@@ -19,7 +16,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     /// </summary>
     public class NewVersionDownloader
     {
-        public NewVersionDownloader(ApplicationConfiguration applicationConfiguration, IHashAlgorithmFactory hashAlgorithmGenerator,IUserAgentManager userAgentManager, TimeProvider timeProvider, ILoggerFactory loggerFactory)
+        public NewVersionDownloader(ApplicationConfiguration applicationConfiguration, IHashAlgorithmFactory hashAlgorithmGenerator, IUserAgentManager userAgentManager, TimeProvider timeProvider, ILoggerFactory loggerFactory)
         {
             Logger = loggerFactory.CreateLogger(GetType());
             ApplicationConfiguration = applicationConfiguration;
@@ -71,11 +68,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             }
 
             if(targetFile.Length != updateItem.ArchiveSize) {
-                Logger.LogWarning("ファイルサイズが異なる: ファイル {0}, 定義 {1}", targetFile.Length, updateItem.ArchiveSize);
+                Logger.LogWarning("ファイルサイズが異なる: ファイル {FileSize}, 定義 {ArchiveSize}", targetFile.Length, updateItem.ArchiveSize);
                 return false;
             }
 
-            Logger.LogInformation("ハッシュ: {0}, {1}", updateItem.ArchiveHashKind, updateItem.ArchiveHashValue);
+            Logger.LogInformation("ハッシュ: {ArchiveHashKind}, {ArchiveHashValue}", updateItem.ArchiveHashKind, updateItem.ArchiveHashValue);
             using(var hashAlgorithm = HashAlgorithmGenerator.Create(updateItem.ArchiveHashKind)) {
                 using var stream = targetFile.OpenRead();
                 using var checkSumBuffer = new DisposableArrayPool<byte>(ChecksumSize);
@@ -92,7 +89,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 hashAlgorithm.TransformFinalBlock(checkSumBuffer.Items, 0, 0);
                 var hash = ToCompareValue(BitConverter.ToString(hashAlgorithm.Hash!));
 
-                Logger.LogInformation("算出ハッシュ: {0}", hash);
+                Logger.LogInformation("算出ハッシュ: {Hash}", hash);
                 userNotifyProgress.Report(1, hash);
 
                 userNotifyProgress.End();
@@ -110,7 +107,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         /// <returns></returns>
         public async Task DownloadArchiveAsync(NewVersionItemData updateItem, FileInfo downloadFile, UserNotifyProgress userNotifyProgress, CancellationToken cancellationToken)
         {
-            Logger.LogInformation("アップデートファイルダウンロード: {0}, {1}", updateItem.ArchiveUri, downloadFile);
+            Logger.LogInformation("アップデートファイルダウンロード: {ArchiveUri}, {DownloadFile}", updateItem.ArchiveUri, downloadFile);
             userNotifyProgress.Start();
 
             using(var userAgent = UserAgentManager.CreateAppHttpUserAgent()) {

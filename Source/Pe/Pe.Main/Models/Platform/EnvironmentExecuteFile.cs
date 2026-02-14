@@ -104,7 +104,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                     var dir = new DirectoryInfo(dirPath);
                     dir.Refresh();
                     if(!dir.Exists) {
-                        Logger.LogInformation("存在しない PATH は無視: {0}", dir.FullName);
+                        Logger.LogInformation("存在しない PATH は無視: {Path}", dir.FullName);
                         continue;
                     }
                     IEnumerable<FileInfo> files = dir.EnumerateFiles("*", SearchOption.TopDirectoryOnly);
