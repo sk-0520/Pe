@@ -28,6 +28,10 @@ namespace License
         private ILogger Logger { get; }
         private LicenseOptions Options { get; }
 
+        private JsonSerializerOptions JsonSerializerOptions { get; } = new() {
+            WriteIndented = true,
+        };
+
         #endregion
 
         #region function
@@ -132,10 +136,7 @@ namespace License
 
         private async Task WriteComponentFileAsync(LicenseComponent component, string outputPath, CancellationToken cancellationToken)
         {
-            var options = new JsonSerializerOptions() {
-                WriteIndented = true,
-            };
-            var content = JsonSerializer.Serialize(component, options);
+            var content = JsonSerializer.Serialize(component, JsonSerializerOptions);
             await System.IO.File.WriteAllTextAsync(outputPath, content, cancellationToken);
         }
 
