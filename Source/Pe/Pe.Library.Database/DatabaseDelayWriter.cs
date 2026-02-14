@@ -37,12 +37,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         public DatabaseDelayWriter(IDatabaseBarrier databaseBarrier, TimeSpan pauseRetryTime, TimeProvider timeProvider, ILoggerFactory loggerFactory)
         {
-            if(databaseBarrier == null) {
-                throw new ArgumentNullException(nameof(databaseBarrier));
-            }
-            if(loggerFactory == null) {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
+            ArgumentNullException.ThrowIfNull(databaseBarrier);
+            ArgumentNullException.ThrowIfNull(loggerFactory);
 
             DatabaseBarrier = databaseBarrier;
             PauseRetryTime = pauseRetryTime;
@@ -147,9 +143,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly", Justification = "デバッグ時のみのあれ")]
         public void Stock(Action<IDatabaseTransaction> action, object uniqueKey)
         {
-            if(uniqueKey == null) {
-                throw new ArgumentNullException(nameof(uniqueKey));
-            }
+            ArgumentNullException.ThrowIfNull(uniqueKey);
+
 #if DEBUG
             if(uniqueKey is UniqueKeyPool) {
                 Debug.Assert(false, $"完全な事故: {nameof(UniqueKeyPool)}.{nameof(UniqueKeyPool.Get)} を使用していない可能性あり");

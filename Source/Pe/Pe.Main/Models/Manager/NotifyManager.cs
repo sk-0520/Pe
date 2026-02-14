@@ -525,9 +525,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         /// <inheritdoc cref="INotifyManager.AppendLogAsync(NotifyMessage)" />
         public async Task<NotifyLogId> AppendLogAsync(NotifyMessage notifyMessage, CancellationToken cancellationToken)
         {
-            if(notifyMessage == null) {
-                throw new ArgumentNullException(nameof(notifyMessage));
-            }
+            ArgumentNullException.ThrowIfNull(notifyMessage);
 
             var element = DiContainer.Build<NotifyLogItemElement>(NotifyLogId.NewId(), notifyMessage);
             await element.InitializeAsync(cancellationToken);

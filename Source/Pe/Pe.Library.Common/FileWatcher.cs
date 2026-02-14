@@ -71,9 +71,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         public FileWatcher(FileWatchParameter watchParameter, ILoggerFactory loggerFactory)
         {
-            if(watchParameter == null) {
-                throw new ArgumentNullException(nameof(watchParameter));
-            }
+            ArgumentNullException.ThrowIfNull(watchParameter);
             if(watchParameter.File == null) {
                 throw new ArgumentNullException($"{nameof(watchParameter)}.{nameof(watchParameter.File)}");
             }

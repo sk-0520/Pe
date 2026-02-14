@@ -169,9 +169,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         public string Join(bool isEnabledSession, bool isEnabledCache) => JoinCore(string.Empty, isEnabledSession, isEnabledCache);
         public string Join(string name, bool isEnabledSession, bool isEnabledCache)
         {
-            if(name == null) {
-                throw new ArgumentNullException(nameof(name));
-            }
+            ArgumentNullException.ThrowIfNull(name);
 
             if(name.IndexOf(Separator) != -1) {
                 throw new ArgumentException(null, nameof(name));

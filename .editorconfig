@@ -57,7 +57,6 @@ dotnet_diagnostic.CA1305.severity = warning
 # CA1873 は無視してOK
 dotnet_diagnostic.CA1873.severity = suggestion
 dotnet_diagnostic.CA1861.severity = suggestion
-dotnet_diagnostic.CA1510.severity = suggestion
 dotnet_diagnostic.CA1860.severity = suggestion
 dotnet_diagnostic.CA1859.severity = suggestion
 dotnet_diagnostic.CA2249.severity = suggestion

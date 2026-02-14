@@ -739,9 +739,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         public void SaveLayout(NoteLayoutData layout)
         {
-            if(layout == null) {
-                throw new ArgumentNullException(nameof(layout));
-            }
+            ArgumentNullException.ThrowIfNull(layout);
             if(layout.NoteId != NoteId) {
                 throw new ArgumentException(null, $"{nameof(layout)}.{nameof(layout.NoteId)}");
             }

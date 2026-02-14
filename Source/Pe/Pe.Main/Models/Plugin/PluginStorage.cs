@@ -36,9 +36,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         protected string AdjustFileName(string name)
         {
-            if(name == null) {
-                throw new ArgumentNullException(nameof(name));
-            }
+            ArgumentNullException.ThrowIfNull(name);
 
             if(string.IsNullOrWhiteSpace(name)) {
                 throw new ArgumentException(null, nameof(name));

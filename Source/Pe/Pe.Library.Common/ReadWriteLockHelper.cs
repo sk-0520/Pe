@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Library.Common
@@ -339,9 +337,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <inheritdoc cref="IReadWriteLockHelper.TryRead(TimeSpan, Action)"/>
         public bool TryRead(TimeSpan timeout, Action lockedAction)
         {
-            if(lockedAction == null) {
-                throw new ArgumentNullException(nameof(lockedAction));
-            }
+            ArgumentNullException.ThrowIfNull(lockedAction);
+
             ThrowIfDisposed();
 
             return TryCore(timeout, lockedAction, Locker.TryEnterReadLock, Locker.ExitReadLock);
@@ -358,9 +355,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <inheritdoc cref="IReadWriteLockHelper.TryUpdate(TimeSpan, Action)"/>
         public bool TryUpdate(TimeSpan timeout, Action lockedAction)
         {
-            if(lockedAction == null) {
-                throw new ArgumentNullException(nameof(lockedAction));
-            }
+            ArgumentNullException.ThrowIfNull(lockedAction);
+
             ThrowIfDisposed();
 
             return TryCore(timeout, lockedAction, Locker.TryEnterUpgradeableReadLock, Locker.ExitUpgradeableReadLock);
@@ -377,9 +373,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <inheritdoc cref="IReadWriteLockHelper.TryWrite(TimeSpan, Action)"/>
         public bool TryWrite(TimeSpan timeout, Action lockedAction)
         {
-            if(lockedAction == null) {
-                throw new ArgumentNullException(nameof(lockedAction));
-            }
+            ArgumentNullException.ThrowIfNull(lockedAction);
+
             ThrowIfDisposed();
 
             return TryCore(timeout, lockedAction, Locker.TryEnterWriteLock, Locker.ExitWriteLock);

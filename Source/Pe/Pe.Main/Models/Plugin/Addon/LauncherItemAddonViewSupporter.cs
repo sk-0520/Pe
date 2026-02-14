@@ -185,9 +185,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         /// <inheritdoc cref="ILauncherItemAddonViewSupporter.RegisterWindowAsync(Window, Func{bool}?, Action?, CancellationToken)"/>
         public async Task<bool> RegisterWindowAsync(Window window, Func<bool>? userClosing, Action? closedWindow, CancellationToken cancellationToken)
         {
-            if(window == null) {
-                throw new ArgumentNullException(nameof(window));
-            }
+            ArgumentNullException.ThrowIfNull(window);
+
             if(window.IsVisible) {
                 Logger.LogError("ランチャーアイテムアドオンの初期表示は Pe 側で処理される必要がある");
                 window.Close();
