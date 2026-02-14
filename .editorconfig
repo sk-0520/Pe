@@ -67,7 +67,6 @@ dotnet_diagnostic.CA1401.severity = suggestion
 dotnet_diagnostic.CA1826.severity = suggestion
 dotnet_diagnostic.CA2263.severity = suggestion
 dotnet_diagnostic.CA1861.severity = suggestion
-dotnet_diagnostic.CA1806.severity = suggestion
 dotnet_diagnostic.CA1824.severity = none
 
 spelling_checkable_types = strings,identifiers,comments

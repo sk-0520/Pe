@@ -52,7 +52,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
 
             var inputArray = inputs.ToArray();
 
-            NativeMethods.SendInput((uint)inputArray.Length, inputArray, Marshal.SizeOf(inputs[0]));
+            uint result = NativeMethods.SendInput((uint)inputArray.Length, inputArray, Marshal.SizeOf(inputs[0]));
+            if(result == 0) {
+                var error = NativeMethods.GetLastError();
+                throw new InvalidOperationException($"SendInput failed. error: {error}");
+            }
         }
 
         /// <summary>

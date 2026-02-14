@@ -264,7 +264,11 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
         public static string GetWindowClassName(IntPtr hWnd, int windowClassNameLength = WindowClassNameLength)
         {
             var buffer = new StringBuilder(windowClassNameLength);
-            NativeMethods.GetClassName(hWnd, buffer, buffer.Capacity);
+            var result = NativeMethods.GetClassName(hWnd, buffer, buffer.Capacity);
+            if(result == 0) {
+                var error = NativeMethods.GetLastError();
+                throw new InvalidOperationException($"GetClassName failed. error: {error}");
+            }
             var windowClassName = buffer.ToString();
             return windowClassName;
         }
@@ -272,7 +276,11 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
         public static string GetWindowText(IntPtr hWnd, int windowTextLength = WindowTextLength)
         {
             var buffer = new StringBuilder(NativeMethods.GetWindowTextLength(hWnd) + 1);
-            NativeMethods.GetWindowText(hWnd, buffer, buffer.Capacity);
+            var result = NativeMethods.GetWindowText(hWnd, buffer, buffer.Capacity);
+            if(result == 0) {
+                var error = NativeMethods.GetLastError();
+                throw new InvalidOperationException($"GetWindowText failed. error: {error}");
+            }
             var windowText = buffer.ToString();
             return windowText;
         }
