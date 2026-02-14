@@ -116,7 +116,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                 return result;
             }
             var className = classTrees.First();
-            var count = classTrees.Count();
+            var count = classTrees.Count;
 
             NativeMethods.EnumChildWindows(hParentWnd, (hWnd, lParam) => {
                 var currentClassName = GetClassName(hWnd);
