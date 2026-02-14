@@ -69,7 +69,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
                 base.SimpleRegister(interfaceType, objectType, name, value);
                 RegisteredTypeSet[name].Add(interfaceType);
             } else {
-                throw new ArgumentException(nameof(interfaceType));
+                throw new ArgumentException(null, nameof(interfaceType));
             }
         }
 
