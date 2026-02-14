@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
 
@@ -66,7 +65,7 @@ namespace ContentTypeTextNet.Pe.Main.Test
                 if(first) {
                     first = false;
                 } else {
-                    sb.Append(",");
+                    sb.Append(',');
                 }
                 sb.Append(column.Name);
             }
