@@ -73,7 +73,6 @@ dotnet_diagnostic.CA1829.severity = suggestion
 dotnet_diagnostic.CA1872.severity = suggestion
 dotnet_diagnostic.CA2208.severity = suggestion
 dotnet_diagnostic.CA1513.severity = suggestion
-dotnet_diagnostic.CA1050.severity = suggestion
 dotnet_diagnostic.CA1824.severity = none
 
 spelling_checkable_types = strings,identifiers,comments
@@ -330,6 +329,8 @@ dotnet_diagnostic.CA1311.severity = warning
 
 [*Test.cs]
 dotnet_diagnostic.IDE1006.severity = none
+dotnet_diagnostic.CA1050.severity = none
+
 
 # VC
 [*.{c,c++,cc,cpp,cppm,cxx,h,h++,hh,hpp,hxx,inl,ipp,ixx,tlh,tli}]
