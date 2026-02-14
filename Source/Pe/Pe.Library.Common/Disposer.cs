@@ -1,11 +1,8 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Xml.Serialization;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
@@ -85,9 +82,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <seealso cref="IDisposed"/>
         protected void ThrowIfDisposed()
         {
-            if(IsDisposed) {
-                throw new ObjectDisposedException(GetType().FullName);
-            }
+            ObjectDisposedException.ThrowIf(IsDisposed, this);
         }
 
         protected void OnDisposing()
