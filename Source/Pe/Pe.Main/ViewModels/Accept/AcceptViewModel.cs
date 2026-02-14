@@ -62,7 +62,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Accept
                    var uri = new Uri(o);
                    OpenUri(uri);
                } catch(Exception ex) {
-                   Logger.LogError(ex, ex.Message);
+                   Logger.LogError(ex, "{Message}", ex.Message);
                }
            }
         );

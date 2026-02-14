@@ -402,7 +402,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                     try {
                         parameter.File.Delete();
                     } catch(Exception ex) {
-                        Logger.LogError(ex, ex.Message);
+                        Logger.LogError(ex, "{Message}", ex.Message);
                     }
                 }
             }

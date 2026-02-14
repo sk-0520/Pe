@@ -119,7 +119,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
                 return true;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
 
             return false;

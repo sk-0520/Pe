@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.ExtendsExecute
                 var result = await launcherExecutor.ExecuteAsync(LauncherItemKind.File, fileData, fileData, environmentVariables, redoData, screen, cancellationToken);
                 return result;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return LauncherFileExecuteResult.Error(ex);
             }
         }

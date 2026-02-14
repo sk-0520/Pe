@@ -221,7 +221,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.FileFinder.Addon
                             }
                         }
                     } catch(Exception ex) {
-                        Logger.LogWarning(ex, ex.Message);
+                        Logger.LogWarning(ex, "{Message}", ex.Message);
                     }
                 }
             }

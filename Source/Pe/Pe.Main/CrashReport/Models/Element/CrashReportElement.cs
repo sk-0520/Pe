@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Element
             try {
                 systemExecutor.OpenUri(new Uri(Options.SourceUri));
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
         }
 
@@ -115,7 +115,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Element
                         }
                     }
                 } catch(Exception ex) {
-                    Logger.LogWarning(ex, ex.Message);
+                    Logger.LogWarning(ex, "{Message}", ex.Message);
                     if(!counter.IsLast) {
                         Logger.LogDebug("待機中: {RetryWaitTime}", RetryWaitTime);
                         await Task.Delay(RetryWaitTime, cancellationToken);

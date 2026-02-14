@@ -75,7 +75,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 var systemExecutor = new SystemExecutor();
                 systemExecutor.ExecuteFile(EnvironmentParameters.HelpFile.FullName);
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
         }
 
@@ -458,7 +458,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 var systemExecutor = new SystemExecutor();
                 systemExecutor.ExecuteFile(EnvironmentParameters.HelpFile.FullName);
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
         }
 

@@ -327,7 +327,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 try {
                     dir.Create();
                 } catch(Exception ex) {
-                    logger.LogError(ex, ex.Message);
+                    logger.LogError(ex, "{Message}", ex.Message);
                     throw;
                 }
             }
@@ -367,7 +367,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 try {
                     file.Delete();
                 } catch(IOException ex) {
-                    logger.LogError(ex, ex.Message);
+                    logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
 
@@ -554,7 +554,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                     var directoryCleaner = new DirectoryCleaner(dir, environmentParameters.ApplicationConfiguration.File.DirectoryRemoveWaitCount, environmentParameters.ApplicationConfiguration.File.DirectoryRemoveWaitTime, loggerFactory);
                     directoryCleaner.Clear(false);
                 } catch(Exception ex) {
-                    logger.LogError(ex, ex.Message);
+                    logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
         }

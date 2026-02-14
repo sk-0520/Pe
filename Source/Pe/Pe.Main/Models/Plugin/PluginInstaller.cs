@@ -189,7 +189,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                 try {
                     pluginLoadContext.Unload();
                 } catch(InvalidOperationException ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
 

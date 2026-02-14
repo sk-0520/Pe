@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             //});
             var fileRotator = new FileRotator();
             fileRotator.ExecuteWildcard(targetDirectory, "*.zip", enabledCount, ex => {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
                 return true;
             });
         }

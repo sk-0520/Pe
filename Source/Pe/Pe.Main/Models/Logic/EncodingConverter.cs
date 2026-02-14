@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             try {
                 return EncodingUtility.Parse(encodingName);
             } catch(ArgumentException ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
                 return Encoding;
             }
         }

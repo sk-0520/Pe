@@ -730,7 +730,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     var systemExecutor = new SystemExecutor();
                     systemExecutor.OpenDirectoryWithFileSelect(Environment.ExpandEnvironmentVariables(LinkPath));
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
                 ShowLinkChangeConfirm = false;
             }
@@ -1406,7 +1406,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         private void SearchContent(string searchValue, bool toNext)
         {
-            Logger.LogDebug(toNext ? "Next" : "Prev");
+            Logger.LogDebug("{Condition}", toNext ? "Next" : "Prev");
 
             var focusedInputSearch = InputSearchElement?.IsFocused ?? false;
 

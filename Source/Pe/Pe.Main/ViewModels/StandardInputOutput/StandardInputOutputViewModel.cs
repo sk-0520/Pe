@@ -128,7 +128,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
                         Terminal!.Clear();
                     });
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             },
             () => !ProcessExited
@@ -140,7 +140,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
                 try {
                     Model.Kill();
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             },
             () => !ProcessExited
@@ -163,7 +163,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
                         try {
                             SaveLog(path);
                         } catch(Exception ex) {
-                            Logger.LogError(ex, ex.Message);
+                            Logger.LogError(ex, "{Message}", ex.Message);
                         }
                     }
                 );
@@ -180,7 +180,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
                     Model.SendInputValue(value);
                     InputValue = string.Empty;
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
 
                 if(string.IsNullOrEmpty(rawValue)) {

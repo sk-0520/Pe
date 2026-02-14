@@ -317,7 +317,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
                 return result;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return LauncherFileExecuteResult.Error(ex);
             }
         }
@@ -342,7 +342,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
                 return result;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return LauncherFileExecuteResult.Error(ex);
             }
         }

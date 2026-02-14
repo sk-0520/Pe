@@ -109,7 +109,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 #endif
                 }
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return false;
             }
 
@@ -119,7 +119,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                     File.Delete(OldStartupFilePath);
                 }
             } catch(Exception ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
             }
 
             return true;
@@ -133,7 +133,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 }
                 return true;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return false;
             }
         }
@@ -181,7 +181,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
                 return Result.CreateSuccess(startupParameter);
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
 
             return Result.CreateFailure<StartupParameter>();

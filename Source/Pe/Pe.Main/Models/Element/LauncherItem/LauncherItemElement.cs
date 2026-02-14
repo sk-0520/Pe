@@ -270,7 +270,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
                 return result;
 
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return new LauncherExecuteErrorResult(Kind, ex);
             }
         }

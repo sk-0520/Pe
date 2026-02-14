@@ -180,11 +180,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 }
                 return iconImage;
             } catch(OperationCanceledException ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
                 RunningStatusImpl.State = RunningState.Cancel;
                 throw;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 RunningStatusImpl.State = RunningState.Error;
                 throw;
             }

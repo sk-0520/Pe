@@ -93,7 +93,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ReleaseNote
                 view.webView.NavigateToString(htmlSource);
 
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 view.webView.NavigateToString(Properties.Resources.File_ReleaseNote_ErrorReleaseNote);
             }
         }

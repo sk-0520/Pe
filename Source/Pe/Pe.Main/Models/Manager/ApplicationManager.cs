@@ -580,7 +580,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 var systemExecutor = ApplicationDiContainer.Build<SystemExecutor>();
                 systemExecutor.ExecuteFile(environmentParameters.HelpFile.FullName);
             } catch(Exception ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
             }
 
             return Task.CompletedTask;
@@ -672,7 +672,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     pack.Commit();
                     uninstalledPlugins.Add(uninstallPlugin);
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
 
@@ -1421,7 +1421,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                         Logger.LogTrace("まだ開かれていないウィンドウのためクローズしない: {WindowKind}, {ViewModel}", windowItem.WindowKind, windowItem.ViewModel);
                     }
                 } catch(System.ComponentModel.Win32Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
         }
@@ -1556,7 +1556,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 try {
                     process.Start();
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
 
@@ -1619,7 +1619,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 process.StartInfo.WorkingDirectory = Environment.CurrentDirectory;
                 process.Start();
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
 
             Exit(true);
@@ -1783,7 +1783,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     action();
                 } catch(Exception ex) {
                     // 運に任せる
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
 

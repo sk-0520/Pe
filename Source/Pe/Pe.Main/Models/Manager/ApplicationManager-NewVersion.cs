@@ -138,7 +138,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 try {
                     await ShowNewVersionReleaseNoteAsync(ApplicationUpdateInfo.NewVersionItem, updateCheckKind == UpdateCheckKind.CheckOnly, cancellationToken);
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                     ApplicationUpdateInfo.SetError(ex.Message);
                     return;
                 }
@@ -209,7 +209,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     new[] { "zip", "7z" },
                     environmentParameters.ApplicationConfiguration.Backup.ArchiveCount,
                     ex => {
-                        Logger.LogWarning(ex, ex.Message);
+                        Logger.LogWarning(ex, "{Message}", ex.Message);
                         return true;
                     }
                 );
@@ -218,7 +218,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 await ShowNewVersionReleaseNoteAsync(ApplicationUpdateInfo.NewVersionItem, false, cancellationToken);
 
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 ApplicationUpdateInfo.SetError(ex.Message);
             }
         }

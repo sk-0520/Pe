@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Feedback
             try {
                 systemExecutor.OpenUri(ApiConfiguration.FeedbackSourceUri);
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
         }
 
@@ -142,12 +142,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Feedback
                         SendStatus.State = RunningState.Error;
                     }
                 } catch(Exception ex) {
-                    Logger.LogWarning(ex, ex.Message);
+                    Logger.LogWarning(ex, "{Message}", ex.Message);
                     if(!counter.IsLast) {
                         Logger.LogDebug("待機中: {RetryWaitTime}", RetryWaitTime);
                         await Task.Delay(RetryWaitTime, cancellationToken);
                     } else {
-                        Logger.LogError(ex, ex.Message);
+                        Logger.LogError(ex, "{Message}", ex.Message);
                         ErrorMessage = ex.Message;
                         SendStatus.State = RunningState.Error;
                     }

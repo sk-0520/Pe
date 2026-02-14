@@ -208,7 +208,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
                     return result;
                 }
             } catch(NotImplementedException ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
             }
 
             return GetPluginIcon(imageLoader, iconScale);

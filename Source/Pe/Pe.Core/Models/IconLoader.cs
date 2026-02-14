@@ -76,10 +76,10 @@ namespace ContentTypeTextNet.Pe.Core.Models
             try {
                 return GetThumbnailImageCore(iconPath, iconSize);
             } catch(COMException ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
                 return null;
             } catch(ArgumentException ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
                 return null;
             }
         }
@@ -235,7 +235,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                         return thumbnailImage;
                     }
                 } catch(Exception ex) {
-                    Logger.LogWarning(ex, ex.Message);
+                    Logger.LogWarning(ex, "{Message}", ex.Message);
                 }
             }
 
@@ -280,7 +280,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                         return image;
                     }
                 } catch(Exception ex) {
-                    Logger.LogDebug(ex, ex.Message);
+                    Logger.LogDebug(ex, "{Message}", ex.Message);
                 }
             }
 
@@ -318,7 +318,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                     }
                 }
             } catch(InvalidCastException ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
             }
 
             return null;

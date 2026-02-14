@@ -445,7 +445,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                                 return true;
                             }
                         } catch(Exception ex) {
-                            Logger.LogError(ex, ex.Message);
+                            Logger.LogError(ex, "{Message}", ex.Message);
                             value = default;
                             return false;
                         }
@@ -456,7 +456,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                             value = JsonSerializer.Deserialize<TValue>(data.Value)!;
                             return true;
                         } catch(Exception ex) {
-                            Logger.LogError(ex, ex.Message);
+                            Logger.LogError(ex, "{Message}", ex.Message);
                             value = default;
                             return false;
                         }
@@ -501,7 +501,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                                 textValue = serializer.Encoding.GetString(stream.GetBuffer(), 0, (int)stream.Length);
                             }
                         } catch(Exception ex) {
-                            Logger.LogError(ex, ex.Message);
+                            Logger.LogError(ex, "{Message}", ex.Message);
                             return false;
                         }
                     }
@@ -511,7 +511,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                         try {
                             textValue = JsonSerializer.Serialize(value);
                         } catch(Exception ex) {
-                            Logger.LogError(ex, ex.Message);
+                            Logger.LogError(ex, "{Message}", ex.Message);
                             return false;
                         }
                     }

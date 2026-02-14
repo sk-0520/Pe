@@ -80,7 +80,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 Clipboard.SetDataObject(data);
                 return true;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return false;
             }
         }
@@ -96,7 +96,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 Clipboard.SetText(data, TextDataFormat.UnicodeText);
                 return true;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return false;
             }
         }
