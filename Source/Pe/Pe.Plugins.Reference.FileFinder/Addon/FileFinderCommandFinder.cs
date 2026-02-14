@@ -121,7 +121,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.FileFinder.Addon
                 return "*";
             }
 
-            if(filePattern.LastIndexOfAny(new[] { '*', '?' }) == -1) {
+            if(filePattern.LastIndexOfAny(['*', '?']) == -1) {
                 return filePattern + "*";
             }
 

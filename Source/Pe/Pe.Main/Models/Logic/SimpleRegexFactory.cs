@@ -76,7 +76,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             }
 
             // 文字列にワイルドカードっぽいのがあればワイルドカード判定
-            if(pattern.IndexOfAny(new[] { '*', '?' }) != -1) {
+            if(pattern.IndexOfAny(['*', '?']) != -1) {
                 var wildcard = "^" + Regex.Escape(pattern).Replace("\\?", ".").Replace("\\*", ".*") + "$";
                 var regOption = RegexOptions.Singleline;
                 if(!IsCaseSensitivePattern(wildcard)) {
