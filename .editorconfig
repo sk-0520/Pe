@@ -58,9 +58,10 @@ dotnet_diagnostic.CA1305.severity = warning
 dotnet_diagnostic.CA1873.severity = suggestion
 # P/Invoke はまとめておきたいので無視。将来的に CsWin32 に置き換え案あり → #944
 dotnet_diagnostic.CA1401.severity = suggestion
+# 抽象化しておきたいので無視。どうしても速度的な問題があれば対応するが、この程度のアプリでそれはない
+dotnet_diagnostic.CA1859.severity = suggestion
 
 dotnet_diagnostic.CA1861.severity = suggestion
-dotnet_diagnostic.CA1859.severity = suggestion
 dotnet_diagnostic.CA2249.severity = suggestion
 dotnet_diagnostic.CA2211.severity = suggestion
 dotnet_diagnostic.CA1816.severity = suggestion
