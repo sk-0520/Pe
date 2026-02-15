@@ -54,18 +54,20 @@ dotnet_diagnostic.CA1304.severity = warning
 dotnet_diagnostic.CA1305.severity = warning
 
 # AnalysisMode: Minimum
-# CA1873 は無視してOK
+# ログ出力の判定コストは気にしない
 dotnet_diagnostic.CA1873.severity = suggestion
+# P/Invoke はまとめておきたいので無視。将来的に CsWin32 に置き換え案あり → #944
+dotnet_diagnostic.CA1401.severity = suggestion
+
 dotnet_diagnostic.CA1861.severity = suggestion
 dotnet_diagnostic.CA1860.severity = suggestion
 dotnet_diagnostic.CA1859.severity = suggestion
 dotnet_diagnostic.CA2249.severity = suggestion
 dotnet_diagnostic.CA2211.severity = suggestion
 dotnet_diagnostic.CA1816.severity = suggestion
-dotnet_diagnostic.CA1401.severity = suggestion
-dotnet_diagnostic.CA1826.severity = suggestion
 dotnet_diagnostic.CA2263.severity = suggestion
-dotnet_diagnostic.CA1861.severity = suggestion
+
+# きちんと対応すべきだが、一旦はコンパイル通すために無効化
 dotnet_diagnostic.CA1824.severity = none
 
 spelling_checkable_types = strings,identifiers,comments

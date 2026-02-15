@@ -105,7 +105,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
             if(!classTrees.Any()) {
                 return result;
             }
-            var className = classTrees.First();
+            var className = classTrees[0];
             var count = classTrees.Count;
 
             NativeMethods.EnumChildWindows(hParentWnd, (hWnd, lParam) => {

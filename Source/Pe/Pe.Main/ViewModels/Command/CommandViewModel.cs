@@ -185,11 +185,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
                 SetCommandItems(commandItems);
                 //SelectedItem = CommandItems.FirstOrDefault();
                 var selectedItem = prevSelectedItem == null
-                    ? CommandItems.FirstOrDefault()
+                    ? CommandItems[0]
                     : CommandItems.FirstOrDefault(i => prevSelectedItem.IsEquals(i))
                 ;
                 if(selectedItem == null || 0 < CommandItems.Count) {
-                    SelectedItem = CommandItems.First();
+                    SelectedItem = CommandItems[0];
                 } else {
                     SelectedItem = selectedItem;
                 }
@@ -390,14 +390,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
             if(SelectedItem == null) {
                 // 多分ここには来ないはずだけど一応
                 SelectedItem = isUp
-                    ? CommandItems.First()
-                    : CommandItems.Last()
+                    ? CommandItems[0]
+                    : CommandItems[CommandItems.Count - 1]
                 ;
             } else {
                 var index = this._commandItems.IndexOf(SelectedItem);
                 if(isUp) {
                     SelectedItem = index == 0
-                        ? CommandItems.Last()
+                        ? CommandItems[CommandItems.Count - 1]
                         : CommandItems[index - 1]
                     ;
                 } else {

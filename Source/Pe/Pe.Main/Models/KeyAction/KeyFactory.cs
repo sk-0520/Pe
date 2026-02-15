@@ -127,7 +127,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
                     (Key)keyConverter.ConvertFromInvariantString(item.Action.KeyActionContent)!
                 );
 
-                return new KeyActionReplaceJob(data, item.Mappings.First());
+                return new KeyActionReplaceJob(data, item.Mappings[0]);
             });
         }
 
@@ -141,7 +141,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
                     disableOptionConverter.ToForever(item.Options)
                 );
 
-                return new KeyActionDisableJob(data, item.Mappings.First());
+                return new KeyActionDisableJob(data, item.Mappings[0]);
             });
         }
 
