@@ -111,7 +111,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
                 return launcherTagsEntityDao.SelectUniqueTags(launcherItemId).ToHashSet();
             });
             LauncherTags.Remove(launcherItemId);
-            if(tags.Any()) {
+            if(0 < tags.Count) {
                 LauncherTags.Add(launcherItemId, tags);
             }
         }

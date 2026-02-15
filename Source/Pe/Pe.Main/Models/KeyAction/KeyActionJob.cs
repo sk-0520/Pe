@@ -214,7 +214,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
             }
 
             var keyIsNoneOrMods = Mappings.Counting().Where(i => i.Value.Key == Key.None || i.Value.Key.IsModifierKey()).ToArray();
-            if(keyIsNoneOrMods.Any()) {
+            if(keyIsNoneOrMods.Length != 0) {
                 var errors = string.Join(", ", keyIsNoneOrMods.Select(i => $"{nameof(mappings)}[{i.Number}]"));
                 throw new ArgumentException("不正なキー設定(キー設定なし、修飾キーのみ): " + errors);
             }
@@ -317,7 +317,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
             }
 
             var keyIsNoneOrMods = Mappings.Counting().Where(i => i.Value.Key == Key.None || i.Value.Key.IsModifierKey()).ToArray();
-            if(keyIsNoneOrMods.Any()) {
+            if(keyIsNoneOrMods.Length != 0) {
                 var errors = string.Join(", ", keyIsNoneOrMods.Select(i => $"{nameof(mappings)}[{i.Number}]"));
                 throw new ArgumentException("不正なキー設定(キー設定なし、修飾キーのみ): " + errors);
             }

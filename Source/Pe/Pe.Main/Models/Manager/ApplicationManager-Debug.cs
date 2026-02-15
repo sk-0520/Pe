@@ -185,7 +185,7 @@ echo end
             dbgKeyboardHooker = new KeyboardHook(LoggerFactory);
             dbgKeyboardHooker.KeyDown += (sender, e) => {
                 var jobs = dbgKeyActionChecker.Find(true, e.Key, e.modifierKeyStatus, e.kbdll);
-                if(jobs.Any()) {
+                if(jobs.Count != 0) {
                     e.Handled = true;
                     Task.Run(() => {
                         foreach(var job in jobs) {

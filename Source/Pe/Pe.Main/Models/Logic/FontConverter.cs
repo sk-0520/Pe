@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         {
             ArgumentNullException.ThrowIfNull(fontFamily);
 
-            if(fontFamily.FamilyNames.Any()) {
+            if(fontFamily.FamilyNames.Count != 0) {
                 return fontFamily.FamilyNames.First().Value;
             }
 

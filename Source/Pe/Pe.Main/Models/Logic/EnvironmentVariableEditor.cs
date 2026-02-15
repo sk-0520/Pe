@@ -121,7 +121,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             collection.Clear();
 
             var errors = func(textDocument!).ToArray();
-            if(errors.Any()) {
+            if(errors.Length != 0) {
                 addErrors(errors);
                 foreach(var err in errors) {
                     collection.Add(err);

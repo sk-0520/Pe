@@ -1487,7 +1487,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 installDataItems = installPluginsEntityDao.SelectInstallPlugins().ToArray();
             }
 
-            if(!installDataItems.Any()) {
+            if(installDataItems.Length == 0) {
                 return;
             }
 

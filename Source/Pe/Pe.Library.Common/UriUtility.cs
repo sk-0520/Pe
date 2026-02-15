@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Common
@@ -11,7 +10,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         private static Uri CombinePathCore(Uri uri, bool appendLastSeparator, string[] paths)
         {
-            Debug.Assert(paths.Any());
+            Debug.Assert(paths.Length != 0);
 
             var noLastSegment = string.IsNullOrEmpty(uri.UserInfo)
                 ? $"{uri.Scheme}://{uri.Authority}"

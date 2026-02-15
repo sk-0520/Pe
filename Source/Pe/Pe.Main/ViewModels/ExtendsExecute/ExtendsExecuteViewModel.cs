@@ -86,7 +86,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
             RedoMode = Model.LauncherRedoData.RedoMode;
             WaitTimeSeconds = (int)Model.LauncherRedoData.WaitTime.TotalSeconds;
             RetryCount = Model.LauncherRedoData.RetryCount;
-            if(Model.LauncherRedoData.SuccessExitCodes.Any()) {
+            if(Model.LauncherRedoData.SuccessExitCodes.Count != 0) {
                 var numericRange = new NumericRange();
                 SuccessExitCodes = numericRange.ToString(Model.LauncherRedoData.SuccessExitCodes);
             } else {

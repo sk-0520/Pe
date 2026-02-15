@@ -195,7 +195,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
                 var exitCodes = launcherRedoSuccessExitCodesEntityDao.SelectRedoSuccessExitCodes(LauncherItemId);
                 redoData.SuccessExitCodes.SetRange(exitCodes);
             }
-            if(!redoData.SuccessExitCodes.Any()) {
+            if(redoData.SuccessExitCodes.Count == 0) {
                 redoData.SuccessExitCodes.Add(0);
             }
             fileData.Caption = Name;

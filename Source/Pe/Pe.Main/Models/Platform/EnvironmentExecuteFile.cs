@@ -68,7 +68,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                     .Select(i => addWildcard ? "*" + i : i)
                     .ToArray()
                 ;
-                if(result.Any()) {
+                if(result.Length != 0) {
                     // EXEが無いって事はないだろうけど実行できないしもうどうでもいい
                     return result;
                 }
