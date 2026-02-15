@@ -62,8 +62,7 @@ dotnet_diagnostic.CA1401.severity = suggestion
 dotnet_diagnostic.CA1859.severity = suggestion
 # 一個一個の挙動はいいけど全体でみるとしんどいので一旦無視
 dotnet_diagnostic.CA2263.severity = suggestion
-
-# きちんと対応すべきだが、一旦はコンパイル通すために無効化
+# カルチャ系処理のテストが分からんので一旦無視（という保留）
 dotnet_diagnostic.CA1824.severity = none
 
 spelling_checkable_types = strings,identifiers,comments
