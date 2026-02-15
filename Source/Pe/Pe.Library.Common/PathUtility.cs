@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
@@ -98,7 +96,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 return false;
             }
 
-            return HasExtensions(path, new[] { "exe", "dll" });
+            return HasExtensions(path, ["exe", "dll"]);
         }
 
 
@@ -113,7 +111,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 return false;
             }
 
-            return HasExtensions(path, new[] { "lnk" });
+            return HasExtensions(path, ["lnk"]);
         }
 
         /// <summary>
@@ -127,7 +125,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 return false;
             }
 
-            return HasExtensions(path, new[] { "exe", "dll" });
+            return HasExtensions(path, ["exe", "dll"]);
         }
 
         /// <summary>

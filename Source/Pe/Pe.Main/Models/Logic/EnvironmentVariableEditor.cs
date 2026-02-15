@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         {
             return TextUtility.ReadLines(text)
                 .Where(i => !string.IsNullOrWhiteSpace(i))
-                .Select(i => i.Split(new char[] { '=' }, 2, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim()).ToArray())
+                .Select(i => i.Split(['='], 2, StringSplitOptions.RemoveEmptyEntries).Select(i => i.Trim()).ToArray())
                 .Where(i => i.Length == 2)
                 .Select(i => new LauncherEnvironmentVariableData(i[0], i[1]))
             ;

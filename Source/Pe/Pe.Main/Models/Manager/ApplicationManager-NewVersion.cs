@@ -206,7 +206,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 var fileRotator = new FileRotator();
                 fileRotator.ExecuteExtensions(
                     environmentParameters.MachineUpdateArchiveDirectory,
-                    new[] { "zip", "7z" },
+                    ["zip", "7z"],
                     environmentParameters.ApplicationConfiguration.Backup.ArchiveCount,
                     ex => {
                         Logger.LogWarning(ex, "{Message}", ex.Message);

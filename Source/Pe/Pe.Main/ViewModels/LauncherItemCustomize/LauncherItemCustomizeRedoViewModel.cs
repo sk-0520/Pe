@@ -88,7 +88,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
             if(numericRange.TryParse(SuccessExitCodes, out var values)) {
                 Redo!.SuccessExitCodes.SetRange(values);
             } else {
-                Redo!.SuccessExitCodes.SetRange(new[] { 0 });
+                Redo!.SuccessExitCodes.SetRange([0]);
             }
         }
 
