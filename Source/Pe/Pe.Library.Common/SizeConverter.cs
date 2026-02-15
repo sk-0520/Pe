@@ -35,7 +35,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         public string ConvertHumanReadableByte(long byteSize, string sizeFormat, IReadOnlyList<string> units)
         {
             if(units.Count == 0) {
-                throw new ArgumentException(nameof(units));
+                throw new ArgumentException($"{nameof(units)}.{nameof(units.Count)} == 0", nameof(units));
             }
 
             double size = byteSize;

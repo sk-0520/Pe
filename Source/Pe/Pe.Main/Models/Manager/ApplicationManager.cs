@@ -294,7 +294,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             {
                 foreach(var element in settingElement.PluginsSettingEditor.PluginItems) {
                     if(element.SupportedPreferences && element.StartedPreferences) {
-                        logger.LogTrace("プラグイン処理設定完了: {0}({1})", element.PluginState.PluginName, element.PluginState.PluginId);
+                        logger.LogTrace("プラグイン処理設定完了: {PluginName}({PluginId})", element.PluginState.PluginName, element.PluginState.PluginId);
                         element.EndPreferences();
                     }
                 }
@@ -580,7 +580,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 var systemExecutor = ApplicationDiContainer.Build<SystemExecutor>();
                 systemExecutor.ExecuteFile(environmentParameters.HelpFile.FullName);
             } catch(Exception ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
             }
 
             return Task.CompletedTask;
@@ -630,7 +630,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             foreach(var dir in dirs) {
                 var destDirPath = Path.Combine(environmentParameters.MachinePluginModuleDirectory.FullName, dir.Name);
                 var destDir = new DirectoryInfo(destDirPath);
-                Logger.LogInformation("新規プラグイン: {0}", destDirPath);
+                Logger.LogInformation("新規プラグイン: {DirectoryPath}", destDirPath);
                 directoryMover.Move(dir, destDir);
             }
 
@@ -672,7 +672,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     pack.Commit();
                     uninstalledPlugins.Add(uninstallPlugin);
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
 
@@ -714,14 +714,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     foreach(var pluginLoadStateItem in pluginLoadStateItems) {
                         // プラグインIDすら取得できなかったぶっこわれアセンブリは無視
                         if(pluginLoadStateItem.PluginId == PluginId.Empty && pluginLoadStateItem.LoadState == PluginState.IllegalAssembly) {
-                            Logger.LogWarning("プラグイン {0} はもろもろおかしい", pluginLoadStateItem.PluginName);
+                            Logger.LogWarning("プラグイン {PluginName} はもろもろおかしい", pluginLoadStateItem.PluginName);
                             if(pluginLoadStateItem == testPluginLoadState) {
 #if DEBUG
                                 if(Debugger.IsAttached) {
                                     Debugger.Break();
                                 }
 #endif
-                                Logger.LogWarning("テスト用プラグインはおかしいためデータ登録処理スキップ: {0}, {1}", testPluginFile!.FullName, pluginLoadStateItem.LoadState);
+                                Logger.LogWarning("テスト用プラグインはおかしいためデータ登録処理スキップ: {Path}, {PluginState}", testPluginFile!.FullName, pluginLoadStateItem.LoadState);
                             }
                             continue;
                         }
@@ -739,7 +739,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                                     Debugger.Break();
                                 }
 #endif
-                                Logger.LogWarning("テスト用プラグインは読み込み失敗したためデータ登録処理スキップ: {0}, {1}", testPluginFile!.FullName, pluginLoadStateItem.LoadState);
+                                Logger.LogWarning("テスト用プラグインは読み込み失敗したためデータ登録処理スキップ: {Path}, {PluginState}", testPluginFile!.FullName, pluginLoadStateItem.LoadState);
                                 continue;
                             }
                         }
@@ -791,9 +791,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                         var unloadedItems = new List<PluginLoadStateData>();
                         foreach(var disabledItem in disabledItems) {
                             if(disabledItem.loadContext.TryGetTarget(out _)) {
-                                Logger.LogInformation("[{0}/{1}] アンロード待ち: {2}, {3}", counter.CurrentCount, counter.MaxCount, disabledItem.item.PluginName, disabledItem.item.PluginId);
+                                Logger.LogInformation("[{CurrentCount}/{MaxCount}] アンロード待ち: {PluginName}, {PluginId}", counter.CurrentCount, counter.MaxCount, disabledItem.item.PluginName, disabledItem.item.PluginId);
                             } else {
-                                Logger.LogInformation("[{0}/{1}] アンロード完了: {2}, {3}", counter.CurrentCount, counter.MaxCount, disabledItem.item.PluginName, disabledItem.item.PluginId);
+                                Logger.LogInformation("[{CurrentCount}/{MaxCount}] アンロード完了: {PluginName}, {PluginId}", counter.CurrentCount, counter.MaxCount, disabledItem.item.PluginName, disabledItem.item.PluginId);
                                 unloadedItems.Add(disabledItem.item);
                             }
                         }
@@ -819,7 +819,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     if(disabledPluginLoadStateItems.Count == 0) {
                         Logger.LogInformation("不要プラグイン解放完了");
                     } else {
-                        Logger.LogWarning("不要プラグイン解放不完全: {0}", disabledPluginLoadStateItems.Count);
+                        Logger.LogWarning("不要プラグイン解放不完全: {Count}", disabledPluginLoadStateItems.Count);
                     }
                 }
             }
@@ -851,7 +851,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             foreach(var pluginLoadStateItem in enabledPluginLoadStateItems) {
                 Debug.Assert(pluginLoadStateItem.Plugin != null);
 
-                Logger.LogInformation("プラグイン初期化処理: {0}, {1}", pluginLoadStateItem.PluginName, pluginLoadStateItem.PluginId);
+                Logger.LogInformation("プラグイン初期化処理: {PluginName}, {PluginId}", pluginLoadStateItem.PluginName, pluginLoadStateItem.PluginId);
                 var plugin = pluginLoadStateItem.Plugin;
                 try {
                     using(var readerPack = databaseBarrierPack.WaitRead()) {
@@ -861,13 +861,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     Debug.Assert(pluginLoadStateItem.LoadContext is not null);
                     initializedPluginItems.Add((plugin, pluginLoadStateItem.LoadContext));
                 } catch(Exception ex) {
-                    Logger.LogError(ex, "プラグイン初期化失敗: {0}, {1}, {2}", ex.Message, pluginLoadStateItem.PluginName, pluginLoadStateItem.PluginId);
+                    Logger.LogError(ex, "プラグイン初期化失敗: {Message}, {PluginName}, {PluginId}", ex.Message, pluginLoadStateItem.PluginName, pluginLoadStateItem.PluginId);
                     pluginLoadStateItem.LoadContext?.Unload();
                 }
             }
 
             foreach(var pluginItems in initializedPluginItems) {
-                Logger.LogInformation("初期化完了プラグイン: {0}, {1}, {2}", pluginItems.plugin.PluginInformation.PluginIdentifiers.PluginName, pluginItems.plugin.PluginInformation.PluginVersions.PluginVersion, pluginItems.plugin.PluginInformation.PluginIdentifiers.PluginId);
+                Logger.LogInformation("初期化完了プラグイン: {PluginName}, {PluginVersion}, {PluginId}", pluginItems.plugin.PluginInformation.PluginIdentifiers.PluginName, pluginItems.plugin.PluginInformation.PluginVersions.PluginVersion, pluginItems.plugin.PluginInformation.PluginIdentifiers.PluginId);
                 PluginContainer.AddPlugin(pluginItems.plugin, pluginItems.loadContext);
             }
 
@@ -902,7 +902,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     try {
                         item.Plugin.Unload(item.Kind, context);
                     } catch(Exception ex) {
-                        Logger.LogError(ex, "{0}({1}) {2}", item.Plugin.PluginInformation.PluginIdentifiers.PluginName, item.Plugin.PluginInformation.PluginIdentifiers.PluginId, ex.Message);
+                        Logger.LogError(ex, "{PluginName}({PluginId}) {Message}", item.Plugin.PluginInformation.PluginIdentifiers.PluginName, item.Plugin.PluginInformation.PluginIdentifiers.PluginId, ex.Message);
                     }
                 }
 
@@ -911,7 +911,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     try {
                         plugin.Finalize(context);
                     } catch(Exception ex) {
-                        Logger.LogError(ex, "{0}({1}) {2}", plugin.PluginInformation.PluginIdentifiers.PluginName, plugin.PluginInformation.PluginIdentifiers.PluginId, ex.Message);
+                        Logger.LogError(ex, "{PluginName}({PluginId}) {Message}", plugin.PluginInformation.PluginIdentifiers.PluginName, plugin.PluginInformation.PluginIdentifiers.PluginId, ex.Message);
                     }
                 }
 
@@ -1028,7 +1028,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             }
 
             if(Logger.IsEnabled(LogLevel.Debug)) {
-                Logger.LogDebug("アクセントカラー: #{0:x2}{1:x2}{2:x2}{3:x2}", accent.Accent.A, accent.Accent.R, accent.Accent.G, accent.Accent.B);
+                //TODO: 埋め込みにしてよさげ
+                Logger.LogDebug("アクセントカラー: #{A:x2}{R:x2}{G:x2}{B:x2}", accent.Accent.A, accent.Accent.R, accent.Accent.G, accent.Accent.B);
             }
         }
 
@@ -1048,7 +1049,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
             var userIdManager = ApplicationDiContainer.Build<UserIdManager>();
             if(!userIdManager.IsValidUserId(setting.UserId)) {
-                Logger.LogWarning("ユーザーIDが不正: {0}", setting.UserId);
+                Logger.LogWarning("ユーザーIDが不正: {UserId}", setting.UserId);
                 return (false, string.Empty);
             }
 
@@ -1220,7 +1221,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         {
             var idFactory = ApplicationDiContainer.Build<IIdFactory>();
             var noteId = idFactory.CreateNoteId();
-            Logger.LogInformation("new note id: {0}, {1}", noteId, ObjectDumper.GetDumpString(dockScreen));
+            Logger.LogInformation("new note id: {NoteId}, {Dump}", noteId, ObjectDumper.GetDumpString(dockScreen));
             var noteElement = await CreateNoteElementAsync(noteId, dockScreen, noteStartupPosition, cancellationToken);
 
             NoteElements.Add(noteElement);
@@ -1408,19 +1409,19 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     if(windowItem.IsOpened) {
                         if(!windowItem.IsClosed) {
                             if(windowItem.Window.IsVisible) {
-                                Logger.LogTrace("閉じることのできるウィンドウ: {0}, {1}", windowItem.WindowKind, windowItem.ViewModel);
+                                Logger.LogTrace("閉じることのできるウィンドウ: {WindowKind}, {ViewModel}", windowItem.WindowKind, windowItem.ViewModel);
                                 windowItem.Window.Close();
                             } else {
-                                Logger.LogTrace("非表示ウィンドウ: {0}, {1}", windowItem.WindowKind, windowItem.ViewModel);
+                                Logger.LogTrace("非表示ウィンドウ: {WindowKind}, {ViewModel}", windowItem.WindowKind, windowItem.ViewModel);
                             }
                         } else {
-                            Logger.LogTrace("既に閉じられたウィンドウのためクローズしない: {0}, {1}", windowItem.WindowKind, windowItem.ViewModel);
+                            Logger.LogTrace("既に閉じられたウィンドウのためクローズしない: {WindowKind}, {ViewModel}", windowItem.WindowKind, windowItem.ViewModel);
                         }
                     } else {
-                        Logger.LogTrace("まだ開かれていないウィンドウのためクローズしない: {0}, {1}", windowItem.WindowKind, windowItem.ViewModel);
+                        Logger.LogTrace("まだ開かれていないウィンドウのためクローズしない: {WindowKind}, {ViewModel}", windowItem.WindowKind, windowItem.ViewModel);
                     }
                 } catch(System.ComponentModel.Win32Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
         }
@@ -1486,7 +1487,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 installDataItems = installPluginsEntityDao.SelectInstallPlugins().ToArray();
             }
 
-            if(!installDataItems.Any()) {
+            if(installDataItems.Length == 0) {
                 return;
             }
 
@@ -1499,13 +1500,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     var destDirPath = Path.Combine(environmentParameters.MachinePluginInstallDirectory.FullName, PluginUtility.ConvertDirectoryName(installDataItem.PluginId));
                     var srcDir = new DirectoryInfo(installDataItem.PluginDirectoryPath);
                     var destDir = new DirectoryInfo(destDirPath);
-                    Logger.LogInformation("インストール対象: 新規プラグイン: {0}, {1} -> {2}", installDataItem.PluginId, srcDir.FullName, destDir.FullName);
+                    Logger.LogInformation("インストール対象: 新規プラグイン: {PluginId}, {Source} -> {Destination}", installDataItem.PluginId, srcDir.FullName, destDir.FullName);
                     directoryMover.Move(srcDir, destDir);
                 } else {
                     Debug.Assert(installDataItem.PluginInstallMode == PluginInstallMode.Update);
                     // 更新の場合、元プラグインのディレクトリ名をあれこれ調整してほわー
                     if(!pluginMap.TryGetValue(installDataItem.PluginId, out var plugin)) {
-                        Logger.LogWarning("更新プラグインインストール処理の無視: {0}", installDataItem.PluginId);
+                        Logger.LogWarning("更新プラグインインストール処理の無視: {PluginId}", installDataItem.PluginId);
                         continue;
                     }
 
@@ -1513,7 +1514,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     var srcDir = new DirectoryInfo(installDataItem.PluginDirectoryPath);
                     var destDirPath = Path.Combine(environmentParameters.MachinePluginInstallDirectory.FullName, PluginUtility.ConvertDirectoryName(installDataItem.PluginId));
                     var destDir = new DirectoryInfo(destDirPath);
-                    Logger.LogInformation("インストール対象: 更新プラグイン: {0}, {1} -> {2}", installDataItem.PluginId, srcDir.FullName, destDir.FullName);
+                    Logger.LogInformation("インストール対象: 更新プラグイン: {PluginId}, {Source} -> {Destination}", installDataItem.PluginId, srcDir.FullName, destDir.FullName);
                     directoryMover.Move(srcDir, destDir);
                 }
             }
@@ -1549,13 +1550,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 process.StartInfo.Arguments = ApplicationUpdateInfo.Path.Option;
                 process.StartInfo.WorkingDirectory = ApplicationUpdateInfo.Path.WorkDirectoryPath;
 
-                Logger.LogInformation("path: {0}", process.StartInfo.FileName);
-                Logger.LogInformation("args: {0}", process.StartInfo.Arguments);
+                Logger.LogInformation("path: {Path}", process.StartInfo.FileName);
+                Logger.LogInformation("args: {Arguments}", process.StartInfo.Arguments);
 
                 try {
                     process.Start();
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
 
@@ -1607,8 +1608,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
             var psCommand = string.Join(" ", psCommands);
 
-            Logger.LogInformation("reboot path: {0}", ps);
-            Logger.LogInformation("reboot args: {0}", psCommand);
+            Logger.LogInformation("reboot path: {Path}", ps);
+            Logger.LogInformation("reboot args: {Arguments}", psCommand);
 
             try {
                 var process = new Process();
@@ -1618,7 +1619,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 process.StartInfo.WorkingDirectory = Environment.CurrentDirectory;
                 process.Start();
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
 
             Exit(true);
@@ -1782,7 +1783,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     action();
                 } catch(Exception ex) {
                     // 運に任せる
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
 
@@ -1877,8 +1878,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
             var systemExecutor = new SystemExecutor();
             var commandPath = ApplicationBoot.CommandPath;
-            Logger.LogInformation("path: {0}", commandPath);
-            Logger.LogInformation("args: {0}", arg);
+            Logger.LogInformation("path: {Path}", commandPath);
+            Logger.LogInformation("args: {Arguments}", arg);
             systemExecutor.ExecuteFile(commandPath, arg);
         }
 
@@ -1908,7 +1909,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
             if(full) {
                 var currentMode = System.Runtime.GCSettings.LargeObjectHeapCompactionMode;
-                Logger.LogTrace("LargeObjectHeapCompactionMode: {0}", currentMode);
+                Logger.LogTrace("LargeObjectHeapCompactionMode: {GCLargeObjectHeapCompactionMode}", currentMode);
                 System.Runtime.GCSettings.LargeObjectHeapCompactionMode = System.Runtime.GCLargeObjectHeapCompactionMode.CompactOnce;
                 try {
                     GC.Collect();
@@ -1925,7 +1926,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
             var now = GC.GetTotalMemory(false);
             var sizeConverter = ApplicationDiContainer.Build<Library.Common.SizeConverter>();
             Logger.LogInformation(
-                "GC(FULL:{0}): {1}({2}) -> {3}({4}), 差分: {5}({6}), 所要時間: {7}",
+                "GC(FULL:{Full}): {HumanOldSize}({OldSize}) -> {HumanNowSize}({NowSize}), 差分: {HumanDiffSize}({DiffSize}), 所要時間: {Elapsed}",
                 full,
                 sizeConverter.ConvertHumanReadableByte(old), old,
                 sizeConverter.ConvertHumanReadableByte(now), now,
@@ -2021,7 +2022,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         {
             var targetElement = NoteElements.FirstOrDefault(i => i.NoteId == noteId);
             if(targetElement == null) {
-                Logger.LogWarning("ノート削除: 対象不明 {0}", noteId);
+                Logger.LogWarning("ノート削除: 対象不明 {NoteId}", noteId);
                 return false;
             }
 
@@ -2036,7 +2037,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     appBarrierPack.Save();
                     return true;
                 } catch(Exception ex) {
-                    Logger.LogError(ex, "ノート削除に失敗: {0} {1}", ex.Message, noteId);
+                    Logger.LogError(ex, "ノート削除に失敗: {Message} {NoteId}", ex.Message, noteId);
                 }
             }
 

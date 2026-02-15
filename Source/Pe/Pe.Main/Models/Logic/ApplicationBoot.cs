@@ -119,7 +119,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
                 return true;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
 
             return false;
@@ -128,7 +128,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         private void Process_Exited(object? sender, EventArgs e)
         {
             var process = (Process?)sender;
-            Logger.LogInformation("プロセス終了: {0}", process);
+            Logger.LogInformation("プロセス終了: {Process}", process);
             if(process is not null) {
                 process.Exited -= Process_Exited;
             }

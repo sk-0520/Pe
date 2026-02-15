@@ -7,8 +7,8 @@ using System.Windows;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.Models.Unmanaged;
-using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.PInvoke.Windows;
 
 namespace ContentTypeTextNet.Pe.Core.Views
 {
@@ -252,7 +252,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
                 .Select(i => new COMDLG_FILTERSPEC() { pszName = i.Display, pszSpec = string.Join(";", i.Wildcards) })
                 .ToArray()
             ;
-            if(filters.Any()) {
+            if(filters.Length != 0) {
                 FileDialog.Instance.SetFileTypes((uint)filters.Length, filters);
             }
 

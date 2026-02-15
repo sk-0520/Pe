@@ -12,13 +12,13 @@ using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Element.StandardInputOutput;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Telemetry;
 using ContentTypeTextNet.Pe.Main.ViewModels.Font;
 using ContentTypeTextNet.Pe.Main.Views.StandardInputOutput;
-using ContentTypeTextNet.Pe.Library.Common;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
 using Microsoft.Extensions.Logging;
@@ -128,7 +128,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
                         Terminal!.Clear();
                     });
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             },
             () => !ProcessExited
@@ -140,7 +140,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
                 try {
                     Model.Kill();
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             },
             () => !ProcessExited
@@ -163,7 +163,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
                         try {
                             SaveLog(path);
                         } catch(Exception ex) {
-                            Logger.LogError(ex, ex.Message);
+                            Logger.LogError(ex, "{Message}", ex.Message);
                         }
                     }
                 );
@@ -180,7 +180,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
                     Model.SendInputValue(value);
                     InputValue = string.Empty;
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
 
                 if(string.IsNullOrEmpty(rawValue)) {
@@ -240,7 +240,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
 
         private void AppendOutput(string value, bool isError)
         {
-            Logger.LogTrace("{0}", value);
+            Logger.LogTrace("{Value}", value);
             if(Terminal == null) {
                 Logger.LogTrace("来ちゃいけない制御フロー");
                 return;
@@ -272,7 +272,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
 
         void SaveLog(string path)
         {
-            Logger.LogDebug("{0}", path);
+            Logger.LogDebug("{Path}", path);
             using var stream = new FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
             using var writer = new StreamWriter(stream, Model.Process.StandardOutput.CurrentEncoding);
             writer.WriteLine(TextDocument.Text);

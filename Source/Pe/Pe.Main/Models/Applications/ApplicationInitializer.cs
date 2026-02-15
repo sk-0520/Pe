@@ -323,11 +323,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             ;
 
             foreach(var dir in dirs) {
-                logger.LogDebug("create {0}", dir.FullName);
+                logger.LogDebug("create {DirectoryPath}", dir.FullName);
                 try {
                     dir.Create();
                 } catch(Exception ex) {
-                    logger.LogError(ex, ex.Message);
+                    logger.LogError(ex, "{Message}", ex.Message);
                     throw;
                 }
             }
@@ -362,12 +362,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 environmentParameters.LargeFile,
             };
             foreach(var file in deleteTargetFiles) {
-                logger.LogDebug("delete: {0}", file.FullName);
+                logger.LogDebug("delete: {Path}", file.FullName);
                 file.Refresh();
                 try {
                     file.Delete();
                 } catch(IOException ex) {
-                    logger.LogError(ex, ex.Message);
+                    logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
 
@@ -549,12 +549,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 environmentParameters.TemporarySettingDirectory,
             };
             foreach(var dir in dirs) {
-                logger.LogInformation("cleanup: {0}", dir.FullName);
+                logger.LogInformation("cleanup: {Path}", dir.FullName);
                 try {
                     var directoryCleaner = new DirectoryCleaner(dir, environmentParameters.ApplicationConfiguration.File.DirectoryRemoveWaitCount, environmentParameters.ApplicationConfiguration.File.DirectoryRemoveWaitTime, loggerFactory);
                     directoryCleaner.Clear(false);
                 } catch(Exception ex) {
-                    logger.LogError(ex, ex.Message);
+                    logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
         }
@@ -603,11 +603,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
             if(RunModeUtility.IsSingleProcessOnly(RunMode)) {
                 var mutexName = environmentParameters.ApplicationConfiguration.General.MutexName;
-                logger.LogInformation("ミューテックス名: {0}", mutexName);
+                logger.LogInformation("ミューテックス名: {MutexName}", mutexName);
                 var mutex = new Mutex(true, mutexName, out var createdNew);
                 if(!createdNew) {
                     //NOTE: 起動中プロセスになんかするならここかなぁ
-                    logger.LogWarning("二重起動: {0}", mutexName);
+                    logger.LogWarning("二重起動: {MutexName}", mutexName);
                     mutex.Dispose();
                     return false;
                 }
@@ -745,7 +745,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                         if(setting.IsEnabledTelemetry) {
                             var userIdManager = DiContainer.Build<UserIdManager>();
                             if(!userIdManager.IsValidUserId(setting.UserId)) {
-                                logger.LogInformation("統計情報送信は有効だがユーザーIDが不正のため無効化: {0}", setting.UserId);
+                                logger.LogInformation("統計情報送信は有効だがユーザーIDが不正のため無効化: {UserId}", setting.UserId);
                                 appExecuteSettingEntityDao.UpdateExecuteSettingAcceptInput(string.Empty, false, DatabaseCommonStatus.CreateCurrentAccount());
                                 context.Commit();
                             }

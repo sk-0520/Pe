@@ -4,9 +4,9 @@ using System.Runtime.InteropServices;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
@@ -72,7 +72,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
         {
             if(color.A < PlatformConfiguration.ThemeAccentColorMinimumAlpha) {
                 var newAlpha = PlatformConfiguration.ThemeAccentColorDefaultAlpha;
-                Logger.LogInformation("アクセントカラー透明度補正: {0} -> {1}", color.A, newAlpha);
+                Logger.LogInformation("アクセントカラー透明度補正: {OldAlpha} -> {NewAlpha}", color.A, newAlpha);
                 color.A = newAlpha;
             }
             AccentColor = color;

@@ -48,11 +48,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         /// <returns></returns>
         public string GetOriginalFontFamilyName(FontFamily fontFamily)
         {
-            if(fontFamily == null) {
-                throw new ArgumentNullException(nameof(fontFamily));
-            }
+            ArgumentNullException.ThrowIfNull(fontFamily);
 
-            if(fontFamily.FamilyNames.Any()) {
+            if(fontFamily.FamilyNames.Count != 0) {
                 return fontFamily.FamilyNames.First().Value;
             }
 

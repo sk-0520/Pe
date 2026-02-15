@@ -4,15 +4,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Element.Font;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.StandardInputOutput
 {
@@ -92,7 +92,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.StandardInputOutput
             ThrowIfDisposed();
 
             if(Process.HasExited) {
-                Logger.LogWarning("既に終了したプロセス: id = {0}, exit code = {1}, exit time = {2}", Process.Id, Process.ExitCode, Process.ExitTime);
+                Logger.LogWarning("既に終了したプロセス: id = {Id}, exit code = {ExitCode}, exit time = {ExitTime}", Process.Id, Process.ExitCode, Process.ExitTime);
                 return;
             }
 
@@ -118,7 +118,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.StandardInputOutput
             ThrowIfDisposed();
 
             if(Process.HasExited) {
-                Logger.LogWarning("既に終了したプロセス: id = {0}, name = {1}, exit coe = {2}, exit time = {3}", Process.Id, Process.ProcessName, Process.ExitCode, Process.ExitTime);
+                Logger.LogWarning("既に終了したプロセス: id = {Id}, name = {ProcessName}, exit coe = {ExitCode}, exit time = {ExitTime}", Process.Id, Process.ProcessName, Process.ExitCode, Process.ExitTime);
                 return;
             }
 
@@ -130,7 +130,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.StandardInputOutput
             ThrowIfDisposed();
 
             if(Process.HasExited) {
-                Logger.LogWarning("既に終了したプロセス: id = {0}, name = {1}, exit coe = {2}, exit time = {3}", Process.Id, Process.ProcessName, Process.ExitCode, Process.ExitTime);
+                Logger.LogWarning("既に終了したプロセス: id = {Id}, name = {ProcessName}, exit coe = {ExitCode}, exit time = {ExitTime}", Process.Id, Process.ProcessName, Process.ExitCode, Process.ExitTime);
                 return;
             }
 
@@ -191,7 +191,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.StandardInputOutput
         public bool ReceiveViewUserClosing()
         {
             if(!ProcessExited) {
-                Logger.LogWarning("実行中のプロセス: id = {0}, name = {1}", Process.Id, Process.ProcessName);
+                Logger.LogWarning("実行中のプロセス: id = {Id}, name = {ProcessName}", Process.Id, Process.ProcessName);
                 return false;
             }
 

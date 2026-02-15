@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Common
@@ -12,7 +10,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         private static Uri CombinePathCore(Uri uri, bool appendLastSeparator, string[] paths)
         {
-            Debug.Assert(paths.Any());
+            Debug.Assert(paths.Length != 0);
 
             var noLastSegment = string.IsNullOrEmpty(uri.UserInfo)
                 ? $"{uri.Scheme}://{uri.Authority}"
@@ -60,15 +58,10 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>結合されたURI。クエリは最後に付与される。</returns>
         public static Uri CombinePath(Uri uri, bool appendLastSeparator, string path, params string[] paths)
         {
-            if(uri == null) {
-                throw new ArgumentNullException(nameof(uri));
-            }
-            if(path == null) {
-                throw new ArgumentNullException(nameof(path));
-            }
-            if(paths == null) {
-                throw new ArgumentNullException(nameof(paths));
-            }
+            ArgumentNullException.ThrowIfNull(uri);
+            ArgumentNullException.ThrowIfNull(path);
+            ArgumentNullException.ThrowIfNull(paths);
+
             foreach(var p in paths) {
                 if(p == null) {
                     throw new ArgumentNullException(nameof(paths));

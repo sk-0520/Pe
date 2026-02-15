@@ -276,9 +276,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         public IReadOnlyList<ObjectDumpItem> Dump(object target, int nest, bool ignoreAutoMember)
         {
-            if(target == null) {
-                throw new ArgumentNullException(nameof(target));
-            }
+            ArgumentNullException.ThrowIfNull(target);
+
             if(nest == 0) {
                 throw new ArgumentException(null, nameof(nest));
             }
@@ -288,9 +287,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         public IReadOnlyList<ObjectDumpItem> Dump(object target, int nest)
         {
-            if(target == null) {
-                throw new ArgumentNullException(nameof(target));
-            }
+            ArgumentNullException.ThrowIfNull(target);
+
             if(nest == 0) {
                 throw new ArgumentException(null, nameof(nest));
             }
@@ -300,9 +298,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         public IReadOnlyList<ObjectDumpItem> Dump(object target)
         {
-            if(target == null) {
-                throw new ArgumentNullException(nameof(target));
-            }
+            ArgumentNullException.ThrowIfNull(target);
 
             return DumpCore(target, -1, true);
         }

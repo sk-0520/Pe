@@ -19,7 +19,7 @@ namespace License
                 await app.ExecuteAsync(default);
                 logger.LogInformation("END!");
             } catch(System.Exception ex) {
-                logger.LogError(ex, ex.Message);
+                logger.LogError(ex, "{Message}", ex.Message);
             }
         }
 

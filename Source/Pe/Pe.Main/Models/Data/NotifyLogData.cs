@@ -151,9 +151,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
             if(!(kind == NotifyLogKind.Normal || kind == NotifyLogKind.Topmost)) {
                 throw new ArgumentException(null, nameof(kind));
             }
+            ArgumentException.ThrowIfNullOrWhiteSpace(header);
 
             Kind = kind;
-            Header = !string.IsNullOrWhiteSpace(header) ? header : throw new ArgumentException(nameof(header));
+            Header = header;
             Content = notifyLogContent ?? throw new ArgumentException(null, nameof(notifyLogContent));
             Callback = EmptyCallback;
         }

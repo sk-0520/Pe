@@ -156,7 +156,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
                             var scale = ImageLoader.GetPrimaryDpiScale();
                             return Plugin.GetIcon(ImageLoader, new IconScale(IconBox.Small, scale));
                         } catch(Exception ex) {
-                            Logger.LogError(ex, "[{0}] {1}, {2}", Plugin.PluginInformation.PluginIdentifiers.PluginName, ex.Message, Plugin.PluginInformation.PluginIdentifiers.PluginId);
+                            Logger.LogError(ex, "[{PluginName}] {Message}, {PluginId}", Plugin.PluginInformation.PluginIdentifiers.PluginName, ex.Message, Plugin.PluginInformation.PluginIdentifiers.PluginId);
                             return null!;
                         }
                     });

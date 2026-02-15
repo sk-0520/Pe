@@ -528,9 +528,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>平仮名以外はそのまま。</returns>
         public string ConvertHiraganaToKatakana(string input)
         {
-            if(input == null) {
-                throw new ArgumentNullException(nameof(input));
-            }
+            ArgumentNullException.ThrowIfNull(input);
 
             return ConvertCore(input, new TextConvertDelegate[] {
                 ConvertHiraganaToKatakanaCore
@@ -553,9 +551,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>カタカナ以外はそのまま。</returns>
         public string ConvertKatakanaToHiragana(string input)
         {
-            if(input == null) {
-                throw new ArgumentNullException(nameof(input));
-            }
+            ArgumentNullException.ThrowIfNull(input);
 
             return ConvertCore(input, new TextConvertDelegate[] {
                 ConvertKatakanaToHiraganaCore
@@ -639,9 +635,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>半角カタカナ以外はそのまま。</returns>
         public string ConvertHankakuKatakanaToZenkakuKatakana(string input)
         {
-            if(input == null) {
-                throw new ArgumentNullException(nameof(input));
-            }
+            ArgumentNullException.ThrowIfNull(input);
 
             return ConvertCore(input, new TextConvertDelegate[] {
                 ConvertHankakuKatakanaToZenkakuKatakanaCore
@@ -696,9 +690,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>全角カタカナ以外はそのまま。</returns>
         public string ConvertZenkakuKatakanaToHankakuKatakana(string input)
         {
-            if(input == null) {
-                throw new ArgumentNullException(nameof(input));
-            }
+            ArgumentNullException.ThrowIfNull(input);
 
             return ConvertCore(input, new TextConvertDelegate[] {
                 ConvertZenkakuKatakanaToHankakuKatakanaCore
@@ -729,9 +721,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>半角アルファベット以外はそのまま。</returns>
         public string ConvertAsciiAlphabetToZenkakuAlphabet(string input)
         {
-            if(input == null) {
-                throw new ArgumentNullException(nameof(input));
-            }
+            ArgumentNullException.ThrowIfNull(input);
 
             return ConvertCore(input, new TextConvertDelegate[] {
                 ConvertAsciiAlphabetToZenkakuAlphabetCore
@@ -762,9 +752,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>全角アルファベット以外はそのまま。</returns>
         public string ConvertZenkakuAlphabetToAsciiAlphabet(string input)
         {
-            if(input == null) {
-                throw new ArgumentNullException(nameof(input));
-            }
+            ArgumentNullException.ThrowIfNull(input);
 
             return ConvertCore(input, new TextConvertDelegate[] {
                 ConvertZenkakuAlphabetToAsciiAlphabetCore
@@ -790,9 +778,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>半角数値以外はそのまま。</returns>
         public string ConvertAsciiDigitToZenkakuDigit(string input)
         {
-            if(input == null) {
-                throw new ArgumentNullException(nameof(input));
-            }
+            ArgumentNullException.ThrowIfNull(input);
 
             return ConvertCore(input, new TextConvertDelegate[] {
                 ConvertAsciiDigitToZenkakuDigitCore
@@ -818,9 +804,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns>全角数値以外はそのまま。</returns>
         public string ConvertZenkakuDigitToAsciiDigit(string input)
         {
-            if(input == null) {
-                throw new ArgumentNullException(nameof(input));
-            }
+            ArgumentNullException.ThrowIfNull(input);
 
             return ConvertCore(input, new TextConvertDelegate[] {
                 ConvertZenkakuDigitToAsciiDigitCore
@@ -862,9 +846,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns></returns>
         public string ConvertHiraganaToAsciiRome(string input)
         {
-            if(input == null) {
-                throw new ArgumentNullException(nameof(input));
-            }
+            ArgumentNullException.ThrowIfNull(input);
 
             return ConvertCore(input, new TextConvertDelegate[] {
                 ConvertHiraganaToAsciiRomeCore

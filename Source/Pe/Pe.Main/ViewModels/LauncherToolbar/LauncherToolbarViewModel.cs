@@ -384,7 +384,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                  var newGroupElement = Model.AddNewGroup(LauncherGroupKind.Normal);
 
                  if(!LauncherGroupCollection.TryGetViewModel(newGroupElement, out var newGroupViewModel)) {
-                     Logger.LogError("生成したグループが存在しない異常: {0}", newGroupElement.LauncherGroupId);
+                     Logger.LogError("生成したグループが存在しない異常: {LauncherGroupId}", newGroupElement.LauncherGroupId);
                      return;
                  }
 
@@ -621,7 +621,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                     launcherItemId = launcherItem.LauncherItemId;
 
                     if(LauncherItemId.Empty == launcherItemId) {
-                        Logger.LogError("ランチャーアイテムID取得できず, {0}, {1}", sender, e);
+                        Logger.LogError("ランチャーアイテムID取得できず, {Sender}, {Event}", sender, e);
                         return;
                     }
                 } else {

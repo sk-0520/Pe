@@ -5,12 +5,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Plugin;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 
@@ -64,7 +63,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
                         var scale = ImageLoader.GetPrimaryDpiScale();
                         return Model.Plugin.GetIcon(ImageLoader, new IconScale(IconBox.Small, scale));
                     } catch(Exception ex) {
-                        Logger.LogError(ex, "[{0}] {1}, {2}", Model.Plugin.PluginInformation.PluginIdentifiers.PluginName, ex.Message, Model.Plugin.PluginInformation.PluginIdentifiers.PluginId);
+                        Logger.LogError(ex, "[{PluginName}] {Message}, {PluginId}", Model.Plugin.PluginInformation.PluginIdentifiers.PluginName, ex.Message, Model.Plugin.PluginInformation.PluginIdentifiers.PluginId);
                         return null!;
                     }
                 });

@@ -58,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             var commandLineIpcMode = CommandLine.Add(new CommandLineOption(CommandLineKeyIpcMode, CommandLineOptionKind.Value, string.Empty));
             CommandLineIpcFile = CommandLine.Add(new CommandLineOption(CommandLineKeyIpcFile, CommandLineOptionKind.Value, string.Empty));
 
-            Logger.LogInformation("コマンドライン解析開始: {0}", e.Args.JoinString(" "));
+            Logger.LogInformation("コマンドライン解析開始: {Args}", e.Args.JoinString(" "));
             ParsedResult = CommandLine.Parse("Ipc", e.Args);
 
 
@@ -70,14 +70,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 throw new ArgumentException($"{nameof(ipcModeValue)}: {ipcModeValue} not defined {nameof(IpcMode)}", nameof(e) + "." + nameof(e.Args));
             }
             IpcMode = ipcMode;
-            Logger.LogInformation("プロセス間通信処理方法: {0}", IpcMode);
+            Logger.LogInformation("プロセス間通信処理方法: {IpcMode}", IpcMode);
 
 #if !NOT_IPC
             Logger.LogInformation("パイプハンドル取得開始");
             if(!ParsedResult.Values.TryGetValue(commandLineIpcHandle.Key, out var ipcHandleValue)) {
                 throw new ArgumentException(commandLineIpcHandle.ToString(), nameof(e) + "." + nameof(e.Args));
             }
-            Logger.LogInformation("パイプハンドル: {0}", ipcHandleValue.First);
+            Logger.LogInformation("パイプハンドル: {Handle}", ipcHandleValue.First);
             IpcPipeHandle = ipcHandleValue.First;
 #endif
         }

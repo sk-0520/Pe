@@ -730,7 +730,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     var systemExecutor = new SystemExecutor();
                     systemExecutor.OpenDirectoryWithFileSelect(Environment.ExpandEnvironmentVariables(LinkPath));
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
                 ShowLinkChangeConfirm = false;
             }
@@ -892,7 +892,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 if(settingLayout != null) {
                     return (false, settingLayout);
                 } else {
-                    Logger.LogInformation("レイアウト未取得のため対象ディスプレイ中央表示: {0}, {1}", Model.DockScreen.DeviceName, ObjectDumper.GetDumpString(Model.DockScreen));
+                    Logger.LogInformation("レイアウト未取得のため対象ディスプレイ中央表示: {DeviceName}, {Dump}", Model.DockScreen.DeviceName, ObjectDumper.GetDumpString(Model.DockScreen));
                     startupPosition = NoteStartupPosition.CenterScreen;
                 }
             }
@@ -1144,7 +1144,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 return;
             }
 
-            Logger.LogDebug("モデルへの位置・サイズ通知: {0}, {1}", Model.NoteId, CanLayoutNotify);
+            Logger.LogDebug("モデルへの位置・サイズ通知: {NoteId}, {CanLayoutNotify}", Model.NoteId, CanLayoutNotify);
             if(!CanLayoutNotify) {
                 Logger.LogDebug("モデルへの通知抑制中");
                 return;
@@ -1406,7 +1406,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         private void SearchContent(string searchValue, bool toNext)
         {
-            Logger.LogDebug(toNext ? "Next" : "Prev");
+            Logger.LogDebug("{Condition}", toNext ? "Next" : "Prev");
 
             var focusedInputSearch = InputSearchElement?.IsFocused ?? false;
 

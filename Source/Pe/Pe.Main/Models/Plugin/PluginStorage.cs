@@ -9,13 +9,13 @@ using System.Text.Json;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
 using ContentTypeTextNet.Pe.Core.Models.Serialization;
-using ContentTypeTextNet.Pe.Main.Models.Data;
-using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Database;
-using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Data;
+using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 {
@@ -36,9 +36,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         protected string AdjustFileName(string name)
         {
-            if(name == null) {
-                throw new ArgumentNullException(nameof(name));
-            }
+            ArgumentNullException.ThrowIfNull(name);
 
             if(string.IsNullOrWhiteSpace(name)) {
                 throw new ArgumentException(null, nameof(name));
@@ -445,7 +443,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                                 return true;
                             }
                         } catch(Exception ex) {
-                            Logger.LogError(ex, ex.Message);
+                            Logger.LogError(ex, "{Message}", ex.Message);
                             value = default;
                             return false;
                         }
@@ -456,7 +454,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                             value = JsonSerializer.Deserialize<TValue>(data.Value)!;
                             return true;
                         } catch(Exception ex) {
-                            Logger.LogError(ex, ex.Message);
+                            Logger.LogError(ex, "{Message}", ex.Message);
                             value = default;
                             return false;
                         }
@@ -464,7 +462,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
                 case PluginPersistenceFormat.Text: {
                         if(typeof(TValue) != typeof(string)) {
-                            Logger.LogWarning("文字列であるべきデータ: {0} -> {1}", nameof(value), typeof(TValue));
+                            Logger.LogWarning("文字列であるべきデータ: value -> {TValue}", typeof(TValue));
                             value = default;
                             return false;
                         }
@@ -501,7 +499,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                                 textValue = serializer.Encoding.GetString(stream.GetBuffer(), 0, (int)stream.Length);
                             }
                         } catch(Exception ex) {
-                            Logger.LogError(ex, ex.Message);
+                            Logger.LogError(ex, "{Message}", ex.Message);
                             return false;
                         }
                     }
@@ -511,7 +509,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                         try {
                             textValue = JsonSerializer.Serialize(value);
                         } catch(Exception ex) {
-                            Logger.LogError(ex, ex.Message);
+                            Logger.LogError(ex, "{Message}", ex.Message);
                             return false;
                         }
                     }
@@ -603,7 +601,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
                         DatabaseDelayWriter.Stock(c => {
                             var result = func(parameter, new DatabaseParameter(DatabaseStatementLoader, c, LoggerFactory));
-                            Logger.LogWarning("result = {0}", result);
+                            Logger.LogWarning("result = {Result}", result);
                         });
                         // 成功したかどうか不明
                         return false;

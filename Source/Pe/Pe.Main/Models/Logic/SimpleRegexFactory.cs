@@ -70,13 +70,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                     return new Regex(patternBody, regOption, RegexTimeout);
                 } catch(Exception ex) {
                     // 正規表現が変な場合は全件一致させる
-                    Logger.LogWarning(ex, "正規表現パターン異常: {0}", ex.Message);
+                    Logger.LogWarning(ex, "正規表現パターン異常: {Message}", ex.Message);
                     return AllMatchRegex;
                 }
             }
 
             // 文字列にワイルドカードっぽいのがあればワイルドカード判定
-            if(pattern.IndexOfAny(new[] { '*', '?' }) != -1) {
+            if(pattern.IndexOfAny(['*', '?']) != -1) {
                 var wildcard = "^" + Regex.Escape(pattern).Replace("\\?", ".").Replace("\\*", ".*") + "$";
                 var regOption = RegexOptions.Singleline;
                 if(!IsCaseSensitivePattern(wildcard)) {

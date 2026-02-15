@@ -1,8 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
@@ -173,7 +171,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Manager
                     RaisePropertyChanged(nameof(UpdateInfo));
                     RaisePropertyChanged(nameof(ExistsPluginChanges));
                 }
-                Logger.LogDebug("[#530調査] <IsOpenContextMenu> IsOpenContextMenu = {0}, IsEnabledManager = {1}", IsOpenContextMenu, IsEnabledManager);
+                Logger.LogDebug("[#530調査] <IsOpenContextMenu> IsOpenContextMenu = {IsOpenContextMenu}, IsEnabledManager = {IsEnabledManager}", IsOpenContextMenu, IsEnabledManager);
             }
         }
 
@@ -341,7 +339,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Manager
         {
             if(e.StatusProperty == StatusProperty.CanCallNotifyAreaMenu) {
                 IsEnabledManager = (bool)e.NewValue!;
-                Logger.LogDebug("[#530調査] <StatusChanged> IsOpenContextMenu = {0}, IsEnabledManager = {1}", IsOpenContextMenu, IsEnabledManager);
+                Logger.LogDebug("[#530調査] <StatusChanged> IsOpenContextMenu = {IsOpenContextMenu}, IsEnabledManager = {IsEnabledManager}", IsOpenContextMenu, IsEnabledManager);
             }
         }
 
@@ -349,7 +347,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Manager
         {
             var members = SettingChangedTargetHelper.GetMembers(GetType());
             foreach(var member in members) {
-                Logger.LogTrace("{0}", member);
+                Logger.LogTrace("{Member}", member);
                 RaisePropertyChanged(member.Name);
             }
         }

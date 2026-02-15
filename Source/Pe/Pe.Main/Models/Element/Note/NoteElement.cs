@@ -309,7 +309,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                 }
             }
 
-            Logger.LogWarning("該当ディスプレイ発見できず: {0}", screenDeviceName);
+            Logger.LogWarning("該当ディスプレイ発見できず: {ScreenDeviceName}", screenDeviceName);
             return Screen.PrimaryScreen ?? throw new InvalidOperationException("Screen.PrimaryScreen is null");
         }
 
@@ -563,7 +563,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             // 文字列からRTFはOK
             if(ContentKind == NoteContentKind.Plain && targetContentKind == NoteContentKind.RichText) {
-                Logger.LogDebug("暗黙変換可能: {0}, {1}", NoteId, targetContentKind);
+                Logger.LogDebug("暗黙変換可能: {NoteId}, {TargetContentKind}", NoteId, targetContentKind);
                 return true;
             }
 
@@ -739,9 +739,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         public void SaveLayout(NoteLayoutData layout)
         {
-            if(layout == null) {
-                throw new ArgumentNullException(nameof(layout));
-            }
+            ArgumentNullException.ThrowIfNull(layout);
             if(layout.NoteId != NoteId) {
                 throw new ArgumentException(null, $"{nameof(layout)}.{nameof(layout.NoteId)}");
             }
@@ -799,7 +797,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         private void Hide()
         {
-            Logger.LogInformation("自動的に隠す: {0}, {1}", HiddenMode, NoteId);
+            Logger.LogInformation("自動的に隠す: {HiddenMode}, {NoteId}", HiddenMode, NoteId);
 
             switch(HiddenMode) {
                 case NoteHiddenMode.Blind:

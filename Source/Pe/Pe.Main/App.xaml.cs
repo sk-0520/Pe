@@ -86,7 +86,7 @@ namespace ContentTypeTextNet.Pe.Main
                         await ApplicationManager.ExecuteAsync(CancellationToken.None);
 
                         await Dispatcher.BeginInvoke(new Action(() => {
-                            Logger.LogInformation("つかえるよ！ 所要時間: {0}", stopwatch.Elapsed);
+                            Logger.LogInformation("つかえるよ！ 所要時間: {Elapsed}", stopwatch.Elapsed);
 
                             var notifyIcon = (Hardcodet.Wpf.TaskbarNotification.TaskbarIcon)FindResource("root");
                             notifyIcon.DataContext = viewModel;
@@ -103,7 +103,7 @@ namespace ContentTypeTextNet.Pe.Main
                         try {
                             options = converter.Convert<CrashReport.Models.Data.CrashReportOptions>(new Library.CommandLine.CommandLineParser(), e.Args);
                         } catch(Exception ex) {
-                            Logger.LogError(ex, "クラッシュレポート起動できず: {0}", string.Join(" ", e.Args));
+                            Logger.LogError(ex, "クラッシュレポート起動できず: {Args}", string.Join(" ", e.Args));
                             Shutdown(-1);
                             return;
                         }
@@ -161,15 +161,15 @@ namespace ContentTypeTextNet.Pe.Main
             }
 
             if(Logger != null) {
-                Logger.LogError(e.Exception, "{0}, {1}", e.Dispatcher.Thread.ManagedThreadId, e.Exception.Message);
-                Logger.LogInformation("RunMode: {0}", RunMode);
+                Logger.LogError(e.Exception, "{ManagedThreadId}, {Message}", e.Dispatcher.Thread.ManagedThreadId, e.Exception.Message);
+                Logger.LogInformation("RunMode: {RunMode}", RunMode);
                 if(ApplicationManager is not null) {
-                    Logger.LogInformation("CanSendCrashReport: {0}", ApplicationManager.CanSendCrashReport);
+                    Logger.LogInformation("CanSendCrashReport: {CanSendCrashReport}", ApplicationManager.CanSendCrashReport);
                     if(ApplicationManager.CanSendCrashReport) {
                         // ふりしぼれ最後の輝き
                         Logger.LogInformation("生クラッシュレポートファイルを吐き出し");
                         var outputFile = ApplicationManager.OutputRawCrashReport(e.Exception);
-                        Logger.LogInformation("生クラッシュレポートファイル: {0}", outputFile);
+                        Logger.LogInformation("生クラッシュレポートファイル: {Path}", outputFile);
                         Logger.LogInformation("クラッシュレポート送信処理立ち上げ...");
                         ApplicationManager.ExecuteCrashReport(outputFile);
 

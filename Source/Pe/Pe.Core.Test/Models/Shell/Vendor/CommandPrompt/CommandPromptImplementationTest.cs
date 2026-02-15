@@ -37,8 +37,14 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Shell.Vendor.CommandPrompt
             Assert.Equal(expected, actual);
         }
 
+        [Fact]
+        public void ToSafeVariableName_Throw_Null_Test()
+        {
+            var test = new CommandPromptImplementation();
+            Assert.Throws<ArgumentNullException>(() => test.ToSafeVariableName(null!));
+        }
+
         [Theory]
-        [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
         public void ToSafeVariableName_Throw_Test(string? name)

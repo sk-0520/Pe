@@ -104,7 +104,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.About
             try {
                 systemExecutor.OpenUri(uri);
             } catch(Exception ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
             }
         }
 
@@ -140,7 +140,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.About
                 var systemExecutor = new SystemExecutor();
                 systemExecutor.ExecuteFile(directory.FullName);
             } catch(Exception ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
             }
         }
 
@@ -532,7 +532,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.About
 
             var path = Environment.ExpandEnvironmentVariables(uninstallBatchFilePath);
             if(Directory.Exists(path)) {
-                Logger.LogInformation("アンインストールバッチファイルパスはディレクトリして存在する: {0}", path);
+                Logger.LogInformation("アンインストールバッチファイルパスはディレクトリして存在する: {Path}", path);
                 return false;
             }
 

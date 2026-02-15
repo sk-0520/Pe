@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -9,17 +8,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Domain;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 {
@@ -107,7 +105,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             var environmentExecuteFile = new EnvironmentExecuteFile(LoggerFactory);
             var pathItem = environmentExecuteFile.Get(editIconData.Path, pathItems);
             if(pathItem == null) {
-                Logger.LogWarning("指定されたコマンドからパス取得失敗: {0}", editIconData.Path);
+                Logger.LogWarning("指定されたコマンドからパス取得失敗: {Path}", editIconData.Path);
                 return Task.FromResult(default(BitmapSource));
             }
 
@@ -188,7 +186,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                 // データ書き込み(失敗してもアイコンが取得できてるならOK)
                 var _ = SaveImageAsync(iconImage, iconScale);
             } else {
-                Logger.LogWarning("アイコン取得失敗: {0}, {1}", LauncherItemId, ObjectDumper.GetDumpString(launcherIconData));
+                Logger.LogWarning("アイコン取得失敗: {LauncherItemId}, {Dump}", LauncherItemId, ObjectDumper.GetDumpString(launcherIconData));
             }
 
             return iconImage;
@@ -212,10 +210,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                     return image;
                 } catch(SynchronizationLockException ex) {
                     if(count.IsLast) {
-                        Logger.LogError(ex, "アイコン取得待機失敗: 全試行 {0}回 失敗: {1}", count.MaxCount, LauncherItemId);
+                        Logger.LogError(ex, "アイコン取得待機失敗: 全試行 {MaxCount}回 失敗: {LauncherItemId}", count.MaxCount, LauncherItemId);
                         return null;
                     } else {
-                        Logger.LogWarning(ex, "アイコン取得待機失敗: {0}/{1}回 失敗, 再試行待機 {2}, {3}", count.CurrentCount, count.MaxCount, RetryWaitTime, LauncherItemId);
+                        Logger.LogWarning(ex, "アイコン取得待機失敗: {CurrentCount}/{MaxCount}回 失敗, 再試行待機 {RetryWaitTime}, {LauncherItemId}", count.CurrentCount, count.MaxCount, RetryWaitTime, LauncherItemId);
                         await Task.Delay(RetryWaitTime, cancellationToken).ConfigureAwait(false);
                     }
                 }

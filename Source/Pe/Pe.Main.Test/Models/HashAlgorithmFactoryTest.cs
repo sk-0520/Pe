@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models
 
             var binary = Encoding.UTF8.GetBytes(input);
             var result = hash.ComputeHash(binary);
-            var actual = BitConverter.ToString(result).Replace("-", "").ToLowerInvariant();
+            var actual = Convert.ToHexStringLower(result);
 
             Assert.Equal(expected, actual);
         }
@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models
             using var hash = new HashAlgorithmFactory().Create(algorithmName);
             var binary = Encoding.UTF8.GetBytes(input);
             var result = hash.ComputeHash(binary);
-            var actual = BitConverter.ToString(result).Replace("-", "").ToLowerInvariant();
+            var actual = Convert.ToHexStringLower(result);
 
             Assert.Equal(expected, actual);
         }

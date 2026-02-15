@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -184,11 +185,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
                 SetCommandItems(commandItems);
                 //SelectedItem = CommandItems.FirstOrDefault();
                 var selectedItem = prevSelectedItem == null
-                    ? CommandItems.FirstOrDefault()
+                    ? CommandItems[0]
                     : CommandItems.FirstOrDefault(i => prevSelectedItem.IsEquals(i))
                 ;
                 if(selectedItem == null || 0 < CommandItems.Count) {
-                    SelectedItem = CommandItems.First();
+                    SelectedItem = CommandItems[0];
                 } else {
                     SelectedItem = selectedItem;
                 }
@@ -295,7 +296,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
         private ICommand? _ExecuteCommand;
         public ICommand ExecuteCommand => this._ExecuteCommand ??= new DelegateCommand(
             () => {
-                Logger.LogInformation("コマンドアイテムの起動: {0}", SelectedItem!.Header);
+                Debug.Assert(SelectedItem != null);
+                Logger.LogInformation("コマンドアイテムの起動: {Header}", SelectedItem.Header);
                 SelectedItem.Execute(DpiScaleOutpour.GetOwnerScreen());
 
                 // 役目は終わったのでコマンドランチャーを閉じる
@@ -388,14 +390,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
             if(SelectedItem == null) {
                 // 多分ここには来ないはずだけど一応
                 SelectedItem = isUp
-                    ? CommandItems.First()
-                    : CommandItems.Last()
+                    ? CommandItems[0]
+                    : CommandItems[CommandItems.Count - 1]
                 ;
             } else {
                 var index = this._commandItems.IndexOf(SelectedItem);
                 if(isUp) {
                     SelectedItem = index == 0
-                        ? CommandItems.Last()
+                        ? CommandItems[CommandItems.Count - 1]
                         : CommandItems[index - 1]
                     ;
                 } else {

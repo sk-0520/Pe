@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
             var map = new Dictionary<PropertyInfo, CommandLineOptionAttribute>(properties.Length);
             foreach(var property in properties) {
                 var attributes = property.GetCustomAttributes(typeof(CommandLineOptionAttribute), true);
-                if(attributes != null && attributes.Any()) {
+                if(attributes != null && attributes.Length != 0) {
                     map.Add(property, attributes.OfType<CommandLineOptionAttribute>().First());
                 }
             }

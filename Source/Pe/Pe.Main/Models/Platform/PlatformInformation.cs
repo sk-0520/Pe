@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                     return userName;
                 }
             } catch(Exception ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
             }
 
             // Windows ログオンユーザー名

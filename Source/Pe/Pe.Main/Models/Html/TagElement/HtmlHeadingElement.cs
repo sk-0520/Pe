@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Html.TagElement
 {
@@ -12,7 +9,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Html.TagElement
             : base(headlineTagName, document)
         {
             if(!HeadingTags.Contains(headlineTagName)) {
-                throw new ArgumentException(nameof(headlineTagName));
+                throw new ArgumentException(null, nameof(headlineTagName));
             }
         }
 

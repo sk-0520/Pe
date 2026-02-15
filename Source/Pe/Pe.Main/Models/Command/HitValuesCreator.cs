@@ -106,7 +106,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
                 return GetScore(ScoreKind.Perfect, NoBonus);
             }
             var score = GetScore(ScoreKind.Initial, NoBonus);
-            var first = hitValues.First();
+            var first = hitValues[0];
             if(first.IsHit) {
                 if(source.StartsWith(first.Value)) {
                     score += GetScore(ScoreKind.Good, 10);

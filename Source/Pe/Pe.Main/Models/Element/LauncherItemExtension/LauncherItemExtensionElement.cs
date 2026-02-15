@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -51,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
         {
             var information = InformationItems.FirstOrDefault(i => i.WindowItem.Window == window);
             if(information == null) {
-                Logger.LogWarning("対象ウィンドウは未登録: {0}", HandleUtility.GetWindowHandle(window));
+                Logger.LogWarning("対象ウィンドウは未登録: {Handle}", HandleUtility.GetWindowHandle(window));
                 return true;
             }
 
@@ -62,7 +61,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
         {
             var information = InformationItems.FirstOrDefault(i => i.WindowItem.Window == window);
             if(information == null) {
-                Logger.LogWarning("対象ウィンドウは未登録: {0}", HandleUtility.GetWindowHandle(window));
+                Logger.LogWarning("対象ウィンドウは未登録: {Handle}", HandleUtility.GetWindowHandle(window));
                 return Task.CompletedTask;
             }
 
@@ -78,7 +77,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
 
         protected override Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            Logger.LogTrace("ランチャーアイテムアドオン初期化: {0}", PluginInformation.PluginIdentifiers);
+            Logger.LogTrace("ランチャーアイテムアドオン初期化: {PluginIdentifiers}", PluginInformation.PluginIdentifiers);
             return Task.CompletedTask;
         }
 

@@ -408,21 +408,21 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             if(IsRunning) {
                 switch(Setting.Mode) {
                     case MultipleExecuteMode.Skip:
-                        Logger.LogInformation("実行中ジョブのため未実行, {0}", ScheduleJobId);
+                        Logger.LogInformation("実行中ジョブのため未実行, {ScheduleJobId}", ScheduleJobId);
                         return Task.CompletedTask;
 
                     case MultipleExecuteMode.Start:
-                        Logger.LogTrace("実行中ジョブの重複実行, {0}", ScheduleJobId);
+                        Logger.LogTrace("実行中ジョブの重複実行, {ScheduleJobId}", ScheduleJobId);
                         break;
 
                     case MultipleExecuteMode.CancelAndStart: {
-                            Logger.LogTrace("実行中ジョブ停止からの実行, {0}", ScheduleJobId);
+                            Logger.LogTrace("実行中ジョブ停止からの実行, {ScheduleJobId}", ScheduleJobId);
                             var cts = CancellationTokenSource;
                             if(cts != null) {
                                 try {
                                     cts.Cancel();
                                 } catch(Exception ex) {
-                                    Logger.LogError(ex, "ジョブキャンセル失敗のため未実行, {0}, {1}", ex.Message, ScheduleJobId);
+                                    Logger.LogError(ex, "ジョブキャンセル失敗のため未実行, {Message}, {ScheduleJobId}", ex.Message, ScheduleJobId);
                                     return Task.CompletedTask;
                                 }
                             }
@@ -447,14 +447,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             return Executor.ExecuteAsync(cancelToken).ContinueWith(t => {
                 if(t.IsCompletedSuccessfully) {
                     if(!IsRunning) {
-                        Logger.LogWarning("実行終了したが実行中フラグが実行していないことになっている, {0}", ScheduleJobId);
+                        Logger.LogWarning("実行終了したが実行中フラグが実行していないことになっている, {ScheduleJobId}", ScheduleJobId);
                     }
 
                     IsRunning = false;
                     CancellationTokenSource?.Dispose();
                     CancellationTokenSource = null;
                 } else if(t.Exception != null) {
-                    Logger.LogError(t.Exception, "{0}", t.Exception.Message);
+                    Logger.LogError(t.Exception, "{Message}", t.Exception.Message);
                 }
             });
         }
@@ -472,7 +472,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                             try {
                                 CancellationTokenSource.Cancel();
                             } catch(AggregateException ex) {
-                                Logger.LogWarning(ex, "{0}, {1}", ex.Message, ScheduleJobId);
+                                Logger.LogWarning(ex, "{Message}, {ScheduleJobId}", ex.Message, ScheduleJobId);
                             }
                         }
                         CancellationTokenSource.Dispose();
@@ -673,7 +673,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         private void ExecuteJobs(IEnumerable<CronJob> jobs)
         {
             foreach(var job in jobs) {
-                Logger.LogTrace("ジョブ実行: {0} = {1}, {2} = {3}, {4}", nameof(job.Setting.Mode), job.Setting.Mode, nameof(job.IsRunning), job.IsRunning, job.ScheduleJobId);
+                Logger.LogTrace("ジョブ実行: Mode = {Mode}, IsRunning = {IsRunning}, {ScheduleJobId}", job.Setting.Mode, job.IsRunning, job.ScheduleJobId);
                 job.ExecuteAsync().ConfigureAwait(false);
             }
         }

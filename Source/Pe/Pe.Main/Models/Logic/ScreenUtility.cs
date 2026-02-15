@@ -5,13 +5,13 @@ using System.Linq;
 using System.Management;
 using System.Runtime.InteropServices;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
+using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.PInvoke.Windows.root.CIMV2;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
@@ -51,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                         if(logger == null) {
                             logger = loggerFactory.CreateLogger(typeof(ScreenUtility));
                         }
-                        logger.LogWarning(ex, ex.Message);
+                        logger.LogWarning(ex, "{Message}", ex.Message);
                         continue;
                     }
 

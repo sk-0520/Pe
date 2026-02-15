@@ -278,15 +278,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         public Task<ILauncherExecuteResult> ExecuteAsync(LauncherItemKind kind, ILauncherExecutePathParameter pathParameter, ILauncherExecuteCustomParameter customParameter, IReadOnlyCollection<LauncherEnvironmentVariableData> environmentVariableItems, IReadOnlyLauncherRedoData redoData, IScreen screen, CancellationToken cancellationToken)
         {
-            if(pathParameter == null) {
-                throw new ArgumentNullException(nameof(pathParameter));
-            }
-            if(customParameter == null) {
-                throw new ArgumentNullException(nameof(customParameter));
-            }
-            if(environmentVariableItems == null) {
-                throw new ArgumentNullException(nameof(environmentVariableItems));
-            }
+            ArgumentNullException.ThrowIfNull(pathParameter);
+            ArgumentNullException.ThrowIfNull(customParameter);
+            ArgumentNullException.ThrowIfNull(environmentVariableItems);
 
             switch(kind) {
                 case LauncherItemKind.File:
@@ -300,10 +294,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
         public ILauncherExecuteResult OpenParentDirectory(LauncherItemKind kind, ILauncherExecutePathParameter pathParameter)
         {
             Debug.Assert(kind == LauncherItemKind.File);
-
-            if(pathParameter == null) {
-                throw new ArgumentNullException(nameof(pathParameter));
-            }
+            ArgumentNullException.ThrowIfNull(pathParameter);
 
             var path = Environment.ExpandEnvironmentVariables(pathParameter.Path ?? string.Empty);
             var fullPath = EnvironmentPathExecuteFileCache.ToFullPathIfExistsCommand(path, LoggerFactory);
@@ -317,7 +308,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
                 return result;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return LauncherFileExecuteResult.Error(ex);
             }
         }
@@ -325,10 +316,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
         public ILauncherExecuteResult OpenWorkingDirectory(LauncherItemKind kind, ILauncherExecutePathParameter pathParameter)
         {
             Debug.Assert(kind == LauncherItemKind.File);
-
-            if(pathParameter == null) {
-                throw new ArgumentNullException(nameof(pathParameter));
-            }
+            ArgumentNullException.ThrowIfNull(pathParameter);
 
             var path = Environment.ExpandEnvironmentVariables(pathParameter.WorkDirectoryPath ?? string.Empty);
             var fullPath = EnvironmentPathExecuteFileCache.ToFullPathIfExistsCommand(path, LoggerFactory);
@@ -342,16 +330,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
                 return result;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return LauncherFileExecuteResult.Error(ex);
             }
         }
 
         public void ShowProperty(ILauncherExecutePathParameter pathParameter)
         {
-            if(pathParameter == null) {
-                throw new ArgumentNullException(nameof(pathParameter));
-            }
+            ArgumentNullException.ThrowIfNull(pathParameter);
 
             var path = Environment.ExpandEnvironmentVariables(pathParameter.Path ?? string.Empty);
             var fullPath = EnvironmentPathExecuteFileCache.ToFullPathIfExistsCommand(path, LoggerFactory);

@@ -67,7 +67,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Startup
                     var subFiles = GetFiles(subDir);
                     result.AddRange(subFiles);
                 } catch(UnauthorizedAccessException ex) {
-                    Logger.LogWarning(ex, ex.Message);
+                    Logger.LogWarning(ex, "{Message}", ex.Message);
                 }
             }
 

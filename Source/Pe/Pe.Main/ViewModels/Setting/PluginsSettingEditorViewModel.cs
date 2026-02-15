@@ -2,17 +2,16 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
-using Forms = System.Windows.Forms;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models;
-using ContentTypeTextNet.Pe.Main.Models.Element.Plugin;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting;
+using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
-using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
+using Forms = System.Windows.Forms;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 {
@@ -76,7 +75,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
                 var parameter = new FileSystemSelectDialogRequestParameter() {
                     FileSystemDialogMode = FileSystemDialogMode.FileOpen,
                 };
-                parameter.Filter.Add(new Core.Models.DialogFilterItem(Properties.Resources.String_Setting_Plugins_Install_File, "7z", new[] { "*.7z", "*.zip" }));
+                parameter.Filter.Add(new Core.Models.DialogFilterItem(Properties.Resources.String_Setting_Plugins_Install_File, "7z", ["*.7z", "*.zip"]));
 
                 SelectPluginFileRequest.Send<FileSystemSelectDialogRequestResponse>(parameter, async r => {
                     if(r.ResponseIsCancel) {
@@ -105,29 +104,29 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
         private ICommand? _WebInstallCommand;
         public ICommand WebInstallCommand => this._WebInstallCommand ??= new DelegateCommand(
         async () => {
-                var parameter = await Model.CreatePluginWebInstallRequestParameterAsync(CancellationToken.None);
-                WebInstallRequest.Send(parameter, async r => {
-                    var response = (PluginWebInstallRequestResponse)r;
-                    if(response.ResponseIsCancel) {
-                        Logger.LogTrace("cancel");
-                        return;
-                    }
-                    try {
-                        await Model.InstallPluginArchiveAsync(response.ArchiveFile, CancellationToken.None);
-                    } catch(Exception ex) {
-                        var parameter = new CommonMessageDialogRequestParameter() {
-                            Caption = ex.Message,
-                            Message = ex.ToString(),
-                            Buttons = [
-                                Forms.TaskDialogButton.OK
-                            ],
-                            DefaultButton = Forms.TaskDialogButton.OK,
-                            Icon = Forms.TaskDialogIcon.Error,
-                        };
-                        ShowMessageRequest.Send(parameter);
-                    }
-                });
-            }
+            var parameter = await Model.CreatePluginWebInstallRequestParameterAsync(CancellationToken.None);
+            WebInstallRequest.Send(parameter, async r => {
+                var response = (PluginWebInstallRequestResponse)r;
+                if(response.ResponseIsCancel) {
+                    Logger.LogTrace("cancel");
+                    return;
+                }
+                try {
+                    await Model.InstallPluginArchiveAsync(response.ArchiveFile, CancellationToken.None);
+                } catch(Exception ex) {
+                    var parameter = new CommonMessageDialogRequestParameter() {
+                        Caption = ex.Message,
+                        Message = ex.ToString(),
+                        Buttons = [
+                            Forms.TaskDialogButton.OK
+                        ],
+                        DefaultButton = Forms.TaskDialogButton.OK,
+                        Icon = Forms.TaskDialogIcon.Error,
+                    };
+                    ShowMessageRequest.Send(parameter);
+                }
+            });
+        }
         );
 
         #endregion

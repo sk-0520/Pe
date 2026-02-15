@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using ContentTypeTextNet.Pe.Library.Database;
@@ -129,7 +128,7 @@ insert into
             // このコードを変更しないでください。クリーンアップ コードを上の Dispose(bool disposing) に記述します。
             Dispose(true);
             // TODO: 上のファイナライザーがオーバーライドされる場合は、次の行のコメントを解除してください。
-            // GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
         #endregion
 

@@ -61,9 +61,9 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt.Command
                     sb.Append(command.GetStatement());
                     sb.Append(newLine);
                 }
-                sb.Append(")");
+                sb.Append(')');
             } else {
-                sb.Append(")");
+                sb.Append(')');
             }
 
             return sb.ToString();

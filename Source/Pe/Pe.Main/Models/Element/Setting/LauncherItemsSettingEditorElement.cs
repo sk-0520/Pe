@@ -42,7 +42,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 if(addon != null) {
                     addons.Add(addon);
                 } else {
-                    Logger.LogWarning("アドオンプラグインが存在しない: {0}", addonId);
+                    Logger.LogWarning("アドオンプラグインが存在しない: {PluginId}", addonId);
                 }
             }
             Addons = addons;

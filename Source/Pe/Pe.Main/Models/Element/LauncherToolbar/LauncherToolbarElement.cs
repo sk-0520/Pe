@@ -241,7 +241,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
             ThrowIfDisposed();
 
             var toolbarId = IdFactory.CreateLauncherToolbarId();
-            Logger.LogDebug("create toolbar: {0}", toolbarId);
+            Logger.LogDebug("create toolbar: {LauncherToolbarId}", toolbarId);
 
             var newFontId = IdFactory.CreateFontId();
 
@@ -328,7 +328,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
 
         private Task LoadLauncherToolbarAsync(CancellationToken cancellationToken)
         {
-            Logger.LogInformation("toolbar id: {0}", LauncherToolbarId);
+            Logger.LogInformation("toolbar id: {LauncherToolbarId}", LauncherToolbarId);
             ThrowIfDisposed();
 
             LauncherToolbarsDisplayData displayData;
@@ -508,7 +508,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
 
             var launcherItem = LauncherItems.FirstOrDefault(i => i.LauncherItemId == launcherItemId);
             if(launcherItem == null) {
-                Logger.LogError("指定のランチャーアイテムは存在しない: {0}", launcherItemId);
+                Logger.LogError("指定のランチャーアイテムは存在しない: {LauncherItemId}", launcherItemId);
                 return;
             }
 
@@ -521,7 +521,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
 
             var launcherItem = LauncherItems.FirstOrDefault(i => i.LauncherItemId == launcherItemId);
             if(launcherItem == null) {
-                Logger.LogError("指定のランチャーアイテムは存在しない: {0}", launcherItemId);
+                Logger.LogError("指定のランチャーアイテムは存在しない: {LauncherItemId}", launcherItemId);
                 return Task.CompletedTask;
             }
 
@@ -560,7 +560,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
 
         override protected Task InitializeCoreAsync(CancellationToken cancellationToken)
         {
-            Logger.LogInformation("initialize {0}:{1}, {2}: {3}", DockScreen.DeviceName, DockScreen.DeviceBounds, nameof(DockScreen.Primary), DockScreen.Primary);
+            Logger.LogInformation("initialize {DeviceName}:{DeviceBounds}, Primary: {Primary}", DockScreen.DeviceName, DockScreen.DeviceBounds, DockScreen.Primary);
 
             NotifyManager.LauncherGroupChanged += NotifyManager_LauncherGroupChanged;
             NotifyManager.LauncherItemChanged += NotifyManager_LauncherItemChanged;

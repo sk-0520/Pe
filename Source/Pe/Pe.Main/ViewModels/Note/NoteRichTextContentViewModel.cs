@@ -1,9 +1,7 @@
 using System;
 using System.Diagnostics;
-using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,11 +11,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Note;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 
@@ -490,8 +488,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
             // 選択状態から表示可能項目の抜出
             var fontFamilyProperty = ControlElement.Selection.GetPropertyValue(RichTextBox.FontFamilyProperty);
             var fontSizeProperty = ControlElement.Selection.GetPropertyValue(RichTextBox.FontSizeProperty);
-            Logger.LogDebug("fontFamilyProperty: {0}", fontFamilyProperty);
-            Logger.LogDebug("fontSizeProperty: {0}", fontSizeProperty);
+            Logger.LogDebug("fontFamilyProperty: {FontFamilyProperty}", fontFamilyProperty);
+            Logger.LogDebug("fontSizeProperty: {FontSizeProperty}", fontSizeProperty);
 
             if(fontFamilyProperty == DependencyProperty.UnsetValue) {
                 SelectionFontFamily = null;

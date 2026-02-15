@@ -9,15 +9,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
-using ContentTypeTextNet.Pe.Main.Models.Data;
-using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Database;
-using Microsoft.Extensions.Logging;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
+using ContentTypeTextNet.Pe.Main.Models.Data;
+using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
@@ -170,11 +169,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         public string Join(bool isEnabledSession, bool isEnabledCache) => JoinCore(string.Empty, isEnabledSession, isEnabledCache);
         public string Join(string name, bool isEnabledSession, bool isEnabledCache)
         {
-            if(name == null) {
-                throw new ArgumentNullException(nameof(name));
-            }
+            ArgumentNullException.ThrowIfNull(name);
 
-            if(name.IndexOf(Separator) != -1) {
+            if(name.Contains(Separator, StringComparison.Ordinal)) {
                 throw new ArgumentException(null, nameof(name));
             }
 
@@ -273,7 +270,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
             if(Pool.TryGetValue(name, out var ua)) {
                 if(ClearTime < ua.LastElapsed) {
-                    Logger.LogDebug("再生成: {0}, {1} < {2}", name, ClearTime, ua.LastElapsed);
+                    Logger.LogDebug("再生成: {Name}, {ClearTime} < {LastElapsed}", name, ClearTime, ua.LastElapsed);
                     // 参照がなければ完全破棄、参照が残っていればGCに任せる
                     if(ua.ReferenceCount == 0) {
                         Logger.LogInformation("完全破棄: {Name}", name);
@@ -285,11 +282,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                     Pool[name] = newUserAgent;
                     return newUserAgent;
                 }
-                Logger.LogInformation("再使用: {0}", name);
+                Logger.LogInformation("再使用: {Name}", name);
                 ua.Lease();
                 return ua;
             } else {
-                Logger.LogInformation("初回生成: {0}", name);
+                Logger.LogInformation("初回生成: {Name}", name);
                 var newUserAgent = Create(name);
                 Pool.Add(name, newUserAgent);
                 return newUserAgent;

@@ -1,25 +1,22 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
+using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
-using ContentTypeTextNet.Pe.Main.Models.WebView;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Bridge.Models;
-using System.Threading;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Feedback
 {
@@ -61,7 +58,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Feedback
             try {
                 systemExecutor.OpenUri(ApiConfiguration.FeedbackSourceUri);
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
         }
 
@@ -112,13 +109,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Feedback
             };
 
             var json = JsonSerializer.Serialize(data);
-            Logger.LogDebug("json: {0}", json);
+            Logger.LogDebug("json: {Json}", json);
 
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var sendContent = new StringContent(json, Encoding.UTF8, "application/json");
             foreach(var counter in new Counter(5)) {
                 try {
                     using var userAgent = UserAgentManager.CreateUserAgent();
-                    var result = await userAgent.PostAsync(ApiConfiguration.FeedbackUri, content, cancellationToken);
+                    var result = await userAgent.PostAsync(ApiConfiguration.FeedbackUri, sendContent, cancellationToken);
                     if(result.IsSuccessStatusCode) {
                         Logger.LogInformation("送信完了");
                         var rawResponse = await result.Content.ReadAsStringAsync(cancellationToken);
@@ -126,30 +123,31 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Feedback
 
                         if(response != null && response.Success) {
                             SendStatus.State = RunningState.End;
-                            Logger.LogInformation("BODY: {0}", rawResponse);
+                            Logger.LogInformation("BODY: {Response}", rawResponse);
                             return;
                         } else {
                             var msg = response?.Message ?? Properties.Resources.String_Common_Network_UnknownResponse;
-                            Logger.LogError("{0}", msg);
+                            Logger.LogError("{Message}", msg);
                             ErrorMessage = msg;
                             SendStatus.State = RunningState.Error;
                         }
 
                         return;
                     }
-                    Logger.LogWarning("HTTP: {0}", result.StatusCode);
-                    Logger.LogWarning("{0}", await result.Content.ReadAsStringAsync(cancellationToken));
+                    Logger.LogWarning("HTTP: {StatusCode}", result.StatusCode);
+                    var content = await result.Content.ReadAsStringAsync(cancellationToken);
+                    Logger.LogWarning("{Content}", content);
                     if(!result.IsSuccessStatusCode && counter.IsLast) {
                         ErrorMessage = result.StatusCode.ToString();
                         SendStatus.State = RunningState.Error;
                     }
                 } catch(Exception ex) {
-                    Logger.LogWarning(ex, ex.Message);
+                    Logger.LogWarning(ex, "{Message}", ex.Message);
                     if(!counter.IsLast) {
-                        Logger.LogDebug("待機中: {0}", RetryWaitTime);
+                        Logger.LogDebug("待機中: {RetryWaitTime}", RetryWaitTime);
                         await Task.Delay(RetryWaitTime, cancellationToken);
                     } else {
-                        Logger.LogError(ex, ex.Message);
+                        Logger.LogError(ex, "{Message}", ex.Message);
                         ErrorMessage = ex.Message;
                         SendStatus.State = RunningState.Error;
                     }

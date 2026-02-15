@@ -5,17 +5,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Note;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using System.Reflection.Metadata;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 {
@@ -87,7 +85,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
         void CreateNewContent(string content)
         {
-            Logger.LogInformation("ノート空コンテンツ生成: {0}, {1}", NoteId, ContentKind);
+            Logger.LogInformation("ノート空コンテンツ生成: {NoteId}, {ContentKind}", NoteId, ContentKind);
             ThrowIfDisposed();
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
@@ -203,7 +201,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             var parameter = GetLinkParameter();
             if(parameter == null) {
-                Logger.LogWarning("リンクがおかしい: {0}", NoteId);
+                Logger.LogWarning("リンクがおかしい: {NoteId}", NoteId);
                 return string.Empty;
             }
 
@@ -232,13 +230,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
         {
             ThrowIfDisposed();
             if(IsLinkLoadError) {
-                Logger.LogWarning("エラーありのため保存スキップ: {0}", NoteId);
+                Logger.LogWarning("エラーありのため保存スキップ: {NoteId}", NoteId);
                 return;
             }
 
             var parameter = (NoteLinkWatchParameter?)LinkWatcher?.WatchParameter;
             if(parameter == null) {
-                Logger.LogWarning("リンクがおかしい: {0}", NoteId);
+                Logger.LogWarning("リンクがおかしい: {NoteId}", NoteId);
                 return;
             }
 
@@ -251,7 +249,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                         }
                     }
                 } catch(IOException ex) {
-                    Logger.LogError(ex, "{0} {1}", ex.Message, NoteId);
+                    Logger.LogError(ex, "{Message} {NoteId}", ex.Message, NoteId);
                 }
             }
         }
@@ -364,7 +362,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
             var parameter = GetLinkParameter();
             if(parameter == null || parameter.File == null) {
                 DisposeLinkWatcher();
-                Logger.LogWarning("リンク状態が不正: {0}", NoteId);
+                Logger.LogWarning("リンク状態が不正: {NoteId}", NoteId);
                 return;
             }
 
@@ -388,7 +386,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                         throw new NotImplementedException();
                 }
             } else {
-                Logger.LogWarning("リンク先が存在しない: {0}, {1}", parameter.File.FullName, NoteId);
+                Logger.LogWarning("リンク先が存在しない: {Path}, {NoteId}", parameter.File.FullName, NoteId);
             }
 
             using(var context = MainDatabaseBarrier.WaitWrite()) {
@@ -404,7 +402,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                     try {
                         parameter.File.Delete();
                     } catch(Exception ex) {
-                        Logger.LogError(ex, ex.Message);
+                        Logger.LogError(ex, "{Message}", ex.Message);
                     }
                 }
             }
@@ -475,7 +473,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
 
             var values = LoadLinkWatchParameter();
             if(!values.success) {
-                Logger.LogError("ノート内容初期化失敗: {0}", NoteId);
+                Logger.LogError("ノート内容初期化失敗: {NoteId}", NoteId);
                 return Task.CompletedTask;
             }
 

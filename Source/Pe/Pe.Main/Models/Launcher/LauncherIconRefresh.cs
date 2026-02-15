@@ -35,7 +35,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             var launcherIconData = GetIconData();
 
             // アイコン取得
-            Logger.LogDebug("ランチャーアイテムのアイコン取得開始: {0}, [{1}], [{2}], {3}", iconScale, launcherIconData.Path, launcherIconData.Icon, LauncherItemId);
+            Logger.LogDebug("ランチャーアイテムのアイコン取得開始: {IconScale}, [{Path}], [{Icon}], {LauncherItemId}", iconScale, launcherIconData.Path, launcherIconData.Icon, LauncherItemId);
 
             GetImageAsync(launcherIconData, iconScale, true, cancellationToken).ContinueWith(t => {
                 try {
@@ -43,13 +43,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                         var image = t.Result;
                         if(image != null) {
                             // 内部でシャットダウン
-                            Logger.LogDebug("ランチャーアイテムのアイコン更新開始: {0}, {1}", iconScale, LauncherItemId);
+                            Logger.LogDebug("ランチャーアイテムのアイコン更新開始: {IconScale}, {LauncherItemId}", iconScale, LauncherItemId);
                             return SaveImageAsync(image, iconScale);
                         } else {
-                            Logger.LogDebug("ランチャーアイテムのアイコン更新失敗: {0}, {1}", iconScale, LauncherItemId);
+                            Logger.LogDebug("ランチャーアイテムのアイコン更新失敗: {IconScale}, {LauncherItemId}", iconScale, LauncherItemId);
                         }
                     } else {
-                        Logger.LogDebug("ランチャーアイテムのアイコン取得停止: {0}, {1}", iconScale, LauncherItemId);
+                        Logger.LogDebug("ランチャーアイテムのアイコン取得停止: {IconScale}, {LauncherItemId}", iconScale, LauncherItemId);
                     }
                     return Task.CompletedTask;
                 } finally {

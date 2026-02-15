@@ -212,7 +212,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
                 }
                 cancellationToken.ThrowIfCancellationRequested();
 
-                Logger.LogTrace("検索終了: {0}", stopwatch.Elapsed);
+                Logger.LogTrace("検索終了: {Elapsed}", stopwatch.Elapsed);
 
                 return (IEnumerable<ICommandItem>)commandItems
                     .OrderByDescending(i => i.Score)

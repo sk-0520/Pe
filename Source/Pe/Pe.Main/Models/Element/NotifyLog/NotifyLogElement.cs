@@ -8,16 +8,15 @@ using System.Windows;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.NotifyLog
 {
@@ -203,12 +202,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.NotifyLog
             var logItem = StreamNotifyLogs.FirstOrDefault(i => i.NotifyLogId == notifyLogId);
             if(logItem == null) {
                 // タイミングによっては可能性あり
-                Logger.LogWarning("指定ログなし: {0}", notifyLogId);
+                Logger.LogWarning("指定ログなし: {NotifyLogId}", notifyLogId);
                 return;
             }
 
             if(!(logItem.Kind == NotifyLogKind.Command || logItem.Kind == NotifyLogKind.Undo)) {
-                Logger.LogError("指定ログは実行不可: {0}, {1}", notifyLogId, logItem.Kind);
+                Logger.LogError("指定ログは実行不可: {NotifyLogId}, {NotifyLogKind}", notifyLogId, logItem.Kind);
                 return;
             }
 

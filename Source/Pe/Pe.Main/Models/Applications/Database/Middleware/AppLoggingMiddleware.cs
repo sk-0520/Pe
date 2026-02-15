@@ -80,16 +80,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Database.Middleware
 
             var elapsedTime = TimeProvider.GetElapsedTime(timestamp);
             if(Logger.IsEnabled(LogLevel.Trace)) {
-                var format = $$"""
+
+                Logger.LogTrace(
+                    $$"""
                     [{InterfaceName}] time: {ElapsedTime}
-                    {{'\t'}}[SQL]
+                    	[SQL]
                     {CommandText}
-                    {{'\t'}}[PARAMS]
+                    	[PARAMS]
                     {Parameters}
                     """
-                ;
-                Logger.LogTrace(
-                    format,
+                    ,
                     interfaceName,
                     elapsedTime,
                     ToLogSql(command.CommandText),

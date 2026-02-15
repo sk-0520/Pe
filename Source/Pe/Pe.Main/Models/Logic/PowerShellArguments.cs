@@ -44,7 +44,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             if(string.IsNullOrWhiteSpace(input.Key)) {
                 throw new ArgumentException(nameof(input.Key), nameof(input));
             }
-            if(input.Key.IndexOf(' ') != -1) {
+            if(input.Key.Contains(' ')) {
                 throw new ArgumentException(nameof(input.Key), nameof(input));
             }
 
