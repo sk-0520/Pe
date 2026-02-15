@@ -53,7 +53,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 var expandedOutputPath = Environment.ExpandEnvironmentVariables(outputPath);
                 if(createDirectory) {
                     var fileName = Path.GetFileName(expandedOutputPath);
-                    if(!string.IsNullOrEmpty(fileName) && fileName.IndexOf('.') == -1) {
+                    if(!string.IsNullOrEmpty(fileName) && !fileName.Contains('.')) {
                         // 拡張子がなければディレクトリ指定と決めつけ
                         Directory.CreateDirectory(expandedOutputPath);
                     } else {

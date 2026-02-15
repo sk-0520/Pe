@@ -171,7 +171,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         {
             ArgumentNullException.ThrowIfNull(name);
 
-            if(name.IndexOf(Separator) != -1) {
+            if(name.Contains(Separator, StringComparison.Ordinal)) {
                 throw new ArgumentException(null, nameof(name));
             }
 
