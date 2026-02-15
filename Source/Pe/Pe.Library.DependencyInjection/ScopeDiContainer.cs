@@ -110,7 +110,10 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
 
             if(disposing) {
 #pragma warning disable S3971 // "GC.SuppressFinalize" should not be called
+#pragma warning disable CA1816 // Dispose メソッドは、SuppressFinalize を呼び出す必要があります
+                // なぜこのタイミングで GC.SuppressFinalize を呼び出しているのか、もうわからない
                 GC.SuppressFinalize(this);
+#pragma warning restore CA1816 // Dispose メソッドは、SuppressFinalize を呼び出す必要があります
 #pragma warning restore S3971 // "GC.SuppressFinalize" should not be called
             }
 

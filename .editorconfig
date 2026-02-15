@@ -61,7 +61,6 @@ dotnet_diagnostic.CA1401.severity = suggestion
 # 抽象化しておきたいので無視。どうしても速度的な問題があれば対応するが、この程度のアプリでそれはない
 dotnet_diagnostic.CA1859.severity = suggestion
 
-dotnet_diagnostic.CA1816.severity = suggestion
 dotnet_diagnostic.CA2263.severity = suggestion
 
 # きちんと対応すべきだが、一旦はコンパイル通すために無効化
