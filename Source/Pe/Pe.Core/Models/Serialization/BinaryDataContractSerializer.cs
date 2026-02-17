@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
     {
         #region DataContractSerializerBase
 
-        protected override TResult LoadImpl<TResult>(Stream stream)
+        protected override TResult LoadCore<TResult>(Stream stream)
         {
             // 閉じない方法がわっからん
             var quotas = new XmlDictionaryReaderQuotas();
@@ -29,7 +29,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
             }
         }
 
-        protected override void SaveImpl<TValue>(TValue value, Stream stream)
+        protected override void SaveCore<TValue>(TValue value, Stream stream)
         {
             using(var writer = XmlDictionaryWriter.CreateBinaryWriter(stream, null, null, false)) {
                 var serializer = new DataContractSerializer(value.GetType());

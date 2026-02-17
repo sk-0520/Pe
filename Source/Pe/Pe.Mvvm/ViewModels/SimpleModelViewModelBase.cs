@@ -55,7 +55,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         /// モデルを取り込んだ際に一度だけ呼び出される処理。
         /// <para>継承クラスでは一番最初に呼び出すこと。</para>
         /// </summary>
-        protected virtual void AttachModelEventsImpl()
+        protected virtual void AttachModelEventsCore()
         {
             ThrowIfDisposed();
         }
@@ -65,7 +65,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             if(Model is null) {
                 ThrowIfDisposed();
 
-                AttachModelEventsImpl();
+                AttachModelEventsCore();
             }
         }
 
@@ -73,13 +73,13 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         /// モデルとサヨナラするとき(<see cref="Dispose(bool)"/>とか)するときに一度だけ呼び出される。
         /// <para>継承クラスでは一番最初に呼び出すこと。</para>
         /// </summary>
-        protected virtual void DetachModelEventsImpl()
+        protected virtual void DetachModelEventsCore()
         { }
 
         protected void DetachModelEvents()
         {
             if(Model is null) {
-                DetachModelEventsImpl();
+                DetachModelEventsCore();
             }
         }
 

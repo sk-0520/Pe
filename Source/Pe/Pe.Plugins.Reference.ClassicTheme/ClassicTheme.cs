@@ -27,9 +27,9 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.ClassicTheme
 
         internal override ThemeBase Theme => this._theme;
 
-        protected override void InitializeImpl(IPluginInitializeContext pluginInitializeContext)
+        protected override void InitializeCore(IPluginInitializeContext pluginInitializeContext)
         { }
-        protected override void FinalizeImpl(IPluginFinalizeContext pluginFinalizeContext)
+        protected override void FinalizeCore(IPluginFinalizeContext pluginFinalizeContext)
         { }
 
 

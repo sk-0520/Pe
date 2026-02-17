@@ -242,10 +242,10 @@ echo end
             if(string.IsNullOrWhiteSpace(debugBootMode)) {
                 return;
             }
-            Logger.LogInformation("DEBUG_BOOT_MODE: {debugBootMode}", debugBootMode);
+            Logger.LogInformation("DEBUG_BOOT_MODE: {DebugBootMode}", debugBootMode);
 
             var debugBootItem = Environment.GetEnvironmentVariable("DEBUG_BOOT_ITEM");
-            Logger.LogInformation("DEBUG_BOOT_ITEM: {debugBootItem}", debugBootItem);
+            Logger.LogInformation("DEBUG_BOOT_ITEM: {DebugBootItem}", debugBootItem);
 
             if(string.IsNullOrWhiteSpace(debugBootItem)) {
                 return;

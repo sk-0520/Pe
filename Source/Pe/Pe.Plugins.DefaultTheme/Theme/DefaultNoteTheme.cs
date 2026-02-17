@@ -18,7 +18,7 @@ using IO = System.IO;
 
 namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
 {
-    internal class DefaultNoteTheme: DefaultThemeBase, INoteTheme
+    internal sealed class DefaultNoteTheme: DefaultThemeBase, INoteTheme
     {
         public DefaultNoteTheme(IThemeParameter parameter)
             : base(parameter)

@@ -83,7 +83,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
         public IEnumerable<string> GetKeys(LauncherItemId launcherItemId)
         {
-            return GetKeysImpl((d) => {
+            return GetKeysCore((d) => {
                 var daoFactory = new AppDaoFactory(d.DatabaseContext, d.DatabaseStatementLoader, d.LoggerFactory);
                 var pluginLauncherItemSettingsEntityDao = daoFactory.Create<PluginLauncherItemSettingsEntityDao>();
                 return pluginLauncherItemSettingsEntityDao.SelectPluginLauncherItemSettingKeys(PluginId, launcherItemId);
@@ -92,7 +92,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
         public bool Exists(LauncherItemId launcherItemId, string key)
         {
-            return ExistsImpl((launcherItemId, key), (p, d) => {
+            return ExistsCore((launcherItemId, key), (p, d) => {
                 var daoFactory = new AppDaoFactory(d.DatabaseContext, d.DatabaseStatementLoader, d.LoggerFactory);
                 var pluginLauncherItemSettingsEntityDao = daoFactory.Create<PluginLauncherItemSettingsEntityDao>();
                 return pluginLauncherItemSettingsEntityDao.SelectExistsPluginLauncherItemSetting(PluginId, launcherItemId, NormalizeKey(key));
@@ -101,7 +101,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
         public bool TryGet<TValue>(LauncherItemId launcherItemId, string key, [MaybeNullWhen(returnValue: false)] out TValue value)
         {
-            return TryGetImpl((launcherItemId, key), (p, d) => {
+            return TryGetCore((launcherItemId, key), (p, d) => {
                 var daoFactory = new AppDaoFactory(d.DatabaseContext, d.DatabaseStatementLoader, d.LoggerFactory);
                 var pluginLauncherItemSettingsEntityDao = daoFactory.Create<PluginLauncherItemSettingsEntityDao>();
                 return pluginLauncherItemSettingsEntityDao.SelectPluginLauncherItemValue(PluginId, p.launcherItemId, NormalizeKey(p.key));
@@ -111,7 +111,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         public bool Set<TValue>(LauncherItemId launcherItemId, string key, TValue value, PluginPersistenceFormat format)
             where TValue : notnull
         {
-            return SetImpl(value, format, (launcherItemId, key), (p, d, v) => {
+            return SetCore(value, format, (launcherItemId, key), (p, d, v) => {
                 var daoFactory = new AppDaoFactory(d.DatabaseContext, d.DatabaseStatementLoader, d.LoggerFactory);
                 var pluginLauncherItemSettingsEntityDao = daoFactory.Create<PluginLauncherItemSettingsEntityDao>();
                 var normalizedKey = NormalizeKey(p.key);
@@ -130,7 +130,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 
         public bool Delete(LauncherItemId launcherItemId, string key)
         {
-            return DeleteImpl((launcherItemId, key), (p, d) => {
+            return DeleteCore((launcherItemId, key), (p, d) => {
                 var daoFactory = new AppDaoFactory(d.DatabaseContext, d.DatabaseStatementLoader, d.LoggerFactory);
                 var pluginLauncherItemSettingsEntityDao = daoFactory.Create<PluginLauncherItemSettingsEntityDao>();
                 return pluginLauncherItemSettingsEntityDao.DeletePluginLauncherItemSetting(PluginId, p.launcherItemId, NormalizeKey(p.key));

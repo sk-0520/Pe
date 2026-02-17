@@ -1,9 +1,9 @@
 using System.Collections.Generic;
+using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Database.Adjust;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database
 {
@@ -35,7 +35,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
 
         #region function
 
-        private void AdjustImpl(IDatabaseAccessor accessor, IEnumerable<AdjustBase> tuners)
+        private void AdjustCore(IDatabaseAccessor accessor, IEnumerable<AdjustBase> tuners)
         {
             using(var transaction = accessor.BeginTransaction()) {
                 foreach(var tuner in tuners) {
@@ -48,15 +48,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
         private void AdjustMain()
         {
             var tuners = new AdjustBase[] {
-                new Adjust_LauncherGroups(IdFactory, StatementLoader, LoggerFactory),
+                new AdjustLauncherGroups(IdFactory, StatementLoader, LoggerFactory),
             };
-            AdjustImpl(AccessorPack.Main, tuners);
+            AdjustCore(AccessorPack.Main, tuners);
         }
 
         private void AdjustFile()
         {
             var tuners = System.Array.Empty<AdjustBase>();
-            AdjustImpl(AccessorPack.Large, tuners);
+            AdjustCore(AccessorPack.Large, tuners);
         }
 
         public void Adjust()

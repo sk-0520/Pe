@@ -114,7 +114,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             } else {
                 var dotExt = Path.GetExtension(archiveFile.Name);
                 if(string.IsNullOrEmpty(dotExt) || dotExt.Length < 2) {
-                    throw new Exception("not found extension: " + archiveFile);
+                    throw new ArgumentException("not found extension: " + archiveFile, nameof(archiveFile));
                 }
                 Extract(dotExt.Substring(1).ToLowerInvariant());
             }

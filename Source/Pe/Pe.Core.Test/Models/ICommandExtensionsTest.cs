@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Core.Models;
 using Xunit;
@@ -29,7 +25,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
 
             #region property
 
-            public bool Called { get; private set; } = false;
+            public bool Called { get; private set; }
 
             #endregion
 

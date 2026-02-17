@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1711:識別子は、不適切なサフィックスを含むことはできません", Justification = "ええねん")]
     public class LauncherItemAddonViewSupporterCollection
     {
         public LauncherItemAddonViewSupporterCollection(IOrderManager orderManager, IWindowManager windowManager, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)

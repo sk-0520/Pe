@@ -31,13 +31,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         #region function
 
-        protected abstract IntPtr RegisterImpl(HookProc hookProc, IntPtr moduleHandle);
+        protected abstract IntPtr RegisterCore(HookProc hookProc, IntPtr moduleHandle);
 
         public void Register()
         {
             var moduleName = Process.GetCurrentProcess().MainModule!.ModuleName!;
             var moduleHandle = NativeMethods.GetModuleHandle(moduleName);
-            HookHandle = RegisterImpl(HookProc, moduleHandle);
+            HookHandle = RegisterCore(HookProc, moduleHandle);
         }
 
         public void Unregister()
@@ -128,10 +128,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     {
         #region variable
 
-        public readonly ModifierKeyState shift;
-        public readonly ModifierKeyState control;
-        public readonly ModifierKeyState alt;
-        public readonly ModifierKeyState super;
+        internal readonly ModifierKeyState shift;
+        internal readonly ModifierKeyState control;
+        internal readonly ModifierKeyState alt;
+        internal readonly ModifierKeyState super;
 
         #endregion
 
@@ -176,8 +176,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     {
         #region variable
 
-        public readonly KBDLLHOOKSTRUCT kbdll;
-        public readonly ModifierKeyStatus modifierKeyStatus;
+        internal readonly KBDLLHOOKSTRUCT kbdll;
+        internal readonly ModifierKeyStatus modifierKeyStatus;
 
         #endregion
 
@@ -230,7 +230,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         #region HookerBase
 
-        protected override IntPtr RegisterImpl(HookProc hookProc, IntPtr moduleHandle)
+        protected override IntPtr RegisterCore(HookProc hookProc, IntPtr moduleHandle)
         {
             return NativeMethods.SetWindowsHookEx(WH.WH_KEYBOARD_LL, hookProc, moduleHandle, 0);
         }
@@ -282,7 +282,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     {
         #region variable
 
-        public readonly MSLLHOOKSTRUCT msll;
+        internal readonly MSLLHOOKSTRUCT msll;
 
         #endregion
 
@@ -372,7 +372,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         #region HookerBase
 
-        protected override IntPtr RegisterImpl(HookProc hookProc, IntPtr moduleHandle)
+        protected override IntPtr RegisterCore(HookProc hookProc, IntPtr moduleHandle)
         {
             return NativeMethods.SetWindowsHookEx(WH.WH_MOUSE_LL, hookProc, moduleHandle, 0);
         }

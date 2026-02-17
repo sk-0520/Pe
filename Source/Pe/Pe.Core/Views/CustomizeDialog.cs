@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using ContentTypeTextNet.Pe.Core.Models.Unmanaged;
-using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.PInvoke.Windows;
 
 namespace ContentTypeTextNet.Pe.Core.Views
 {
@@ -24,7 +23,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
         public int ControlId { get; private set; }
 
         /// <summary>
-        /// <see cref="BuildImpl"/>で使用する生処理。
+        /// <see cref="BuildCore"/>で使用する生処理。
         /// </summary>
         protected SafeCom<IFileDialogCustomize>? FileDialogCustomize { get; private set; }
 
@@ -39,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
         /// <para>継承先で実装すること。</para>
         /// <para><see cref="ControlId"/>, <see cref="FileDialogCustomize"/>は有効。</para>
         /// </remarks>
-        protected abstract void BuildImpl();
+        protected abstract void BuildCore();
 
         /// <summary>
         /// ビルド処理実施。
@@ -51,13 +50,13 @@ namespace ContentTypeTextNet.Pe.Core.Views
             ControlId = controlId;
             FileDialogCustomize = fileDialogCustomize;
 
-            BuildImpl();
+            BuildCore();
         }
 
         /// <summary>
         /// 状態変更内部処理。
         /// </summary>
-        protected virtual void ChangeStatusImpl()
+        protected virtual void ChangeStatusCore()
         { }
 
         /// <summary>
@@ -65,7 +64,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
         /// </summary>
         internal void ChangeStatus()
         {
-            ChangeStatusImpl();
+            ChangeStatusCore();
         }
 
         #endregion
@@ -107,7 +106,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
 
         #region CustomizeDialogControlBase
 
-        protected override void BuildImpl()
+        protected override void BuildCore()
         {
             FileDialogCustomize!.Instance.StartVisualGroup(ControlId, Header);
         }
@@ -133,7 +132,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
 
         #region CustomizeDialogControlBase
 
-        protected override void BuildImpl()
+        protected override void BuildCore()
         {
             FileDialogCustomize!.Instance.SetControlLabel(ControlId, Label);
         }
@@ -205,7 +204,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
         /// <summary>
         /// 選択インデックス。
         /// </summary>
-        public int SelectedIndex { get; set; } = 0;
+        public int SelectedIndex { get; set; }
 
         #endregion
 
@@ -220,7 +219,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
 
         #region CustomizeDialogControlBase
 
-        protected override void BuildImpl()
+        protected override void BuildCore()
         {
             FileDialogCustomize!.Instance.AddComboBox(ControlId);
             foreach(var item in Items.Counting()) {
@@ -229,7 +228,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
             FileDialogCustomize!.Instance.SetSelectedControlItem(ControlId, SelectedIndex);
         }
 
-        protected override void ChangeStatusImpl()
+        protected override void ChangeStatusCore()
         {
             FileDialogCustomize!.Instance.GetSelectedControlItem(ControlId, out var index);
             SelectedIndex = index;

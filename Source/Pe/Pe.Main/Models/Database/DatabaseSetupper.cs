@@ -176,7 +176,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
             var error = errors.ToString();
             Logger.LogError("{Error}", error);
 
-            throw new Exception("CheckForeignKey") {
+            throw new SetupException("CheckForeignKey") {
                 Source = error
             };
 

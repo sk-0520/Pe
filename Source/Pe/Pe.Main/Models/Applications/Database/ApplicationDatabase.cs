@@ -109,7 +109,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         {
             var loggingMiddleware = new AppLoggingMiddleware(databaseFactory.TimeProvider, LoggerFactory);
 
-            MiddlewareCollection = new MiddlewareCollection() {
+            Middleware = new Middleware() {
                 Statements = [
                     new AppStatementMiddleware(Implementation, LoggerFactory),
                 ],
@@ -293,7 +293,7 @@ limit
 
         #region IDisposable Support
 
-        private bool disposedValue = false; // 重複する呼び出しを検出するには
+        private bool disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {

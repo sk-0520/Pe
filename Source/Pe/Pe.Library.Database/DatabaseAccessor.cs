@@ -44,7 +44,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         private DbConnectionWrapper CreateDbConnectionWrapper(IDbConnection connection)
         {
             if(connection is DbConnection dbConnection) {
-                return new DbConnectionWrapper(dbConnection, MiddlewareCollection);
+                return new DbConnectionWrapper(dbConnection, Middleware);
             }
 
             throw new NotSupportedException();

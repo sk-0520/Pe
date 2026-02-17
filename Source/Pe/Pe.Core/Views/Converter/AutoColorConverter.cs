@@ -15,7 +15,7 @@ namespace ContentTypeTextNet.Pe.Core.Views.Converter
         /// <summary>
         /// 透明度を保持しない。
         /// </summary>
-        public bool Opaque { get; set; } = false;
+        public bool Opaque { get; set; }
 
         #endregion
 

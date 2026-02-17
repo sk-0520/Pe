@@ -57,12 +57,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         private bool _showLinkChangeConfirm;
         private bool _isPopupRemoveNote;
 
-        private bool _windowMovingOrResizing = false;
+        private bool _windowMovingOrResizing;
 
         /// <summary>
         /// 検索中か。
         /// </summary>
-        private bool _isSearching = false;
+        private bool _isSearching;
         /// <summary>
         /// 検索文字列。
         /// </summary>
@@ -1421,16 +1421,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #region SingleModelViewModelBase
 
-        protected override void AttachModelEventsImpl()
+        protected override void AttachModelEventsCore()
         {
-            base.AttachModelEventsImpl();
+            base.AttachModelEventsCore();
 
             Model.PropertyChanged += Model_PropertyChanged;
         }
 
-        protected override void DetachModelEventsImpl()
+        protected override void DetachModelEventsCore()
         {
-            base.DetachModelEventsImpl();
+            base.DetachModelEventsCore();
 
             Model.PropertyChanged -= Model_PropertyChanged;
         }

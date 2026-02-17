@@ -8,7 +8,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     /// <remarks>
     /// <para>先頭がパイプライン上の外側にあたる。</para>
     /// </remarks>
-    public class MiddlewareCollection
+    public class Middleware
     {
         #region property
 

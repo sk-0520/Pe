@@ -64,16 +64,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Plugin
             if(Guid.TryParse(pluginIdOrInfoUrl, out var guid)) {
                 var info = await NewVersionChecker.GetPluginVersionInfoByApiAsync(ApiConfiguration.ServerPluginInformation, new PluginId(guid), cancellationToken);
                 if(info is null) {
-                    throw new Exception(Properties.Resources.String_PluginWebInstall_NotFoundByPluginId);
+                    throw new PluginApiNotFoundException(Properties.Resources.String_PluginWebInstall_NotFoundByPluginId);
                 }
                 return new Uri(info.CheckUrl);
             }
 
             if(!Uri.TryCreate(pluginIdOrInfoUrl, UriKind.Absolute, out var uri)) {
-                throw new Exception(Properties.Resources.String_PluginWebInstall_PluginIdOrInfoUrl_UrlParseError);
+                throw new PluginApiInvalidUriException(Properties.Resources.String_PluginWebInstall_PluginIdOrInfoUrl_UrlParseError);
             }
             if(!(uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeHttp)) {
-                throw new Exception(Properties.Resources.String_PluginWebInstall_PluginIdOrInfoUrl_ProtocolError);
+                throw new PluginApiInvalidSchemeException(Properties.Resources.String_PluginWebInstall_PluginIdOrInfoUrl_ProtocolError);
             }
 
             return uri;
@@ -85,13 +85,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Plugin
             var checkUri = await GetCheckUriAsync(pluginIdOrInfoUrl, cancellationToken);
             var updateData = await NewVersionChecker.RequestUpdateDataAsync(checkUri, cancellationToken);
             if(updateData is null) {
-                throw new Exception(Properties.Resources.String_PluginWebInstall_NewVersionData_NotFound);
+                throw new PluginException(Properties.Resources.String_PluginWebInstall_NewVersionData_NotFound);
             }
 
             var versionConverter = new VersionConverter();
             var newVersionItem = NewVersionChecker.GetPluginNewVersionItem(new Version(), updateData.Items);
             if(newVersionItem is null) {
-                throw new Exception(Properties.Resources.String_PluginWebInstall_NewVersionData_NotFound);
+                throw new PluginException(Properties.Resources.String_PluginWebInstall_NewVersionData_NotFound);
             }
 
             var baseDirName = PathUtility.ToSafeNameDefault(pluginIdOrInfoUrl);
@@ -108,7 +108,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Plugin
 
             var checksumOk = await NewVersionDownloader.ChecksumAsync(newVersionItem, pluginArchiveFile, notifyProgress, cancellationToken);
             if(!checksumOk) {
-                throw new Exception("チェックサム異常あり");
+                throw new PluginNotFoundException("チェックサム異常あり");
             }
 
             PluginArchiveFile = pluginArchiveFile;
@@ -117,7 +117,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Plugin
         public Task GetPluginAsync(CancellationToken cancellationToken)
         {
             if(string.IsNullOrWhiteSpace(PluginIdOrInfoUrl)) {
-                throw new Exception(Properties.Resources.String_PluginWebInstall_PluginIdOrInfoUrl_Empty);
+                throw new PluginException(Properties.Resources.String_PluginWebInstall_PluginIdOrInfoUrl_Empty);
             }
 
             return GetPluginAsync(PluginIdOrInfoUrl, cancellationToken);

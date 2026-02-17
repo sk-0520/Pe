@@ -742,7 +742,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         {
             var memberInfo = baseType.GetMember(memberName, MemberBindingFlags);
             if(memberInfo == null || memberInfo.Length != 1) {
-                throw new NullReferenceException(memberName);
+                throw new DiMemberNotFoundException(memberName);
             }
 
             var member = new DiInjectionMember(baseType, memberInfo[0], objectType, ToInjectionName(name));

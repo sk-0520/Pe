@@ -84,6 +84,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
             ChangedWeakEvent.Raise(this, EventArgs.Empty);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:識別子はアンダースコアを含むことはできません", Justification = "<保留中>")]
         public void WndProc_WM_DWMCOLORIZATIONCOLORCHANGED(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             Logger.LogTrace("WM_DWMCOLORIZATIONCOLORCHANGED");
@@ -93,6 +94,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
             handled = true;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:識別子はアンダースコアを含むことはできません", Justification = "<保留中>")]
         public void WndProc_WM_SETTINGCHANGE(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             var lParamMessage = Marshal.PtrToStringAuto(lParam);

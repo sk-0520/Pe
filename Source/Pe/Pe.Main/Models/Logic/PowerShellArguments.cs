@@ -1,12 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ContentTypeTextNet.Pe.Generator.Throws;
 using ContentTypeTextNet.Pe.Library.CommandLine;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
+    [GeneratedException]
+    public partial class PowerShellException: Exception
+    { }
+
     internal class PowerShellCommandLineHelper: CommandLineHelper
     {
         public PowerShellCommandLineHelper()

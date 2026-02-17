@@ -47,16 +47,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
 
         #region SingleModelViewModelBase
 
-        protected override void AttachModelEventsImpl()
+        protected override void AttachModelEventsCore()
         {
-            base.AttachModelEventsImpl();
+            base.AttachModelEventsCore();
 
             Model.PropertyChanged += Model_PropertyChanged;
         }
 
-        protected override void DetachModelEventsImpl()
+        protected override void DetachModelEventsCore()
         {
-            base.DetachModelEventsImpl();
+            base.DetachModelEventsCore();
 
             Model.PropertyChanged -= Model_PropertyChanged;
         }
@@ -72,7 +72,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                 return ScreenUtility.GetName(Model.DockScreen, LoggerFactory);
             }
         }
-        public bool MenuHeaderHasAccessKey { get; } = false;
+        public bool MenuHeaderHasAccessKey { get; }
         public KeyGesture? MenuKeyGesture { get; }
         LauncherToolbarIconMaker IconMaker { get; } = new LauncherToolbarIconMaker();
         public DependencyObject MenuIcon => IconMaker.GetToolbarImage(Model.DockScreen, Screen.AllScreens, IconBox.Small, MenuIsChecked);

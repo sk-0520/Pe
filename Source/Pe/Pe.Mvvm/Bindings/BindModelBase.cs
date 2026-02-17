@@ -91,7 +91,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
 
         #region IDisposed
 
-        private bool _isDisposed = false;
+        private bool _isDisposed;
 
         public bool IsDisposed => this._isDisposed;
 

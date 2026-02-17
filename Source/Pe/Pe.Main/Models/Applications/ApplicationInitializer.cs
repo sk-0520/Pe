@@ -58,11 +58,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
         #region property
 
-        private bool BetaMode { get; } =
+        private bool BetaMode =>
 #if BETA
             true
 #else
-    false
+            false
 #endif
 ;
 

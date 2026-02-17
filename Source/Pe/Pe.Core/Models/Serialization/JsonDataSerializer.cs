@@ -12,7 +12,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
     {
         #region SerializerBase
 
-        protected override TResult LoadImpl<TResult>(Stream stream)
+        protected override TResult LoadCore<TResult>(Stream stream)
         {
             var serializer = new DataContractJsonSerializer(typeof(TResult));
             var rawResult = serializer.ReadObject(stream);
@@ -24,7 +24,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
             throw new SerializationException();
         }
 
-        protected override void SaveImpl<TValue>(TValue value, Stream stream)
+        protected override void SaveCore<TValue>(TValue value, Stream stream)
         {
             var serializer = new DataContractJsonSerializer(value.GetType());
             serializer.WriteObject(stream, value);

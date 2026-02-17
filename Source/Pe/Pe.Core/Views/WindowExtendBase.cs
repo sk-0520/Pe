@@ -55,14 +55,14 @@ namespace ContentTypeTextNet.Pe.Core.Views
 
         #region function
 
-        protected virtual void InitializedWindowHandleImpl()
+        protected virtual void InitializedWindowHandleCore()
         { }
 
         private void InitializedWindowHandle()
         {
             Debug.Assert(WindowHandle.ToInt32() != 0);
 
-            InitializedWindowHandleImpl();
+            InitializedWindowHandleCore();
         }
 
         private void AttachHwndSource()

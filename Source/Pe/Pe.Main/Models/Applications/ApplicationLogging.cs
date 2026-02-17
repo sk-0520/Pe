@@ -150,7 +150,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
         public LoggerFactory Factory { get; }
 
-        private bool ReceivePausing { get; set; } = false;
+        private bool ReceivePausing { get; set; }
 
 
         #endregion

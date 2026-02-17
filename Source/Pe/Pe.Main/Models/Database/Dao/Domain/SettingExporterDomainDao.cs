@@ -1,12 +1,11 @@
 using System.Collections.Generic;
-using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using System.Linq;
-using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Library.Database;
-using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Data;
-using System.Text;
+using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Data;
+using ContentTypeTextNet.Pe.Main.Models.Logic;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Domain
 {
@@ -28,7 +27,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Domain
             public string LauncherItemName { get; set; } = string.Empty;
             public string LauncherItemKind { get; set; } = string.Empty;
             public string IconPath { get; set; } = string.Empty;
-            public long IconIndex { get; set; } = 0;
+            public long IconIndex { get; set; }
             public string FilePath { get; set; } = string.Empty;
             public string FileOption { get; set; } = string.Empty;
             public string FileWorkDirectory { get; set; } = string.Empty;

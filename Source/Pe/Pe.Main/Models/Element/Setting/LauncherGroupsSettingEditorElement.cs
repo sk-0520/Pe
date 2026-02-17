@@ -110,7 +110,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             var launcherFactory = new LauncherFactory(IdFactory, LoggerFactory);
             foreach(var group in GroupItems.Counting()) {

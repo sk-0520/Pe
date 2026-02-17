@@ -241,6 +241,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <remarks>
     /// <para>破棄順序は後入れ先出になる。</para>
     /// </remarks>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1711:識別子は、不適切なサフィックスを含むことはできません", Justification = "ええねん")]
     public sealed class DisposableCollection: DisposerBase
     {
         #region property

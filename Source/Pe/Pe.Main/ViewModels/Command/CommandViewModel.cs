@@ -497,16 +497,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 
         #region SingleModelViewModelBase
 
-        protected override void AttachModelEventsImpl()
+        protected override void AttachModelEventsCore()
         {
-            base.AttachModelEventsImpl();
+            base.AttachModelEventsCore();
 
             Model.PropertyChanged += Model_PropertyChanged;
         }
 
-        protected override void DetachModelEventsImpl()
+        protected override void DetachModelEventsCore()
         {
-            base.DetachModelEventsImpl();
+            base.DetachModelEventsCore();
 
             Model.PropertyChanged -= Model_PropertyChanged;
         }

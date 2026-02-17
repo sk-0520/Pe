@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Html
 {
@@ -22,11 +18,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Html
         /// <summary>
         /// インライン要素か。
         /// </summary>
-        public virtual bool IsInline { get; set; } = false;
+        public virtual bool IsInline { get; set; }
         /// <summary>
         /// 空要素か。
         /// </summary>
-        public virtual bool IsVoid { get; set; } = false;
+        public virtual bool IsVoid { get; set; }
 
         public IDictionary<string, string> Attributes { get; } = new Dictionary<string, string>();
 

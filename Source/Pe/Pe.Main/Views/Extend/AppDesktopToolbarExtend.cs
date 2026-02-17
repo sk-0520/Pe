@@ -810,9 +810,9 @@ namespace ContentTypeTextNet.Pe.Main.Views.Extend
             }
         }
 
-        protected override void InitializedWindowHandleImpl()
+        protected override void InitializedWindowHandleCore()
         {
-            base.InitializedWindowHandleImpl();
+            base.InitializedWindowHandleCore();
 
             View.IsVisibleChanged += View_IsVisibleChanged;
 

@@ -15,19 +15,19 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
         /// <summary>
         /// 列挙対象。
         /// </summary>
-        protected IEnumerator<T> _enumerator;
+        private protected IEnumerator<T> _enumerator;
         /// <summary>
         /// キャッシュ済み要素一覧。
         /// </summary>
         /// <remarks>実体。</remarks>
-        protected List<T> _cachedItems;
+        private protected List<T> _cachedItems;
         /// <summary>
         /// 列挙が完了したか。
         /// </summary>
         /// <remarks>
         /// <para>実体。</para>
         /// </remarks>
-        protected volatile bool _isEnumerationCompleted = false;
+        private protected volatile bool _isEnumerationCompleted;
 
         #endregion
 

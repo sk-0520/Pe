@@ -40,12 +40,12 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models.Serialization
         private class ThrowSerializer<TException>: SerializerBase
             where TException : Exception, new()
         {
-            protected override TResult LoadImpl<TResult>(Stream stream)
+            protected override TResult LoadCore<TResult>(Stream stream)
             {
                 throw new TException();
             }
 
-            protected override void SaveImpl<TValue>(TValue value, Stream stream)
+            protected override void SaveCore<TValue>(TValue value, Stream stream)
             {
                 throw new TException();
             }

@@ -9,7 +9,7 @@ using ContentTypeTextNet.Pe.Core.Models;
 
 namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
 {
-    internal class DefaultCommandTheme: DefaultThemeBase, ICommandTheme
+    internal sealed class DefaultCommandTheme: DefaultThemeBase, ICommandTheme
     {
         public DefaultCommandTheme(IThemeParameter parameter)
             : base(parameter)

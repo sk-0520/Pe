@@ -63,7 +63,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
         /// <remarks>
         /// <para>呼び出し側で制御。。。</para>
         /// </remarks>
-        public bool IgnoreSelfJobInput { get; set; } = false;
+        public bool IgnoreSelfJobInput { get; set; }
         /// <summary>
         /// 置き換えに使用する入力に埋め込むIDの設定。
         /// </summary>

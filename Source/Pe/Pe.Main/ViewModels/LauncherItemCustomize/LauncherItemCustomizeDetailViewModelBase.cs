@@ -36,14 +36,14 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #region function
 
-        protected abstract void InitializeImpl();
+        protected abstract void InitializeCore();
 
         public void Initialize()
         {
             if(IsInitialize) {
                 return;
             }
-            InitializeImpl();
+            InitializeCore();
             if(!Model.IsLazyLoad) {
                 IsInitialize = true;
             }
@@ -61,16 +61,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
             base.Dispose(disposing);
         }
 
-        protected override void AttachModelEventsImpl()
+        protected override void AttachModelEventsCore()
         {
-            base.AttachModelEventsImpl();
+            base.AttachModelEventsCore();
 
             Model.PropertyChanged += Model_PropertyChanged;
         }
 
-        protected override void DetachModelEventsImpl()
+        protected override void DetachModelEventsCore()
         {
-            base.DetachModelEventsImpl();
+            base.DetachModelEventsCore();
 
             Model.PropertyChanged -= Model_PropertyChanged;
         }

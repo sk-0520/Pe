@@ -9,6 +9,7 @@ namespace ContentTypeTextNet.Pe.CommonTest
     /// <summary>
     /// テスト拡張系。
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1711:識別子は、不適切なサフィックスを含むことはできません", Justification = "役割的に Ex なんよ")]
     public static class AssertEx
     {
         #region function

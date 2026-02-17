@@ -65,6 +65,17 @@ dotnet_diagnostic.CA2263.severity = suggestion
 # カルチャ系処理のテストが分からんので一旦無視（という保留）
 dotnet_diagnostic.CA1824.severity = none
 
+# AnalysisMode: Recommended
+# 今さら修正は無理
+dotnet_diagnostic.CA1716.severity = suggestion
+# Delegate は単純に引数名を定義したいだけなので型名として Delegate は許可する
+dotnet_code_quality.CA1711.allowed_suffixes = Delegate
+# CA1873 的な理由で無視
+dotnet_diagnostic.CA1848.severity = suggestion
+# CsWin32 でいい感じになるんじゃね
+dotnet_diagnostic.CA1838.severity = suggestion
+
+
 spelling_checkable_types = strings,identifiers,comments
 spelling_exclusion_path = .\exclusion.dic
 
@@ -317,11 +328,26 @@ csharp_style_prefer_utf8_string_literals = true:suggestion
 dotnet_diagnostic.CA1507.severity = warning
 dotnet_diagnostic.CA1311.severity = warning
 
+[Source/Pe/Pe.Main/Models/Database/Setupper/*.cs]
+dotnet_diagnostic.CA1707.severity = none
+
+[Source/Pe/Pe.PInvoke/**/*.cs]
+dotnet_diagnostic.CA1051.severity = suggestion
+dotnet_diagnostic.CA1707.severity = silent
+dotnet_diagnostic.CA1852.severity = none
+dotnet_diagnostic.CA1720.severity = silent
+
 [*Test.cs]
 dotnet_diagnostic.IDE1006.severity = none
 dotnet_diagnostic.CA1050.severity = none
 dotnet_diagnostic.CA1861.severity = suggestion
 dotnet_diagnostic.CA2211.severity = suggestion
+dotnet_diagnostic.CA1711.severity = suggestion
+dotnet_diagnostic.CA1051.severity = suggestion
+dotnet_diagnostic.CA1708.severity = suggestion
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA1852.severity = silent
+dotnet_diagnostic.CA1720.severity = suggestion
 
 
 # VC

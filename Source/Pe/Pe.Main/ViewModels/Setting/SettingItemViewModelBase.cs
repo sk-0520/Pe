@@ -74,18 +74,18 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #region SingleModelViewModelBase
 
-        protected override void AttachModelEventsImpl()
+        protected override void AttachModelEventsCore()
         {
-            base.AttachModelEventsImpl();
+            base.AttachModelEventsCore();
 
             Model.PropertyChanged += Model_PropertyChanged;
         }
 
-        protected override void DetachModelEventsImpl()
+        protected override void DetachModelEventsCore()
         {
             Model.PropertyChanged -= Model_PropertyChanged;
 
-            base.DetachModelEventsImpl();
+            base.DetachModelEventsCore();
         }
 
         protected override void Dispose(bool disposing)

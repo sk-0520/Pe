@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
@@ -14,11 +13,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         /// <summary>
         /// このコンテキストが使用できない際に<see cref="PluginUnavailableContextException"/>を投げる。
         /// </summary>
-        /// <param name="_callerMemberName"></param>
-        protected void ThrowIfUnavailable([CallerMemberName] string _callerMemberName = "")
+        /// <param name="callerMemberName"></param>
+        protected void ThrowIfUnavailable([CallerMemberName] string callerMemberName = "")
         {
             if(!IsAvailable) {
-                throw new PluginUnavailableContextException(_callerMemberName);
+                throw new PluginUnavailableContextException(callerMemberName);
             }
         }
 

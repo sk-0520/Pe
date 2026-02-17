@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database.Adjust
@@ -32,11 +32,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Adjust
             return new Dictionary<string, object>(AdjustCommonDtoSource);
         }
 
-        protected abstract void AdjustImpl(IDatabaseContext context);
+        protected abstract void AdjustCore(IDatabaseContext context);
 
         public void Adjust(IDatabaseContext context)
         {
-            AdjustImpl(context);
+            AdjustCore(context);
         }
 
         #endregion

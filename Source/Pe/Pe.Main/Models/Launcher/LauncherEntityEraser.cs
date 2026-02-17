@@ -39,7 +39,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         #region EntityEraserBase
 
-        protected override void ExecuteMainImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
+        protected override void ExecuteMainCore(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
             var daoFactory = new AppDaoFactory(context, statementLoader, LoggerFactory);
             var launcherBadgesEntityDao = daoFactory.Create<LauncherBadgesEntityDao>();
@@ -87,14 +87,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
             launcherItemsEntityDao.DeleteLauncherItem(LauncherItemId);
         }
 
-        protected override void ExecuteLargeImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
+        protected override void ExecuteLargeCore(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
             var daoFactory = new AppDaoFactory(context, statementLoader, LoggerFactory);
             var launcherItemIconsEntityDao = daoFactory.Create<LauncherItemIconsEntityDao>();
             launcherItemIconsEntityDao.DeleteAllSizeImageBinary(LauncherItemId);
         }
 
-        protected override void ExecuteTemporaryImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
+        protected override void ExecuteTemporaryCore(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         { }
 
         #endregion

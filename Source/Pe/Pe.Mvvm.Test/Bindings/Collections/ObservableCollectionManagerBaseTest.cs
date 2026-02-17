@@ -37,32 +37,32 @@ namespace ContentTypeTextNet.Pe.Mvvm.Test.Bindings.Collections
 
             public LastAction LastAction { get; private set; }
 
-            protected override void AddItemsImpl(IReadOnlyList<T> newItems)
+            protected override void AddItemsCore(IReadOnlyList<T> newItems)
             {
                 LastAction = LastAction.Add;
             }
 
-            protected override void InsertItemsImpl(int insertIndex, IReadOnlyList<T> newItems)
+            protected override void InsertItemsCore(int insertIndex, IReadOnlyList<T> newItems)
             {
                 LastAction = LastAction.Insert;
             }
 
-            protected override void MoveItemsImpl(int newStartingIndex, int oldStartingIndex)
+            protected override void MoveItemsCore(int newStartingIndex, int oldStartingIndex)
             {
                 LastAction = LastAction.Move;
             }
 
-            protected override void RemoveItemsImpl(int oldStartingIndex, IReadOnlyList<T> oldItems)
+            protected override void RemoveItemsCore(int oldStartingIndex, IReadOnlyList<T> oldItems)
             {
                 LastAction = LastAction.Remove;
             }
 
-            protected override void ReplaceItemsImpl(int startIndex, IReadOnlyList<T> newItems, IReadOnlyList<T> oldItems)
+            protected override void ReplaceItemsCore(int startIndex, IReadOnlyList<T> newItems, IReadOnlyList<T> oldItems)
             {
                 LastAction = LastAction.Replace;
             }
 
-            protected override void ResetItemsImpl()
+            protected override void ResetItemsCore()
             {
                 LastAction = LastAction.Reset;
             }

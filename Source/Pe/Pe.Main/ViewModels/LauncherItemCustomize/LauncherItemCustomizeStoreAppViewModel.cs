@@ -48,7 +48,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #region LauncherItemCustomizeDetailViewModelBase
 
-        protected override void InitializeImpl()
+        protected override void InitializeCore()
         {
         }
 

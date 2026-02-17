@@ -38,9 +38,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
         #region function
 
-        protected abstract object GetIconImpl(in IconScale iconScale);
-        protected abstract void ExecuteImpl(ICommandExecuteParameter parameter);
-        protected abstract bool EqualsImpl(CommandItemElementBase commandItemElement);
+        protected abstract object GetIconCore(in IconScale iconScale);
+        protected abstract void ExecuteCore(ICommandExecuteParameter parameter);
+        protected abstract bool EqualsCore(CommandItemElementBase commandItemElement);
 
         #endregion
 
@@ -91,9 +91,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
         {
             ContextDispatcher.VerifyAccess();
 
-            return this._icon ??= GetIconImpl(iconScale);
+            return this._icon ??= GetIconCore(iconScale);
         }
-        public void Execute(ICommandExecuteParameter parameter) => ExecuteImpl(parameter);
+        public void Execute(ICommandExecuteParameter parameter) => ExecuteCore(parameter);
 
         public bool IsEquals(ICommandItem? commandItem)
         {
@@ -106,7 +106,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
             }
 
             if(commandItem is CommandItemElementBase commandItemElement) {
-                return EqualsImpl(commandItemElement);
+                return EqualsCore(commandItemElement);
             }
 
             return false;
@@ -135,14 +135,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
         public override CommandItemKind Kind => EditableKind;
 
-        protected override object GetIconImpl(in IconScale iconScale)
+        protected override object GetIconCore(in IconScale iconScale)
         {
             var factory = LauncherItemElement.CreateLauncherIconFactory();
             var iconSource = factory.CreateIconSource(ContextDispatcher);
             return factory.CreateView(iconSource, true, true, ContextDispatcher);
         }
 
-        protected override void ExecuteImpl(ICommandExecuteParameter parameter)
+        protected override void ExecuteCore(ICommandExecuteParameter parameter)
         {
             if(parameter.IsExtend) {
                 LauncherItemElement.OpenExtendsExecuteViewAsync(parameter.Screen, CancellationToken.None);
@@ -151,7 +151,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
             }
         }
 
-        protected override bool EqualsImpl(CommandItemElementBase commandItemElement)
+        protected override bool EqualsCore(CommandItemElementBase commandItemElement)
         {
             if(commandItemElement is LauncherCommandItemElement launcherCommandItemElement) {
                 return LauncherItemElement == launcherCommandItemElement.LauncherItemElement;
@@ -189,18 +189,18 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Command
 
         public override CommandItemKind Kind => CommandItemKind.ApplicationCommand;
 
-        protected override void ExecuteImpl(ICommandExecuteParameter parameter)
+        protected override void ExecuteCore(ICommandExecuteParameter parameter)
         {
             Parameter.Executor(parameter);
         }
 
-        protected override object GetIconImpl(in IconScale iconScale)
+        protected override object GetIconCore(in IconScale iconScale)
         {
             return Parameter.IconGetter(iconScale);
             //return Application.Current.Resources["pack://application:,,,/Pe.Main;component/Resources/Icon/App.ico"];
         }
 
-        protected override bool EqualsImpl(CommandItemElementBase commandItemElement)
+        protected override bool EqualsCore(CommandItemElementBase commandItemElement)
         {
             if(commandItemElement is ApplicationCommandItemElement applicationCommandItemElement) {
                 return Parameter == applicationCommandItemElement.Parameter;

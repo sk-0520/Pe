@@ -42,7 +42,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #region property
 
-        private FlowDocument Document => ControlElement?.Document ?? throw new NullReferenceException(nameof(ControlElement));
+        private FlowDocument Document => ControlElement?.Document ?? throw new InvalidOperationException(nameof(ControlElement));
 
         private DelayAction TextChangeDelayAction { get; }
 

@@ -328,7 +328,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             ;
         }
 
-        protected IEnumerable<string> GetKeysImpl(Func<DatabaseParameter, IEnumerable<string>> func)
+        protected IEnumerable<string> GetKeysCore(Func<DatabaseParameter, IEnumerable<string>> func)
         {
             switch(Mode) {
                 case PluginPersistenceMode.Context: {
@@ -357,7 +357,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             }
         }
 
-        protected bool ExistsImpl<TParameter>(TParameter parameter, Func<TParameter, DatabaseParameter, bool> func)
+        protected bool ExistsCore<TParameter>(TParameter parameter, Func<TParameter, DatabaseParameter, bool> func)
         {
             switch(Mode) {
                 case PluginPersistenceMode.Context: {
@@ -386,7 +386,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             }
         }
 
-        protected bool TryGetImpl<TValue, TParameter>(TParameter parameter, Func<TParameter, DatabaseParameter, PluginSettingRawValue?> func, [MaybeNullWhen(returnValue: false)] out TValue value)
+        protected bool TryGetCore<TValue, TParameter>(TParameter parameter, Func<TParameter, DatabaseParameter, PluginSettingRawValue?> func, [MaybeNullWhen(returnValue: false)] out TValue value)
         {
             if(Mode == PluginPersistenceMode.DelayWriter) {
                 // 遅延書き込み待機を終了
@@ -476,7 +476,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             }
         }
 
-        protected bool SetImpl<TValue, TParameter>(TValue value, PluginPersistenceFormat format, TParameter parameter, Action<TParameter, DatabaseParameter, PluginSettingRawValue> action)
+        protected bool SetCore<TValue, TParameter>(TValue value, PluginPersistenceFormat format, TParameter parameter, Action<TParameter, DatabaseParameter, PluginSettingRawValue> action)
             where TValue : notnull
         {
             if(IsReadOnly) {
@@ -566,7 +566,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             return true;
         }
 
-        protected bool DeleteImpl<TParameter>(TParameter parameter, Func<TParameter, DatabaseParameter, bool> func)
+        protected bool DeleteCore<TParameter>(TParameter parameter, Func<TParameter, DatabaseParameter, bool> func)
         {
             if(IsReadOnly) {
                 throw new InvalidOperationException(nameof(IsReadOnly));
@@ -653,7 +653,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         /// <inheritdoc cref="IPluginPersistenceStorage.GetKeys()"/>
         public IEnumerable<string> GetKeys()
         {
-            return GetKeysImpl((d) => {
+            return GetKeysCore((d) => {
                 var daoFactory = new AppDaoFactory(d.DatabaseContext, d.DatabaseStatementLoader, d.LoggerFactory);
                 var pluginSettingsEntityDao = daoFactory.Create<PluginSettingsEntityDao>();
                 return pluginSettingsEntityDao.SelectPluginSettingKeys(PluginId);
@@ -663,7 +663,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         /// <inheritdoc cref="IPluginPersistenceStorage.Exists(string)"/>
         public bool Exists(string key)
         {
-            return ExistsImpl(key, (p, d) => {
+            return ExistsCore(key, (p, d) => {
                 var daoFactory = new AppDaoFactory(d.DatabaseContext, d.DatabaseStatementLoader, d.LoggerFactory);
                 var pluginSettingsEntityDao = daoFactory.Create<PluginSettingsEntityDao>();
                 return pluginSettingsEntityDao.SelectExistsPluginSetting(PluginId, NormalizeKey(key));
@@ -673,7 +673,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         /// <inheritdoc cref="IPluginPersistenceStorage.TryGet{TValue}(string, out TValue)"/>
         public bool TryGet<TValue>(string key, [MaybeNullWhen(returnValue: false)] out TValue value)
         {
-            return TryGetImpl(key, (p, d) => {
+            return TryGetCore(key, (p, d) => {
                 var daoFactory = new AppDaoFactory(d.DatabaseContext, d.DatabaseStatementLoader, d.LoggerFactory);
                 var pluginSettingsEntityDao = daoFactory.Create<PluginSettingsEntityDao>();
                 return pluginSettingsEntityDao.SelectPluginSettingValue(PluginId, NormalizeKey(key));
@@ -684,7 +684,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         public bool Set<TValue>(string key, TValue value, PluginPersistenceFormat format)
             where TValue : notnull
         {
-            return SetImpl(value, format, key, (p, d, v) => {
+            return SetCore(value, format, key, (p, d, v) => {
                 var daoFactory = new AppDaoFactory(d.DatabaseContext, d.DatabaseStatementLoader, d.LoggerFactory);
                 var pluginSettingsEntityDao = daoFactory.Create<PluginSettingsEntityDao>();
                 var normalizedKey = NormalizeKey(p);
@@ -705,7 +705,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
         /// <inheritdoc cref="IPluginPersistenceStorage.Delete(string)"/>
         public bool Delete(string key)
         {
-            return DeleteImpl(key, (p, d) => {
+            return DeleteCore(key, (p, d) => {
                 var daoFactory = new AppDaoFactory(d.DatabaseContext, d.DatabaseStatementLoader, d.LoggerFactory);
                 var pluginSettingsEntityDao = daoFactory.Create<PluginSettingsEntityDao>();
                 return pluginSettingsEntityDao.DeletePluginSetting(PluginId, NormalizeKey(key));

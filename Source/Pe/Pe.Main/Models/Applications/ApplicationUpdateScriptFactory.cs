@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             var psResult = powerShellArguments.GetPowerShellFromCommandName(environmentExecuteFile);
             if(!psResult.Success) {
                 Logger.LogError("PowerShell が見つかんないのでもぅﾏﾁﾞ無理");
-                throw new Exception("PowerShell が見つからない");
+                throw new PowerShellException("PowerShell が見つからない");
             }
             var ps = psResult.SuccessValue!;
 

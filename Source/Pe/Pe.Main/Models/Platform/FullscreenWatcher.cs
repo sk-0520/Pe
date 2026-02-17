@@ -73,7 +73,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
         /// <summary>
         /// フルスクリーン判定を最前面ウィンドウのみにするか。
         /// </summary>
-        public bool TopmostOnly { get; set; } = false;
+        public bool TopmostOnly { get; set; }
         /// <summary>
         /// フルスクリーン判定から WS_EX_NOACTIVE を除外するか。
         /// </summary>

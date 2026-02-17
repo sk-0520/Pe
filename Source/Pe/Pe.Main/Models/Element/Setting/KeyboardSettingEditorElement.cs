@@ -194,7 +194,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
         }
 
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             var jobs = ReplaceJobEditors
                 .Cast<KeyboardJobSettingEditorElementBase>()

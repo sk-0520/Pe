@@ -51,16 +51,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #region SingleModelViewModelBase
 
-        protected override void AttachModelEventsImpl()
+        protected override void AttachModelEventsCore()
         {
-            base.AttachModelEventsImpl();
+            base.AttachModelEventsCore();
 
             Model.PropertyChanged += Model_PropertyChanged;
         }
 
-        protected override void DetachModelEventsImpl()
+        protected override void DetachModelEventsCore()
         {
-            base.DetachModelEventsImpl();
+            base.DetachModelEventsCore();
 
             Model.PropertyChanged -= Model_PropertyChanged;
         }
@@ -70,12 +70,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         #region INotifyArea
 
         public string MenuHeader => Model.Title ?? "<からもじれつ>";
-        public bool MenuHeaderHasAccessKey { get; } = false;
+        public bool MenuHeaderHasAccessKey { get; }
         public KeyGesture? MenuKeyGesture { get; }
         public DependencyObject? MenuIcon => NoteIconFactory.GetIconImage(IconBox.Small, Model.IsCompact, Model.IsLocked, ColorPair.Create(Model.ForegroundColor, Model.BackgroundColor));
         public bool MenuHasIcon { get; } = true;
         public bool MenuIsEnabled { get; } = true;
-        public bool MenuIsChecked { get; } = false;
+        public bool MenuIsChecked { get; }
 
         private ICommand? _MenuCommand;
         public ICommand MenuCommand => this._MenuCommand ??= new DelegateCommand(

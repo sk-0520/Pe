@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell
 
         /// <inheritdoc cref="Commands"/>
         /// <remarks>実体。</remarks>
-        protected List<CommandBase> _commands = new List<CommandBase>();
+        private protected List<CommandBase> _commands = new List<CommandBase>();
 
         #endregion
 

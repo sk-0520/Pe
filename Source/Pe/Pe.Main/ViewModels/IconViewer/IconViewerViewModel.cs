@@ -75,8 +75,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.IconViewer
 
         #region variable
 
-        private ViewModelBase? _icon = null;
-        private bool _useCache = false;
+        private ViewModelBase? _icon;
+        private bool _useCache;
 
         #endregion
 

@@ -2,13 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Mvvm.ViewModels;
-using System.ComponentModel;
 using System.Windows.Data;
 
 namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
@@ -36,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             }
 
             Options = options;
-            EditableViewModels = new ObservableCollection<TViewModel>(Collection.Select(m => ToViewModelImpl(m)));
+            EditableViewModels = new ObservableCollection<TViewModel>(Collection.Select(m => ToViewModelCore(m)));
         }
 
         public ModelViewModelObservableCollectionManager(ObservableCollection<TModel> collection, ModelViewModelObservableCollectionOptions<TModel, TViewModel> options)
@@ -47,7 +44,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             }
 
             Options = options;
-            EditableViewModels = new ObservableCollection<TViewModel>(Collection.Select(m => ToViewModelImpl(m)));
+            EditableViewModels = new ObservableCollection<TViewModel>(Collection.Select(m => ToViewModelCore(m)));
         }
 
         #region property
@@ -72,37 +69,37 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         /// </summary>
         /// <param name="model"></param>
         /// <returns>初期化前の場合は null、初期化後は生成後の<typeparamref name="TViewModel"/>。</returns>
-        protected TViewModel ToViewModelImpl(TModel model)
+        protected TViewModel ToViewModelCore(TModel model)
         {
             return Options.ToViewModel(model);
         }
 
-        protected void AddItemsKindImpl(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.AddItemParameter parameter)
+        protected void AddItemsKindCore(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.AddItemParameter parameter)
         {
             Options.AddItems?.Invoke(parameter);
         }
 
-        protected void InsertItemsKindImpl(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.InsertItemParameter parameter)
+        protected void InsertItemsKindCore(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.InsertItemParameter parameter)
         {
             Options.InsertItems?.Invoke(parameter);
         }
 
-        protected void RemoveItemsKindImpl(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.RemoveItemParameter parameter)
+        protected void RemoveItemsKindCore(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.RemoveItemParameter parameter)
         {
             Options.RemoveItems?.Invoke(parameter);
         }
 
-        protected void ReplaceItemsKindImpl(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.ReplaceItemParameter parameter)
+        protected void ReplaceItemsKindCore(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.ReplaceItemParameter parameter)
         {
             Options.ReplaceItems?.Invoke(parameter);
         }
 
-        protected void MoveItemsKindImpl(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.MoveItemParameter parameter)
+        protected void MoveItemsKindCore(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.MoveItemParameter parameter)
         {
             Options.MoveItems?.Invoke(parameter);
         }
 
-        protected void ResetItemsKindImpl(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.ResetItemParameter parameter)
+        protected void ResetItemsKindCore(ModelViewModelObservableCollectionOptions<TModel, TViewModel>.ResetItemParameter parameter)
         {
             Options.ResetItems?.Invoke(parameter);
         }
@@ -179,10 +176,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         #region ObservableCollectionManagerBase
 
-        protected override void AddItemsImpl(IReadOnlyList<TModel> newItems)
+        protected override void AddItemsCore(IReadOnlyList<TModel> newItems)
         {
             var newViewModels = newItems
-                .Select(m => ToViewModelImpl(m))
+                .Select(m => ToViewModelCore(m))
                 .ToArray()
             ;
 
@@ -193,20 +190,20 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
                 NewViewModels = newViewModels,
             };
 
-            AddItemsKindImpl(parameter);
+            AddItemsKindCore(parameter);
 
             foreach(var vm in newViewModels) {
                 EditableViewModels.Add(vm);
             }
 
             parameter.Apply = ModelViewModelObservableCollectionViewModelApply.After;
-            AddItemsKindImpl(parameter);
+            AddItemsKindCore(parameter);
         }
 
-        protected override void InsertItemsImpl(int insertIndex, IReadOnlyList<TModel> newItems)
+        protected override void InsertItemsCore(int insertIndex, IReadOnlyList<TModel> newItems)
         {
             var newViewModels = newItems
-                .Select(m => ToViewModelImpl(m))
+                .Select(m => ToViewModelCore(m))
                 .Select((v, i) => (index: i + insertIndex, value: v))
                 .ToArray()
             ;
@@ -219,18 +216,18 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
                 NewViewModels = newViewModels.Select(a => a.value).ToArray(),
             };
 
-            InsertItemsKindImpl(parameter);
+            InsertItemsKindCore(parameter);
 
             foreach(var (index, value) in newViewModels) {
                 EditableViewModels.Insert(index, value);
             }
 
             parameter.Apply = ModelViewModelObservableCollectionViewModelApply.After;
-            InsertItemsKindImpl(parameter);
+            InsertItemsKindCore(parameter);
         }
 
 
-        protected override void RemoveItemsImpl(int oldStartingIndex, IReadOnlyList<TModel> oldItems)
+        protected override void RemoveItemsCore(int oldStartingIndex, IReadOnlyList<TModel> oldItems)
         {
             var oldViewModels = EditableViewModels
                 .Skip(oldStartingIndex)
@@ -246,7 +243,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
                 OldViewModels = oldViewModels,
             };
 
-            RemoveItemsKindImpl(parameter);
+            RemoveItemsKindCore(parameter);
 
             foreach(var _ in Enumerable.Range(0, oldViewModels.Length)) {
                 EditableViewModels.RemoveAt(oldStartingIndex);
@@ -254,14 +251,14 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             DisposeViewModelsIfAutoDispose(oldViewModels);
 
             parameter.Apply = ModelViewModelObservableCollectionViewModelApply.After;
-            RemoveItemsKindImpl(parameter);
+            RemoveItemsKindCore(parameter);
         }
 
-        protected override void ReplaceItemsImpl(int startIndex, IReadOnlyList<TModel> newItems, IReadOnlyList<TModel> oldItems)
+        protected override void ReplaceItemsCore(int startIndex, IReadOnlyList<TModel> newItems, IReadOnlyList<TModel> oldItems)
         {
             //TODO: インデックスが必要
             var newViewModels = newItems
-                .Select(m => ToViewModelImpl(m))
+                .Select(m => ToViewModelCore(m))
                 .ToArray()
             ;
 
@@ -281,7 +278,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
                 StartIndex = startIndex,
             };
 
-            ReplaceItemsKindImpl(parameter);
+            ReplaceItemsKindCore(parameter);
 
             for(var i = 0; i < newViewModels.Length; i++) {
                 EditableViewModels[i + startIndex] = newViewModels[i];
@@ -295,10 +292,10 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             //}
 
             parameter.Apply = ModelViewModelObservableCollectionViewModelApply.After;
-            ReplaceItemsKindImpl(parameter);
+            ReplaceItemsKindCore(parameter);
         }
 
-        protected override void MoveItemsImpl(int newStartingIndex, int oldStartingIndex)
+        protected override void MoveItemsCore(int newStartingIndex, int oldStartingIndex)
         {
             var parameter = new ModelViewModelObservableCollectionOptions<TModel, TViewModel>.MoveItemParameter() {
                 Sender = this,
@@ -307,15 +304,15 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
                 OldStartingIndex = oldStartingIndex,
             };
 
-            MoveItemsKindImpl(parameter);
+            MoveItemsKindCore(parameter);
 
             EditableViewModels.Move(oldStartingIndex, newStartingIndex);
 
             parameter.Apply = ModelViewModelObservableCollectionViewModelApply.After;
-            MoveItemsKindImpl(parameter);
+            MoveItemsKindCore(parameter);
         }
 
-        protected override void ResetItemsImpl()
+        protected override void ResetItemsCore()
         {
             var oldViewModels = EditableViewModels;
 
@@ -325,13 +322,13 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
                 OldViewModels = oldViewModels,
             };
 
-            ResetItemsKindImpl(parameter);
+            ResetItemsKindCore(parameter);
 
             EditableViewModels.Clear();
             DisposeViewModelsIfAutoDispose(oldViewModels);
 
             parameter.Apply = ModelViewModelObservableCollectionViewModelApply.After;
-            ResetItemsKindImpl(parameter);
+            ResetItemsKindCore(parameter);
         }
 
         protected override void CollectionChanged(NotifyCollectionChangedEventArgs e)

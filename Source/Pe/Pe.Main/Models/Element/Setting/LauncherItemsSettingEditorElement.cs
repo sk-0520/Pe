@@ -252,7 +252,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             foreach(var item in AllLauncherItems.Where(i => !i.IsLazyLoad)) {
                 var needIconClear = item.SaveItem(contextPack);

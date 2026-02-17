@@ -30,10 +30,10 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.FileFinder
 
         protected override IPreferences CreatePreferences() => new FileFinderPreferences(this);
 
-        protected override void InitializeImpl(IPluginInitializeContext pluginInitializeContext)
+        protected override void InitializeCore(IPluginInitializeContext pluginInitializeContext)
         { }
 
-        protected override void FinalizeImpl(IPluginFinalizeContext pluginFinalizeContext)
+        protected override void FinalizeCore(IPluginFinalizeContext pluginFinalizeContext)
         { }
 
 

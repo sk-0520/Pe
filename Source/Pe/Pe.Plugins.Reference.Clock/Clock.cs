@@ -30,10 +30,10 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock
 
         protected override IPreferences CreatePreferences() => new ClockPreferences(this);
 
-        protected override void InitializeImpl(IPluginInitializeContext pluginInitializeContext)
+        protected override void InitializeCore(IPluginInitializeContext pluginInitializeContext)
         { }
 
-        protected override void FinalizeImpl(IPluginFinalizeContext pluginFinalizeContext)
+        protected override void FinalizeCore(IPluginFinalizeContext pluginFinalizeContext)
         { }
 
 

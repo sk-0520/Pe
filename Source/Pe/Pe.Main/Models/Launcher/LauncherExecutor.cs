@@ -187,7 +187,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                 ShowMode.Hidden => ProcessWindowStyle.Hidden,
                 ShowMode.Maximized => ProcessWindowStyle.Maximized,
                 ShowMode.Minimized => ProcessWindowStyle.Minimized,
-                _ => throw new Exception(customParameter.ShowMode.ToString()),
+                _ => throw new NotImplementedException(customParameter.ShowMode.ToString()),
             };
 
             // 環境変数

@@ -99,7 +99,7 @@ insert into
         #endregion
 
         #region IDisposable Support
-        private bool _disposedValue = false; // 重複する呼び出しを検出するには
+        private bool _disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {

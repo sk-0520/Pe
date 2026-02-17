@@ -1,8 +1,7 @@
-using System;
 using ContentTypeTextNet.Pe.Library.Database;
-using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database
 {
@@ -44,16 +43,16 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
 
         #region function
 
-        protected abstract void ExecuteMainImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation);
-        protected abstract void ExecuteLargeImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation);
-        protected abstract void ExecuteTemporaryImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation);
+        protected abstract void ExecuteMainCore(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation);
+        protected abstract void ExecuteLargeCore(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation);
+        protected abstract void ExecuteTemporaryCore(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation);
 
 
         public void Execute()
         {
-            ExecuteMainImpl(MainContext, StatementLoader, MainContext.Implementation);
-            ExecuteLargeImpl(LargeContext, StatementLoader, LargeContext.Implementation);
-            ExecuteTemporaryImpl(TemporaryContext, StatementLoader, TemporaryContext.Implementation);
+            ExecuteMainCore(MainContext, StatementLoader, MainContext.Implementation);
+            ExecuteLargeCore(LargeContext, StatementLoader, LargeContext.Implementation);
+            ExecuteTemporaryCore(TemporaryContext, StatementLoader, TemporaryContext.Implementation);
         }
 
         #endregion

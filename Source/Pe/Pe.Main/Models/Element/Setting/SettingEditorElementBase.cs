@@ -3,13 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
+using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Manager.Setting;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 {
@@ -72,7 +72,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             IsLoaded = true;
         }
 
-        protected abstract void SaveImpl(IDatabaseContextPack contextPack);
+        protected abstract void SaveCore(IDatabaseContextPack contextPack);
 
         public void Save(IDatabaseContextPack contextPack)
         {
@@ -80,7 +80,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 throw new InvalidOperationException(nameof(IsLoaded));
             }
 
-            SaveImpl(contextPack);
+            SaveCore(contextPack);
         }
 
         protected virtual void ReceiveLauncherItemRemoved(LauncherItemId launcherItemId)

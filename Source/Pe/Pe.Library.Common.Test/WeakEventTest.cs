@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test
@@ -66,9 +61,9 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
     {
         #region property
 
-        public int StrongCount { get; private set; } = 0;
-        public int WeakCount { get; private set; } = 0;
-        public int NoGenericsCount { get; private set; } = 0;
+        public int StrongCount { get; private set; }
+        public int WeakCount { get; private set; }
+        public int NoGenericsCount { get; private set; }
 
         #endregion
 
@@ -109,9 +104,9 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
     {
         #region property
 
-        public int StrongTestCount { get; set; } = 0;
-        public int WeakTestCount { get; set; } = 0;
-        public int NoGenericsTestCount { get; set; } = 0;
+        public int StrongTestCount { get; set; }
+        public int WeakTestCount { get; set; }
+        public int NoGenericsTestCount { get; set; }
 
         #endregion
 

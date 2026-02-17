@@ -24,6 +24,10 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
     { }
 
     [GeneratedException]
+    public partial class DiMemberNotFoundException: DiException
+    { }
+
+    [GeneratedException]
     public partial class DiFunctionMethodNotFoundException: DiException
     { }
 

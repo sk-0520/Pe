@@ -283,13 +283,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                         return true;
 
                     default:
-                        resultException = new Exception($"{nameof(cronPattern)}: {values[0]}");
+                        resultException = new FormatException($"{nameof(cronPattern)}: {values[0]}");
                         resultSetting = default;
                         return false;
                 }
             }
             if(values.Length != 5) {
-                resultException = new Exception($"{nameof(cronPattern)}: {cronPattern} -> {values.Length}");
+                resultException = new FormatException($"{nameof(cronPattern)}: {cronPattern} -> {values.Length}");
                 resultSetting = default;
                 return false;
             }

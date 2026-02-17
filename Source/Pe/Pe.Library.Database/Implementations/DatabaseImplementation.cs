@@ -16,16 +16,16 @@ namespace ContentTypeTextNet.Pe.Library.Database.Implementations
         public string NewLine { get; } = Environment.NewLine;
 
         /// <inheritdoc cref="IDatabaseImplementation.SupportedTransactionDDL"/>
-        public virtual bool SupportedTransactionDDL { get; } = false;
+        public virtual bool SupportedTransactionDDL => false;
         /// <inheritdoc cref="IDatabaseImplementation.SupportedTransactionDML"/>
-        public virtual bool SupportedTransactionDML { get; } = true;
+        public virtual bool SupportedTransactionDML => true;
         /// <inheritdoc cref="IDatabaseImplementation.SupportedTransactionTruncate"/>
-        public virtual bool SupportedTransactionTruncate { get; } = false;
+        public virtual bool SupportedTransactionTruncate => false;
 
         /// <inheritdoc cref="IDatabaseImplementation.SupportedLineComment"/>
-        public virtual bool SupportedLineComment { get; } = true;
+        public virtual bool SupportedLineComment => true;
         /// <inheritdoc cref="IDatabaseImplementation.SupportedBlockComment"/>
-        public virtual bool SupportedBlockComment { get; } = true;
+        public virtual bool SupportedBlockComment => true;
 
         /// <inheritdoc cref="IDatabaseImplementation.LineComments"/>
         public virtual IEnumerable<string> LineComments => new[] { "--", };

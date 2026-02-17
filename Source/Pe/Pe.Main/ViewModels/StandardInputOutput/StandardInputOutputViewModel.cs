@@ -37,9 +37,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
 
         #region variable
 
-        private bool _isTopmost = false;
+        private bool _isTopmost;
         private bool _autoScroll = true;
-        private bool _wordWrap = false;
+        private bool _wordWrap;
         private string _inputValue = string.Empty;
 
         #endregion
@@ -321,16 +321,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
 
         #region SingleModelViewModelBase
 
-        protected override void AttachModelEventsImpl()
+        protected override void AttachModelEventsCore()
         {
-            base.AttachModelEventsImpl();
+            base.AttachModelEventsCore();
 
             Model.PropertyChanged += Model_PropertyChanged;
         }
 
-        protected override void DetachModelEventsImpl()
+        protected override void DetachModelEventsCore()
         {
-            base.DetachModelEventsImpl();
+            base.DetachModelEventsCore();
 
             Model.PropertyChanged -= Model_PropertyChanged;
         }

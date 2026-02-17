@@ -162,7 +162,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #region CustomizeLauncherDetailViewModelBase
 
-        protected override void InitializeImpl()
+        protected override void InitializeCore()
         {
             //Name = Model.Name;
             //Code = Model.Code;

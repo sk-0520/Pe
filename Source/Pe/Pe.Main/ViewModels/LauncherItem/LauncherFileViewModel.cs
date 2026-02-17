@@ -208,9 +208,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 
         #region LauncherItemViewModelBase
 
-        protected override void DetachModelEventsImpl()
+        protected override void DetachModelEventsCore()
         {
-            base.DetachModelEventsImpl();
+            base.DetachModelEventsCore();
 
             PropertyChanged -= LauncherFileViewModel_PropertyChanged;
         }

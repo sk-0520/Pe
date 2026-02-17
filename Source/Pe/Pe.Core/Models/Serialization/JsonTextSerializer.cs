@@ -75,7 +75,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
 
         #region SerializerBase
 
-        protected override TResult LoadImpl<TResult>(Stream stream)
+        protected override TResult LoadCore<TResult>(Stream stream)
         {
             var rawResult = JsonSerializer.Deserialize(stream, typeof(TResult), ReaderOptions ?? DefaultReaderOptions);
             if(rawResult is TResult result) {
@@ -85,7 +85,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
             throw new SerializationException();
         }
 
-        protected override void SaveImpl<TValue>(TValue value, Stream stream)
+        protected override void SaveCore<TValue>(TValue value, Stream stream)
         {
             using(var writer = new Utf8JsonWriter(stream, WriterOptions ?? DefaultWriterOptions)) {
                 JsonSerializer.Serialize(writer, value);

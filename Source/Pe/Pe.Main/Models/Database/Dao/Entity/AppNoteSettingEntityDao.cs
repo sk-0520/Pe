@@ -20,7 +20,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
             public string BackgroundColor { get; set; } = string.Empty;
             public bool IsTopmost { get; set; }
             public string CaptionPosition { get; set; } = string.Empty;
-            public bool ExcludeScreenCapture { get; set; } = false;
+            public bool ExcludeScreenCapture { get; set; }
 
             #endregion
         }

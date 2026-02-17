@@ -240,7 +240,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #region CustomizeLauncherDetailViewModelBase
 
-        protected override void InitializeImpl()
+        protected override void InitializeCore()
         {
             //var data = Model.LoadFileData();
             //Path = data.Path;
