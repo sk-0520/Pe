@@ -1,4 +1,4 @@
-Param(
+﻿Param(
 	[switch] $Fix,
 	[switch] $RunCi,
 	[string] $File = ''
@@ -7,7 +7,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 $imageName = 'sqlfluff/sqlfluff'
-$versionTag = '3.5.0'
+$versionTag = '4.0.4'
 
 
 Import-Module "${PSScriptRoot}/Modules/Project"
