@@ -1,10 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ContentTypeTextNet.Pe.Generator.Throws;
 using ContentTypeTextNet.Pe.Library.CommandLine;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
+#if !DOC_FX
+using ContentTypeTextNet.Pe.Generator.Throws;
+#else
+// docfx 用ダミー
+[System.AttributeUsage(System.AttributeTargets.Class)]
+file sealed class GeneratedExceptionAttribute: System.Attribute
+{
+    public GeneratedExceptionAttribute()
+    { }
+}
+#endif
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {

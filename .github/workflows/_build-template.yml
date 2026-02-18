@@ -171,8 +171,8 @@ jobs:
 
       - name: <Build> Main
         shell: pwsh
-        # 別に無視したいわけじゃないけどソースジェネレータのやつの対応がようわからん
-        continue-on-error: true
+        # # 別に無視したいわけじゃないけどソースジェネレータのやつの対応がようわからん
+        # continue-on-error: true
         run: |
           .\_tools\docfx docfx.json
 
