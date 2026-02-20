@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 
 namespace ContentTypeTextNet.Pe.Library.Common
@@ -14,7 +15,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <summary>
         /// サイズ単位一覧。
         /// </summary>
-        public string[] Units { get; init; } = new[] { "byte", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", }; // YB とか生きている間に見ることあるんだろうか
+        public ReadOnlyCollection<string> Units { get; init; } = ["byte", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB",]; // YB とか生きている間に見ることあるんだろうか
 
         /// <summary>
         /// 1KB のサイズ。

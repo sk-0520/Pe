@@ -28,6 +28,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Plugin.Addon
     /// <summary>
     /// なんだこれ。。。
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1008:列挙型は 0 値を含んでいなければなりません", Justification = "なんだこれ。。。")]
     public enum RunExecuteKind
     {
 

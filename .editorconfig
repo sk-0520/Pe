@@ -75,6 +75,48 @@ dotnet_diagnostic.CA1848.severity = suggestion
 # CsWin32 でいい感じになるんじゃね
 dotnet_diagnostic.CA1838.severity = suggestion
 
+# AnalysisMode: All
+# null 許容参照型チェックで対応するので無視
+dotnet_diagnostic.CA1062.severity = none
+# 演算子オーバーロードはそうする理由があるので無視(なんだがメソッド名の規約分からんのでよくわからんから無視)
+dotnet_diagnostic.CA2225.severity = suggestion
+# これはもういい
+dotnet_diagnostic.CA1813.severity = suggestion
+# いいよこれは
+dotnet_diagnostic.CA1065.severity = silent
+# 名前空間とクラス名が一緒 OK の前提で組んでるのでしゃあない
+dotnet_diagnostic.CA1724.severity = suggestion
+# GeneratedException の兼ね合いもあるので無視
+dotnet_diagnostic.CA1032.severity = silent
+# 収拾がつかん
+dotnet_diagnostic.CA1515.severity = none
+# やー、むり 使用者側で追加・削除する前提で組んでいる
+dotnet_diagnostic.CA1002.severity = suggestion
+# 今後何とかしたいがこれは確認がめんどいので無視
+dotnet_diagnostic.CA1019.severity = suggestion
+# まぁ取得系は Get にしたいので無理にプロパティやらメソッド名を変更する必要はないかと
+dotnet_diagnostic.CA1024.severity = suggestion
+# プロパティに対する明示的な取得処理とかなので無視
+dotnet_diagnostic.CA1721.severity = silent
+# 検査例外ないのに制限できるかい
+dotnet_diagnostic.CA1031.severity = suggestion
+# もはや収拾がつかない
+dotnet_diagnostic.CA2000.severity = suggestion
+# dotnet_code_quality.CA2000.dispose_ownership_transfer_at_constructor = true
+# これも収拾がつかない
+dotnet_diagnostic.CA1030.severity = suggestion
+# これも収拾がつかない!
+dotnet_diagnostic.CA2007.severity = suggestion
+# いろいろ工夫してるようで工夫してない感じもするが工夫している気がするのでOK
+dotnet_diagnostic.CA1851.severity = suggestion
+# CA1054 と対になる微妙処理
+dotnet_diagnostic.CA1056.severity = suggestion
+# なんも理解してないので無視。そもそも明示的実装自体がふわふわしてる
+dotnet_diagnostic.CA1033.severity = suggestion
+# いつか対応する！
+dotnet_diagnostic.CA2008.severity = suggestion
+# いつか対応する！
+dotnet_diagnostic.CA2227.severity = suggestion
 
 spelling_checkable_types = strings,identifiers,comments
 spelling_exclusion_path = .\exclusion.dic
@@ -331,13 +373,22 @@ dotnet_diagnostic.CA1311.severity = warning
 [Source/Pe/Pe.Main/Models/Database/Setupper/*.cs]
 dotnet_diagnostic.CA1707.severity = none
 
+[Source/Pe/Pe.Main/Models/Database/Dao/Entity/*.cs]
+dotnet_diagnostic.CA1034.severity = suggestion
+
 [Source/Pe/Pe.PInvoke/**/*.cs]
 dotnet_diagnostic.CA1051.severity = suggestion
 dotnet_diagnostic.CA1707.severity = silent
 dotnet_diagnostic.CA1852.severity = none
 dotnet_diagnostic.CA1720.severity = silent
+dotnet_diagnostic.CA1008.severity = none
+dotnet_diagnostic.CA1815.severity = none
+dotnet_diagnostic.CA1028.severity = silent
+dotnet_diagnostic.CA1819.severity = suggestion
+dotnet_diagnostic.CA2225.severity = silent
 
-[*Test.cs]
+
+[Source/Pe/**/*Test.cs]
 dotnet_diagnostic.IDE1006.severity = none
 dotnet_diagnostic.CA1050.severity = none
 dotnet_diagnostic.CA1861.severity = suggestion
@@ -348,6 +399,11 @@ dotnet_diagnostic.CA1708.severity = suggestion
 dotnet_diagnostic.CA1707.severity = none
 dotnet_diagnostic.CA1852.severity = silent
 dotnet_diagnostic.CA1720.severity = suggestion
+dotnet_diagnostic.CA1034.severity = suggestion
+dotnet_diagnostic.CA1823.severity = silent
+dotnet_diagnostic.CA5394.severity = suggestion #TODO: 実装側は工夫しないとダメだわ
+dotnet_diagnostic.CA1054.severity = suggestion # くっそめんどい
+dotnet_diagnostic.CA1812.severity = silent
 
 
 # VC

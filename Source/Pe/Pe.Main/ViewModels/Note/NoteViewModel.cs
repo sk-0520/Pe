@@ -687,7 +687,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                         return;
                     }
 
-                    if(r.ResponseFilePaths != null && 0 < r.ResponseFilePaths.Length) {
+                    if(r.ResponseFilePaths != null && 0 < r.ResponseFilePaths.Count) {
                         Model.OpenLinkContent(r.ResponseFilePaths[0], r.Encoding!, false);
                         RaisePropertyChanged(nameof(IsLink));
                         RaisePropertyChanged(nameof(LinkPath));
@@ -707,7 +707,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                         return;
                     }
 
-                    if(r.ResponseFilePaths != null && 0 < r.ResponseFilePaths.Length) {
+                    if(r.ResponseFilePaths != null && 0 < r.ResponseFilePaths.Count) {
                         Model.OpenLinkContent(r.ResponseFilePaths[0], r.Encoding!, true);
                         RaisePropertyChanged(nameof(IsLink));
                         RaisePropertyChanged(nameof(LinkPath));

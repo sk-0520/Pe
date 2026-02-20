@@ -26,6 +26,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1069:列挙値を重複させることはできない")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1712:列挙値の前に型名を付けないでください", Justification = "WindowsAPI")]
+    [Flags]
     public enum DT
     {
         DT_TOP = 0x00000000,

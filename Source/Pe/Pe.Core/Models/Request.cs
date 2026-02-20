@@ -1,10 +1,5 @@
 using System;
-using System.Drawing;
-using System.Reflection.Metadata;
-using System.Windows;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
-using System.Windows.Documents;
-using System.Windows.Forms;
+using System.Collections.Generic;
 using Forms = System.Windows.Forms;
 
 namespace ContentTypeTextNet.Pe.Core.Models
@@ -108,7 +103,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
     public class FileDialogRequestResponse: CancelResponse
     {
-        public string[] ResponseFilePaths { get; set; } = Array.Empty<string>();
+        public IReadOnlyList<string> ResponseFilePaths { get; set; } = Array.Empty<string>();
     }
 
     public class FileOpenDialogRequestParameter: FileDialogRequestParameter

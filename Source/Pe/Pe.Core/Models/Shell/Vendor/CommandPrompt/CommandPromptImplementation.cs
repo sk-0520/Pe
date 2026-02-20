@@ -9,7 +9,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt
 
         public override string EscapeValue(string value)
         {
-            var needQuotation = value == string.Empty;
+            var needQuotation = string.IsNullOrEmpty(value);
             var needHatEscape = false;
 
             needQuotation |= value.Contains(' ');

@@ -60,8 +60,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         {
             var bufferCount = 20 * 1024;
             using var buffer = new DisposableArrayPool<byte>(bufferCount);
-            var rand = new Random();
-            rand.NextBytes(buffer.Items);
+            RandomNumberGenerator.Fill(buffer.Items);
             return ComputeHash(buffer.Items, bufferCount);
         }
 

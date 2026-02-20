@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
@@ -14,6 +12,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// 知らん。
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2346:Flags enumerations zero-value members should be named \"None\"", Justification = "<保留中>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1008:列挙型は 0 値を含んでいなければなりません", Justification = $"None じゃなくて知らんこと({nameof(Unknown)})を明示しておきたい")]
         Unknown = 0b_0000,
         /// <summary>
         /// <see cref="IDisposable.Dispose"/> 時に <see langword="null" /> 設定する目的でセッターを公開。

@@ -34,12 +34,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             : this(collection, collection)
         { }
 
-        ~ObservableCollectionManagerBase()
-        {
-            Dispose(disposing: false);
-        }
-
-
         #region property
 
         /// <summary>

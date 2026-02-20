@@ -171,6 +171,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
         [DataMember]
         [JsonPropertyName("items")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = "なんだこれ")]
         public NewVersionItemData[] Items { get; set; } = Array.Empty<NewVersionItemData>();
 
         #endregion

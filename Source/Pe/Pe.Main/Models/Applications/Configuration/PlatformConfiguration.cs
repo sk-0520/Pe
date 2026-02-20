@@ -5,38 +5,34 @@ using Microsoft.Extensions.Configuration;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
 {
+    public class PlatformFullscreenConfiguration: ConfigurationBase
+    {
+        public PlatformFullscreenConfiguration(IConfigurationSection section)
+            : base(section)
+        { }
+
+        #region property
+
+        [Configuration("ignore_window_class")]
+        public IReadOnlyList<string> IgnoreWindowClasses { get; } = default!;
+        [Configuration("ignore_window_class_text", nestConvertMethodName: nameof(ConvertClassAndText))]
+        public IReadOnlyList<ClassAndText> IgnoreClassAndTexts { get; } = default!;
+
+        [Configuration]
+        public bool TopmostOnly { get; }
+        [Configuration("exclude_noactive")]
+        public bool ExcludeNoActive { get; }
+        [Configuration("exclude_toolwindow")]
+        public bool ExcludeToolWindow { get; }
+
+        #endregion
+    }
+
     /// <summary>
     /// アプリケーション構成: 実行環境。
     /// </summary>
     public class PlatformConfiguration: ConfigurationBase
     {
-        #region define
-
-        public class PlatformFullscreenConfiguration: ConfigurationBase
-        {
-            public PlatformFullscreenConfiguration(IConfigurationSection section)
-                : base(section)
-            { }
-
-            #region property
-
-            [Configuration("ignore_window_class")]
-            public IReadOnlyList<string> IgnoreWindowClasses { get; } = default!;
-            [Configuration("ignore_window_class_text", nestConvertMethodName: nameof(ConvertClassAndText))]
-            public IReadOnlyList<ClassAndText> IgnoreClassAndTexts { get; } = default!;
-
-            [Configuration]
-            public bool TopmostOnly { get; }
-            [Configuration("exclude_noactive")]
-            public bool ExcludeNoActive { get; }
-            [Configuration("exclude_toolwindow")]
-            public bool ExcludeToolWindow { get; }
-
-            #endregion
-        }
-
-        #endregion
-
         public PlatformConfiguration(IConfigurationSection section)
             : base(section)
         {

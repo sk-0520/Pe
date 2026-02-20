@@ -87,7 +87,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     /// <summary>
     /// 修飾キーが押されているか。
     /// </summary>
-    public readonly struct ModifierKeyState
+    public readonly record struct ModifierKeyState
     {
         public ModifierKeyState(bool left, bool right)
         {
@@ -124,7 +124,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         #endregion
     }
 
-    public readonly struct ModifierKeyStatus
+    public readonly record struct ModifierKeyStatus
     {
         #region variable
 

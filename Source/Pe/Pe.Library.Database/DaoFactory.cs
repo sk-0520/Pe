@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
@@ -36,6 +37,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         protected IDatabaseContext Context { get; }
         protected IDatabaseStatementLoader StatementLoader { get; }
         protected ILoggerFactory LoggerFactory { get; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = $"{nameof(ConstructorInfo.Invoke)}が配列しか受け取らん")]
         protected object[] ConstructorParameters { get; }
 
         #endregion

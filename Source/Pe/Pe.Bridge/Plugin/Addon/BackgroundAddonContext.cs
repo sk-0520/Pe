@@ -5,6 +5,7 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 
 namespace ContentTypeTextNet.Pe.Bridge.Plugin.Addon
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1040:空のインターフェイスは使用しません", Justification = "実装方針が決まってない")]
     public interface IBackgroundAddonRunStartupContext
     { }
 
@@ -19,6 +20,8 @@ namespace ContentTypeTextNet.Pe.Bridge.Plugin.Addon
 
         #endregion
     }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1040:空のインターフェイスは使用しません", Justification = "実装方針が決まってない")]
     public interface IBackgroundAddonRunShutdownContext
     { }
 

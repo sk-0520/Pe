@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Text;
 using Microsoft.CodeAnalysis;
-using ContentTypeTextNet.Pe.Generator;
 
 namespace ContentTypeTextNet.Pe.Generator.Id
 {
@@ -26,6 +23,7 @@ namespace ContentTypeTextNet.Pe.Generator.Id
 
 namespace {{attributeNamespace}}
 {
+    [System.Serializable]
     [{{sourceBuilder.ToCode<System.AttributeUsageAttribute>()}}({{sourceBuilder.ToCode(attributeTarget)}}, AllowMultiple = false)]
     internal sealed class {{attributeName}}: {{sourceBuilder.ToCode<System.Attribute>()}}
     {
@@ -168,7 +166,7 @@ readonly partial record struct {{targetName}}
 }
 
 """;
-                var sourceFileName =  sourceBuilder.ToSourceFilePath(targetSymbol);
+                var sourceFileName = sourceBuilder.ToSourceFilePath(targetSymbol);
                 context.AddSource(sourceFileName, source);
             }
         }

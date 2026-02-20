@@ -31,6 +31,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1712:列挙値の前に型名を付けないでください", Justification = "WindowsAPI")]
+    [Flags]
     public enum SHOP: uint
     {
         /// <summary>

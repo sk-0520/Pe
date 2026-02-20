@@ -29,6 +29,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 
         #region function
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1849:非同期メソッドの場合に非同期メソッドを呼び出す", Justification = "async しない前提の実装")]
         public Task LoadAndSaveAsync(IconScale iconScale, CancellationToken cancellationToken)
         {
             // アイコンパス取得

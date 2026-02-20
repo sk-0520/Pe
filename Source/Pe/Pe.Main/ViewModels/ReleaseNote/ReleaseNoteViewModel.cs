@@ -89,7 +89,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ReleaseNote
                     Logger.LogTrace("closed");
                     return;
                 }
-                var htmlSource = releaseNoteTask.Result;
+                var htmlSource = await releaseNoteTask;
                 view.webView.NavigateToString(htmlSource);
 
             } catch(Exception ex) {

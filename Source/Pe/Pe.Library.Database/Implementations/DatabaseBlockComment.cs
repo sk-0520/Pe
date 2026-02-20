@@ -6,7 +6,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Implementations
     /// <remarks>
     /// <para>あえてなんかすることはないはず。</para>
     /// </remarks>
-    public readonly struct DatabaseBlockComment
+    public readonly record struct DatabaseBlockComment
     {
         /// <summary>
         ///

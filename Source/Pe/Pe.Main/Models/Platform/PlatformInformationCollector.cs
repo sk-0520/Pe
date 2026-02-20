@@ -6,13 +6,11 @@ using System.Management;
 using System.Reflection;
 using System.Text;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.PInvoke.Windows;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Platform
 {
-    public struct PlatformInformationItem
+    public readonly record struct PlatformInformationItem
     {
         public PlatformInformationItem(string key, object? value)
         {

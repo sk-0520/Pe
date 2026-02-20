@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Linq
 {
@@ -7,7 +7,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
     /// </summary>
     /// <typeparam name="TNumber"></typeparam>
     /// <typeparam name="TElement"></typeparam>
-    public readonly struct CountingItem<TNumber, TElement>
+    public readonly record struct CountingItem<TNumber, TElement>
         where TNumber : struct
     {
         internal CountingItem(TNumber number, TElement element)

@@ -1,15 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 
@@ -20,9 +13,11 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.FileFinder.Addon
         #region define
 
         [DllImport("shell32.dll")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
         private static extern IntPtr ExtractAssociatedIcon(IntPtr hInst, StringBuilder lpIconPath, out ushort lpiIcon);
 
-        [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
         private extern static bool DestroyIcon(IntPtr handle);
 
         #endregion

@@ -158,7 +158,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
             var prevInputCancellationTokenSource = InputCancellationTokenSource;
             if(prevInputCancellationTokenSource != null) {
                 Logger.LogDebug("入力中の何かしらをキャンセル");
-                prevInputCancellationTokenSource?.Cancel();
+#pragma warning disable CA1849 // ここは同期なんです
+                prevInputCancellationTokenSource.Cancel();
+#pragma warning restore CA1849
             }
 
             InputCancellationTokenSource = new CancellationTokenSource();
@@ -176,7 +178,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Command
 #endif
 
                 var commandItems = await Model.EnumerateCommandItemsAsync(this._inputValue, InputCancellationTokenSource.Token);
-                InputCancellationTokenSource?.Dispose();
+                InputCancellationTokenSource.Dispose();
                 InputCancellationTokenSource = null;
 #if DEBUG
                 ContextDispatcher.VerifyAccess();

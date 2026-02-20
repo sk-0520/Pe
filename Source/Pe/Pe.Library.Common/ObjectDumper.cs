@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
-    public struct ObjectDumpItem
+    public readonly record struct ObjectDumpItem
     {
         public ObjectDumpItem(MemberInfo memberInfo, object? value, IReadOnlyList<ObjectDumpItem> children)
         {

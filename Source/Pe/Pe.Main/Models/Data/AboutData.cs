@@ -8,9 +8,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
     {
         #region property
         [DataMember(Name = "library")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = "ライセンス出力処理と合わせたい思いで無視")]
         public AboutComponentData[] Library { get; set; } = Array.Empty<AboutComponentData>();
 
         [DataMember(Name = "resource")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = "ライセンス出力処理と合わせたい思いで無視")]
         public AboutComponentData[] Resource { get; set; } = Array.Empty<AboutComponentData>();
         #endregion
     }

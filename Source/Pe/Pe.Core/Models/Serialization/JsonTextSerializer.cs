@@ -1,7 +1,5 @@
 using System;
-using System.Buffers;
 using System.IO;
-using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -14,6 +12,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
     {
         #region define
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:入れ子にされた型を参照可能にすることはできません", Justification = "<保留中>")]
         public class VersionConverter: JsonConverter<Version>
         {
             public override Version Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

@@ -130,6 +130,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         /// <param name="pluginId">プラグインID。</param>
         /// <param name="pluginVersion">プラグインバージョン。</param>
         /// <returns>構築したURI。構築できなかった場合は<see langword="null" /></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1054:URI 類似のパラメーターを文字列にすることはできません", Justification = $"{nameof(baseUrl)}の対応は将来実施")]
         protected internal Uri? BuildPluginUri(string baseUrl, PluginId pluginId, Version pluginVersion)
         {
             if(string.IsNullOrWhiteSpace(baseUrl)) {

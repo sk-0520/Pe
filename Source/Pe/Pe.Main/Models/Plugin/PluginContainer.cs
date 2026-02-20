@@ -245,10 +245,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                 // コンストラクタ時にメモリログが参照に残るのを抑制
                 using(pauseReceiveLog()) {
                     var pluginInstance = Activator.CreateInstance(pluginInterfaceImpl, new[] { pluginConstructorContext });
-                    if(pluginInstance == null) {
+                    if(pluginInstance is null) {
                         throw new PluginInvalidAssemblyException($"{nameof(Activator)}.{nameof(Activator.CreateInstance)}失敗");
                     }
-                    plugin = (IPlugin)pluginInstance ?? throw new PluginInvalidAssemblyException($"{nameof(IPlugin)}へのキャスト失敗: {pluginInstance}");
+                    plugin = pluginInstance as IPlugin ?? throw new PluginInvalidAssemblyException($"{nameof(IPlugin)}へのキャスト失敗: {pluginInstance}");
                     pluginInformation = plugin.PluginInformation;
                 }
             } catch(Exception ex) {

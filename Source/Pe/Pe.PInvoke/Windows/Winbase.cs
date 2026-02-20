@@ -26,6 +26,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
     /// </summary>
     /// <seealso href="https://docs.microsoft.com/ja-jp/windows/win32/menurc/resource-types"/>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1712:列挙値の前に型名を付けないでください", Justification = "WindowsAPI")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1027:列挙型を FlagsAttribute に設定します", Justification = "フラグじゃなさそう")]
     public enum RT
     {
         /// <summary>

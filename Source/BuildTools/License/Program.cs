@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace License
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1052:スタティック ホルダー型は Static または NotInheritable でなければなりません", Justification = "ビルド時しか使わん！")]
     public class Program
     {
         public static async Task Main(string[] args)

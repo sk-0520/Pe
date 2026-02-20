@@ -27,6 +27,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         #region function
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5389:アーカイブ項目のパスをターゲット ファイル システム パスに追加しない", Justification = "ExtractToFile なんだけど色々あるので無視")]
         private void ExtractZip(FileInfo archiveFile, DirectoryInfo extractDirectory, UserNotifyProgress userNotifyProgress)
         {
             var createdDirs = new HashSet<string>();

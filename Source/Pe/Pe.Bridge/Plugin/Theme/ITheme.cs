@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Plugin.Theme
         Notify,
     }
 
-    public readonly struct ColorPair<T>
+    public readonly record struct ColorPair<T>
     {
         public ColorPair(T foreground, T background)
         {

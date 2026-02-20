@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
@@ -34,7 +31,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable, DataContract]
-    public readonly struct MinMax<T>: IReadOnlyMinMax<T>
+    public readonly record struct MinMax<T>: IReadOnlyMinMax<T>
         where T : IComparable<T>
     {
         public MinMax(T minimum, T maximum)
@@ -130,7 +127,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Serializable, DataContract]
-    public readonly struct MinMaxDefault<T>: IReadOnlyMinMaxDefault<T>
+    public readonly record struct MinMaxDefault<T>: IReadOnlyMinMaxDefault<T>
         where T : IComparable<T>
     {
         public MinMaxDefault(T minimum, T maximum, T defaultValue)

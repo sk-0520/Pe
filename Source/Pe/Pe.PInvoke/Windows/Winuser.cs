@@ -1930,6 +1930,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1712:列挙値の前に型名を付けないでください", Justification = "WindowsAPI")]
+    [Flags]
     public enum MK
     {
         /// <summary>
@@ -2051,6 +2052,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
 
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1712:列挙値の前に型名を付けないでください", Justification = "WindowsAPI")]
+    [Flags]
     public enum CWP: uint
     {
         CWP_ALL = 0x0000,
@@ -2333,6 +2335,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1712:列挙値の前に型名を付けないでください", Justification = "<保留中>")]
+    [Flags]
     public enum MF: uint
     {
         MF_BYCOMMAND = 0x00000000,

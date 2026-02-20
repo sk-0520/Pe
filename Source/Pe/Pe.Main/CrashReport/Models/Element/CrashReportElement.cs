@@ -91,7 +91,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Element
                 // 失敗時にリフレッシュしたいので毎回生成する
                 try {
                     using(var httpClient = new HttpClient()) {
-                        var result = await httpClient.PostAsync(Options.PostUri, content, cancellationToken);
+                        var result = await httpClient.PostAsync(new Uri(Options.PostUri), content, cancellationToken);
                         if(result.IsSuccessStatusCode) {
                             Logger.LogInformation("送信完了");
                             var rawResponse = await result.Content.ReadAsStringAsync(cancellationToken);

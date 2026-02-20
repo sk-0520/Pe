@@ -22,7 +22,7 @@
         <InvariantGlobalization>true</InvariantGlobalization>
         <PredefinedCulturesOnly>false</PredefinedCulturesOnly>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-        <AnalysisMode>Recommended</AnalysisMode>
+        <AnalysisMode>All</AnalysisMode>
   </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">

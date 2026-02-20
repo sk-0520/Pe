@@ -7147,6 +7147,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
 #endif
         static DirCodes dirCodes;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2207:値型の静的フィールドをインラインで初期化します", Justification = "PInvoke.net 産はすべて許される")]
         static HRESULT()
         {
             dirCodes = new DirCodes(1280);

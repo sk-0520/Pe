@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Mvvm.ViewModels;
 
 namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 {
@@ -14,8 +10,9 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
     /// <typeparam name="TViewModel"></typeparam>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:入れ子にされた型を参照可能にすることはできません", Justification = "ジェネリクスめんどいねん")]
     public class ModelViewModelObservableCollectionOptions<TModel, TViewModel>
-        where TViewModel : INotifyPropertyChanged
+    where TViewModel : INotifyPropertyChanged
     {
         #region define
 

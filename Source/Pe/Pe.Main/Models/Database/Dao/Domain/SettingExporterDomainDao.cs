@@ -34,7 +34,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Domain
             public string Comment { get; set; } = string.Empty;
         }
 
-        public record class SettingNoteDto(
+        private sealed record class SettingNoteDto(
             NoteId NoteId,
             string Title,
             string ScreenName,

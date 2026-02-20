@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -272,14 +273,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                     case "@hourly":
                         resultException = default;
                         resultSetting = new CronItemSetting();
-                        resultSetting.Minutes.Add(Random.Next(1, 59));
+                        resultSetting.Minutes.Add(RandomNumberGenerator.GetInt32(1, 59));
                         return true;
 
                     case "@daily":
                         resultException = default;
                         resultSetting = new CronItemSetting();
-                        resultSetting.Minutes.Add(Random.Next(1, 59));
-                        resultSetting.Hours.Add(Random.Next(0, 23));
+                        resultSetting.Minutes.Add(RandomNumberGenerator.GetInt32(1, 59));
+                        resultSetting.Hours.Add(RandomNumberGenerator.GetInt32(0, 23));
                         return true;
 
                     default:
@@ -420,7 +421,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                             var cts = CancellationTokenSource;
                             if(cts != null) {
                                 try {
+#pragma warning disable CA1849 // ここは同期なんです
                                     cts.Cancel();
+#pragma warning restore CA1849
                                 } catch(Exception ex) {
                                     Logger.LogError(ex, "ジョブキャンセル失敗のため未実行, {Message}, {ScheduleJobId}", ex.Message, ScheduleJobId);
                                     return Task.CompletedTask;

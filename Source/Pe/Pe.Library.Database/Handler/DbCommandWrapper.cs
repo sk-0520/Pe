@@ -77,6 +77,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         public override string CommandText
         {
             get => BaseCommand.CommandText;
+            [SuppressMessage("Security", "CA2100:SQL クエリのセキュリティ脆弱性を確認", Justification = "本クラスはただのラッパーなので元クラス側で対応すべき(対象DB自体も知らんし)")]
             set => BaseCommand.CommandText = value;
         }
 

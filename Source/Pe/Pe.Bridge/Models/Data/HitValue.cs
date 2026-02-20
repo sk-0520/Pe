@@ -3,7 +3,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models.Data
     /// <summary>
     /// 該当状態文字列。
     /// </summary>
-    public readonly struct HitValue
+    public readonly record struct HitValue
     {
         /// <summary>
         ///

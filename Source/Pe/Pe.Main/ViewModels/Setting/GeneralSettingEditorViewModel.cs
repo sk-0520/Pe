@@ -124,50 +124,46 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
         #endregion
     }
 
-    public sealed class AppGeneralSettingEditorViewModel: GeneralSettingEditorViewModelBase<AppGeneralSettingEditorElement>
+    public class ThemePluginItemViewModel: ViewModelBase
     {
-        #region define
-
-        public class ThemePluginItemViewModel: ViewModelBase
+        public ThemePluginItemViewModel(IPlugin plugin, IImageLoader imageLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
-            public ThemePluginItemViewModel(IPlugin plugin, IImageLoader imageLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
-                : base(loggerFactory)
+            Plugin = plugin;
+            ImageLoader = imageLoader;
+            ContextDispatcher = contextDispatcher;
+        }
+
+        #region property
+
+        IPlugin Plugin { get; }
+        IImageLoader ImageLoader { get; }
+        IContextDispatcher ContextDispatcher { get; }
+
+        public string Name => Plugin.PluginInformation.PluginIdentifiers.PluginName;
+        public PluginId Id => Plugin.PluginInformation.PluginIdentifiers.PluginId;
+
+        public DependencyObject PluginIcon
+        {
+            get
             {
-                Plugin = plugin;
-                ImageLoader = imageLoader;
-                ContextDispatcher = contextDispatcher;
+                return ContextDispatcher.Get(() => {
+                    try {
+                        var scale = ImageLoader.GetPrimaryDpiScale();
+                        return Plugin.GetIcon(ImageLoader, new IconScale(IconBox.Small, scale));
+                    } catch(Exception ex) {
+                        Logger.LogError(ex, "[{PluginName}] {Message}, {PluginId}", Plugin.PluginInformation.PluginIdentifiers.PluginName, ex.Message, Plugin.PluginInformation.PluginIdentifiers.PluginId);
+                        return null!;
+                    }
+                });
             }
-
-            #region property
-
-            IPlugin Plugin { get; }
-            IImageLoader ImageLoader { get; }
-            IContextDispatcher ContextDispatcher { get; }
-
-            public string Name => Plugin.PluginInformation.PluginIdentifiers.PluginName;
-            public PluginId Id => Plugin.PluginInformation.PluginIdentifiers.PluginId;
-
-            public DependencyObject PluginIcon
-            {
-                get
-                {
-                    return ContextDispatcher.Get(() => {
-                        try {
-                            var scale = ImageLoader.GetPrimaryDpiScale();
-                            return Plugin.GetIcon(ImageLoader, new IconScale(IconBox.Small, scale));
-                        } catch(Exception ex) {
-                            Logger.LogError(ex, "[{PluginName}] {Message}, {PluginId}", Plugin.PluginInformation.PluginIdentifiers.PluginName, ex.Message, Plugin.PluginInformation.PluginIdentifiers.PluginId);
-                            return null!;
-                        }
-                    });
-                }
-            }
-
-            #endregion
         }
 
         #endregion
+    }
 
+    public sealed class AppGeneralSettingEditorViewModel: GeneralSettingEditorViewModelBase<AppGeneralSettingEditorElement>
+    {
         public AppGeneralSettingEditorViewModel(AppGeneralSettingEditorElement model, IReadOnlyCollection<string> cultureNames, IImageLoader imageLoader, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
             : base(model, contextDispatcher, loggerFactory)
         {

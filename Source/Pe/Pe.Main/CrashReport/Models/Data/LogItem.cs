@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
@@ -48,6 +47,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Data
         public string Level { get; set; } = string.Empty;
         [DataMember]
         [JsonPropertyName("stack_trace")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = "なんかよくわからんがヨシ！")]
         public string[] StackTrace { get; set; } = Array.Empty<string>();
         //[DataMember]
         //[JsonPropertyName("sequence_id")]
@@ -87,7 +87,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models.Data
                 LoggerName = logEventInfo.LoggerName,
                 FormattedMessage = logEventInfo.FormattedMessage,
                 Message = logEventInfo.Message,
-                StackTrace = logEventInfo.StackTrace is not null ? TextUtility.ReadLines(logEventInfo.StackTrace.ToString()).Skip(logEventInfo.CallerLineNumber).ToArray(): [],
+                StackTrace = logEventInfo.StackTrace is not null ? TextUtility.ReadLines(logEventInfo.StackTrace.ToString()).Skip(logEventInfo.CallerLineNumber).ToArray() : [],
                 Level = Convert(logEventInfo.Level),
                 //SequenceID = logEventInfo.SequenceID,
                 TimeStamp = logEventInfo.TimeStamp.ToUniversalTime(),

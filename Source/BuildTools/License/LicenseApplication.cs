@@ -155,7 +155,9 @@ namespace License
             // キャッシュコンテキスト
             using var cache = new SourceCacheContext();
 
+#pragma warning disable CA2025 // await Task.WhenAll してるので多分よし
             var metadataTasks = nugetPackageItems.Select(a => GetMetadataAsync(a, metadataResource, cache, cancellationToken));
+#pragma warning restore CA2025
             var metadatas = (await Task.WhenAll(metadataTasks)).OrderBy(a => a.Identity.Id).ToArray();
 
             var component = await ReadComponentFileAsync(Options.BaseJson, cancellationToken);

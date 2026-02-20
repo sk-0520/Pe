@@ -324,6 +324,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #region property
 
         private ArrayPool<T> Pool { get; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = "Index を使わないパターンのプロパティ")]
         public T[] Items { get; }
         public int Length { get; }
 
@@ -365,6 +366,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #region property
 
         private ArrayPool<T> Pool { get; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = "Index を使わないパターンのプロパティ")]
         public T[] Items { get; }
         public int Length { get; }
 

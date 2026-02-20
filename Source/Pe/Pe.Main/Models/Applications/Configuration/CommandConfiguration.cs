@@ -5,39 +5,36 @@ using Microsoft.Extensions.Configuration;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
 {
+
+    public class ApplicationCommandConfiguration: ConfigurationBase
+    {
+        public ApplicationCommandConfiguration(IConfiguration conf) : base(conf)
+        {
+        }
+
+        #region property
+
+        [Configuration]
+        public string Prefix { get; } = default!;
+        [Configuration]
+        public string Separator { get; } = default!;
+        [Configuration]
+        public IReadOnlyDictionary<ApplicationCommand, string> Mapping { get; } = default!;
+
+        /// <summary>
+        /// 例外送出機能を有効にするか。
+        /// </summary>
+        [Configuration]
+        public bool IsEnabledException { get; }
+
+        #endregion
+    }
+
     /// <summary>
     /// アプリケーション構成: コマンド。
     /// </summary>
     public class CommandConfiguration: ConfigurationBase
     {
-        #region define
-
-        public class ApplicationCommandConfiguration: ConfigurationBase
-        {
-            public ApplicationCommandConfiguration(IConfiguration conf) : base(conf)
-            {
-            }
-
-            #region property
-
-            [Configuration]
-            public string Prefix { get; } = default!;
-            [Configuration]
-            public string Separator { get; } = default!;
-            [Configuration]
-            public IReadOnlyDictionary<ApplicationCommand, string> Mapping { get; } = default!;
-
-            /// <summary>
-            /// 例外送出機能を有効にするか。
-            /// </summary>
-            [Configuration]
-            public bool IsEnabledException { get; }
-
-            #endregion
-        }
-
-        #endregion
-
         public CommandConfiguration(IConfigurationSection section)
             : base(section)
         { }
