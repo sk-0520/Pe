@@ -40,83 +40,6 @@ dotnet_style_allow_multiple_blank_lines_experimental = true:warning
 dotnet_style_allow_statement_immediately_after_block_experimental = true:warning
 dotnet_style_predefined_type_for_locals_parameters_members = true:silent
 dotnet_style_predefined_type_for_member_access = true:suggestion
-dotnet_diagnostic.CA2231.severity = warning
-dotnet_diagnostic.CA2219.severity = warning
-dotnet_diagnostic.CA1018.severity = warning
-dotnet_diagnostic.CA1068.severity = warning
-dotnet_diagnostic.CA1419.severity = warning
-dotnet_diagnostic.CA1710.severity = warning
-#dotnet_diagnostic.CA1711.severity = warning
-dotnet_diagnostic.CA1712.severity = warning
-dotnet_diagnostic.CA1715.severity = warning
-dotnet_diagnostic.CA1416.severity = suggestion
-dotnet_diagnostic.CA1304.severity = warning
-dotnet_diagnostic.CA1305.severity = warning
-
-# AnalysisMode: Minimum
-# ログ出力の判定コストは気にしない
-dotnet_diagnostic.CA1873.severity = suggestion
-# P/Invoke はまとめておきたいので無視。将来的に CsWin32 に置き換え案あり → #944
-dotnet_diagnostic.CA1401.severity = suggestion
-# 抽象化しておきたいので無視。どうしても速度的な問題があれば対応するが、この程度のアプリでそれはない
-dotnet_diagnostic.CA1859.severity = suggestion
-# 一個一個の挙動はいいけど全体でみるとしんどいので一旦無視
-dotnet_diagnostic.CA2263.severity = suggestion
-# カルチャ系処理のテストが分からんので一旦無視（という保留）
-dotnet_diagnostic.CA1824.severity = none
-
-# AnalysisMode: Recommended
-# 今さら修正は無理
-dotnet_diagnostic.CA1716.severity = suggestion
-# Delegate は単純に引数名を定義したいだけなので型名として Delegate は許可する
-dotnet_code_quality.CA1711.allowed_suffixes = Delegate
-# CA1873 的な理由で無視
-dotnet_diagnostic.CA1848.severity = suggestion
-# CsWin32 でいい感じになるんじゃね
-dotnet_diagnostic.CA1838.severity = suggestion
-
-# AnalysisMode: All
-# null 許容参照型チェックで対応するので無視
-dotnet_diagnostic.CA1062.severity = none
-# 演算子オーバーロードはそうする理由があるので無視(なんだがメソッド名の規約分からんのでよくわからんから無視)
-dotnet_diagnostic.CA2225.severity = suggestion
-# これはもういい
-dotnet_diagnostic.CA1813.severity = suggestion
-# いいよこれは
-dotnet_diagnostic.CA1065.severity = silent
-# 名前空間とクラス名が一緒 OK の前提で組んでるのでしゃあない
-dotnet_diagnostic.CA1724.severity = suggestion
-# GeneratedException の兼ね合いもあるので無視
-dotnet_diagnostic.CA1032.severity = silent
-# 収拾がつかん
-dotnet_diagnostic.CA1515.severity = none
-# やー、むり 使用者側で追加・削除する前提で組んでいる
-dotnet_diagnostic.CA1002.severity = suggestion
-# 今後何とかしたいがこれは確認がめんどいので無視
-dotnet_diagnostic.CA1019.severity = suggestion
-# まぁ取得系は Get にしたいので無理にプロパティやらメソッド名を変更する必要はないかと
-dotnet_diagnostic.CA1024.severity = suggestion
-# プロパティに対する明示的な取得処理とかなので無視
-dotnet_diagnostic.CA1721.severity = silent
-# 検査例外ないのに制限できるかい
-dotnet_diagnostic.CA1031.severity = suggestion
-# もはや収拾がつかない
-dotnet_diagnostic.CA2000.severity = suggestion
-# dotnet_code_quality.CA2000.dispose_ownership_transfer_at_constructor = true
-# これも収拾がつかない
-dotnet_diagnostic.CA1030.severity = suggestion
-# これも収拾がつかない!
-dotnet_diagnostic.CA2007.severity = suggestion
-# いろいろ工夫してるようで工夫してない感じもするが工夫している気がするのでOK
-dotnet_diagnostic.CA1851.severity = suggestion
-# CA1054 と対になる微妙処理
-dotnet_diagnostic.CA1056.severity = suggestion
-# なんも理解してないので無視。そもそも明示的実装自体がふわふわしてる
-dotnet_diagnostic.CA1033.severity = suggestion
-# いつか対応する！
-dotnet_diagnostic.CA2008.severity = suggestion
-# いつか対応する！
-dotnet_diagnostic.CA2227.severity = suggestion
 
 spelling_checkable_types = strings,identifiers,comments
 spelling_exclusion_path = .\exclusion.dic
@@ -204,6 +127,84 @@ dotnet_diagnostic.CA1822.severity = silent
 dotnet_diagnostic.CA1825.severity = warning
 # CA1041: ObsoleteAttribute メッセージを指定します
 dotnet_diagnostic.CA1041.severity = none
+
+dotnet_diagnostic.CA2231.severity = warning
+dotnet_diagnostic.CA2219.severity = warning
+dotnet_diagnostic.CA1018.severity = warning
+dotnet_diagnostic.CA1068.severity = warning
+dotnet_diagnostic.CA1419.severity = warning
+dotnet_diagnostic.CA1710.severity = warning
+#dotnet_diagnostic.CA1711.severity = warning
+dotnet_diagnostic.CA1712.severity = warning
+dotnet_diagnostic.CA1715.severity = warning
+dotnet_diagnostic.CA1416.severity = suggestion
+dotnet_diagnostic.CA1304.severity = warning
+dotnet_diagnostic.CA1305.severity = warning
+
+# AnalysisMode: Minimum
+# ログ出力の判定コストは気にしない
+dotnet_diagnostic.CA1873.severity = suggestion
+# P/Invoke はまとめておきたいので無視。将来的に CsWin32 に置き換え案あり → #944
+dotnet_diagnostic.CA1401.severity = suggestion
+# 抽象化しておきたいので無視。どうしても速度的な問題があれば対応するが、この程度のアプリでそれはない
+dotnet_diagnostic.CA1859.severity = suggestion
+# 一個一個の挙動はいいけど全体でみるとしんどいので一旦無視
+dotnet_diagnostic.CA2263.severity = suggestion
+# カルチャ系処理のテストが分からんので一旦無視（という保留）
+dotnet_diagnostic.CA1824.severity = none
+
+# AnalysisMode: Recommended
+# 今さら修正は無理
+dotnet_diagnostic.CA1716.severity = suggestion
+# Delegate は単純に引数名を定義したいだけなので型名として Delegate は許可する
+dotnet_code_quality.CA1711.allowed_suffixes = Delegate
+# CA1873 的な理由で無視
+dotnet_diagnostic.CA1848.severity = suggestion
+# CsWin32 でいい感じになるんじゃね
+dotnet_diagnostic.CA1838.severity = suggestion
+
+# AnalysisMode: All
+# null 許容参照型チェックで対応するので無視
+dotnet_diagnostic.CA1062.severity = none
+# 演算子オーバーロードはそうする理由があるので無視(なんだがメソッド名の規約分からんのでよくわからんから無視)
+dotnet_diagnostic.CA2225.severity = suggestion
+# これはもういい
+dotnet_diagnostic.CA1813.severity = suggestion
+# いいよこれは
+dotnet_diagnostic.CA1065.severity = silent
+# 名前空間とクラス名が一緒 OK の前提で組んでるのでしゃあない
+dotnet_diagnostic.CA1724.severity = suggestion
+# GeneratedException の兼ね合いもあるので無視
+dotnet_diagnostic.CA1032.severity = silent
+# 収拾がつかん
+dotnet_diagnostic.CA1515.severity = none
+# やー、むり 使用者側で追加・削除する前提で組んでいる
+dotnet_diagnostic.CA1002.severity = suggestion
+# 今後何とかしたいがこれは確認がめんどいので無視
+dotnet_diagnostic.CA1019.severity = suggestion
+# まぁ取得系は Get にしたいので無理にプロパティやらメソッド名を変更する必要はないかと
+dotnet_diagnostic.CA1024.severity = suggestion
+# プロパティに対する明示的な取得処理とかなので無視
+dotnet_diagnostic.CA1721.severity = silent
+# 検査例外ないのに制限できるかい
+dotnet_diagnostic.CA1031.severity = suggestion
+# もはや収拾がつかない
+dotnet_diagnostic.CA2000.severity = suggestion
+# dotnet_code_quality.CA2000.dispose_ownership_transfer_at_constructor = true
+# これも収拾がつかない
+dotnet_diagnostic.CA1030.severity = suggestion
+# これも収拾がつかない!
+dotnet_diagnostic.CA2007.severity = suggestion
+# いろいろ工夫してるようで工夫してない感じもするが工夫している気がするのでOK
+dotnet_diagnostic.CA1851.severity = suggestion
+# CA1054 と対になる微妙処理
+dotnet_diagnostic.CA1056.severity = suggestion
+# なんも理解してないので無視。そもそも明示的実装自体がふわふわしてる
+dotnet_diagnostic.CA1033.severity = suggestion
+# いつか対応する！
+dotnet_diagnostic.CA2008.severity = suggestion
+# いつか対応する！
+dotnet_diagnostic.CA2227.severity = suggestion
 
 # ClrHeapAllocationAnalyzer ----------------------------------------------------
 # HAA0301: Closure Allocation Source
