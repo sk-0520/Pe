@@ -23,7 +23,7 @@
         <PredefinedCulturesOnly>false</PredefinedCulturesOnly>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <AnalysisMode>All</AnalysisMode>
-  </PropertyGroup>
+    </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)'=='Debug'">
         <DefineConstants>TRACE;DEBUG</DefineConstants>
@@ -43,6 +43,12 @@
         <DefineConstants>OS_MAC</DefineConstants>
     </PropertyGroup>
 
+    <ItemGroup Condition="$(MSBuildProjectName.StartsWith('Pe.Library.'))">
+        <SupportedPlatform Include="Windows" />
+        <SupportedPlatform Include="Linux" />
+        <SupportedPlatform Include="macOS" />
+    </ItemGroup>
+
     <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
         <Compile Remove="TestResults\**" />
         <EmbeddedResource Remove="TestResults\**" />
@@ -61,8 +67,8 @@
         </PackageReference>
         <PackageReference Include="xunit.v3" />
         <PackageReference Include="xunit.v3.runner.msbuild">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 </Project>
