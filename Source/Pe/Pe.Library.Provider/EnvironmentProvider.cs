@@ -26,6 +26,8 @@ namespace ContentTypeTextNet.Pe.Library.Provider
         /// <inheritdoc cref="Environment.OSVersion"/>
         public virtual OperatingSystem OSVersion { get; } = Environment.OSVersion;
 
+        /// <inheritdoc cref="Environment.UserName"/>
+        public virtual string UserName { get; } = Environment.UserName;
 
         #endregion
 
