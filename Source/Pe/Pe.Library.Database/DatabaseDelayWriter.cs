@@ -93,7 +93,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
                     }
                 }
 
-                var item = new DelayStockItem(action, TimeProvider.GetUtcNow().DateTime);
+                var item = new DelayStockItem(action, TimeProvider.GetUtcNow().UtcDateTime);
                 StockItems.Add(item);
                 if(uniqueKey != null) {
                     UniqueItems.Add(uniqueKey, item);
