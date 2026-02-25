@@ -132,6 +132,30 @@ namespace ContentTypeTextNet.Pe.Main.Test.UI
             }
         }
 
+        [Fact]
+        public void BootExecute_NotifyArea_Close_Test()
+        {
+            var testIO = TestIO.InitializeMethod(this);
+            using var testApp = TestUI.Launch(testIO, LaunchMode.Default);
+
+            // タスクトレイ（通知領域）を取得する
+            using(var automation = new UIA3Automation()) {
+                var desktop = automation.GetDesktop();
+
+                var shellTrayWnd = desktop.FindFirstDescendant(a => a.ByClassName("Shell_TrayWnd"));
+                var trayNotifyWnd = shellTrayWnd!.FindFirstDescendant(a => a.ByClassName("TrayNotifyWnd"));
+                var sysPager = trayNotifyWnd!.FindFirstDescendant(a => a.ByClassName("SysPager"));
+                var toolbarWindow32 = sysPager!.FindFirstDescendant(a => a.ByClassName("ToolbarWindow32"));
+
+
+                Assert.NotNull(shellTrayWnd);
+                Assert.NotNull(trayNotifyWnd);
+                Assert.NotNull(sysPager);
+                Assert.NotNull(toolbarWindow32);
+
+            }
+        }
+
         #endregion
     }
 }
