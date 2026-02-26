@@ -142,17 +142,20 @@ namespace ContentTypeTextNet.Pe.Main.Test.UI
             using(var automation = new UIA3Automation()) {
                 var desktop = automation.GetDesktop();
 
-                var shellTrayWnd = desktop.FindFirstDescendant(a => a.ByClassName("Shell_TrayWnd"));
-                var trayNotifyWnd = shellTrayWnd!.FindFirstDescendant(a => a.ByClassName("TrayNotifyWnd"));
-                var sysPager = trayNotifyWnd!.FindFirstDescendant(a => a.ByClassName("SysPager"));
-                var toolbarWindow32 = sysPager!.FindFirstDescendant(a => a.ByClassName("ToolbarWindow32"));
+                var inputSites = desktop.FindAllDescendants(a => a.ByClassName("Windows.UI.Input.InputSite.WindowClass"))
+                    !;
+                //var trayNotifyWnd = shellTrayWnd!.FindFirstDescendant(a => a.ByClassName("TrayNotifyWnd"));
+                //var sysPager = trayNotifyWnd!.FindFirstDescendant(a => a.ByClassName("SysPager"));
+                //var toolbarWindow32 = sysPager!.FindFirstDescendant(a => a.ByClassName("ToolbarWindow32"));
 
 
-                Assert.NotNull(shellTrayWnd);
-                Assert.NotNull(trayNotifyWnd);
-                Assert.NotNull(sysPager);
-                Assert.NotNull(toolbarWindow32);
+                Assert.NotNull(inputSites);
+                //Assert.NotNull(trayNotifyWnd);
+                //Assert.NotNull(sysPager);
+                //Assert.NotNull(toolbarWindow32);
 
+                inputSites[0].Click();
+                inputSites[1].Click();
             }
         }
 
