@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 {
-    /// <inheritdoc cref="IPluginCommonContext"/>
     public abstract class PluginCommonContextBase: DisposerBase
     {
         #region function
@@ -27,11 +26,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             return value;
         }
 
-        #endregion
-
-        #region IPluginCommonContext
-
-        /// <inheritdoc cref="IPluginCommonContext.IsAvailable"/>
         public bool IsAvailable => !IsDisposed;
 
         #endregion
