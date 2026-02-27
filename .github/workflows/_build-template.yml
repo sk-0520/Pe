@@ -18,7 +18,7 @@ on:
         type: string
       OS_WINDOWS:
         type: string
-        default: windows-2025
+        default: windows-2025-vs2026
       INVOKE_PLUGIN_TEMPLATE:
         required: true
         type: boolean
@@ -1084,6 +1084,7 @@ jobs:
       fail-fast: false
       matrix:
         OS:
+          - windows-2025-vs2026
           - windows-2025
           - windows-2022
           - ubuntu-24.04
