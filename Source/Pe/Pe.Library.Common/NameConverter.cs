@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         #region property
 
-        public CultureInfo CultureInfo { get; private set; }
+        public CultureInfo CultureInfo { get; }
 
         #endregion
 

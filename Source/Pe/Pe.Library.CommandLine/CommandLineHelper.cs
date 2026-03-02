@@ -29,9 +29,6 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
         /// </summary>
         /// <param name="key"></param>
         /// <exception cref="CommandLineInvalidKeyException"></exception>
-        /// <remarks>
-        /// <para>実装メモ: `<see cref="CommandLineInvalidKeyException"/>.ThrowIfInvalidKey` ではなく <see cref="CommandLineHelper"/> で実装しているのはキー判定処理が変更される可能性があるため継承可能なこちらで実装している。</para>
-        /// </remarks>
         public virtual void ThrowIfInvalidKey(string key)
         {
             if(string.IsNullOrWhiteSpace(key)) {

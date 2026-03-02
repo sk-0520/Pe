@@ -33,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
                 DatabaseCommonStatus.CreateCurrentAccount()
             );
             using(var test = creator()) {
-                Debug.Assert(test.Items.All(a => a.Implementation.SupportedTransactionDDL));
+                Debug.Assert(test.Items.All(a => a.Implementation.SupportedDdlInTransaction));
             }
 
             using(var test = creator()) {
@@ -71,7 +71,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
                 DatabaseCommonStatus.CreateCurrentAccount()
             );
             using(var test = creator()) {
-                Debug.Assert(test.Items.All(a => a.Implementation.SupportedTransactionDDL));
+                Debug.Assert(test.Items.All(a => a.Implementation.SupportedDdlInTransaction));
             }
 
             using(var test = creator()) {
@@ -107,7 +107,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
                 DatabaseCommonStatus.CreateCurrentAccount()
             );
             using(var test = creator()) {
-                Debug.Assert(test.Items.All(a => a.Implementation.SupportedTransactionDDL));
+                Debug.Assert(test.Items.All(a => a.Implementation.SupportedDdlInTransaction));
             }
 
             using(var test = creator()) {
@@ -145,7 +145,7 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database
                 DatabaseCommonStatus.CreateCurrentAccount()
             );
             using(var test = creator()) {
-                Debug.Assert(test.Items.All(a => a.Implementation.SupportedTransactionDDL));
+                Debug.Assert(test.Items.All(a => a.Implementation.SupportedDdlInTransaction));
             }
 
             using(var test = creator()) {

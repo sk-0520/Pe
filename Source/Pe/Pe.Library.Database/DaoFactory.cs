@@ -4,8 +4,17 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
+    /// <summary>
+    /// <see cref="DatabaseAccessObjectBase"/>ファクトリ。
+    /// </summary>
     public class DaoFactory
     {
+        /// <summary>
+        /// 生成。
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="statementLoader"></param>
+        /// <param name="loggerFactory"></param>
         public DaoFactory(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
         {
             Context = context;
@@ -42,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         #endregion
 
-        #region IDaoFactory
+        #region function
 
         public virtual DatabaseAccessObjectBase Create(Type type)
         {

@@ -25,6 +25,9 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #endregion
     }
 
+    /// <summary>
+    /// アトリビュート系ユーティリティ。
+    /// </summary>
     public static class AttributeUtility
     {
         #region function

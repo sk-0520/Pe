@@ -91,7 +91,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             {
                 if(this._processBodyRegex is null) {
                     Debug.Assert(Implementation.SupportedBlockComment);
-                    Debug.Assert(Implementation.BlockComments.Any());
+                    Debug.Assert(Implementation.BlockComments.Count != 0);
 
                     var blockComment = Implementation.BlockComments.First();
 

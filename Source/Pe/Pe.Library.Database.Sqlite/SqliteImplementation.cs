@@ -112,7 +112,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Sqlite
 
         #region DatabaseImplementation
 
-        public override bool SupportedTransactionDDL { get; } = true;
+        public override bool SupportedDdlInTransaction { get; } = true;
 
         public override string ToStatementTableName(string tableName) => "[" + tableName + "]";
         public override string ToStatementColumnName(string columnName) => "[" + columnName + "]";

@@ -15,12 +15,12 @@ namespace ContentTypeTextNet.Pe.Library.Database.Implementations
         /// <inheritdoc cref="IDatabaseImplementation.NewLine"/>
         public string NewLine { get; } = Environment.NewLine;
 
-        /// <inheritdoc cref="IDatabaseImplementation.SupportedTransactionDDL"/>
-        public virtual bool SupportedTransactionDDL => false;
-        /// <inheritdoc cref="IDatabaseImplementation.SupportedTransactionDML"/>
-        public virtual bool SupportedTransactionDML => true;
-        /// <inheritdoc cref="IDatabaseImplementation.SupportedTransactionTruncate"/>
-        public virtual bool SupportedTransactionTruncate => false;
+        /// <inheritdoc cref="IDatabaseImplementation.SupportedDdlInTransaction"/>
+        public virtual bool SupportedDdlInTransaction => false;
+        /// <inheritdoc cref="IDatabaseImplementation.SupportedDmlInTransaction"/>
+        public virtual bool SupportedDmlInTransaction => true;
+        /// <inheritdoc cref="IDatabaseImplementation.SupportedTruncateInTransaction"/>
+        public virtual bool SupportedTruncateInTransaction => false;
 
         /// <inheritdoc cref="IDatabaseImplementation.SupportedLineComment"/>
         public virtual bool SupportedLineComment => true;
@@ -28,9 +28,9 @@ namespace ContentTypeTextNet.Pe.Library.Database.Implementations
         public virtual bool SupportedBlockComment => true;
 
         /// <inheritdoc cref="IDatabaseImplementation.LineComments"/>
-        public virtual IEnumerable<string> LineComments => new[] { "--", };
+        public virtual IReadOnlyCollection<string> LineComments => new[] { "--", };
         /// <inheritdoc cref="IDatabaseImplementation.BlockComments"/>
-        public virtual IEnumerable<DatabaseBlockComment> BlockComments { get; } = new[] { new DatabaseBlockComment("/*", "*/"), };
+        public virtual IReadOnlyCollection<DatabaseBlockComment> BlockComments { get; } = new[] { new DatabaseBlockComment("/*", "*/"), };
 
         /// <inheritdoc cref="IDatabaseImplementation.ProcessBodyRange"/>
         public virtual DatabaseBlockComment ProcessBodyRange { get; } = new DatabaseBlockComment("{{", "}}");

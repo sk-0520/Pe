@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
@@ -17,7 +14,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #region function
 
         /// <summary>
-        /// insert, update, delete, select(sequence) 的なデータ変動するやつを実行。
+        /// insert, update, delete 的なデータ変動するやつを実行。
         /// </summary>
         /// <param name="statement">データベース問い合わせ文。</param>
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>
@@ -25,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         int Execute(string statement, object? parameter);
 
         /// <summary>
-        /// 非同期で insert, update, delete, select(sequence) 的なデータ変動するやつを実行。
+        /// 非同期で insert, update, delete 的なデータ変動するやつを実行。
         /// </summary>
         /// <param name="statement">データベース問い合わせ文。</param>
         /// <param name="parameter"><paramref name="statement"/>に対するパラメータ。</param>

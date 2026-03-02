@@ -18,6 +18,10 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
         /// 必須項目か。
         /// </summary>
         public bool Required { get; init; }
+        /// <summary>
+        /// ヘルプで値の説明に使用する名称。
+        /// </summary>
+        /// <seealso cref="CommandLineParserExtensions.ToUsageCore(CommandLineHelper, CommandLineOption)"/>
         public string ValueName { get; init; } = string.Empty;
 
         #endregion

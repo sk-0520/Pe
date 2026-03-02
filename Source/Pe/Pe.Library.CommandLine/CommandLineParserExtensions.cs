@@ -54,6 +54,11 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
             return builder.ToString();
         }
 
+        /// <summary>
+        /// ヘルプ用文字列の生成。
+        /// </summary>
+        /// <param name="parser"></param>
+        /// <returns></returns>
         public static string ToUsage(this CommandLineParser parser)
         {
             var items = parser.Options

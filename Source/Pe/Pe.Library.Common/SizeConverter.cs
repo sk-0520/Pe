@@ -29,11 +29,11 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <summary>
         /// 人間様が読みやすい形にサイズ(バイト数)を整える。
         /// </summary>
-        /// <param name="byteSize"></param>
-        /// <param name="sizeFormat"></param>
-        /// <param name="units"></param>
+        /// <param name="byteSize">バイトサイズ</param>
+        /// <param name="format">書式。`0`: サイズ, `1`: 単位。</param>
+        /// <param name="units">単位一覧。</param>
         /// <returns></returns>
-        public string ConvertHumanReadableByte(long byteSize, string sizeFormat, IReadOnlyList<string> units)
+        public string ConvertHumanReadableByte(long byteSize, string format, IReadOnlyList<string> units)
         {
             if(units.Count == 0) {
                 throw new ArgumentException($"{nameof(units)}.{nameof(units.Count)} == 0", nameof(units));
@@ -47,7 +47,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 order += 1;
             }
 
-            return string.Format(CultureInfo.InvariantCulture, sizeFormat, size, units[order]);
+            return string.Format(CultureInfo.InvariantCulture, format, size, units[order]);
         }
 
 

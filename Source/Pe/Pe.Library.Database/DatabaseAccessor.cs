@@ -78,7 +78,6 @@ namespace ContentTypeTextNet.Pe.Library.Database
             return new DatabaseTransaction(BaseDbConnection, transaction, Implementation, LoggerFactory);
         }
 
-
         #endregion
 
         #region IDatabaseAccessor

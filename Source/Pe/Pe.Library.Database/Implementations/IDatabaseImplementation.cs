@@ -12,15 +12,15 @@ namespace ContentTypeTextNet.Pe.Library.Database.Implementations
         /// <summary>
         /// トランザクション中の<c>DDL</c>が有効か。
         /// </summary>
-        bool SupportedTransactionDDL { get; }
+        bool SupportedDdlInTransaction { get; }
         /// <summary>
         /// トランザクション中の<c>DML</c>が有効か。
         /// </summary>
-        bool SupportedTransactionDML { get; }
+        bool SupportedDmlInTransaction { get; }
         /// <summary>
         /// トランザクション中の<c>TRUNCATE</c>が有効か。
         /// </summary>
-        bool SupportedTransactionTruncate { get; }
+        bool SupportedTruncateInTransaction { get; }
 
         /// <summary>
         /// 単一行コメントをサポートしているか。
@@ -34,11 +34,11 @@ namespace ContentTypeTextNet.Pe.Library.Database.Implementations
         /// <summary>
         /// 単一行コメントの開始文字列。
         /// </summary>
-        IEnumerable<string> LineComments { get; }
+        IReadOnlyCollection<string> LineComments { get; }
         /// <summary>
         /// ブロックコメントの開始終了文字列。
         /// </summary>
-        IEnumerable<DatabaseBlockComment> BlockComments { get; }
+        IReadOnlyCollection<DatabaseBlockComment> BlockComments { get; }
         /// <summary>
         /// DAOで文の置き換え処理を行う際の範囲開始・終了文字列。
         /// </summary>
