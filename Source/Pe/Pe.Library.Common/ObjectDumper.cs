@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #endregion
     }
 
-    internal class DummyInfo: MemberInfo
+    internal sealed class DummyInfo: MemberInfo
     {
         public DummyInfo(string name, Type declaringType, Type reflectedType)
         {

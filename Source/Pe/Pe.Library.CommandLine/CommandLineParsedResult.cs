@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ContentTypeTextNet.Pe.Library.CommandLine
 {
-    internal class CommandLineParsing
+    internal sealed class CommandLineParsing
     {
         /// <summary>
         /// 生成。
