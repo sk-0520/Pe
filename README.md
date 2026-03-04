@@ -11,6 +11,7 @@
 ![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=sk-0520_Pe&metric=code_smells)
 ![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=sk-0520_Pe&metric=duplicated_lines_density)
 ](https://sonarcloud.io/summary/new_code?id=sk-0520_Pe)
+[![CodeFactor](https://www.codefactor.io/repository/github/sk-0520/pe/badge)](https://www.codefactor.io/repository/github/sk-0520/pe)
 
 
 Pe は Windows 10 以上で動作するデスクトップユーティリティです。
