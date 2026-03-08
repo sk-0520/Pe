@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using ContentTypeTextNet.Pe.Library.Common;
@@ -10,7 +11,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
     /// </summary>
     /// <typeparam name="TModel"></typeparam>
     public class SimpleModelViewModelBase<TModel>: ViewModelBase
-        where TModel : notnull
+        where TModel : notnull, INotifyPropertyChanged
     {
         protected SimpleModelViewModelBase(TModel model, PropertyMode propertyMode, EventReference propertyChangedEventReference, EventReference disposingEventReference, ILoggerFactory loggerFactory)
             : base(propertyMode, propertyChangedEventReference, disposingEventReference, loggerFactory)
@@ -62,7 +63,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         protected void AttachModelEvents()
         {
-            if(Model is null) {
+            if(Model is not null) {
                 ThrowIfDisposed();
 
                 AttachModelEventsCore();
@@ -78,7 +79,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         protected void DetachModelEvents()
         {
-            if(Model is null) {
+            if(Model is not null) {
                 DetachModelEventsCore();
             }
         }
