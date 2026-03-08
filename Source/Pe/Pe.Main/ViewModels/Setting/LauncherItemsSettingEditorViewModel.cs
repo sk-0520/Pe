@@ -76,7 +76,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
             set => SetProperty(ref this._isPopupAddItemMenu, value);
         }
 
-        [IgnoreValidation]
+        [ContentTypeTextNet.Pe.Mvvm.ViewModels.IgnoreValidation]
         public LauncherItemSettingEditorViewModel? SelectedItem
         {
             get => this._selectedItem;

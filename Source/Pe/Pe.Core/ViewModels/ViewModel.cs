@@ -13,21 +13,12 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.Property;
+using ContentTypeTextNet.Pe.Mvvm.ViewModels;
 using Microsoft.Extensions.Logging;
 using Prism.Mvvm;
 
 namespace ContentTypeTextNet.Pe.Core.ViewModels
 {
-    /// <summary>
-    /// 検証無視。
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
-    public sealed class IgnoreValidationAttribute: Attribute
-    {
-        public IgnoreValidationAttribute()
-        { }
-    }
-
     /// <summary>
     /// ViewModel の基底。
     /// </summary>
@@ -42,7 +33,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
         {
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
-            ErrorsContainer = new ErrorsContainer<string>(OnErrorsChanged);
+            ErrorsContainer = new Prism.Mvvm.ErrorsContainer<string>(OnErrorsChanged);
             WeakDisposing = new WeakEvent<EventArgs>(nameof(Disposing));
 
             if(cacheProperty) {
@@ -350,7 +341,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
 
         #region INotifyDataErrorInfo
 
-        private ErrorsContainer<string> ErrorsContainer { get; }
+        private Prism.Mvvm.ErrorsContainer<string> ErrorsContainer { get; }
 
         protected void OnErrorsChanged([CallerMemberName] string propertyName = "")
         {

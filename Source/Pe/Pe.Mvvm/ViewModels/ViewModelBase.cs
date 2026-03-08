@@ -116,6 +116,13 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         #region function
 
+        [Obsolete]
+        protected bool SetPropertyValue<TOwner, TValue>(TOwner owner, TValue value, [CallerMemberName] string targetMemberName = "", [CallerMemberName] string notifyPropertyName = "")
+            where TOwner : notnull
+        {
+            return SetProperty(owner, value, targetMemberName, notifyPropertyName);
+        }
+
         /// <summary>
         /// オブジェクトのプロパティに値設定。
         /// </summary>

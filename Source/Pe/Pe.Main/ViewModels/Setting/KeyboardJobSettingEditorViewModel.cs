@@ -306,9 +306,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
 
         #region property
 
-        [IgnoreValidation]
+        [ContentTypeTextNet.Pe.Mvvm.ViewModels.IgnoreValidation]
         private ModelViewModelObservableCollectionManager<LauncherItemSettingEditorElement, LauncherItemSettingEditorViewModel> AllLauncherItemCollection { get; }
-        [IgnoreValidation]
+        [ContentTypeTextNet.Pe.Mvvm.ViewModels.IgnoreValidation]
         public ICollectionView AllLauncherItems { get; }
 
         public LauncherItemSettingEditorViewModel? LauncherItem
