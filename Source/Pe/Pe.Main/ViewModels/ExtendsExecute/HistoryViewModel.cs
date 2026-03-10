@@ -1,9 +1,9 @@
 using System;
 using System.Globalization;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
+using ContentTypeTextNet.Pe.Mvvm.ViewModels;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute

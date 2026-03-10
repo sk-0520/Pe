@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Mvvm.ViewModels;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.CrashReport.ViewModels

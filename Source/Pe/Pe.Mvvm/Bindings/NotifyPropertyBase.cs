@@ -45,7 +45,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings
             OnPropertyChanged(eventArgs);
         }
 
-        protected void RaisePropertyChanged(string notifyPropertyName)
+        protected void RaisePropertyChanged([CallerMemberName] string notifyPropertyName = "")
         {
             OnPropertyChanged(new PropertyChangedEventArgs(notifyPropertyName));
         }

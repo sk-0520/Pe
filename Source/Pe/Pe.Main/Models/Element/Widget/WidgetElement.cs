@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -8,20 +7,17 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Addon;
-using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
-using ContentTypeTextNet.Pe.Main.Models.WebView;
 using ContentTypeTextNet.Pe.Main.ViewModels.Widget;
 using ContentTypeTextNet.Pe.Main.Views.Converter;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Mvvm.ViewModels;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Widget
 {

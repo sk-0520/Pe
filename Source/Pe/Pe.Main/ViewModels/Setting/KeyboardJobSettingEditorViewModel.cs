@@ -5,11 +5,11 @@ using System.Linq;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting;
 using ContentTypeTextNet.Pe.Main.Models.KeyAction;
 using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
+using ContentTypeTextNet.Pe.Mvvm.ViewModels;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
 

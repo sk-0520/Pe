@@ -1,6 +1,6 @@
 using System;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Mvvm.ViewModels;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput

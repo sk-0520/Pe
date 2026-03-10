@@ -94,7 +94,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
         /// このVMは検証非対象か。
         /// </summary>
         [IgnoreValidation]
-        public bool SkipValidation { get; init; } = false;
+        protected virtual bool SkipValidation => false;
 
         protected ILoggerFactory LoggerFactory { get; }
         protected ILogger Logger { get; }
@@ -116,7 +116,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
 
         #region function
 
-        [Obsolete]
         protected bool SetPropertyValue<TOwner, TValue>(TOwner owner, TValue value, [CallerMemberName] string targetMemberName = "", [CallerMemberName] string notifyPropertyName = "")
             where TOwner : notnull
         {

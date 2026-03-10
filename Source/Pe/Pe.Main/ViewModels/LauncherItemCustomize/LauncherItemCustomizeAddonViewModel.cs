@@ -80,7 +80,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         private void NotifyPropertyChanged_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            RaisePropertyChanged(e.PropertyName);
+            if(e.PropertyName is not null) {
+                RaisePropertyChanged(e.PropertyName);
+            }
         }
     }
 }
