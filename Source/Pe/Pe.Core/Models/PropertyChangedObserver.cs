@@ -305,6 +305,8 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 return false;
             }
 
+            var mvvmCommands = raiseCommands.Where(a => a is Mvvm.Commands.CommandBase).Cast<Mvvm.Commands.CommandBase>().ToArray();
+
             ContextDispatcher.BeginAsync(arg => {
                 if(arg.@this.IsDisposed) {
                     return;
@@ -313,9 +315,12 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 foreach(var raiseCommand in arg.raiseDelegateCommands) {
                     raiseCommand.RaiseCanExecuteChanged();
                 }
-            }, (@this: this, raiseDelegateCommands));
+                foreach(var command in arg.mvvmCommands) {
+                    command.RaiseCanExecuteChanged();
+                }
+            }, (@this: this, raiseDelegateCommands, mvvmCommands));
 
-            if(raiseCommands.Count != 0) {
+            if(raiseCommands.Count != 0 && raiseCommands.Count != mvvmCommands.Length) {
                 // 個別にやる方法はわからん
                 ContextDispatcher.BeginAsync(() => {
                     CommandManager.InvalidateRequerySuggested();
