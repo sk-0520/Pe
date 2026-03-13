@@ -17,6 +17,8 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             : base(propertyMode, propertyChangedEventReference, disposingEventReference, loggerFactory)
         {
             Model = model;
+
+            AttachModelEvents();
         }
 
         protected SimpleModelViewModelBase(TModel model, PropertyMode propertyMode, ILoggerFactory loggerFactory)
