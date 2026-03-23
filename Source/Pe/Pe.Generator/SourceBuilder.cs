@@ -85,11 +85,11 @@ namespace ContentTypeTextNet.Pe.Generator
                 case TypedConstantKind.Primitive: {
                         switch(c.Value) {
                             case string s:
-                                return "\"" + s.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
+                                return ToStringLiteral(s);
                             case bool b:
                                 return b ? "true" : "false";
                             case char ch:
-                                return "'" + ch.ToString().Replace("\\", "\\\\").Replace("'", "\\'") + "'";
+                                return ToCharLiteral(ch);
                             default:
                                 return Convert.ToString(c.Value, System.Globalization.CultureInfo.InvariantCulture);
                         }
@@ -132,6 +132,16 @@ namespace ContentTypeTextNet.Pe.Generator
             var targetName = targetSymbol.Name;
             var fullName = (targetSymbol.ContainingNamespace.IsGlobalNamespace ? "" : targetSymbol.ContainingNamespace + ".") + targetName;
             return $"{fullName}.g.cs";
+        }
+
+        public string ToStringLiteral(string value)
+        {
+            return "\"" + value.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"";
+        }
+
+        public string ToCharLiteral(char value)
+        {
+            return "'" + value.ToString().Replace("\\", "\\\\").Replace("'", "\\'") + "'";
         }
 
         #endregion
