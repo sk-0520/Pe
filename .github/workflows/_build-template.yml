@@ -145,7 +145,7 @@ jobs:
         run: npm run help-build
 
       - name: <Artifact> Help
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Help
           path: Output/help
@@ -182,7 +182,7 @@ jobs:
           7z a doc-comment.7z _doc-comment\*
 
       - name: <Artifact> Document Comment
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: DocumentComment
           path: |
@@ -274,7 +274,7 @@ jobs:
       - name: <Artifact> Plugin Template
         # x86 が動かない問題, あとで対処
         if: matrix.PLATFORM == 'x64'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: template-plugin-${{ matrix.PLATFORM }}
           path: plugin-template.tar
@@ -333,7 +333,7 @@ jobs:
         run: npm run generate-release-note
 
       - name: <Artifact> Release Note
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: History
           path: history/*.html
@@ -370,7 +370,7 @@ jobs:
         run: .\Build\make-buildtools.ps1 -InformationAction Continue
 
       - name: <Artifact> BuildTools
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: BuildTools
           path: Output\tools
@@ -415,7 +415,7 @@ jobs:
         run: .\Build\buildtools-sql.ps1 -InformationAction Continue -BuildToolsSqlPack "artifacts\buildtools\SqlPack.exe" -OutputFile sql.sqlite3
 
       - name: <Artifact> SQL
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: SQL
           path: sql.sqlite3
@@ -447,7 +447,7 @@ jobs:
         run: .\Build\buildtools-license.ps1 -InformationAction Continue -BuildToolsLicense "artifacts\buildtools\License.exe" -InputFile 'Define/components.json' -OutputFile 'components.json'
 
       - name: <Artifact> License
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: License
           path: components.json
@@ -490,7 +490,7 @@ jobs:
           .\Build\build-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType $buildType -Platform ${{ matrix.PLATFORM }}
 
       - name: <Artifact> Module
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.MODULE }}-${{ matrix.PLATFORM }}
           path: Output\Release\${{ matrix.PLATFORM }}\Pe\*
@@ -576,7 +576,7 @@ jobs:
 
       - name: <Artifact> CodeCoverage
         if: matrix.CONFIGURATION == 'CI_TEST'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Test_Pe.Boot_${{ matrix.PLATFORM }}
           path: |
@@ -638,7 +638,7 @@ jobs:
         run: ./Build/archive-compress.sh "bin.tar" "Output/Release/${{ matrix.PLATFORM }}/Pe/bin"
 
       - name: <Artifact> Module
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.MODULE }}-bin-${{ matrix.PLATFORM }}
           path: bin.tar
@@ -718,7 +718,7 @@ jobs:
       - name: <Artifact> CodeCoverage
         # x86 が動かない問題, あとで対処
         if: matrix.PLATFORM == 'x64'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Test_Pe.Main_${{ matrix.PLATFORM }}
           path: |
@@ -801,7 +801,7 @@ jobs:
         run: .\Build\compress-module.ps1 -InformationAction Continue -TargetDirectory 'Output' -OutputFileBaseName "Pe_${{ matrix.PLATFORM }}" -Archive "$env:Archive"
 
       - name: <Artifact> Application
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Pe_${{ matrix.PLATFORM }}
           path: Pe_${{ matrix.PLATFORM }}.${{ inputs.APPLICATION_ARCHIVE }}
@@ -842,7 +842,7 @@ jobs:
         run: .\Build\generate-update-information.ps1 -InformationAction Continue -Revision '${{ github.sha }}' -MinimumVersion ${{ env.MINIMUM_VERSION }} -ArchiveBaseUrl $env:ArchiveBaseUrl -NoteBaseUrl $env:NoteBaseUrl -OutputDirectory Output -Module 'application' -Archive $env:Archive -ArtifactDirectory (Join-Path -Path 'artifacts' -ChildPath 'Pe') -Platforms ${{ env.PLATFORMS }}
 
       - name: <Artifact> Update Information
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Information_Pe
           path: |
@@ -902,7 +902,7 @@ jobs:
           ls Output\Release\${{ matrix.PLATFORM }}\Plugins
 
       - name: <Artifact> Module
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugins-${{ matrix.PLATFORM }}
           path: Output\Release\${{ matrix.PLATFORM }}\Plugins
@@ -958,7 +958,7 @@ jobs:
         run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
       # - name: <Artifact> result
-      #   uses: actions/upload-artifact@v4
+      #   uses: actions/upload-artifact@v7
       #   with:
       #     name: Test_Pe.Plugins.Reference_${{ matrix.PLATFORM }}
       #     path: Source/**/coverage.cobertura.xml
@@ -1007,7 +1007,7 @@ jobs:
           }
 
       - name: <Artifact> Plugins
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Pe.Plugins.Reference_${{ matrix.PLATFORM }}
           path: ./*.${{ inputs.PLUGINS_ARCHIVE }}
@@ -1054,7 +1054,7 @@ jobs:
         run:  Get-ChildItem artifacts -R | Select-Object Name
 
       - name: <Artifact> Update Information
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Information_Pe.Plugins.Reference
           path: |
@@ -1148,7 +1148,7 @@ jobs:
 
       - name: <Artifact> Update:Error
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ github.job }}-Update.log
           path: ${{ env.UPDATE_DESTINATION }}.log
@@ -1198,7 +1198,7 @@ jobs:
           docker compose run --entrypoint "python /work/create-ico.py --dir /data/@data/${{ matrix.TYPE }} --output /data/@data/${{ matrix.TYPE }}/App.ico" python
 
       - name: <Artifact> Icon
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Icon-${{ matrix.TYPE }}
           path: Resource/Icon
@@ -1224,7 +1224,7 @@ jobs:
         run: ./Build/package-icon.ps1 -ArtifactDirectoryPath "$(pwd)/icons" -OutputDirectoryPath "$(pwd)/package-icons"
 
       - name: <Artifact> Packed Icons
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Package-Icons
           path: package-icons

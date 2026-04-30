@@ -44,7 +44,7 @@ jobs:
         run: npm run help-build
 
       - name: <Artifact> Help
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Help
           path: Output/help
@@ -127,7 +127,7 @@ jobs:
       - name: <Artifact> Plugin Template
         # x86 が動かない問題, 確認中
         # if: matrix.PLATFORM == 'x64'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: template-plugin-${{ matrix.PLATFORM }}
           path: plugin-template.tar
@@ -164,7 +164,7 @@ jobs:
         run: .\Build\make-buildtools.ps1 -InformationAction Continue
 
       - name: <Artifact> BuildTools
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: BuildTools
           path: Output\tools
@@ -225,7 +225,7 @@ jobs:
         run: ./Build/archive-compress.sh "bin.tar" "Output/Release/${{ matrix.PLATFORM }}/Pe/bin"
 
       - name: <Artifact> Module
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.MODULE }}-bin-${{ matrix.PLATFORM }}
           path: bin.tar
@@ -303,7 +303,7 @@ jobs:
       - name: <Artifact> CodeCoverage
         # x86 が動かない問題, 確認中
         # if: matrix.PLATFORM == 'x64'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Test_Pe.Main_${{ matrix.PLATFORM }}
           path: |
@@ -363,7 +363,7 @@ jobs:
           ls Output\Release\${{ matrix.PLATFORM }}\Plugins
 
       - name: <Artifact> Module
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugins-${{ matrix.PLATFORM }}
           path: Output\Release\${{ matrix.PLATFORM }}\Plugins
@@ -419,7 +419,7 @@ jobs:
         run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
       # - name: <Artifact> result
-      #   uses: actions/upload-artifact@v4
+      #   uses: actions/upload-artifact@v7
       #   with:
       #     name: Test_Pe.Plugins.Reference_${{ matrix.PLATFORM }}
       #     path: Source/**/coverage.cobertura.xml
