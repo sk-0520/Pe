@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
@@ -102,7 +102,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
             var result = Context.Delete(statement, dto);
             if(1 < result) {
                 // これだけ正しさが分からん
-                Logger.LogWarning("削除件数がちょっとあれ: {0}", result);
+                Logger.LogWarning("削除件数がちょっとあれ: {Result}", result);
             }
             return result;
         }

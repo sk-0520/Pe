@@ -5,14 +5,12 @@ using System.Linq;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.Setting;
 using ContentTypeTextNet.Pe.Main.Models.KeyAction;
 using ContentTypeTextNet.Pe.Mvvm.Bindings.Collections;
 using Microsoft.Extensions.Logging;
-using NLog.Filters;
 using Prism.Commands;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
@@ -64,7 +62,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
                     var replaceContentConverter = new ReplaceContentConverter();
                     return replaceContentConverter.ToReplaceKey(Model.Content);
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                     return Key.None;
                 }
             }
@@ -363,7 +361,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
                 try {
                     return launcherItemContentConverter.ToKeyActionContentLauncherItem(Model.Content);
                 } catch(Exception ex) {
-                    Logger.LogWarning(ex, ex.Message);
+                    Logger.LogWarning(ex, "{Message}", ex.Message);
                     // 泥臭い
                     Model.Content = launcherItemContentConverter.ToContent(KeyActionContentLauncherItem.Execute);
                 }
@@ -399,7 +397,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
                 try {
                     return launcherToolbarContentConverter.ToKeyActionContentLauncherToolbar(Model.Content);
                 } catch(Exception ex) {
-                    Logger.LogWarning(ex, ex.Message);
+                    Logger.LogWarning(ex, "{Message}", ex.Message);
                 }
                 return KeyActionContentLauncherToolbar.AutoHiddenToHide;
             }
@@ -439,7 +437,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
                 try {
                     return noteContentConverter.ToKeyActionContentNote(Model.Content);
                 } catch(Exception ex) {
-                    Logger.LogWarning(ex, ex.Message);
+                    Logger.LogWarning(ex, "{Message}", ex.Message);
                     // 泥臭い
                     Model.Content = noteContentConverter.ToContent(KeyActionContentNote.Create);
                 }

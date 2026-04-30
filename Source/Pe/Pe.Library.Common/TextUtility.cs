@@ -123,15 +123,9 @@ namespace ContentTypeTextNet.Pe.Library.Common
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S907:\"goto\" statement should not be used")]
         public static string ToUnique(string source, IReadOnlyCollection<string> sequence, StringComparison comparisonType, Func<string, int, string> converter)
         {
-            if(source == null) {
-                throw new ArgumentNullException(nameof(source));
-            }
-            if(sequence == null) {
-                throw new ArgumentNullException(nameof(sequence));
-            }
-            if(converter == null) {
-                throw new ArgumentNullException(nameof(converter));
-            }
+            ArgumentNullException.ThrowIfNull(source);
+            ArgumentNullException.ThrowIfNull(sequence);
+            ArgumentNullException.ThrowIfNull(converter);
 
             var result = source;
 

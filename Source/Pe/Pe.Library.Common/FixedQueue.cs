@@ -1,12 +1,12 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
+    [SuppressMessage("Naming", "CA1711:識別子は、不適切なサフィックスを含むことはできません", Justification = "Queue 定義なのでこうなるんよ")]
     public interface IReadOnlyFixedQueue<T>: IReadOnlyCollection<T>
     {
         #region property
@@ -40,6 +40,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// 最大数制限ありのキュー。
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [SuppressMessage("Naming", "CA1711:識別子は、不適切なサフィックスを含むことはできません", Justification = "Queue 定義なのでこうなるんよ")]
     public interface IFixedQueue<T>: IReadOnlyFixedQueue<T>
     {
         #region function
@@ -60,6 +61,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// </summary>
     /// <seealso cref="Queue{T}"/>
     /// <typeparam name="T"></typeparam>
+    [SuppressMessage("Naming", "CA1711:識別子は、不適切なサフィックスを含むことはできません", Justification = "Queue 実装なのでこうなるんよ")]
     public class FixedQueue<T>: IFixedQueue<T>
     {
         public FixedQueue(int limit)
@@ -128,6 +130,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// </summary>
     /// <seealso cref="ConcurrentQueue{T}"/>
     /// <typeparam name="T"></typeparam>
+    [SuppressMessage("Naming", "CA1711:識別子は、不適切なサフィックスを含むことはできません", Justification = "Queue 実装なのでこうなるんよ")]
     public class ConcurrentFixedQueue<T>: IFixedQueue<T>
     {
         public ConcurrentFixedQueue(int limit)

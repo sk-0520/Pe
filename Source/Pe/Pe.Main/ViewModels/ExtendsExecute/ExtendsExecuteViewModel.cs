@@ -86,7 +86,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
             RedoMode = Model.LauncherRedoData.RedoMode;
             WaitTimeSeconds = (int)Model.LauncherRedoData.WaitTime.TotalSeconds;
             RetryCount = Model.LauncherRedoData.RetryCount;
-            if(Model.LauncherRedoData.SuccessExitCodes.Any()) {
+            if(Model.LauncherRedoData.SuccessExitCodes.Count != 0) {
                 var numericRange = new NumericRange();
                 SuccessExitCodes = numericRange.ToString(Model.LauncherRedoData.SuccessExitCodes);
             } else {
@@ -336,7 +336,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
                 if(numericRange.TryParse(SuccessExitCodes, out var values)) {
                     redo.SuccessExitCodes.SetRange(values);
                 } else {
-                    Logger.LogError("終了コードが分解できず: {0}", SuccessExitCodes);
+                    Logger.LogError("終了コードが分解できず: {SuccessExitCodes}", SuccessExitCodes);
                     redo.RedoMode = RedoMode.None;
                 }
             }
@@ -423,10 +423,10 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.ExtendsExecute
                             e.Handled = true;
                             break;
                         } else {
-                            Logger.LogInformation("非ディレクトリ: {0}", filePath);
+                            Logger.LogInformation("非ディレクトリ: {Path}", filePath);
                         }
                     } catch(Exception ex) {
-                        Logger.LogInformation(ex, "非ディレクトリ: {0}", filePath);
+                        Logger.LogInformation(ex, "非ディレクトリ: {Path}", filePath);
                     }
                 }
 

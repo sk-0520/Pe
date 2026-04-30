@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
-using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Library.Common;
 
 
@@ -69,14 +68,14 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
             where T : notnull
         {
             using(var stream = CreateInnerStream()) {
-                SaveImpl(source, stream);
+                SaveCore(source, stream);
                 stream.Position = 0;
-                return LoadImpl<T>(stream);
+                return LoadCore<T>(stream);
             }
         }
 
         /// <inheritdoc cref="Load{TResult}(Stream)"/>
-        protected abstract TResult LoadImpl<TResult>(Stream stream);
+        protected abstract TResult LoadCore<TResult>(Stream stream);
 
         /// <summary>
         /// 復元処理。
@@ -88,14 +87,14 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
         public TResult Load<TResult>(Stream stream)
         {
             try {
-                return LoadImpl<TResult>(stream);
+                return LoadCore<TResult>(stream);
             } catch(Exception ex) when(ex is not SerializationException) {
                 throw new SerializationException(ex.Message, ex);
             }
         }
 
         /// <inheritdoc cref="Save{TValue}(TValue, Stream)"/>
-        protected abstract void SaveImpl<TValue>(TValue value, Stream stream)
+        protected abstract void SaveCore<TValue>(TValue value, Stream stream)
             where TValue : notnull
         ;
 
@@ -109,7 +108,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
             where TValue : notnull
         {
             try {
-                SaveImpl(value, stream);
+                SaveCore(value, stream);
             } catch(Exception ex) when(ex is not SerializationException) {
                 throw new SerializationException(ex.Message, ex);
             }

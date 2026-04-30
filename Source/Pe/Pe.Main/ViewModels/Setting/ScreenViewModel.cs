@@ -1,4 +1,4 @@
-using System;
+using System.Security.Cryptography;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Models;
@@ -25,12 +25,11 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Setting
             if(Screen.Primary) {
                 BackgroundColor = Color.FromArgb(alpha, 0xff, 0xff, 0xff);
             } else {
-                var rand = new Random(screen.DeviceName.GetHashCode());
                 BackgroundColor = Color.FromArgb(
                     alpha,
-                    (byte)rand.Next(0x00, 0xff),
-                    (byte)rand.Next(0x00, 0xff),
-                    (byte)rand.Next(0x00, 0xff)
+                    (byte)RandomNumberGenerator.GetInt32(0x00, 0xff),
+                    (byte)RandomNumberGenerator.GetInt32(0x00, 0xff),
+                    (byte)RandomNumberGenerator.GetInt32(0x00, 0xff)
                 );
             }
             ForegroundColor = MediaUtility.GetAutoColor(BackgroundColor);

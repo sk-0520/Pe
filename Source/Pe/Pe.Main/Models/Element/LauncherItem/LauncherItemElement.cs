@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Command;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database;
@@ -16,12 +21,6 @@ using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.Common;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using System.Threading;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
 {
@@ -183,7 +182,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
 
                 fileData = launcherFilesEntityDao.SelectFile(LauncherItemId);
                 if(customArgument != null) {
-                    Logger.LogInformation("引数指定があるため上書き: [元] {0}, [優先] {1}", fileData.Option, customArgument);
+                    Logger.LogInformation("引数指定があるため上書き: [元] {Option}, [優先] {CustomArgument}", fileData.Option, customArgument);
                     fileData.Option = customArgument;
                 }
                 if(fileData.IsEnabledCustomEnvironmentVariable) {
@@ -196,7 +195,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
                 var exitCodes = launcherRedoSuccessExitCodesEntityDao.SelectRedoSuccessExitCodes(LauncherItemId);
                 redoData.SuccessExitCodes.SetRange(exitCodes);
             }
-            if(!redoData.SuccessExitCodes.Any()) {
+            if(redoData.SuccessExitCodes.Count == 0) {
                 redoData.SuccessExitCodes.Add(0);
             }
             fileData.Caption = Name;
@@ -210,7 +209,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
         private Task<LauncherAddonExecuteResult> ExecuteAddonAsync(string? customArgument, IScreen screen, CancellationToken cancellationToken)
         {
             if(LauncherItemAddonViewSupporterCollection.ExistsInformation(LauncherItemId)) {
-                Logger.LogInformation("ランチャーアイテムはすでに起動している: {0}", LauncherItemId);
+                Logger.LogInformation("ランチャーアイテムはすでに起動している: {LauncherItemId}", LauncherItemId);
                 LauncherItemAddonViewSupporterCollection.Foreground(LauncherItemId);
 
                 return Task.FromResult(new LauncherAddonExecuteResult() {
@@ -271,7 +270,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
                 return result;
 
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return new LauncherExecuteErrorResult(Kind, ex);
             }
         }
@@ -391,18 +390,18 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
                 if(!PathUtility.IsNetworkDirectoryPath(path)) {
                     var fullPath = EnvironmentPathExecuteFileCache.ToFullPathIfExistsCommand(path, LoggerFactory);
                     if(ReferenceEquals(fullPath, path) || fullPath == null) {
-                        Logger.LogWarning("親ディレクトリ不明: {0}, {1}", path, LauncherItemId);
+                        Logger.LogWarning("親ディレクトリ不明: {Path}, {LauncherItemId}", path, LauncherItemId);
                         return;
                     }
                     value = Path.GetDirectoryName(fullPath);
                     if(string.IsNullOrEmpty(value)) {
-                        Logger.LogWarning("親ディレクトリ不明: {0}, {1}", fullPath, LauncherItemId);
+                        Logger.LogWarning("親ディレクトリ不明: {Path}, {LauncherItemId}", fullPath, LauncherItemId);
                         return;
                     }
                 } else {
                     var owner = PathUtility.GetNetworkOwnerName(path);
                     if(string.IsNullOrEmpty(owner)) {
-                        Logger.LogWarning("親ディレクトリ不明: {0}, {1}", path, LauncherItemId);
+                        Logger.LogWarning("親ディレクトリ不明: {Path}, {LauncherItemId}", path, LauncherItemId);
                         return;
                     }
                     value = owner;
@@ -432,7 +431,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem
             ThrowIfDisposed();
 
             if(NowCustomizing) {
-                Logger.LogWarning("現在編集中: {0}", LauncherItemId);
+                Logger.LogWarning("現在編集中: {LauncherItemId}", LauncherItemId);
                 //OrderManager.FlashCustomizeLauncherItem(LauncherItemId);
                 //WindowManager.Flash()
                 var items = WindowManager.GetWindowItems(Manager.WindowKind.LauncherCustomize);

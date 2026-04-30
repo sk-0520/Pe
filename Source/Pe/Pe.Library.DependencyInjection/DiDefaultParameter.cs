@@ -6,7 +6,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
     /// <summary>
     /// パラメータに型判別できない(<c><see langword="default"/>(type)</c>とか)を無理やり認識させるしゃあなし対応。
     /// </summary>
-    public readonly struct DiDefaultParameter
+    public readonly record struct DiDefaultParameter
     {
         public DiDefaultParameter(Type type)
         {

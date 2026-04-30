@@ -31,7 +31,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Note
 
         #region EntityEraserBase
 
-        protected override void ExecuteMainImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
+        protected override void ExecuteMainCore(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
             var daoFactory = new AppDaoFactory(context, statementLoader, LoggerFactory);
             var noteViewOffsetsEntityDao = daoFactory.Create<NoteViewOffsetsEntityDao>();
@@ -45,12 +45,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Note
             notesEntityDao.DeleteNote(NoteId);
         }
 
-        protected override void ExecuteLargeImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
+        protected override void ExecuteLargeCore(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         {
             //TODO: 添付ファイル(そもそも添付ファイル自体実装してない)
         }
 
-        protected override void ExecuteTemporaryImpl(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
+        protected override void ExecuteTemporaryCore(IDatabaseContext context, IDatabaseStatementLoader statementLoader, IDatabaseImplementation implementation)
         { }
 
         #endregion

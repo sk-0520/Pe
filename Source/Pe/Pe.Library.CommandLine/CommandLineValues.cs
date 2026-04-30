@@ -24,7 +24,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
 
     /// <inheritdoc cref="ICommandLineValues"/>
     /// <remarks>内部使用を目的としており外部公開されるものは <see cref="ICommandLineValues"/> を参照のこと。</remarks>
-    internal class CommandLineValues: ICommandLineValues
+    internal sealed class CommandLineValues: ICommandLineValues
     {
         #region function
 

@@ -4,9 +4,9 @@ using System.Runtime.InteropServices;
 using System.Windows.Media;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 
@@ -72,7 +72,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
         {
             if(color.A < PlatformConfiguration.ThemeAccentColorMinimumAlpha) {
                 var newAlpha = PlatformConfiguration.ThemeAccentColorDefaultAlpha;
-                Logger.LogInformation("アクセントカラー透明度補正: {0} -> {1}", color.A, newAlpha);
+                Logger.LogInformation("アクセントカラー透明度補正: {OldAlpha} -> {NewAlpha}", color.A, newAlpha);
                 color.A = newAlpha;
             }
             AccentColor = color;
@@ -84,6 +84,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
             ChangedWeakEvent.Raise(this, EventArgs.Empty);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:識別子はアンダースコアを含むことはできません", Justification = "<保留中>")]
         public void WndProc_WM_DWMCOLORIZATIONCOLORCHANGED(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             Logger.LogTrace("WM_DWMCOLORIZATIONCOLORCHANGED");
@@ -93,6 +94,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
             handled = true;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:識別子はアンダースコアを含むことはできません", Justification = "<保留中>")]
         public void WndProc_WM_SETTINGCHANGE(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             var lParamMessage = Marshal.PtrToStringAuto(lParam);

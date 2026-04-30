@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.CommonTest;
+using ContentTypeTextNet.Pe.Library.Common;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.DependencyInjection.Test
@@ -741,7 +739,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection.Test
             dic.Register<I1, C1>(DiLifecycle.Transient);
 
             dic.RegisterMember<D1, I1>("I1_1");
-            Assert.Throws<NullReferenceException>(() => dic.RegisterMember<D1, I1>("I1_0"));
+            Assert.Throws<DiMemberNotFoundException>(() => dic.RegisterMember<D1, I1>("I1_0"));
             Assert.Throws<ArgumentException>(() => dic.RegisterMember<D1, I1>("I1_1"));
         }
 

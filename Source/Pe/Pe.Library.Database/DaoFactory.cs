@@ -1,10 +1,20 @@
 using System;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
+    /// <summary>
+    /// <see cref="DatabaseAccessObjectBase"/>ファクトリ。
+    /// </summary>
     public class DaoFactory
     {
+        /// <summary>
+        /// 生成。
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="statementLoader"></param>
+        /// <param name="loggerFactory"></param>
         public DaoFactory(IDatabaseContext context, IDatabaseStatementLoader statementLoader, ILoggerFactory loggerFactory)
         {
             Context = context;
@@ -36,11 +46,12 @@ namespace ContentTypeTextNet.Pe.Library.Database
         protected IDatabaseContext Context { get; }
         protected IDatabaseStatementLoader StatementLoader { get; }
         protected ILoggerFactory LoggerFactory { get; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = $"{nameof(ConstructorInfo.Invoke)}が配列しか受け取らん")]
         protected object[] ConstructorParameters { get; }
 
         #endregion
 
-        #region IDaoFactory
+        #region function
 
         public virtual DatabaseAccessObjectBase Create(Type type)
         {

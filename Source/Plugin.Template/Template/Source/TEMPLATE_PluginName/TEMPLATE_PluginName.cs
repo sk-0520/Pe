@@ -21,10 +21,10 @@ namespace TEMPLATE_Namespace
 
         #region PluginBase
 
-        protected override void InitializeImpl(IPluginInitializeContext pluginInitializeContext)
+        protected override void InitializeCore(IPluginInitializeContext pluginInitializeContext)
         { }
 
-        protected override void FinalizeImpl(IPluginFinalizeContext pluginFinalizeContext)
+        protected override void FinalizeCore(IPluginFinalizeContext pluginFinalizeContext)
         { }
 
         #endregion

@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
 using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
@@ -57,10 +55,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             foreach(var dataDirItem in dataDirItems) {
                 dataDirItem.Directory.Refresh();
                 if(dataDirItem.Directory.Exists) {
-                    Logger.LogDebug("プラグインデータディレクトリ削除: {0}, {1}", dataDirItem.Target, dataDirItem.Directory);
+                    Logger.LogDebug("プラグインデータディレクトリ削除: {Target}, {Path}", dataDirItem.Target, dataDirItem.Directory);
                     dataDirItem.Directory.Delete(true);
                 } else {
-                    Logger.LogDebug("プラグインデータディレクトリなし: {0}, {1}", dataDirItem.Target, dataDirItem.Directory);
+                    Logger.LogDebug("プラグインデータディレクトリなし: {Target}, {Path}", dataDirItem.Target, dataDirItem.Directory);
                 }
             }
 
@@ -106,7 +104,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
 
         public void Uninstall(IPluginIdentifiers pluginIdentifiers)
         {
-            Logger.LogInformation("プラグインアンインストール: {0}", pluginIdentifiers);
+            Logger.LogInformation("プラグインアンインストール: {PluginIdentifiers}", pluginIdentifiers);
 
             UninstallPersistence(pluginIdentifiers);
             UninstallFiles(pluginIdentifiers);

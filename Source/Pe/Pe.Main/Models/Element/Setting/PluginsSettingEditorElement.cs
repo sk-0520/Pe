@@ -170,7 +170,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             }
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             foreach(var element in PluginItems) {
                 if(element.SupportedPreferences && element.StartedPreferences) {

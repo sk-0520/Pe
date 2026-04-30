@@ -102,10 +102,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
         [DataMember]
         [JsonPropertyName("version")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:識別子はアンダースコアを含むことはできません", Justification = "<保留中>")]
         public string _Version { get; set; } = string.Empty;
 
         [DataMember]
         [JsonPropertyName("minimum_version")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:識別子はアンダースコアを含むことはできません", Justification = "<保留中>")]
         public string _MinimumVersion { get; set; } = string.Empty;
 
         #endregion
@@ -169,6 +171,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
         [DataMember]
         [JsonPropertyName("items")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = "なんだこれ")]
         public NewVersionItemData[] Items { get; set; } = Array.Empty<NewVersionItemData>();
 
         #endregion

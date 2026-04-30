@@ -2,27 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Addon;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Element.Command;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Main.Models.Plugin;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Library.Database;
-using ContentTypeTextNet.Pe.Library.Common;
-using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
-using ContentTypeTextNet.Pe.Main.Models.Data;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Command
 {
@@ -75,7 +74,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
         {
             var nameMatches = hitValuesCreator.GetMatches(targetValue, inputRegex);
             if(nameMatches.Any()) {
-                Logger.LogTrace("ランチャー: {0}, {1}, {2}", targetLogName, targetValue, element.LauncherItemId);
+                Logger.LogTrace("ランチャー: {LogName}, {Target}, {LauncherItemId}", targetLogName, targetValue, element.LauncherItemId);
                 var result = new LauncherCommandItemElement(element, ContextDispatcher, LoggerFactory) {
                     EditableKind = kind,
                 };
@@ -112,7 +111,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
                 return launcherTagsEntityDao.SelectUniqueTags(launcherItemId).ToHashSet();
             });
             LauncherTags.Remove(launcherItemId);
-            if(tags.Any()) {
+            if(0 < tags.Count) {
                 LauncherTags.Add(launcherItemId, tags);
             }
         }
@@ -237,7 +236,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
             var element = LauncherItemElements.FirstOrDefault(i => i.LauncherItemId == e.LauncherItemId);
             if(element != null) {
                 if(!element.IsEnabledCommandLauncher) {
-                    Logger.LogInformation("コマンドランチャーから既存ランチャーアイテムの除外: {0}", element.LauncherItemId);
+                    Logger.LogInformation("コマンドランチャーから既存ランチャーアイテムの除外: {LauncherItemId}", element.LauncherItemId);
                     LauncherItemElements.Remove(element);
                     LauncherItemElementMap.Remove(element.LauncherItemId);
                     LauncherTags.Remove(element.LauncherItemId);
@@ -257,7 +256,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
 
             var element = OrderManager.GetOrCreateLauncherItemElement(e.LauncherItemId);
             if(element.IsEnabledCommandLauncher) {
-                Logger.LogInformation("コマンドランチャーへ新規ランチャーアイテムの追加: {0}", element.LauncherItemId);
+                Logger.LogInformation("コマンドランチャーへ新規ランチャーアイテムの追加: {LauncherItemId}", element.LauncherItemId);
                 AddItem(element);
             }
         }

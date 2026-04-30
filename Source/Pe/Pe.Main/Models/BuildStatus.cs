@@ -78,7 +78,7 @@ namespace ContentTypeTextNet.Pe.Main.Models
         /// <remarks>
         /// <para>本番バージョンはそれ以外と違って稼働ディレクトリが一段上になる。</para>
         /// </remarks>
-        public static bool IsProduct { get; } =
+        public static bool IsProduct =>
 #if PRODUCT
             true
 #else

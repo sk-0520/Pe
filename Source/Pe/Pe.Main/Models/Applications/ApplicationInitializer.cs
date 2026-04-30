@@ -58,11 +58,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
         #region property
 
-        private bool BetaMode { get; } =
+        private bool BetaMode =>
 #if BETA
             true
 #else
-    false
+            false
 #endif
 ;
 
@@ -73,7 +73,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         private string CommandLineSwitchFullTraceLog { get; } = "full-trace-log";
         public static string CommandLineSwitchForceLog { get; } = "force-log";
 
-        private string CommandLineSwitchAcceptSkip { get; } = "skip-accept";
+        private string CommandLineSwitchSkipAccept { get; } = "skip-accept";
+        private string CommandLineSwitchSkipStartup { get; } = "skip-startup";
         private string CommandLineSwitchBetaVersion { get; } = "beta-version";
 
 #if DEBUG
@@ -94,6 +95,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         private string CommandLineTestPluginName { get; } = "test-plugin-name";
 
         public bool IsFirstStartup { get; private set; }
+        /// <summary>
+        /// スタートアップ画面を表示するか。
+        /// </summary>
+        public bool SkipStartup { get; private set; }
         public RunMode RunMode { get; private set; }
         public ApplicationDiContainer? DiContainer { get; private set; }
         public ApplicationLogging? Logging { get; private set; }
@@ -136,7 +141,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             commandLineParser.Add(new CommandLineOption(CommandLineKeyWithLog, CommandLineOptionKind.Value, string.Empty));
             commandLineParser.Add(new CommandLineOption(CommandLineSwitchFullTraceLog, CommandLineOptionKind.Switch, string.Empty));
             commandLineParser.Add(new CommandLineOption(CommandLineSwitchForceLog, CommandLineOptionKind.Switch, string.Empty));
-            commandLineParser.Add(new CommandLineOption(CommandLineSwitchAcceptSkip, CommandLineOptionKind.Switch, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineSwitchSkipAccept, CommandLineOptionKind.Switch, string.Empty));
+            commandLineParser.Add(new CommandLineOption(CommandLineSwitchSkipStartup, CommandLineOptionKind.Switch, string.Empty));
             commandLineParser.Add(new CommandLineOption(CommandLineSwitchBetaVersion, CommandLineOptionKind.Switch, string.Empty));
 #if DEBUG
             commandLineParser.Add(new CommandLineOption(CommandLineSwitchDebugDevelopMode, CommandLineOptionKind.Switch, string.Empty));
@@ -317,11 +323,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             ;
 
             foreach(var dir in dirs) {
-                logger.LogDebug("create {0}", dir.FullName);
+                logger.LogDebug("create {DirectoryPath}", dir.FullName);
                 try {
                     dir.Create();
                 } catch(Exception ex) {
-                    logger.LogError(ex, ex.Message);
+                    logger.LogError(ex, "{Message}", ex.Message);
                     throw;
                 }
             }
@@ -356,12 +362,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 environmentParameters.LargeFile,
             };
             foreach(var file in deleteTargetFiles) {
-                logger.LogDebug("delete: {0}", file.FullName);
+                logger.LogDebug("delete: {Path}", file.FullName);
                 file.Refresh();
                 try {
                     file.Delete();
                 } catch(IOException ex) {
-                    logger.LogError(ex, ex.Message);
+                    logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
 
@@ -543,12 +549,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 environmentParameters.TemporarySettingDirectory,
             };
             foreach(var dir in dirs) {
-                logger.LogInformation("cleanup: {0}", dir.FullName);
+                logger.LogInformation("cleanup: {Path}", dir.FullName);
                 try {
                     var directoryCleaner = new DirectoryCleaner(dir, environmentParameters.ApplicationConfiguration.File.DirectoryRemoveWaitCount, environmentParameters.ApplicationConfiguration.File.DirectoryRemoveWaitTime, loggerFactory);
                     directoryCleaner.Clear(false);
                 } catch(Exception ex) {
-                    logger.LogError(ex, ex.Message);
+                    logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
         }
@@ -597,11 +603,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
             if(RunModeUtility.IsSingleProcessOnly(RunMode)) {
                 var mutexName = environmentParameters.ApplicationConfiguration.General.MutexName;
-                logger.LogInformation("ミューテックス名: {0}", mutexName);
+                logger.LogInformation("ミューテックス名: {MutexName}", mutexName);
                 var mutex = new Mutex(true, mutexName, out var createdNew);
                 if(!createdNew) {
                     //NOTE: 起動中プロセスになんかするならここかなぁ
-                    logger.LogWarning("二重起動: {0}", mutexName);
+                    logger.LogWarning("二重起動: {MutexName}", mutexName);
                     mutex.Dispose();
                     return false;
                 }
@@ -617,11 +623,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 return true;
             }
 
-            var skipAccept = parsedResult.ExistsSwitch(CommandLineSwitchAcceptSkip);
+            var skipAccept = parsedResult.ExistsSwitch(CommandLineSwitchSkipAccept);
             if(skipAccept) {
                 logger.LogInformation("使用許諾はコマンドライン設定によりスキップ");
             }
 
+            SkipStartup = parsedResult.ExistsSwitch(CommandLineSwitchSkipStartup);
+            if(SkipStartup) {
+                logger.LogInformation("スタートアップはコマンドライン設定によりスキップ");
+            }
 #if DEBUG
             if(IsDebugDevelopMode) {
                 if(!skipAccept) {
@@ -735,7 +745,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                         if(setting.IsEnabledTelemetry) {
                             var userIdManager = DiContainer.Build<UserIdManager>();
                             if(!userIdManager.IsValidUserId(setting.UserId)) {
-                                logger.LogInformation("統計情報送信は有効だがユーザーIDが不正のため無効化: {0}", setting.UserId);
+                                logger.LogInformation("統計情報送信は有効だがユーザーIDが不正のため無効化: {UserId}", setting.UserId);
                                 appExecuteSettingEntityDao.UpdateExecuteSettingAcceptInput(string.Empty, false, DatabaseCommonStatus.CreateCurrentAccount());
                                 context.Commit();
                             }

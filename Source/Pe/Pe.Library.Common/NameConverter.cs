@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         #region property
 
-        public CultureInfo CultureInfo { get; private set; }
+        public CultureInfo CultureInfo { get; }
 
         #endregion
 
@@ -70,9 +70,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns></returns>
         public string PascalToKebab(string source)
         {
-            if(source == null) {
-                throw new ArgumentNullException(nameof(source));
-            }
+            ArgumentNullException.ThrowIfNull(source);
+
             if(string.IsNullOrWhiteSpace(source)) {
                 return source;
             }
@@ -90,9 +89,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns></returns>
         public string PascalToSnake(string source)
         {
-            if(source == null) {
-                throw new ArgumentNullException(nameof(source));
-            }
+            ArgumentNullException.ThrowIfNull(source);
+
             if(string.IsNullOrWhiteSpace(source)) {
                 return source;
             }
@@ -111,9 +109,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns></returns>
         public string PascalToCamel(string source)
         {
-            if(source == null) {
-                throw new ArgumentNullException(nameof(source));
-            }
+            ArgumentNullException.ThrowIfNull(source);
+
             if(string.IsNullOrWhiteSpace(source)) {
                 return source;
             }
@@ -195,9 +192,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns></returns>
         public string KebabToPascal(string source)
         {
-            if(source == null) {
-                throw new ArgumentNullException(nameof(source));
-            }
+            ArgumentNullException.ThrowIfNull(source);
+
             if(string.IsNullOrWhiteSpace(source)) {
                 return source;
             }
@@ -215,9 +211,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <returns></returns>
         public string SnakeToPascal(string source)
         {
-            if(source == null) {
-                throw new ArgumentNullException(nameof(source));
-            }
+            ArgumentNullException.ThrowIfNull(source);
+
             if(string.IsNullOrWhiteSpace(source)) {
                 return source;
             }

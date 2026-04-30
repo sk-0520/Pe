@@ -14,10 +14,10 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         [UnsafeAccessor(UnsafeAccessorKind.Method, Name = "get_" + nameof(DbParameterCollection))]
         private static extern DbParameterCollection Get_DbParameterCollection(DbCommand dbCommand);
 
-        public DbCommandWrapper(DbCommand command, MiddlewareCollection middlewareCollection)
+        public DbCommandWrapper(DbCommand command, Middleware middleware)
         {
             BaseCommand = command;
-            MiddlewareCollection = middlewareCollection;
+            Middleware = middleware;
         }
 
         #region property
@@ -26,8 +26,8 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         /// 元の <see cref="DbCommand"/>。
         /// </summary>
         public DbCommand BaseCommand { get; private set; }
-        /// <inheritdoc cref="ContentTypeTextNet.Pe.Library.Database.Handler.MiddlewareCollection"/>
-        public MiddlewareCollection MiddlewareCollection { get; }
+        /// <inheritdoc cref="ContentTypeTextNet.Pe.Library.Database.Handler.Middleware"/>
+        public Middleware Middleware { get; }
 
         #endregion
 
@@ -36,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         protected ExecuteNonQueryPipeline CreateExecuteNonQueryPipeline()
         {
             var pipeline = new ExecuteNonQueryPipeline();
-            pipeline.UseRange(MiddlewareCollection.ExecuteNonQueries);
+            pipeline.UseRange(Middleware.ExecuteNonQueries);
             return pipeline;
         }
 
@@ -48,7 +48,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         protected ExecuteScalarPipeline CreateExecuteScalarPipeline()
         {
             var pipeline = new ExecuteScalarPipeline();
-            pipeline.UseRange(MiddlewareCollection.ExecuteScalars);
+            pipeline.UseRange(Middleware.ExecuteScalars);
             return pipeline;
         }
 
@@ -60,7 +60,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         protected ExecuteDataReaderPipeline CreateExecuteDataReaderPipeline()
         {
             var pipeline = new ExecuteDataReaderPipeline();
-            pipeline.UseRange(MiddlewareCollection.ExecuteDataReaders);
+            pipeline.UseRange(Middleware.ExecuteDataReaders);
             return pipeline;
         }
 
@@ -77,6 +77,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         public override string CommandText
         {
             get => BaseCommand.CommandText;
+            [SuppressMessage("Security", "CA2100:SQL クエリのセキュリティ脆弱性を確認", Justification = "本クラスはただのラッパーなので元クラス側で対応すべき(対象DB自体も知らんし)")]
             set => BaseCommand.CommandText = value;
         }
 

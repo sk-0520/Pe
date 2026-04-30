@@ -124,7 +124,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         PluginState LoadState
     ): IPluginLoadState;
 
-    [Serializable, DataContract]
     public class PluginLoadStateData: IPluginLoadState
     {
         public PluginLoadStateData(PluginId pluginId, string pluginName, Version pluginVersion, PluginState loadState, PluginAssemblyLoadContext? loadContext, IPlugin? plugin)

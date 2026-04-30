@@ -1,11 +1,8 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Xml.Serialization;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
@@ -85,9 +82,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <seealso cref="IDisposed"/>
         protected void ThrowIfDisposed()
         {
-            if(IsDisposed) {
-                throw new ObjectDisposedException(GetType().FullName);
-            }
+            ObjectDisposedException.ThrowIf(IsDisposed, this);
         }
 
         protected void OnDisposing()
@@ -246,6 +241,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <remarks>
     /// <para>破棄順序は後入れ先出になる。</para>
     /// </remarks>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1711:識別子は、不適切なサフィックスを含むことはできません", Justification = "ええねん")]
     public sealed class DisposableCollection: DisposerBase
     {
         #region property
@@ -328,6 +324,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #region property
 
         private ArrayPool<T> Pool { get; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = "Index を使わないパターンのプロパティ")]
         public T[] Items { get; }
         public int Length { get; }
 
@@ -369,6 +366,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #region property
 
         private ArrayPool<T> Pool { get; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = "Index を使わないパターンのプロパティ")]
         public T[] Items { get; }
         public int Length { get; }
 

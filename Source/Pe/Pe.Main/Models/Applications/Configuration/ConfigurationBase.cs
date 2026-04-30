@@ -103,7 +103,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
             }
 
             if(checkHasConfiguration) {
-                throw new Exception();
+                throw new ConfigurationException();
             }
 #endif
         }
@@ -118,7 +118,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
             if(method == null) {
                 method = typeof(ConfigurationBase).GetMethod(methodName, BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.InvokeMethod);
                 if(method == null) {
-                    throw new Exception($"method not found: {methodName}");
+                    throw new ConfigurationNotFoundMethodException($"method not found: {methodName}");
                 }
             }
 
@@ -191,7 +191,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications.Configuration
                     var customResult = GetCustomValue(methodParent, conf, memberKey, valueType, methodInfo);
                     return customResult;
                 }
-                throw new Exception($"{childSection.Path}: {valueType}");
+                throw new ConfigurationException($"{childSection.Path}: {valueType}");
             } else {
                 return result;
             }

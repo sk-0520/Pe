@@ -164,7 +164,9 @@ namespace ContentTypeTextNet.Pe.Bridge.Plugin
 
         public const string Unknown = "unknown";
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:識別子はアンダースコアを含むことはできません", Justification = "OK")]
         public const string DoWhatTheF_ckYouWantToPublicLicense1 = "WTFPLv1";
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:識別子はアンダースコアを含むことはできません", Justification = "OK")]
         public const string DoWhatTheF_ckYouWantToPublicLicense2 = "WTFPLv2";
         public const string GnuGeneralPublicLicense1 = "GPLv1";
         public const string GnuGeneralPublicLicense2 = "GPLv2";

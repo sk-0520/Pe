@@ -45,7 +45,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #region LauncherItemCustomizeSeparatorViewModel
 
-        protected override void InitializeImpl()
+        protected override void InitializeCore()
         {
             if(Model.IsLazyLoad) {
                 return;

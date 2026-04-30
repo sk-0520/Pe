@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
-    public struct ObjectDumpItem
+    public readonly record struct ObjectDumpItem
     {
         public ObjectDumpItem(MemberInfo memberInfo, object? value, IReadOnlyList<ObjectDumpItem> children)
         {
@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #endregion
     }
 
-    internal class DummyInfo: MemberInfo
+    internal sealed class DummyInfo: MemberInfo
     {
         public DummyInfo(string name, Type declaringType, Type reflectedType)
         {
@@ -276,9 +276,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         public IReadOnlyList<ObjectDumpItem> Dump(object target, int nest, bool ignoreAutoMember)
         {
-            if(target == null) {
-                throw new ArgumentNullException(nameof(target));
-            }
+            ArgumentNullException.ThrowIfNull(target);
+
             if(nest == 0) {
                 throw new ArgumentException(null, nameof(nest));
             }
@@ -288,9 +287,8 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         public IReadOnlyList<ObjectDumpItem> Dump(object target, int nest)
         {
-            if(target == null) {
-                throw new ArgumentNullException(nameof(target));
-            }
+            ArgumentNullException.ThrowIfNull(target);
+
             if(nest == 0) {
                 throw new ArgumentException(null, nameof(nest));
             }
@@ -300,9 +298,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
 
         public IReadOnlyList<ObjectDumpItem> Dump(object target)
         {
-            if(target == null) {
-                throw new ArgumentNullException(nameof(target));
-            }
+            ArgumentNullException.ThrowIfNull(target);
 
             return DumpCore(target, -1, true);
         }

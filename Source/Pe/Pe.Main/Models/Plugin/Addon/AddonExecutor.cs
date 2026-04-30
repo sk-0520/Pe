@@ -40,7 +40,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
             try {
                 systemExecutor.ExecuteFile(path);
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
         }
 

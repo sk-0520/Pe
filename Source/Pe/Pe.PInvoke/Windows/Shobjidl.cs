@@ -85,6 +85,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
         SLR_INVOKE_MSI = 0x80
     }
 
+    [Flags]
     public enum THUMBBUTTONFLAGS
     {
 
@@ -96,6 +97,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
         THBF_NONINTERACTIVE = 0x10
     }
 
+    [Flags]
     public enum TBPFLAG
     {
         TBPF_NOPROGRESS = 0,
@@ -106,6 +108,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
     }
 
 
+    [Flags]
     public enum THUMBBUTTONMASK
     {
         THB_BITMAP = 0x1,

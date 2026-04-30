@@ -5,15 +5,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Domain;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Element.Font;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 {
@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             var defaultLauncherGroupId = LauncherGroupId;
             if(defaultLauncherGroupId != LauncherGroupId.Empty) {
                 if(!AllLauncherGroups.Any(i => i.LauncherGroupId == defaultLauncherGroupId)) {
-                    Logger.LogTrace("存在しないランチャーグループIDのため補正: {0}", defaultLauncherGroupId);
+                    Logger.LogTrace("存在しないランチャーグループIDのため補正: {LauncherGroupId}", defaultLauncherGroupId);
                     defaultLauncherGroupId = LauncherGroupId.Empty;
                 }
             }

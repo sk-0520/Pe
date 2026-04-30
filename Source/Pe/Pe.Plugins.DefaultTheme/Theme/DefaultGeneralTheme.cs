@@ -4,7 +4,7 @@ using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
 
 namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
 {
-    internal class DefaultGeneralTheme: DefaultThemeBase, IGeneralTheme
+    internal sealed class DefaultGeneralTheme: DefaultThemeBase, IGeneralTheme
     {
         public DefaultGeneralTheme(IThemeParameter parameter)
             : base(parameter)

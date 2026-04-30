@@ -45,7 +45,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
             base.Dispose(disposing);
         }
 
-        protected override void InitializeImpl()
+        protected override void InitializeCore()
         {
             if(Model.IsLazyLoad) {
                 return;
@@ -70,7 +70,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
                 var hasError = Model.CheckLauncherItemPreferences();
                 if(hasError) {
                     //TODO: エラーがあった際にどうすべきか
-                    Logger.LogError("[TODO] エラーあり: {0}", LauncherItemId);
+                    Logger.LogError("[TODO] エラーあり: {LauncherItemId}", LauncherItemId);
                     AddError("error", string.Empty);
                 }
             }

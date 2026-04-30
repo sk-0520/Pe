@@ -10,6 +10,7 @@ namespace ContentTypeTextNet.Pe.Generator.Throws.Test
     public partial class DefException: AbcException
     { }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1012:抽象型はパブリック コンストラクターを含むことはできません", Justification = $"{nameof(GeneratedExceptionAttribute)}制御の元{nameof(JklException)}を使用する前提のクラス")]
     public abstract class GhiException: System.Exception
     {
         public enum GhiCode

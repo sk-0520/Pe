@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Timers;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
@@ -79,15 +78,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
             Timer.Stop();
         }
 
-        private string GetClassName(IntPtr hWnd)
-        {
-            var buffer = new StringBuilder(WindowClassNameLength);
-            NativeMethods.GetClassName(hWnd, buffer, buffer.Capacity);
-
-            var className = buffer.ToString();
-            return className;
-        }
-
         private IReadOnlyList<IntPtr> GetExplorerWindowHandles()
         {
             var result = new List<IntPtr>();
@@ -97,7 +87,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                     return true;
                 }
 
-                var className = GetClassName(hWnd);
+                var className = WindowsUtility.GetWindowClassName(hWnd);
                 if(ExplorerClassNames.Contains(className)) {
                     result.Add(hWnd);
                 }
@@ -115,11 +105,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
             if(!classTrees.Any()) {
                 return result;
             }
-            var className = classTrees.First();
-            var count = classTrees.Count();
+            var className = classTrees[0];
+            var count = classTrees.Count;
 
             NativeMethods.EnumChildWindows(hParentWnd, (hWnd, lParam) => {
-                var currentClassName = GetClassName(hWnd);
+                var currentClassName = WindowsUtility.GetWindowClassName(hWnd);
                 if(className != currentClassName) {
                     return true;
                 }

@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using ContentTypeTextNet.Pe.Core.Views.Converter;
 using Xunit;
@@ -21,7 +17,8 @@ namespace ContentTypeTextNet.Pe.Core.Test.Views.Converter
 
             var value = new CollectionView(Array.Empty<int>());
             var actual = test.Convert(value, default!, default!, CultureInfo.InvariantCulture);
-            Assert.Equal(false, actual);
+            Assert.IsType<bool>(actual);
+            Assert.False((bool)actual);
         }
 
         [Fact]
@@ -31,7 +28,8 @@ namespace ContentTypeTextNet.Pe.Core.Test.Views.Converter
 
             var value = new CollectionView(new[] { 1, 2, 3 });
             var actual = test.Convert(value, default!, default!, CultureInfo.InvariantCulture);
-            Assert.Equal(true, actual);
+            Assert.IsType<bool>(actual);
+            Assert.True((bool)actual);
         }
 
         [Fact]
@@ -41,7 +39,8 @@ namespace ContentTypeTextNet.Pe.Core.Test.Views.Converter
 
             var value = Array.Empty<int>();
             var actual = test.Convert(value, default!, default!, CultureInfo.InvariantCulture);
-            Assert.Equal(false, actual);
+            Assert.IsType<bool>(actual);
+            Assert.False((bool)actual);
         }
 
         [Fact]
@@ -51,7 +50,8 @@ namespace ContentTypeTextNet.Pe.Core.Test.Views.Converter
 
             var value = new[] { 1, 2, 3 };
             var actual = test.Convert(value, default!, default!, CultureInfo.InvariantCulture);
-            Assert.Equal(true, actual);
+            Assert.IsType<bool>(actual);
+            Assert.True((bool)actual);
         }
 
         [Fact]

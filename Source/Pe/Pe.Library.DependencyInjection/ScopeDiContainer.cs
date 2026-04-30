@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ContentTypeTextNet.Pe.Library.DependencyInjection
 {
-    internal class ConcurrentHashSet<T>: ConcurrentDictionary<T, byte>
+    internal sealed class ConcurrentHashSet<T>: ConcurrentDictionary<T, byte>
         where T : notnull
     {
         #region function
@@ -18,7 +18,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         #endregion
     }
 
-    internal class ScopeDiContainer: DiContainer, IScopeDiContainer
+    internal sealed class ScopeDiContainer: DiContainer, IScopeDiContainer
     {
         public ScopeDiContainer(bool isDisposeObjectPool)
             : base(isDisposeObjectPool)
@@ -69,7 +69,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
                 base.SimpleRegister(interfaceType, objectType, name, value);
                 RegisteredTypeSet[name].Add(interfaceType);
             } else {
-                throw new ArgumentException(nameof(interfaceType));
+                throw new ArgumentException(null, nameof(interfaceType));
             }
         }
 
@@ -78,6 +78,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         #region IDisposable
 
         // ここの構造わかんねぇなぁ！
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2215:Dispose メソッドが基底クラスの Dispose を呼び出す必要があります", Justification = "わからん！ 多分呼んだら死ぬ！")]
         protected override void Dispose(bool disposing)
         {
             if(!IsDisposed) {
@@ -110,7 +111,10 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
 
             if(disposing) {
 #pragma warning disable S3971 // "GC.SuppressFinalize" should not be called
+#pragma warning disable CA1816 // Dispose メソッドは、SuppressFinalize を呼び出す必要があります
+                // なぜこのタイミングで GC.SuppressFinalize を呼び出しているのか、もうわからない
                 GC.SuppressFinalize(this);
+#pragma warning restore CA1816 // Dispose メソッドは、SuppressFinalize を呼び出す必要があります
 #pragma warning restore S3971 // "GC.SuppressFinalize" should not be called
             }
 

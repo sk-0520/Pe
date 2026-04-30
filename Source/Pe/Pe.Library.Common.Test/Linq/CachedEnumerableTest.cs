@@ -11,6 +11,63 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test.Linq
 {
     public class CachedEnumerableTest
     {
+        #region function
+
+        [Fact]
+        public void SimpleTest()
+        {
+            int[] raw = [0, 1, 2, 3];
+
+            using var test = CachedEnumerable.Create(raw);
+
+            Assert.Equal(raw, test);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        [InlineData(4)]
+        public void Cached_N_Test(int count)
+        {
+            int[] raw = [0, 1, 2, 3];
+
+            using var test = CachedEnumerable.Create(raw);
+
+            var i = 0;
+            foreach(var item in test) {
+                Assert.Equal(raw[i], item);
+                if(count <= ++i) {
+                    break;
+                }
+            }
+
+            Assert.Equal(count, test.Cached.Count);
+            for(var j = 0; j < count; j++) {
+                Assert.Equal(raw[j], test.Cached[j]);
+            }
+        }
+
+        [Fact]
+        public void Cached_Full_Test()
+        {
+            int[] raw = [0, 1, 2, 3];
+
+            using var test = CachedEnumerable.Create(raw);
+
+            var i = 0;
+            foreach(var item in test) {
+                Assert.Equal(raw[i++], item);
+            }
+
+            Assert.Equal(raw, test.Cached);
+        }
+
+        #endregion
+    }
+
+    public class ConcurrentCachedEnumerableTest
+    {
         #region define
 
         /// <summary>
@@ -60,7 +117,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test.Linq
         {
             int[] raw = [0, 1, 2, 3];
 
-            using var test = CachedEnumerable.Create(raw);
+            using var test = ConcurrentCachedEnumerable.Create(raw);
 
             Assert.Equal(raw, test);
         }
@@ -70,11 +127,11 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test.Linq
         [InlineData(2)]
         [InlineData(3)]
         [InlineData(4)]
-        public void Cahced_N_Test(int count)
+        public void Cached_N_Test(int count)
         {
             int[] raw = [0, 1, 2, 3];
 
-            var test = CachedEnumerable.Create(raw);
+            using var test = ConcurrentCachedEnumerable.Create(raw);
 
             var i = 0;
             foreach(var item in test) {
@@ -91,11 +148,11 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test.Linq
         }
 
         [Fact]
-        public void Cahced_Full_Test()
+        public void Cached_Full_Test()
         {
             int[] raw = [0, 1, 2, 3];
 
-            var test = CachedEnumerable.Create(raw);
+            var test = ConcurrentCachedEnumerable.Create(raw);
 
             var i = 0;
             foreach(var item in test) {
@@ -117,7 +174,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test.Linq
 
             // 内部 enumerator を直接渡して、Dispose の呼び出しを検出できるようにする
             var slowEnumerator = new SlowEnumerator(raw, TimeSpan.FromMicroseconds(2));
-            var cached = new CachedEnumerable<int>(slowEnumerator);
+            var cached = new ConcurrentCachedEnumerable<int>(slowEnumerator);
 
             // 各スレッドは全要素を列挙して自分の結果リストに格納する
             var tasks = new Task<List<int>>[threadCount];

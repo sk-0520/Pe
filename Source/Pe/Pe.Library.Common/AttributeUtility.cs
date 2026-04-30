@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
-    public readonly struct AttributeProperty<TAttribute>
+    public readonly record struct AttributeProperty<TAttribute>
         where TAttribute : Attribute
     {
         public AttributeProperty(PropertyInfo property, IReadOnlyList<TAttribute> attributes)
@@ -27,6 +25,9 @@ namespace ContentTypeTextNet.Pe.Library.Common
         #endregion
     }
 
+    /// <summary>
+    /// アトリビュート系ユーティリティ。
+    /// </summary>
     public static class AttributeUtility
     {
         #region function

@@ -161,7 +161,8 @@ export const DatabaseTableIndex: FC<DatabaseTableIndexProps> = (
 					{workIndex.columnIds.map((a, i) => {
 						return (
 							<Box
-								key={`${i}_${a}`}
+								// biome-ignore lint/suspicious/noArrayIndexKey: a は一意足りえない
+								key={`${a}_${i}`}
 								sx={{
 									display: "flex",
 								}}

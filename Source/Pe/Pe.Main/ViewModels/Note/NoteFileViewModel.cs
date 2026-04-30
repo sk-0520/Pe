@@ -1,14 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.ViewModels;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.Note;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
@@ -57,7 +51,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     var systemExecutor = new SystemExecutor();
                     systemExecutor.ExecuteFile(FilePath);
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
         );
@@ -70,7 +64,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     var systemExecutor = new SystemExecutor();
                     systemExecutor.ShowProperty(FilePath);
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
         );

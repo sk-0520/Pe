@@ -18,6 +18,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1711:識別子は、不適切なサフィックスを含むことはできません", Justification = "ええねん")]
     public class LauncherItemAddonViewSupporterCollection
     {
         public LauncherItemAddonViewSupporterCollection(IOrderManager orderManager, IWindowManager windowManager, IUserTracker userTracker, IContextDispatcher contextDispatcher, ILoggerFactory loggerFactory)
@@ -185,9 +186,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Addon
         /// <inheritdoc cref="ILauncherItemAddonViewSupporter.RegisterWindowAsync(Window, Func{bool}?, Action?, CancellationToken)"/>
         public async Task<bool> RegisterWindowAsync(Window window, Func<bool>? userClosing, Action? closedWindow, CancellationToken cancellationToken)
         {
-            if(window == null) {
-                throw new ArgumentNullException(nameof(window));
-            }
+            ArgumentNullException.ThrowIfNull(window);
+
             if(window.IsVisible) {
                 Logger.LogError("ランチャーアイテムアドオンの初期表示は Pe 側で処理される必要がある");
                 window.Close();

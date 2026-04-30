@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
@@ -38,12 +37,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
 
         public DatabaseDelayWriter(IDatabaseBarrier databaseBarrier, TimeSpan pauseRetryTime, TimeProvider timeProvider, ILoggerFactory loggerFactory)
         {
-            if(databaseBarrier == null) {
-                throw new ArgumentNullException(nameof(databaseBarrier));
-            }
-            if(loggerFactory == null) {
-                throw new ArgumentNullException(nameof(loggerFactory));
-            }
+            ArgumentNullException.ThrowIfNull(databaseBarrier);
+            ArgumentNullException.ThrowIfNull(loggerFactory);
 
             DatabaseBarrier = databaseBarrier;
             PauseRetryTime = pauseRetryTime;
@@ -92,13 +87,13 @@ namespace ContentTypeTextNet.Pe.Library.Database
                 // 既に登録されている処理が存在する場合は破棄しておく
                 if(uniqueKey != null) {
                     if(UniqueItems.TryGetValue(uniqueKey, out var stockedItem)) {
-                        Logger.LogTrace("待機処理破棄: {0} {1}", stockedItem.StockUtcTimestamp, uniqueKey.GetHashCode());
+                        Logger.LogTrace("待機処理破棄: {Timestamp} {HashCode}", stockedItem.StockUtcTimestamp, uniqueKey.GetHashCode());
                         StockItems.Remove(stockedItem);
                         UniqueItems.Remove(uniqueKey);
                     }
                 }
 
-                var item = new DelayStockItem(action, TimeProvider.GetUtcNow().DateTime);
+                var item = new DelayStockItem(action, TimeProvider.GetUtcNow().UtcDateTime);
                 StockItems.Add(item);
                 if(uniqueKey != null) {
                     UniqueItems.Add(uniqueKey, item);
@@ -148,9 +143,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3236:Caller information arguments should not be provided explicitly", Justification = "デバッグ時のみのあれ")]
         public void Stock(Action<IDatabaseTransaction> action, object uniqueKey)
         {
-            if(uniqueKey == null) {
-                throw new ArgumentNullException(nameof(uniqueKey));
-            }
+            ArgumentNullException.ThrowIfNull(uniqueKey);
+
 #if DEBUG
             if(uniqueKey is UniqueKeyPool) {
                 Debug.Assert(false, $"完全な事故: {nameof(UniqueKeyPool)}.{nameof(UniqueKeyPool.Get)} を使用していない可能性あり");

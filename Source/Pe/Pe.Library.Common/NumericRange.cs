@@ -167,12 +167,12 @@ namespace ContentTypeTextNet.Pe.Library.Common
                                     workValues.Add(i);
                                 }
                             } else {
-                                ex = new Exception($"error: {head} < {tail}");
+                                ex = new FormatException($"error: {head} < {tail}");
                                 result = null;
                                 return false;
                             }
                         } else {
-                            ex = new Exception("range separator");
+                            ex = new FormatException("range separator");
                             result = null;
                             return false;
                         }
@@ -180,7 +180,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                         workValues.Add(head);
                     }
                 } else {
-                    ex = new Exception("unmatched");
+                    ex = new FormatException("unmatched");
                     result = Array.Empty<int>();
                     return false;
                 }

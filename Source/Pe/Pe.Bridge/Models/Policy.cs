@@ -11,6 +11,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
         #endregion
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1040:空のインターフェイスは使用しません", Justification = "実装方針が決まってない")]
     public interface IPolicyBuilder
     {
         #region function

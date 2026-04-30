@@ -28,6 +28,7 @@ namespace ContentTypeTextNet.Pe.Core.Compatibility.Forms
 
         /// <inheritdoc cref="WinForms.Screen.AllScreens"/>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Critical Code Smell", "S2365:Properties should not make collection or array copies")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1819:プロパティは配列を返すことはできません", Justification = $"{nameof(WinForms.Screen.AllScreens)}がそうなってる")]
         public static Screen[] AllScreens
         {
             get { return GetAllScreens().ToArray(); }

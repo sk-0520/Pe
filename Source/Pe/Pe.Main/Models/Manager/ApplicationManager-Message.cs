@@ -10,13 +10,14 @@ using System.Windows.Interop;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Addon;
-using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.KeyAction;
@@ -27,8 +28,6 @@ using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
 using ContentTypeTextNet.Pe.PInvoke.Windows;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Manager
 {
@@ -87,7 +86,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         private IntPtr MessageWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
 #if DEBUG
-            Logger.LogTrace("[MSG WND] hWnd = {0}, msg = {1}({2}), wParam = {3}, lParam = {4}", hWnd, msg, (WM)msg, wParam, lParam);
+            Logger.LogTrace("[MSG WND] hWnd = {Handle}, msg = {RawMsg}({EnumMsg}), wParam = {WParam}, lParam = {LParam}", hWnd, msg, (WM)msg, wParam, lParam);
 #endif
 
             switch(msg) {
@@ -257,7 +256,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                     break;
 
                 case KeyActionLauncherItemJob launcherItemJob: {
-                        Logger.LogInformation("キーからの起動: アイテム = {0}, キー = {1}", launcherItemJob.PressedData.LauncherItemId, launcherItemJob.CommonData.KeyActionId);
+                        Logger.LogInformation("キーからの起動: アイテム = {LauncherItemId}, キー = {KeyActionId}", launcherItemJob.PressedData.LauncherItemId, launcherItemJob.CommonData.KeyActionId);
 
                         NativeMethods.GetCursorPos(out var podPoint);
                         var deviceCursorLocation = PodStructUtility.Convert(podPoint);
@@ -368,7 +367,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                         default:
                             if(job is KeyActionPressedJobBase pressedJob) {
                                 if(!pressedJob.IsAllHit) {
-                                    Logger.LogTrace("待機中: {0}", job.CommonData.KeyActionId);
+                                    Logger.LogTrace("待機中: {KeyActionId}", job.CommonData.KeyActionId);
                                     firstWaitingPressedJob = pressedJob;
                                     break;
                                 }
@@ -431,7 +430,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         [Obsolete("DisplaySettingsChanged でいける気がするんよ")]
         private void CatchDeviceChanged(DeviceChangedData deviceChangedData)
         {
-            Logger.LogInformation("デバイス状態検知: {0}", deviceChangedData.DBT);
+            Logger.LogInformation("デバイス状態検知: {Dbt}", deviceChangedData.DBT);
 
             // デバイス状態が変更されたか
             if(deviceChangedData.DBT == DBT.DBT_DEVNODES_CHANGED /*&& Initialized && !IsPause*/) {
@@ -441,7 +440,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
                 var rawScreenCount = NativeMethods.GetSystemMetrics(SM.SM_CMONITORS);
                 if(LauncherToolbarElements.Count != rawScreenCount) {
                     // 数が変わってりゃ待機
-                    Logger.LogInformation("ディスプレイ数変更検知: WindowsAPI = {0}, Toolbar = {1}", rawScreenCount, LauncherToolbarElements.Count);
+                    Logger.LogInformation("ディスプレイ数変更検知: WindowsAPI = {RawScreenCount}, Toolbar = {Count}", rawScreenCount, LauncherToolbarElements.Count);
                     var displayConfiguration = ApplicationDiContainer.Get<DisplayConfiguration>();
 
                     Task.Run(() => {
@@ -722,7 +721,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         private void SystemEvents_SessionEnding(object sender, SessionEndingEventArgs e)
         {
-            Logger.LogInformation("セッション終了検知: Reason = {0}, Cancel = {1}", e.Reason, e.Cancel);
+            Logger.LogInformation("セッション終了検知: Reason = {Reason}, Cancel = {Cancel}", e.Reason, e.Cancel);
 
             CloseViews(true);
             DisposeElements();
@@ -732,7 +731,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
 
         private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
         {
-            Logger.LogInformation("セッション変更検知: Reason = {0}", e.Reason);
+            Logger.LogInformation("セッション変更検知: Reason = {Reason}", e.Reason);
             // そろそろ switch すべきちゃうんかと
 
             if(e.Reason == SessionSwitchReason.ConsoleConnect || e.Reason == SessionSwitchReason.SessionUnlock) {

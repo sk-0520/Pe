@@ -11,7 +11,7 @@ using ContentTypeTextNet.Pe.Library.Common;
 
 namespace ContentTypeTextNet.Pe.Plugins.DefaultTheme.Theme
 {
-    internal class DefaultLauncherToolbarTheme: DefaultThemeBase, ILauncherToolbarTheme
+    internal sealed class DefaultLauncherToolbarTheme: DefaultThemeBase, ILauncherToolbarTheme
     {
         public DefaultLauncherToolbarTheme(IThemeParameter parameter)
             : base(parameter)

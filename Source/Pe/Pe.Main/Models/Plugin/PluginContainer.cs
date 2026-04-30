@@ -8,15 +8,14 @@ using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Addon;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.Models.Serialization;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Theme;
 using ContentTypeTextNet.Pe.Plugins.DefaultTheme;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Plugin
@@ -109,7 +108,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                 try {
                     existsPlugin = File.Exists(pluginPath);
                 } catch(Exception ex) {
-                    Logger.LogError(ex, "プラグイン実ファイル取得失敗: {0}, {1}", ex.Message, pluginPath);
+                    Logger.LogError(ex, "プラグイン実ファイル取得失敗: {Message}, {Path}", ex.Message, pluginPath);
                     continue;
                 }
 
@@ -125,7 +124,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                     try {
                         existsPlugin = File.Exists(pluginPath);
                     } catch(Exception ex) {
-                        Logger.LogError(ex, "プラグイン実ファイル取得失敗: {0}, {1}", ex.Message, pluginPath);
+                        Logger.LogError(ex, "プラグイン実ファイル取得失敗: {Message}, {Path}", ex.Message, pluginPath);
                         continue;
                     }
 
@@ -185,7 +184,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             var currentPlugin = pluginStateItems.FirstOrDefault(i => string.Equals(pluginBaseName, i.PluginName, StringComparison.InvariantCultureIgnoreCase));
             if(currentPlugin != null) {
                 if(currentPlugin.State == PluginState.Disable) {
-                    Logger.LogInformation("(名前判定)プラグイン読み込み停止中: {0}, {1}", currentPlugin.PluginName, currentPlugin.PluginId);
+                    Logger.LogInformation("(名前判定)プラグイン読み込み停止中: {PluginName}, {PluginId}", currentPlugin.PluginName, currentPlugin.PluginId);
                     return new PluginLoadStateData(currentPlugin.PluginId, currentPlugin.PluginName, new Version(), PluginState.Disable, null, null);
                 }
             }
@@ -197,7 +196,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             try {
                 pluginAssembly = loadContext.Load();
             } catch(Exception ex) {
-                Logger.LogError(ex, "プラグインアセンブリ読み込み失敗: {0}", pluginFile.Name);
+                Logger.LogError(ex, "プラグインアセンブリ読み込み失敗: {Name}", pluginFile.Name);
                 loadContext.Unload();
                 return new PluginLoadStateData(currentPlugin?.PluginId ?? PluginId.Empty, currentPlugin?.PluginName ?? pluginFile.Name, new Version(), PluginState.IllegalAssembly, loadContext, null);
             }
@@ -210,11 +209,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                     if(pluginType.IsAbstract || pluginType.IsNotPublic) {
                         continue;
                     }
-                    Logger.LogDebug("{0}", pluginType.FullName);
+                    Logger.LogDebug("{Path}", pluginType.FullName);
 
                     var typeInterfaces = pluginType.GetInterfaces();
                     foreach(var typeInterface in typeInterfaces) {
-                        Logger.LogDebug("> {0}", typeInterface.FullName);
+                        Logger.LogDebug("> {Path}", typeInterface.FullName);
                     }
                     var plugins = typeInterfaces.FirstOrDefault(i => i == typeof(IPlugin));
                     if(plugins != null) {
@@ -223,21 +222,21 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                     }
                 }
             } catch(Exception ex) {
-                Logger.LogError(ex, "プラグインアセンブリ リフレクション失敗: {0}", pluginFile.Name);
+                Logger.LogError(ex, "プラグインアセンブリ リフレクション失敗: {Name}", pluginFile.Name);
                 loadContext.Unload();
                 return new PluginLoadStateData(currentPlugin?.PluginId ?? PluginId.Empty, currentPlugin?.PluginName ?? pluginFile.Name, new Version(), PluginState.IllegalAssembly, loadContext, null);
             }
 
             if(pluginInterfaceImpl == null) {
-                Logger.LogError("プラグインアセンブリからプラグインインターフェイス取得できず: {0}, {1}", pluginAssembly.FullName, pluginFile.FullName);
+                Logger.LogError("プラグインアセンブリからプラグインインターフェイス取得できず: {PluginAssembly}, {PluginFile}", pluginAssembly.FullName, pluginFile.FullName);
                 loadContext.Unload();
                 return new PluginLoadStateData(currentPlugin?.PluginId ?? PluginId.Empty, currentPlugin?.PluginName ?? pluginFile.Name, new Version(), PluginState.IllegalAssembly, loadContext, null);
             }
 
-            Logger.LogDebug("[{0}]", pluginInterfaceImpl.FullName);
+            Logger.LogDebug("[{Path}]", pluginInterfaceImpl.FullName);
             foreach(var constructor in pluginInterfaceImpl.GetConstructors()) {
                 var paras = string.Join(", ", constructor.GetParameters().Select(i => $"{i.ParameterType.FullName} {i.Name}"));
-                Logger.LogDebug("-> {0}", paras);
+                Logger.LogDebug("-> {Parameters}", paras);
             }
 
             IPlugin plugin;
@@ -246,14 +245,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                 // コンストラクタ時にメモリログが参照に残るのを抑制
                 using(pauseReceiveLog()) {
                     var pluginInstance = Activator.CreateInstance(pluginInterfaceImpl, new[] { pluginConstructorContext });
-                    if(pluginInstance == null) {
+                    if(pluginInstance is null) {
                         throw new PluginInvalidAssemblyException($"{nameof(Activator)}.{nameof(Activator.CreateInstance)}失敗");
                     }
-                    plugin = (IPlugin)pluginInstance ?? throw new PluginInvalidAssemblyException($"{nameof(IPlugin)}へのキャスト失敗: {pluginInstance}");
+                    plugin = pluginInstance as IPlugin ?? throw new PluginInvalidAssemblyException($"{nameof(IPlugin)}へのキャスト失敗: {pluginInstance}");
                     pluginInformation = plugin.PluginInformation;
                 }
             } catch(Exception ex) {
-                Logger.LogError(ex, "プラグインインターフェイスを生成できず: {0}, {1}, {2}", ex.Message, pluginAssembly.FullName, pluginFile.FullName);
+                Logger.LogError(ex, "プラグインインターフェイスを生成できず: {Message}, {PluginAssembly}, {PluginFile}", ex.Message, pluginAssembly.FullName, pluginFile.FullName);
                 loadContext.Unload();
                 return new PluginLoadStateData(currentPlugin?.PluginId ?? PluginId.Empty, currentPlugin?.PluginName ?? pluginFile.Name, new Version(), PluginState.IllegalAssembly, loadContext, null);
             }
@@ -264,7 +263,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
             var loadedCurrentPlugin = pluginStateItems.FirstOrDefault(i => i.PluginId == pluginId);
             if(loadedCurrentPlugin != null) {
                 if(loadedCurrentPlugin.State == PluginState.Disable) {
-                    Logger.LogInformation("(ID判定)プラグイン読み込み停止中: {0}({1}), {2}", loadedCurrentPlugin.PluginName, pluginName, loadedCurrentPlugin.PluginId);
+                    Logger.LogInformation("(ID判定)プラグイン読み込み停止中: {LoadedCurrentPluginName}({PluginName}), {PluginId}", loadedCurrentPlugin.PluginName, pluginName, loadedCurrentPlugin.PluginId);
                     loadContext.Unload();
                     return new PluginLoadStateData(loadedCurrentPlugin.PluginId, pluginName, new Version(), PluginState.Disable, loadContext, null);
                 }
@@ -277,7 +276,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                 var minVersion = versionConverter.TrimUndefinedElement(pluginInformation.PluginVersions.MinimumSupportVersion);
                 var ok = minVersion <= applicationVersion;
                 if(!ok) {
-                    Logger.LogWarning("プラグインサポート最低バージョン({0}): {1}, {2}", pluginInformation.PluginVersions.MinimumSupportVersion, pluginName, pluginId);
+                    Logger.LogWarning("プラグインサポート最低バージョン({MinimumSupportVersion}): {PluginName}, {PluginId}", pluginInformation.PluginVersions.MinimumSupportVersion, pluginName, pluginId);
                     loadContext.Unload();
                     return new PluginLoadStateData(pluginId, pluginName, pluginVersion, PluginState.IllegalVersion, loadContext, null);
                 }
@@ -287,14 +286,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
                 var maxVersion = versionConverter.TrimUndefinedElement(pluginInformation.PluginVersions.MaximumSupportVersion);
                 var ok = applicationVersion <= maxVersion;
                 if(!ok) {
-                    Logger.LogWarning("プラグインサポート最高バージョン({0}): {1}, {2}", pluginInformation.PluginVersions.MaximumSupportVersion, pluginName, pluginId);
+                    Logger.LogWarning("プラグインサポート最高バージョン({MaximumSupportVersion}): {PluginName}, {PluginId}", pluginInformation.PluginVersions.MaximumSupportVersion, pluginName, pluginId);
                     loadContext.Unload();
                     return new PluginLoadStateData(pluginId, pluginName, pluginVersion, PluginState.IllegalVersion, loadContext, null);
                 }
             }
 
             // 読み込み対象！
-            Logger.LogInformation("プラグイン読み込み対象: {0}, {1}", pluginName, pluginId);
+            Logger.LogInformation("プラグイン読み込み対象: {PluginName}, {PluginId}", pluginName, pluginId);
             return new PluginLoadStateData(pluginId, pluginName, pluginVersion, PluginState.Enable, loadContext, plugin);
         }
 

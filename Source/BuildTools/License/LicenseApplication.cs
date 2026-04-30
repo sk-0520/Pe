@@ -28,6 +28,10 @@ namespace License
         private ILogger Logger { get; }
         private LicenseOptions Options { get; }
 
+        private JsonSerializerOptions JsonSerializerOptions { get; } = new() {
+            WriteIndented = true,
+        };
+
         #endregion
 
         #region function
@@ -132,10 +136,7 @@ namespace License
 
         private async Task WriteComponentFileAsync(LicenseComponent component, string outputPath, CancellationToken cancellationToken)
         {
-            var options = new JsonSerializerOptions() {
-                WriteIndented = true,
-            };
-            var content = JsonSerializer.Serialize(component, options);
+            var content = JsonSerializer.Serialize(component, JsonSerializerOptions);
             await System.IO.File.WriteAllTextAsync(outputPath, content, cancellationToken);
         }
 
@@ -154,7 +155,9 @@ namespace License
             // キャッシュコンテキスト
             using var cache = new SourceCacheContext();
 
+#pragma warning disable CA2025 // await Task.WhenAll してるので多分よし
             var metadataTasks = nugetPackageItems.Select(a => GetMetadataAsync(a, metadataResource, cache, cancellationToken));
+#pragma warning restore CA2025
             var metadatas = (await Task.WhenAll(metadataTasks)).OrderBy(a => a.Identity.Id).ToArray();
 
             var component = await ReadComponentFileAsync(Options.BaseJson, cancellationToken);

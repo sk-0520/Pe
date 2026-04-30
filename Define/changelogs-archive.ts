@@ -1927,7 +1927,7 @@ const ArchiveChangelogs: ChangelogVersion[] = [
 						revision: "0717ee46f28e4f00b16aa25a8f8a015f2ac9cc8b",
 						subject: "#915: Node.js 16 actions are deprecated",
 						comments: [
-							"actions/upload-artifact@v4 の速度アップは未調査のため zip 圧縮展開処理は継続",
+							"actions/upload-artifact@v7 の速度アップは未調査のため zip 圧縮展開処理は継続",
 							"Release ページへのアップロード処理 svenstaro/upload-release-action は本件では未対応、 #916 で対応する",
 						],
 					},

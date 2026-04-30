@@ -10,10 +10,10 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
     /// <remarks><see cref="IDbConnection"/> は知らん。</remarks>
     public class DbConnectionWrapper: DbConnection
     {
-        public DbConnectionWrapper(DbConnection dbConnection, MiddlewareCollection middlewareCollection)
+        public DbConnectionWrapper(DbConnection dbConnection, Middleware middleware)
         {
             BaseConnection = dbConnection;
-            MiddlewareCollection = middlewareCollection;
+            Middleware = middleware;
         }
 
         #region property
@@ -22,8 +22,8 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
         /// 元の <see cref="DbConnection"/>。
         /// </summary>
         public DbConnection BaseConnection { get; private set; }
-        /// <inheritdoc cref="ContentTypeTextNet.Pe.Library.Database.Handler.MiddlewareCollection"/>
-        public MiddlewareCollection MiddlewareCollection { get; }
+        /// <inheritdoc cref="ContentTypeTextNet.Pe.Library.Database.Handler.Middleware"/>
+        public Middleware Middleware { get; }
 
         #endregion
 
@@ -66,7 +66,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Handler
 
         protected override DbCommand CreateDbCommand()
         {
-            var command = new DbCommandWrapper(BaseConnection.CreateCommand(), MiddlewareCollection);
+            var command = new DbCommandWrapper(BaseConnection.CreateCommand(), Middleware);
             return command;
         }
 

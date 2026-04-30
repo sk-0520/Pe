@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using SevenZipExtractor;
@@ -28,6 +27,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         #region function
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5389:アーカイブ項目のパスをターゲット ファイル システム パスに追加しない", Justification = "ExtractToFile なんだけど色々あるので無視")]
         private void ExtractZip(FileInfo archiveFile, DirectoryInfo extractDirectory, UserNotifyProgress userNotifyProgress)
         {
             var createdDirs = new HashSet<string>();
@@ -46,7 +46,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 foreach(var entry in dirEntries) {
                     var dirPath = PathUtility.SafeCombine(extractDirectory.FullName, entry.FullName);
                     if(!createdDirs.Contains(dirPath) && !Directory.Exists(dirPath)) {
-                        Logger.LogTrace("作成: {0}", dirPath);
+                        Logger.LogTrace("作成: {Path}", dirPath);
                         Directory.CreateDirectory(dirPath);
                         createdDirs.Add(dirPath);
 
@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
                 foreach(var entry in fileEntries) {
                     var expandPath = PathUtility.SafeCombine(extractDirectory.FullName, entry.FullName);
-                    Logger.LogTrace("展開: {0}", expandPath);
+                    Logger.LogTrace("展開: {Path}", expandPath);
                     entry.ExtractToFile(expandPath, true);
                     extractedItemCount += 1;
                     userNotifyProgress.Report(extractedItemCount / (double)totalExtractItemCount, entry.FullName);
@@ -75,7 +75,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 archive.Extract(e => {
                     var expandPath = PathUtility.SafeCombine(extractDirectory.FullName, e.FileName);
 
-                    Logger.LogTrace("展開: {0}", expandPath);
+                    Logger.LogTrace("展開: {Path}", expandPath);
                     extractedItemCount += 1;
                     userNotifyProgress.Report(extractedItemCount / (double)totalExtractItemCount, expandPath);
 
@@ -115,7 +115,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             } else {
                 var dotExt = Path.GetExtension(archiveFile.Name);
                 if(string.IsNullOrEmpty(dotExt) || dotExt.Length < 2) {
-                    throw new Exception("not found extension: " + archiveFile);
+                    throw new ArgumentException("not found extension: " + archiveFile, nameof(archiveFile));
                 }
                 Extract(dotExt.Substring(1).ToLowerInvariant());
             }

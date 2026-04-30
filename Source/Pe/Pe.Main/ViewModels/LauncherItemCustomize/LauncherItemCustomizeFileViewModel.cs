@@ -7,13 +7,13 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.ViewModels;
+using ContentTypeTextNet.Pe.Library.Common.Linq;
 using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
 using Microsoft.Extensions.Logging;
 using Prism.Commands;
-using ContentTypeTextNet.Pe.Library.Common.Linq;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 {
@@ -141,7 +141,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
                     dialogRequester.ExpandPath(Path),
                     true,
                     new[] {
-                        new DialogFilterItem("exe", exeExtensions.First(), exeExtensions),
+                        new DialogFilterItem("exe", exeExtensions[0], exeExtensions),
                         dialogRequester.CreateAllFilter(),
                     },
                     r => {
@@ -240,7 +240,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #region CustomizeLauncherDetailViewModelBase
 
-        protected override void InitializeImpl()
+        protected override void InitializeCore()
         {
             //var data = Model.LoadFileData();
             //Path = data.Path;

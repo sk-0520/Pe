@@ -26,6 +26,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
     /// http://pinvoke.net/default.aspx/Enums/HRESULT.html
     /// </summary>
     [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 4)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1708:識別子は、大文字と小文字の区別以外にも相違していなければなりません", Justification = "分からんけど無視")]
     public struct HRESULT:
       System.IComparable
 #if DOTNET20
@@ -138,13 +139,13 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
         public static bool SUCCEEDED(int hr) { return hr >= 0; }
 
         #region IComparable<> Members
-        public int CompareTo(HRESULT that)
+        public int CompareTo(HRESULT obj)
         {
-            return (this.m_value < that.m_value) ? -1 : (this.m_value > that.m_value) ? +1 : 0;
+            return (this.m_value < obj.m_value) ? -1 : (this.m_value > obj.m_value) ? +1 : 0;
         }
-        public int CompareTo(int that)
+        public int CompareTo(int obj)
         {
-            return (this.m_value < that) ? -1 : (this.m_value > that) ? +1 : 0;
+            return (this.m_value < obj) ? -1 : (this.m_value > obj) ? +1 : 0;
         }
         #endregion
 
@@ -7146,6 +7147,7 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
 #endif
         static DirCodes dirCodes;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2207:値型の静的フィールドをインラインで初期化します", Justification = "PInvoke.net 産はすべて許される")]
         static HRESULT()
         {
             dirCodes = new DirCodes(1280);
@@ -7167,6 +7169,26 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
         public static bool operator !=(HRESULT left, HRESULT right)
         {
             return !(left == right);
+        }
+
+        public static bool operator <(HRESULT left, HRESULT right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        public static bool operator <=(HRESULT left, HRESULT right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >(HRESULT left, HRESULT right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+
+        public static bool operator >=(HRESULT left, HRESULT right)
+        {
+            return left.CompareTo(right) >= 0;
         }
     }
 #pragma warning restore IDE0011 // 波かっこを追加します

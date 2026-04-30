@@ -113,14 +113,14 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
         #region function
 
-        protected abstract bool CanDragStartImpl(UIElement sender, MouseEventArgs e);
+        protected abstract bool CanDragStartCore(UIElement sender, MouseEventArgs e);
         /// <summary>
         /// ドラッグした<see cref="DragParameter"/>の取得。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         /// <returns></returns>
-        protected abstract IResultSuccess<DragParameter> GetDragParameterImpl(UIElement sender, MouseEventArgs e);
+        protected abstract IResultSuccess<DragParameter> GetDragParameterCore(UIElement sender, MouseEventArgs e);
 
         private void MouseDownCore(UIElement sender, MouseEventArgs e)
         {
@@ -134,7 +134,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
             var isDragX = Math.Abs(nowPosition.X - DragStartPosition.X) > DragStartSize.Width;
             var isDragY = Math.Abs(nowPosition.Y - DragStartPosition.Y) > DragStartSize.Height;
             if(isDragX || isDragY) {
-                var parameterResult = GetDragParameterImpl(sender, e);
+                var parameterResult = GetDragParameterCore(sender, e);
                 if(parameterResult.Success) {
                     var parameter = parameterResult.SuccessValue;
                     if(parameter == null) {
@@ -177,7 +177,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 return;
             }
 
-            if(!CanDragStartImpl(sender, e)) {
+            if(!CanDragStartCore(sender, e)) {
                 return;
             }
 
@@ -224,7 +224,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
 
         #region DragAndDropBase
 
-        protected override bool CanDragStartImpl(UIElement sender, MouseEventArgs e)
+        protected override bool CanDragStartCore(UIElement sender, MouseEventArgs e)
         {
             if(CanDragStart != null) {
                 return CanDragStart(sender, e);
@@ -233,7 +233,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
             return false;
         }
 
-        protected override IResultSuccess<DragParameter> GetDragParameterImpl(UIElement sender, MouseEventArgs e)
+        protected override IResultSuccess<DragParameter> GetDragParameterCore(UIElement sender, MouseEventArgs e)
         {
             if(GetDragParameter != null) {
                 return GetDragParameter(sender, e);

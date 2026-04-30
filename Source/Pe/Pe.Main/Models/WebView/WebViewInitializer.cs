@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
@@ -124,7 +123,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.WebView
                     InitializeCompleted.Wait(cancellationToken);
                     IsInitialized = true;
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }, cancellationToken);
         }

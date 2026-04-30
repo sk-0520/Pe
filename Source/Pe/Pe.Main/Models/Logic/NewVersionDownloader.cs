@@ -1,11 +1,8 @@
 using System;
 using System.IO;
-using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Applications.Configuration;
 using ContentTypeTextNet.Pe.Main.Models.Data;
@@ -19,7 +16,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     /// </summary>
     public class NewVersionDownloader
     {
-        public NewVersionDownloader(ApplicationConfiguration applicationConfiguration, IHashAlgorithmFactory hashAlgorithmGenerator,IUserAgentManager userAgentManager, TimeProvider timeProvider, ILoggerFactory loggerFactory)
+        public NewVersionDownloader(ApplicationConfiguration applicationConfiguration, IHashAlgorithmFactory hashAlgorithmGenerator, IUserAgentManager userAgentManager, TimeProvider timeProvider, ILoggerFactory loggerFactory)
         {
             Logger = loggerFactory.CreateLogger(GetType());
             ApplicationConfiguration = applicationConfiguration;
@@ -71,17 +68,17 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             }
 
             if(targetFile.Length != updateItem.ArchiveSize) {
-                Logger.LogWarning("ファイルサイズが異なる: ファイル {0}, 定義 {1}", targetFile.Length, updateItem.ArchiveSize);
+                Logger.LogWarning("ファイルサイズが異なる: ファイル {FileSize}, 定義 {ArchiveSize}", targetFile.Length, updateItem.ArchiveSize);
                 return false;
             }
 
-            Logger.LogInformation("ハッシュ: {0}, {1}", updateItem.ArchiveHashKind, updateItem.ArchiveHashValue);
+            Logger.LogInformation("ハッシュ: {ArchiveHashKind}, {ArchiveHashValue}", updateItem.ArchiveHashKind, updateItem.ArchiveHashValue);
             using(var hashAlgorithm = HashAlgorithmGenerator.Create(updateItem.ArchiveHashKind)) {
                 using var stream = targetFile.OpenRead();
                 using var checkSumBuffer = new DisposableArrayPool<byte>(ChecksumSize);
                 long totalReadSize = 0;
                 while(true) {
-                    var readSize = await stream.ReadAsync(checkSumBuffer.Items, 0, checkSumBuffer.Items.Length, cancellationToken);
+                    var readSize = await stream.ReadAsync(checkSumBuffer.Items.AsMemory(0, checkSumBuffer.Items.Length), cancellationToken);
                     if(readSize == 0) {
                         break;
                     }
@@ -92,7 +89,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                 hashAlgorithm.TransformFinalBlock(checkSumBuffer.Items, 0, 0);
                 var hash = ToCompareValue(BitConverter.ToString(hashAlgorithm.Hash!));
 
-                Logger.LogInformation("算出ハッシュ: {0}", hash);
+                Logger.LogInformation("算出ハッシュ: {Hash}", hash);
                 userNotifyProgress.Report(1, hash);
 
                 userNotifyProgress.End();
@@ -110,7 +107,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         /// <returns></returns>
         public async Task DownloadArchiveAsync(NewVersionItemData updateItem, FileInfo downloadFile, UserNotifyProgress userNotifyProgress, CancellationToken cancellationToken)
         {
-            Logger.LogInformation("アップデートファイルダウンロード: {0}, {1}", updateItem.ArchiveUri, downloadFile);
+            Logger.LogInformation("アップデートファイルダウンロード: {ArchiveUri}, {DownloadFile}", updateItem.ArchiveUri, downloadFile);
             userNotifyProgress.Start();
 
             using(var userAgent = UserAgentManager.CreateAppHttpUserAgent()) {
@@ -134,9 +131,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                         };
                     var format = Properties.Resources.String_Download_Seconds_Format_DOTNET;
                     while(true) {
-                        var downloadSize = await networkStream.ReadAsync(downloadChunkBuffer.Items, 0, downloadChunkBuffer.Length, cancellationToken);
+                        var downloadSize = await networkStream.ReadAsync(downloadChunkBuffer.Items.AsMemory(0, downloadChunkBuffer.Length), cancellationToken);
                         if(0 < downloadSize) {
-                            await localStream.WriteAsync(downloadChunkBuffer.Items, 0, downloadSize, cancellationToken);
+                            await localStream.WriteAsync(downloadChunkBuffer.Items.AsMemory(0, downloadSize), cancellationToken);
                             totalDownloadedSize += downloadSize;
                             sizePerTime.Add(downloadSize);
                             var size = sizeConverter.ConvertHumanReadableByte(sizePerTime.Size, format, units);

@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Common.Throw;
 
 namespace ContentTypeTextNet.Pe.Core.Views
 {
@@ -85,7 +86,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
             var ctrl = (NumericUpDown)d;
             var minimum = (decimal)e.NewValue;
             if(ctrl.Maximum < minimum) {
-                throw new ArgumentOutOfRangeException($"{nameof(ctrl.Maximum)} < {nameof(minimum)}");
+                throw new ArgumentComplexException($"{nameof(ctrl.Maximum)} < {nameof(minimum)}", nameof(ctrl.Maximum), nameof(minimum));
             }
             ctrl.Minimum = minimum;
             ctrl.PART_DOWN_BUTTON.IsEnabled = ctrl.Minimum < ctrl.Value;
@@ -113,7 +114,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
             var ctrl = (NumericUpDown)d;
             var maximum = (decimal)e.NewValue;
             if(maximum < ctrl.Minimum) {
-                throw new ArgumentOutOfRangeException($"{nameof(maximum)} < {nameof(ctrl.Minimum)}");
+                throw new ArgumentComplexException($"{nameof(maximum)} < {nameof(ctrl.Minimum)}", nameof(maximum), nameof(ctrl.Minimum));
             }
             ctrl.Maximum = maximum;
             ctrl.PART_UP_BUTTON.IsEnabled = ctrl.Value < ctrl.Maximum;

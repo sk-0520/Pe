@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// </summary>
     /// <typeparam name="TEventListener"></typeparam>
     /// <typeparam name="TEventArgs"></typeparam>
-    public class WeakEventBase<TEventListener, TEventArgs>
+    public abstract class WeakEventBase<TEventListener, TEventArgs>
         where TEventListener : class
         where TEventArgs : EventArgs
     {

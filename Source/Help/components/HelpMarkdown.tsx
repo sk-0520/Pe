@@ -92,6 +92,7 @@ export const HelpMarkdown: FC<HelpMarkdownProps> = (
 							stickyHeader: true,
 						} satisfies TableProps,
 					},
+					a: MdLink,
 					MdLink,
 					MdPath,
 					MdInline,

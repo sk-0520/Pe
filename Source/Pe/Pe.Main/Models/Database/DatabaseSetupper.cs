@@ -1,17 +1,16 @@
 using System;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Library.Database.Implementations;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Setupper;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-using ContentTypeTextNet.Pe.Library.Database.Implementations;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database
 {
@@ -63,7 +62,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
 
         private void Execute(IDatabaseAccessorPack accessorPack, IReadOnlySetupDto dto, SetupperBase setupper)
         {
-            Logger.LogInformation("セットアップ処理: バージョン{0}, {1}", setupper.Version, setupper.GetType().Name);
+            Logger.LogInformation("セットアップ処理: バージョン{Version}, {Type}", setupper.Version, setupper.GetType().Name);
             var start = DateTime.UtcNow;
 
             ExecuteCore(accessorPack.Main, dto, setupper.ExecuteMainDDL, setupper.ExecuteMainDML);
@@ -71,7 +70,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
             ExecuteCore(accessorPack.Temporary, dto, setupper.ExecuteTemporaryDDL, setupper.ExecuteTemporaryDML);
 
             var end = DateTime.UtcNow;
-            Logger.LogInformation("対象バージョンセットアップ完了: {0}, {1}", setupper.Version, end - start);
+            Logger.LogInformation("対象バージョンセットアップ完了: {Version}, {Elapsed}", setupper.Version, end - start);
         }
 
         /// <summary>
@@ -114,7 +113,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
 
             foreach(var (setupperType, version) in setupperTypes) {
                 if(lastVersion < version) {
-                    Logger.LogInformation("マイグレーション対象: {0} < {1}", lastVersion, version);
+                    Logger.LogInformation("マイグレーション対象: {LastVersion} < {Version}", lastVersion, version);
                     var setupper = (SetupperBase?)Activator.CreateInstance(setupperType, new object[] { IdFactory, StatementLoader, LoggerFactory });
                     Debug.Assert(setupper is not null);
                     Execute(accessorPack, dto, setupper);
@@ -175,9 +174,9 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database
                 errors.AppendLine();
             }
             var error = errors.ToString();
-            Logger.LogError("{0}", error);
+            Logger.LogError("{Error}", error);
 
-            throw new Exception("CheckForeignKey") {
+            throw new SetupException("CheckForeignKey") {
                 Source = error
             };
 

@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -68,7 +65,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Commands
         /// <summary>
         /// <see cref="OperationCanceledException"/>を再スローするか。
         /// </summary>
-        public bool RethrowOperationCanceledException { get; init; } = false;
+        public bool RethrowOperationCanceledException { get; init; }
 
         protected CancellationTokenSource? CancellationTokenSource { get; set; }
 

@@ -26,7 +26,7 @@ namespace ContentTypeTextNet.Pe.Main.Models
         public string ResourceBaseName { get; set; }
     }
 
-    public readonly struct EnumResource
+    public readonly record struct EnumResource
     {
         // uintとか long とか来ないことを信じて...
         public EnumResource(int rawMember, string resourceName)
@@ -122,7 +122,7 @@ namespace ContentTypeTextNet.Pe.Main.Models
         private string GetResourceName(EnumResourceMapping mapping, Type enumType, object enumValue)
         {
             var item = mapping.Items.FirstOrDefault(i => i.RawMember == (int)enumValue);
-            if(item.ResourceName == string.Empty) {
+            if(string.IsNullOrEmpty(item.ResourceName)) {
                 return string.Empty;
             }
             return item.ResourceName;
@@ -157,7 +157,7 @@ namespace ContentTypeTextNet.Pe.Main.Models
                 ? GetResourceName(val, type, enumValue)
                 : GetResourceName(type, enumValue)
             ;
-            if(resourceBaseName == string.Empty) {
+            if(string.IsNullOrEmpty(resourceBaseName)) {
                 if(undefinedIsRaw) {
                     return enumValue.ToString() ?? string.Empty;
                 }

@@ -22,7 +22,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <param name="waitTime">ディレクトリ作成失敗時の再試行前に待機する時間。</param>
         /// <param name="fileSystemProvider"></param>
         /// <param name="loggerFactory"></param>
-        public DirectoryCleaner(DirectoryInfo directory, int retryCount, TimeSpan waitTime, FileSystemProvider fileSystemProvider ,ILoggerFactory loggerFactory)
+        public DirectoryCleaner(DirectoryInfo directory, int retryCount, TimeSpan waitTime, FileSystemProvider fileSystemProvider, ILoggerFactory loggerFactory)
         {
             Directory = directory;
             if(retryCount < 1) {
@@ -96,10 +96,10 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 if(Directory.Exists) {
                     break;
                 } else if(count.IsLast) {
-                    Logger.LogError("ディレクトリ作成に失敗: {0}", Directory);
+                    Logger.LogError("ディレクトリ作成に失敗: {Directory}", Directory);
                     return;
                 }
-                Logger.LogInformation("ディレクトリ作成待機中: {0}/{1} {2}", count.CurrentCount, count.MaxCount, WaitTime);
+                Logger.LogInformation("ディレクトリ作成待機中: {CurrentCount}/{MaxCount} {WaitTime}", count.CurrentCount, count.MaxCount, WaitTime);
                 Thread.Sleep(WaitTime);
             }
         }

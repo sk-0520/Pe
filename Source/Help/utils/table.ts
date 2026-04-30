@@ -178,7 +178,7 @@ export function splitRawSection(rawEntity: string): RawSection {
 			}
 
 			const result = line.match(RawSectionHeaderRegex.name);
-			if (!result || !result.groups || !result.groups.TABLE) {
+			if (!result?.groups?.TABLE) {
 				throw new Error("table");
 			}
 

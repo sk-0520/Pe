@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace ContentTypeTextNet.Pe.Library.Common
 {
@@ -57,7 +55,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <summary>
     /// <see cref="IResult"/> 実体。
     /// </summary>
-    public readonly struct Result: IResult
+    public readonly record struct Result: IResult
     {
         /// <summary>
         /// 生成。
@@ -114,7 +112,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <summary>
     /// <see cref="IResultSuccess{TSuccess}"/> 実体。
     /// </summary>
-    public readonly struct ResultSuccess<TSuccess>: IResultSuccess<TSuccess>
+    public readonly record struct ResultSuccess<TSuccess>: IResultSuccess<TSuccess>
     {
         public ResultSuccess(bool success, [AllowNull] TSuccess successValue)
         {
@@ -135,7 +133,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <summary>
     /// <see cref="IResultFailure{TFailure}"/> 実体。
     /// </summary>
-    public readonly struct ResultFailure<TFailure>: IResultFailure<TFailure>
+    public readonly record struct ResultFailure<TFailure>: IResultFailure<TFailure>
     {
         public ResultFailure(bool success, [AllowNull] TFailure failureValue)
         {
@@ -156,7 +154,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     /// <summary>
     /// <see cref="IResultSuccess{TSuccess}"/>/<see cref="IResultFailure{TFailure}"/> 実体。
     /// </summary>
-    public readonly struct Result<TSuccess, TFailure>: IResultSuccess<TSuccess>, IResultFailure<TFailure>
+    public readonly record struct Result<TSuccess, TFailure>: IResultSuccess<TSuccess>, IResultFailure<TFailure>
     {
         public Result(bool success, [AllowNull] TSuccess successValue, [AllowNull] TFailure failureValue)
         {

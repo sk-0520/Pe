@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
     /// プラグイン処理にて明示的に発生させる基底の例外。
     /// </summary>
     [GeneratedException]
-    public abstract partial class PluginException: Exception
+    public partial class PluginException: Exception
     { }
 
     /// <summary>
@@ -75,4 +75,15 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin
     [GeneratedException]
     public partial class PluginUnavailableContextException: PluginException
     { }
+
+    [GeneratedException]
+    public partial class PluginApiNotFoundException: PluginException;
+
+    [GeneratedException]
+    public partial class PluginApiInvalidUriException: PluginException;
+
+    [GeneratedException]
+    public partial class PluginApiInvalidSchemeException: PluginException;
+
+
 }

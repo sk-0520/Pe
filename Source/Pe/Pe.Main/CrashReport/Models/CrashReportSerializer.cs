@@ -15,7 +15,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models
 
         #region SerializerBase
 
-        protected override TResult LoadImpl<TResult>(Stream stream)
+        protected override TResult LoadCore<TResult>(Stream stream)
         {
             using var reader = CreateReader(stream);
             var json = reader.ReadToEnd();
@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.Pe.Main.CrashReport.Models
             return result;
         }
 
-        protected override void SaveImpl<TValue>(TValue value, Stream stream)
+        protected override void SaveCore<TValue>(TValue value, Stream stream)
         {
             using var writer = CreateWriter(stream);
             var json = System.Text.Json.JsonSerializer.Serialize(value); // TODO: ストリーム直接でいいと思う

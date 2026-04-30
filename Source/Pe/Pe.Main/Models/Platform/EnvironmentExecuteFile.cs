@@ -68,7 +68,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                     .Select(i => addWildcard ? "*" + i : i)
                     .ToArray()
                 ;
-                if(result.Any()) {
+                if(result.Length != 0) {
                     // EXEが無いって事はないだろうけど実行できないしもうどうでもいい
                     return result;
                 }
@@ -104,7 +104,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                     var dir = new DirectoryInfo(dirPath);
                     dir.Refresh();
                     if(!dir.Exists) {
-                        Logger.LogInformation("存在しない PATH は無視: {0}", dir.FullName);
+                        Logger.LogInformation("存在しない PATH は無視: {Path}", dir.FullName);
                         continue;
                     }
                     IEnumerable<FileInfo> files = dir.EnumerateFiles("*", SearchOption.TopDirectoryOnly);
@@ -115,7 +115,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
                         }
                     }
                 } catch(Exception ex) {
-                    Logger.LogWarning(ex, ex.Message);
+                    Logger.LogWarning(ex, "{Message}", ex.Message);
                 }
             }
 

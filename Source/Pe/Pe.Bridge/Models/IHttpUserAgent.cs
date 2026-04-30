@@ -85,12 +85,11 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
         /// <param name="requestUri"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>HTTP 応答 文字列本文。</returns>
-        public static Task<string> GetStringAsync(this IHttpUserAgent httpUserAgent, Uri requestUri, CancellationToken cancellationToken = default)
+        public static async Task<string> GetStringAsync(this IHttpUserAgent httpUserAgent, Uri requestUri, CancellationToken cancellationToken = default)
         {
-            return httpUserAgent.GetAsync(requestUri, cancellationToken).ContinueWith(t => {
-                cancellationToken.ThrowIfCancellationRequested();
-                return t.Result.Content.ReadAsStringAsync(cancellationToken);
-            }, cancellationToken).Unwrap();
+            var response = await httpUserAgent.GetAsync(requestUri, cancellationToken).ConfigureAwait(false);
+            var content = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            return content;
         }
 
         /// <summary>
@@ -100,12 +99,11 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
         /// <param name="requestUri"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>HTTP 応答 <see cref="Stream"/>本文。</returns>
-        public static Task<Stream> GetStreamAsync(this IHttpUserAgent httpUserAgent, Uri requestUri, CancellationToken cancellationToken = default)
+        public static async Task<Stream> GetStreamAsync(this IHttpUserAgent httpUserAgent, Uri requestUri, CancellationToken cancellationToken = default)
         {
-            return httpUserAgent.GetAsync(requestUri, cancellationToken).ContinueWith(t => {
-                cancellationToken.ThrowIfCancellationRequested();
-                return t.Result.Content.ReadAsStreamAsync(cancellationToken);
-            }, cancellationToken).Unwrap();
+            var response = await httpUserAgent.GetAsync(requestUri, cancellationToken).ConfigureAwait(false);
+            var content = await response.Content.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false);
+            return content;
         }
 
         /// <summary>
@@ -115,12 +113,12 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
         /// <param name="requestUri"></param>
         /// <param name="cancellationToken"></param>
         /// <returns>HTTP 応答 byte配列本文。</returns>
-        public static Task<byte[]> GetByteArrayAsync(this IHttpUserAgent httpUserAgent, Uri requestUri, CancellationToken cancellationToken = default)
+        public static async Task<byte[]> GetByteArrayAsync(this IHttpUserAgent httpUserAgent, Uri requestUri, CancellationToken cancellationToken = default)
         {
-            return httpUserAgent.GetAsync(requestUri, cancellationToken).ContinueWith(t => {
-                cancellationToken.ThrowIfCancellationRequested();
-                return t.Result.Content.ReadAsByteArrayAsync(cancellationToken);
-            }, cancellationToken).Unwrap();
+            var response = await httpUserAgent.GetAsync(requestUri, cancellationToken).ConfigureAwait(false);
+            var content = await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
+            return content;
+
         }
 
         #endregion

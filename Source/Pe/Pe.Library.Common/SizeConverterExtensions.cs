@@ -6,19 +6,19 @@ namespace ContentTypeTextNet.Pe.Library.Common
     {
         #region function
 
-        /// <inheritdoc cref="ConvertHumanReadableByte(long, string, IReadOnlyList{string})"/>
+        /// <inheritdoc cref="SizeConverter.ConvertHumanReadableByte(long, string, IReadOnlyList{string})"/>
         public static string ConvertHumanReadableByte(this SizeConverter sizeConverter, long byteSize, IReadOnlyList<string> units)
         {
             return sizeConverter.ConvertHumanReadableByte(byteSize, "{0:0.00} {1}", units);
         }
 
-        /// <inheritdoc cref="ConvertHumanReadableByte(long, string, IReadOnlyList{string})"/>
-        public static string ConvertHumanReadableByte(this SizeConverter sizeConverter, long byteSize, string sizeFormat)
+        /// <inheritdoc cref="SizeConverter.ConvertHumanReadableByte(long, string, IReadOnlyList{string})"/>
+        public static string ConvertHumanReadableByte(this SizeConverter sizeConverter, long byteSize, string format)
         {
-            return sizeConverter.ConvertHumanReadableByte(byteSize, sizeFormat, sizeConverter.Units);
+            return sizeConverter.ConvertHumanReadableByte(byteSize, format, sizeConverter.Units);
         }
 
-        /// <inheritdoc cref="ConvertHumanReadableByte(long, string, IReadOnlyList{string})"/>
+        /// <inheritdoc cref="SizeConverter.ConvertHumanReadableByte(long, string, IReadOnlyList{string})"/>
         public static string ConvertHumanReadableByte(this SizeConverter sizeConverter, long byteSize)
         {
             return sizeConverter.ConvertHumanReadableByte(byteSize, sizeConverter.Units);

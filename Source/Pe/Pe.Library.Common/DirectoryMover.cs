@@ -17,7 +17,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         }
 
         public DirectoryMover(ILoggerFactory loggerFactory)
-            :this(FileSystemProvider.Default, loggerFactory)
+            : this(FileSystemProvider.Default, loggerFactory)
         { }
 
         #region property
@@ -46,12 +46,12 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 try {
                     source.MoveTo(destination.FullName);
                 } catch(IOException ex) {
-                    Logger.LogWarning(ex, ex.Message);
+                    Logger.LogWarning(ex, "{Message}", ex.Message);
                     Copy(source, destination);
                     try {
                         source.Delete(true);
                     } catch(UnauthorizedAccessException ex2) {
-                        Logger.LogError(ex2, ex2.Message);
+                        Logger.LogError(ex2, "{Message}", ex2.Message);
                     }
                 }
 

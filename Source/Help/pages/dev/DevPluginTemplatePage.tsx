@@ -55,19 +55,21 @@ export const DevPluginTemplatePage: FC<PageProps> = (props: PageProps) => {
 					label="プラグインID"
 					value={pluginId}
 					onChange={(ev) => setPluginId(ev.target.value)}
-					InputProps={{
-						endAdornment: (
-							<InputAdornment position="end">
-								<IconButton
-									title="自動生成"
-									edge="end"
-									color="primary"
-									onClick={handleGeneratePluginIdClick}
-								>
-									<ApiIcon />
-								</IconButton>
-							</InputAdornment>
-						),
+					slotProps={{
+						input: {
+							endAdornment: (
+								<InputAdornment position="end">
+									<IconButton
+										title="自動生成"
+										edge="end"
+										color="primary"
+										onClick={handleGeneratePluginIdClick}
+									>
+										<ApiIcon />
+									</IconButton>
+								</InputAdornment>
+							),
+						},
 					}}
 				/>
 				<TextField

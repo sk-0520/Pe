@@ -34,12 +34,6 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
             : this(collection, collection)
         { }
 
-        ~ObservableCollectionManagerBase()
-        {
-            Dispose(disposing: false);
-        }
-
-
         #region property
 
         /// <summary>
@@ -59,12 +53,12 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         /// アイテム追加処理実装部。
         /// </summary>
         /// <param name="newItems"></param>
-        protected abstract void AddItemsImpl(IReadOnlyList<TValue> newItems);
+        protected abstract void AddItemsCore(IReadOnlyList<TValue> newItems);
         private void AddItems(IReadOnlyList<TValue> newItems)
         {
             ThrowIfDisposed();
 
-            AddItemsImpl(newItems);
+            AddItemsCore(newItems);
         }
 
         /// <summary>
@@ -72,12 +66,12 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         /// </summary>
         /// <param name="insertIndex"></param>
         /// <param name="newItems"></param>
-        protected abstract void InsertItemsImpl(int insertIndex, IReadOnlyList<TValue> newItems);
+        protected abstract void InsertItemsCore(int insertIndex, IReadOnlyList<TValue> newItems);
         private void InsertItems(int insertIndex, IReadOnlyList<TValue> newItems)
         {
             ThrowIfDisposed();
 
-            InsertItemsImpl(insertIndex, newItems);
+            InsertItemsCore(insertIndex, newItems);
         }
 
         /// <summary>
@@ -85,12 +79,12 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         /// </summary>
         /// <param name="oldStartingIndex"></param>
         /// <param name="oldItems"></param>
-        protected abstract void RemoveItemsImpl(int oldStartingIndex, IReadOnlyList<TValue> oldItems);
+        protected abstract void RemoveItemsCore(int oldStartingIndex, IReadOnlyList<TValue> oldItems);
         private void RemoveItems(IReadOnlyList<TValue> oldItems, int oldStartingIndex)
         {
             ThrowIfDisposed();
 
-            RemoveItemsImpl(oldStartingIndex, oldItems);
+            RemoveItemsCore(oldStartingIndex, oldItems);
         }
 
         /// <summary>
@@ -98,12 +92,12 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         /// </summary>
         /// <param name="newItems"></param>
         /// <param name="oldItems"></param>
-        protected abstract void ReplaceItemsImpl(int startIndex, IReadOnlyList<TValue> newItems, IReadOnlyList<TValue> oldItems);
+        protected abstract void ReplaceItemsCore(int startIndex, IReadOnlyList<TValue> newItems, IReadOnlyList<TValue> oldItems);
         private void ReplaceItems(int startIndex, IReadOnlyList<TValue> newItems, IReadOnlyList<TValue> oldItems)
         {
             ThrowIfDisposed();
 
-            ReplaceItemsImpl(startIndex, newItems, oldItems);
+            ReplaceItemsCore(startIndex, newItems, oldItems);
         }
 
         /// <summary>
@@ -111,24 +105,24 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
         /// </summary>
         /// <param name="newStartingIndex"></param>
         /// <param name="oldStartingIndex"></param>
-        protected abstract void MoveItemsImpl(int newStartingIndex, int oldStartingIndex);
+        protected abstract void MoveItemsCore(int newStartingIndex, int oldStartingIndex);
         private void MoveItems(int newStartingIndex, int oldStartingIndex)
         {
             ThrowIfDisposed();
 
-            MoveItemsImpl(newStartingIndex, oldStartingIndex);
+            MoveItemsCore(newStartingIndex, oldStartingIndex);
         }
 
         /// <summary>
         /// コレクションリセット処理実装部。
         /// </summary>
-        protected abstract void ResetItemsImpl();
+        protected abstract void ResetItemsCore();
 
         private void ResetItems()
         {
             ThrowIfDisposed();
 
-            ResetItemsImpl();
+            ResetItemsCore();
         }
 
         /// <summary>

@@ -1,10 +1,6 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test
@@ -17,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         {
             #region property
 
-            public int Value { get; set; } = 0;
+            public int Value { get; set; }
 
             #endregion
 

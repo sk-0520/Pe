@@ -21,7 +21,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
     /// <summary>
     /// OS テーマ色の集合。
     /// </summary>
-    public readonly struct PlatformThemeColors
+    public readonly record struct PlatformThemeColors
     {
         public PlatformThemeColors(Color background, Color foreground, Color control, Color border)
         {
@@ -56,7 +56,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models
     /// <summary>
     /// アクセントカラー。
     /// </summary>
-    public readonly struct PlatformAccentColors
+    public readonly record struct PlatformAccentColors
     {
         public PlatformAccentColors(Color accent, Color baseColor, Color highlight, Color active, Color disable)
         {

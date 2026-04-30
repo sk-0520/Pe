@@ -57,12 +57,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
         private bool _showLinkChangeConfirm;
         private bool _isPopupRemoveNote;
 
-        private bool _windowMovingOrResizing = false;
+        private bool _windowMovingOrResizing;
 
         /// <summary>
         /// 検索中か。
         /// </summary>
-        private bool _isSearching = false;
+        private bool _isSearching;
         /// <summary>
         /// 検索文字列。
         /// </summary>
@@ -687,7 +687,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                         return;
                     }
 
-                    if(r.ResponseFilePaths != null && 0 < r.ResponseFilePaths.Length) {
+                    if(r.ResponseFilePaths != null && 0 < r.ResponseFilePaths.Count) {
                         Model.OpenLinkContent(r.ResponseFilePaths[0], r.Encoding!, false);
                         RaisePropertyChanged(nameof(IsLink));
                         RaisePropertyChanged(nameof(LinkPath));
@@ -707,7 +707,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                         return;
                     }
 
-                    if(r.ResponseFilePaths != null && 0 < r.ResponseFilePaths.Length) {
+                    if(r.ResponseFilePaths != null && 0 < r.ResponseFilePaths.Count) {
                         Model.OpenLinkContent(r.ResponseFilePaths[0], r.Encoding!, true);
                         RaisePropertyChanged(nameof(IsLink));
                         RaisePropertyChanged(nameof(LinkPath));
@@ -730,7 +730,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                     var systemExecutor = new SystemExecutor();
                     systemExecutor.OpenDirectoryWithFileSelect(Environment.ExpandEnvironmentVariables(LinkPath));
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
                 ShowLinkChangeConfirm = false;
             }
@@ -892,7 +892,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 if(settingLayout != null) {
                     return (false, settingLayout);
                 } else {
-                    Logger.LogInformation("レイアウト未取得のため対象ディスプレイ中央表示: {0}, {1}", Model.DockScreen.DeviceName, ObjectDumper.GetDumpString(Model.DockScreen));
+                    Logger.LogInformation("レイアウト未取得のため対象ディスプレイ中央表示: {DeviceName}, {Dump}", Model.DockScreen.DeviceName, ObjectDumper.GetDumpString(Model.DockScreen));
                     startupPosition = NoteStartupPosition.CenterScreen;
                 }
             }
@@ -1144,7 +1144,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
                 return;
             }
 
-            Logger.LogDebug("モデルへの位置・サイズ通知: {0}, {1}", Model.NoteId, CanLayoutNotify);
+            Logger.LogDebug("モデルへの位置・サイズ通知: {NoteId}, {CanLayoutNotify}", Model.NoteId, CanLayoutNotify);
             if(!CanLayoutNotify) {
                 Logger.LogDebug("モデルへの通知抑制中");
                 return;
@@ -1406,7 +1406,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         private void SearchContent(string searchValue, bool toNext)
         {
-            Logger.LogDebug(toNext ? "Next" : "Prev");
+            Logger.LogDebug("{Condition}", toNext ? "Next" : "Prev");
 
             var focusedInputSearch = InputSearchElement?.IsFocused ?? false;
 
@@ -1421,16 +1421,16 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #region SingleModelViewModelBase
 
-        protected override void AttachModelEventsImpl()
+        protected override void AttachModelEventsCore()
         {
-            base.AttachModelEventsImpl();
+            base.AttachModelEventsCore();
 
             Model.PropertyChanged += Model_PropertyChanged;
         }
 
-        protected override void DetachModelEventsImpl()
+        protected override void DetachModelEventsCore()
         {
-            base.DetachModelEventsImpl();
+            base.DetachModelEventsCore();
 
             Model.PropertyChanged -= Model_PropertyChanged;
         }

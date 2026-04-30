@@ -150,12 +150,12 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.Note
 
         #region SingleModelViewModelBase
 
-        protected override void AttachModelEventsImpl()
+        protected override void AttachModelEventsCore()
         {
             Model.LinkContentChanged += Model_LinkContentChanged;
         }
 
-        protected override void DetachModelEventsImpl()
+        protected override void DetachModelEventsCore()
         {
             Model.LinkContentChanged -= Model_LinkContentChanged;
         }

@@ -73,7 +73,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
             base.Dispose(disposing);
         }
 
-        protected override void InitializeImpl()
+        protected override void InitializeCore()
         {
             //var tags = Model.LoadTags();
             //TagDocument = new TextDocument(string.Join(Environment.NewLine, tags));

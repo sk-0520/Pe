@@ -6,13 +6,12 @@ using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItem;
 using ContentTypeTextNet.Pe.Main.Models.KeyAction;
-using ContentTypeTextNet.Pe.Library.Common;
-using Microsoft.Extensions.Logging;
 using ContentTypeTextNet.Pe.Mvvm.Commands;
+using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 {
@@ -129,7 +128,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         private void StartDelayExecute()
         {
             if(DelayWaiting) {
-                Logger.LogWarning("抑制待機中: {0}", Model.LauncherItemId);
+                Logger.LogWarning("抑制待機中: {LauncherItemId}", Model.LauncherItemId);
                 return;
             }
             ThrowIfDisposed();
@@ -209,9 +208,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 
         #region LauncherItemViewModelBase
 
-        protected override void DetachModelEventsImpl()
+        protected override void DetachModelEventsCore()
         {
-            base.DetachModelEventsImpl();
+            base.DetachModelEventsCore();
 
             PropertyChanged -= LauncherFileViewModel_PropertyChanged;
         }
@@ -219,7 +218,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
         protected override Task ExecuteMainImplAsync(CancellationToken cancellationToken)
         {
             if(NowLoading) {
-                Logger.LogWarning("読み込み中のため抑制: {0}", Model.LauncherItemId);
+                Logger.LogWarning("読み込み中のため抑制: {LauncherItemId}", Model.LauncherItemId);
                 StartDelayExecute();
                 return Task.CompletedTask;
             }

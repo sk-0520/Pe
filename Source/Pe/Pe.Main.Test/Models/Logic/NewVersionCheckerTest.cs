@@ -461,7 +461,9 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Logic
                     Arg.Is<HttpRequestMessage>(a => a.Method == HttpMethod.Get && a.RequestUri == new Uri("http://localhost.invalid/version_check_url_item/2")),
                     Arg.Any<CancellationToken>()
                 )
+#pragma warning disable CA2201 // 予約された例外の種類を発生させません
                 .ThrowsAsync(_ => new Exception())
+#pragma warning restore CA2201 // 予約された例外の種類を発生させません
             ;
             Test.MockHttpUserAgent
                 .SendAsync(

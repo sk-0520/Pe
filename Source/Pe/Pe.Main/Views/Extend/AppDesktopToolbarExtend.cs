@@ -292,7 +292,7 @@ namespace ContentTypeTextNet.Pe.Main.Views.Extend
                         return;
                     }
 
-                    Logger.LogDebug("フルスクリーン対象: {0}", hForegroundWnd.ToInt64());
+                    Logger.LogDebug("フルスクリーン対象: {Handle}", hForegroundWnd.ToInt64());
                 }
 
                 ExtendData.ExistsFullScreenWindow = fullScreen;
@@ -810,9 +810,9 @@ namespace ContentTypeTextNet.Pe.Main.Views.Extend
             }
         }
 
-        protected override void InitializedWindowHandleImpl()
+        protected override void InitializedWindowHandleCore()
         {
-            base.InitializedWindowHandleImpl();
+            base.InitializedWindowHandleCore();
 
             View.IsVisibleChanged += View_IsVisibleChanged;
 

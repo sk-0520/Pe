@@ -72,15 +72,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         /// <inheritdoc cref="IClipboardManager.CopyData(IDataObject, ClipboardNotify)"/>
         public bool CopyData(IDataObject data, ClipboardNotify clipboardNotify)
         {
-            if(data == null) {
-                throw new ArgumentNullException(nameof(data));
-            }
+            ArgumentNullException.ThrowIfNull(data);
 
             try {
                 Clipboard.SetDataObject(data);
                 return true;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return false;
             }
         }
@@ -88,15 +86,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Manager
         /// <inheritdoc cref="IClipboardManager.CopyText(string, ClipboardNotify)"/>
         public bool CopyText(string data, ClipboardNotify clipboardNotify)
         {
-            if(data == null) {
-                throw new ArgumentNullException(nameof(data));
-            }
+            ArgumentNullException.ThrowIfNull(data);
 
             try {
                 Clipboard.SetText(data, TextDataFormat.UnicodeText);
                 return true;
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
                 return false;
             }
         }

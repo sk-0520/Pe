@@ -8,6 +8,8 @@ namespace ContentTypeTextNet.Pe.Main.Models
     {
         #region IHashAlgorithmFactory
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5350:脆弱な暗号アルゴリズムを使用しない", Justification = "この処理では古いアルゴリズムOK")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5351:破られた暗号アルゴリズムを使用しない", Justification = "この処理では古いアルゴリズムOK")]
         public HashAlgorithm Create(HashAlgorithmKind hashAlgorithmKind)
         {
             return hashAlgorithmKind switch {

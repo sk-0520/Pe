@@ -1,17 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Views
 {
@@ -26,10 +16,13 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Views
         private const int SC_SIZE = 0xF000;
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
         private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, int wParam, IntPtr lParam);
         [DllImport("User32.dll")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
         private static extern bool SetCapture(IntPtr hWnd);
         [DllImport("user32.dll")]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.SafeDirectories)]
         private static extern bool ReleaseCapture();
 
         #endregion

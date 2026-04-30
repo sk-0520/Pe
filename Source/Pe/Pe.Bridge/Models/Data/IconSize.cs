@@ -10,6 +10,8 @@ namespace ContentTypeTextNet.Pe.Bridge.Models.Data
     /// <remarks>
     /// <para>名前の迷走よ。</para>
     /// </remarks>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1008:列挙型は 0 値を含んでいなければなりません", Justification = "アイコンサイズとして利用しているので None は見送り")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1027:列挙型を FlagsAttribute に設定します", Justification = "複数値として扱わない")]
     public enum IconBox
     {
         /// <summary>
@@ -33,7 +35,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models.Data
     /// <summary>
     /// アイコンサイズ。
     /// </summary>
-    public readonly struct IconSize
+    public readonly record struct IconSize
     {
         public IconSize([PixelKind(Px.Device)] int width, [PixelKind(Px.Device)] int height)
         {
@@ -108,7 +110,7 @@ namespace ContentTypeTextNet.Pe.Bridge.Models.Data
     /// <summary>
     /// アイコンの大きさとDPIを持ち歩く。
     /// </summary>
-    public readonly struct IconScale
+    public readonly record struct IconScale
     {
         public IconScale(IconBox box, Point dpiScale)
         {

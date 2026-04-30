@@ -204,7 +204,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
                             Logger.LogDebug("path: {Path}", path);
                             Model.OutputHtmlSetting(path);
                         } catch(Exception ex) {
-                            Logger.LogError(ex, ex.Message);
+                            Logger.LogError(ex, "{Message}", ex.Message);
                         }
                     }
                 );
@@ -219,7 +219,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
                     var path = "x:\\a.html";
                     Model.OutputHtmlSetting(path);
                 } catch(Exception ex) {
-                    Logger.LogError(ex, ex.Message);
+                    Logger.LogError(ex, "{Message}", ex.Message);
                 }
             }
         );
@@ -242,7 +242,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
                          try {
                              UninstallBatchFilePath = path;
                          } catch(Exception ex) {
-                             Logger.LogError(ex, ex.Message);
+                             Logger.LogError(ex, "{Message}", ex.Message);
                          }
                      }
                  );
@@ -260,7 +260,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
                             var systemExecutor = new SystemExecutor();
                             systemExecutor.OpenDirectoryWithFileSelect(UninstallBatchFilePath);
                         } catch(Exception ex) {
-                            Logger.LogWarning(ex, ex.Message);
+                            Logger.LogWarning(ex, "{Message}", ex.Message);
                         }
 
                         ShowMessageRequest.Send(new CommonMessageDialogRequestParameter() {
@@ -271,7 +271,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
                             Icon = Forms.TaskDialogIcon.Information,
                         });
                     } catch(Exception ex) {
-                        Logger.LogError(ex, ex.Message);
+                        Logger.LogError(ex, "{Message}", ex.Message);
                         ShowMessageRequest.Send(new CommonMessageDialogRequestParameter() {
                             Caption = Properties.Resources.String_About_Uninstall_Create_Caption,
                             Message = ex.ToString(),
@@ -307,7 +307,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.About
                 var fileName = process.MainModule?.FileName;
                 return System.IO.Path.GetDirectoryName(fileName) ?? throw new WebView2RuntimeNotFoundException("failed to get runtime path");
             } catch(Exception e) {
-                Logger.LogError(e, e.Message);
+                Logger.LogError(e, "{Message}", e.Message);
                 return e.Message;
             }
         }

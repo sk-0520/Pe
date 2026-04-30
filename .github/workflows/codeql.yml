@@ -14,7 +14,7 @@ env:
 jobs:
   analyze:
     name: CodeQL
-    runs-on: windows-2025
+    runs-on: windows-2025-vs2026
     permissions:
       actions: read
       contents: read
@@ -29,7 +29,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
       if: matrix.language == 'csharp'

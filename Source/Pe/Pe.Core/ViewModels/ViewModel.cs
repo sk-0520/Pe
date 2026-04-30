@@ -10,11 +10,9 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using System.Windows.Input;
 using System.Xml.Serialization;
-using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.Library.Property;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Property;
 using Microsoft.Extensions.Logging;
 using Prism.Mvvm;
 
@@ -90,7 +88,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
         /// <summary>
         /// このVMは検証非対象か。
         /// </summary>
-        protected virtual bool SkipValidation { get; } = false;
+        protected virtual bool SkipValidation { get; }
 
         #endregion
 
@@ -475,7 +473,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
         /// <remarks>
         /// <para>継承クラスでは一番最初に呼び出すこと。</para>
         /// </remarks>
-        protected virtual void AttachModelEventsImpl()
+        protected virtual void AttachModelEventsCore()
         {
             ThrowIfDisposed();
         }
@@ -485,7 +483,7 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
             if(Model is not null) {
                 ThrowIfDisposed();
 
-                AttachModelEventsImpl();
+                AttachModelEventsCore();
             }
         }
 
@@ -495,13 +493,13 @@ namespace ContentTypeTextNet.Pe.Core.ViewModels
         /// <remarks>
         /// <para>継承クラスでは一番最初に呼び出すこと。</para>
         /// </remarks>
-        protected virtual void DetachModelEventsImpl()
+        protected virtual void DetachModelEventsCore()
         { }
 
         protected void DetachModelEvents()
         {
             if(Model is not null) {
-                DetachModelEventsImpl();
+                DetachModelEventsCore();
             }
         }
 

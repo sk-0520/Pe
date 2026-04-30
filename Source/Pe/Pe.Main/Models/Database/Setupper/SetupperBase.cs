@@ -102,12 +102,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Setupper
         {
             var pairs = SplitMultiStatement(statement);
             if(!pairs.Any()) {
-                throw new Exception("分解失敗: " + statement);
+                throw new SetupFormatException("分解失敗: " + statement);
             }
             foreach(var pair in pairs) {
-                Logger.LogInformation("{0}", pair.Key);
+                Logger.LogInformation("{Key}", pair.Key);
                 var result = context.Execute(pair.Value, parameters);
-                Logger.LogInformation("result: {0}", result);
+                Logger.LogInformation("result: {Result}", result);
             }
         }
 

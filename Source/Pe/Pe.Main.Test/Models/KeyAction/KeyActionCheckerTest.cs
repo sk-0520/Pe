@@ -38,16 +38,16 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.KeyAction
             var expectedUpA = keyActionChecker.Find(false, Key.A, modifierKeyStatus, new KBDLLHOOKSTRUCT());
             var expectedUpB = keyActionChecker.Find(false, Key.B, modifierKeyStatus, new KBDLLHOOKSTRUCT());
             var expectedUpC = keyActionChecker.Find(false, Key.C, modifierKeyStatus, new KBDLLHOOKSTRUCT());
-            Assert.False(expectedUpA.Any());
-            Assert.False(expectedUpB.Any());
-            Assert.False(expectedUpC.Any());
+            Assert.Empty(expectedUpA);
+            Assert.Empty(expectedUpB);
+            Assert.Empty(expectedUpC);
 
             var expectedDownA = keyActionChecker.Find(true, Key.A, modifierKeyStatus, new KBDLLHOOKSTRUCT());
             var expectedDownB = keyActionChecker.Find(true, Key.B, modifierKeyStatus, new KBDLLHOOKSTRUCT());
             var expectedDownC = keyActionChecker.Find(true, Key.C, modifierKeyStatus, new KBDLLHOOKSTRUCT());
-            Assert.False(expectedDownA.Any());
-            Assert.True(expectedDownB.Any());
-            Assert.False(expectedDownC.Any());
+            Assert.Empty(expectedDownA);
+            Assert.NotEmpty(expectedDownB);
+            Assert.Empty(expectedDownC);
 
         }
 
@@ -69,9 +69,9 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.KeyAction
             var expected2 = keyActionChecker.Find(true, Key.A, modifierKeyStatus, new KBDLLHOOKSTRUCT());
             keyActionChecker.KeyDisableToEnableTime = TimeSpan.Zero;
             var expected3 = keyActionChecker.Find(true, Key.A, modifierKeyStatus, new KBDLLHOOKSTRUCT());
-            Assert.True(expected1.Any());
-            Assert.False(expected2.Any());
-            Assert.True(expected3.Any());
+            Assert.NotEmpty(expected1);
+            Assert.Empty(expected2);
+            Assert.NotEmpty(expected3);
         }
 
         [Fact]
@@ -92,9 +92,9 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.KeyAction
             var expected2 = keyActionChecker.Find(true, Key.A, modifierKeyStatus, new KBDLLHOOKSTRUCT());
             keyActionChecker.KeyDisableToEnableTime = TimeSpan.Zero;
             var expected3 = keyActionChecker.Find(true, Key.A, modifierKeyStatus, new KBDLLHOOKSTRUCT());
-            Assert.True(expected1.Any());
-            Assert.True(expected2.Any());
-            Assert.True(expected3.Any());
+            Assert.NotEmpty(expected1);
+            Assert.NotEmpty(expected2);
+            Assert.NotEmpty(expected3);
         }
 
         [Fact]

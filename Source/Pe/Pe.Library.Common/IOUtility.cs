@@ -163,6 +163,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             return plainName ?? Path.GetFileName(path) ?? string.Empty;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "CA5394:安全でないランダム度を使用しない", Justification = $"{nameof(Random)}は引数側の責任")]
         private static string GenerateTemporaryPath(Random random, DirectoryInfo baseDirectory, string prefix, string suffix, int randomNameLength, IReadOnlyList<char> randomNameCharacters)
         {
             Span<char> dirName = stackalloc char[prefix.Length + randomNameLength + suffix.Length];

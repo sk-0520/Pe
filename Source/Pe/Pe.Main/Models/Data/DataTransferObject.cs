@@ -5,17 +5,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 {
     #region Dto
 
-    public interface IReadOnlyDto
-    { }
-
-    public abstract class DtoBase: IReadOnlyDto
+    public abstract class DtoBase
     { }
 
     #endregion
 
     #region common dto
 
-    public interface IReadOnlyCreateDto: IReadOnlyDto
+    public interface IReadOnlyCreateDto
     {
         #region property
 
@@ -27,7 +24,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
         #endregion
     }
-    public interface IWritableCreateDto: IReadOnlyDto
+    public interface IWritableCreateDto
     {
         #region property
 
@@ -40,7 +37,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
         #endregion
     }
 
-    public interface IReadOnlyUpdateDto: IReadOnlyDto
+    public interface IReadOnlyUpdateDto
     {
         #region property
 
@@ -53,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Data
 
         #endregion
     }
-    public interface IWritableUpdateDto: IReadOnlyDto
+    public interface IWritableUpdateDto
     {
         #region property
 

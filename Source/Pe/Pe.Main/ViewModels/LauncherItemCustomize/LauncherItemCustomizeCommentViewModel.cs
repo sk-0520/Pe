@@ -47,7 +47,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItemCustomize
 
         #region CustomizeLauncherDetailViewModelBase
 
-        protected override void InitializeImpl()
+        protected override void InitializeCore()
         {
             //CommentDocument = new TextDocument(Model.Comment);
         }

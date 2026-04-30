@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Data;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
@@ -52,6 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
             return Context.SelectOrdered<string>(statement, parameter);
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1054:URI 類似のパラメーターを文字列にすることはできません", Justification = $"{nameof(checkUrl)}の対応は将来実施")]
         public void InsertPluginVersionCheckUrl(PluginId pluginId, long sequence, string checkUrl, IDatabaseCommonStatus databaseCommonStatus)
         {
             var statement = LoadStatement();

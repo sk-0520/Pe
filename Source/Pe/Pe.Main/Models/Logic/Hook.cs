@@ -5,9 +5,8 @@ using System.Windows;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
-using ContentTypeTextNet.Pe.Core.Models;
-using ContentTypeTextNet.Pe.PInvoke.Windows;
 using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.PInvoke.Windows;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
@@ -32,13 +31,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         #region function
 
-        protected abstract IntPtr RegisterImpl(HookProc hookProc, IntPtr moduleHandle);
+        protected abstract IntPtr RegisterCore(HookProc hookProc, IntPtr moduleHandle);
 
         public void Register()
         {
             var moduleName = Process.GetCurrentProcess().MainModule!.ModuleName!;
             var moduleHandle = NativeMethods.GetModuleHandle(moduleName);
-            HookHandle = RegisterImpl(HookProc, moduleHandle);
+            HookHandle = RegisterCore(HookProc, moduleHandle);
         }
 
         public void Unregister()
@@ -88,7 +87,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     /// <summary>
     /// 修飾キーが押されているか。
     /// </summary>
-    public readonly struct ModifierKeyState
+    public readonly record struct ModifierKeyState
     {
         public ModifierKeyState(bool left, bool right)
         {
@@ -125,14 +124,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
         #endregion
     }
 
-    public readonly struct ModifierKeyStatus
+    public readonly record struct ModifierKeyStatus
     {
         #region variable
 
-        public readonly ModifierKeyState shift;
-        public readonly ModifierKeyState control;
-        public readonly ModifierKeyState alt;
-        public readonly ModifierKeyState super;
+        internal readonly ModifierKeyState shift;
+        internal readonly ModifierKeyState control;
+        internal readonly ModifierKeyState alt;
+        internal readonly ModifierKeyState super;
 
         #endregion
 
@@ -177,8 +176,8 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     {
         #region variable
 
-        public readonly KBDLLHOOKSTRUCT kbdll;
-        public readonly ModifierKeyStatus modifierKeyStatus;
+        internal readonly KBDLLHOOKSTRUCT kbdll;
+        internal readonly ModifierKeyStatus modifierKeyStatus;
 
         #endregion
 
@@ -231,7 +230,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         #region HookerBase
 
-        protected override IntPtr RegisterImpl(HookProc hookProc, IntPtr moduleHandle)
+        protected override IntPtr RegisterCore(HookProc hookProc, IntPtr moduleHandle)
         {
             return NativeMethods.SetWindowsHookEx(WH.WH_KEYBOARD_LL, hookProc, moduleHandle, 0);
         }
@@ -257,7 +256,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                             var e = new KeyboardHookEventArgs(isDown, lParam, modifierKeyStatus);
                             keyEvent.Invoke(this, e);
                             if(e.Handled) {
-                                Logger.LogInformation("キーボード入力制御: {0}, {1}, {2}", isUp ? nameof(KeyDown) : nameof(KeyUp), e.Key, e.modifierKeyStatus);
+                                Logger.LogInformation("キーボード入力制御: {KeyState}, {Key}, {ModifierKeyStatus}", isUp ? nameof(KeyDown) : nameof(KeyUp), e.Key, e.modifierKeyStatus);
                                 return new IntPtr(1);
                             }
                         } finally {
@@ -265,7 +264,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                                 Debug.Assert(stopwatch != null);
                                 stopwatch.Stop();
                                 if(TimeSpan.FromMilliseconds(300) < stopwatch.Elapsed) {
-                                    Logger.LogWarning("キーボード {0} フック 実装部 所要時間長期: {1}", isUp ? nameof(KeyDown) : nameof(KeyUp), stopwatch.Elapsed);
+                                    Logger.LogWarning("キーボード {KeyState} フック 実装部 所要時間長期: {Elapsed}", isUp ? nameof(KeyDown) : nameof(KeyUp), stopwatch.Elapsed);
                                 }
                             }
                         }
@@ -283,7 +282,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
     {
         #region variable
 
-        public readonly MSLLHOOKSTRUCT msll;
+        internal readonly MSLLHOOKSTRUCT msll;
 
         #endregion
 
@@ -373,7 +372,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
 
         #region HookerBase
 
-        protected override IntPtr RegisterImpl(HookProc hookProc, IntPtr moduleHandle)
+        protected override IntPtr RegisterCore(HookProc hookProc, IntPtr moduleHandle)
         {
             return NativeMethods.SetWindowsHookEx(WH.WH_MOUSE_LL, hookProc, moduleHandle, 0);
         }

@@ -3,9 +3,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
-using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
@@ -53,15 +53,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             using(var hash = CreateHash()) {
                 hashValue = hash.ComputeHash(buffer, 0, count);
             }
-            return BitConverter.ToString(hashValue).Replace("-", string.Empty).ToLowerInvariant();
+            return Convert.ToHexStringLower(hashValue);
         }
 
         public string CreateFromRandom()
         {
             var bufferCount = 20 * 1024;
             using var buffer = new DisposableArrayPool<byte>(bufferCount);
-            var rand = new Random();
-            rand.NextBytes(buffer.Items);
+            RandomNumberGenerator.Fill(buffer.Items);
             return ComputeHash(buffer.Items, bufferCount);
         }
 

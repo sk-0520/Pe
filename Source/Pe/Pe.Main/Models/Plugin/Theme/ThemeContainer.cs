@@ -6,11 +6,11 @@ using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Theme;
+using ContentTypeTextNet.Pe.Library.Database;
+using ContentTypeTextNet.Pe.Main.Models.Applications;
 using ContentTypeTextNet.Pe.Main.Models.Manager;
 using ContentTypeTextNet.Pe.Plugins.DefaultTheme;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Theme
 {
@@ -94,7 +94,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Plugin.Theme
         {
             var theme = Themes.FirstOrDefault(i => i.PluginInformation.PluginIdentifiers.PluginId == themePluginId);
             if(theme == null) {
-                Logger.LogWarning("指定のテーマ不明のため標準テーマを使用: {0}", themePluginId);
+                Logger.LogWarning("指定のテーマ不明のため標準テーマを使用: {PluginId}", themePluginId);
                 theme = DefaultTheme;
                 CurrentThemeIsDefaultTheme = true;
             } else {

@@ -140,16 +140,16 @@ namespace ContentTypeTextNet.Pe.Main.Test.Models.Database.Dao
         {
             public string NewLine { get; set; } = Environment.NewLine;
 
-            public bool SupportedTransactionDDL => throw new NotSupportedException();
+            public bool SupportedDdlInTransaction => throw new NotSupportedException();
 
-            public bool SupportedTransactionDML => throw new NotSupportedException();
-            public bool SupportedTransactionTruncate => throw new NotSupportedException();
+            public bool SupportedDmlInTransaction => throw new NotSupportedException();
+            public bool SupportedTruncateInTransaction => throw new NotSupportedException();
 
             public bool SupportedLineComment => throw new NotSupportedException();
             public bool SupportedBlockComment => throw new NotSupportedException();
 
-            public IEnumerable<string> LineComments => throw new NotSupportedException();
-            public IEnumerable<DatabaseBlockComment> BlockComments => throw new NotSupportedException();
+            public IReadOnlyCollection<string> LineComments => throw new NotSupportedException();
+            public IReadOnlyCollection<DatabaseBlockComment> BlockComments => throw new NotSupportedException();
             public DatabaseBlockComment ProcessBodyRange => throw new NotSupportedException();
 
             public string ToStatementColumnName(string columnName)

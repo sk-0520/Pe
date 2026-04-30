@@ -101,6 +101,99 @@ namespace ContentTypeTextNet.Pe.Generator.Test
             Assert.Throws<NotSupportedException>(() => sourceBuilder.ToCode(accessibility));
         }
 
+        [Theory]
+        [InlineData("' '", ' ')]
+        [InlineData("'a'", 'a')]
+        [InlineData("'\\r'", '\r')]
+        [InlineData("'\\n'", '\n')]
+        [InlineData("'\\t'", '\t')]
+        public void ToCharLiteralTest(string expected, char input)
+        {
+            var sourceBuilder = new SourceBuilder();
+            var actual = sourceBuilder.ToCharLiteral(input);
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("\"\"", "")]
+        [InlineData("\"a\"", "a")]
+        [InlineData("\"\\r\"", "\r")]
+        [InlineData("\"\\n\"", "\n")]
+        [InlineData("\"\\r\\n\"", "\r\n")]
+        [InlineData("\"\\t\"", "\t")]
+        public void ToStringLiteralTest(string expected, string input)
+        {
+            var sourceBuilder = new SourceBuilder();
+            var actual = sourceBuilder.ToStringLiteral(input);
+            Assert.Equal(expected, actual);
+        }
+
+        public static TheoryData<string, string, string> ApplyIndentData => new()
+        {
+            {
+                "",
+                "",
+                ""
+            },
+            {
+                "",
+                "<INDENT>",
+                ""
+            },
+            {
+                "<INDENT>a",
+                "<INDENT>",
+                "a"
+            },
+             {
+                $"<INDENT>a{Environment.NewLine}<INDENT>b{Environment.NewLine}<INDENT>c{Environment.NewLine}<INDENT>d",
+                "<INDENT>",
+                "a\rb\nc\r\nd"
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(ApplyIndentData))]
+        public void ApplyIndentTest(string expected, string indent, string source)
+        {
+            var sourceBuilder = new SourceBuilder();
+            var actual = sourceBuilder.ApplyIndent(indent, source);
+            Assert.Equal(expected, actual);
+        }
+
+        public static TheoryData<string, string, string> ApplyXmlDocumentCommentData => new()
+        {
+            {
+                "",
+                "",
+                ""
+            },
+            {
+                "",
+                "<INDENT>",
+                ""
+            },
+            {
+                "<INDENT>/// a",
+                "<INDENT>",
+                "a"
+            },
+             {
+                $"<INDENT>/// a{Environment.NewLine}<INDENT>/// b{Environment.NewLine}<INDENT>/// c{Environment.NewLine}<INDENT>/// d",
+                "<INDENT>",
+                "a\rb\nc\r\nd"
+            },
+        };
+
+        [Theory]
+        [MemberData(nameof(ApplyXmlDocumentCommentData))]
+        public void ApplyXmlDocumentCommentTest(string expected, string indent, string source)
+        {
+            var sourceBuilder = new SourceBuilder();
+            var actual = sourceBuilder.ApplyXmlDocumentComment(indent, source);
+            Assert.Equal(expected, actual);
+        }
+
         #endregion
     }
 }

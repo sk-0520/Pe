@@ -368,9 +368,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
                 return false;
             }
 
-            if(propertyCallback == null) {
-                throw new ArgumentNullException(nameof(propertyCallback));
-            }
+            ArgumentNullException.ThrowIfNull(propertyCallback);
 
             if(!Cache.TryGetValue(notifyPropertyName, out var hookItemCache)) {
                 hookItemCache = MakeCache(hookItems);

@@ -73,7 +73,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
 
         #region function
 
-        protected virtual DependencyObject? GetIconImpl(in IconScale iconScale) => null;
+        protected virtual DependencyObject? GetIconCore(in IconScale iconScale) => null;
 
         protected DependencyObject GetPluginIcon(IImageLoader imageLoader, in IconScale iconScale)
         {
@@ -81,9 +81,9 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
         }
 
         /// <inheritdoc cref="IPlugin.Initialize(IPluginInitializeContext)"/>
-        protected abstract void InitializeImpl(IPluginInitializeContext pluginInitializeContext);
+        protected abstract void InitializeCore(IPluginInitializeContext pluginInitializeContext);
         /// <inheritdoc cref="IPlugin.Finalize(IPluginFinalizeContext)"/>
-        protected abstract void FinalizeImpl(IPluginFinalizeContext pluginFinalizeContext);
+        protected abstract void FinalizeCore(IPluginFinalizeContext pluginFinalizeContext);
 
         /// <summary>
         /// アセンブリ設定から <see cref="IPluginInformation"/> を生成。
@@ -156,7 +156,7 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
         private TTheme BuildSupportedAddon<TArgument, TTheme>(AddonKind addonKind, string methodName, TArgument argument, Func<TArgument, TTheme> build)
         {
             if(!Addon.IsSupported(addonKind)) {
-                Logger.LogWarning("{0} はサポートされていない", addonKind);
+                Logger.LogWarning("{AddonKind} はサポートされていない", addonKind);
                 throw new NotSupportedException();
             }
 
@@ -203,12 +203,12 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
         public DependencyObject GetIcon(IImageLoader imageLoader, in IconScale iconScale)
         {
             try {
-                var result = GetIconImpl(iconScale);
+                var result = GetIconCore(iconScale);
                 if(result != null) {
                     return result;
                 }
             } catch(NotImplementedException ex) {
-                Logger.LogWarning(ex, ex.Message);
+                Logger.LogWarning(ex, "{Message}", ex.Message);
             }
 
             return GetPluginIcon(imageLoader, iconScale);
@@ -221,14 +221,14 @@ namespace ContentTypeTextNet.Pe.Embedded.Abstract
                 throw new InvalidOperationException(nameof(IsInitialized));
             }
 
-            InitializeImpl(pluginInitializeContext);
+            InitializeCore(pluginInitializeContext);
             IsInitialized = true;
         }
 
         /// <inheritdoc cref="IPlugin.Finalize(IPluginFinalizeContext)"/>
         public void Finalize(IPluginFinalizeContext pluginFinalizeContext)
         {
-            FinalizeImpl(pluginFinalizeContext);
+            FinalizeCore(pluginFinalizeContext);
             // 例外で死んだ場合は再初期化を避けるため補正しない
             IsInitialized = true;
         }

@@ -138,7 +138,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
             }
 
             // 対象の名前で存在しなければ存在するところから引っ張る
-            if(name != string.Empty) {
+            if(!string.IsNullOrEmpty(name)) {
                 // まずは空の名前から検索
                 var namelessPool = ObjectPool[string.Empty];
                 if(namelessPool.TryGetValue(interfaceType, out var poolValue)) {
@@ -239,7 +239,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
                     }
                 }
 
-                if(parameterInjections.TryGetValue(parameterInfo, out var injectAttribute) && injectAttribute.Name != string.Empty) {
+                if(parameterInjections.TryGetValue(parameterInfo, out var injectAttribute) && !string.IsNullOrEmpty(injectAttribute.Name)) {
                     var injectName = injectAttribute.Name;
 
                     if(ObjectPool[injectName].TryGetValue(parameterInfo.ParameterType, out var injectNamePoolValue)) {
@@ -257,7 +257,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
                 } else if(Factory[name].TryGetValue(parameterInfo.ParameterType, out var factoryWorker)) {
                     arguments[i] = factoryWorker.Create();
                 } else {
-                    if(name != string.Empty) {
+                    if(!string.IsNullOrEmpty(name)) {
                         if(ObjectPool[string.Empty].TryGetValue(parameterInfo.ParameterType, out var namelessPoolValue)) {
                             arguments[i] = namelessPoolValue;
                             continue;
@@ -742,7 +742,7 @@ namespace ContentTypeTextNet.Pe.Library.DependencyInjection
         {
             var memberInfo = baseType.GetMember(memberName, MemberBindingFlags);
             if(memberInfo == null || memberInfo.Length != 1) {
-                throw new NullReferenceException(memberName);
+                throw new DiMemberNotFoundException(memberName);
             }
 
             var member = new DiInjectionMember(baseType, memberInfo[0], objectType, ToInjectionName(name));

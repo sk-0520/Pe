@@ -174,7 +174,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
             var pluginId = launcherAddonsEntityDao.SelectAddonPluginId(LauncherItemId);
 
             if(!LauncherItemAddonFinder.Exists(pluginId)) {
-                Logger.LogError("ランチャーアイテムアドオンが存在しない: {0}", pluginId);
+                Logger.LogError("ランチャーアイテムアドオンが存在しない: {PluginId}", pluginId);
                 return;
             }
             LauncherItemPlugin = LauncherItemAddonFinder.GetPlugin(pluginId);
@@ -182,7 +182,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
             LauncherItemExtension = LauncherItemAddonFinder.Find(LauncherItemId, pluginId);
             LauncherItemSupportedPreferences = LauncherItemExtension.SupportedPreferences;
             if(!LauncherItemSupportedPreferences) {
-                Logger.LogInformation("{0} はアドオン設定をサポートしていない", LauncherItemPlugin.PluginInformation.PluginIdentifiers);
+                Logger.LogInformation("{PluginIdentifiers} はアドオン設定をサポートしていない", LauncherItemPlugin.PluginInformation.PluginIdentifiers);
                 return;
             }
 
@@ -264,11 +264,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
 
         internal string GetLauncherItemPluginHeader()
         {
-            if(LauncherItemPlugin == null) {
+            if(LauncherItemPlugin is null) {
                 return Properties.Resources.String_LauncherItemCustomizeControl_UnloadedPlugin_Header;
             }
 
-            Debug.Assert(LauncherItemPlugin != null);
             if(LauncherItemSupportedPreferences) {
                 Debug.Assert(LauncherItemPreferences != null);
             }
@@ -432,14 +431,13 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize
                     break;
 
                 case LauncherItemKind.Addon: {
-                        if(LauncherItemPlugin == null) {
+                        if(LauncherItemPlugin is null) {
                             Logger.LogWarning("読み込めてないプラグインはプラグイン設定箇所スキップ");
                             break;
                         }
                         if(LauncherItemSupportedPreferences) {
-                            Debug.Assert(LauncherItemPlugin != null);
-                            Debug.Assert(LauncherItemExtension != null);
-                            Debug.Assert(LauncherItemPreferences != null);
+                            Debug.Assert(LauncherItemExtension is not null);
+                            Debug.Assert(LauncherItemPreferences is not null);
 
                             SaveLauncherPreferences(commandsPack);
                         }

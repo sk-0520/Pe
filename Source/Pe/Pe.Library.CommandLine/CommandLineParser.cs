@@ -75,6 +75,36 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
         public CommandLineOption Add(CommandLineOption option) => AddCore(option);
 
         /// <summary>
+        /// 必須項目の検証。
+        /// </summary>
+        /// <param name="optionItems">オプション一覧。</param>
+        /// <param name="commandLineParsing">パース結果。</param>
+        /// <param name="exception">失敗時の例外。</param>
+        /// <returns>必須項目がすべて揃っているか。</returns>
+        private static bool ValidateRequiredKeys(IReadOnlyDictionary<string, CommandLineOption> optionItems, CommandLineParsing commandLineParsing, [NotNullWhen(false)] out Exception? exception)
+        {
+            var requiredKeys = optionItems
+                .Where(a => a.Value.Required)
+                .Select(a => a.Key)
+                .ToArray()
+            ;
+            if(0 < requiredKeys.Length) {
+                var needRequiredKeys = requiredKeys
+                    .Except(commandLineParsing.Values.Select(a => a.Key))
+                    .Order()
+                    .ToArray()
+                ;
+                if(0 < needRequiredKeys.Length) {
+                    exception = new CommandLineRequiredException(needRequiredKeys);
+                    return false;
+                }
+            }
+
+            exception = null;
+            return true;
+        }
+
+        /// <summary>
         /// パース処理実体。
         /// </summary>
         /// <param name="command">コマンド・プログラム名。</param>
@@ -152,22 +182,9 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
                 }
             }
 
-            // 必須項目チェック
-            var requiredKeys = OptionItems
-                .Where(a => a.Value.Required)
-                .Select(a => a.Key)
-                .ToArray()
-            ;
-            if(0 < requiredKeys.Length) {
-                var needRequiredKeys = requiredKeys
-                    .Except(parsing.Values.Select(a => a.Key))
-                    .Order()
-                    .ToArray()
-                ;
-                if(0 < needRequiredKeys.Length) {
-                    exception = new CommandLineRequiredException(needRequiredKeys);
-                    return false;
-                }
+            if(!ValidateRequiredKeys(OptionItems, parsing, out var requiredKeysException)) {
+                exception = requiredKeysException;
+                return false;
             }
 
             result = parsing.ToResult();

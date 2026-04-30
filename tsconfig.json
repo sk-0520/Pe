@@ -2,7 +2,6 @@
 	"compilerOptions": {
 		"target": "ES2023",
 		"module": "commonjs",
-		"moduleResolution": "Node",
 		"strict": true,
 		"noImplicitAny": true,
 		"strictNullChecks": true,
@@ -19,6 +18,10 @@
 		"resolveJsonModule": true,
 		"jsx": "react-jsx",
 		"skipLibCheck": true,
+		"types": [
+			"node",
+			"jest",
+		],
 		"typeRoots": [
 			"node_modules/@types"
 		],

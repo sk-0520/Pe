@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.Common;
 using Microsoft.Extensions.Logging;
 using NLog;
@@ -37,7 +36,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
             var logger = Factory.CreateLogger(GetType());
             logger.LogInformation("ログ構築開始: LogLimit = {LogLimit}", internalLogSize);
-            
+
             var enabledLogNames = new HashSet<string>();
             if(isEnabledInternalLog) {
                 logger.LogInformation("内部ログあり");
@@ -54,7 +53,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 var expandedOutputPath = Environment.ExpandEnvironmentVariables(outputPath);
                 if(createDirectory) {
                     var fileName = Path.GetFileName(expandedOutputPath);
-                    if(!string.IsNullOrEmpty(fileName) && fileName.IndexOf('.') == -1) {
+                    if(!string.IsNullOrEmpty(fileName) && !fileName.Contains('.')) {
                         // 拡張子がなければディレクトリ指定と決めつけ
                         Directory.CreateDirectory(expandedOutputPath);
                     } else {
@@ -140,7 +139,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                     logger.LogInformation("データ出力: {Elapsed}", stopwatch.Elapsed);
                 }
                 foreach(var traceTarget in traceTargets) {
-                    logger.LogInformation("{0}", traceTarget);
+                    logger.LogInformation("{Trace}", traceTarget);
                 }
             }
         }
@@ -151,7 +150,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
         public LoggerFactory Factory { get; }
 
-        private bool ReceivePausing { get; set; } = false;
+        private bool ReceivePausing { get; set; }
 
 
         #endregion

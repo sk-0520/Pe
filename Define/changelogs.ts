@@ -5,6 +5,66 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
+		date: "2026/04/30",
+		version: "0.99.268",
+		contents: [
+			{
+				type: "note",
+				logs: [
+					{
+						subject: "ライブラリ更新系",
+					},
+				],
+			},
+			{
+				type: "fixes",
+				logs: [
+					{
+						revision: "154c2f68c337be430fcfd109a8238fe161a11c60",
+						subject:
+							"#1079: ヘルプの外部リンクは別ウィンドウ（別タブ）で開くようにする",
+					},
+				],
+			},
+			{
+				type: "developer",
+				logs: [
+					{
+						subject: "sqlfluff 3.5.0 -> 4.0.4",
+					},
+					{
+						revision: "4780a08bdce216c1aeaf1cbf8b6656c32bed050e",
+						class: "nuget",
+						subject: "update nuget",
+						comments: [
+							"Microsoft.CodeAnalysis.CSharp 5.0.0 -> 5.3.0",
+							"System.Management 10.0.2 -> 10.0.7",
+							"Microsoft.Extensions.Logging.Abstractions 10.0.2 -> 10.0.7",
+							"Dapper 2.1.66 -> 2.1.72",
+							"Microsoft.Extensions.Configuration.Binder 10.0.2 -> 10.0.7",
+							"Microsoft.Extensions.Configuration.Json 10.0.2 -> 10.0.7",
+							"Microsoft.Extensions.Logging 10.0.2 -> 10.0.7",
+							"Microsoft.Web.WebView2 1.0.3719.77 -> 1.0.3912.50",
+							"System.DirectoryServices.AccountManagement 10.0.2 -> 10.0.7",
+							"NLog.Extensions.Logging 6.1.1 -> 6.1.2",
+							"coverlet.collector 6.0.4 -> 10.0.0",
+							"Microsoft.NET.Test.Sdk 18.0.1 -> 18.5.1",
+							"Microsoft.Extensions.TimeProvider.Testing 10.2.0 -> 10.5.0",
+						],
+					},
+					{
+						revision: "a9d779d261ebedf4c1e7506b7e7f566971f9ab5c",
+						subject: "update npm",
+					},
+					{
+						revision: "988a9106c28643eabddf02fb43cff57322eeb7c2",
+						subject: "GHA 各種モジュールの最新化",
+					},
+				],
+			},
+		],
+	},
+	{
 		date: "2026/02/08",
 		version: "0.99.267",
 		contents: [

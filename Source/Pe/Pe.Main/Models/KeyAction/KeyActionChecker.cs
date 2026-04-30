@@ -63,7 +63,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
         /// <remarks>
         /// <para>呼び出し側で制御。。。</para>
         /// </remarks>
-        public bool IgnoreSelfJobInput { get; set; } = false;
+        public bool IgnoreSelfJobInput { get; set; }
         /// <summary>
         /// 置き換えに使用する入力に埋め込むIDの設定。
         /// </summary>
@@ -103,7 +103,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
                     return Array.Empty<KeyActionJobBase>();
                 }
             }
-            Logger.LogTrace("{0}, {1}", key, modifierKeyStatus);
+            Logger.LogTrace("{Key}, {ModifierKeyStatus}", key, modifierKeyStatus);
 
             // 置き換え
             foreach(var job in ReplaceJobs) {

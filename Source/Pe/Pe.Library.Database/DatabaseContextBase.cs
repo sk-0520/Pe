@@ -19,7 +19,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
             DbConnection = dbConnection;
             DbTransaction = dbTransaction;
             Implementation = implementation;
-            MiddlewareCollection = new MiddlewareCollection();
+            Middleware = new Middleware();
             LoggerFactory = loggerFactory;
             Logger = loggerFactory.CreateLogger(GetType());
         }
@@ -32,7 +32,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         /// <summary>
         /// ミドルウェア一覧。
         /// </summary>
-        public MiddlewareCollection MiddlewareCollection { get; set; }
+        public Middleware Middleware { get; set; }
 
         protected ILoggerFactory LoggerFactory { get; }
         protected ILogger Logger { get; }
@@ -44,7 +44,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         protected StatementPipeline CreateStatementPipeline()
         {
             var pipeline = new StatementPipeline();
-            pipeline.UseRange(MiddlewareCollection.Statements);
+            pipeline.UseRange(Middleware.Statements);
             return pipeline;
         }
 

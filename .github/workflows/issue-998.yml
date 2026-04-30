@@ -10,7 +10,7 @@ env:
   NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
   PLATFORMS: x86,x64
   DOTNET_VERSION: 10.0.x
-  VS_TEST_CONSOLE_PATH: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow
+  VS_TEST_CONSOLE_PATH: C:\Program Files\Microsoft Visual Studio\18\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow
   PLUGIN_TEMPLATE_REPOSITORY_OWNER: sk-0520
   PLUGIN_TEMPLATE_REPOSITORY_NAME: Pe.PluginTemplate
 
@@ -23,10 +23,10 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Add> Node/NPM
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: ./.node-version
           cache: npm
@@ -44,7 +44,7 @@ jobs:
         run: npm run help-build
 
       - name: <Artifact> Help
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Help
           path: Output/help
@@ -78,7 +78,7 @@ jobs:
           git config --global user.name "${{ github.job }}"
 
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -86,12 +86,12 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: <Add> msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Download> Help
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Help
           path: artifacts/help
@@ -127,7 +127,7 @@ jobs:
       - name: <Artifact> Plugin Template
         # x86 が動かない問題, 確認中
         # if: matrix.PLATFORM == 'x64'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: template-plugin-${{ matrix.PLATFORM }}
           path: plugin-template.tar
@@ -139,7 +139,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -147,12 +147,12 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: <Add> msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: x64
 
       - name: <Cache> Nuget
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: nuget-${{ github.job }}-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
@@ -164,7 +164,7 @@ jobs:
         run: .\Build\make-buildtools.ps1 -InformationAction Continue
 
       - name: <Artifact> BuildTools
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: BuildTools
           path: Output\tools
@@ -186,7 +186,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -194,12 +194,12 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: <Add> msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Cache> Nuget
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
@@ -225,7 +225,7 @@ jobs:
         run: ./Build/archive-compress.sh "bin.tar" "Output/Release/${{ matrix.PLATFORM }}/Pe/bin"
 
       - name: <Artifact> Module
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.MODULE }}-bin-${{ matrix.PLATFORM }}
           path: bin.tar
@@ -246,7 +246,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -254,12 +254,12 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: <Add> msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Cache> Nuget
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
@@ -303,7 +303,7 @@ jobs:
       - name: <Artifact> CodeCoverage
         # x86 が動かない問題, 確認中
         # if: matrix.PLATFORM == 'x64'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Test_Pe.Main_${{ matrix.PLATFORM }}
           path: |
@@ -327,7 +327,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -335,12 +335,12 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: <Add> msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Cache> Nuget
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
@@ -363,7 +363,7 @@ jobs:
           ls Output\Release\${{ matrix.PLATFORM }}\Plugins
 
       - name: <Artifact> Module
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: plugins-${{ matrix.PLATFORM }}
           path: Output\Release\${{ matrix.PLATFORM }}\Plugins
@@ -384,7 +384,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -392,12 +392,12 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: <Add> msbuild to PATH
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Cache> Nuget
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
@@ -419,7 +419,7 @@ jobs:
         run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
       # - name: <Artifact> result
-      #   uses: actions/upload-artifact@v4
+      #   uses: actions/upload-artifact@v7
       #   with:
       #     name: Test_Pe.Plugins.Reference_${{ matrix.PLATFORM }}
       #     path: Source/**/coverage.cobertura.xml

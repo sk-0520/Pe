@@ -41,10 +41,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
         public void Save(IDatabaseContextPack contextPack)
         {
-            SaveImpl(contextPack);
+            SaveCore(contextPack);
         }
 
-        protected abstract void SaveImpl(IDatabaseContextPack contextPack);
+        protected abstract void SaveCore(IDatabaseContextPack contextPack);
 
         #endregion
     }
@@ -75,7 +75,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 var systemExecutor = new SystemExecutor();
                 systemExecutor.ExecuteFile(EnvironmentParameters.HelpFile.FullName);
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
         }
 
@@ -103,7 +103,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             var daoFactory = new AppDaoFactory(contextPack.Main, DatabaseStatementLoader, LoggerFactory);
             var appExecuteSettingEntityDao = daoFactory.Create<AppExecuteSettingEntityDao>();
@@ -182,7 +182,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             var daoFactory = new AppDaoFactory(contextPack.Main, DatabaseStatementLoader, LoggerFactory);
             var appGeneralSettingEntityDao = daoFactory.Create<AppGeneralSettingEntityDao>();
@@ -240,7 +240,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             var daoFactory = new AppDaoFactory(contextPack.Main, DatabaseStatementLoader, LoggerFactory);
             var appUpdateSettingEntityDao = daoFactory.Create<AppUpdateSettingEntityDao>();
@@ -285,7 +285,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             var daoFactory = new AppDaoFactory(contextPack.Main, DatabaseStatementLoader, LoggerFactory);
             var appNotifyLogSettingEntityDao = daoFactory.Create<AppNotifyLogSettingEntityDao>();
@@ -336,7 +336,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             var daoFactory = new AppDaoFactory(contextPack.Main, DatabaseStatementLoader, LoggerFactory);
             var appLauncherToolbarSettingEntityDao = daoFactory.Create<AppLauncherToolbarSettingEntityDao>();
@@ -391,7 +391,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             HideWaitTime = setting.HideWaitTime;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             Debug.Assert(Font != null);
 
@@ -458,7 +458,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
                 var systemExecutor = new SystemExecutor();
                 systemExecutor.ExecuteFile(EnvironmentParameters.HelpFile.FullName);
             } catch(Exception ex) {
-                Logger.LogError(ex, ex.Message);
+                Logger.LogError(ex, "{Message}", ex.Message);
             }
         }
 
@@ -493,7 +493,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             ExcludeScreenCapture = setting.ExcludeScreenCapture;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             Debug.Assert(Font != null);
 
@@ -573,7 +573,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             IsTopmost = setting.IsTopmost;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             Debug.Assert(Font != null);
 
@@ -643,7 +643,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             return Task.CompletedTask;
         }
 
-        protected override void SaveImpl(IDatabaseContextPack contextPack)
+        protected override void SaveCore(IDatabaseContextPack contextPack)
         {
             var daoFactory = new AppDaoFactory(contextPack.Main, DatabaseStatementLoader, LoggerFactory);
             var appProxySettingEntityDao = daoFactory.Create<AppProxySettingEntityDao>();

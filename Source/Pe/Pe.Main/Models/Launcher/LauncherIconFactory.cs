@@ -4,16 +4,15 @@ using System.Windows.Controls;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Addon;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Plugin.Addon;
 using ContentTypeTextNet.Pe.Main.ViewModels.IconViewer;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using System.Windows.Media;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Launcher
 {
@@ -60,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Launcher
                             return launcherAddonsEntityDao.SelectAddonPluginId(LauncherItemId);
                         });
                         if(!LauncherItemAddonFinder.Exists(pluginId)) {
-                            Logger.LogError("プラグイン取得失敗: ランチャーアイテム = {0}, プラグインID = {1}", LauncherItemId, pluginId);
+                            Logger.LogError("プラグイン取得失敗: ランチャーアイテム = {LauncherItemId}, プラグインID = {PluginId}", LauncherItemId, pluginId);
                             return default!; // null は上流で何とかしてちょ
                         }
                         var addon = LauncherItemAddonFinder.Find(LauncherItemId, pluginId);

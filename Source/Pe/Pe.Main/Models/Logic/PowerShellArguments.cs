@@ -4,9 +4,24 @@ using System.Linq;
 using ContentTypeTextNet.Pe.Library.CommandLine;
 using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
+#if !DOC_FX
+using ContentTypeTextNet.Pe.Generator.Throws;
+#else
+// docfx 用ダミー
+[System.AttributeUsage(System.AttributeTargets.Class)]
+file sealed class GeneratedExceptionAttribute: System.Attribute
+{
+    public GeneratedExceptionAttribute()
+    { }
+}
+#endif
 
 namespace ContentTypeTextNet.Pe.Main.Models.Logic
 {
+    [GeneratedException]
+    public partial class PowerShellException: Exception
+    { }
+
     internal class PowerShellCommandLineHelper: CommandLineHelper
     {
         public PowerShellCommandLineHelper()
@@ -44,7 +59,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
             if(string.IsNullOrWhiteSpace(input.Key)) {
                 throw new ArgumentException(nameof(input.Key), nameof(input));
             }
-            if(input.Key.IndexOf(' ') != -1) {
+            if(input.Key.Contains(' ')) {
                 throw new ArgumentException(nameof(input.Key), nameof(input));
             }
 

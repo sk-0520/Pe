@@ -9,7 +9,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt
 
         public override string EscapeValue(string value)
         {
-            var needQuotation = value == string.Empty;
+            var needQuotation = string.IsNullOrEmpty(value);
             var needHatEscape = false;
 
             needQuotation |= value.Contains(' ');
@@ -37,9 +37,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt
 
         public override string ToSafeVariableName(string name)
         {
-            if(string.IsNullOrWhiteSpace(name)) {
-                throw new ArgumentException(nameof(name));
-            }
+            ArgumentException.ThrowIfNullOrWhiteSpace(name);
 
             var buffer = name.Trim().ToArray();
             for(var i = 0; i < buffer.Length; i++) {

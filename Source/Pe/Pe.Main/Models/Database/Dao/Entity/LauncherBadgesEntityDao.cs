@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
@@ -27,7 +23,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity
         {
             #region property
 
-            public bool IsVisible { get; set; } = false;
+            public bool IsVisible { get; set; }
             public string Display { get; set; } = string.Empty;
             public string Shape { get; set; } = string.Empty;
             public string Background { get; set; } = string.Empty;

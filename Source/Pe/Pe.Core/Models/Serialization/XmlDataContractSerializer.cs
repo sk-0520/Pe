@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
     {
         #region DataContractSerializerBase
 
-        protected override TResult LoadImpl<TResult>(Stream stream)
+        protected override TResult LoadCore<TResult>(Stream stream)
         {
             using(var reader = XmlReader.Create(stream, CreateXmlReaderSettings())) {
                 var serializer = new DataContractSerializer(typeof(TResult));
@@ -27,7 +27,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Serialization
             }
         }
 
-        protected override void SaveImpl<TValue>(TValue value, Stream stream)
+        protected override void SaveCore<TValue>(TValue value, Stream stream)
         {
             using(var writer = XmlWriter.Create(stream, CreateXmlWriterSettings())) {
                 var serializer = new DataContractSerializer(value.GetType());

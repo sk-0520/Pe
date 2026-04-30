@@ -92,7 +92,7 @@ namespace ContentTypeTextNet.Pe.Core.Test.Models
 
             #region property
 
-            public bool Called { get; private set; } = false;
+            public bool Called { get; private set; }
 
             #endregion
 

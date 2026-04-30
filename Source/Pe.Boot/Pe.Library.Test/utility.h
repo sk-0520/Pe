@@ -233,8 +233,8 @@ public:
         get_path_from_test_dir(work_dir, work_dir_name);
         mstest::Logger::WriteMessage((tstring(_T("[FILE LIST] -> ")) + work_dir).c_str());
 
-        for (const auto& file : std::filesystem::recursive_directory_iterator(work_dir)) {
-            auto path = tstring(file.path().c_str() + work_dir.size() + 1/* \ */);
+        for (const auto& file : std::filesystem::recursive_directory_iterator(work_dir)) { // NOSONAR
+            auto path = tstring(file.path().c_str() + work_dir.size() + 1/* \ */); // NOSONAR
             mstest::Logger::WriteMessage((tstring(_T("> ")) + (tstring(file.is_directory() ? _T("[D] ") : _T("[F] "))) + path).c_str());
         }
 

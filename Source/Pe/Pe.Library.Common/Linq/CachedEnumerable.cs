@@ -4,30 +4,30 @@ using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Linq
 {
-    public sealed class CachedEnumerable<T>: DisposerBase, IEnumerable<T>
+    /// <summary>
+    /// 列挙処理のキャッシュ基底。
+    /// </summary>
+    /// <typeparam name="T">列挙対象の型。</typeparam>
+    public abstract class CachedEnumerableBase<T>: DisposerBase, IEnumerable<T>
     {
         #region variable
 
         /// <summary>
         /// 列挙対象。
         /// </summary>
-        private IEnumerator<T> _enumerator;
+        private protected IEnumerator<T> _enumerator;
         /// <summary>
         /// キャッシュ済み要素一覧。
         /// </summary>
         /// <remarks>実体。</remarks>
-        private List<T> _cachedItems;
-        /// <summary>
-        /// マルチスレッド用ロック。
-        /// </summary>
-        private readonly Lock _locker = new Lock();
+        private protected List<T> _cachedItems;
         /// <summary>
         /// 列挙が完了したか。
         /// </summary>
         /// <remarks>
         /// <para>実体。</para>
         /// </remarks>
-        private volatile bool _isEnumerationCompleted = false;
+        private protected volatile bool _isEnumerationCompleted;
 
         #endregion
 
@@ -35,7 +35,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
         /// 生成。
         /// </summary>
         /// <param name="enumerable"></param>
-        public CachedEnumerable(IEnumerable<T> enumerable)
+        protected CachedEnumerableBase(IEnumerable<T> enumerable)
             : this(enumerable.GetEnumerator())
         { }
 
@@ -43,7 +43,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
         /// 生成。
         /// </summary>
         /// <param name="enumerator"></param>
-        public CachedEnumerable(IEnumerator<T> enumerator)
+        protected CachedEnumerableBase(IEnumerator<T> enumerator)
         {
             this._enumerator = enumerator;
             this._cachedItems = new List<T>();
@@ -73,7 +73,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
         /// <remarks>
         /// <para>関数名からは予測しにくいが、列挙完了後に元となる _enumerator のクリーンアップまで行う。</para>
         /// </remarks>
-        private bool TryGetNextElement(int index, out T result)
+        protected virtual bool TryGetNextElement(int index, out T result)
         {
             // キャッシュ済みであればロック不要
             if(index < this._cachedItems.Count) {
@@ -81,7 +81,143 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
                 return true;
             }
 
-            lock(this._locker) {
+            if(this._enumerator is null) {
+                result = default!;
+                return false;
+            }
+
+            // 順々取得してキャッシュ化
+            if(this._enumerator.MoveNext()) {
+                var current = this._enumerator.Current;
+                this._cachedItems.Add(current);
+                result = current;
+                return true;
+            }
+
+            // 列挙完了!
+            this._isEnumerationCompleted = true;
+            this._enumerator.Dispose();
+            this._enumerator = null!;
+
+            result = default!;
+            return false;
+        }
+
+        #endregion
+
+        #region IEnumerable
+
+        public abstract IEnumerator<T> GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            ThrowIfDisposed();
+
+            return GetEnumerator();
+        }
+
+        #endregion
+
+        #region DisposerBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                // this._enumerator の破棄は継承先で行う
+                this._enumerator = null!;
+                this._cachedItems = null!;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
+    }
+
+    public sealed class CachedEnumerable<T>: CachedEnumerableBase<T>
+    {
+        /// <inheritdoc cref="CachedEnumerableBase{T}.CachedEnumerableBase(IEnumerable{T})"/>
+        public CachedEnumerable(IEnumerable<T> enumerable)
+            : base(enumerable)
+        { }
+
+        /// <inheritdoc cref="CachedEnumerableBase{T}.CachedEnumerableBase(IEnumerator{T})"/>
+        public CachedEnumerable(IEnumerator<T> enumerator)
+            : base(enumerator)
+        { }
+
+
+        #region CachedEnumerableBase
+
+        public override IEnumerator<T> GetEnumerator()
+        {
+            ThrowIfDisposed();
+
+            // すでに完了している場合はキャッシュから返すだけ
+            if(this._isEnumerationCompleted) {
+                foreach(var cachedValue in this._cachedItems) {
+                    yield return cachedValue;
+                }
+                yield break;
+            }
+
+            // キャッシュ構築しながら順次取得
+            var index = 0;
+            while(TryGetNextElement(index++, out var current)) {
+                yield return current;
+            }
+        }
+
+        #endregion
+
+        #region DisposerBase
+
+        protected override void Dispose(bool disposing)
+        {
+            if(!IsDisposed) {
+                if(disposing) {
+                    this._enumerator?.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
+        #endregion
+    }
+
+    public sealed class ConcurrentCachedEnumerable<T>: CachedEnumerableBase<T>
+    {
+        #region variable
+
+        /// <summary>
+        /// マルチスレッド用ロック。
+        /// </summary>
+        private readonly Lock _sync = new Lock();
+
+        #endregion
+
+        /// <inheritdoc cref="CachedEnumerableBase{T}.CachedEnumerableBase(IEnumerable{T})"/>
+        public ConcurrentCachedEnumerable(IEnumerable<T> enumerable)
+            : base(enumerable)
+        { }
+
+        /// <inheritdoc cref="CachedEnumerableBase{T}.CachedEnumerableBase(IEnumerator{T})"/>
+        public ConcurrentCachedEnumerable(IEnumerator<T> enumerator)
+            : base(enumerator)
+        { }
+
+        #region function
+
+        protected override bool TryGetNextElement(int index, out T result)
+        {
+            // キャッシュ済みであればロック不要
+            if(index < this._cachedItems.Count) {
+                result = this._cachedItems[index];
+                return true;
+            }
+
+            lock(this._sync) {
                 // ロック待ち中にキャッシュに追加されている可能性あり
                 if(index < this._cachedItems.Count) {
                     result = this._cachedItems[index];
@@ -115,7 +251,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
 
         #region IEnumerable
 
-        public IEnumerator<T> GetEnumerator()
+        public override IEnumerator<T> GetEnumerator()
         {
             ThrowIfDisposed();
 
@@ -134,13 +270,6 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            ThrowIfDisposed();
-
-            return GetEnumerator();
-        }
-
         #endregion
 
         #region DisposerBase
@@ -149,13 +278,12 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
         {
             if(!IsDisposed) {
                 if(disposing) {
-                    lock(this._locker) {
+                    lock(this._sync) {
                         this._enumerator?.Dispose();
                     }
                 }
-                this._enumerator = null!;
-                this._cachedItems = null!;
             }
+
             base.Dispose(disposing);
         }
 
@@ -177,6 +305,26 @@ namespace ContentTypeTextNet.Pe.Library.Common.Linq
         public static CachedEnumerable<T> Create<T>(IEnumerator<T> enumerator)
         {
             return new CachedEnumerable<T>(enumerator);
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// <see cref="ConcurrentCachedEnumerable{T}"/> 生成用。
+    /// </summary>
+    public static class ConcurrentCachedEnumerable
+    {
+        #region function
+
+        public static ConcurrentCachedEnumerable<T> Create<T>(IEnumerable<T> enumerable)
+        {
+            return new ConcurrentCachedEnumerable<T>(enumerable);
+        }
+
+        public static ConcurrentCachedEnumerable<T> Create<T>(IEnumerator<T> enumerator)
+        {
+            return new ConcurrentCachedEnumerable<T>(enumerator);
         }
 
         #endregion

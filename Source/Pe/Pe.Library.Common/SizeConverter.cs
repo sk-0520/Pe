@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 
 namespace ContentTypeTextNet.Pe.Library.Common
@@ -14,7 +15,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <summary>
         /// サイズ単位一覧。
         /// </summary>
-        public string[] Units { get; init; } = new[] { "byte", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", }; // YB とか生きている間に見ることあるんだろうか
+        public ReadOnlyCollection<string> Units { get; init; } = ["byte", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB",]; // YB とか生きている間に見ることあるんだろうか
 
         /// <summary>
         /// 1KB のサイズ。
@@ -28,14 +29,14 @@ namespace ContentTypeTextNet.Pe.Library.Common
         /// <summary>
         /// 人間様が読みやすい形にサイズ(バイト数)を整える。
         /// </summary>
-        /// <param name="byteSize"></param>
-        /// <param name="sizeFormat"></param>
-        /// <param name="units"></param>
+        /// <param name="byteSize">バイトサイズ</param>
+        /// <param name="format">書式。`0`: サイズ, `1`: 単位。</param>
+        /// <param name="units">単位一覧。</param>
         /// <returns></returns>
-        public string ConvertHumanReadableByte(long byteSize, string sizeFormat, IReadOnlyList<string> units)
+        public string ConvertHumanReadableByte(long byteSize, string format, IReadOnlyList<string> units)
         {
             if(units.Count == 0) {
-                throw new ArgumentException(nameof(units));
+                throw new ArgumentException($"{nameof(units)}.{nameof(units.Count)} == 0", nameof(units));
             }
 
             double size = byteSize;
@@ -46,7 +47,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
                 order += 1;
             }
 
-            return string.Format(CultureInfo.InvariantCulture, sizeFormat, size, units[order]);
+            return string.Format(CultureInfo.InvariantCulture, format, size, units[order]);
         }
 
 

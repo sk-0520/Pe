@@ -1,13 +1,12 @@
 using System;
 using System.Diagnostics;
-using System.Reflection.Metadata;
 using System.Windows;
-using Forms = System.Windows.Forms;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
 using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Core.Views;
-using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
+using ContentTypeTextNet.Pe.Main.Models;
+using Forms = System.Windows.Forms;
 
 namespace ContentTypeTextNet.Pe.Main.Views
 {
@@ -17,7 +16,6 @@ namespace ContentTypeTextNet.Pe.Main.Views
         {
             View = view;
 
-            View = view;
             if(View.IsLoaded) {
                 OwnerWindow = Window.GetWindow(view);
                 View.Unloaded += View_Unloaded;
