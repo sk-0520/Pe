@@ -5,48 +5,14 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
-		date: "YYYY/MM/DD",
-		version: "0.99.267+",
+		date: "2026/04/30",
+		version: "0.99.268",
 		contents: [
 			{
 				type: "note",
 				logs: [
 					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "features",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
+						subject: "ライブラリ更新系",
 					},
 				],
 			},
@@ -54,21 +20,9 @@ const Changelogs: ChangelogVersion[] = [
 				type: "fixes",
 				logs: [
 					{
-						revision: "",
+						revision: "154c2f68c337be430fcfd109a8238fe161a11c60",
 						subject:
 							"#1079: ヘルプの外部リンクは別ウィンドウ（別タブ）で開くようにする",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
 					},
 				],
 			},
@@ -76,11 +30,10 @@ const Changelogs: ChangelogVersion[] = [
 				type: "developer",
 				logs: [
 					{
-						revision: "",
 						subject: "sqlfluff 3.5.0 -> 4.0.4",
 					},
 					{
-						revision: "",
+						revision: "4780a08bdce216c1aeaf1cbf8b6656c32bed050e",
 						class: "nuget",
 						subject: "update nuget",
 						comments: [
@@ -100,16 +53,12 @@ const Changelogs: ChangelogVersion[] = [
 						],
 					},
 					{
-						revision: "",
+						revision: "a9d779d261ebedf4c1e7506b7e7f566971f9ab5c",
 						subject: "update npm",
 					},
 					{
-						revision: "",
+						revision: "988a9106c28643eabddf02fb43cff57322eeb7c2",
 						subject: "GHA 各種モジュールの最新化",
-					},
-					{
-						revision: "",
-						subject: "",
 					},
 				],
 			},
