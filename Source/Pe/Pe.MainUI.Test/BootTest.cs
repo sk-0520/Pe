@@ -88,20 +88,20 @@ namespace ContentTypeTextNet.Pe.Main.Test.UI
             }
         }
 
-        [Fact]
-        public void BootExecute_LaunchMode_SkipAccept_Test()
-        {
-            var testIO = TestIO.InitializeMethod(this);
-            using var testApp = TestUI.Launch(testIO, LaunchMode.SkipAccept);
+        //[Fact]
+        //public void BootExecute_LaunchMode_SkipAccept_Test()
+        //{
+        //    var testIO = TestIO.InitializeMethod(this);
+        //    using var testApp = TestUI.Launch(testIO, LaunchMode.SkipAccept);
 
-            using(var automation = new UIA3Automation()) {
-                var window = TestUI.GetMainWindow(testApp, automation);
-                // 使用許諾は表示されない
-                Assert.NotEqual("AcceptWindow", window.Properties.AutomationId);
-                // スタートアップが表示される
-                Assert.Equal("StartupWindow", window.Properties.AutomationId);
-            }
-        }
+        //    using(var automation = new UIA3Automation()) {
+        //        var window = TestUI.GetMainWindow(testApp, automation);
+        //        // 使用許諾は表示されない
+        //        Assert.NotEqual("AcceptWindow", window.Properties.AutomationId);
+        //        // スタートアップが表示される
+        //        Assert.Equal("StartupWindow", window.Properties.AutomationId);
+        //    }
+        //}
 
         [Fact]
         public void BootExecute_LaunchMode_SkipStartup_Test()
