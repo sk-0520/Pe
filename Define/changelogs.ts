@@ -105,6 +105,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "GHA 各種モジュールの最新化",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
