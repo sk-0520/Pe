@@ -228,7 +228,7 @@ jobs:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Download> Help
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Help
           path: artifacts/help
@@ -405,7 +405,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: <Download> BuildTools
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: BuildTools
           path: artifacts/buildtools
@@ -437,7 +437,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: <Download> BuildTools
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: BuildTools
           path: artifacts/buildtools
@@ -748,31 +748,31 @@ jobs:
         uses: actions/checkout@v6
 
       - name: <Download> SQL
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: SQL
           path: artifacts/sql
 
       - name: <Download> License
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: License
           path: artifacts/license
 
       - name: <Download> Help
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Help
           path: artifacts/help
 
       - name: <Download> Boot
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: boot-${{ matrix.PLATFORM }}
           path: artifacts/boot
 
       - name: <Download> Main
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: main-bin-${{ matrix.PLATFORM }}
           path: main-bin.tar
@@ -818,13 +818,13 @@ jobs:
         uses: actions/checkout@v6
 
       - name: <Download> Application x86
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Pe_x86
           path: artifacts/Pe
 
       - name: <Download> Application x64
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Pe_x64
           path: artifacts/Pe
@@ -982,7 +982,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: <Download> Plugins
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: plugins-${{ matrix.PLATFORM }}
           path: artifacts/plugins
@@ -1024,13 +1024,13 @@ jobs:
         uses: actions/checkout@v6
 
       - name: <Download> Plugins x86
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Pe.Plugins.Reference_x86
           path: artifacts/Pe.Plugins.Reference
 
       - name: <Download> Plugins x64
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: Pe.Plugins.Reference_x64
           path: artifacts/Pe.Plugins.Reference
@@ -1215,7 +1215,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download Icon Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           path: icons
 
