@@ -103,7 +103,7 @@ export function splitLines(s: string): string[] {
 const CharactersRegex = /[\uD800-\uDBFF][\uDC00-\uDFFF]|[^\uD800-\uDFFF]/g;
 
 export function countSingleChar(s: string): number {
-	if (!s || !s.length) {
+	if (!s) {
 		return 0;
 	}
 	const chars = s.match(CharactersRegex) || [];

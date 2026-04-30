@@ -15,7 +15,8 @@ function renderItems(kind: MdBreadcrumbsProps["kind"], items: string[]) {
 					}}
 				>
 					{items.map((a, i) => (
-						<Fragment key={`${i}-${a}`}>
+						// biome-ignore lint/suspicious/noArrayIndexKey: a は一意足りえない
+						<Fragment key={`${a}-${i}`}>
 							{i !== 0 ? (
 								<Typography component="span">→</Typography>
 							) : null}
