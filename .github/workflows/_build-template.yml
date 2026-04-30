@@ -41,7 +41,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Lint> gha
         shell: pwsh
@@ -54,7 +54,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Lint> shellcheck
         uses: ludeeus/action-shellcheck@master
@@ -69,7 +69,7 @@ jobs:
           git config --global core.autocrlf false
 
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Add> Node/NPM
         uses: actions/setup-node@v4
@@ -99,7 +99,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Lint> PowerShell
         shell: pwsh
@@ -124,7 +124,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Add> Node/NPM
         uses: actions/setup-node@v4
@@ -158,7 +158,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -215,7 +215,7 @@ jobs:
           git config --global user.name "${{ github.job }}"
 
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -311,7 +311,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Add> Node/NPM
         uses: actions/setup-node@v4
@@ -345,7 +345,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -382,7 +382,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Lint> SQL
         shell: pwsh
@@ -397,7 +397,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -429,7 +429,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -468,7 +468,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v2
@@ -514,7 +514,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v2
@@ -599,7 +599,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -659,7 +659,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -745,7 +745,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Download> SQL
         uses: actions/download-artifact@v4
@@ -815,7 +815,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Download> Application x86
         uses: actions/download-artifact@v4
@@ -866,7 +866,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -923,7 +923,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -979,7 +979,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Download> Plugins
         uses: actions/download-artifact@v4
@@ -1021,7 +1021,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Download> Plugins x86
         uses: actions/download-artifact@v4
@@ -1069,7 +1069,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Check> Pe.Library + workflow
         shell: pwsh
@@ -1102,7 +1102,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
         uses: actions/setup-dotnet@v5
@@ -1140,7 +1140,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: <Test> Update
         shell: pwsh
@@ -1172,7 +1172,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Delete *.ico
         shell: bash
@@ -1212,7 +1212,7 @@ jobs:
 
     steps:
       - name: <Checkout> Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Download Icon Artifacts
         uses: actions/download-artifact@v4
