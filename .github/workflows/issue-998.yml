@@ -152,7 +152,7 @@ jobs:
           msbuild-architecture: x64
 
       - name: <Cache> Nuget
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: nuget-${{ github.job }}-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
@@ -199,7 +199,7 @@ jobs:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Cache> Nuget
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
@@ -259,7 +259,7 @@ jobs:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Cache> Nuget
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
@@ -340,7 +340,7 @@ jobs:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Cache> Nuget
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
@@ -397,7 +397,7 @@ jobs:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Cache> Nuget
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ github.workspace }}/.nuget/packages
           key: nuget-${{ github.job }}-${{ runner.os }}-${{ matrix.PLATFORM }}-${{ hashFiles('**/*.csproj') }}
