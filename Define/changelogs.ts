@@ -76,7 +76,7 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "#1095: actions/github-script を最新化する",
 					},
 					{
 						revision: "",
