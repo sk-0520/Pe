@@ -15,6 +15,10 @@ exclude_rules =
     # 単独カラムでも改行したいけどダメっぽい
     layout.select_targets,
     layout.indent,
+    structure.simple_case,
+    structure.column_order,
+    aliasing.unique.table,
+    aliasing.expression,
 
 # Below controls SQLFluff output, see max_line_length for SQL output
 output_line_length = 80

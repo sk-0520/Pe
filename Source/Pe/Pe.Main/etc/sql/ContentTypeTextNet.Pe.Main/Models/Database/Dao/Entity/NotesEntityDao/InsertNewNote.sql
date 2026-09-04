@@ -44,7 +44,7 @@ insert into
 			when 'timestamp' then
 				STRFTIME('%Y/%m/%d %H:%M:%S', CURRENT_TIMESTAMP, 'localtime')
 			else
-				(select COUNT(NoteId) + 1 from Notes)
+				(select COUNT(Notes.NoteId) + 1 from Notes)
 		end,
 /* LayoutKind            */ AppNoteSetting.LayoutKind,
 /* FontId                */ AppNoteSetting.FontId,

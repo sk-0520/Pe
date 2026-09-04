@@ -80,7 +80,7 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "sqlfluff 4.0.4 -> 4.3.0",
 					},
 					{
 						revision: "",
