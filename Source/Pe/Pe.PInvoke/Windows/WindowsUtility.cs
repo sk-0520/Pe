@@ -275,10 +275,19 @@ namespace ContentTypeTextNet.Pe.PInvoke.Windows
 
         public static string GetWindowText(IntPtr hWnd, int windowTextLength = WindowTextLength)
         {
-            var buffer = new StringBuilder(NativeMethods.GetWindowTextLength(hWnd) + 1);
+            var textLength = NativeMethods.GetWindowTextLength(hWnd);
+            if(textLength == 0) {
+                return string.Empty;
+            }
+
+            var buffer = new StringBuilder(textLength + 1);
+            NativeMethods.SetLastError(0);
             var result = NativeMethods.GetWindowText(hWnd, buffer, buffer.Capacity);
             if(result == 0) {
                 var error = NativeMethods.GetLastError();
+                if(error == 0) {
+                    return string.Empty;
+                }
                 throw new InvalidOperationException($"GetWindowText failed. error: {error}");
             }
             var windowText = buffer.ToString();

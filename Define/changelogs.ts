@@ -55,7 +55,8 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"#1096: [CR:87,88,94-97,99] System.InvalidOperationException: GetWindowText failed. error: 0",
 					},
 					{
 						revision: "",
