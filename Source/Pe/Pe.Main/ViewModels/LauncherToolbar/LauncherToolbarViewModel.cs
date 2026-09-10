@@ -610,7 +610,6 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherToolbar
                     var selfIndex = LauncherItemCollection.IndexOf(draggingItemData.ViewModel);
                     var nextIndex = LauncherItemCollection.IndexOf(detail);
                     Model.MoveLauncherItemId(selfIndex, nextIndex);
-
                 }
             } else {
                 LauncherItemId launcherItemId = LauncherItemId.Empty;

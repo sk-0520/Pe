@@ -60,7 +60,8 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"#1094: ツールバーのD&Dで並べ替えたアイテム順序がグループ切り替え時に保持されない",
 					},
 					{
 						revision: "",
