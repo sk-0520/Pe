@@ -86,7 +86,7 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "Dapper 2.1.72 -> 2.1.79",
 					},
 					{
 						revision: "",
