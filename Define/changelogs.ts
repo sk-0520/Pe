@@ -124,7 +124,7 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "NSubstitute 5.3.0 -> 6.2.0",
 					},
 				],
 			},
