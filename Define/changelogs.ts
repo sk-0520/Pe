@@ -120,7 +120,7 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "NLog.Extensions.Logging 6.1.2 -> 6.2.0",
 					},
 					{
 						revision: "",
