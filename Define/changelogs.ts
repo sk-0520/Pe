@@ -116,7 +116,7 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "System.Management 10.0.7 -> 10.0.12",
 					},
 					{
 						revision: "",
