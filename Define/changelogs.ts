@@ -5,6 +5,90 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
+		date: "2026/09/11",
+		version: "0.99.269",
+		contents: [
+			{
+				type: "fixes",
+				logs: [
+					{
+						revision: "db7b45924da58abb97e29b8a403579efaabd8809",
+						subject:
+							"#1096: [CR:87,88,94-97,99] System.InvalidOperationException: GetWindowText failed. error: 0",
+					},
+					{
+						revision: "3e6c746f96f619e424227f1ac72e790f95e7aa6f",
+						subject:
+							"#1094: ツールバーのD&Dで並べ替えたアイテム順序がグループ切り替え時に保持されない",
+					},
+				],
+			},
+			{
+				type: "developer",
+				logs: [
+					{
+						revision: "dfffbec64cc2d6bc35be81acccaf8e00c484d16e",
+						subject: "#1095: actions/github-script を最新化する",
+					},
+					{
+						revision: "7b59895eedcbef198429f178448139ccf61ca801",
+						subject: "sqlfluff 4.0.4 -> 4.3.0",
+					},
+					{
+						revision: "5d7b1f45c9bcf7b4a2428b62520573bb943a92a9",
+						class: "nuget",
+						subject: "Dapper 2.1.72 -> 2.1.79",
+					},
+					{
+						revision: "840f241279bcf0195fee1a41ce40909fa3d90881",
+						class: "nuget",
+						subject:
+							"Microsoft.Web.WebView2 1.0.3912.50 -> 1.0.4191.47",
+					},
+					{
+						revision: "fa1322fc9cac92009fa195f0c3162ebec2963a21",
+						class: "nuget",
+						subject:
+							"Microsoft.CodeAnalysis.Analyzers 5.3.0-2.25625.1 -> 5.9.0-1.26328.17",
+					},
+					{
+						revision: "4cdc2364b67e809890b08c441628a73f920cb9bc",
+						class: "nuget",
+						subject: "Microsoft.Extensions.*",
+						comments: [
+							"Microsoft.Extensions.Logging.Abstractions 10.0.7 -> 10.0.12",
+							"Microsoft.Extensions.Configuration.Binder 10.0.7 -> 10.0.12",
+							"Microsoft.Extensions.Configuration.Json 10.0.7 -> 10.0.12",
+							"Microsoft.Extensions.Logging 10.0.7 -> 10.0.12",
+							"Microsoft.Extensions.TimeProvider.Testing 10.5.0 -> 10.10.0",
+						],
+					},
+					{
+						revision: "5c1810998391d199e7d5b15a7128011dbeff5afe",
+						class: "nuget",
+						subject:
+							"System.DirectoryServices.AccountManagement 10.0.7 -> 10.0.12",
+					},
+					{
+						revision: "3d8c1e49bd462dd3a72475ae1e64638a70ea4a36",
+						class: "nuget",
+						subject: "System.Management 10.0.7 -> 10.0.12",
+					},
+					{
+						revision: "67741c131a6725fa2f96af61e6e43f898f546939",
+						class: "nuget",
+						subject: "NLog.Extensions.Logging 6.1.2 -> 6.2.0",
+					},
+					{
+						revision: "1bd601f67b994d44651c65d3865c9b32bf6e51dc",
+						class: "nuget",
+						subject: "NSubstitute 5.3.0 -> 6.2.0",
+					},
+				],
+			},
+		],
+	},
+	{
 		date: "2026/04/30",
 		version: "0.99.268",
 		contents: [

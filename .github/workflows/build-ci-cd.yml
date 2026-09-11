@@ -121,7 +121,7 @@ jobs:
       # ドラフトリリースを作成
       - name: <Create> Release
         id: create-release
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const releaseResult = await github.rest.repos.createRelease({
@@ -141,7 +141,7 @@ jobs:
 
       # リリースを確定(後続処理はリリースページとはちょっと違うのでここで確定する)
       - name: <Update> Release
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             return await github.rest.repos.updateRelease({

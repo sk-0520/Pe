@@ -7,7 +7,7 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 $imageName = 'sqlfluff/sqlfluff'
-$versionTag = '4.0.4'
+$versionTag = '4.3.0'
 
 
 Import-Module "${PSScriptRoot}/Modules/Project"

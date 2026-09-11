@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
 using Microsoft.CodeAnalysis;
 
 namespace ContentTypeTextNet.Pe.Generator.Id
@@ -31,7 +28,7 @@ namespace {{attributeNamespace}}
     {
         public {{attributeName}}({{sourceBuilder.ToCode<System.Type>()}} type)
         {
-            //NOP
+            Type = type;
         }
 
         #region property

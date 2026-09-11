@@ -551,6 +551,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.LauncherToolbar
                 context.Commit();
             }
 
+            SelectedLauncherGroup.LoadLauncherItems();
             NotifyManager.SendLauncherGroupChanged(LauncherToolbarId, launcherGroupId);
         }
 
