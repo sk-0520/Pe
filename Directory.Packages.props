@@ -31,7 +31,7 @@
     <PackageVersion Include="NSubstitute" Version="6.2.0" />
     <PackageVersion Include="NSubstitute.Analyzers.CSharp" Version="1.0.17" />
     <!-- TEST: UI -->
-    <PackageVersion Include="Xunit.StaFact" Version="3.0.13" />
+    <PackageVersion Include="Xunit.StaFact" Version="4.0.23" />
     <PackageVersion Include="FlaUI.UIA3" Version="5.0.0" />
     <!-- ビルドツール -->
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.7" />
