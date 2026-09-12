@@ -76,7 +76,12 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "xunit.v3.*",
+						comments: [
+							"xunit.v3 3.2.2 -> 4.0.0",
+							"xunit.v3.runner.msbuild 3.2.2 -> 4.0.0",
+							"xunit.runner.visualstudio 3.1.5 -> 4.0.0",
+						],
 					},
 					{
 						revision: "",
