@@ -5,9 +5,23 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
-		date: "2026/09/11",
-		version: "0.99.269",
+		date: "2026/09/12",
+		version: "0.99.270",
 		contents: [
+			{
+				type: "note",
+				logs: [
+					{
+						subject:
+							"2026/09/11 0.99.269 は致命的な不具合があったため 0.99.270 として再リリース",
+						comments: [
+							"WebView2 周りの処理でプロセスごとクラッシュするためリリースノート表示でおそらく死ぬ",
+							"0.99.269 はリリース後、30分以内に API 側を 0.99.268 に戻したためおそらく影響はないはずです",
+							"本リリースノートが表示され、アップデート前にクラッシュする場合は手動でダウンロードしてください",
+						],
+					},
+				],
+			},
 			{
 				type: "fixes",
 				logs: [
@@ -22,7 +36,7 @@ const Changelogs: ChangelogVersion[] = [
 							"#1094: ツールバーのD&Dで並べ替えたアイテム順序がグループ切り替え時に保持されない",
 					},
 					{
-						revision: "",
+						revision: "3fc00cbe74522a5a90a3a5a358784c37de74530c",
 						subject:
 							"#1097: WebView 起動後の後始末でプロセスを巻き込んで死ぬ",
 					},
