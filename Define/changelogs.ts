@@ -5,6 +5,96 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
+		date: "YYYY/MM/DD",
+		version: "0.99.270+",
+		contents: [
+			{
+				type: "note",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "features",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "fixes",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+			{
+				type: "developer",
+				logs: [
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+				],
+			},
+		],
+	},
+	{
 		date: "2026/09/12",
 		version: "0.99.270",
 		contents: [
