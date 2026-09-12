@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="MSTest.Sdk/4.1.0">
   <PropertyGroup>
     <AssemblyName>Pe.Bridge.Test</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Bridge.Test</RootNamespace>
-    
+
     <IsTestProject>true</IsTestProject>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
@@ -13,7 +13,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\Pe.Bridge\Pe.Bridge.csproj" />
   </ItemGroup>
