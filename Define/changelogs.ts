@@ -21,6 +21,11 @@ const Changelogs: ChangelogVersion[] = [
 						subject:
 							"#1094: ツールバーのD&Dで並べ替えたアイテム順序がグループ切り替え時に保持されない",
 					},
+					{
+						revision: "",
+						subject:
+							"#1097: WebView 起動後の後始末でプロセスを巻き込んで死ぬ",
+					},
 				],
 			},
 			{

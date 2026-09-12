@@ -1,13 +1,13 @@
 using System.Windows;
-using Forms = System.Windows.Forms;
 using System.Windows.Input;
-using ContentTypeTextNet.Pe.Core.Models;
-using Prism.Commands;
 using ContentTypeTextNet.Pe.Core.Compatibility.Windows;
+using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Library.DependencyInjection;
-using ContentTypeTextNet.Pe.Main.Models.WebView;
 using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
+using ContentTypeTextNet.Pe.Main.Models.WebView;
+using Prism.Commands;
+using Forms = System.Windows.Forms;
 
 namespace ContentTypeTextNet.Pe.Main.Views.About
 {
@@ -82,7 +82,9 @@ namespace ContentTypeTextNet.Pe.Main.Views.About
 
         private void WebView_Unloaded(object sender, RoutedEventArgs e)
         {
-            this.webView.CoreWebView2.NewWindowRequested -= CoreWebView2_NewWindowRequested;
+            if(this.webView.CoreWebView2 is not null) {
+                this.webView.CoreWebView2.NewWindowRequested -= CoreWebView2_NewWindowRequested;
+            }
             this.webView.Unloaded -= WebView_Unloaded;
             WebViewInitializer.Dispose();
         }
