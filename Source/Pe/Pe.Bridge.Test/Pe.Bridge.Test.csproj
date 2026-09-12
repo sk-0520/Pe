@@ -1,4 +1,4 @@
-<Project Sdk="MSTest.Sdk/4.1.0">
+﻿<Project Sdk="MSTest.Sdk/4.1.0">
   <PropertyGroup>
     <AssemblyName>Pe.Bridge.Test</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Bridge.Test</RootNamespace>
@@ -7,6 +7,7 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Testing.Platform.MSBuild" />
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="NSubstitute.Analyzers.CSharp">
       <PrivateAssets>all</PrivateAssets>
