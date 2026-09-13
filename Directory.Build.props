@@ -43,6 +43,12 @@
         <DefineConstants>OS_MAC</DefineConstants>
     </PropertyGroup>
 
+    <!--
+    <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
+        <UseTestingPlatformOverride>true</UseTestingPlatformOverride>
+    </PropertyGroup>
+    -->
+
     <ItemGroup Condition="$(MSBuildProjectName.StartsWith('Pe.Library.'))">
         <SupportedPlatform Include="Windows" />
         <SupportedPlatform Include="Linux" />
