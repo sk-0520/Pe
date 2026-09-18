@@ -35,6 +35,7 @@
     <PackageVersion Include="Microsoft.Testing.Platform.MSBuild" Version="2.4.1" />
     <PackageVersion Include="MSTest.TestAdapter" Version="4.4.1" />
     <PackageVersion Include="MSTest.TestFramework" Version="4.4.1" />
+    <PackageVersion Include="xunit.v3.mtp-v2" Version="4.0.1" />
 
     <!-- TEST: UI -->
     <PackageVersion Include="Xunit.StaFact" Version="4.0.23" />
