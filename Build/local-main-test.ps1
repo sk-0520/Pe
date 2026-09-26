@@ -55,14 +55,34 @@ $testResultFiles = @()
 # テスト実行
 foreach ($dir in $targetProjectDirs) {
 	$testResultFileName = 'coverage.cobertura.xml'
+	$testResultDirPath = Join-Path -Path '.' -ChildPath 'TestResults'
+	$testResultFilePath = Join-Path -Path $testResultDirPath -ChildPath $testResultFileName
 	Push-Location -LiteralPath $dir.FullName
 	try {
-		Start-Command -Command dotnet -ArgumentList @('test', "/p:Platform=$Platform", "--runtime", "win-$Platform", "--configuration", "Debug", "--collect:XPlat Code Coverage")
+		if (!(Test-Path -LiteralPath $testResultDirPath)) {
+			New-Item -Path $testResultDirPath -ItemType Directory | Out-Null
+		}
 
-		# 恐らく最新の結果ファイルを取得
-		$testResultFile = Get-ChildItem -LiteralPath 'TestResults' -Filter $testResultFileName -Recurse -File |
+		# 旧結果を拾わないように事前削除してから実行する
+		@(Get-ChildItem -LiteralPath '.' -Filter 'coverage*.cobertura*.xml' -Recurse -File -ErrorAction SilentlyContinue) |
+			Remove-Item -Force -ErrorAction SilentlyContinue
+
+		Start-Command -Command dotnet -ArgumentList @(
+			'test',
+			"/p:Platform=$Platform",
+			'--runtime', "win-$Platform",
+			'--configuration', 'Debug',
+			'--coverage',
+			'--coverage-output', $testResultFilePath,
+			'--coverage-output-format', 'cobertura'
+		)
+
+		$testResultFile = Get-ChildItem -LiteralPath '.' -Filter 'coverage*.cobertura*.xml' -Recurse -File -ErrorAction SilentlyContinue |
 			Sort-Object LastWriteTime -Descending |
 			Select-Object -First 1
+		if ($null -eq $testResultFile) {
+			throw "カバレッジ結果が見つかりません: $($dir.Name)"
+		}
 
 		# 作業ディレクトリにお引越し
 		$testDestPath = Join-Path -Path $resultBaseDir -ChildPath "$($dir.Name)_$($testResultFile.Name)"

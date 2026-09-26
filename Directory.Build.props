@@ -60,6 +60,7 @@
         <EmbeddedResource Remove="TestResults\**" />
         <None Remove="TestResults\**" />
 
+        <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
         <PackageReference Include="xunit.v3.mtp-v2" />
         <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
         <PackageReference Include="NSubstitute" />

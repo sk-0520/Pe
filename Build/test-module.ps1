@@ -50,18 +50,32 @@ if ($Module -eq 'boot') {
 
 	}
 } elseif ($Module -eq 'main' -or $Module -eq 'plugins') {
-	$loggerArg = ''
-	if (![string]::IsNullOrEmpty($Logger)) {
-		$loggerArg = "--logger:$Logger"
-	}
-
 	$projectDirItems = Get-TestProjectDirectory -Kind $Module
 
 
 	foreach ($projectDirItem in $projectDirItems) {
 		Push-Location -Path $projectDirItem
 		try {
-			Start-Command -Command dotnet -ArgumentList @('test', "/p:Platform=$Platform", '--runtime', "win-$Platform", '--configuration', 'Debug', '--collect:XPlat Code Coverage', '--test-adapter-path:.', $loggerArg)
+			$testResultDirPath = Join-Path -Path '.' -ChildPath 'TestResults'
+			$testResultFilePath = Join-Path -Path $testResultDirPath -ChildPath 'coverage.cobertura.xml'
+			if (!(Test-Path -LiteralPath $testResultDirPath)) {
+				New-Item -Path $testResultDirPath -ItemType Directory | Out-Null
+			}
+
+			$argumentList = @(
+				'test',
+				"/p:Platform=$Platform",
+				'--runtime', "win-$Platform",
+				'--configuration', 'Debug',
+				'--coverage',
+				'--coverage-output', $testResultFilePath,
+				'--coverage-output-format', 'cobertura'
+			)
+			if ($Logger -eq 'GitHubActions') {
+				$argumentList += '--report-github'
+			}
+
+			Start-Command -Command dotnet -ArgumentList $argumentList
 		} finally {
 			Pop-Location
 		}
