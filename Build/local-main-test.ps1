@@ -77,11 +77,11 @@ foreach ($dir in $targetProjectDirs) {
 			'--coverage-output-format', 'cobertura'
 		)
 
-		$testResultFile = Get-ChildItem -LiteralPath '.' -Filter 'coverage*.cobertura*.xml' -Recurse -File -ErrorAction SilentlyContinue |
+		$testResultFile = Get-ChildItem -LiteralPath (Join-Path -Path $dir.FullName -ChildPath 'TestResults') -Filter 'coverage.cobertura.xml' -Recurse -File -ErrorAction SilentlyContinue |
 			Sort-Object LastWriteTime -Descending |
 			Select-Object -First 1
 		if ($null -eq $testResultFile) {
-			throw "カバレッジ結果が見つかりません: $($dir.Name)"
+			throw "not found: $($dir.FullName)"
 		}
 
 		# 作業ディレクトリにお引越し
