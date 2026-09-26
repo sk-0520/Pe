@@ -53,7 +53,9 @@
         <Compile Remove="TestResults\**" />
         <EmbeddedResource Remove="TestResults\**" />
         <None Remove="TestResults\**" />
+    </ItemGroup>
 
+    <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Test')) and '$(MSBuildProjectName)' != 'Pe.Bridge.Test'">
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
         <PackageReference Include="coverlet.collector">
             <PrivateAssets>all</PrivateAssets>
