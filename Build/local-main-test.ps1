@@ -40,6 +40,31 @@ foreach ($pj in $Project) {
 	}
 }
 
+function Get-CoverageResultFiles {
+	[OutputType([System.IO.FileInfo[]])]
+	Param(
+		[Parameter(Mandatory = $true)][string] $BasePath,
+		[Parameter(Mandatory = $true)][string[]] $Patterns
+	)
+
+	if (!(Test-Path -LiteralPath $BasePath)) {
+		return @()
+	}
+
+	return @(Get-ChildItem -LiteralPath $BasePath -Recurse -File -ErrorAction SilentlyContinue | Where-Object {
+		$name = $_.Name
+		$matched = $false
+		foreach ($pattern in $Patterns) {
+			if ($name -like $pattern) {
+				$matched = $true
+				break
+			}
+		}
+
+		$matched
+	})
+}
+
 
 $rootDir = Get-RootDirectory
 $baseDir = Join-Path -Path $rootDir -ChildPath '_coverage' | Join-Path -ChildPath 'main'
@@ -58,6 +83,7 @@ foreach ($dir in $targetProjectDirs) {
 		'coverage.cobertura.xml'
 		'coverage*.cobertura*.xml'
 	)
+	$testResultDirPath = Join-Path -Path '.' -ChildPath 'TestResults'
 	Push-Location -LiteralPath $dir.FullName
 	try {
 		$projectFilePath = Join-Path -Path $dir.FullName -ChildPath "$($dir.Name).csproj"
@@ -68,9 +94,7 @@ foreach ($dir in $targetProjectDirs) {
 		}
 
 		# 旧結果を拾わないように事前削除してから実行する
-		@($testResultFilePatterns | ForEach-Object {
-			Get-ChildItem -LiteralPath '.' -Filter $_ -Recurse -File -ErrorAction SilentlyContinue
-		}) |
+		@(Get-CoverageResultFiles -BasePath $testResultDirPath -Patterns $testResultFilePatterns) |
 			Remove-Item -Force -ErrorAction SilentlyContinue
 
 		if ($isMtpProject) {
@@ -80,9 +104,7 @@ foreach ($dir in $targetProjectDirs) {
 		}
 
 		# xUnit v4 移行中は出力先が変わる可能性があるためプロジェクト配下全体から取得する
-		$testResultFile = @($testResultFilePatterns | ForEach-Object {
-			Get-ChildItem -LiteralPath '.' -Filter $_ -Recurse -File -ErrorAction SilentlyContinue
-		}) |
+		$testResultFile = @(Get-CoverageResultFiles -BasePath $testResultDirPath -Patterns $testResultFilePatterns) |
 			Sort-Object LastWriteTime -Descending |
 			Select-Object -First 1
 		if ($null -eq $testResultFile) {
