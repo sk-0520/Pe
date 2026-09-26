@@ -54,17 +54,35 @@ $codeCoverageDir = Join-Path -Path $workBaseDir -ChildPath 'codecoverage'
 $testResultFiles = @()
 # テスト実行
 foreach ($dir in $targetProjectDirs) {
-	$testResultFileName = 'coverage.cobertura.xml'
+	$testResultFilePatterns = @(
+		'coverage.cobertura.xml'
+		'coverage*.cobertura*.xml'
+	)
 	Push-Location -LiteralPath $dir.FullName
 	try {
+		$projectFilePath = Join-Path -Path $dir.FullName -ChildPath "$($dir.Name).csproj"
+		$isMtpProject = $false
+		if (Test-Path -LiteralPath $projectFilePath) {
+			$projectContent = Get-Content -LiteralPath $projectFilePath -Raw
+			$isMtpProject = $projectContent -match 'xunit\.v3\.mtp-v2|Microsoft\.Testing\.Platform|Microsoft\.Testing\.Extensions\.CodeCoverage|coverlet\.MTP|UseMicrosoftTestingPlatformRunner|TestingPlatformDotnetTestSupport'
+		}
+
 		# 旧結果を拾わないように事前削除してから実行する
-		@(Get-ChildItem -LiteralPath '.' -Filter $testResultFileName -Recurse -File -ErrorAction SilentlyContinue) |
+		@($testResultFilePatterns | ForEach-Object {
+			Get-ChildItem -LiteralPath '.' -Filter $_ -Recurse -File -ErrorAction SilentlyContinue
+		}) |
 			Remove-Item -Force -ErrorAction SilentlyContinue
 
-		Start-Command -Command dotnet -ArgumentList @('test', "/p:Platform=$Platform", "--runtime", "win-$Platform", "--configuration", "Debug", "--collect:XPlat Code Coverage", '--test-adapter-path:.')
+		if ($isMtpProject) {
+			Start-Command -Command dotnet -ArgumentList @('test', "/p:Platform=$Platform", '--runtime', "win-$Platform", '--configuration', 'Debug', '--coverage', '--coverage-output-format=cobertura')
+		} else {
+			Start-Command -Command dotnet -ArgumentList @('test', "/p:Platform=$Platform", "--runtime", "win-$Platform", "--configuration", "Debug", "--collect:XPlat Code Coverage", '--test-adapter-path:.')
+		}
 
 		# xUnit v4 移行中は出力先が変わる可能性があるためプロジェクト配下全体から取得する
-		$testResultFile = Get-ChildItem -LiteralPath '.' -Filter $testResultFileName -Recurse -File -ErrorAction SilentlyContinue |
+		$testResultFile = @($testResultFilePatterns | ForEach-Object {
+			Get-ChildItem -LiteralPath '.' -Filter $_ -Recurse -File -ErrorAction SilentlyContinue
+		}) |
 			Sort-Object LastWriteTime -Descending |
 			Select-Object -First 1
 		if ($null -eq $testResultFile) {
