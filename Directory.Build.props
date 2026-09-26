@@ -55,6 +55,12 @@
         <SupportedPlatform Include="macOS" />
     </ItemGroup>
 
+    <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
+        <IsTestProject>true</IsTestProject>
+        <OutputType>Exe</OutputType>
+        <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    </PropertyGroup>
+
     <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
         <Compile Remove="TestResults\**" />
         <EmbeddedResource Remove="TestResults\**" />
