@@ -57,7 +57,19 @@ foreach ($dir in $targetProjectDirs) {
 	$testResultFileName = 'coverage.cobertura.xml'
 	Push-Location -LiteralPath $dir.FullName
 	try {
-		Start-Command -Command dotnet -ArgumentList @('test', "/p:Platform=$Platform", "--runtime", "win-$Platform", "--configuration", "Debug", "--collect:XPlat Code Coverage")
+		Start-Command -Command dotnet -ArgumentList @(
+			'test',
+			"/p:Platform=$Platform",
+			'--runtime',
+			"win-$Platform",
+			'--configuration',
+			'Debug',
+			'--coverage',
+			'--coverage-output-format',
+			'cobertura',
+			'--coverage-output',
+			$testResultFileName
+		)
 
 		# 恐らく最新の結果ファイルを取得
 		$testResultFile = Get-ChildItem -LiteralPath 'TestResults' -Filter $testResultFileName -Recurse -File |
