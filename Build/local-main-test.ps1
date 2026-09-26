@@ -83,9 +83,9 @@ foreach ($dir in $targetProjectDirs) {
 		'coverage.cobertura.xml'
 		'coverage*.cobertura*.xml'
 	)
-	$testResultDirPath = Join-Path -Path '.' -ChildPath 'TestResults'
 	Push-Location -LiteralPath $dir.FullName
 	try {
+		$testResultDirPath = Join-Path -Path (Get-Location) -ChildPath 'TestResults'
 		$projectFilePath = Join-Path -Path $dir.FullName -ChildPath "$($dir.Name).csproj"
 		$isMtpProject = $false
 		if (Test-Path -LiteralPath $projectFilePath) {
