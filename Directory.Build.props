@@ -49,6 +49,10 @@
         <SupportedPlatform Include="macOS" />
     </ItemGroup>
 
+    <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
     <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
         <Compile Remove="TestResults\**" />
         <EmbeddedResource Remove="TestResults\**" />
@@ -56,11 +60,6 @@
 
         <PackageReference Include="xunit.v3.mtp-v2" />
         <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
-        <PackageReference Include="NSubstitute" />
-        <PackageReference Include="NSubstitute.Analyzers.CSharp">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
         <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
     </ItemGroup>
 </Project>
