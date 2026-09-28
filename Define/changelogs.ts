@@ -5,6 +5,34 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
+		date: "2026/09/28",
+		version: "0.99.271",
+		contents: [
+			{
+				type: "note",
+				logs: [
+					{
+						subject: "本体あんまり関係なくてテスト用の処理を整備",
+					},
+				],
+			},
+			{
+				type: "developer",
+				logs: [
+					{
+						revision: "f9d7922662093bc1a5523bd8f229436b79426ea7",
+						subject: "xunit.v3 4 対応",
+						comments: ["関連モジュールはとりあえず色々対応した"],
+					},
+					{
+						revision: "1d03178653972685e74e962b4bc907b336f8818d",
+						subject: "#998: x86 でテストに失敗する",
+					},
+				],
+			},
+		],
+	},
+	{
 		date: "2026/09/12",
 		version: "0.99.270",
 		contents: [

@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using ContentTypeTextNet.Pe.Core.Views.Converter;
-using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Views.Converter

@@ -15,7 +15,7 @@ foreach ($scriptFileName in $scriptFileNames) {
 
 
 foreach ($platform in $Platforms) {
-	dotnet test Source/$ProjectName/$ProjectName.csproj /m --verbosity normal --configuration Release /p:Platform=$platform --runtime win-$platform
+	dotnet test Source/$ProjectName/$ProjectName.csproj --configuration Release /p:Platform=$platform --runtime win-$platform
 	if (-not $?) {
 		throw "test error: $?"
 	}

@@ -1,6 +1,5 @@
 <MdAlert kind="IMPORTANT">
   * x86 の保守がつらい・しんどいので将来的には廃止します
-  * [#998: x86 でテストに失敗する](https://github.com/sk-0520/Pe/issues/998)
   * [#1006: x86 サポートはもう不要ではないか](https://github.com/sk-0520/Pe/issues/1006)
 </MdAlert>
 

@@ -1,20 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>Pe.Bridge.Test</AssemblyName>
     <RootNamespace>ContentTypeTextNet.Pe.Bridge.Test</RootNamespace>
-    
-    <IsTestProject>true</IsTestProject>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="NSubstitute" />
-    <PackageReference Include="NSubstitute.Analyzers.CSharp">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\Pe.Bridge\Pe.Bridge.csproj" />
   </ItemGroup>
+
+
 </Project>
