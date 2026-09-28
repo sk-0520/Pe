@@ -64,7 +64,7 @@ jobs:
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     steps:
-      - name: <Git> conig
+      - name: <Git> config
         run: |
           git config --global core.autocrlf false
 
