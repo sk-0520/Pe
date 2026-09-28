@@ -239,8 +239,18 @@ jobs:
 
       - name: <Create> Plugin Template [NORMAL]
         if: ${{ github.event_name != 'pull_request' }}
+        id: create_plugin_template_normal
         shell: pwsh
         run: .\${{ env.EXPAND_DIR }}\create-project.ps1 -Verbose -InformationAction Continue -ProjectDirectory ${{ env.PROJECT_DIR }} -PluginName ${{ env.PROJECT_NAME }} -PluginId ([Guid]::Empty) -DefaultNamespace ${{ env.PROJECT_NAME }} -AppTargetBranch '${{ github.ref_name }}'
+
+      - name: <Artifact> Plugin Template Project Dir
+        uses: actions/upload-artifact@v7
+        with:
+          name: plugin-template-project-dir-${{ matrix.PLATFORM }}
+          path: ${{ env.PROJECT_DIR }}
+          if-no-files-found: warn
+
+
 
       # PR は現状トリガーにしないけど将来用にコードだけは残しておく
       - name: <Create> Plugin Template [PR]

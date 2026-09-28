@@ -43,30 +43,34 @@
         <DefineConstants>OS_MAC</DefineConstants>
     </PropertyGroup>
 
+    <!--
+    <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
+        <UseTestingPlatformOverride>true</UseTestingPlatformOverride>
+    </PropertyGroup>
+    -->
+
     <ItemGroup Condition="$(MSBuildProjectName.StartsWith('Pe.Library.'))">
         <SupportedPlatform Include="Windows" />
         <SupportedPlatform Include="Linux" />
         <SupportedPlatform Include="macOS" />
     </ItemGroup>
 
-    <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
+    <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
+        <IsTestProject>true</IsTestProject>
+        <OutputType>Exe</OutputType>
+        <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    </PropertyGroup>
+
+    <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Test')) or '$(MSBuildProjectName)' == 'Pe.CommonTest'">
         <Compile Remove="TestResults\**" />
         <EmbeddedResource Remove="TestResults\**" />
         <None Remove="TestResults\**" />
 
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
-        <PackageReference Include="coverlet.collector">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="Microsoft.Testing.Extensions.CodeCoverage" />
+        <PackageReference Include="xunit.v3.mtp-v2" />
         <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
-        <PackageReference Include="xunit.runner.visualstudio">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="xunit.v3" />
-        <PackageReference Include="xunit.v3.runner.msbuild">
+        <PackageReference Include="NSubstitute" />
+        <PackageReference Include="NSubstitute.Analyzers.CSharp">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

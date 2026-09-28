@@ -76,7 +76,8 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "xunit.v3 4 対応",
+						comments: ["関連モジュールはとりあえず色々対応した"],
 					},
 					{
 						revision: "",
