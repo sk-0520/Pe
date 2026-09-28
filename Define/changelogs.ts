@@ -81,7 +81,7 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "#998: x86 でテストに失敗する",
 					},
 					{
 						revision: "",

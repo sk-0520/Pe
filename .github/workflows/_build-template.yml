@@ -227,6 +227,20 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
+      - name: &x86_test_name <Setup> .NET x86 runtime/SDK
+        if: matrix.PLATFORM == 'x86'
+        shell: &x86_test_shell pwsh
+        run: &x86_test_run |
+          $installScript = Join-Path $env:RUNNER_TEMP 'dotnet-install.ps1'
+          Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -OutFile $installScript
+
+          $x86Root = Join-Path $env:RUNNER_TEMP 'dotnet-x86'
+          & $installScript -Channel '10.0' -Architecture 'x86' -InstallDir $x86Root
+
+          "DOTNET_ROOT_X86=$x86Root" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "DOTNET_ROOT=$x86Root"     | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          $x86Root | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
       - name: <Download> Help
         uses: actions/download-artifact@v8
         with:
@@ -250,8 +264,6 @@ jobs:
           path: ${{ env.PROJECT_DIR }}
           if-no-files-found: warn
 
-
-
       # PR は現状トリガーにしないけど将来用にコードだけは残しておく
       - name: <Create> Plugin Template [PR]
         if: ${{ github.event_name == 'pull_request' }}
@@ -268,22 +280,16 @@ jobs:
           .\FullBuild.ps1 -Verbose -InformationAction Continue -Platforms ${{ matrix.PLATFORM }}
 
       - name: <Test> Plugin Template
-        # x86 が動かない問題, あとで対処
-        if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: |
           Set-Location ${{ env.PROJECT_DIR }}
           .\FullTest.ps1 -Verbose -InformationAction Continue -Platforms ${{ matrix.PLATFORM }}
 
       - name: <Archive> Plugin Template
-        # x86 が動かない問題, あとで対処
-        if: matrix.PLATFORM == 'x64'
         shell: bash
         run: ./Build/archive-compress.sh "plugin-template.tar" "${{ env.PROJECT_DIR }}"
 
       - name: <Artifact> Plugin Template
-        # x86 が動かない問題, あとで対処
-        if: matrix.PLATFORM == 'x64'
         uses: actions/upload-artifact@v7
         with:
           name: template-plugin-${{ matrix.PLATFORM }}
@@ -681,6 +687,11 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
+      - name: *x86_test_name
+        if: matrix.PLATFORM == 'x86'
+        shell: *x86_test_shell
+        run: *x86_test_run
+
       - name: <Setup> dotnet tool
         shell: cmd
         run: install-dotnet-tool.bat
@@ -702,13 +713,10 @@ jobs:
         run: .\Build\setup-test-module.ps1 -InformationAction Continue -Service github -Module ${{ env.MODULE }}
 
       - name: <Test> Module
-        if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
       - name: <Make> CodeCoverage
-        # x86 が動かない問題, あとで対処
-        if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: |
           $files = @(Get-ChildItem -Filter coverage.cobertura.xml -Recurse)
@@ -726,8 +734,6 @@ jobs:
           Get-Location
 
       - name: <Artifact> CodeCoverage
-        # x86 が動かない問題, あとで対処
-        if: matrix.PLATFORM == 'x64'
         uses: actions/upload-artifact@v7
         with:
           name: Test_Pe.Main_${{ matrix.PLATFORM }}
@@ -945,6 +951,11 @@ jobs:
         with:
           msbuild-architecture: ${{ matrix.PLATFORM }}
 
+      - name: *x86_test_name
+        if: matrix.PLATFORM == 'x86'
+        shell: *x86_test_shell
+        run: *x86_test_run
+
       - name: <Cache> Nuget
         uses: actions/cache@v5
         with:
@@ -962,8 +973,6 @@ jobs:
         run: .\Build\setup-test-module.ps1 -InformationAction Continue -Service github -Module ${{ env.MODULE }}
 
       - name: <Test> Module
-        # x86 が動かない問題, あとで対処
-        if: matrix.PLATFORM == 'x64'
         shell: pwsh
         run: .\Build\test-module.ps1 -InformationAction Continue -Module ${{ env.MODULE }} -ProductMode -BuildType BETA -Platform ${{ matrix.PLATFORM }} -Configuration Release -Logger GitHubActions
 
