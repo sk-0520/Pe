@@ -76,7 +76,7 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "#1099: CodeQL が一生死んでる",
 					},
 					{
 						revision: "",
