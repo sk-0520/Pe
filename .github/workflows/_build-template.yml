@@ -85,6 +85,31 @@ jobs:
         shell: bash
         run: npm run lint
 
+  lint-json:
+    name: "Lint Json"
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Mod
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: ./.node-version
+          cache: npm
+
+      - name: Install AJV
+        shell: bash
+        run: npm install -D ajv-cli ajv-formats
+
+      - name: components.json
+        shell: bash
+        run: |
+          set -e
+          npx ajv validate -c ajv-formats -s Define/components.schema.json -d Define/components.json --all-errors
+
   powershell-source:
     name: PowerShell
 
@@ -441,6 +466,7 @@ jobs:
     name: "BuildTools License"
     needs:
       - build-tools
+      - lint-json
     runs-on: ${{ inputs.OS_WINDOWS }}
 
     steps:

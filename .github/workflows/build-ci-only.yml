@@ -11,8 +11,6 @@ on:
   #     - master
   #     - ci-test
   #     - develop
-    paths:
-      - '!.github/workflows/codeql.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
