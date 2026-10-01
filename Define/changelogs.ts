@@ -5,69 +5,15 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
-		date: "YYYY/MM/DD",
-		version: "0.99.271+",
+		date: "2026/10/01",
+		version: "0.99.272",
 		contents: [
 			{
 				type: "note",
 				logs: [
 					{
 						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "features",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "fixes",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
+						subject: "ドメイン周りの調整のみ",
 					},
 				],
 			},
@@ -75,24 +21,16 @@ const Changelogs: ChangelogVersion[] = [
 				type: "developer",
 				logs: [
 					{
-						revision: "",
+						revision: "332c63eee5c280feb963545a2a1dc60f89c5964a",
 						subject: "#1099: CodeQL が一生死んでる",
 					},
 					{
-						revision: "",
+						revision: "6e49a41062ec0456c350c4b2cb9500f8e9529ac9",
 						subject: "APIサーバー変更(org -> net)",
 						comments: [
 							"pe.content-type-text.org -> pe.content-type-text.net",
 							"ドメインをやっとこさ取り戻した",
 						],
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
 					},
 				],
 			},
