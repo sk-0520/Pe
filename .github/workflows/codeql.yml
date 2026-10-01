@@ -8,6 +8,10 @@ on:
     paths:
       - '.github/workflows/codeql.yml'
 
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   DOTNET_VERSION: 10.0.x
 
@@ -23,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'cpp', 'csharp', 'typescript' ]
+        language: [ 'actions', 'cpp', 'csharp', 'typescript' ]
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
@@ -31,16 +35,20 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v6
 
-    - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+    - name: "<Setup:C#> .NET ${{ env.DOTNET_VERSION }}"
       if: matrix.language == 'csharp'
-      uses: actions/setup-dotnet@v5
+      uses: actions/setup-dotnet@v6
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: "c++: NuGet"
+    - name: "<Setup:C> NuGet"
       if: matrix.language == 'cpp'
       shell: pwsh
       run: Remove-Item -Path Directory.Build.props
+
+    - name: "<Add:C> msbuild to PATH"
+      if: matrix.language == 'cpp'
+      uses: microsoft/setup-msbuild@v3
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -54,11 +62,18 @@ jobs:
         # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         # queries: security-extended,security-and-quality
 
-
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Autobuild
+      if: matrix.language != 'cpp'
       uses: github/codeql-action/autobuild@v4
+
+    - name: Build C
+      if: matrix.language == 'cpp'
+      shell: pwsh
+      run: |
+        .\Build\build-module.ps1 -InformationAction Continue -Module 'boot' -ProductMode -BuildType '' -Platform 'x64'
+        .\Build\build-module.ps1 -InformationAction Continue -Module 'boot' -ProductMode -BuildType '' -Platform 'x86'
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun

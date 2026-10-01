@@ -1,4 +1,5 @@
 {
+	"$schema": "./components.schema.json",
 	"library": [
 		{
 			"name": ".NET 10",

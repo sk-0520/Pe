@@ -91,7 +91,7 @@ export async function generatePluginId(): Promise<string> {
 		try {
 			//const uri = 'http://localhost/api/plugin/generate-plugin-id';
 			const uri =
-				"https://pe.content-type-text.org/api/plugin/generate-plugin-id";
+				"https://pe.content-type-text.net/api/plugin/generate-plugin-id";
 			const response = await fetch(uri);
 			const json = await response.json();
 			guid = json.data.plugin_id;

@@ -17,6 +17,6 @@
 
 * [プロジェクトサイト](https://github.com/sk-0520/Pe)
 * [フォーラム](https://github.com/sk-0520/Pe/discussions)
-* [Webサイト](https://pe.content-type-text.org)
-* [おれんち](https://content-type-text.org)
+* [Webサイト](https://pe.content-type-text.net)
+* [おれんち](https://content-type-text.net)
 

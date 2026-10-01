@@ -8,7 +8,7 @@ Import-Module "${PSScriptRoot}/Modules/Version"
 Import-Module "${PSScriptRoot}/Modules/Command"
 
 
-$verionEndPoint = [uri]'https://pe.content-type-text.org/api/application/version/update'
+$verionEndPoint = [uri]'https://pe.content-type-text.net/api/application/version/update'
 $extension = '7z'
 $response = Invoke-WebRequest -Uri $verionEndPoint -Method Get
 $latestResult = ConvertFrom-Json ([System.Text.Encoding]::UTF8.GetString($response.Content))

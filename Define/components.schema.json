@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ComponentsSchema",
+  "type": "object",
+  "required": [
+    "$schema",
+    "library",
+    "resource"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "library": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/componentItem"
+      }
+    },
+    "resource": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/componentItem"
+      }
+    }
+  },
+  "definitions": {
+    "componentItem": {
+      "type": "object",
+      "required": [
+        "name",
+        "uri",
+        "license",
+        "comment"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "license": {
+          "type": "object",
+          "required": [
+            "name",
+            "uri"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "uri": {
+              "type": "string",
+              "oneOf": [
+                { "format": "uri" },
+                { "enum": [ "" ] }
+              ]
+            }
+          }
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

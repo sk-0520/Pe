@@ -5,6 +5,38 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
+		date: "2026/10/01",
+		version: "0.99.272",
+		contents: [
+			{
+				type: "note",
+				logs: [
+					{
+						revision: "",
+						subject: "ドメイン周りの調整のみ",
+					},
+				],
+			},
+			{
+				type: "developer",
+				logs: [
+					{
+						revision: "332c63eee5c280feb963545a2a1dc60f89c5964a",
+						subject: "#1099: CodeQL が一生死んでる",
+					},
+					{
+						revision: "6e49a41062ec0456c350c4b2cb9500f8e9529ac9",
+						subject: "APIサーバー変更(org -> net)",
+						comments: [
+							"pe.content-type-text.org -> pe.content-type-text.net",
+							"ドメインをやっとこさ取り戻した",
+						],
+					},
+				],
+			},
+		],
+	},
+	{
 		date: "2026/09/28",
 		version: "0.99.271",
 		contents: [
