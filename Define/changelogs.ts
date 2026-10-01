@@ -80,7 +80,11 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "APIサーバー変更(org -> net)",
+						comments: [
+							"pe.content-type-text.org -> pe.content-type-text.net",
+							"ドメインをやっとこさ取り戻した",
+						],
 					},
 					{
 						revision: "",
