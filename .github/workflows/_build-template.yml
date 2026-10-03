@@ -102,13 +102,13 @@ jobs:
 
       - name: Install AJV
         shell: bash
-        run: npm install -D ajv-cli ajv-formats
+        run: npm install -D ajv-cli ajv-formats --ignore-scripts
 
       - name: components.json
         shell: bash
         run: |
           set -e
-          npx ajv validate -c ajv-formats -s Define/components.schema.json -d Define/components.json --all-errors
+          npx --ignore-scripts ajv validate -c ajv-formats -s Define/components.schema.json -d Define/components.json --all-errors
 
   powershell-source:
     name: PowerShell
