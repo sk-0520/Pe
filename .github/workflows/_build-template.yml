@@ -108,7 +108,7 @@ jobs:
         shell: bash
         run: |
           set -e
-          npm exec -p ajv validate -c ajv-formats -s Define/components.schema.json -d Define/components.json --all-errors
+          npx ajv validate -c ajv-formats -s Define/components.schema.json -d Define/components.json --all-errors
 
   powershell-source:
     name: PowerShell
