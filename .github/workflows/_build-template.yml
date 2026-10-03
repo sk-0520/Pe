@@ -327,6 +327,7 @@ jobs:
     needs:
       - plugin-template
       - powershell-source
+      - test-plugins
       - test-main
     runs-on: ubuntu-latest
 
@@ -774,6 +775,7 @@ jobs:
       - help
       - build-tools-sql
       - build-tools-license
+      - test-boot
       - build-boot
       - build-main
     runs-on: ${{ inputs.OS_WINDOWS }}
