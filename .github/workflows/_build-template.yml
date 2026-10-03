@@ -102,7 +102,7 @@ jobs:
 
       - name: Install AJV
         shell: bash
-        run: npm install -D ajv-cli ajv-formats
+        run: npm install -D ajv-cli ajv-formats --ignore-scripts
 
       - name: components.json
         shell: bash
