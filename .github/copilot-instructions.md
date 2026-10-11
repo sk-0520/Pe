@@ -64,10 +64,6 @@
 
 * 基本的には `.editorconfig` に従うこと
 
-## C#
-
-* 抽象クラスは `XxxBase` という形でサフィックスを `Base` とする
-* ただし `ContentTypeTextNet.Pe.Library.Common.Service` は例外的に `Base` を付与しない
 
 # アプリケーション仕様
 
