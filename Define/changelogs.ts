@@ -96,6 +96,15 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject:
+							"Microsoft.Testing.Extensions.CodeCoverage 18.11.2 -> 18.12.0",
+					},
+					{
+						revision: "",
+						subject: "",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 					{
