@@ -84,7 +84,7 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "Xunit.StaFact 4.0.23 -> 4.0.24",
 					},
 					{
 						revision: "",
