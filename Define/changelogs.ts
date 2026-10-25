@@ -5,69 +5,15 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
-		date: "YYYY/MM/DD",
-		version: "0.99.272+",
+		date: "2026/10/25",
+		version: "0.99.273",
 		contents: [
 			{
 				type: "note",
 				logs: [
 					{
 						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "features",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-				],
-			},
-			{
-				type: "fixes",
-				logs: [
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
+						subject: "依存ライブラリ 更新のみです",
 					},
 				],
 			},
@@ -116,14 +62,6 @@ const Changelogs: ChangelogVersion[] = [
 					{
 						revision: "965227b6eea17f655ef4fe92281ae7cb50e56a9b",
 						subject: "System.Management 10.0.12 -> 10.0.13",
-					},
-					{
-						revision: "",
-						subject: "",
-					},
-					{
-						revision: "",
-						subject: "",
 					},
 				],
 			},
