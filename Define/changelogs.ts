@@ -55,7 +55,7 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "Dapper 2.1.79 -> 2.1.89",
+						subject: "",
 					},
 					{
 						revision: "",
@@ -76,11 +76,11 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "Dapper 2.1.79 -> 2.1.89",
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "xunit.v3.mtp-v2 4.0.1 -> 4.0.2",
 					},
 					{
 						revision: "",
