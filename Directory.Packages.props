@@ -19,7 +19,7 @@
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.13" />
     <PackageVersion Include="Microsoft.Web.WebView2" Version="1.0.4314.35" />
     <PackageVersion Include="SevenZipExtractor" Version="1.0.19" />
-    <PackageVersion Include="System.DirectoryServices.AccountManagement" Version="10.0.12" />
+    <PackageVersion Include="System.DirectoryServices.AccountManagement" Version="10.0.13" />
     <PackageVersion Include="NLog.Extensions.Logging" Version="6.2.2" />
     <!-- TEST: 共通 -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />

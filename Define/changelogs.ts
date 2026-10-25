@@ -110,7 +110,8 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject:
+							"System.DirectoryServices.AccountManagement 10.0.12 -> 10.0.13",
 					},
 					{
 						revision: "",
