@@ -55,7 +55,7 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "Dapper 2.1.79 -> 2.1.89",
 					},
 					{
 						revision: "",
