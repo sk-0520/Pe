@@ -75,46 +75,46 @@ const Changelogs: ChangelogVersion[] = [
 				type: "developer",
 				logs: [
 					{
-						revision: "",
+						revision: "76a334aae90489731d662c9c61bfb61ec6253d47",
 						subject: "Dapper 2.1.79 -> 2.1.89",
 					},
 					{
-						revision: "",
+						revision: "b15376424886a03b1b2675aa9af5e698e1c9a516",
 						subject: "xunit.v3.mtp-v2 4.0.1 -> 4.0.2",
 					},
 					{
-						revision: "",
+						revision: "4688a5879dfb0c215ef1cf0c9b9464b213c3f3f4",
 						subject: "Xunit.StaFact 4.0.23 -> 4.0.24",
 					},
 					{
-						revision: "",
+						revision: "2feca37a8cc0f9b3b26ca5e9a1c3c9cdf4d5899e",
 						subject: "Microsoft.Extensions.* 10.10.0 -> 10.11.0",
 					},
 					{
-						revision: "",
+						revision: "912dbeeef1df454abce95abb685772471ad951d4",
 						subject: "Microsoft.NET.Test.Sdk 18.10.1 -> 18.11.0",
 					},
 					{
-						revision: "",
+						revision: "cdf25659c07f01884232cd17e74afa9d4f26b960",
 						subject:
 							"Microsoft.Testing.Extensions.CodeCoverage 18.11.2 -> 18.12.0",
 					},
 					{
-						revision: "",
+						revision: "6dc29b5b6e34ff84157f29cdcaab099ba19bfd18",
 						subject: "NLog.Extensions.Logging 6.2.0 -> 6.2.2",
 					},
 					{
-						revision: "",
+						revision: "6a2e233450f4f1c7cda72ce2da911bf79f71d2a4",
 						subject:
 							"Microsoft.Web.WebView2 1.0.4191.47 -> 1.0.4314.35",
 					},
 					{
-						revision: "",
+						revision: "5cc6427c4444ecffaccebe0f678f53948b0e495a",
 						subject:
 							"System.DirectoryServices.AccountManagement 10.0.12 -> 10.0.13",
 					},
 					{
-						revision: "",
+						revision: "965227b6eea17f655ef4fe92281ae7cb50e56a9b",
 						subject: "System.Management 10.0.12 -> 10.0.13",
 					},
 					{
