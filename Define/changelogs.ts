@@ -88,6 +88,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
+						subject: "Microsoft.Extensions.* 10.10.0 -> 10.11.0",
+					},
+					{
+						revision: "",
 						subject: "",
 					},
 				],
