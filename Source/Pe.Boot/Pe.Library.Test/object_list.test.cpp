@@ -12,6 +12,46 @@ namespace PeLibraryTest
     TEST_CLASS(object_list_test)
     {
     public:
+        TEST_METHOD(capacity_boundary_test)
+        {
+            for (size_t capacity : { (size_t)0, (size_t)1, (size_t)2 }) {
+                OBJECT_LIST list = new_object_list(sizeof(int), capacity, NULL, compare_object_list_value_null, release_object_list_value_null, DEFAULT_MEMORY_ARENA);
+                Assert::AreEqual(capacity, (size_t)list.library.capacity);
+
+                int values[] = { 10, 20, 30, 40 };
+                for (size_t i = 0; i < SIZEOF_ARRAY(values); i++) {
+                    Assert::IsNotNull(push_object_list(&list, &values[i]));
+                    Assert::AreEqual(i + 1, list.length);
+                    Assert::IsTrue(list.length <= list.library.capacity);
+                    if (i + 1 <= capacity) {
+                        Assert::AreEqual(capacity, (size_t)list.library.capacity);
+                    }
+                    for (size_t j = 0; j <= i; j++) {
+                        OBJECT_RESULT_VALUE result = get_object_list(&list, j);
+                        Assert::IsTrue(result.exists);
+                        Assert::AreEqual(values[j], *(int*)result.value);
+                    }
+                }
+                Assert::IsTrue(release_object_list(&list, true));
+            }
+        }
+
+        TEST_METHOD(capacity_range_test)
+        {
+            OBJECT_LIST list = new_object_list(sizeof(uint64_t), 1, NULL, compare_object_list_value_null, release_object_list_value_null, DEFAULT_MEMORY_ARENA);
+            uint64_t first = 100;
+            uint64_t more[] = { 200, 300, 400 };
+            Assert::IsNotNull(push_object_list(&list, &first));
+            Assert::IsTrue(add_range_object_list(&list, more, SIZEOF_ARRAY(more)));
+            Assert::AreEqual((size_t)4, list.length);
+            Assert::IsTrue(list.length <= list.library.capacity);
+            Assert::AreEqual(first, *(uint64_t*)get_object_list(&list, 0).value);
+            for (size_t i = 0; i < SIZEOF_ARRAY(more); i++) {
+                Assert::AreEqual(more[i], *(uint64_t*)get_object_list(&list, i + 1).value);
+            }
+            Assert::IsTrue(release_object_list(&list, true));
+        }
+
         TEST_METHOD(life_int_test)
         {
             OBJECT_LIST list = new_object_list(sizeof(int), OBJECT_LIST_DEFAULT_CAPACITY_COUNT, NULL, compare_object_list_value_null, release_object_list_value_null, DEFAULT_MEMORY_ARENA);

@@ -40,7 +40,7 @@ OBJECT_LIST RC_HEAP_FUNC(new_object_list, byte_t item_size, size_t capacity_coun
         .library = {
             .memory_arena_resource = memory_arena_resource,
             .item_size = item_size,
-            .capacity = capacity_count + item_size,
+            .capacity = capacity_count,
             .compare_object_list_value = compare_object_list_value,
             .release_object_list_value = release_object_list_value
     },
@@ -193,4 +193,3 @@ void clear_object_list(OBJECT_LIST* object_list, bool value_release)
 
     object_list->length = 0;
 }
-

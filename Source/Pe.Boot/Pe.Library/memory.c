@@ -190,7 +190,7 @@ byte_t library_extend_capacity_if_not_enough_bytes(void** target, byte_t current
     void* new_buffer = allocate_raw_memory(new_capacity_bytes, false, memory_arena_resource);
     void* old_buffer = *target;
 
-    copy_memory(new_buffer, old_buffer, new_capacity_bytes);
+    copy_memory(new_buffer, old_buffer, current_capacity_bytes);
     release_memory(old_buffer, memory_arena_resource);
 
     *target = new_buffer;

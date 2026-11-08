@@ -29,6 +29,9 @@ typedef struct tag_FILE_READER
 typedef enum tag_FILE_WRITER_OPTIONS
 {
     FILE_WRITER_OPTIONS_NONE = 0x00000000,
+    /// <summary>
+    /// 対応するエンコーディングで、空のファイルに BOM を書き込む。
+    /// </summary>
     FILE_WRITER_OPTIONS_BOM = 0x00000001,
 } FILE_WRITER_OPTIONS;
 

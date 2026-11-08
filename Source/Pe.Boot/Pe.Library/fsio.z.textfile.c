@@ -5,7 +5,7 @@
 
 
 static const uint8_t library_unicode_utf8_bom[] = { 0xef, 0xbb, 0xbf };
-static const uint8_t library_unicode_utf16le_bom[] = { 0xff, 0xef };
+static const uint8_t library_unicode_utf16le_bom[] = { 0xff, 0xfe };
 
 static void write_bom_if_unicode(const FILE_RESOURCE* file_resource, FILE_ENCODING encoding)
 {
@@ -188,8 +188,13 @@ FILE_WRITER RC_FILE_FUNC(new_file_writer, const TEXT* path, FILE_ENCODING encodi
         case FILE_OPEN_MODE_OPEN_OR_CREATE:
         case FILE_OPEN_MODE_OPEN:
             if ((options & FILE_WRITER_OPTIONS_BOM) == FILE_WRITER_OPTIONS_BOM) {
-                DATA_INT64 pos = get_position_file_resource(&result.resource);
-                if (!pos.plain) {
+                DATA_INT64 size = get_size_file_resource(&result.resource);
+                if (size.plain < 0) {
+                    RC_FILE_CALL(release_file_resource, &result.resource);
+                    RC_HEAP_CALL(release_string_builder, &result.library.string_builder);
+                    return create_invalid_file_writer();
+                }
+                if (!size.plain) {
                     write_bom_if_unicode(&result.resource, result.library.encoding);
                 }
             }
@@ -338,4 +343,3 @@ void write_format_file_writer(FILE_WRITER* file_writer, const TEXT* format, ...)
 
     va_end(ap);
 }
-

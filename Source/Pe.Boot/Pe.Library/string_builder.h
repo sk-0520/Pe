@@ -63,10 +63,11 @@ TEXT RC_HEAP_FUNC(build_text_string_builder, const STRING_BUILDER* string_builde
 
 /// <summary>
 /// テキストを参照する。
-/// <para>参照テキスト使用中に元<c>STRING_BUILDER</c>を操作しない前提。</para>
+/// <para>文字列の末尾には終端の<c>0</c>があり、終端はテキストの長さに含まれない。</para>
+/// <para>参照テキスト使用中に元<c>STRING_BUILDER</c>を操作・解放しない前提。</para>
 /// </summary>
 /// <param name="string_builder"></param>
-/// <returns>参照テキスト。</returns>
+/// <returns>参照テキスト。解放不要。</returns>
 TEXT reference_text_string_builder(STRING_BUILDER* string_builder);
 
 STRING_BUILDER* clear_builder(STRING_BUILDER* string_builder);

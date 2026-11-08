@@ -56,7 +56,7 @@ Pe は Windows 10 以上で動作するデスクトップユーティリティ�
 
 1. リポジトリルートへ移動
 1. テスト実行  
-   `PS1> .\Build\local-main-test-.ps1 -Project Pe.Main.Test`
+   `PS1> .\Build\local-main-test.ps1 -Project Pe.Main.Test`
    * `Source\Pe` 内の `*.Test` プロジェクトを指定
    * 複数指定は `,` を使用する
    * 全て指定する場合は `*` を使用する
