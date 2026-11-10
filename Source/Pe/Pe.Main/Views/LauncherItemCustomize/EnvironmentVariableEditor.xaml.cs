@@ -8,10 +8,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Main.Models;
 using ContentTypeTextNet.Pe.Main.Models.Element.LauncherItemCustomize;
-using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.CodeCompletion;
 using ICSharpCode.AvalonEdit.Document;
-using ICSharpCode.AvalonEdit.Editing;
 
 namespace ContentTypeTextNet.Pe.Main.Views.LauncherItemCustomize
 {
@@ -176,6 +174,33 @@ namespace ContentTypeTextNet.Pe.Main.Views.LauncherItemCustomize
 
         void RemoveErrorItemsSourceValueINotifyCollectionChanged_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         { }
+
+        #endregion
+
+        #region IsUsed
+
+        public static readonly DependencyProperty IsUsedProperty = DependencyProperty.Register(
+            nameof(IsUsed),
+            typeof(bool),
+            typeof(EnvironmentVariableEditor),
+            new PropertyMetadata(
+                true,
+                OnIsUsedChanged
+            )
+        );
+
+        public bool IsUsed
+        {
+            get { return (bool)GetValue(IsUsedProperty); }
+            set { SetValue(IsUsedProperty, value); }
+        }
+
+        private static void OnIsUsedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if(d is EnvironmentVariableEditor control) {
+                control.IsUsed = (bool)e.NewValue;
+            }
+        }
 
         #endregion
 
