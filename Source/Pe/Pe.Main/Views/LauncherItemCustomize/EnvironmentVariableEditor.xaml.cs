@@ -183,8 +183,9 @@ namespace ContentTypeTextNet.Pe.Main.Views.LauncherItemCustomize
             nameof(IsUsed),
             typeof(bool),
             typeof(EnvironmentVariableEditor),
-            new PropertyMetadata(
+            new FrameworkPropertyMetadata(
                 true,
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 OnIsUsedChanged
             )
         );

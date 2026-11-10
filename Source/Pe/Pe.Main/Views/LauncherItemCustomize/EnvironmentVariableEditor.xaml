@@ -26,6 +26,20 @@
         </Setter.Value>
       </Setter>
     </Style>
+
+    <Style x:Key="EnvironmentVariableTextEditor" TargetType="sharpdevelop_avalonedit:TextEditor" BasedOn="{StaticResource SettingEditor}">
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding IsUsed, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="False">
+          <Setter Property="Background">
+            <Setter.Value>
+              <SolidColorBrush>AliceBlue</SolidColorBrush>
+            </Setter.Value>
+          </Setter>
+        </DataTrigger>
+      </Style.Triggers>
+
+      <Setter Property="Background" Value="DeepPink" />
+    </Style>
   </UserControl.Resources>
 
   <Grid>
@@ -41,13 +55,13 @@
     </Grid.ColumnDefinitions>
 
     <Label Grid.Row="0" Grid.Column="0" Target="{Binding ElementName=envMergeEditor}" Content="{Binding Resources.String_EnvironmentVariableEditor_Merge_A, Source={x:Static app_main:CultureService.Instance}}"  />
-    <sharpdevelop_avalonedit:TextEditor Grid.Row="1" Grid.Column="0" x:Name="envMergeEditor" Style="{StaticResource SettingEditor}" Document="{Binding MergeTextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}" Loaded="EnvMergeEditor_Loaded" />
+    <sharpdevelop_avalonedit:TextEditor Grid.Row="1" Grid.Column="0" x:Name="envMergeEditor" Style="{StaticResource EnvironmentVariableTextEditor}" Document="{Binding MergeTextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}" Loaded="EnvMergeEditor_Loaded" />
     <ItemsControl Grid.Row="2" Grid.Column="0" Style="{StaticResource ErrorMessages}" ItemsSource="{Binding MergeErrorItemsSource, RelativeSource={RelativeSource AncestorType=UserControl}}" />
 
     <Separator Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" Style="{StaticResource Normal-Indent}" />
 
     <Label Grid.Row="0" Grid.Column="2" Target="{Binding ElementName=envRemoveEditor}" Content="{Binding Resources.String_EnvironmentVariableEditor_Remove_A, Source={x:Static app_main:CultureService.Instance}}" />
-    <sharpdevelop_avalonedit:TextEditor x:Name="envRemoveEditor" Grid.Row="1" Grid.Column="2" Style="{StaticResource SettingEditor}" Document="{Binding RemoveTextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}" Loaded="EnvRemoveEditor_Loaded" KeyDown="envRemoveEditor_KeyDown" Initialized="envRemoveEditor_Initialized" />
+    <sharpdevelop_avalonedit:TextEditor x:Name="envRemoveEditor" Grid.Row="1" Grid.Column="2" Style="{StaticResource EnvironmentVariableTextEditor}" Document="{Binding RemoveTextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}" Loaded="EnvRemoveEditor_Loaded" KeyDown="envRemoveEditor_KeyDown" Initialized="envRemoveEditor_Initialized" />
     <ItemsControl Grid.Row="2" Grid.Column="2" Style="{StaticResource ErrorMessages}" ItemsSource="{Binding RemoveErrorItemsSource, RelativeSource={RelativeSource AncestorType=UserControl}}" />
   </Grid>
 </UserControl>
