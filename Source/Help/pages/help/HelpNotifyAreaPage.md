@@ -7,5 +7,5 @@
 <MdAlert kind="CAUTION">
   右クリックが死ぬのです。再現できなくてつらい。
 
-  [通知領域右クリックが死んでるときがある。](https://github.com/sk-0520/Pe/issues/530)
+[通知領域右クリックが死んでるときがある。](https://github.com/sk-0520/Pe/issues/530)
 </MdAlert>

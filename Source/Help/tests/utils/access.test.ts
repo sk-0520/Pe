@@ -49,7 +49,7 @@ describe("getElement:Map", () => {
 		});
 	});
 
-	describe("normal", () => {
+	describe("normal-throws", () => {
 		test("editable", () => {
 			expect(() => getElement(commonInput1, "d")).toThrow(
 				new OutOfRangeError("key = d"),
@@ -75,7 +75,7 @@ describe("getElement:Map", () => {
 				new OutOfRangeError("key = b"),
 			);
 		});
-		test("editable", () => {
+		test("editable2", () => {
 			expect(() => getElement(input2, "b")).toThrow(
 				new OutOfRangeError("key = b"),
 			);

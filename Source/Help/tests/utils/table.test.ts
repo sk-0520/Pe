@@ -97,25 +97,25 @@ describe("convertColumns", () => {
 		expect(() => convertColumns(["", ""])).toThrow("table markdown");
 	});
 
-	test("header short", () => {
+	test("header short: column", () => {
 		expect(() => convertColumns(["0|1|2|3|4|5|6", "", ""])).toThrow(
 			"column length",
 		);
 	});
 
-	test("header long", () => {
+	test("header long: column", () => {
 		expect(() => convertColumns(["0|1|2|3|4|5|6|*|8", "", ""])).toThrow(
 			"column length",
 		);
 	});
 
-	test("header short", () => {
+	test("header short: data", () => {
 		expect(() =>
 			convertColumns(["0|1|2|3|4|5|6|7", "", "0|1|2|3|4|5|6"]),
 		).toThrow("data length");
 	});
 
-	test("header long", () => {
+	test("header long: data", () => {
 		expect(() =>
 			convertColumns(["0|1|2|3|4|5|6|7", "", "0|1|2|3|4|5|6|*|7"]),
 		).toThrow("data length");
@@ -220,23 +220,23 @@ describe("convertIndexes", () => {
 		expect(() => convertIndexes(["", ""])).toThrow("table markdown");
 	});
 
-	test("header short", () => {
+	test("header short: column", () => {
 		expect(() => convertIndexes(["0|1", "", ""])).toThrow("column length");
 	});
 
-	test("header long", () => {
+	test("header long: column", () => {
 		expect(() => convertIndexes(["0|1|*|3", "", ""])).toThrow(
 			"column length",
 		);
 	});
 
-	test("header short", () => {
+	test("header short: data", () => {
 		expect(() => convertIndexes(["0|1|2", "", "0|1"])).toThrow(
 			"data length",
 		);
 	});
 
-	test("header long", () => {
+	test("header long: data", () => {
 		expect(() => convertIndexes(["0|1|2", "", "0|1|*|3"])).toThrow(
 			"data length",
 		);

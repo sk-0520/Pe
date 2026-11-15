@@ -11,13 +11,13 @@
 <dl>
   <dt><MdPath>Build\build-project.ps1</MdPath></dt>
   <dd>プロジェクトのビルド処理</dd>
-  
+
   <dt><MdPath>Build\archive-plugin.ps1</MdPath></dt>
   <dd>ビルドされたプラグインを圧縮</dd>
-  
+
   <dt><MdPath>Build\create-info.ps1</MdPath></dt>
   <dd>アーカイブをもとにプラグイン情報を生成</dd>
-  
+
   <dt><MdPath>FullBuild.ps1</MdPath></dt>
   <dd>Buildディレクトリ内スクリプトを使用したビルド一括処理</dd>
 </dl>
@@ -31,10 +31,10 @@
 <dl>
   <dt><MdInline kind="variable">$minimumVersion</MdInline></dt>
   <dd>実行可能 Pe 最低バージョン</dd>
-  
+
   <dt><MdInline kind="variable">$archiveBaseUrl</MdInline></dt>
   <dd>配布アーカイブURL<br />`@ARCHIVENAME@` がアーカイブ名に置き換えられる</dd>
-  
+
   <dt><MdInline  kind="variable">$releaseNoteUrl</MdInline></dt>
   <dd>いらんねんこれ<br />`@VERSION@` がバージョン値に置き換えられる</dd>
 </dl>

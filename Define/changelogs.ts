@@ -76,7 +76,7 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "放置していた NPM 周りを更新",
 					},
 					{
 						revision: "",
