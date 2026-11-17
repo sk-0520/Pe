@@ -10,7 +10,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt.Value.Spe
 
         #region property
 
-        public static ErrorLevel Instance => new ErrorLevel();
+        public static ErrorLevel Instance => field ??= new ErrorLevel();
 
         #endregion
     }

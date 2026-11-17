@@ -1,6 +1,5 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -159,7 +158,7 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.LauncherItem
 
             var keys = KeyGestureGuide.GetLauncherItemKeys(LauncherItemId);
             ExecuteKeyGestures = new ObservableCollection<string>(keys);
-            HasExecuteKeyGestures = ExecuteKeyGestures.Any();
+            HasExecuteKeyGestures = ExecuteKeyGestures.Count != 0;
 
             RaisePropertyChanged(nameof(HasExecuteKeyGestures));
             RaisePropertyChanged(nameof(ExecuteKeyGestures));

@@ -46,11 +46,14 @@ describe("buildCell", () => {
 		["あ  ", 4, "あ", "left" as TableColumnAlign],
 		[" あ ", 4, "あ", "center" as TableColumnAlign],
 		["  あ", 4, "あ", "right" as TableColumnAlign],
-	])("each 期待値: [%s], maxWidth: [%d], value: [%s], align: [%s]", (expected: string, maxWidth: number, value: string, align:
-		| TableColumnAlign
-		| undefined) => {
-		expect(buildCell(maxWidth, value, align)).toBe(expected);
-	});
+	])(
+		"each 期待値: [%s], maxWidth: [%d], value: [%s], align: [%s]",
+		(expected: string, maxWidth: number, value: string, align:
+			| TableColumnAlign
+			| undefined) => {
+			expect(buildCell(maxWidth, value, align)).toBe(expected);
+		},
+	);
 });
 
 describe("buildTable", () => {
@@ -165,7 +168,10 @@ describe("buildTable", () => {
 				["", "🐎🦌"],
 			],
 		],
-	])("each 期待値: [%s]", (expected: string, columns: TableColumn[], rows: string[][]) => {
-		expect(buildTable(columns, rows)).toBe(expected);
-	});
+	])(
+		"each 期待値: [%s]",
+		(expected: string, columns: TableColumn[], rows: string[][]) => {
+			expect(buildTable(columns, rows)).toBe(expected);
+		},
+	);
 });

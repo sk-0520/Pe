@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using ContentTypeTextNet.Pe.Core.Models.Shell.Value;
 using ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt.Value.Special;
@@ -50,7 +49,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell.Vendor.CommandPrompt.Command
                 sb.Append(command.GetStatement());
                 sb.Append(newLine);
             }
-            if(FalseBlock.Any()) {
+            if(FalseBlock.Count != 0) {
                 sb.Append(") ");
 
                 sb.Append(GetStatementCommandName(ElseName));

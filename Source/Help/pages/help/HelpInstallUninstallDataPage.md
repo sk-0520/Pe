@@ -24,10 +24,10 @@ Pe の配置されているディレクトリをそのまま削除すればア�
 <MdAlert kind="NOTE">
   0.83.0 からバージョンアップした場合、以下のレジストリに PeMain.exe が残っている可能性があります。
 
-  * `HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION`
-  * `HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_DOCUMENT_COMPATIBLE_MODE`
+- `HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION`
+- `HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_DOCUMENT_COMPATIBLE_MODE`
 
-  実稼働に影響はありませんが、気になる場合は削除しても問題ありません。
+実稼働に影響はありませんが、気になる場合は削除しても問題ありません。
 </MdAlert>
 
 # 保存データ
@@ -38,26 +38,24 @@ Pe の配置されているディレクトリをそのまま削除すればア�
 
 設定データは大まかに 3 種類あります。
 
-* ユーザーデータ  
+- ユーザーデータ  
   基本的な設定データが格納され、バックアップ対象にもなります。
-* 端末データ  
+- 端末データ  
   大きなデータやバックアップしなくても問題ないデータで、起動時に存在しなくても問題ない扱いです。
-* 一時データ  
+- 一時データ  
   一時的な使用を目的としたものでバックアップしなくても問題ないデータで、起動時に存在しなくても問題ない扱いです。
-
 
 通知領域(タスクトレイ)の Pe アイコンを右クリックし、コンテキストメニューから <MdBreadcrumbs kind="ui" items="情報 / バージョン情報" /> を選択して <MdInline kind="ui">ユーザーデータ</MdInline> <MdInline kind="ui">端末データ</MdInline> <MdInline kind="ui">一時データ</MdInline> ボタンを押下すると設定データが格納されたディレクトリがエクスプローラで開きます。
 
 通常使用なら設定ファイルやアップデート用アーカイブ等はすべてこのディレクトリに格納されるため完全に消してしまいたい場合はこのディレクトリを Pe 終了後に削除してください。
 
-
 各種保存パスは明示的に指定しない場合以下の通りになります(エクスプローラのアドレス欄に張り付けることで実パスに変換されます)。
 
-| データ種別 | パス |
-|---|---|
+| データ種別     | パス                                   |
+| -------------- | -------------------------------------- |
 | ユーザーデータ | <MdPath>%APPDATA%\Pe\settings</MdPath> |
-| 端末データ | <MdPath>%APPDATA%\Pe\settings</MdPath> |
-| 一時データ | <MdPath>%TEMP%\Pe</MdPath> |
+| 端末データ     | <MdPath>%APPDATA%\Pe\settings</MdPath> |
+| 一時データ     | <MdPath>%TEMP%\Pe</MdPath>             |
 
 <MdAlert kind="IMPORTANT">
   Pe 格納ディレクトリを移動する場合、スタートアップに登録している場合はディレクトリ移動前に登録を解除してください。

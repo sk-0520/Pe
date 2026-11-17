@@ -55,14 +55,15 @@ TEXT RC_HEAP_FUNC(build_text_string_builder, const STRING_BUILDER* string_builde
 
 TEXT reference_text_string_builder(STRING_BUILDER* string_builder)
 {
-    TCHAR* buffer;
-    if (string_builder->library.list.length < string_builder->library.list.library.capacity_bytes * sizeof(TCHAR)) {
-        buffer = reference_list_tchar(&string_builder->library.list);
-        buffer[string_builder->library.list.length] = 0;
-    } else {
-        append_builder_character(string_builder, _T('0'), false);
-        buffer = reference_list_tchar(&string_builder->library.list);
+    if (string_builder->library.list.length >= string_builder->library.list.library.capacity_bytes / sizeof(TCHAR)) {
+        if (!push_list_tchar(&string_builder->library.list, 0)) {
+            return create_invalid_text();
+        }
+        string_builder->library.list.length -= 1;
     }
+
+    TCHAR* buffer = reference_list_tchar(&string_builder->library.list);
+    buffer[string_builder->library.list.length] = 0;
     return wrap_text_with_length(buffer, string_builder->library.list.length, false, NULL);
 }
 

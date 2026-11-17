@@ -73,7 +73,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
         private async Task<ICommandItem?> GetHitItemAsync(CommandItemKind kind, LauncherItemElement element, string targetValue, string targetLogName, string input, Regex inputRegex, IHitValuesCreator hitValuesCreator, CancellationToken cancellationToken)
         {
             var nameMatches = hitValuesCreator.GetMatches(targetValue, inputRegex);
-            if(nameMatches.Any()) {
+            if(nameMatches.Count != 0) {
                 Logger.LogTrace("ランチャー: {LogName}, {Target}, {LauncherItemId}", targetLogName, targetValue, element.LauncherItemId);
                 var result = new LauncherCommandItemElement(element, ContextDispatcher, LoggerFactory) {
                     EditableKind = kind,

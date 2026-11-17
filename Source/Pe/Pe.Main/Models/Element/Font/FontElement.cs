@@ -2,15 +2,14 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
+using ContentTypeTextNet.Pe.Library.Database;
 using ContentTypeTextNet.Pe.Main.Models.Applications;
+using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 using ContentTypeTextNet.Pe.Main.Models.Data;
 using ContentTypeTextNet.Pe.Main.Models.Database.Dao.Entity;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
-using ContentTypeTextNet.Pe.Library.Common;
-using ContentTypeTextNet.Pe.Library.Database;
 using Microsoft.Extensions.Logging;
-using ContentTypeTextNet.Pe.Main.Models.Applications.Database;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Element.Font
 {
@@ -62,7 +61,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Font
             set => SetProperty(ref this._size, value);
         }
 
-        public FontData FontData => new FontData() {
+        #endregion
+
+        #region function
+
+        public FontData ToFontData() => new FontData() {
             FamilyName = FamilyName,
             Size = Size,
             IsBold = IsBold,
@@ -70,22 +73,6 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Font
             IsUnderline = false,
             IsStrikeThrough = false,
         };
-
-
-        #endregion
-
-        #region function
-
-        protected virtual FontData GetFontData()
-        {
-            ThrowIfDisposed();
-
-            using(var context = MainDatabaseBarrier.WaitRead()) {
-                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
-                var dao = daoFactory.Create<FontsEntityDao>();
-                return dao.SelectFont(FontId);
-            }
-        }
 
         private void LoadFont()
         {
@@ -100,8 +87,18 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Font
             IsItalic = data.IsItalic;
         }
 
-        #endregion
+        protected virtual FontData GetFontData()
+        {
+            ThrowIfDisposed();
 
+            using(var context = MainDatabaseBarrier.WaitRead()) {
+                var daoFactory = new AppDaoFactory(context, DatabaseStatementLoader, LoggerFactory);
+                var dao = daoFactory.Create<FontsEntityDao>();
+                return dao.SelectFont(FontId);
+            }
+        }
+
+        #endregion
 
         #region ElementBase
 

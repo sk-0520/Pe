@@ -15,9 +15,8 @@ CI/CD の一括処理試験は ci-test ブランチにて実施すること(Pe �
 <MdAlert kind="WARNING">
   特に設定なしって書いてるけど書き込み権限が必要
 
-  将来的に何とかする
+将来的に何とかする
 </MdAlert>
-
 
 # GitHub での CI 試験
 

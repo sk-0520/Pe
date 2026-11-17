@@ -300,6 +300,7 @@ typedef struct
 {
     size_t length;
     size_t* index;
+    bool* should_continue;
     const void* arg;
     func_foreach_map func;
 } FOREACH_MAP_DATA;
@@ -309,26 +310,28 @@ static bool foreach_map_core(const void* value, size_t index, size_t length, voi
     const FOREACH_MAP_DATA* foreach_arg = arg;
     const KEY_VALUE_PAIR* pair = (const KEY_VALUE_PAIR*)value;
 
-    foreach_arg->func(pair, *foreach_arg->index, foreach_arg->length, foreach_arg->arg);
-
+    *foreach_arg->should_continue = foreach_arg->func(pair, *foreach_arg->index, foreach_arg->length, foreach_arg->arg);
     *foreach_arg->index += 1;
 
-    return true;
+    return *foreach_arg->should_continue;
 }
 
-void foreach_map(const MAP* map, func_foreach_map func, const void* arg)
+void foreach_map(const MAP* map, func_foreach_map func, void* arg)
 {
     size_t length = map->length;
     size_t index = 0;
+    bool should_continue = true;
 
     FOREACH_MAP_DATA data = {
         .arg = arg,
         .index = &index,
+        .should_continue = &should_continue,
         .length = length,
         .func = func,
     };
 
-    for (size_t i = 0; i < length; i++) {
+    size_t capacity = get_capacity(map);
+    for (size_t i = 0; i < capacity && should_continue; i++) {
         const LINKED_LIST* linked_list = map->library.items + i;
         foreach_linked_list(linked_list, foreach_map_core, &data);
     }

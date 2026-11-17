@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
-using ContentTypeTextNet.Pe.Core.Models;
 using ContentTypeTextNet.Pe.Main.ViewModels.Setting;
 using Microsoft.Extensions.Logging.Abstractions;
 using Prism.Commands;
@@ -74,7 +73,7 @@ namespace ContentTypeTextNet.Pe.Main.Views.Setting
         private ICommand? _DisplayAllScreensCommand;
         public ICommand DisplayAllScreensCommand => this._DisplayAllScreensCommand ??= new DelegateCommand(
             () => {
-                if(ScreenWindows.Any()) {
+                if(ScreenWindows.Count != 0) {
                     CloseWindows();
                 }
 

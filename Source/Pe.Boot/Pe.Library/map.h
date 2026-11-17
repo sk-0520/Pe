@@ -114,7 +114,7 @@ typedef struct tag_MAP
 /// <param name="index">現在処理数。</param>
 /// <param name="length">最大件数。</param>
 /// <param name="arg">ご自由にどうぞ。</param>
-/// <returns>継続状態。</returns>
+/// <returns>列挙を継続する場合は<c>true</c>、中断する場合は<c>false</c>。</returns>
 typedef bool (*func_foreach_map)(const KEY_VALUE_PAIR* pair, size_t index, size_t length, const void* arg);
 
 size_t calc_map_hash_default(const TEXT* key);
@@ -200,10 +200,11 @@ bool RC_HEAP_FUNC(remove_map, MAP* map, const TEXT* key);
 #endif
 
 /// <summary>
-/// ぐるんぐるん回す
+/// マップの全要素を列挙する。列挙順は保証されない。
+/// <para>コールバックが<c>false</c>を返した場合、列挙を中断する。</para>
+/// <para>列挙中にマップを変更・解放してはならない。</para>
 /// </summary>
 /// <param name="map"></param>
 /// <param name="func"></param>
 /// <param name="arg"></param>
 void foreach_map(const MAP* map, func_foreach_map func, void* arg);
-

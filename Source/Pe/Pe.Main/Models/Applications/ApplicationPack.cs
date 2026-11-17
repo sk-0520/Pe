@@ -78,11 +78,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
         [NotNull]
         TInterface IApplicationPack<TInterface>.Temporary => Temporary;
 
-        public IReadOnlyList<TObject> Items => new[] {
+        public IReadOnlyList<TObject> Items => [
             Main,
             Large,
             Temporary,
-        };
+        ];
         IReadOnlyList<TInterface> IApplicationPack<TInterface>.Items => (IReadOnlyList<TInterface>)Items; // あっれぇ
 
         public TObject this[Pack index] => Items[(int)index];

@@ -174,7 +174,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Logic
                             }
                         }
                     }
-                    if(parsedResult.Unknowns.Any()) {
+                    if(parsedResult.Unknowns.Count != 0) {
                         startupParameter.Argument = string.Join(" ", parsedResult.Unknowns.OrderBy(a => a.Key).Select(a => a.Value));
                     }
                 }

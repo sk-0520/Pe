@@ -5,6 +5,9 @@ on: push
 permissions:
   contents: write
 
+env:
+  DOTNET_VERSION: 11.0.x
+
 jobs:
   build:
 
@@ -16,10 +19,15 @@ jobs:
         with:
           submodules: true
 
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v3
         with:
-          msbuild-architecture: x64
+          msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Embedded> git revision
         shell: pwsh
@@ -55,10 +63,15 @@ jobs:
         with:
           submodules: true
 
+      - name: <Setup> .NET ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
       - name: <Add> msbuild to PATH
         uses: microsoft/setup-msbuild@v3
         with:
-          msbuild-architecture: x64
+          msbuild-architecture: ${{ matrix.PLATFORM }}
 
       - name: <Setup> .NET x86 runtime/SDK
         if: matrix.PLATFORM == 'x86'
@@ -67,8 +80,9 @@ jobs:
           $installScript = Join-Path $env:RUNNER_TEMP 'dotnet-install.ps1'
           Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -OutFile $installScript
 
+          $channel = '${{ env.DOTNET_VERSION }}' -replace '\.x$',''
           $x86Root = Join-Path $env:RUNNER_TEMP 'dotnet-x86'
-          & $installScript -Channel '10.0' -Architecture 'x86' -InstallDir $x86Root
+          & $installScript -Channel $channel -Architecture 'x86' -InstallDir $x86Root
 
           "DOTNET_ROOT_X86=$x86Root" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           "DOTNET_ROOT=$x86Root"     | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append

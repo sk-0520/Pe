@@ -61,7 +61,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
 
             var daoFactory = new AppDaoFactory(commandPack.Main, DatabaseStatementLoader, LoggerFactory);
             var fontsEntityDao = daoFactory.Create<FontsEntityDao>();
-            fontsEntityDao.UpdateFont(Font.FontId, Font.FontData, commandPack.CommonStatus);
+            fontsEntityDao.UpdateFont(Font.FontId, Font.ToFontData(), commandPack.CommonStatus);
 
             var defaultLauncherGroupId = LauncherGroupId;
             if(defaultLauncherGroupId != LauncherGroupId.Empty) {

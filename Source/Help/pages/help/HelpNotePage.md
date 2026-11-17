@@ -19,7 +19,7 @@
 <dl>
   <dt>絶対座標</dt>
   <dd>位置・サイズが絶対値として扱われます。通常のウィンドウみたいなイメージです。</dd>
-  
+
   <dt>相対座標</dt>
   <dd>位置・サイズが相対値として扱われます。ディスプレイのサイズ変更時にもある程度レイアウトを維持したままになります。</dd>
 </dl>
@@ -116,6 +116,6 @@
 
 抑止方法自体は <MdLink page="help.others_appsettings" /> で設定します。
 
-* キー項目: `$.note.exclude_screen_capture_monitor_only`
-  * `true`: https://learn.microsoft.com/ja-jp/windows/win32/api/winuser/nf-winuser-setwindowdisplayaffinity#:~:text=WDA%5FMONITOR
-  * `false`: https://learn.microsoft.com/ja-jp/windows/win32/api/winuser/nf-winuser-setwindowdisplayaffinity#:~:text=WDA%5FEXCLUDEFROMCAPTURE
+- キー項目: `$.note.exclude_screen_capture_monitor_only`
+  - `true`: https://learn.microsoft.com/ja-jp/windows/win32/api/winuser/nf-winuser-setwindowdisplayaffinity#:~:text=WDA%5FMONITOR
+  - `false`: https://learn.microsoft.com/ja-jp/windows/win32/api/winuser/nf-winuser-setwindowdisplayaffinity#:~:text=WDA%5FEXCLUDEFROMCAPTURE

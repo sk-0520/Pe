@@ -98,7 +98,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.NotifyLog
             return new ActionDisposer(d => {
                 NowSilent = false;
 
-                if(TopmostNotifyLogs.Any() || StreamNotifyLogs.Any()) {
+                if(TopmostNotifyLogs.Count != 0 || StreamNotifyLogs.Count != 0) {
                     StartView();
                 }
             });

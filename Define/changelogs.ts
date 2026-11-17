@@ -5,6 +5,43 @@ import ArchiveChangelogs from "./changelogs-archive";
 
 const Changelogs: ChangelogVersion[] = [
 	{
+		date: "2026/11/17",
+		version: "0.99.274",
+		group: ".NET 11",
+		contents: [
+			{
+				type: "note",
+				logs: [
+					{
+						class: "compatibility",
+						subject: "本バージョンから .NET 11 で稼働します",
+						comments: [
+							"多分大丈夫だと思うけど一応互換性注意(.NET 10 移行時と同じ)",
+							"色々しんどいので一旦リリース",
+						],
+					},
+				],
+			},
+			{
+				type: "developer",
+				logs: [
+					{
+						revision: "747a9be7b3d12f7d00e3319e157500bfee903be0",
+						subject: "放置していた NPM 周りを更新",
+					},
+					{
+						revision: "29889cd12b53c6df762ebb786f16d510ff469615",
+						subject: "#1101: .NET 11 へ移行",
+						comments: [
+							"依存ライブラリも一括で変更, それが .NET 11 に関係なくても対応",
+							"プラグインテンプレートは死んでるけど一旦はこれで進める。単純につらい",
+						],
+					},
+				],
+			},
+		],
+	},
+	{
 		date: "2026/10/25",
 		version: "0.99.273",
 		contents: [

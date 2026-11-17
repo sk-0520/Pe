@@ -12,14 +12,14 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell.Redirect
         /// <summary>
         /// 空リダイレクト。
         /// </summary>
-        public virtual OutputRedirect Null => new OutputRedirect() {
+        public virtual OutputRedirect Null => field ??= new OutputRedirect() {
             Target = "/dev/null",
         };
 
         /// <summary>
         /// 空リダイレクト(エラー付き)。
         /// </summary>
-        public virtual OutputRedirect NullWithError => new OutputRedirect() {
+        public virtual OutputRedirect NullWithError => field ??= new OutputRedirect() {
             Target = "/dev/null",
             Error = new ErrorRedirect() {
                 StandardOutput = true,

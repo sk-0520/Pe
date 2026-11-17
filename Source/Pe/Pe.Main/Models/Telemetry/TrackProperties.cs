@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -13,6 +14,39 @@ namespace ContentTypeTextNet.Pe.Main.Models.Telemetry
     [SuppressMessage("Naming", "CA1710:識別子は、正しいサフィックスを含んでいなければなりません", Justification = "OK")]
     public class TrackProperties: IDictionary<string, string>, IReadOnlyDictionary<string, string>
     {
+        #region define
+
+        private class ReadOnlyTrackProperties: TrackProperties
+        {
+            #region TrackProperties
+
+            public static new TrackProperties Empty { get; } = new ReadOnlyTrackProperties();
+
+            public override void Add(string key, string value)
+            {
+                throw new NotSupportedException();
+            }
+
+            public override void Add(KeyValuePair<string, string> item)
+            {
+                throw new NotSupportedException();
+            }
+
+            override public bool Remove(string key)
+            {
+                throw new NotSupportedException();
+            }
+
+            public override bool Remove(KeyValuePair<string, string> item)
+            {
+                throw new NotSupportedException();
+            }
+
+            #endregion
+        }
+
+        #endregion
+
         public TrackProperties()
         { }
 
@@ -21,7 +55,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Telemetry
 
         #region property
 
-        public static TrackProperties Empty => new TrackProperties();
+        public static TrackProperties Empty => ReadOnlyTrackProperties.Empty;
 
         private IDictionary<string, string> Items { get; } = new Dictionary<string, string>();
 
@@ -74,12 +108,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Telemetry
 
         public bool IsReadOnly => Items.IsReadOnly;
 
-        public void Add(string key, string value)
+        public virtual void Add(string key, string value)
         {
             AddCore(key, value);
         }
 
-        public void Add(KeyValuePair<string, string> item)
+        public virtual void Add(KeyValuePair<string, string> item)
         {
             AddCore(item.Key, item.Value);
         }
@@ -109,12 +143,12 @@ namespace ContentTypeTextNet.Pe.Main.Models.Telemetry
             return Items.GetEnumerator();
         }
 
-        public bool Remove(string key)
+        public virtual bool Remove(string key)
         {
             return Items.Remove(key);
         }
 
-        public bool Remove(KeyValuePair<string, string> item)
+        public virtual bool Remove(KeyValuePair<string, string> item)
         {
             return Items.Remove(item);
         }

@@ -20,7 +20,6 @@
   [#581: 標準入出力をもうちょっとターミナル的な感じにしたい](https://github.com/sk-0520/Pe/issues/581)
 </MdAlert>
 
-
 ## 管理者実行
 
 ファイルを管理者権限で実行します。
@@ -79,11 +78,11 @@ UAC による権限昇格の通知が行われます。
 
 `,` と `-` を使用して複数値を指定できます。
 
-* <MdInline kind="sample">0</MdInline>  
+- <MdInline kind="sample">0</MdInline>  
   終了コード 0 は正常終了
-* <MdInline kind="sample">0,2,4</MdInline>  
+- <MdInline kind="sample">0,2,4</MdInline>  
   終了コード 0, 2, 4 は正常終了
-* <MdInline kind="sample">0-3</MdInline>  
+- <MdInline kind="sample">0-3</MdInline>  
   終了コード 0, 1, 2, 3 は正常終了
-* <MdInline kind="sample">1, 3-5</MdInline>  
+- <MdInline kind="sample">1, 3-5</MdInline>  
   終了コード 1, 3, 4, 5 は正常終了

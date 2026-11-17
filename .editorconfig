@@ -405,7 +405,7 @@ dotnet_diagnostic.CA1823.severity = silent
 dotnet_diagnostic.CA5394.severity = suggestion #TODO: 実装側は工夫しないとダメだわ
 dotnet_diagnostic.CA1054.severity = suggestion # くっそめんどい
 dotnet_diagnostic.CA1812.severity = silent
-
+dotnet_diagnostic.WFO2000.severity = silent #今の記述を変えるのは違う気がするし調べてもないので抑制
 
 # VC
 [*.{c,c++,cc,cpp,cppm,cxx,h,h++,hh,hpp,hxx,inl,ipp,ixx,tlh,tli}]

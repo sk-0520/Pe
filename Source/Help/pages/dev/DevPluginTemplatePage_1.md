@@ -26,7 +26,7 @@ Powershell で <MdPath>create-project.ps1</MdPath> を実行することでプ�
 <MdAlert kind="TIP">
   必要に応じてセキュリティ設定を一時的にファイル読み込み可能にする必要あり。
 
-  `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process`
+`Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process`
 </MdAlert>
 
 ## パラメータ生成

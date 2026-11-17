@@ -276,7 +276,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Command
 
             foreach(var parameter in Parameters) {
                 var parameterMatches = hitValuesCreator.GetMatches(parameter.Header, inputRegex);
-                if(parameterMatches.Any()) {
+                if(parameterMatches.Count != 0) {
                     var ranges = hitValuesCreator.ConvertRanges(parameterMatches);
                     var hitValue = hitValuesCreator.ConvertHitValues(parameter.Header, ranges);
 
