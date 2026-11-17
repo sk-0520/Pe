@@ -22,11 +22,11 @@ namespace ContentTypeTextNet.Pe.Core.Models
         /// <summary>
         /// BOMありUTF-8エンコーディング。
         /// </summary>
-        public static Encoding UTF8Bom => new UTF8Encoding(true);
+        public static Encoding UTF8Bom => field ??= new UTF8Encoding(true);
         /// <summary>
         /// BOMなしUTF-8エンコーディング。
         /// </summary>
-        public static Encoding UTF8N => new UTF8Encoding(false);
+        public static Encoding UTF8N => field ??= new UTF8Encoding(false);
 
         #endregion
 

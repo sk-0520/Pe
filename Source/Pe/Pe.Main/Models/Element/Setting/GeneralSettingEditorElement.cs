@@ -406,7 +406,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             appCommandSettingEntityDao.UpdateSettingCommandSetting(data, contextPack.CommonStatus);
 
             var fontsEntityDao = daoFactory.Create<FontsEntityDao>();
-            fontsEntityDao.UpdateFont(Font.FontId, Font.FontData, contextPack.CommonStatus);
+            fontsEntityDao.UpdateFont(Font.FontId, Font.ToFontData(), contextPack.CommonStatus);
 
         }
 
@@ -515,7 +515,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             appNoteHiddenSettingEntityDao.UpdateHiddenWaitTimes(WaitTimes, contextPack.CommonStatus);
 
             var fontsEntityDao = daoFactory.Create<FontsEntityDao>();
-            fontsEntityDao.UpdateFont(Font.FontId, Font.FontData, contextPack.CommonStatus);
+            fontsEntityDao.UpdateFont(Font.FontId, Font.ToFontData(), contextPack.CommonStatus);
         }
 
         protected override void Dispose(bool disposing)
@@ -590,7 +590,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Setting
             appStandardInputOutputSettingEntityDao.UpdateSettingStandardInputOutputSetting(data, contextPack.CommonStatus);
 
             var fontsEntityDao = daoFactory.Create<FontsEntityDao>();
-            fontsEntityDao.UpdateFont(Font.FontId, Font.FontData, contextPack.CommonStatus);
+            fontsEntityDao.UpdateFont(Font.FontId, Font.ToFontData(), contextPack.CommonStatus);
         }
 
         protected override void Dispose(bool disposing)

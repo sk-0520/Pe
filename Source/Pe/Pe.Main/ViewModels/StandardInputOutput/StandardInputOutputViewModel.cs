@@ -111,9 +111,9 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.StandardInputOutput
             set => SetProperty(ref this._inputValue, value);
         }
 
-        public Brush StandardOutputBackground => new SolidColorBrush(Model.OutputBackgroundColor);
-        public Brush StandardOutputForeground => new SolidColorBrush(Model.OutputForegroundColor);
-        public Brush StandardErrorForeground => new SolidColorBrush(Model.ErrorForegroundColor);
+        public Brush StandardOutputBackground => field ??= new SolidColorBrush(Model.OutputBackgroundColor);
+        public Brush StandardOutputForeground => field ??= new SolidColorBrush(Model.OutputForegroundColor);
+        public Brush StandardErrorForeground => field ??= new SolidColorBrush(Model.ErrorForegroundColor);
         private StandardOutputColorizingTransformer? StandardOutputColorizingTransformer { get; set; }
 
         #endregion

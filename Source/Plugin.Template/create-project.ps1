@@ -360,93 +360,93 @@ try {
 	Write-Verbose 'Peを追加'
 	$appDir = Join-Path -Path $parameters.source -ChildPath 'Pe' | Join-Path -ChildPath 'Source' | Join-Path -ChildPath 'Pe'
 	$items = @(
-		@{
-			project = 'Pe.Generator.Id'
-			directory = 'Pe\generator'
-		},
-		@{
-			project = 'Pe.Generator.Throws'
-			directory = 'Pe\generator'
-		},
-		@{
-			project = 'Pe.Bridge'
-			directory = 'Pe\bridge'
-		},
-		@{
-			project = 'Pe.Embedded'
-			directory = 'Pe\bridge'
-		},
-		@{
-			project = 'Pe.Library.CommandLine'
-			directory = 'Pe\lib\library'
-		},
-		@{
-			project = 'Pe.Library.Provider'
-			directory = 'Pe\lib\library'
-		},
-		@{
-			project = 'Pe.Library.Common'
-			directory = 'Pe\lib\library'
-		},
-		@{
-			project = 'Pe.Library.Property'
-			directory = 'Pe\lib\library'
-		},
-		@{
-			project = 'Pe.Library.Database'
-			directory = 'Pe\lib\library'
-		},
-		@{
-			project = 'Pe.Library.Database.Sqlite'
-			directory = 'Pe\lib\library'
-		},
-		@{
-			project = 'Pe.Library.DependencyInjection'
-			directory = 'Pe\lib\library'
-		},
-		@{
-			project = 'Pe.Mvvm'
-			directory = 'Pe\lib'
-		},
-		@{
-			project = 'Pe.PInvoke'
-			directory = 'Pe\lib'
-		},
-		@{
-			project = 'Pe.Core'
-			directory = 'Pe\lib'
-		},
-		@{
-			project = 'Pe.Plugins.DefaultTheme'
-			directory = 'Pe\lib\plugins'
-		},
-		@{
-			project = 'Pe.Main'
-			directory = 'Pe'
-		}
+		# @{
+		# 	project = 'Pe.Generator.Id'
+		# 	directory = 'Pe/generator'
+		# },
+		# @{
+		# 	project = 'Pe.Generator.Throws'
+		# 	directory = 'Pe/generator'
+		# },
+		# @{
+		# 	project = 'Pe.Bridge'
+		# 	directory = 'Pe/bridge'
+		# },
+		# @{
+		# 	project = 'Pe.Embedded'
+		# 	directory = 'Pe/bridge'
+		# },
+		# @{
+		# 	project = 'Pe.Library.CommandLine'
+		# 	directory = 'Pe/lib/library'
+		# },
+		# @{
+		# 	project = 'Pe.Library.Provider'
+		# 	directory = 'Pe/lib/library'
+		# },
+		# @{
+		# 	project = 'Pe.Library.Common'
+		# 	directory = 'Pe/lib/library'
+		# },
+		# @{
+		# 	project = 'Pe.Library.Property'
+		# 	directory = 'Pe/lib/library'
+		# },
+		# @{
+		# 	project = 'Pe.Library.Database'
+		# 	directory = 'Pe/lib/library'
+		# },
+		# @{
+		# 	project = 'Pe.Library.Database.Sqlite'
+		# 	directory = 'Pe/lib/library'
+		# },
+		# @{
+		# 	project = 'Pe.Library.DependencyInjection'
+		# 	directory = 'Pe/lib/library'
+		# },
+		# @{
+		# 	project = 'Pe.Mvvm'
+		# 	directory = 'Pe/lib'
+		# },
+		# @{
+		# 	project = 'Pe.PInvoke'
+		# 	directory = 'Pe/lib'
+		# },
+		# @{
+		# 	project = 'Pe.Core'
+		# 	directory = 'Pe/lib'
+		# },
+		# @{
+		# 	project = 'Pe.Plugins.DefaultTheme'
+		# 	directory = 'Pe/lib/plugins'
+		# },
+		# @{
+		# 	project = 'Pe.Main'
+		# 	directory = 'Pe'
+		# }
 	)
 	foreach ($item in $items) {
 		$projectFilePath = Join-Path -Path $appDir -ChildPath $item.project | Join-Path -ChildPath ($item.project + '.csproj')
 		Start-DotNet -ArgumentList sln, add, $projectFilePath, --solution-folder, $item.directory
 	}
 
-	# <Project> の子要素 <Platform> が追加されないプロジェクトを補正
-	$fixPlatformPaths = @(
-		'Pe/Source/Pe/Pe.Generator.Id/Pe.Generator.Id.csproj'
-	)
-	$solutionXml = [xml]::new()
-	$solutionXml.Load($solutionPathName)
-	foreach ($fixPlatformPath in $fixPlatformPaths) {
-		$projectNode = $solutionXml.SelectSingleNode("//Project[@Path='$fixPlatformPath']")
-		$platforms = @('x86', 'x64')
-		foreach ($platform in $platforms) {
-			$platformNode = $solutionXml.CreateElement('Platform')
-			$platformNode.SetAttribute('Solution', "*|$platform")
-			$platformNode.SetAttribute('Project', $platform)
-			$projectNode.AppendChild($platformNode) | Out-Null
-		}
-	}
-	$solutionXml.Save($solutionPathName)
+	# # <Project> の子要素 <Platform> が追加されないプロジェクトを補正
+	# $fixPlatformPaths = @(
+	# 	'Pe/Source/Pe/Pe.Generator.Id/Pe.Generator.Id.csproj'
+	# )
+	# $solutionXml = [xml]::new()
+	# $solutionXml.Load($solutionPathName)
+	# foreach ($fixPlatformPath in $fixPlatformPaths) {
+	# 	$projectNode = $solutionXml.SelectSingleNode("//Project[@Path='$fixPlatformPath']")
+	# 	$platforms = @('x86', 'x64')
+	# 	foreach ($platform in $platforms) {
+	# 		$platformNode = $solutionXml.CreateElement('Platform')
+	# 		$platformNode.SetAttribute('Solution', "*|$platform")
+	# 		$platformNode.SetAttribute('Project', $platform)
+	# 		$projectNode.AppendChild($platformNode) | Out-Null
+	# 	}
+	# }
+	# $solutionXml.Save($solutionPathName)
 
 	# プラグインプロジェクトを補正・追加
 	$pluginTargets = @(
@@ -491,7 +491,7 @@ try {
 		}
 
 		Write-Verbose "プロジェクトを追加: $pluginTarget"
-		Start-DotNet -ArgumentList sln, add, $pluginTarget
+		Start-DotNet -ArgumentList sln, add, $pluginTarget, --in-root
 	}
 
 
@@ -503,6 +503,7 @@ try {
 	# Set-Content -Path $solutionFileName -Value $solutionContent
 
 	# スタートアップ設定
+	$solutionXml = [xml]::new()
 	$solutionXml.Load($solutionPathName)
 	$projectNode = $solutionXml.SelectSingleNode("//Project[@Path='${PluginName}/${PluginName}.csproj']")
 	$projectNode.SetAttribute('DefaultStartup', 'true')

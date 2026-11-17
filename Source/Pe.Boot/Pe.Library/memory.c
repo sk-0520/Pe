@@ -96,7 +96,7 @@ bool is_enabled_memory_arena_resource(const MEMORY_ARENA_RESOURCE* memory_arena_
         return false;
     }
 
-    return memory_arena_resource->handle;
+    return memory_arena_resource->handle != NULL;
 }
 
 void* RC_HEAP_FUNC(allocate_raw_memory, byte_t bytes, bool zero_fill, const MEMORY_ARENA_RESOURCE* memory_arena_resource)

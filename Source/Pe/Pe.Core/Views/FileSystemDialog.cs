@@ -167,7 +167,7 @@ namespace ContentTypeTextNet.Pe.Core.Views
                 return path;
             }
 
-            if(!Filters.Any()) {
+            if(Filters.Count == 0) {
                 return path;
             }
 

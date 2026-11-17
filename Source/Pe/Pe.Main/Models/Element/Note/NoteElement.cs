@@ -608,7 +608,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Element.Note
                     switch(toKind) {
                         case NoteContentKind.RichText:
                             Debug.Assert(ContextDispatcher.CheckAccess());
-                            return noteContentConverter.ToRichText(fromRawContent, FontElement.FontData, ForegroundColor);
+                            return noteContentConverter.ToRichText(fromRawContent, FontElement.ToFontData(), ForegroundColor);
 
                         case NoteContentKind.Plain:
                         default:

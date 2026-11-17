@@ -3,4 +3,82 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Folder Name="/Pe/">
+    <Project Path="Pe/Source/Pe/Pe.Main/Pe.Main.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+  </Folder>
+  <Folder Name="/Pe/bridge/">
+    <Project Path="Pe/Source/Pe/Pe.Bridge/Pe.Bridge.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe/Source/Pe/Pe.Embedded/Pe.Embedded.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+  </Folder>
+  <Folder Name="/Pe/generator/">
+    <Project Path="Pe/Source/Pe/Pe.Generator.Id/Pe.Generator.Id.csproj">
+      <Platform Solution="*|x86" Project="x86" />
+      <Platform Solution="*|x64" Project="x64" />
+    </Project>
+    <Project Path="Pe/Source/Pe/Pe.Generator.Throws/Pe.Generator.Throws.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+  </Folder>
+  <Folder Name="/Pe/lib/">
+    <Project Path="Pe/Source/Pe/Pe.Core/Pe.Core.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe/Source/Pe/Pe.Mvvm/Pe.Mvvm.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe/Source/Pe/Pe.PInvoke/Pe.PInvoke.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+  </Folder>
+  <Folder Name="/Pe/lib/library/">
+    <Project Path="Pe/Source/Pe/Pe.Library.CommandLine/Pe.Library.CommandLine.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe/Source/Pe/Pe.Library.Common/Pe.Library.Common.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe/Source/Pe/Pe.Library.Database.Sqlite/Pe.Library.Database.Sqlite.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe/Source/Pe/Pe.Library.Database/Pe.Library.Database.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe/Source/Pe/Pe.Library.DependencyInjection/Pe.Library.DependencyInjection.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe/Source/Pe/Pe.Library.Property/Pe.Library.Property.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+    <Project Path="Pe/Source/Pe/Pe.Library.Provider/Pe.Library.Provider.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+  </Folder>
+  <Folder Name="/Pe/lib/plugins/">
+    <Project Path="Pe/Source/Pe/Pe.Plugins.DefaultTheme/Pe.Plugins.DefaultTheme.csproj">
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+    </Project>
+  </Folder>
+  <Folder Name="/Pe/Source/" />
+  <Folder Name="/Pe/Source/Pe/" />
 </Solution>

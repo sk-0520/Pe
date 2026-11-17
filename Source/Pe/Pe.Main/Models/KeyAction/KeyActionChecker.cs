@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
 using ContentTypeTextNet.Pe.Core.Compatibility.Forms;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
@@ -84,7 +83,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.KeyAction
             }
         }
 
-        public bool HasJob => DisableJobs.Any() || ReplaceJobs.Any() || PressedJobs.Any();
+        public bool HasJob => DisableJobs.Count != 0 || ReplaceJobs.Count != 0 || PressedJobs.Count != 0;
 
         public IList<KeyActionDisableJob> DisableJobs { get; } = new List<KeyActionDisableJob>();
         public IList<KeyActionReplaceJob> ReplaceJobs { get; } = new List<KeyActionReplaceJob>();

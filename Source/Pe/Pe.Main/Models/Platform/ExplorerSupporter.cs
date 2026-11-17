@@ -102,7 +102,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Platform
         {
             IntPtr result = IntPtr.Zero;
 
-            if(!classTrees.Any()) {
+            if(classTrees.Count == 0) {
                 return result;
             }
             var className = classTrees[0];

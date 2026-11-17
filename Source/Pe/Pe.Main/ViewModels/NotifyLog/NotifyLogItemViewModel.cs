@@ -1,4 +1,4 @@
-using System;
+using System.Diagnostics.CodeAnalysis;
 using ContentTypeTextNet.Pe.Bridge.Models;
 using ContentTypeTextNet.Pe.Bridge.Models.Data;
 using ContentTypeTextNet.Pe.Core.Models;
@@ -24,6 +24,8 @@ namespace ContentTypeTextNet.Pe.Main.ViewModels.NotifyLog
 
         public NotifyLogKind Kind => Model.Kind;
         public string Header => Model.Header;
+
+        [SuppressMessage("WFO", "WFO2000", Justification = "プロパティ通知が既存であるため")]
         public NotifyLogContentViewModel Content => new NotifyLogContentViewModel(Model.Content, LoggerFactory);
 
         #endregion

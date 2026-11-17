@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using ContentTypeTextNet.Pe.Core.Models;
+using ContentTypeTextNet.Pe.Library.Common;
 using ContentTypeTextNet.Pe.Main.Models.Logic;
 using ContentTypeTextNet.Pe.Main.Models.Platform;
-using ContentTypeTextNet.Pe.Library.Common;
 
 namespace ContentTypeTextNet.Pe.Main.Models.Applications
 {
@@ -51,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             {
                 foreach(var item in items) {
                     var key = string.IsNullOrWhiteSpace(item.MemberInfo.Name) ? parent : parent + "." + item.MemberInfo.Name;
-                    if(item.Children.Any()) {
+                    if(item.Children.Count != 0) {
                         AddResult(key, item.Children);
                     } else {
                         var pi = new PlatformInformationItem(key, item.Value);

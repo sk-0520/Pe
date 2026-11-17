@@ -7,13 +7,17 @@ const Changelogs: ChangelogVersion[] = [
 	{
 		date: "YYYY/MM/DD",
 		version: "0.99.273+",
+		group: ".NET 11",
 		contents: [
 			{
 				type: "note",
 				logs: [
 					{
-						revision: "",
-						subject: "",
+						class: "compatibility",
+						subject: "本バージョンから .NET 11 で稼働します",
+						comments: [
+							"多分大丈夫だと思うけど一応互換性注意(.NET 10 移行時と同じ)",
+						],
 					},
 					{
 						revision: "",
@@ -80,7 +84,10 @@ const Changelogs: ChangelogVersion[] = [
 					},
 					{
 						revision: "",
-						subject: "",
+						subject: "#1101: .NET 11 へ移行",
+						comments: [
+							"依存ライブラリも一括で変更, それが .NET 11 に関係なくても対応",
+						],
 					},
 					{
 						revision: "",
