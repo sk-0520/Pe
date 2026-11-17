@@ -1,6 +1,6 @@
 <Project>
     <PropertyGroup>
-        <Version>0.99.273</Version>
+        <Version>0.99.274</Version>
 
         <TargetFramework>net11.0-windows</TargetFramework>
         <LangVersion>15</LangVersion>
