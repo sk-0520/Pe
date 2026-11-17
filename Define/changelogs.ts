@@ -87,6 +87,7 @@ const Changelogs: ChangelogVersion[] = [
 						subject: "#1101: .NET 11 へ移行",
 						comments: [
 							"依存ライブラリも一括で変更, それが .NET 11 に関係なくても対応",
+							"プラグインテンプレートは死んでるけど一旦はこれで進める。単純につらい",
 						],
 					},
 					{
