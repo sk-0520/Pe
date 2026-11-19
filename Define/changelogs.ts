@@ -76,7 +76,7 @@ const Changelogs: ChangelogVersion[] = [
 				logs: [
 					{
 						revision: "",
-						subject: "",
+						subject: "#1102: Node.js を更新: 26 ",
 					},
 					{
 						revision: "",
