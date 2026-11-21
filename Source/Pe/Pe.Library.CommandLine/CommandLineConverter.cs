@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using ContentTypeTextNet.Pe.Library.CommandLine.ConvertHandlers;
 using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.CommandLine
@@ -37,6 +38,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine
             new CommandLineBooleanConvertHandler(),
             new CommandLineDateTimeConvertHandler(),
             new CommandLineTimeSpanConvertHandler(),
+            new CommandLineEnumConvertHandler(),
         ];
 
         #endregion

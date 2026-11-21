@@ -5,7 +5,7 @@ namespace ContentTypeTextNet.Pe.Core.Models.Shell.Value
 {
     public class Express: ValueBase
     {
-        #region proeprty
+        #region property
 
         public static Express Empty { get; } = new Express();
 

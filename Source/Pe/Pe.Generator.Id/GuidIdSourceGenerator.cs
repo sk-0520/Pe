@@ -23,6 +23,7 @@ namespace ContentTypeTextNet.Pe.Generator.Id
 
 namespace {{attributeNamespace}}
 {
+    {{sourceBuilder.CoverageExclusion}}
     [System.Serializable]
     [{{sourceBuilder.ToCode<System.AttributeUsageAttribute>()}}({{sourceBuilder.ToCode(attributeTarget)}}, AllowMultiple = false)]
     internal sealed class {{attributeName}}: {{sourceBuilder.ToCode<System.Attribute>()}}
@@ -80,6 +81,7 @@ readonly partial record struct {{targetName}}
     /// <summary>
     /// 生成。
     /// </summary>
+    {{sourceBuilder.CoverageExclusion}}
     [JsonConstructor]
     public {{targetName}}({{sourceBuilder.ToCode<Guid>()}} id)
     {
@@ -91,11 +93,13 @@ readonly partial record struct {{targetName}}
     /// <summary>
     /// 生ID。
     /// </summary>
+    {{sourceBuilder.CoverageExclusion}}
     public {{sourceBuilder.ToCode<Guid>()}} Id { get; }
 
     /// <summary>
     /// 空ID。
     /// </summary>
+    {{sourceBuilder.CoverageExclusion}}
     public static {{targetName}} Empty
     {
         get
@@ -113,8 +117,9 @@ readonly partial record struct {{targetName}}
     /// <see cref="{{targetName}}"/>に変換。
     /// </summary>
     /// <param name="s">入力文字列。</param>
-    /// <param name="result">変更成功。</param>
+    /// <param name="result">変換後のID。</param>
     /// <returns></returns>
+    {{sourceBuilder.CoverageExclusion}}
     public static bool TryParse(string s, out {{targetName}} result)
     {
         if({{sourceBuilder.ToCode<Guid>()}}.TryParse(s, out var val)) {
@@ -131,6 +136,7 @@ readonly partial record struct {{targetName}}
     /// </summary>
     /// <param name="s">入力文字列。</param>
     /// <returns></returns>
+    {{sourceBuilder.CoverageExclusion}}
     public static {{targetName}} Parse(string s)
     {
         var id = {{sourceBuilder.ToCode<Guid>()}}.Parse(s);
@@ -141,6 +147,7 @@ readonly partial record struct {{targetName}}
     /// 新規IDの生成。
     /// </summary>
     /// <returns></returns>
+    {{sourceBuilder.CoverageExclusion}}
     public static {{targetName}} NewId()
     {
         return new {{targetName}}({{sourceBuilder.ToCode<Guid>()}}.NewGuid());
@@ -157,6 +164,7 @@ readonly partial record struct {{targetName}}
     /// <para>ファイル名として使用可能な文字列表現にもなる。</para>
     /// </remarks>
     /// <returns></returns>
+    {{sourceBuilder.CoverageExclusion}}
     public override string ToString()
     {
         return Id.ToString("D");

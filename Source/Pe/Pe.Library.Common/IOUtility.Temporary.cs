@@ -143,7 +143,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
             File.Refresh();
         }
 
-        #region proeprty
+        #region property
 
         /// <summary>
         /// ファイルストリーム。

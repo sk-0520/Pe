@@ -29,7 +29,10 @@ namespace ContentTypeTextNet.Pe.CommonTest
         /// 生成。
         /// </summary>
         /// <remarks>原則これを使用する。</remarks>
-        /// <returns></returns>
+        /// <param name="logLevel">
+        /// <see cref="ILogger.IsEnabled"/> の判定に使用するレベル。<see cref="LogLevel.None"/> の場合、判定結果は <see langword="true" />。
+        /// </param>
+        /// <returns>生成したモックロガーとファクトリー。</returns>
         public static MockLog Create(LogLevel logLevel = LogLevel.None)
         {
             var mockLogger = Substitute.For<ILogger>();

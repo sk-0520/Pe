@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Pe.Generator.Id\Pe.Generator.Id.csproj">
       <OutputItemType>Analyzer</OutputItemType>
       <!--<ReferenceOutputAssembly>false</ReferenceOutputAssembly>-->

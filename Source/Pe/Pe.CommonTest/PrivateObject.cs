@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 
 namespace ContentTypeTextNet.Pe.CommonTest
 {
@@ -69,16 +70,33 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         public object? Invoke(string name, params object[] arguments)
         {
+            static bool IsMatchParameters(ParameterInfo[] parameters, object[] arguments)
+            {
+                if(parameters.Length != arguments.Length) {
+                    return false;
+                }
+
+                for(var i = 0; i < parameters.Length; i++) {
+                    var parameter = parameters[i];
+                    var argument = arguments[i];
+                    if(!parameter.ParameterType.IsAssignableFrom(argument.GetType())) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
             if(Methods.TryGetValue(name, out var members)) {
-                var parameters = arguments.Select(a => a.GetType()).ToArray();
                 foreach(var member in members) {
-                    var memberParams = member
-                        .GetParameters()
-                        .Select(a => a.ParameterType)
-                    ;
-                    if(parameters.SequenceEqual(memberParams)) {
-                        var result = member.Invoke(Instance, arguments);
-                        return result;
+                    var memberParams = member.GetParameters();
+                    if(IsMatchParameters(memberParams, arguments)) {
+                        try {
+                            var result = member.Invoke(Instance, arguments);
+                            return result;
+                        } catch(TargetInvocationException ex) when(ex.InnerException is not null) {
+                            ExceptionDispatchInfo.Capture(ex.InnerException).Throw();
+                        }
                     }
                 }
 

@@ -23,7 +23,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.ViewModels
             Attributes = attributes;
         }
 
-        #region proeprty
+        #region property
 
         /// <summary>
         /// 対象プロパティ。

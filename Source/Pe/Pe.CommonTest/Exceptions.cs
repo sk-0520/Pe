@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 #if !DOC_FX
 using ContentTypeTextNet.Pe.Generator.Throws;
 #else
@@ -18,7 +19,18 @@ namespace ContentTypeTextNet.Pe.CommonTest
     /// <remarks>こいつを捕まえてどうこうすることはない。</remarks>
     [GeneratedException]
     public partial class TestException: System.Exception
-    { }
+    {
+        public static T ThrowIfNull<T>(T? value, string? message = null, [CallerArgumentExpression(nameof(value))] string valueExpression = "")
+            where T : class
+        {
+            if(value is null) {
+                var msg = (message ?? $"{nameof(value)} is null") + $" ({valueExpression})";
+
+                throw new TestException(msg);
+            }
+            return value;
+        }
+    }
 
     #region PrivateObject
 

@@ -112,6 +112,7 @@ namespace ContentTypeTextNet.Pe.Library.Provider
         #endregion
     }
 
+    [ExcludeFromCodeCoverage]
     file sealed class DefaultEnvironmentProvider: EnvironmentProvider
     { }
 }

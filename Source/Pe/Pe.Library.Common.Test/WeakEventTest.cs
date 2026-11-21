@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test
 {
+    [ExcludeFromCodeCoverage]
     file class EventSource
     {
         #region event
@@ -57,6 +59,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test
         #endregion
     }
 
+    [ExcludeFromCodeCoverage]
     file class EventListener
     {
         #region property

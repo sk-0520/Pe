@@ -1,12 +1,29 @@
 using System;
 using ContentTypeTextNet.Pe.CommonTest;
+using ContentTypeTextNet.Pe.Library.CommandLine.ConvertHandlers;
 using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 
-namespace ContentTypeTextNet.Pe.Library.CommandLine.Test
+namespace ContentTypeTextNet.Pe.Library.CommandLine.Test.ConvertHandlers
 {
     public class CommandLineConverterTest
     {
+        #region define
+
+        private enum TestEnum1
+        {
+            None,
+            First,
+        }
+
+        private enum TestEnum2
+        {
+            Zero = 0,
+            One = 1,
+        }
+
+        #endregion
+
         #region function
 
         private sealed class ClassDefault
@@ -40,6 +57,12 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine.Test
             public TimeSpan TimeSpan1 { get; set; }
             public TimeSpan TimeSpan2 { get; set; }
 
+            [CommandLineOption("enum1", CommandLineOptionKind.Value)]
+            public TestEnum1 Enum1 { get; set; }
+
+            [CommandLineOption("enum2", CommandLineOptionKind.Value)]
+            public TestEnum2 Enum2 { get; set; }
+
             #endregion
         }
 
@@ -57,6 +80,8 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine.Test
                     "--bool-switch1",
                     "--datetime=2026-01-02T03:04:05",
                     "--timespan", "1.2:3:4.005",
+                    "--enum1", "First",
+                    "--enum2", "1",
                 ]
             );
 
@@ -78,6 +103,9 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine.Test
 
             Assert.Equal(new TimeSpan(1, 2, 3, 4, 5), actual.TimeSpan1);
             Assert.Equal(TimeSpan.Zero, actual.TimeSpan2);
+
+            Assert.Equal(TestEnum1.First, actual.Enum1);
+            Assert.Equal(TestEnum2.One, actual.Enum2);
         }
 
         private sealed class ClassConvertError
@@ -127,7 +155,7 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine.Test
         {
             #region CommandLineConvertHandlerBase
 
-            public override byte[]? ConvertTarget(Type targetType, string? value)
+            protected override byte[]? ConvertTarget(Type targetType, string? value)
             {
                 if(string.IsNullOrWhiteSpace(value)) {
                     return null;

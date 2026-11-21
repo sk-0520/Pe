@@ -18,7 +18,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         public interface IApplyParameter
         {
-            #region proeprty
+            #region property
 
             ModelViewModelObservableCollectionManager<TModel, TViewModel>? Sender { get; }
             ModelViewModelObservableCollectionViewModelApply Apply { get; }
@@ -28,7 +28,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         public abstract class ApplyParameter: IApplyParameter
         {
-            #region proeprty
+            #region property
 
             public ModelViewModelObservableCollectionManager<TModel, TViewModel>? Sender { get; set; }
             public ModelViewModelObservableCollectionViewModelApply Apply { get; set; }
@@ -38,7 +38,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         public interface IAddItemParameter: IApplyParameter
         {
-            #region proeprty
+            #region property
 
             IReadOnlyList<TModel> NewModels { get; }
             IReadOnlyList<TViewModel> NewViewModels { get; }
@@ -57,7 +57,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         public interface IInsertItemParameter: IApplyParameter
         {
-            #region proeprty
+            #region property
 
             int InsertIndex { get; }
             IReadOnlyList<TModel> NewModels { get; }
@@ -77,7 +77,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         public interface IRemoveItemParameter: IApplyParameter
         {
-            #region proeprty
+            #region property
 
             int OldStartingIndex { get; }
             IReadOnlyList<TModel> OldModels { get; }
@@ -99,7 +99,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         public interface IReplaceItemParameter: IApplyParameter
         {
-            #region proeprty
+            #region property
 
             int StartIndex { get; }
             IReadOnlyList<TModel> NewModels { get; }
@@ -124,7 +124,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         public interface IMoveItemParameter: IApplyParameter
         {
-            #region proeprty
+            #region property
 
             int NewStartingIndex { get; }
             int OldStartingIndex { get; }
@@ -143,7 +143,7 @@ namespace ContentTypeTextNet.Pe.Mvvm.Bindings.Collections
 
         public interface IResetItemParameter: IApplyParameter
         {
-            #region proeprty
+            #region property
 
             IReadOnlyList<TViewModel> OldViewModels { get; }
 

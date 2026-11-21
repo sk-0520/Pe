@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.CommonTest;
 using Xunit;
 
-namespace Pe.CommonTest.Test
+namespace ContentTypeTextNet.Pe.CommonTest.Test
 {
     public class PrivateObjectTest
     {
@@ -24,7 +20,7 @@ namespace Pe.CommonTest.Test
 
             #endregion
 
-            #region proeprty
+            #region property
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:使用されていないプライベート メンバーを削除する", Justification = "<保留中>")]
             private int Property { get; set; }
@@ -45,6 +41,17 @@ namespace Pe.CommonTest.Test
                 return a + a;
             }
 
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:使用されていないプライベート メンバーを削除する", Justification = "<保留中>")]
+            private IReadOnlyList<int> ReadOnlyListMethod(IReadOnlyList<int> values)
+            {
+                return values;
+            }
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:使用されていないプライベート メンバーを削除する", Justification = "<保留中>")]
+            private void ThrowingMethod()
+            {
+                throw new InvalidOperationException(nameof(ThrowingMethod));
+            }
             #endregion
         }
 
@@ -97,6 +104,27 @@ namespace Pe.CommonTest.Test
             Assert.Throws<PrivateObjectMethodParametersException>(() => test.Invoke("Method", (double)1));
             Assert.Throws<PrivateObjectMethodParametersException>(() => test.Invoke("Method", (decimal)1));
             Assert.Throws<PrivateObjectMethodParametersException>(() => test.Invoke("Method", "A"));
+        }
+        [Fact]
+        public void Invoke_ReadOnlyListArgument_Test()
+        {
+            var obj = new Class();
+            var test = new PrivateObject(obj);
+            var values = new List<int> { 1, 2, 3 };
+
+            Assert.Same(values, test.Invoke("ReadOnlyListMethod", values));
+        }
+
+        [Fact]
+        public void Invoke_Exception_Test()
+        {
+            var obj = new Class();
+            var test = new PrivateObject(obj);
+
+            var exception = Assert.Throws<InvalidOperationException>(
+                () => test.Invoke("ThrowingMethod"));
+
+            Assert.Equal("ThrowingMethod", exception.Message);
         }
 
         #endregion

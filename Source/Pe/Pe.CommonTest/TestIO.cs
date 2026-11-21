@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Xml.Linq;
-using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
 
 namespace ContentTypeTextNet.Pe.CommonTest
 {
@@ -289,7 +285,12 @@ namespace ContentTypeTextNet.Pe.CommonTest
         {
             get
             {
-                return _ProjectDirectory ??= new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new TestException("どうやって到達するのか知らん例外"));
+                if(_ProjectDirectory is null) {
+                    var location = TestException.ThrowIfNull(Assembly.GetExecutingAssembly().Location);
+                    var directoryPath = TestException.ThrowIfNull(Path.GetDirectoryName(location));
+                    _ProjectDirectory = new DirectoryInfo(directoryPath);
+                }
+                return _ProjectDirectory;
             }
         }
 
@@ -323,7 +324,8 @@ namespace ContentTypeTextNet.Pe.CommonTest
 
         private static string GetWorkClassDirectoryName(object test)
         {
-            return test.GetType().FullName ?? throw new TestException(test.ToString()!);
+            var directoryPath = TestException.ThrowIfNull(test.GetType().FullName);
+            return directoryPath;
         }
 
         private static string GetDataMethodDirectoryName(string extension, string callerMemberName)

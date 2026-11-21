@@ -215,6 +215,17 @@ namespace ContentTypeTextNet.Pe.CommonTest.Test
             mockLog.VerifyMessageRegex(LogLevel.Critical, new TestRegex("Critical"), 0);
         }
 
+        [Theory]
+        [InlineData(true, LogLevel.None)]
+        [InlineData(true, LogLevel.Trace)]
+        [InlineData(false, LogLevel.Information)]
+        public void Create_IsEnabled_Trace_Test(bool expected, LogLevel configuredLevel)
+        {
+            var mockLog = MockLog.Create(configuredLevel);
+
+            Assert.Equal(expected, mockLog.Logger.IsEnabled(LogLevel.Trace));
+        }
+
         #endregion
     }
 }

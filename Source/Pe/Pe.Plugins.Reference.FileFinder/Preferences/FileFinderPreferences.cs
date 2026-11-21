@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Windows.Controls;
 using ContentTypeTextNet.Pe.Bridge.Plugin;
 using ContentTypeTextNet.Pe.Bridge.Plugin.Preferences;
@@ -18,7 +15,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.FileFinder.Preferences
             : base(plugin)
         { }
 
-        #region proeprty
+        #region property
 
         private FileFinderSettingViewModel? SettingViewModel { get; set; }
 

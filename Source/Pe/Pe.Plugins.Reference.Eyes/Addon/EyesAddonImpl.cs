@@ -13,7 +13,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Eyes.Addon
             : base(pluginConstructorContext, plugin)
         { }
 
-        #region proeprty
+        #region property
 
         private EyesWidget? EyesWidget { get; set; }
         private EyesBackground? EyesBackground { get; set; }

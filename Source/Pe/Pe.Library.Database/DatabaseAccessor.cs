@@ -184,8 +184,8 @@ namespace ContentTypeTextNet.Pe.Library.Database
     public class DatabaseAccessor<TDbConnection>: DatabaseAccessor
         where TDbConnection : DbConnection
     {
-        public DatabaseAccessor(IDatabaseFactory connectionFactory, ILoggerFactory loggerFactory)
-            : base(connectionFactory, loggerFactory)
+        public DatabaseAccessor(IDatabaseFactory databaseFactory, ILoggerFactory loggerFactory)
+            : base(databaseFactory, loggerFactory)
         { }
 
         #region property

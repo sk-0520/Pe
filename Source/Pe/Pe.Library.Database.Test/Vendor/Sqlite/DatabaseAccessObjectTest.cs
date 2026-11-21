@@ -1,16 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.Library.Common;
-using Microsoft.Extensions.Logging.Abstractions;
-using Xunit;
-using ContentTypeTextNet.Pe.CommonTest;
-using System.Runtime.CompilerServices;
-using ContentTypeTextNet.Pe.Library.Database.Sqlite;
 using System.Data;
+using ContentTypeTextNet.Pe.CommonTest;
 using ContentTypeTextNet.Pe.Library.Database.Implementations;
+using Microsoft.Extensions.Logging.Abstractions;
+using NSubstitute;
+using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Database.Test.Vendor.Sqlite
 {
@@ -45,7 +40,7 @@ namespace ContentTypeTextNet.Pe.Library.Database.Test.Vendor.Sqlite
             public override string LoadStatement(string key)
             {
                 var testIO = TestIO.InitializeMethod(this);
-                
+
                 var file = testIO.Work.CreateTextFile("MEMBER!NAME.sql", "file-sql1\nfile-sql2");
                 using var reader = file.OpenText();
                 return reader.ReadToEnd();
@@ -112,7 +107,7 @@ VALUE2:CODE
         }
 
         [Fact]
-        public void ProcessStatementTest_1()
+        public void ProcessStatement_KEY1_Test()
         {
             var dao = CreateDao();
             var map = new Dictionary<string, string>();
@@ -131,7 +126,7 @@ COL3
         }
 
         [Fact]
-        public void ProcessStatementTest_2()
+        public void ProcessStatement_Key1_KEY2_Test()
         {
             var dao = CreateDao();
             var map = new Dictionary<string, string>();
@@ -153,7 +148,7 @@ order by
         }
 
         [Fact]
-        public void ProcessStatementTest_3()
+        public void ProcessStatement_KEY1_VALUE3_Test()
         {
             var dao = CreateDao();
             var map = new Dictionary<string, string>();
@@ -171,6 +166,24 @@ COL3
 
 ";
             AssertEx.EqualMultiLineTextIgnoreNewline(expected3, actual3);
+        }
+
+        [Fact]
+        public void ProcessStatement_Throw_Test()
+        {
+            var mockLog = MockLog.Create();
+            var mockContext = Substitute.For<IDatabaseContext>();
+            var mockImplementation = Substitute.For<IDatabaseImplementation>();
+            mockImplementation.SupportedBlockComment.Returns(false);
+            mockContext.Implementation.Returns(mockImplementation);
+            var dao = Substitute.For<DatabaseAccessObjectBase>(
+                mockContext,
+                Substitute.For<IDatabaseStatementLoader>(),
+                mockLog.Factory
+            );
+            var privateObject = new PrivateObject(dao);
+            var exception = Assert.Throws<InvalidOperationException>(() => privateObject.Invoke("ProcessStatement", Sql, new Dictionary<string, string>(), "MEMBER"));
+            Assert.Equal(nameof(IDatabaseImplementation.SupportedBlockComment), exception.Message);
         }
 
         #endregion

@@ -18,7 +18,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Preferences
             : base(plugin)
         { }
 
-        #region proeprty
+        #region property
 
         private ClockSettingViewModel? SettingViewModel { get; set; }
 
