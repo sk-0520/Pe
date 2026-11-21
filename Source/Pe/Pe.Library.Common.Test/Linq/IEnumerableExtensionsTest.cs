@@ -1,12 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ContentTypeTextNet.Pe.Library.Common.Linq;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Library.Common.Test.Linq
 {
+    [ExcludeFromCodeCoverage]
     file sealed class NormalComparer<T>: IComparer<T>
         where T : IComparable<T>
     {
@@ -16,6 +17,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test.Linq
         }
     }
 
+    [ExcludeFromCodeCoverage]
     file sealed class ReverseComparer<T>: IComparer<T>
         where T : IComparable<T>
     {
@@ -170,7 +172,7 @@ namespace ContentTypeTextNet.Pe.Library.Common.Test.Linq
         [InlineData(new[] { "a0", "a1", "a2" }, new[] { "a0", "a1", "a2" }, Order.Ascending)]
         [InlineData(new[] { "a0", "b0", "b1" }, new[] { "b1", "a0", "b0" }, Order.Ascending)]
         [InlineData(new[] { "a2", "a1", "a0" }, new[] { "a0", "a1", "a2" }, Order.Descending)]
-        [InlineData(new[] { "a0" , "b1", "b0", }, new[] { "b1", "a0", "b0" }, Order.Descending)]
+        [InlineData(new[] { "a0", "b1", "b0", }, new[] { "b1", "a0", "b0" }, Order.Descending)]
         public void ThenByTest(IEnumerable<string> expected, IEnumerable<string> source, Order order)
         {
             var actual = source.OrderBy(a => a.First()).ThenBy(order, a => a.Last());

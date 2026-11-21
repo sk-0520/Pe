@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ContentTypeTextNet.Pe.Library.Database
 {
+    [ExcludeFromCodeCoverage]
     file class DatabaseBarrierTransaction: DatabaseTransaction
     {
         public DatabaseBarrierTransaction(IDisposable locker, IDbConnection connection, IDatabaseTransaction transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)
@@ -51,6 +51,7 @@ namespace ContentTypeTextNet.Pe.Library.Database
         #endregion
     }
 
+    [ExcludeFromCodeCoverage]
     file sealed class ReadOnlyDatabaseBarrierTransaction: DatabaseBarrierTransaction
     {
         public ReadOnlyDatabaseBarrierTransaction(IDisposable locker, IDbConnection connection, IDatabaseTransaction transaction, IDatabaseImplementation implementation, ILoggerFactory loggerFactory)

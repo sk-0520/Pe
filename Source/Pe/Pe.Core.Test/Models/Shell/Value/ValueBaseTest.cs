@@ -1,9 +1,11 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using ContentTypeTextNet.Pe.Core.Models.Shell.Value;
 using Xunit;
 
 namespace ContentTypeTextNet.Pe.Core.Test.Models.Shell.Value
 {
+    [ExcludeFromCodeCoverage]
     file sealed class TestValue: ValueBase
     {
         #region property

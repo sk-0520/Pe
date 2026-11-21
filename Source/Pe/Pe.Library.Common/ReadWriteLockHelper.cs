@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 
 namespace ContentTypeTextNet.Pe.Library.Common
@@ -33,6 +34,7 @@ namespace ContentTypeTextNet.Pe.Library.Common
     }
 
     // ActionDisposer は意図的に除外, あんま変わりないけど。
+    [ExcludeFromCodeCoverage]
     file sealed class LockDisposer: DisposerBase, ILockDisposeable
     {
         public LockDisposer(ReadWriteLockMode mode, Action action)
