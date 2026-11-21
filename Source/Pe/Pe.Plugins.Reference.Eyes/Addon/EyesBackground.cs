@@ -83,7 +83,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Eyes.Addon
             PluginInformation = pluginInformation;
         }
 
-        #region proeprty
+        #region property
 
         private ILoggerFactory LoggerFactory { get; }
         private ILogger Logger { get; }

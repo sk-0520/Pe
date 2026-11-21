@@ -43,6 +43,14 @@
         <DefineConstants>OS_MAC</DefineConstants>
     </PropertyGroup>
 
+    <PropertyGroup Condition="$(MSBuildProjectName.StartsWith('Pe.Generator.')) and $(MSBuildProjectName.EndsWith('.Test'))">
+        <DefineConstants>$(DefineConstants);GENERATOR_COVERAGE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup Condition="$(MSBuildProjectName.StartsWith('Pe.Generator.')) and $(MSBuildProjectName.EndsWith('.Test'))">
+        <None Include="$(MSBuildThisFileDirectory)Source\Pe\generator-testconfig.json" Link="testconfig.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
     <!--
     <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Test'))">
         <UseTestingPlatformOverride>true</UseTestingPlatformOverride>

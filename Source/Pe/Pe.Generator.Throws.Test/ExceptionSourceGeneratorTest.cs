@@ -46,6 +46,18 @@ namespace ContentTypeTextNet.Pe.Generator.Throws.Test
         #region function
 
         [Fact]
+        public void GeneratedConstructors_AreIncludedInCoverage_Test()
+        {
+            var exclusion = typeof(System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute);
+
+            Assert.False(System.Attribute.IsDefined(typeof(AbcException), exclusion, false));
+            Assert.False(System.Attribute.IsDefined(typeof(GeneratedExceptionAttribute), exclusion, false));
+            foreach(var constructor in typeof(AbcException).GetConstructors(System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic)) {
+                Assert.False(System.Attribute.IsDefined(constructor, exclusion, false));
+            }
+        }
+
+        [Fact]
         public void AbcExceptionTest()
         {
             var type = typeof(AbcException);

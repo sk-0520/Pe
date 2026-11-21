@@ -59,6 +59,54 @@ namespace ContentTypeTextNet.Pe.Library.CommandLine.Test
         }
 
         [Fact]
+        public void Convert_Byte_Test()
+        {
+            var test = new CommandLineIntegerConvertHandler();
+            var actual = test.Convert(typeof(byte), "255");
+            Assert.Equal((byte)255, actual);
+        }
+
+        [Fact]
+        public void Convert_SByte_Test()
+        {
+            var test = new CommandLineIntegerConvertHandler();
+            var actual = test.Convert(typeof(sbyte), "127");
+            Assert.Equal((sbyte)127, actual);
+        }
+
+        [Fact]
+        public void Convert_Int16_Test()
+        {
+            var test = new CommandLineIntegerConvertHandler();
+            var actual = test.Convert(typeof(short), "32767");
+            Assert.Equal((short)32767, actual);
+        }
+
+        [Fact]
+        public void Convert_UInt16_Test()
+        {
+            var test = new CommandLineIntegerConvertHandler();
+            var actual = test.Convert(typeof(ushort), "65535");
+            Assert.Equal((ushort)65535, actual);
+        }
+
+        [Fact]
+        public void Convert_Int32_Test()
+        {
+            var test = new CommandLineIntegerConvertHandler();
+            var actual = test.Convert(typeof(int), "2147483647");
+            Assert.Equal((int)2147483647, actual);
+        }
+
+        [Fact]
+        public void Convert_UInt32_Test()
+        {
+            var test = new CommandLineIntegerConvertHandler();
+            var actual = test.Convert(typeof(uint), "4294967295");
+            Assert.Equal((uint)4294967295, actual);
+        }
+
+        [Fact]
         public void Convert_Throw_Test()
         {
             var test = new CommandLineIntegerConvertHandler();

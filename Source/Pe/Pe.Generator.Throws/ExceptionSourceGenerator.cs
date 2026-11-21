@@ -42,7 +42,6 @@ namespace ContentTypeTextNet.Pe.Generator.Throws
                 .FilterAttribute(baseType.GetAttributes())
                 .Select(a => ToAttributeCode(sourceBuilder, a))
                 .Prepend("[global::System.SerializableAttribute]")
-                .Prepend("[global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute]")
                 .Distinct()
                 .ToArray()
             ;
@@ -72,6 +71,7 @@ namespace ContentTypeTextNet.Pe.Generator.Throws
 
                 var constructorCode = $$"""
 
+                    {{sourceBuilder.CoverageExclusion}}
                     {{string.Join("", constructorAttributeCodes)}}
                     {{signature}}
                         : base({{string.Join(", ", args)}})
@@ -165,6 +165,7 @@ namespace ContentTypeTextNet.Pe.Generator.Throws
 
 namespace {{attributeNamespace}}
 {
+    {{sourceBuilder.CoverageExclusion}}
     [{{sourceBuilder.ToCode<System.AttributeUsageAttribute>()}}({{sourceBuilder.ToCode(attributeTarget)}}, AllowMultiple = false)]
     internal sealed class {{attributeName}}: {{sourceBuilder.ToCode<System.Attribute>()}}
     {

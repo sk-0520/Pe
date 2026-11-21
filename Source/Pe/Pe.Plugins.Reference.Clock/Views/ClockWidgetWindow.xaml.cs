@@ -31,7 +31,7 @@ namespace ContentTypeTextNet.Pe.Plugins.Reference.Clock.Views
             InitializeComponent();
         }
 
-        #region proeprty
+        #region property
 
         //Storyboard? PrevStoryboard { get; set; }
 

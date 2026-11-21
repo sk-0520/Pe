@@ -39,6 +39,22 @@ namespace ContentTypeTextNet.Pe.Bridge.Test.Models.Data
         #region function
 
         [Fact]
+        public void GeneratedMembers_AreExcludedFromCoverage_Test()
+        {
+            var type = typeof(LauncherItemId);
+            var exclusion = typeof(System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute);
+
+            Assert.False(Attribute.IsDefined(type, exclusion));
+            Assert.True(Attribute.IsDefined(type.GetConstructor(new[] { typeof(Guid) })!, exclusion));
+            Assert.True(Attribute.IsDefined(type.GetProperty(nameof(LauncherItemId.Id))!, exclusion));
+            Assert.True(Attribute.IsDefined(type.GetProperty(nameof(LauncherItemId.Empty))!, exclusion));
+            Assert.True(Attribute.IsDefined(type.GetMethod(nameof(LauncherItemId.TryParse))!, exclusion));
+            Assert.True(Attribute.IsDefined(type.GetMethod(nameof(LauncherItemId.Parse))!, exclusion));
+            Assert.True(Attribute.IsDefined(type.GetMethod(nameof(LauncherItemId.NewId))!, exclusion));
+            Assert.True(Attribute.IsDefined(type.GetMethod(nameof(LauncherItemId.ToString))!, exclusion));
+        }
+
+        [Fact]
         public void SerializeClassDataTest()
         {
             var input = new ClassData() {

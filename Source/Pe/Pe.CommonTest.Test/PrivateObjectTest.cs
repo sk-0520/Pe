@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ContentTypeTextNet.Pe.CommonTest;
 using Xunit;
 
-namespace Pe.CommonTest.Test
+namespace ContentTypeTextNet.Pe.CommonTest.Test
 {
     public class PrivateObjectTest
     {
@@ -24,7 +18,7 @@ namespace Pe.CommonTest.Test
 
             #endregion
 
-            #region proeprty
+            #region property
 
             [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0051:使用されていないプライベート メンバーを削除する", Justification = "<保留中>")]
             private int Property { get; set; }

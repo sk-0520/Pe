@@ -23,6 +23,7 @@ namespace ContentTypeTextNet.Pe.Generator.Id
 
 namespace {{attributeNamespace}}
 {
+    {{sourceBuilder.CoverageExclusion}}
     [{{sourceBuilder.ToCode<System.AttributeUsageAttribute>()}}({{sourceBuilder.ToCode(attributeTarget)}}, AllowMultiple = false)]
     internal sealed class {{attributeName}}: {{sourceBuilder.ToCode<System.Attribute>()}}
     {
@@ -88,11 +89,13 @@ partial class {{targetName}}: global::Dapper.SqlMapper.TypeHandler<{{idType}}>
 {
     #region TypeHandler
 
+    {{sourceBuilder.CoverageExclusion}}
     public override void SetValue(IDbDataParameter parameter, {{idType}} value)
     {
         parameter.Value = value.ToString();
     }
 
+    {{sourceBuilder.CoverageExclusion}}
     public override {{idType}} Parse(object value)
     {
         var s = (string)value;
