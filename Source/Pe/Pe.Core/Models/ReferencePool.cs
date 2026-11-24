@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 using ContentTypeTextNet.Pe.Library.Common;
@@ -27,7 +26,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
             Timeout = timeout;
             IsManage = isManage;
             TimeProvider = timeProvider;
-            LifeTime = Stopwatch.StartNew();
+            StartTimestamp = TimeProvider.GetTimestamp();
         }
 
         #region property
@@ -38,9 +37,9 @@ namespace ContentTypeTextNet.Pe.Core.Models
         public TValue Value { get; }
 
         /// <summary>
-        /// 生存時間。
+        /// 生存時間の計測開始時刻。
         /// </summary>
-        private Stopwatch LifeTime { get; set; }
+        private long StartTimestamp { get; set; }
         /// <summary>
         /// 死ぬまでの猶予。
         /// </summary>
@@ -55,7 +54,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         /// <summary>
         /// 生存中か。
         /// </summary>
-        public bool Alive => LifeTime.Elapsed < Timeout;
+        public bool Alive => TimeProvider.GetElapsedTime(StartTimestamp) < Timeout;
 
         #endregion
 
@@ -66,7 +65,7 @@ namespace ContentTypeTextNet.Pe.Core.Models
         /// </summary>
         public void Recycle()
         {
-            LifeTime.Restart();
+            StartTimestamp = TimeProvider.GetTimestamp();
         }
 
         #endregion
