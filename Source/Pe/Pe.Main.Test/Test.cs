@@ -110,7 +110,7 @@ namespace ContentTypeTextNet.Pe.Main.Test
             var sqlRootDirPath = Path.Combine(Path.GetDirectoryName(testAssemblyPath)!, "etc", "sql", "ContentTypeTextNet.Pe.Main");
 
             diContainer
-                .Register<IDatabaseStatementLoader, ApplicationDatabaseStatementLoader>(new ApplicationDatabaseStatementLoader(new DirectoryInfo(sqlRootDirPath), TimeSpan.FromMinutes(6), null, true, diContainer.Build<LoggerFactory>()))
+                .Register<IDatabaseStatementLoader, ApplicationDatabaseStatementLoader>(new ApplicationDatabaseStatementLoader(new DirectoryInfo(sqlRootDirPath), TimeSpan.FromMinutes(6), null, true, TimeProvider.System, diContainer.Build<LoggerFactory>()))
                 .Register<IDatabaseCommonStatus>(DatabaseCommonStatus.CreateCurrentAccount())
                 .RegisterDatabase(factoryPack, delayWriterWaitTimePack, diContainer.Build<ILoggerFactory>())
             ;

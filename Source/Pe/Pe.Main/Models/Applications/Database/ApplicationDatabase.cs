@@ -189,11 +189,11 @@ limit
 
         #endregion
 
-        public ApplicationDatabaseStatementLoader(DirectoryInfo baseDirectory, TimeSpan timelimit, DatabaseAccessor? statementAccessor, bool givePriorityToFile, ILoggerFactory loggerFactory)
+        public ApplicationDatabaseStatementLoader(DirectoryInfo baseDirectory, TimeSpan timelimit, DatabaseAccessor? statementAccessor, bool givePriorityToFile, TimeProvider timeProvider, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             BaseDirectory = baseDirectory;
-            StatementCache = new ReferencePool<string, string>(TimeSpan.FromMinutes(10), timelimit, false, loggerFactory);
+            StatementCache = new ReferencePool<string, string>(TimeSpan.FromMinutes(10), timelimit, false, timeProvider, loggerFactory);
             GivePriorityToFile = givePriorityToFile;
             StatementAccessor = statementAccessor;
 

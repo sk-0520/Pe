@@ -50,7 +50,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             );
             var delayWriterWaitTimePack = new DelayWriterWaitTimePack(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3));
             var environmentParameters = ApplicationDiContainer.Build<EnvironmentParameters>();
-            ApplicationDiContainer.Register<IDatabaseStatementLoader, ApplicationDatabaseStatementLoader>(new ApplicationDatabaseStatementLoader(environmentParameters.MainSqlDirectory, TimeSpan.FromMinutes(6), null, environmentParameters.ApplicationConfiguration.File.GivePriorityToFile, LoggerFactory));
+            ApplicationDiContainer.Register<IDatabaseStatementLoader, ApplicationDatabaseStatementLoader>(new ApplicationDatabaseStatementLoader(environmentParameters.MainSqlDirectory, TimeSpan.FromMinutes(6), null, environmentParameters.ApplicationConfiguration.File.GivePriorityToFile, TimeProvider.System, LoggerFactory));
             ApplicationDiContainer.RegisterDatabase(factory, delayWriterWaitTimePack, LoggerFactory);
 
             CommandLine = new CommandLineParser();

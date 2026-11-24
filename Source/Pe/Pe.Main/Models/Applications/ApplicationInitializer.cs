@@ -341,7 +341,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 new ApplicationDatabaseFactory(true, false)
             );
         }
-        private IDatabaseStatementLoader GetDatabaseStatementLoader(EnvironmentParameters environmentParameters, ILoggerFactory loggerFactory)
+        private IDatabaseStatementLoader GetDatabaseStatementLoader(EnvironmentParameters environmentParameters, TimeProvider timeProvider, ILoggerFactory loggerFactory)
         {
             DatabaseAccessor? statementAccessor = null;
             environmentParameters.SqlStatementAccessorFile.Refresh();
@@ -349,10 +349,10 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
                 statementAccessor = new ApplicationDatabaseAccessor(new ApplicationDatabaseFactory(environmentParameters.SqlStatementAccessorFile, true, true), loggerFactory);
             }
 
-            return new ApplicationDatabaseStatementLoader(environmentParameters.MainSqlDirectory, TimeSpan.Zero, statementAccessor, environmentParameters.ApplicationConfiguration.File.GivePriorityToFile, loggerFactory);
+            return new ApplicationDatabaseStatementLoader(environmentParameters.MainSqlDirectory, TimeSpan.Zero, statementAccessor, environmentParameters.ApplicationConfiguration.File.GivePriorityToFile, timeProvider, loggerFactory);
         }
 
-        private void FirstSetup(EnvironmentParameters environmentParameters, ILoggerFactory loggerFactory, ILogger logger)
+        private void FirstSetup(EnvironmentParameters environmentParameters, TimeProvider timeProvider, ILoggerFactory loggerFactory, ILogger logger)
         {
             logger.LogInformation("初回セットアップ");
 
@@ -374,14 +374,14 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             var idFactory = new IdFactory(loggerFactory);
             using(var factoryPack = CreateDatabaseFactoryPack(environmentParameters, false, logger))
             using(var accessorPack = ApplicationDatabaseAccessorPack.Create(factoryPack, loggerFactory)) {
-                var statementLoader = GetDatabaseStatementLoader(environmentParameters, loggerFactory);
+                var statementLoader = GetDatabaseStatementLoader(environmentParameters, timeProvider, loggerFactory);
                 using var statementLoaderDisposer = statementLoader as IDisposable;
                 var databaseSetupper = new DatabaseSetupper(idFactory, statementLoader, loggerFactory);
                 databaseSetupper.Initialize(accessorPack);
             }
         }
 
-        private bool NormalSetup(out (ApplicationDatabaseFactoryPack factory, ApplicationDatabaseAccessorPack accessor) pack, EnvironmentParameters environmentParameters, ILoggerFactory loggerFactory, ILogger logger)
+        private bool NormalSetup(out (ApplicationDatabaseFactoryPack factory, ApplicationDatabaseAccessorPack accessor) pack, EnvironmentParameters environmentParameters, TimeProvider timeProvider, ILoggerFactory loggerFactory, ILogger logger)
         {
             logger.LogInformation("DBセットアップ");
 
@@ -390,7 +390,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
             var idFactory = new IdFactory(loggerFactory);
 
-            var statementLoader = GetDatabaseStatementLoader(environmentParameters, loggerFactory);
+            var statementLoader = GetDatabaseStatementLoader(environmentParameters, timeProvider, loggerFactory);
             using var statementLoaderDisposer = statementLoader as IDisposable;
 
             var databaseSetupper = new DatabaseSetupper(idFactory, statementLoader, loggerFactory);
@@ -487,7 +487,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             ;
 
             if(factory is not null) {
-                container.Register<IDatabaseStatementLoader, ApplicationDatabaseStatementLoader>(new ApplicationDatabaseStatementLoader(environmentParameters.MainSqlDirectory, TimeSpan.FromMinutes(6), statementAccessor, environmentParameters.ApplicationConfiguration.File.GivePriorityToFile, loggerFactory));
+                container.Register<IDatabaseStatementLoader, ApplicationDatabaseStatementLoader>(new ApplicationDatabaseStatementLoader(environmentParameters.MainSqlDirectory, TimeSpan.FromMinutes(6), statementAccessor, environmentParameters.ApplicationConfiguration.File.GivePriorityToFile, container.Get<TimeProvider>(), loggerFactory));
                 container.RegisterDatabase(factory, delayWriterWaitTimePack, loggerFactory);
             }
 
@@ -671,7 +671,7 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
 
             if(RunModeUtility.IsBuildPersistence(RunMode)) {
                 if(IsFirstStartup) {
-                    FirstSetup(environmentParameters, loggerFactory, logger);
+                    FirstSetup(environmentParameters, TimeProvider.System, loggerFactory, logger);
                 }
             }
 
@@ -682,11 +682,11 @@ namespace ContentTypeTextNet.Pe.Main.Models.Applications
             ApplicationDatabaseFactoryPack? factory = null;
             if(RunModeUtility.IsBuildPersistence(RunMode)) {
                 (ApplicationDatabaseFactoryPack factory, ApplicationDatabaseAccessorPack accessor) pack;
-                if(!NormalSetup(out pack, environmentParameters, loggerFactory, logger)) {
+                if(!NormalSetup(out pack, environmentParameters, TimeProvider.System, loggerFactory, logger)) {
                     logger.LogWarning("再初期化処理実施");
                     // データぶっ壊れてる系
-                    FirstSetup(environmentParameters, loggerFactory, logger);
-                    var retryResult = NormalSetup(out pack, environmentParameters, loggerFactory, logger);
+                    FirstSetup(environmentParameters, TimeProvider.System, loggerFactory, logger);
+                    var retryResult = NormalSetup(out pack, environmentParameters, TimeProvider.System, loggerFactory, logger);
                     if(!retryResult) {
                         logger.LogWarning("あかんかったわ");
                         throw new ApplicationInitializerException();
